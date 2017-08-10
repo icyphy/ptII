@@ -629,7 +629,6 @@ public class JSAccessor extends JavaScript {
                                                  obeyCheckoutOrUpdateRepositoryParameter);
 
         boolean isOverridden = getAttribute("_localChanges") != null;
-        System.out.println("JSAccessor.reload(): " + getName() + " has been overridden: " + isOverridden);
         if (isOverridden) {
             String diff = "";
             try {
@@ -745,7 +744,6 @@ public class JSAccessor extends JavaScript {
                                        + "or updated and JSDoc invoked more than once when the tests are run.");
                 }
                 boolean isOverridden = ((JSAccessor)entity).getAttribute("_localChanges") != null;
-                System.out.println("JSAccessor.reloadAllAccessors(): " + ((JSAccessor)entity).getFullName() + " is overridden: " + isOverridden);
                 if (!promptForOverrideOfLocalModifications && isOverridden) {
                     System.out.println("reloadAllAccesors: The script of "
                                        + ((JSAccessor)entity).getFullName()
@@ -954,7 +952,7 @@ public class JSAccessor extends JavaScript {
                 // Get the DocAttribute by looking for an adjacent *PtDoc.xml file.
                 try {
                     if (urlSpec.endsWith("utilities/Mutable.js")) {
-                        System.out.println("The Mutable accessor has no documentation, so we are not "
+                        System.out.println("The Mutable accessor original file has no documentation, so we are not "
                                            + "running jsdoc on " + urlSpec);
                     } else if (urlSpec.indexOf("test/auto") != -1) {
                         System.out.println("Accessors in test/auto do not typically have documentation, so we are not "
