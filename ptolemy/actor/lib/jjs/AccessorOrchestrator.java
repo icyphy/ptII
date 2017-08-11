@@ -1,6 +1,6 @@
 /* Interface for classes that can orchestrate the execution of accessors.
 
-   Copyright (c) 2014-2016 The Regents of the University of California.
+   Copyright (c) 2014-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -76,10 +76,14 @@ public interface AccessorOrchestrator extends Nameable {
      */
     public void invokeCallback(final Runnable function) throws IllegalActionException;
 
-    /** Report an error. */
+    /** Report an error.
+     *  @param error The error message.
+     */
     public void error(String message);
 
-    /** Print a message. */
+    /** Print a message.
+     *  @param log The message to be printed.
+     */
     public void log(String message);
     
     /** Invoke the specified function after the specified amount of time and again
@@ -101,6 +105,9 @@ public interface AccessorOrchestrator extends Nameable {
      */
     public Object setTimeout(Runnable function, int milliseconds) throws IllegalActionException;
 
-    /** Cancel all pending callbacks and stop responding to future callbacks. */
+    /** Cancel all pending callbacks and stop responding to future
+     * callbacks.
+     * @exception IllegalActionException If there is a problem wrapping up.
+     */
     public void wrapup() throws IllegalActionException;
 }

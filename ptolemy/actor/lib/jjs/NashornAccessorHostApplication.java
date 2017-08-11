@@ -127,6 +127,7 @@ public class NashornAccessorHostApplication {
     
     /** Create an orchestrator for a top-level accessor.
      *  @param name The name for the orchestrator.
+     *  @return an aorchestrator for the top-level accessor.
      */
     public static ActorSubstitute createOrchestrator(String name) {
         return new ActorSubstitute(name);
@@ -233,6 +234,9 @@ public class NashornAccessorHostApplication {
      */
     public static class ActorSubstitute implements AccessorOrchestrator {
         
+        /** Construct an actor substitute instance.
+         *  @param name The name of the actor substitute instance.
+         */
         public ActorSubstitute(String name) {
             _name = name;
         }
@@ -351,13 +355,17 @@ public class NashornAccessorHostApplication {
             return _name;
         }
 
-        /** Return the name specified in the constructor. */
+        /** Return the name specified in the constructor.
+         *  @see #setName(String)   
+         */
         @Override
         public String getName() {
             return _name;
         }
 
-        /** Return the name specified in the constructor. */
+        /** Return the name specified in the constructor.
+         *  @see #setName(String)   
+         */
         @Override
         public String getName(NamedObj relativeTo) throws InvalidStateException {
             return _name;
@@ -376,6 +384,7 @@ public class NashornAccessorHostApplication {
                 
         /** Set the name.
          *  @param name The name to use in reporting errors.
+         *  @see #getName()
          */
         @Override
         public void setName(String name) {

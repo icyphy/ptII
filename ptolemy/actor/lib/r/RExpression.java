@@ -989,7 +989,7 @@ public class RExpression extends TypedAtomicActor {
     /** The pathname of the graphics output file. */
     protected String _graphicsOutputFile = "";
 
-    /** The home */
+    /** The home. */
     protected String _home;
 
     ///////////////////////////////////////////////////////////////////

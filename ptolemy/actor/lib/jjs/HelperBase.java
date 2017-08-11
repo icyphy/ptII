@@ -101,11 +101,17 @@ public class HelperBase {
 
     /** Support data types for reading and writing to buffers. */
     public static enum DATA_TYPE {
+        /** Bytes. */
         BYTE,
+        /** Doubles. */
         DOUBLE,
+        /** Floats. */
         FLOAT,
+        /** Images. */
         IMAGE,
+        /** Integers. */
         INT,
+        /** JSON. */
         JSON,
 
         // Unsigned ints cannot be represented as a JavaScript number.
@@ -115,13 +121,18 @@ public class HelperBase {
 
         // LONG,
 
+        /** JavaScript numbers.. */
         NUMBER,
+        /** Shorts. */
         SHORT,
+        /** Strings. */
         STRING,
+        /** Unsigned bytes. */
         UNSIGNEDBYTE,
 
         // UNSIGNEDINT,
 
+        /** Unsigned shorts. */
         UNSIGNEDSHORT
     };
 

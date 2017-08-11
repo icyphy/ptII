@@ -76,17 +76,20 @@ public class MqttHelper extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get or create a helper for the specified actor.
-     *  If one has been created before and has not been garbage collected, return
+    /** Get or create a helper for the specified actor.  If one has
+     *  been created before and has not been garbage collected, return
      *  that one. Otherwise, create a new one.
-     *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @param actor Either a JavaScript actor or a
+     *  RestrictedJavaScriptInterface.
+     *  @param helping The JavaScript object that this is helping.
      *  @return The MqttHelper.
      */
     public static MqttHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
         if (_mqttHelper == null) {
-            // FIXME: This isn't right. Instead of a static _mqttHelper, this
-            // should use a mechanism like in VertHelperBase to associate helpers
-            // with actors. Perhaps this should subclass VertxHelperBase?
+            // FIXME: This isn't right. Instead of a static
+            // _mqttHelper, this should use a mechanism like in
+            // VertHelperBase to associate helpers with
+            // actors. Perhaps this should subclass VertxHelperBase?
             _mqttHelper = new MqttHelper(actor, helping);
         }
         return _mqttHelper;

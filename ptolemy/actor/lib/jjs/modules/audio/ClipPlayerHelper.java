@@ -49,7 +49,7 @@ import ptolemy.actor.lib.jjs.HelperBase;
  */
 public class ClipPlayerHelper extends HelperBase {
 
-    /** Construct a new ClipPlayerHelper
+    /** Construct a new ClipPlayerHelper.
      * 
      * @param actor  The actor associated with this ClipPlayerHelper.
      * @param helping The Javascript object being helped.
