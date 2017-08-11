@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 75840 2017-04-02 14:01:32Z beth@berkeley.edu $
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/speechRecognition/demo
 
-DIRS =		SpeechRecognition
+DIRS =		SpeechRecognition WatchCommandUpdater
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,7 +48,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	SpeechRecognition/SpeechRecognition.jar
+	SpeechRecognition/SpeechRecognition.jar \
+	WatchCommandUpdater/WatchCommandUpdater.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
