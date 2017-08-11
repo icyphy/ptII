@@ -176,6 +176,7 @@ public class RExpression2 extends TypedAtomicActor {
     }
 
 
+    /** The log. */
     public static Log log = LogFactory.getLog(RExpression2.class);
 
     ///////////////////////////////////////////////////////////////////
@@ -902,6 +903,10 @@ public class RExpression2 extends TypedAtomicActor {
 	return returnArray;
     }
 
+    /** Return the array as an int matrix.
+     *  @param doubles The 2-d array of doubles.
+     *  @param The 2d array of integers.
+     */
     public static int[][] asIntMatrix(double[][] doubles) {
 	int[][] returnArray = new int[doubles.length][doubles[0].length];
 	for (int i = 0; i < doubles.length; i++) {
@@ -913,6 +918,10 @@ public class RExpression2 extends TypedAtomicActor {
 	return returnArray;
     }
 
+    /** Return as a matrix of booleans.
+     *  @param x The R expression.
+     *  @return the result as an array of booleans.
+     */
     public static boolean[][] asBooleanMatrix(REXP x) {
 	int[] ct = x.asIntArray();
 	if (ct == null)

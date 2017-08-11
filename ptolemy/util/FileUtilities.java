@@ -896,13 +896,15 @@ public class FileUtilities {
     public static class StreamAndURL {
         /** Create an object containing an InputStream
          *  and a URL.
+         *  @param stream The stream.
+         *  @param url The url.
          */   
         public StreamAndURL(InputStream stream, URL url) {
             _stream = stream;
             _url = url;
         }
 
-        /** Return the stream
+        /** Return the stream.
          *  @return The stream.
          */
         public InputStream stream() {

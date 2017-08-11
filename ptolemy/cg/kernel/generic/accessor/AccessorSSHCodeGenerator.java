@@ -213,7 +213,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *
      *  In this class, any commands that start with "npm install" are
      *  removed.
-     *  @param return The list of commands.
+     *  @return return The list of commands.
      *  @exception IllegalActionException If thrown in a base class.
      */
     protected List<String> _setupCommands() throws IllegalActionException {

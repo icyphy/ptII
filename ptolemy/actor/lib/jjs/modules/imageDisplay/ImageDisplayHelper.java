@@ -82,7 +82,7 @@ public class ImageDisplayHelper {
 
     /** Display an image.
      *
-     *  @param image The image to be displayed.
+     *  @param imageToken The image to be displayed.
      */
     public void displayImage(AWTImageToken imageToken) {
         // Display probably to be done in the Swing event thread.

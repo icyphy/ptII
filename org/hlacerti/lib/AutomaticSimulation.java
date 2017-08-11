@@ -81,6 +81,8 @@ public class AutomaticSimulation extends VergilApplication
      * Read a file and return the contents as ano ArrayList of Strings.
      * @param file The file whose content is going to be turned into String.
      * @return the ArrayList of Strings.
+     * @exception IOException If there is a problem converting the file to an
+     * ArrayList of strings.x
      */
     public static ArrayList<String> convertFileToString(File file)
             throws IOException {
@@ -137,6 +139,8 @@ public class AutomaticSimulation extends VergilApplication
      * @param file The file to be read
      * @param propertyLine The property line to be found
      * @return The parameter value.
+     * @exception IllegalActionException If there is a problem
+     * reading the property file.
      */
     public static String findParameterValue(File file, String propertyLine)
             throws IllegalActionException {
@@ -176,6 +180,7 @@ public class AutomaticSimulation extends VergilApplication
      * @param modelPath The path to the model you want to run.
      * @param propertyLine The xml line of the parameter that we want to change.
      * @param values The values the new property will assume.
+     * @param solver Which RKSolver to use
      * @exception IllegalActionException If there is a problem reading a file.
      **/
     public static void changeParameter(int waitingTime,
@@ -253,6 +258,7 @@ public class AutomaticSimulation extends VergilApplication
      * @param start The value of the parameter.
      * @param end The end value of the parameter.
      * @param step The increment of the parameter value.
+     * @param solver Which RKSolver to use
      * @exception IllegalActionException If there is a problem reading a file.
      */
     public static void changeParameter(int waitingTime,
@@ -558,6 +564,10 @@ public class AutomaticSimulation extends VergilApplication
         System.out.println(manager.getFullName() + " " + manager.getState());
     }
 
+    /* Run all the models.
+     * @param vergil The script
+     * @return true if the models complete without throwing an exception.
+     */
     public static boolean runAllModels(AutomaticSimulation vergil) {
         Runnable runModels = new Runnable() {
             @Override

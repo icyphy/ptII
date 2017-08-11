@@ -91,6 +91,9 @@ public class RConsole implements RMainLoopCallbacks {
     /** Read from the console.
      *  In this class, null is returned.
      *  @param re The R engine 
+     *  @param prompt The prompt
+     *  @param addToHistory unknown
+     *  @return the string read from the console
      */
     public String rReadConsole(Rengine re, String prompt, int addToHistory) {
 	return null;
@@ -107,6 +110,8 @@ public class RConsole implements RMainLoopCallbacks {
     /** Choose a file.
      * In this class return the empty string.
      * @param re The R engine 
+     * @param newFile unused
+     * @return The file name.
      */
     public String rChooseFile(Rengine re, int newFile) {
 	return "";

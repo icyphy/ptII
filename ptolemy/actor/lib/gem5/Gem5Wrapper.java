@@ -403,7 +403,7 @@ public class Gem5Wrapper extends SequenceSource {
 
     /** Sort by the difference between the command times. */
     public static class SortByCommandTime implements Comparator<RecordToken>, Serializable {
-        /** Return the difference between time 1 and time2
+        /** Return the difference between time 1 and time2.
          *  @param t1 The record token containing the first time.
          *  @param t2 The record token containing the first time.
          *  @return The difference between the two times.

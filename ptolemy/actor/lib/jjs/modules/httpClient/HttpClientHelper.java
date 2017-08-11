@@ -167,6 +167,7 @@ public class HttpClientHelper extends VertxHelperBase {
      *  This method discards any pending submitted jobs,
      *  marks the helper not busy, and resets the sequence number to zero.
      *  If there is no HttpClientHelper associated with this actor, then do nothing.
+     *  @param actor the actor with the associated helper to be reset.
      */
     public static void reset(Object actor) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);

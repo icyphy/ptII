@@ -398,7 +398,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     protected abstract void _iterateEM() throws IllegalActionException;
 
     /**
-     * Check whether the gradient-descent algorithm has converged
+     * Check whether the gradient-descent algorithm has converged.
      * @param i Current iteration index
      * @return boolean indicating whether algorithm has converged
      * @exception IllegalActionException If there is a problem
