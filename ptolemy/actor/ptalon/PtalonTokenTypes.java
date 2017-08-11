@@ -1,4 +1,4 @@
-// $ANTLR 2.7.6 (2005-12-22): "parser.g" -> "PtalonLexer.java"$
+// $ANTLR 2.7.7 (2006-11-01): "parser.g" -> "PtalonLexer.java"$
 /* Lexer/Parser for Ptalon.
 
  Copyright (c) 2006-2009 The Regents of the University of California.

@@ -91,10 +91,10 @@ import ptolemy.kernel.util.ScopeExtender;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.FileUtilities.StreamAndURL;
 import ptolemy.util.CancelException;
 import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.FileUtilities.StreamAndURL;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
