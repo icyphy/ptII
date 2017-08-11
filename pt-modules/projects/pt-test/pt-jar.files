@@ -1,5 +1,5 @@
 # files for pt-test @ /Users/hal/java/workspaces/ptolemy/ptII/pt-modules/build/../projects/pt-kore
-/ptolemy/util/test/Diff.java
+/ptolemy/util/Diff.java
 /ptolemy/util/test/RecorderMessageHandler.java
 /ptolemy/util/test/WatchDog.java
 /ptolemy/util/test/junit/AutoCGCInlineTests.java
