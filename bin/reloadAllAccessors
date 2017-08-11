@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: reloadAllAccessors 76519 2017-08-04 19:35:00Z cxh $
+# $Id$
 # Reload all the accessors in the models that have JSAccessors actors
 # See https://accessors.org/wiki/Main/CapeCodeHost#ReloadAllAccessors
 # This script is run as part of the nightly test suite, see
