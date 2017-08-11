@@ -1,4 +1,0 @@
-#!/bin/sh
-# $Id$
-# Invoke vergil -viptos
-$PTII/bin/vergil -viptos $@

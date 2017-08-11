@@ -1,5 +1,0 @@
-#!/bin/sh
-# $Id$
-# Invoke the Cyber-Physical Simulator
-$PTII/bin/vergil -cyphysim $@
-
