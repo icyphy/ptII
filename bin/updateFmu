@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: updateFmu 67777 2013-10-26 01:51:06Z cxh $
+# $Id$
 # Update a fmu
 
 # Functional Mockup Unit (.fmu) files are zip files that contain

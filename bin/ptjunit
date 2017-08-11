@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: ptjunit 67777 2013-10-26 01:51:06Z cxh $
+# $Id$
 # ptjunit - a simple script that runs the junit tests in a directory.
 # Typically, this script is run from the test directory:
 #   cd $PTII/ptolemy/kernel/test

@@ -1,5 +1,5 @@
 #! /bin/sh
-# $Id: mkl4j 74455 2016-02-08 18:37:15Z cxh $
+# $Id$
 # Create a Launch4j (http://launch4j.sourceforge.net/) configuration file
 #
 ROOT=.
