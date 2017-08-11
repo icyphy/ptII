@@ -1,0 +1,174 @@
+#!/bin/sh
+# $Id$
+# ptmkdemo - create a makefile in a demo directory
+
+if [ $# -ne 1 ]; then
+   echo "$0: Usage: $0 demo/directory/relative/to/ptII. Exiting"
+   exit 2
+fi
+
+if [ -z "$PTII" ]; then
+    echo "$0: \$PTII was not set?  Exiting."
+    exit 6
+fi
+
+if [ ! -d "$PTII" ]; then
+    echo "$0: \$PTII is $PTII, which is not a directory.  Exiting."
+    exit 7
+fi  
+
+ptIIdir=`cd $PTII; pwd`
+
+if [ "`pwd`" != "`cd $PTII; pwd`" ]; then
+    echo "$0: Typically, this command is run from \$PTII ($PTII), not `pwd`."
+    echo "cding to $PTII now."
+    cd $PTII
+    if [ "`pwd`" != "`cd $PTII; pwd`" ]; then
+        echo "$0: Warning: cding to $PTII and running pwd (`pwd`) did not yield the expected results..."
+    fi
+fi
+
+demoDirectory=$1
+
+echo "$demoDirectory" | egrep '^/' >& /dev/null
+status=$?
+if [ $status -eq 0 ]; then
+    echo "$0: $demoDirectory starts with a slash?  Exiting."
+    exit 3
+fi
+
+parentDirectory=`dirname $demoDirectory`
+if [ `basename $parentDirectory` != demo ]; then
+    echo "$0: The demo $demoDirectory is not in a demo/ directory?  Exiting."
+    exit 4
+fi
+
+if [ ! -d $parentDirectory ]; then
+    echo "$0: Warning: $parentDirectory does not exist. BTW - $0 should be run from the $PTII directory"
+fi
+
+if [ ! -d $demoDirectory ]; then
+   mkdir -p $demoDirectory
+fi
+
+if [ ! -d $demoDirectory ]; then
+   echo "$0: The demo directory $demoDirectory is not a directory? Exiting."
+   exit 5
+fi
+
+
+if [ ! -f $demoDirectory/makefile ]; then
+   
+    relativePath=`echo $demoDirectory | awk -F / '{for(i=1;i<=NF;i++) {printf("../")}}'`
+    demoName=`basename $demoDirectory`
+    year=`date +%Y`
+
+    cat > $demoDirectory/makefile <<EOF
+# Makefile for Ptolemy II $demoName demo
+#
+# @Authors: Christopher Brooks (makefile only)
+#
+# @Version: \$Id: makefile 60082 2010-12-26 19:07:30Z cxh \$
+#
+# @Copyright (c) $year The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+
+ME =		$demoDirectory
+
+# Root of the Java directory
+ROOT =		$relativePath
+
+CLASSPATH =	\$(ROOT)\$(CLASSPATHSEPARATOR)
+
+# Get configuration info
+CONFIG =	\$(ROOT)/mk/ptII.mk
+include \$(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	$demoName
+PTCLASSJAR = 	\$(PTPACKAGE).jar
+
+JSRCS =
+
+OTHER_FILES_TO_BE_JARED = \\
+EOF
+
+    # List the .xml files in the directory.
+    (cd $demoDirectory; find . -name "*.xml" | awk '{printf("\t%s \\\n", $1)}' | grep -v $demoName.xml >> makefile)
+
+    # Continue creating the makefile.
+    cat >> $demoDirectory/makefile <<EOF2
+	$demoName.xml
+
+EXTRA_SRCS = \\
+	\$(JSRCS) \\
+	\$(OTHER_FILES_TO_BE_JARED)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = \$(DIRS)
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \\
+	doc
+
+JCLASS = \$(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
+install: all \$(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="\$(CLASSPATH)" appletviewer $demoName.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="\$(CLASSPATH)" appletviewer $demoNameVergil.htm
+
+demo_ptolemy:
+	"\$(PTII)/bin/ptolemy" $demoName.xml
+
+demo_vergil:
+	"\$(PTII)/bin/vergil" $demoName.xml
+
+# Get the rest of the rules
+include \$(ROOT)/mk/ptcommon.mk
+
+EOF2
+    echo "$0: $demoDirectory/makefile created."
+    echo "Don't forget to edit $parentDirectory/makefile and update DIRS and PTCLASSALLJARS"
+    numberOfXMLFiles=`find $demoDirectory -name "*.xml" | wc -l`
+    if [ $numberOfXMLFiles -ge 1 -a ! -f $demoDirectory/$demoName.xml ]; then
+        echo "There are $numberOfXMLFiles .xml files in $demoDirectory and $demoName.xml does not exist."
+        echo "Consider running:"
+        echo "   $PTII/bin/mkptlivelinkdemo $demoDirectory > $demoDirectory/$demoName.xml"
+    fi
+    echo "Also, be sure to add demos to $PTII/ptolemy/configs/doc/completeDemos.htm and run make in that directory"
+fi

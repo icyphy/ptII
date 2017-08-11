@@ -1,0 +1,690 @@
+#!/bin/sh
+# Script to create osgi Eclpse OSGi plugins.  See $PTII/mk/jnlp.mk
+# Based on $PTII/bin/mkjnlp
+#
+# @author: Christopher Brooks
+# @version: $Id: mkosgi 67778 2013-10-26 15:50:13Z cxh $
+#
+# Copyright (c) 2008-2013 The Regents of the University of California.
+# 	All Rights Reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+# 
+
+if [ $# -lt 4 ]; then 
+    echo "Usage: mkosgi baseDirectory targetDirectory featureName jars . . " 
+    exit 5
+fi
+
+#jnlpfile=$1
+#eagerjars=$2
+baseDirectory=$1
+targetDirectory=$2
+featureName=$3
+shift; shift; shift
+#mainjar=$4
+#shift; shift; shift; shift
+
+otherJars="$@"
+
+if [ ! -d "$baseDirectory" ]; then
+    echo "$0: '$baseDirectory' does not exist or is not a directory."
+    echo "This is the directory under which the jar files may be found."
+    exit 5
+fi
+
+if [ ! -d "$targetDirectory" ]; then
+    echo "$0: '$targetDirectory' does not exist or is not a directory."
+    echo "This is the directory where the features and plugins will be created."
+    exit 5
+fi
+
+
+# The directory where all the plugins reside
+pluginsDirectory=$targetDirectory/plugins
+if [ ! -d "$pluginsDirectory" ]; then
+    mkdir $pluginsDirectory
+fi	
+
+# Create the example
+exampleName=$featureName
+exampleDirectory=$pluginsDirectory/$exampleName
+echo "### Creating $exampleName"
+
+mkdir $exampleDirectory
+mkdir $exampleDirectory/src
+mkdir $exampleDirectory/bin
+
+    cat > "$exampleDirectory/.classpath" <<EOF1
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
+EOF1
+
+
+    cat > "$exampleDirectory/build.properties" <<EOF3
+source.. = src/
+output.. = bin/
+bin.includes = META-INF/,\\
+      .
+EOF3
+
+    cat > "$exampleDirectory/.project" <<EOFproject
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>$exampleName</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>
+EOFproject
+
+mkdir "$exampleDirectory/META-INF"
+manifestFile=$exampleDirectory/META-INF/MANIFEST.MF
+
+cat > "$manifestFile" <<EOF4
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: $exampleName Plug-in
+Bundle-SymbolicName: $exampleName
+Bundle-Version: 8.0.0
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+EOF4
+
+    echo $otherJars | 
+    sed -e 's@^lib/.*.jar @@g' \
+	-e 's@/[^/]*\.jar@@g' \
+	-e 's@/@.@g' |
+    awk '{nf = split($0, f, " ")
+            for (i = 1; i <= nf; i++) { 
+                if (i == 1) {
+                    printedALine=1
+		    printf("Require-Bundle:");
+	        } else {
+	            printf(";bundle-version=\"8.0.0\",\n")
+                }
+                needVersion=1
+	        printf(" %s", $i)
+             }
+             if (nf == 1) {
+                 needVersion=0
+                 # If we have only one required bundle . . .
+                 printf(";bundle-version=\"8.0.0\"")
+              }
+
+   	   }
+        END {if (needVersion==1) {
+                 printf(";bundle-version=\"8.0.0\"")
+             }
+             if (printedALine==1) {
+                 printf("\n")
+             } 
+            }' - >> $manifestFile
+
+# Create the feature
+featuresDirectory=$targetDirectory/features
+if [ ! -d "$featuresDirectory" ]; then
+    mkdir $featuresDirectory
+fi
+
+featureNameFeature=${featureName}feature
+featureDirectory=$featuresDirectory/$featureNameFeature
+
+mkdir $featureDirectory
+featureFile=$featureDirectory/feature.xml
+
+cat > $featureFile <<EOF0
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="$featureNameFeature"
+      label="Ptolemy II $feature"
+      version="8.0.0">
+
+   <description url="http://ptolemy.org/ptolemyII">
+       $featureName
+   </description>
+
+   <copyright url="http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm">
+Copyright (c) 1995-2013 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+   </copyright>
+
+
+   <requires>
+      <import plugin="org.eclipse.osgi"/>
+   </requires>
+EOF0
+
+cat > $featureDirectory/build.properties <<EOFfeatureBuildProperties
+bin.includes = feature.xml
+# simple plugin build does not need a base eclipse installation
+skipBase=true
+# don't get the source from a repository with cvs. svn checkout is done in outter build script
+skipMaps=true
+skipFetch=true
+
+logExtension=.log
+javacDebugInfo=false 
+javacFailOnError=true
+javacVerbose=true
+
+# create jars for an update site with correct directory structure
+# site.xml needs to be provided, though
+outputUpdateJars=true
+
+# Default value for the version of the source code. This value is used when compiling plug-ins that do not set the Bundle-RequiredExecutionEnvironment or set javacSource in build.properties
+javacSource=1.5
+
+# Default value for the version of the byte code targeted. This value is used when compiling plug-ins that do not set the Bundle-RequiredExecutionEnvironment or set javacTarget in build.properties.
+javacTarget=1.5
+
+#The type of the top level element we are building,  generally "feature"
+topLevelElementType = feature
+#The id of the top level element we are building
+topLevelElementId = $featureNameFeature
+#dir and archive suffix of the generated archives
+buildLabel = archives
+buildId = 8.0.0
+
+# name of the dir containing the features and plugins folder
+# should be the same of the updatesite project
+archivePrefix=ptolemy.updatesite
+EOFfeatureBuildProperties
+
+cat > $featureDirectory/.project <<EOFfeatureProject
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>$featureName</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.pde.FeatureBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.pde.FeatureNature</nature>
+	</natures>
+</projectDescription>
+EOFfeatureProject
+
+# Cygwin might have /cygdrive/c/WINDOWS/system32/sort in the path
+# before /usr/bin/sort
+SORT=/usr/bin/sort
+
+ERRFILE=/tmp/mkosgi.err
+rm -f $ERRFILE
+# Create a plugin for each jar file
+for file in $otherJars
+do
+    echo "#### Creating plug-in for $file"
+
+    case $file in
+	lib*) echo "Skipping $file, we can't handle jar files from lib yet"
+	    continue;;
+    esac	
+	
+    if [ ! -f "$baseDirectory/$file" ]; then
+	echo "$0: WARNING: '$baseDirectory/$file' could not be found,"
+    fi	
+
+    # Name of the plugin
+    pluginName=`dirname $file | sed 's@/@.@g'`
+
+    cat >> $featureFile <<EOF0b
+   <plugin
+         id="$pluginName"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+EOF0b
+
+    # Directory where the plugin will reside
+    pluginDirectory=$pluginsDirectory/$pluginName
+
+    if [ -d "$pluginDirectory" ]; then
+	echo "$0: '$pluginDirectory exists, skipping"
+	continue;
+    fi	
+    mkdir "$pluginDirectory"
+
+
+    cat > "$pluginDirectory/.classpath" <<EOF1
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
+EOF1
+
+
+    cat > "$pluginDirectory/build.properties" <<EOF3
+source.. = src/
+output.. = bin/
+bin.includes = META-INF/,\
+      .
+EOF3
+
+    cat > "$pluginDirectory/.project" <<EOFproject
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>$projectName</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>
+EOFproject
+
+    mkdir "$pluginDirectory/META-INF"
+    manifestFile=$pluginDirectory/META-INF/MANIFEST.MF
+
+    # Add imports as needed
+    importPackage="Import-Package: org.osgi.framework;version=\"1.4.0\""
+    case "$pluginName" in
+	ptolemy.actor)
+	    importPackage="$importPackage,
+ ptolemy.util"
+	    ;;
+	ptolemy.actor.gui)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.moml"
+	    ;;
+	ptolemy.actor.lib)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.graph,
+ ptolemy.math,
+ ptolemy.moml,
+ ptolemy.util"
+	    ;;
+	ptolemy.actor.lib.image)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.actor,
+ ptolemy.gui,
+ ptolemy.moml"
+	    ;;
+	ptolemy.codegen)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.actor.lib.colt,
+ ptolemy.actor.lib.gui,
+ ptolemy.actor.lib.javasound,
+ ptolemy.actor.lib.jni,
+ ptolemy.domains.ct.kernel,
+ ptolemy.domains.hdf.kernel,
+ ptolemy.graph,
+ ptolemy.moml"
+	    ;;
+	ptolemy.data)
+	    importPackage="$importPackage,
+ ptolemy.graph,
+ ptolemy.util"
+	    ;;
+	ptolemy.domains.ct.demo)
+	    importPackage="$importPackage,
+ ptolemy.gui"
+	    ;;
+	ptolemy.domains.ddf)
+	    importPackage="$importPackage,
+ ptolemy.graph"
+	    ;;
+	ptolemy.domains.sdf.lib.vq)
+	    importPackage="$importPackage,
+ ptolemy.actor.gui,
+ ptolemy.actor.lib.image,
+ ptolemy.gui"
+	    ;;
+	ptolemy.domains.pn|ptolemy.domains.rendezvous)
+	    importPackage="$importPackage,
+ ptolemy.graph"
+	    ;;
+
+	ptolemy.kernel)
+	    importPackage="$importPackage,
+ ptolemy.util"
+	    ;;
+
+	ptolemy.moml)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.util"
+	    ;;
+	ptolemy.vergil)
+	    importPackage="$importPackage,
+ ptolemy.domains.ct.kernel"
+	    ;;
+    esac
+
+    cat > "$manifestFile" <<EOF4
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: $pluginName Plug-in
+Bundle-SymbolicName: $pluginName
+Bundle-Version: 8.0.0
+$importPackage
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+EOF4
+
+    # Copy necessary jar files
+    case "$pluginName" in
+	ptolemy.actor.lib.colt)
+	    #echo "Bundle-ClassPath: ptcolt.jar" >> "$manifestFile"
+	    echo "jars.extra.classpath = ptcolt.jar" >> "$pluginDirectory/build.properties"
+            cp $PTII/lib/ptcolt.jar $pluginDirectory
+            ;;
+	ptolemy.actor.lib.python)
+	    #echo "Bundle-ClassPath: jython.jar" >> "$manifestFile"
+	    echo "jars.extra.classpath = jython.jar" >> "$pluginDirectory/build.properties"
+            cp $PTII/lib/jython.jar $pluginDirectory
+            ;;
+	ptolemy.actor.ptalon)
+	    #echo "Bundle-ClassPath: antlr.jar" >> "$manifestFile"
+	    echo "jars.extra.classpath = antlr.jar" >> "$pluginDirectory/build.properties"
+            cp $PTII/ptolemy/actor/ptalon/antlr/antlr.jar $pluginDirectory            ;;
+    esac
+
+    # FIXME: MANIFEST.MF should include the reqirements:
+    #Require-Bundle: ptolemy.util;bundle-version="1.0.0"
+
+    # Next, we add packages that are exported.  MANIFEST.MF will look like:
+    #Export-Package: ptolemy.kernel,
+    # ptolemy.kernel.attributes,
+    # ptolemy.kernel.undo,
+    # ptolemy.kernel.util,
+    # ptolemy.kore
+
+    # Use ls -lg because Cygwin ls -l includes the group and
+    # Under Cygwin, group names could have spaces: "Domain Users"
+    # Solaris 8 /usr/ucb/ls -l does not
+    #otherJarssizes="$otherJarssizes `/bin/ls -l $baseDirectory/$file | awk '{for (i=3;i<NF;i++) {if ($i ~ /^[0-9]*$/) {print $i; exit}}}'`"
+
+    # Determine what packages are in the jar file
+    packages=`jar -tf $baseDirectory/$file |
+	grep -v '/$' | grep -v META | grep -v JNLP-INF |
+	grep -v '/[^.]*$' |
+	awk -F / '{
+		   for(i = 1; i < NF; i++) {
+			if (i == 1) {
+				printf("%s", $i)
+			} else {
+				printf(".%s", $i)
+			}
+		   } 
+                   printf("\n")
+	}' | $SORT | uniq`
+
+    
+    # Add the files to MANIFEST.MF
+    echo $packages | 
+    awk '{nf = split($0, f, " ")
+            for (i = 1; i <= nf; i++) { 
+                if (i == 1) {
+		    printf("Export-Package:");
+	        } else {
+	            printf(",\n")
+                }
+	        printf(" %s", $i)
+             }
+   	   }
+        END {printf("\n")}' - >> $manifestFile
+    #echo "packages: `echo $packages| wc` $packages"
+    #otherJarspackages="$otherJarspackages $file:${packages}"
+
+    # Copy the source files to the target
+    mkdir $pluginDirectory/src
+    for package in $packages
+    do
+	sourceDirectory=`echo $package | sed 's@\.@/@g'`
+	  
+	# Hide tar's stderr because it contains messages about files
+	# that don't exist but are listed inside the curly braces.
+	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.c,*.dtd,*.gif,*.h,*.htm,*.html,*.in,*.java,*.jj,*.jjt,*.jpg,*.pdf,*.ptln,*.txt,*.xml} 2>> $ERRFILE) | (cd $pluginDirectory/src; tar -xpf -) 
+    done	
+    # Do a diff after all the packages have been created so that
+    # subpackages are present
+    #
+    for package in $packages
+    do
+        sourceDirectory=`echo $package | sed 's@\.@/@g'`
+        echo "#### Diffing package: $package"
+        echo "diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory"
+        diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
+    done
+done
+echo "</feature>" >> $featureFile 
+
+
+# Now try to create Require-Bundle lines in MANIFEST.MF.
+# We loop through each package and look for imports
+for file in $otherJars
+do
+    echo "#### Updating Required-Bundle for $file"
+
+    case $file in
+	lib*) echo "Skipping $file, we can't handle jar files from lib yet"
+	    continue;;
+    esac	
+
+    # Name of the plugin
+    pluginName=`dirname $file | sed 's@/@.@g'`
+
+    # Directory where the plugin will reside
+    pluginDirectory=$pluginsDirectory/$pluginName
+
+    # File that we update with Require-Bundle lines
+    manifestFile=$pluginDirectory/META-INF/MANIFEST.MF
+
+    # Get all the required packages by looking at the imports
+    requiredPackagesFile=/tmp/mkosgi.requiredPackages
+    find $pluginDirectory/src -name "*.java" |
+        xargs egrep -h "^import (ptolemy|com.microstar.xml|diva)" |
+	awk -F . '{for ( i = 1; i < NF; i++) {
+                       if (i>1) {
+                           printf(".")
+                       }
+                       printf("%s", $i)
+                   }
+	           printf("\n");
+                 '} - |
+        sort | uniq | sed 's/import //' > $requiredPackagesFile
+
+    # Get all the xrequired packages that are external to this bundle
+    providedPackagesFile=/tmp/mkosgi.providedPackages
+    topSrcDirectory=`find $pluginDirectory/src -type d | head -1`
+    find $pluginDirectory/src -type f | 
+        awk -F / '{for(i=1; i < NF; i++) {printf("%s/", $i)} printf("\n")}' |
+	sed 's@/$@@' |
+	sort | uniq | 
+        sed "s@$topSrcDirectory/@@" | 
+	grep -v "$topSrcDirectory" |
+	sed 's@/@.@g' | sort > $providedPackagesFile
+
+    externalRequiredPackages=`comm -23 $requiredPackagesFile $providedPackagesFile`
+    echo "$file: external required packages:"
+    echo $externalRequiredPackages
+
+    #rm -f $requiredPackagesFile $providedPackagesFile
+
+    if [ -z "$externalRequiredPackages" ]; then
+	continue;
+    fi	
+
+    # Map the required packages to the bundles that provide that package
+    externalRequiredBundlesFile=/tmp/mkosgi.externalRequiredBundlesFile
+    rm -f $externalRequiredBundlesFile
+    for packageName in $externalRequiredPackages
+    do
+        # If we could just parse the MANIFEST.MF files, we could
+        # ask each bundle what it provides.  Instead, we just look for
+        # the source.
+        packageDirectory=`echo "$packageName" | sed 's@\.@/@g'`
+	# If we are looking for ptolemy.actor, then it can be found
+	# i
+	possibleExporters=`(cd $pluginsDirectory; ls -d */src/${packageDirectory}/) | 
+	    sed "s@src/$packageDirectory/@@" | sed 's@/$@@' |
+	    awk '{for(i=1; i<=NF; i++) print $i}'`
+	for possibleExporter in $possibleExporters
+	do
+            awk -v packageName=${packageName} \
+		-v possibleExporter=${possibleExporter} \
+                '{ if (sawExportPackage == 1) {
+                       # Strip off the trailing comma
+		       if (substr($1,length($1), 1) == ",") {
+		           if (substr($1,1,length($1)- 1) == packageName) {
+		               print possibleExporter
+			       exit
+                           } 
+                       } else {
+			   if ($1 == packageName) {
+		               print possibleExporter
+			       exit
+                           }
+		       }
+
+		    }
+		    if ($1 == "Require-Bundle:") {
+		       sawExportPackage = 0
+                    }
+		    if ($1 == "Export-Package:" ) {
+		       sawExportPackage = 1
+		       if (substr($2,length($2), 1) == ",") {
+		           if (substr($2,1,length($2)- 1) == packageName) {
+		               print possibleExporter
+			       exit
+                           } 
+                       } else {
+			   if ($2 == packageName) {
+		               print possibleExporter
+			       exit
+                           }
+		       }
+                    }
+                }' $pluginsDirectory/$possibleExporter/META-INF/MANIFEST.MF  >> $externalRequiredBundlesFile
+	done    
+
+    done	
+    externalRequiredBundles=`sort $externalRequiredBundlesFile | uniq`
+    #rm -f $externalRequiredBundlesFile
+
+    echo "$file: external required bundles: $externalRequiredBundles"
+
+    # Add the required bundles to MANIFEST.MF
+    echo $externalRequiredBundles |
+    awk '{nf = split($0, f, " ")
+            for (i = 1; i <= nf; i++) { 
+                if (i == 1) {
+                    printedALine=1
+                    needVersion=1
+		    printf("Require-Bundle:");
+	        } else {
+	            printf(";bundle-version=\"8.0.0\",\n")
+                }
+	        printf(" %s", $i)
+             }
+             if (nf == 1) {
+                 needVersion=0
+                 # If we have only one required bundle . . .
+                 printf(";bundle-version=\"8.0.0\"")
+              }
+
+   	   }
+        END {#if (needVersion==1) {
+             #    printf(";bundle-version=\"8.0.0\"")
+             #}
+             if (printedALine==1) {
+                 printf("\n")
+             } 
+            }' - >> $manifestFile
+    cat $manifestFile
+done

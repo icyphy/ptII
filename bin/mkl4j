@@ -1,0 +1,147 @@
+#! /bin/sh
+# $Id: mkl4j 74455 2016-02-08 18:37:15Z cxh $
+# Create a Launch4j (http://launch4j.sourceforge.net/) configuration file
+#
+ROOT=.
+base=vergil
+cmdLine=""
+icon=$ROOT/doc/img/ptIIplanet.ico
+mainClass=ptolemy.vergil.VergilApplication
+fileVersion=11.0.0.1
+PTVERSION=11.0-devel
+
+# Sigh.  Look in %HOMEPATH% and %HOME%. See
+# http://www.askvg.com/list-of-environment-variables-in-windows-xp-vista-and-7/
+# However, there is a bug:
+# http://bugs.sun.com/view_bug.do?bug_id=4787931
+
+classPathPreamble="<cp>%HOMEPATH%/.ptolemyII</cp>
+    <cp>%HOMEPATH%/.ptolemyII/*</cp>
+    <cp>%HOME%/.ptolemyII</cp>
+    <cp>%HOME%/.ptolemyII/*</cp>
+    <cp>contrib/contrib.jar</cp>
+    <cp>$ROOT</cp>"
+
+classPath=""
+
+# echo -n is not reliable, so we use awk to print a line without a newline.
+echo foo | awk '{printf("Class-Path: ")}' > ${base}_l4j.mf
+
+if [ $# -gt 0 ]; then
+   base=$1
+   shift
+fi
+
+if [ $# -gt 0 ]; then
+   mainClass=$1
+   shift
+fi
+
+if [ $# -gt 0 ]; then
+   icon=$1
+   shift
+fi
+
+if [ $# -gt 0 ]; then
+   cmdLine=$1
+   shift
+fi
+
+if [ ! $# -eq 0 ]; then
+   # Collect up remaining arguments as classpath
+   while test $# -gt 0; do
+       if [ ! -f $1 ]; then
+           echo "$0: warning: $1 does not exist" 1>&2
+           exit 2
+       fi
+       # Get rid of .. in the path, for example
+       # PTII=/home/hudson/jobs/ptII/workspace/adm/test/../../adm/dists/ptII10.0.devel
+       # /var/lib/hudson/jobs/ptII/workspace/adm/dists/ptII10.0devel/vendors/oracle/javamail/javax.mail.jar
+       # and
+       # /home/hudson/jobs/ptII/workspace/adm/dists/ptII10.0.devel/lib/jsoup-1.7.3.jar
+       realPTII=`cd $PTII; pwd` 
+       jarfile=`echo $1 | sed "s@$PTII/@@"`
+
+       # Windows cmd.exe has a limit of 8192 characters
+       # Another reason why Windows is a toy.
+
+       # The solution is to create a jar file that has a Class-Path:
+       # manifest if the classpath is more than 8192 character.
+       
+       # We will classPath if it is less than 8192 characters
+       classPath="$classPath
+       <cp>$jarfile</cp>"
+
+       # We will create a jar file if it is more than 8192 characters.
+       echo " $jarfile " >> ${base}_l4j.mf
+       shift
+
+   done
+fi
+
+classPathLength=`echo "$classPathPreamble $classPath" | awk '{cp=cp $0} END {print length(cp)}'`
+if [ "$classPathLength" -gt 8000 ]; then
+
+    # Will it never end?  Lines can't be more than 72 characters in the manifest.
+    # http://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html
+
+    cat ${base}_l4j.mf | awk '{
+              lineLength=70
+              if (length($0) < lineLength) {
+                  print $0
+              } else {
+                  print substr($0, 1, lineLength)
+                  start = lineLength + 1
+                  while (start <= length($0)) {
+                     print " " substr($0, start, lineLength)
+                     start += lineLength
+                  }
+              }
+          }' > ${base}_tmp_l4j.mf
+
+    mv ${base}_tmp_l4j.mf ${base}_l4j.mf
+
+    jar cfm ${base}_l4j.jar ${base}_l4j.mf
+
+    classPath="<cp>${base}_l4j.jar</cp>"
+fi
+
+# Remove it so that it does not pollute directory.
+rm -f ${base}_l4j.mf
+
+cat <<EOF
+<launch4jConfig>
+  <headerType>gui</headerType>
+  <dontWrapJar>true</dontWrapJar>
+  <jar></jar>
+  <outfile>${base}.exe</outfile>
+  <errTitle>${base}</errTitle>
+  <chdir>.</chdir>
+  <cmdLine>${cmdLine}</cmdLine>
+  <customProcName>true</customProcName>
+  <stayAlive>true</stayAlive>
+  <icon>${icon}</icon>
+  <jre>
+    <minVersion>1.6.0</minVersion>
+    <maxHeapSize>512</maxHeapSize>
+    <path>jre</path>
+  </jre>
+  <classPath>
+    <mainClass>${mainClass}</mainClass>
+    $classPathPreamble
+    $classPath
+  </classPath>
+  <versionInfo>
+    <fileVersion>${fileVersion}</fileVersion>
+    <txtFileVersion>${PTVERSION}</txtFileVersion>
+    <fileDescription>Ptolemy II Application</fileDescription>
+    <copyright>Copyright (c) 1995-2016 The Regents of the University of California. All rights reserved. http://ptolemy.eecs.berkeley.edu/copyright.htm</copyright>
+    <productVersion>${fileVersion}</productVersion>
+    <txtProductVersion>${PTVERSION}</txtProductVersion>
+    <productName>Ptolemy II</productName>
+    <companyName>Ptolemy Project, University of California, Berkeley</companyName>
+    <internalName>${base}</internalName>
+    <originalFilename>${base}.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>
+EOF

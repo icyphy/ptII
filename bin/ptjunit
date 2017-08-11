@@ -1,0 +1,23 @@
+#!/bin/sh
+# $Id: ptjunit 67777 2013-10-26 01:51:06Z cxh $
+# ptjunit - a simple script that runs the junit tests in a directory.
+# Typically, this script is run from the test directory:
+#   cd $PTII/ptolemy/kernel/test
+#   $PTII/bin/ptjunit
+
+pwd=`pwd`
+basename=`basename $pwd`
+if [ "$basename" != "test" ]; then
+   echo "$0: $0 should be run in a test/ directory, not $pwd"
+   exit 2
+fi
+
+if [ ! -d junit ]; then
+   echo "$0: no junit/ directory in $pwd"
+   exit 3
+fi
+
+package=`echo $pwd | sed "s@$PTII/@@" | sed 's@/@.@g'`
+set -x
+cd $PTII
+ant test.single -Djunit.formatter=plain -Dtest.name=${package}.junit.JUnitTclTest
