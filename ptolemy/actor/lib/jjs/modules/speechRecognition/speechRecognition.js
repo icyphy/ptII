@@ -36,7 +36,20 @@
 "use strict";
 
 // Java types used
-var SpeechRecognitionHelper = Java.type('ptolemy.actor.lib.jjs.modules.speechRecognition.SpeechRecognitionHelper');
+
+// Put loading SpeechRecognitionHelper into a try/catch block so that
+// a model that uses the speechRecognition accessor will open if the
+// Sphinx4 jars are not present.
+
+var SpeechRecognitionHelper = null;
+var SpeechRecognitionHelperException = null
+try {
+    SpeechRecognitionHelper = Java.type('ptolemy.actor.lib.jjs.modules.speechRecognition.SpeechRecognitionHelper');
+} catch (ee) {
+    console.error("Failed to find the SpeechRecognitionHelper class: " + ee);
+    SpeechRecognitionHelperException = ee;
+}
+
 var EventEmitter = require('events').EventEmitter;
 
 /** Create a SpeechRecognition object.  
@@ -44,6 +57,9 @@ var EventEmitter = require('events').EventEmitter;
  * recognition automatically after one phrase has been detected.
  */
 exports.SpeechRecognition = function(options) {
+    if (SpeechRecognitionHelper === null) {
+        throw new Error("Failed to find the SpeechRecognitionHelper class, the exception was: " + SpeechRecognitionHelperException);
+    }
     this.recognition = new SpeechRecognitionHelper(actor, this, options); 
 };
 
