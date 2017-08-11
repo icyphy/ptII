@@ -120,6 +120,7 @@ public class ComputerVision {
     ////                         public methods                    ////
     
     /** Construct an instance of ComputerVision and load OpenCV.
+     *  @exception IOException If the shared library cannot be loaded.
      */
     public ComputerVision() throws IOException {
         super();
@@ -144,8 +145,8 @@ public class ComputerVision {
     }
 
     /** Apply the specified filter to the source image. 
-
      *  @param source The source image to transform.
+     *  @param filterName The name of the filter.
      *  @return The transformed image.
      */
     public BufferedImage filter(BufferedImage source, String filterName) 
@@ -288,10 +289,10 @@ public class ComputerVision {
          *  @return The blurred image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            Imgproc.cvtColor(source, converted, Imgproc.COLOR_RGB2BGRA);
+            Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Mat result = new Mat();
             Size blurSize = new Size(_blurSize, _blurSize);
@@ -310,10 +311,10 @@ public class ComputerVision {
          *  @return The dilated image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            Imgproc.cvtColor(source, converted, Imgproc.COLOR_RGB2BGRA);
+            Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Size erosionSize = new Size(2*_erosionSize+1, 2*_erosionSize+1);
             int erosionType = Imgproc.MORPH_RECT;
@@ -335,10 +336,10 @@ public class ComputerVision {
          *  @return The eroded image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            Imgproc.cvtColor(source, converted, Imgproc.COLOR_RGB2BGRA);
+            Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Size erosionSize = new Size(2*_erosionSize+1, 2*_erosionSize+1);
             int erosionType = Imgproc.MORPH_RECT;
@@ -360,10 +361,10 @@ public class ComputerVision {
          *  @return An image of the contours.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            Imgproc.cvtColor(source, converted, Imgproc.COLOR_RGB2BGRA);
+            Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Mat blurred = new Mat();
             Mat cannied = new Mat();
@@ -403,10 +404,10 @@ public class ComputerVision {
          *  @return An image of the edges.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            Imgproc.cvtColor(source, converted, Imgproc.COLOR_RGB2BGRA);
+            Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Mat blurred = new Mat();
             Mat result = new Mat();
@@ -428,10 +429,10 @@ public class ComputerVision {
          *  @return The blurred image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            Imgproc.cvtColor(source, converted, Imgproc.COLOR_RGB2BGRA);
+            Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
             
             Mat result = new Mat();
             Size blurSize = new Size(2*_blurSize+1, 2*_blurSize+1);
@@ -451,13 +452,13 @@ public class ComputerVision {
          *  @return A histogram.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             
             int numBins = 255;
             
             ArrayList<Mat> rgbPlanes = new ArrayList();
-            Core.split(source, rgbPlanes);
+            Core.split(sourceMatrix, rgbPlanes);
 
             MatOfInt planes = new MatOfInt();
             MatOfFloat ranges = new MatOfFloat();
@@ -525,10 +526,10 @@ public class ComputerVision {
          *  @return The image in BGRA format.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
             // bufferedImage2Mat returns BGRA, so just return that.
-            Mat source = bufferedImage2Mat(src);       
-            return mat2BufferedImage(source);
+            Mat sourceMatrix = bufferedImage2Mat(source);       
+            return mat2BufferedImage(sourceMatrix);
         }
     }
     
@@ -542,10 +543,10 @@ public class ComputerVision {
          *  @return The grayscale image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat result = new Mat();
-            Imgproc.cvtColor(source, result, Imgproc.COLOR_RGB2GRAY);
+            Imgproc.cvtColor(sourceMatrix, result, Imgproc.COLOR_RGB2GRAY);
 
             return mat2BufferedImage(result);
         }
@@ -561,11 +562,11 @@ public class ComputerVision {
          *  @return The HSV image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat tmp = new Mat();
             Mat result = new Mat();
-            Imgproc.cvtColor(source, tmp, Imgproc.COLOR_RGBA2RGB);
+            Imgproc.cvtColor(sourceMatrix, tmp, Imgproc.COLOR_RGBA2RGB);
             Imgproc.cvtColor(tmp, result, Imgproc.COLOR_RGB2HSV);
 
             return mat2BufferedImage(result);
@@ -582,10 +583,10 @@ public class ComputerVision {
          *  @return The HSV image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat result = new Mat();
-            Imgproc.cvtColor(source, result, Imgproc.COLOR_RGB2YUV);
+            Imgproc.cvtColor(sourceMatrix, result, Imgproc.COLOR_RGB2YUV);
 
             return mat2BufferedImage(result);
         }
@@ -601,10 +602,10 @@ public class ComputerVision {
          *  @return The blurred image.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+            Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            Imgproc.cvtColor(source, converted, Imgproc.COLOR_RGB2BGRA);
+            Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Mat result = new Mat();
             Imgproc.medianBlur(converted, result, 2*_blurSize+1);
