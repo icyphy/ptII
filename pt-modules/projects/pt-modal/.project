@@ -26,26 +26,6 @@
 			<locationURI>PT_LOC/ptolemy/actor/InvariantViolationException.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/kernel/util/DropTargetHandler.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/DropTargetHandler.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/Flowable.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/Flowable.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/kernel/util/StreamListener.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/kernel/util/StreamListener.java</locationURI>
-		</link>
-		<link>
-			<name>linked-src/ptolemy/moml/filter/RemoveClasses.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/moml/filter/RemoveClasses.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/domains/modal/kernel/AbstractActionsAttribute.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/modal/kernel/AbstractActionsAttribute.java</locationURI>
@@ -254,6 +234,26 @@
 			<name>linked-src/ptolemy/domains/modal/modal/TransitionRefinementPort.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/domains/modal/modal/TransitionRefinementPort.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/DropTargetHandler.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/DropTargetHandler.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/Flowable.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/Flowable.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/util/StreamListener.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/util/StreamListener.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/moml/filter/RemoveClasses.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/moml/filter/RemoveClasses.java</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
