@@ -1,0 +1,29 @@
+#!/bin/sh
+# $Id: ptcygpath 67777 2013-10-26 01:51:06Z cxh $
+# Script used by mk/jnlp.mk to handle pathnames
+#
+if [ $# -eq 0 ]; then
+    echo "$0: Script used by mk/jnlp.mk to handle pathnames"
+    echo "  Usage: $0 path"
+    echo "  Usage: $0 --windows path"
+    exit 2
+fi
+
+pwd=`pwd`
+
+if [ "$1" = "--windows" ]; then
+    shift;
+    echo `cygpath --windows $pwd/$1 | sed 's@\\\@/@g'`
+else
+    case "`uname -s`" in
+	CYGWIN_NT-*)
+	    if [ $# -eq 1 ]; then
+		echo `cygpath --windows $pwd/$1 | sed 's@\\\@/@g'`
+	    else 
+		echo `cygpath $1 $2`
+            fi		
+	    ;;
+	*)
+	    echo `pwd`/$1;;
+    esac
+fi

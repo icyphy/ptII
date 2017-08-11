@@ -1,0 +1,31 @@
+#!/bin/sh
+# $Id: updateFmu 67777 2013-10-26 01:51:06Z cxh $
+# Update a fmu
+
+# Functional Mockup Unit (.fmu) files are zip files that contain
+# shared libraries for multiple platforms This script unzips all the
+# .fmu files in a directory and creates a new fmu with (hopefully)
+# all the shared libraries.
+
+if [ $# -ne 1 ]; then
+    echo "$0: Usage: $u FmuFile.fmu"
+    exit 2
+fi
+
+tmp=tmpFMU
+rm -rf $tmp
+mkdir $tmp
+files=`ls -1tr *.fmu`
+cd $tmp
+for file in $files
+do
+    # The -o option overwrites
+    unzip -o ../$file
+done
+
+zip -r -u ../$1 .
+cd ..
+
+ls -l $1
+
+rm -rf $tmp
