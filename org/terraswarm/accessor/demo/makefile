@@ -92,12 +92,7 @@ PTCLASSALLJARS = \
 	VertxBus/VertxBus.jar \
 	WatchHandRaisingLight/WatchHandRaisingLight.jar \
 	Weather/Weather.jar \
-	WebServer/WebServer.jar \
-	WebSocketChat/WebSocketChat.jar \
-	WebSocketClient/WebSocketClient.jar \
-	WebSocketGraph/WebSocketGraph.jar \
-	WebSocketImage/WebSocketImage.jar \
-	WebSocketLog/WebSocketLog.jar
+	WebServer/WebServer.jar
 
 JSRCS = 
 
