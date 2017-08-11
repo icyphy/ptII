@@ -46,7 +46,6 @@ DIRS = Audio \
 	StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket UserInterface VertxBus \
-	WatchCommandUpdater \
 	WatchHandRaisingLight \
 	Weather WebServer 
 
@@ -91,7 +90,6 @@ PTCLASSALLJARS = \
 	UDPSocket/UDPSocket.jar \
 	UserInterface/UserInterface.jar \
 	VertxBus/VertxBus.jar \
-	WatchCommandUpdater/WatchCommandUpdater.jar \
 	WatchHandRaisingLight/WatchHandRaisingLight.jar \
 	Weather/Weather.jar \
 	WebServer/WebServer.jar \
