@@ -130,6 +130,7 @@ public class FaceRecognizer {
     
     /** Construct an instance of FaceRecognizer and load the face 
      *  recognition classifier.
+     *  @exception IOException If the shared library cannot be found.
      */
     public FaceRecognizer() throws IOException {
         super();
@@ -202,6 +203,8 @@ public class FaceRecognizer {
      *  @param source The source image to transform.
      *  @param filterName "eyes" or "faces".
      *  @return The transformed image.
+     *  @exception IllegalActionException If the filter is anything other
+     *  than "eyes" or "faces".
      */
    public BufferedImage filter(BufferedImage source, String filterName) 
            throws IllegalActionException {
@@ -349,15 +352,15 @@ public class FaceRecognizer {
          *  @return The image with squares around any eyes and faces.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
             // Get OpenCV image.
-            Mat inputImage = bufferedImage2Mat(src);
+            Mat inputImage = bufferedImage2Mat(source);
             Mat converted = new Mat();
             
             // Webcam images are type 0: Type_INT_RGB.
             // Images loaded from files are type 5: Type_3BYTE_BGR
             // We might need to handle other types in the future.
-            if (src.getType() != 0) {
+            if (source.getType() != 0) {
             	Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
             } else {
             	converted = inputImage;
@@ -429,15 +432,15 @@ public class FaceRecognizer {
          *  @return The image with squares around any eyes and faces.
          */
         @Override
-        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
+        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
             // Get OpenCV image.
-            Mat inputImage = bufferedImage2Mat(src);
+            Mat inputImage = bufferedImage2Mat(source);
             Mat converted = new Mat();
             
             // Webcam images are type 0: Type_INT_RGB.
             // Images loaded from files are type 5: Type_3BYTE_BGR
             // We might need to handle other types in the future.
-            if (src.getType() != 0) {
+            if (source.getType() != 0) {
             	Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
             } else {
             	converted = inputImage;
