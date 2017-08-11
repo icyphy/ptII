@@ -1863,7 +1863,8 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             }
         };
         _setTimeout(reschedulingFunction, milliseconds, id);
-        return Integer.valueOf(id);
+        // Avoid FindBugs: "Boxed value is unboxed and then immediately reboxed"
+        return id;
     }
 
     /** Invoke the specified function after the specified amount of time.
