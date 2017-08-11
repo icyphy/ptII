@@ -66,11 +66,13 @@ MISC_FILES =	#test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR)
-
-JCLASS = $(JSRCS:%.java=%.class) \
+	$(PTCLASSJAR) \
 	'ImageDisplayHelper$$1.class' \
 	'ImageDisplayHelper$$2.class'
+
+
+JCLASS = $(JSRCS:%.java=%.class)
+
 
 all: jclass
 install: jclass jars
