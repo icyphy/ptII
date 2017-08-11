@@ -77,12 +77,12 @@ public interface AccessorOrchestrator extends Nameable {
     public void invokeCallback(final Runnable function) throws IllegalActionException;
 
     /** Report an error.
-     *  @param error The error message.
+     *  @param message The error message.
      */
     public void error(String message);
 
     /** Print a message.
-     *  @param log The message to be printed.
+     *  @param message The message to be printed.
      */
     public void log(String message);
     

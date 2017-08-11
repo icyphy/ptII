@@ -905,7 +905,7 @@ public class RExpression2 extends TypedAtomicActor {
 
     /** Return the array as an int matrix.
      *  @param doubles The 2-d array of doubles.
-     *  @param The 2d array of integers.
+     *  @return The 2d array of integers.
      */
     public static int[][] asIntMatrix(double[][] doubles) {
 	int[][] returnArray = new int[doubles.length][doubles[0].length];
