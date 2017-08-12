@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/FaceDetectorCamera
+ME =		ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera
 
 # Root of the Java directory
 ROOT =		../../../../../../../..

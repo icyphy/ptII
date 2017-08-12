@@ -364,7 +364,7 @@ public class NashornAccessorHostApplication {
         }
 
         /** Return the name specified in the constructor.
-         *  @see #setName(String)   
+         *  @see #setName(String)
          */
         @Override
         public String getName(NamedObj relativeTo) throws InvalidStateException {

@@ -32,11 +32,11 @@
 # Root of Ptolemy II directory
 ROOT = ../../../..
 
-DIRS = Audio \
+DIRS = \
 	AugmentedReality \
-	Foscam HappySadStock \
+	HappySadStock \
 	Heartbeat HueToggle \
-	IMUSensor ImageAnnotate ImageFilters Kubi \
+	IMUSensor Kubi \
 	KeyValueStoreClient \
 	MotionDetector MotionLights \
 	NaturalLanguage OccupancyCount \
@@ -45,7 +45,7 @@ DIRS = Audio \
 	SpeechSynthesis \
 	StockTick \
 	SwarmAcousticService TCPSocket \
-	UDPSocket UserInterface VertxBus \
+	UserInterface VertxBus \
 	WatchHandRaisingLight \
 	Weather WebServer 
 
@@ -68,15 +68,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Audio/Audio.jar \
 	AugmentedReality/AugmentedReality.jar \
-	Foscam/Foscam.jar \
 	HappySadStock/HappySadStock.jar \
 	Heartbeat/Heartbeat.jar \
 	HueToggle/HueToggle.jar \
 	IMUSensor/IMUSensor.jar \
-	ImageAnnotate/ImageAnnotate.jar \
-	ImageFilters/ImageFilters.jar \
 	KeyValueStoreClient/KeyValueStoreClient.jar \
 	Kubi/Kubi.jar \
 	MotionDetector/MotionDetector.jar \
@@ -87,7 +83,6 @@ PTCLASSALLJARS = \
 	StockTick/StockTick.jar \
 	SwarmAcousticService/SwarmAcousticService.jar \
 	TCPSocket/TCPSocket.jar \
-	UDPSocket/UDPSocket.jar \
 	UserInterface/UserInterface.jar \
 	VertxBus/VertxBus.jar \
 	WatchHandRaisingLight/WatchHandRaisingLight.jar \

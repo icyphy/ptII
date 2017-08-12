@@ -29,13 +29,13 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+# $(ME) is used in ptdir.mk
+ME = ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex
+
 # Root of Ptolemy II directory
 ROOT =		../../../../../../../..
 
 DIRS = 
-
-# $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/demo/WebSocketFullDuplex
 
 CLASSPATH =	$(ROOT)
 
@@ -47,7 +47,7 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = WebSocketClient
+PTPACKAGE = WebSocketFullDuplex
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 

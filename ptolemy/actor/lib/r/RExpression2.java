@@ -99,9 +99,6 @@ import ptolemy.kernel.util.Workspace;
  * @author Dan Higgins and Matt Jones, NCEAS, UC Santa Barbara
  * @version $Id$
  * @since Ptolemy II 11.0
- * @UserLevelDocumentation This actor let the user insert R scripts in a Kepler
- *                         workflow. It requires the R system to be installed on
- *                         the computer executing the workflow
  */
 
 public class RExpression2 extends TypedAtomicActor {

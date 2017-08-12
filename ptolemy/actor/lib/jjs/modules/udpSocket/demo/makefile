@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/udp/demo
 
-DIRS =		WatchEmulator
+DIRS =		UDPSocket WatchEmulator
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,6 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	UDPSocket/UDPSocket.jar \
 	WatchEmulator/WatchEmulator.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

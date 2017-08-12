@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/CameraWebSocket
+ME =		ptolemy/actor/lib/jjs/modules/cameras/demo/CameraWebSocket
 
 # Root of the Java directory
 ROOT =		../../../../../../../..

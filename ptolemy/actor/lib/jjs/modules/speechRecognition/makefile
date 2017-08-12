@@ -66,7 +66,9 @@ MISC_FILES =	#test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'SpeechRecognitionHelper$$1.class' \
+	'SpeechRecognitionHelper$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

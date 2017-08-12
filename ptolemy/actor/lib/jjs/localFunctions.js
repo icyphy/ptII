@@ -124,6 +124,12 @@ function getResource(uri, timeout) {
     return actor.getResource(uri, timeout);
 }
 
+/** Throw an error indicating that getTopLevelAccessors is not supported. 
+ */
+function getTopLevelAccessorsNotSupported() {
+    throw new Error("getTopLevelAccessors() is not supported in CapeCode because each accessor is a separate JavaScript engine.");
+}
+
 /** Specify an input for the accessor.
  *  The name argument is a required string, recommended to be camelCase with a leading
  *  lower-case character). The options argument can have the following fields:

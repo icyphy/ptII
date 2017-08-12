@@ -29,13 +29,13 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+# $(ME) is used in ptdir.mk
+ME = ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient
+
 # Root of Ptolemy II directory
 ROOT =		../../../../../../../..
 
 DIRS = 
-
-# $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/demo/WebSocketClient
 
 CLASSPATH =	$(ROOT)
 
