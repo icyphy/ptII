@@ -108,7 +108,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketImage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketSecureServerClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketTwoClients.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketUnsignedShort.xml
-$CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterface.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceBrowser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceFixedPage.xml
@@ -244,6 +243,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketU
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
