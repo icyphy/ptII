@@ -176,7 +176,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioCapture.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioClipPlayer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioRecorder.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioSynthesis.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioSynthesise.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/Camera.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/CameraWebSocket/CameraWebSocket.xml
