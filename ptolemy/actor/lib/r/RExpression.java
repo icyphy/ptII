@@ -91,9 +91,6 @@ import ptolemy.vergil.toolbox.TextEditorTableauFactory;
  * ports correspond to R variables used in the R script.
  * 
  * @author Dan Higgins, NCEAS, UC Santa Barbara
- * @UserLevelDocumentation This actor let the user insert R scripts in a Kepler
- *                         workflow. It requires the R system to be installed on
- *                         the computer executing the workflow
  * @version $Id$
  * @since Ptolemy II 11.0
  */

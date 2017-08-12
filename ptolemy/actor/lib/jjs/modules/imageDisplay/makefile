@@ -70,9 +70,7 @@ OPTIONAL_FILES = \
 	'ImageDisplayHelper$$1.class' \
 	'ImageDisplayHelper$$2.class'
 
-
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

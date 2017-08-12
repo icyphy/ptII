@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2015-2016 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -50,7 +50,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	Audio.xml
+	Audio.xml \
+	AudioCapture.xml \
+	AudioClipPlayer.xml \
+	AudioRecorder.xml \
+	AudioSynthesis.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

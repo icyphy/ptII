@@ -63,11 +63,12 @@ import ptolemy.data.Token;
 //// HttpClientHelper
 
 /**
-   A helper class for the HttpClient module in JavaScript.
-   You should use {@link #getOrCreateHelper(Object)} to create
-   exactly one instance of this helper per actor. This class
-   will then ensure that response and error callbacks will occur
-   in the same order as the queries that trigger them.
+   A helper class for the HttpClient module in JavaScript.  You should
+   use {@link #getOrCreateHelper(Object, ScriptObjectMirror)} to
+   create exactly one instance of this helper per actor. This class
+   will then ensure that response and error callbacks will occur in
+   the same order as the queries that trigger them.
+
    To initiate a query, create an instance of the JavaScript
    ClientRequest object and call {@link #request(ScriptObjectMirror, Map)},
    passing it the ClientRequest object and a Map of options

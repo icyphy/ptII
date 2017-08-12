@@ -45,7 +45,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto computerVision dataConverter discovery dsp $(PTEVENTBUS_DIR) faceDetector $(PTGDP_DIR) geoLocator $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTUSERINTERFACE_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
+DIRS = 		audio buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto computerVision dataConverter discovery dsp $(PTEVENTBUS_DIR) faceDetector $(PTGDP_DIR) geoLocator $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay imageFilters $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTUSERINTERFACE_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -80,7 +80,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	aprilTags audio buffer cameras computerVision contextAware contextAwareTest crypto dataConverter demo.jar deterministicTemporalSemantics.js discovery dsp eventbus faceDetector gdp geolocation httpClient httpServer imageDisplay imageFilters IMUSensor iotAuth localStorage mapManager modules.jar motionDetector mqtt objectAssign os process README.txt serial shell socket speechRecognition testing udpSocket userInterface webSocket webSocketClient webSocketServer wifiScanner xbee
+MISC_FILES =	aprilTags audio buffer cameras computerVision contextAware contextAwareTest crypto dataConverter deterministicTemporalSemantics.js discovery dsp eventbus faceDetector gdp geolocation httpClient httpServer imageDisplay imageFilters IMUSensor iotAuth localStorage mapManager modules.jar motionDetector mqtt objectAssign os process README.txt serial shell socket speechRecognition testing udpSocket userInterface webSocket webSocketClient webSocketServer wifiScanner xbee
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

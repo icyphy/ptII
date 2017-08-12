@@ -1,9 +1,10 @@
-# Makefile for TerraSwarm Audio demo.
+# Makefile for Ptolemy II ImageFilters demo
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,53 +28,81 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = ../../../../..
+ME =		ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters
 
-DIRS = 
+# Root of the Java directory
+ROOT =		../../../../../../../..
 
-# $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/demo/Audio
-
-CLASSPATH =	$(ROOT)
-
-# True source directory
-VPATH =	$(ROOT)/$(ME)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = Audio
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	ImageFilters
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = 
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Audio.xml \
-	AudioCapture.xml \
-	AudioClipPlayer.xml \
-	AudioRecorder.xml
+	ImageFilters.xml \
+	Annotate.xml \
+	Average.xml \
+	BicubicScale.xml \
+	Block.xml \
+	Border.xml \
+	BoxBlur.xml \
+	Bump.xml \
+	ChannelMix.xml \
+	Chrome.xml \
+	Circle.xml \
+	ColorHalftone.xml \
+	Contour.xml \
+	Contrast.xml \
+	Crop.xml \
+	Crystallize.xml \
+	Gray.xml \
+	Invert.xml \
+	LensBlur.xml \
+	Random.xml \
+	Solarize.xml \
+	Threshold.xml
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(DIRS)
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
+
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer ImageFilters.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" ImageFilters.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" ImageFilters.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+

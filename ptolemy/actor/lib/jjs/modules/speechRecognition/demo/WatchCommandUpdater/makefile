@@ -3,7 +3,7 @@
 # @Version: $Id: makefile 72403 2015-05-22 20:12:54Z eal $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = ../../../../..
-
-DIRS = 
-
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/demo/WatchCommandUpdater
+ME = ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater
+
+# Root of Ptolemy II directory
+ROOT =		../../../../../../../..
+DIRS = 
 
 CLASSPATH =	$(ROOT)
 
