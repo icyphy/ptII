@@ -88,6 +88,8 @@ OPTIONAL_FILES = \
 	node_files \
 	'HelperBase$$1.class' \
 	'HelperBase$$2.class' \
+	'HelperBase$$3.class' \
+	'HelperBase$$DATA_TYPE.class' \
 	'JavaScript$$1.class' \
 	'JavaScript$$2.class' \
 	'JavaScript$$DeferredSend.class' \
