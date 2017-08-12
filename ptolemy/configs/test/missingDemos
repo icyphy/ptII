@@ -167,7 +167,7 @@ do
                 grep "<!--" $PTII/ptolemy/configs/doc/completeDemos.htm | grep $demoModel >& /dev/null
                 status=$?
                 if [ $status -eq 1 ]; then
-                    echo "$demoModel is not present in completeDemos.htm" >&2
+                    echo "$demoModel is not present in completeDemos.htm.  Check for jar files in `dirname $demoModel`" >&2
                     demoHTML $verbose $demoModel
                     exitCode=9
                 fi
