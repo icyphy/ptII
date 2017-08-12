@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/testing/window-mock
+ME =		ptolemy/actor/lib/jjs/modules/testing/windowMock
 
 DIRS = 		
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	window-mock
+PTPACKAGE = 	windowMock
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.

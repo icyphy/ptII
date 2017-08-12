@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2014-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -48,11 +48,12 @@ PTPACKAGE = 	node
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
+JSRCS =
 
-	
 OTHER_FILES_TO_BE_JARED = \
-    events.js \
+	apiai \
+	events.js \
+	LICENSE.txt \
 	util.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
