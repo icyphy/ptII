@@ -844,6 +844,23 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         MessageHandler.error(getName() + ": " + message, throwable);
     }
 
+    /** Escape a string for use within JavaScript.
+     *  @param unescapedString The unescaped string to be escaped for use in JavaScript.
+     *  @return The encodedString
+     *  @exception IllegalActionException If the string cannot be escaped.
+     */
+    public String escapeForJavaScript(String unescapedString) throws
+        IllegalActionException {
+        try {
+            // escape() is deprecated, but encodeURIComponent() does not encode -_.!~*'()
+            // https://stackoverflow.com/questions/75980/when-are-you-supposed-to-use-escape-instead-of-encodeuri-encodeuricomponent
+            return (String) ((Invocable)_engine).invokeFunction("escape", unescapedString);
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable, "Failed to escape: \""
+                                             + unescapedString + "\".");
+        }
+    }                              
+
     /** Produce any pending outputs specified by send() since the last firing,
      *  invoke any timer tasks that match the current time, and invoke the
      *  fire function. Specifically:
