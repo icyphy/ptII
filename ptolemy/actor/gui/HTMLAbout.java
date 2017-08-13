@@ -473,6 +473,11 @@ public class HTMLAbout {
         String demoFileName = "ptolemy/configs/doc/completeDemos.htm";
         String outputFileName = "models.txt";
 
+        if (System.getenv("DISPLAY").length() > 0) {
+            System.err.println("Because of issues with webcam-capture hanging during discovery "
+                    + "it is best if HTMLAbout is invoked with DISPLAY=\"\".  "
+                    + "See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers.");
+        }
         if (args.length > 2) {
             System.err.println("Usage: [demoFileName [outputFilename]\n"
                     + "demoFileName defaults to " + demoFileName + "\n"
