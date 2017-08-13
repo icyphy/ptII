@@ -53,6 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 	GDPAppendViaGW.xml \
 	GDPCreateViaGW.xml \
 	GDPReadViaGW.xml \
+	GDPSubscribeViaGW.xml \
 	SimpleCodeGen.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
