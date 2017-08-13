@@ -1060,7 +1060,7 @@ codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
 ../ptolemy/configs/doc/models.txt: \
 			$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 			../ptolemy/configs/doc/completeDemos.htm
-	(cd ../ptolemy/configs/doc; make models.txt)
+	(cd ../ptolemy/configs/doc; DISPLAY="" make models.txt)
 
 
 
@@ -1160,7 +1160,8 @@ codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocCapeCode/doc/c
 ../ptolemy/configs/capecode/capecodeModels.txt: \
 		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 		../ptolemy/configs/capecode/intro.htm
-	(cd ../ptolemy/configs/capecode; make capecodeModels.txt)
+	@echo "See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why DISPLAY=\"\""
+	(cd ../ptolemy/configs/capecode; DISPLAY="" make capecodeModels.txt)
 
 #############################################################################
 # HyVisual
@@ -1209,7 +1210,8 @@ codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/c
 ../ptolemy/configs/hyvisual/hyvisualModels.txt: \
 		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 		../ptolemy/configs/hyvisual/intro.htm
-	(cd ../ptolemy/configs/hyvisual; make hyvisualModels.txt)
+	@echo "See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why DISPLAY=\"\""
+	(cd ../ptolemy/configs/hyvisual; make DISPLAY="" hyvisualModels.txt)
 
 #############################################################################
 # Viptos
@@ -1259,7 +1261,8 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 $(ROOT)/ptolemy/configs/viptos/viptosModels.txt: \
 			$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 			../ptolemy/configs/viptos/intro.htm
-	(cd ../ptolemy/configs/viptos; make viptosModels.txt)
+	@echo "See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why DISPLAY=\"\""
+	(cd ../ptolemy/configs/viptos; DISPLAY="" make viptosModels.txt)
 
 #############################################################################
 # VisualSense
@@ -1309,7 +1312,8 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 ../ptolemy/configs/visualsense/visualsenseModels.txt: \
 		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 		../ptolemy/configs/visualsense/intro.htm
-	(cd ../ptolemy/configs/visualsense; make visualsenseModels.txt)
+	@echo "See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why DISPLAY=\"\""
+	(cd ../ptolemy/configs/visualsense; DISPLAY="" make visualsenseModels.txt)
 
 #############################################################################
 # Doccheck
