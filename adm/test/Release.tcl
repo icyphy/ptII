@@ -197,7 +197,6 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptserver/test/PtolemyServer.log} {
 ?       reports} {
 ?       vendors/jogl} {
-?       vendors/misc/javamail/javax.mail.jar} {
 ?       vendors/universalJavaApplicationStub} {
 M       lib/diva.jar}}
         if { $result == $result2 } {
