@@ -34,20 +34,18 @@ ROOT = ../../../..
 
 DIRS = \
 	AugmentedReality \
-	HappySadStock \
-	Heartbeat HueToggle \
+	Heartbeat Hue \
 	IMUSensor Kubi \
 	KeyValueStoreClient \
-	MotionDetector MotionLights \
+	MotionDetector \
 	NaturalLanguage OccupancyCount \
-	OccupancyLights REST \
+	REST \
 	Scarab SecureSocket \
-	SpeechSynthesis \
-	StockTick \
-	SwarmAcousticService TCPSocket \
+	Services \
+	TCPSocket \
 	UserInterface VertxBus \
 	WatchHandRaisingLight \
-	Weather WebServer 
+	WebServer 
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/demo
@@ -69,9 +67,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	AugmentedReality/AugmentedReality.jar \
-	HappySadStock/HappySadStock.jar \
 	Heartbeat/Heartbeat.jar \
-	HueToggle/HueToggle.jar \
+	Hue/Hue.jar \
 	IMUSensor/IMUSensor.jar \
 	KeyValueStoreClient/KeyValueStoreClient.jar \
 	Kubi/Kubi.jar \
@@ -79,14 +76,10 @@ PTCLASSALLJARS = \
 	NaturalLanguage/NaturalLanguage.jar \
 	OccupancyCount/OccupancyCount.jar \
 	REST/REST.jar \
-	SpeechSynthesis/SpeechSynthesis.jar \
-	StockTick/StockTick.jar \
-	SwarmAcousticService/SwarmAcousticService.jar \
 	TCPSocket/TCPSocket.jar \
 	UserInterface/UserInterface.jar \
 	VertxBus/VertxBus.jar \
 	WatchHandRaisingLight/WatchHandRaisingLight.jar \
-	Weather/Weather.jar \
 	WebServer/WebServer.jar
 
 JSRCS = 
