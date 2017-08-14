@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/cameras/demo
 
-DIRS =		Camera CameraWebSocket Foscam
+DIRS =		Camera CameraWebSocket Foscam MotionDetector
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -50,7 +50,8 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	Camera/Camera.jar \
 	CameraWebSocket/CameraWebSocket.jar \
-	Foscam/Foscam.jar
+	Foscam/Foscam.jar \
+	MotionDetector/MotionDetector.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

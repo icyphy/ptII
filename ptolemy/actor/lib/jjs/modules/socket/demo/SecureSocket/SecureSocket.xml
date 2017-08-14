@@ -1,0 +1,156 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SecureSocket" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="localClock" class="ptolemy.actor.LocalClock">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 90.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to set up and use a secure socket connection between a client and server.&#10;This uses a PFX format file (https://en.wikipedia.org/wiki/PKCS_12) which contains a self-signed certificate&#10;and the associated private key. The file name is Server.pfx, and it is stored in the same directory as this demo.&#10;&#10;This PFX format file was created using following openssl commands:&#10;&#10;$ openssl genrsa -out ServerKey.pem 2048&#10;$ openssl req -new -key ServerKey.pem -sha256 -out ServerReq.pem&#10;&#10;Country Name (2 letter code) [AU]:US&#10;State or Province Name (full name) [Some-State]:CA&#10;Locality Name (eg, city) []:Berkeley&#10;Organization Name (eg, company) [Internet Widgits Pty Ltd]:UC Berkeley&#10;Organizational Unit Name (eg, section) []:Ptolemy Project&#10;Common Name (e.g. server FQDN or YOUR name) []:ptolemy.org&#10;Email Address []:&#10;&#10;A challenge password []:&#10;An optional company name []:&#10;&#10;$ openssl x509 -req -in ServerReq.pem -sha256 -extensions v3_ca -signkey ServerKey.pem -out ServerCert.pem&#10;$ openssl pkcs12 -export -out Server.pfx -inkey ServerKey.pem -in ServerCert.pem -password pass:ptolemy&#10;">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{375.0, 185.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1175, 787}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[941, 677]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1415844216183335">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{748.9228515625, 282.0108806474894}">
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send a sequence of strings.&#10;This is set to use SSL/TLS&#10;and to trust all servers.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-180.0, 45.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Client">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is set to use&#10;the certificate and private key&#10;in the local demo directory.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-75.0, 90.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Server">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(64183, 'localhost', {&#10;			'sslTls': true,&#10;			'trustAll': true,&#10;		}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		client.send(data);&#10;	});&#10;	client.open();&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{685.0, 35.0}">
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':64183,&#10;		'sslTls': true,&#10;		'pfxKeyCertPath': '$CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/Server.pfx',&#10;		'pfxKeyCertPassword': 'ptolemy',&#10;		'trustAll': true&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 30.0}">
+        </property>
+        <port name="listening" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ServerReceived" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={907, 445, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 235, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 70.0]">
+        </property>
+    </entity>
+    <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 23, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{900.0, 20.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 25.0}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 35.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=395.0,y=25.0}, tail={id=&quot;Ramp.trigger&quot;,x=555.0,y=35.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.toSend&quot;,x=685.0,y=35.0}, tail={id=&quot;Ramp.output&quot;,x=555.0,y=35.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Client.toSend" relation="relation5"/>
+    <link port="Server.listening" relation="relation6"/>
+    <link port="Server.connected" relation="relation2"/>
+    <link port="Server.received" relation="relation7"/>
+    <link port="ServerReceived.input" relation="relation7"/>
+    <link port="ServerConnected.input" relation="relation2"/>
+    <link port="ListeningPort.input" relation="relation6"/>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="Ramp.output" relation="relation5"/>
+    <link port="Ramp.trigger" relation="relation4"/>
+</entity>

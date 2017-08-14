@@ -49,7 +49,8 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	FaceDetector/FaceDetector.jar \
-	FaceDetectorCamera/FaceDetectorCamera.jar
+	FaceDetectorCamera/FaceDetectorCamera.jar \
+	OccupanceyCount/OccupancyCount.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

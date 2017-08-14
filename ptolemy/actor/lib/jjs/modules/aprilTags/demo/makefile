@@ -32,7 +32,8 @@
 ME =		ptolemy/actor/lib/jjs/modules/aprilTags/demo
 
 DIRS =	AprilTagImageAnnotate \
-	AprilTags
+	AprilTags \
+	Kubi
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -50,7 +51,8 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	AprilTagImageAnnotate/AprilTagImageAnnotate.jar \
-	AprilTags/AprilTags.jar
+	AprilTags/AprilTags.jar \
+	Kubi/Kubi.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
