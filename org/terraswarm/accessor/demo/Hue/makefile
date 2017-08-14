@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Weather demo
+# Makefile for Ptolemy II Hue demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id$
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/Weather
+ME =		org/terraswarm/accessor/demo/Hue
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,14 +41,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Weather
+PTPACKAGE = 	Hue
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	Weather.xml
+OTHER_FILES_TO_BE_JARED = \
+	Hue.xml \
+	HappySadStock.xml \
+	HueToggle.xml \
+	MotionLights.xml \
+	OccupancyLights.xml
 
-EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -56,7 +63,8 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -70,16 +78,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Weather.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer Hue.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Weather.xml
+	"$(PTII)/bin/ptolemy" Hue.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Weather.xml
+	"$(PTII)/bin/vergil" Hue.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
