@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2016 The Regents of the University of California.
+# @Copyright (c) 2016-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/httpServer/demo
 
-DIRS =		HttpServer
+DIRS =		HttpServer KeyValueStoreClient WebServer
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,7 +48,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	HttpServer/HttpServer.jar
+	HttpServer/HttpServer.jar \
+	KeyValueStoreClient/KeyValueStoreClient.jar \
+	WebServer/WebServer.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

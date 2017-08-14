@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II TCPSocket demo
+# Makefile for Ptolemy II WebServer demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id$
 #
-# @Copyright (c) 2015-2016 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/TCPSocket
+ME =		ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -41,22 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	TCPSocket
+PTPACKAGE = 	WebServer
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	TCPSocket.xml \
-	TCPSocketDoubleArrayBatched.xml \
-	TCPSocketImage.xml \
-	TCPSocketSecureServerClient.xml \
-	TCPSocketTwoClients.xml \
-	TCPSocketUnsignedShort.xml \
-	certs/CACert.pem \
-	certs/Client.pfx \
-	certs/README \
-	certs/Server.pfx
+	Ideas.xml \
+	WebServer.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -66,9 +58,7 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	certs
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -82,16 +72,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer TCPSocket.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer WebServer.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" TCPSocket.xml
+	"$(PTII)/bin/ptolemy" WebServer.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" TCPSocket.xml
+	"$(PTII)/bin/vergil" WebServer.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

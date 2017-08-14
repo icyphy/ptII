@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/discovery/demo
 
-DIRS =		Discovery
+DIRS =		Discovery Heartbeat
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..

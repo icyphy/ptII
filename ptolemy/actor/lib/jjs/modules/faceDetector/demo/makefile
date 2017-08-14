@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/faceDetector/demo
 
-DIRS =		FaceDetector FaceDetectorCamera
+DIRS =		FaceDetector FaceDetectorCamera OccupancyCount
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..

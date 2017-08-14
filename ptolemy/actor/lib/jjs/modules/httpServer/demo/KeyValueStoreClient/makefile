@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II IMUSensor demo
+# Makefile for Ptolemy II KeyValueStoreClient demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id$
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/IMUSensor
+ME =		ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -41,12 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	IMUSensor
+PTPACKAGE = 	KeyValueStoreClient
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	IMUSensor.xml
+OTHER_FILES_TO_BE_JARED = \
+	KeyValueStoreClient.xml \
+	KeyValueStoreServer.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -56,7 +58,9 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+OPTIONAL_FILES = \
+	doc \
+	KeyValueStoreData.txt
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -70,16 +74,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer IMUSensor.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer KeyValueStoreClient.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" IMUSensor.xml
+	"$(PTII)/bin/ptolemy" KeyValueStoreClient.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" IMUSensor.xml
+	"$(PTII)/bin/vergil" KeyValueStoreClient.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

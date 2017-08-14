@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/jjs/modules/discovery/demo/Heartbeat
 
 # Root of the Java directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 

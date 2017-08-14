@@ -54,7 +54,8 @@ OTHER_FILES_TO_BE_JARED = \
 	AudioCapture.xml \
 	AudioClipPlayer.xml \
 	AudioRecorder.xml \
-	AudioSynthesis.xml
+	AudioSynthesis.xml \
+	SpeechSynthesis.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

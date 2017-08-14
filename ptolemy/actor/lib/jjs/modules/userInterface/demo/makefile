@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/userInterface/demo
 
-DIRS =		HelloUserInterface
+DIRS =		HelloUserInterface UserInterface
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,7 +48,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	HelloUserInterface/HelloUserInterface.jar
+	HelloUserInterface/HelloUserInterface.jar \
+	UserInterface/UserInterface.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="REST" class="ptolemy.actor.TypedCompositeActor">
+<entity name="RESTSimple" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 934, 634}, maximized=false}">
@@ -74,7 +74,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://ptolemy.eecs.berkeley.edu&quot;">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;https://ptolemy.eecs.berkeley.edu&quot;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
