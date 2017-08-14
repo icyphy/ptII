@@ -65,45 +65,51 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 310.0}">
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Create a log (use with caution; we do not have a good way of cleanup yet).&#10;Accessor created automatically using code generation. Comment added manually.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Nitesh Mor (mor@eecs.berkeley.edu)">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="A trigger">
+            </property>
+            <property name="logname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of the log that we should create. If&#10;  empty, a random name is generated. Log creation is still one of the&#10;  not-quite-polished parts of the GDP; this may result in surprises at&#10;  the moment in situations of partial network outages.">
+            </property>
+            <property name="logdname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of the logserver where this log&#10;  should be placed. The logdname is in the same namespace as a logname,&#10;  i.e. a GDP name. For the moment, there are four GDP log servers run&#10;  by the GDP group. They are named: 'edu.berkeley.eecs.gdp-04.gdplogd',&#10;  'edu.berkeley.eecs.gdp-03.gdplogd', 'edu.berkeley.eecs.gdp-02.gdplogd',&#10;  'edu.berkeley.eecs.gdp-01.gdplogd'. If ommitted, one of these four log&#10;  servers is picked randomly.">
+            </property>
+            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="A list of other options supported by the REST&#10;  gateway, i.e. &quot;-C&quot;, &quot;-h&quot;, &quot;-k&quot;, &quot;-b&quot;, and &quot;-c&quot;. The name of the&#10;  the logserver is already specified in the input *logdname*.">
+            </property>
+            <property name="_logname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of the log that was created.">
+            </property>
+            <property name="_logdname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of the server that the log was&#10;  created on.">
+            </property>
+            <property name="gateway (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The full gateway address that should be &#10;  used. An example is 'https://gdp-rest-01.eecs.berkeley.edu'">
+            </property>
+            <property name="auth (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The base64 encoded authentication information&#10;  for the given gateway. For the moment, only basic authentication is&#10;  supported. For a 'username:password' pair, this will look something&#10;  like 'dXNlcm5hbWU6cGFzc3dvcmQ='.">
+            </property>
+        </property>
         <port name="gateway" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="auth" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="logname" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="logdname" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="options" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="_logname" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="_logdname" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="AuthFilename" class="org.terraswarm.accessor.JSAccessor">
@@ -282,11 +288,11 @@
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console.&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console using util.inspect().&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestDisplay.js 1636 2017-05-05 18:21:03Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestDisplay.js 2003 2017-08-03 14:47:31Z eal $$">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
@@ -362,23 +368,15 @@
         </property>
         <port name="_logname" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="_logdname" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="_lognameNotEmpty" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="_logdnameNotEmpty" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TrainableTest" class="org.terraswarm.accessor.JSAccessor">
