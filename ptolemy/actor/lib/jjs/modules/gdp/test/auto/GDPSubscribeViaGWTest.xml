@@ -65,6 +65,32 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 210.0]">
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Subscribe to a log for a given duration starting from a specified&#10; starting point.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Nitesh Mor (mor@eecs.berkeley.edu)">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="A trigger">
+            </property>
+            <property name="logname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of the log that we should subscribe to">
+            </property>
+            <property name="numrec (port)" class="ptolemy.kernel.util.StringAttribute" value="The number of records to be returned. (see GDP C&#10;  API documentation).">
+            </property>
+            <property name="startrec (port)" class="ptolemy.kernel.util.StringAttribute" value="The first record to read from. e.g. -5 means the&#10;  fifth most recent record. (see GDP C API documentation)">
+            </property>
+            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="Whether we are connected to the gateway">
+            </property>
+            <property name="_logname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of the log the newly delivered data&#10;  arrived on.">
+            </property>
+            <property name="recno (port)" class="ptolemy.kernel.util.StringAttribute" value="The record number for the data delivered.">
+            </property>
+            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The actual data">
+            </property>
+            <property name="ts (port)" class="ptolemy.kernel.util.StringAttribute" value="The commit timestamp of the data, as reported by&#10;  logserver.">
+            </property>
+            <property name="gateway (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The full gateway address that should be &#10;  used. An example is 'ws://gdp-rest-01.eecs.berkeley.edu:9007'">
+            </property>
+        </property>
         <port name="gateway" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
