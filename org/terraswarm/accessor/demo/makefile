@@ -34,18 +34,10 @@ ROOT = ../../../..
 
 DIRS = \
 	AugmentedReality \
-	Heartbeat Hue \
-	IMUSensor Kubi \
-	KeyValueStoreClient \
-	MotionDetector \
-	NaturalLanguage OccupancyCount \
-	REST \
-	Scarab SecureSocket \
-	Services \
-	TCPSocket \
-	UserInterface VertxBus \
+	Hue \
+	NaturalLanguage \
+	Scarab \
 	WatchHandRaisingLight \
-	WebServer 
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/demo
@@ -67,20 +59,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	AugmentedReality/AugmentedReality.jar \
-	Heartbeat/Heartbeat.jar \
 	Hue/Hue.jar \
-	IMUSensor/IMUSensor.jar \
-	KeyValueStoreClient/KeyValueStoreClient.jar \
-	Kubi/Kubi.jar \
-	MotionDetector/MotionDetector.jar \
 	NaturalLanguage/NaturalLanguage.jar \
-	OccupancyCount/OccupancyCount.jar \
-	REST/REST.jar \
-	TCPSocket/TCPSocket.jar \
-	UserInterface/UserInterface.jar \
-	VertxBus/VertxBus.jar \
-	WatchHandRaisingLight/WatchHandRaisingLight.jar \
-	WebServer/WebServer.jar
+	WatchHandRaisingLight/WatchHandRaisingLight.jar
 
 JSRCS = 
 

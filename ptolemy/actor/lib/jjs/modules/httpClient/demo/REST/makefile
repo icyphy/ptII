@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Services demo
+# Makefile for Ptolemy II REST demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/Services
+ME =		ptolemy/actor/lib/jjs/modules/httpClient/demo/REST
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -41,17 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Services
+PTPACKAGE = 	REST
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Services.xml \
-	SpeechSynthesis.xml \
-	StockTick.xml \
-	SwarmAcousticService.xml \
-	Weather.xml
+	REST.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -78,16 +74,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Services.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer REST.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Services.xml
+	"$(PTII)/bin/ptolemy" REST.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Services.xml
+	"$(PTII)/bin/vergil" REST.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

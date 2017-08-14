@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II SecureSocket demo
+# Makefile for Ptolemy II VertxBus demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id$
 #
-# @Copyright (c) 2015-2016 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/SecureSocket
+ME =		ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxBus
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -41,15 +41,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	SecureSocket
+PTPACKAGE = 	VertxBus
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	SecureSocket.xml \
-	Server.pfx \
-	keystore.jks
+OTHER_FILES_TO_BE_JARED = 	VertxBus.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -73,16 +70,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer SecureSocket.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer VertxBus.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" SecureSocket.xml
+	"$(PTII)/bin/ptolemy" VertxBus.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" SecureSocket.xml
+	"$(PTII)/bin/vergil" VertxBus.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
