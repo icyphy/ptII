@@ -5,8 +5,6 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="localClock" class="ptolemy.actor.LocalClock">
-        </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
@@ -26,7 +24,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1415844216183335">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{748.9228515625, 282.0108806474894}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{748.9228515625, 282.01088064748944}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send a sequence of strings.&#10;This is set to use SSL/TLS&#10;and to trust all servers.">
@@ -68,7 +66,7 @@
         </port>
     </entity>
     <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':64183,&#10;		'sslTls': true,&#10;		'pfxKeyCertPath': '$CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/Server.pfx',&#10;		'pfxKeyCertPassword': 'ptolemy',&#10;		'trustAll': true&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':64183,&#10;		'sslTls': true,&#10;		'pfxKeyCertPath': '$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/Server.pfx',&#10;		'pfxKeyCertPassword': 'ptolemy',&#10;		'trustAll': true&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>

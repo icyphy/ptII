@@ -9,16 +9,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-49, 99, 1424, 660}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 99, 1205, 653}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1196, 543]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 543]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2982889398482977">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{471.75502717391305, 209.45181725543475}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{485.5, 271.5}">
     </property>
     <property name="ScarabIP" class="ptolemy.data.expr.StringParameter" value="192.168.0.111">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -36,7 +36,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 10.0]">
         </property>
     </property>
     <property name="ScarabPort" class="ptolemy.data.expr.Parameter" value="9090">
@@ -55,13 +55,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 10.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo constructs a motion command for a Scarab robot&#10;from images taken from a camera. Specifically, the amount of&#10;motion depends on the amount of motion (percentage of pixels&#10;in the frame that change), and the direction of turning depends&#10;on the center of gravity of the motion. If the motion is in the&#10;center of the image, the robot does not turn. If the motion is&#10;to one side or the other, the robot turns.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -69,7 +69,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo requires a Scarab robot to be&#10;visible at the specified IP address and port.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 265.0]">
         </property>
     </property>
     <entity name="Scarab" class="org.terraswarm.accessor.JSAccessor">
@@ -95,7 +95,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{815.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 120.0]">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="ScarabPort">
         </property>
@@ -159,7 +159,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{620.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 120.0]">
         </property>
         <port name="turn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -177,7 +177,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 120.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -225,7 +225,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 120.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -273,7 +273,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 110.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 110.0]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -302,7 +302,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 220.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -312,7 +312,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Center of Gravity">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{595, 60}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 60.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -322,7 +322,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Robot Location">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 160.0]">
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
@@ -332,7 +332,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Velocity Command">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 235.0]">
         </property>
     </entity>
     <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
@@ -342,13 +342,13 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Amount of Motion">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 215.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{725.0, 120.0}">
+        <vertex name="vertex1" value="[720.0, 120.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.TimedDisplay.input&quot;,x=775.0,y=240.0}, tail={id=&quot;relation3.vertex1&quot;,x=725.0,y=120.0}, points={725.0,240.0} },{ head={id=&quot;JavaScript.velocity&quot;,x=620.0,y=120.0}, tail={id=&quot;relation3.vertex1&quot;,x=725.0,y=120.0}, points={} },{ head={id=&quot;Scarab.cmdvel&quot;,x=815.0,y=120.0}, tail={id=&quot;relation3.vertex1&quot;,x=725.0,y=120.0}, points={} } }">
         </property>
@@ -360,7 +360,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{340.0, 120.0}">
+        <vertex name="vertex1" value="[335.0, 120.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=340.0,y=120.0}, tail={id=&quot;ImageDisplay.input&quot;,x=400.0,y=220.0}, points={340.0,220.0} },{ head={id=&quot;Camera.image&quot;,x=245.0,y=120.0}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=120.0}, points={} },{ head={id=&quot;MotionDetector.input&quot;,x=435.0,y=110.0}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=120.0}, points={} } }">
         </property>
@@ -368,7 +368,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{555.0, 215.0}">
+        <vertex name="vertex1" value="[550.0, 215.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=555.0,y=215.0}, tail={id=&quot;JavaScript.area&quot;,x=620.0,y=120.0}, points={555.0,130.0} },{ head={id=&quot;.TimedDisplay2.input&quot;,x=605.0,y=215.0}, tail={id=&quot;relation6.vertex1&quot;,x=555.0,y=215.0}, points={} },{ head={id=&quot;MotionDetector.area&quot;,x=435.0,y=110.0}, tail={id=&quot;relation6.vertex1&quot;,x=555.0,y=215.0}, points={520.0,120.0,520.0,215.0} } }">
         </property>
@@ -376,7 +376,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[530.0, 110.0]">
+        <vertex name="vertex1" value="[525.0, 110.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

@@ -9,7 +9,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 235, 934, 634}, maximized=false}">
@@ -18,20 +18,20 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{463.75000000000006, 284.52539062500006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo uses the Camera object in the cameras module in &quot;open-loop&quot; mode,&#10;where it captures all images from the camera, at the speed of the camera.&#10;&#10;See also:">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[20.0, 200.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[18.0, 205.125]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Camera">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[88.0, 255.125]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/Camera.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -58,13 +58,13 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../node_modules/@accessors-hosts/node/nodeHostInvoke.js cameras/demo/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[78.0, 330.125]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The code generator will generate a swarmlet that&#10;may be run by the Node accessor host.&#10;&#10;Note that the swarmlet requires the opencv&#10;npm module, which is installed when the&#10;swarmlet is run.&#10;&#10;Unfortunately, the opencv npm module does&#10;not always install correctly.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[28.0, 360.125]">
         </property>
     </property>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -112,7 +112,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[193.0, 140.125]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -148,7 +148,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 140.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">

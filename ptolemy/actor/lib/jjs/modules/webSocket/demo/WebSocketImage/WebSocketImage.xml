@@ -11,16 +11,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 95, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1060461854430697">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.078125, 254.5408344655797}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -31,13 +31,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model starts a server that receives images from clients,&#10;and one client that sends an image 10 times per second.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 20.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Extract the image&#10;from the received&#10;message.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-10.0, 50.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-15.0, 50.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScript">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -47,7 +47,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each sent message should result in one reply,&#10;a count of the images received.&#10;Here, the client only attempts to conenct&#10;after receiving notification that the server&#10;is listening.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-205.0, 60.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-210.0, 60.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="WebSocketClient">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -57,7 +57,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that messages&#10;are bigger than the&#10;default frame size,&#10;but get chunked&#10;automatically.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-140.0, 70.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-145.0, 70.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="WebSocketServer">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -66,7 +66,7 @@
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 100.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -76,7 +76,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Server Status">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 100.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -86,7 +86,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Client Status">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 295.0]">
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
@@ -96,11 +96,11 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Client Received">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 355.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 160.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -111,7 +111,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 315.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -131,7 +131,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 315.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for a camera on the local host. This can be a built-in camera or&#10; a USB-connected camera. This accessor has two modes of operation, &amp;quot;triggered&amp;quot;&#10; and &amp;quot;open loop.&amp;quot; In triggered mode, it captures an image whenever a trigger&#10; input is received and produces that image on its output. In open-loop mode,&#10; it captures every image produced by the camera, at the speed of the camera,&#10; and produces on the output a stream of such images.&lt;/p&gt;">
@@ -165,7 +165,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 160.0]">
         </property>
     </entity>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -229,7 +229,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 100.0]">
         </property>
         <property name="pfxKeyCertPassword" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -271,7 +271,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 160.0]">
         </property>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -359,7 +359,7 @@
         </property>
         <property name="throttleFactor" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 305.0]">
         </property>
         <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
@@ -406,7 +406,7 @@
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[360.0, 170.0]">
+        <vertex name="vertex1" value="[350.0, 160.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

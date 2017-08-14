@@ -20,10 +20,10 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5031713318203594">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.2206997230277, 267.67342883123905}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.22069972302745, 267.67342883123905}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transcribe speech.  Stop after 30 seconds.&#10;&#10;This demo illustrates the use of a custom dictionary and language model.&#10;&#10;New dictionaries and language models can be generate from a file of sentences &#10;using the Sphinx lmtool:  http://www.speech.cs.cmu.edu/tools/lmtool-new.html&#10;Download the generated .dic and .lm files.&#10;&#10;This model is trained for weather sentences, try:&#10;&#10;&quot;The rain in Spain falls mainly in the plain&quot;&#10;&#10;The output will appear on stdout.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transcribe speech.  Stop after 30 seconds.&#10;&#10;This demo illustrates the use of a custom dictionary and language model.&#10;&#10;New dictionaries and language models can be generate from a file of sentences &#10;using the Sphinx lmtool:  http://www.speech.cs.cmu.edu/tools/lmtool-new.html&#10;Download the generated .dic and .lm files.&#10;&#10;This model is trained for weather sentences, try:&#10;&#10;&quot;Berkeley will be foggy tomorrow.&quot;&#10;&#10;The output will appear on stdout.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-280.0, -125.0]">
         </property>

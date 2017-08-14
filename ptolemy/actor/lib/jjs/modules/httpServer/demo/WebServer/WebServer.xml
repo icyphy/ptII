@@ -5,37 +5,39 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{76.36973571777344, 37.2265625}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[76.36973571777344, 67.2265625]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 63, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1296412032383896">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.40670702429594, 216.50586581230164}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScript actor above constructs a simple&#10;&quot;Hello World&quot; response.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 435.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple demo of the WebServer accessor.&#10;This starts a web server on localhost on port 8080&#10;and sends back a simple &quot;Hello World&quot; response to&#10;any request.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple demo of the WebServer accessor.&#10;This starts a web server on localhost on port 8180&#10;and sends back a simple &quot;Hello World&quot; response to&#10;any request.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, -15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The REST actor periodically sends&#10;a GET request to the server.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 155.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
@@ -48,11 +50,11 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run the model and&#10;point your browser to&#10;http://localhost:8080&#10;or click here to test&#10;in your browser.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run the model and&#10;point your browser to&#10;http://localhost:8180&#10;or click here to test&#10;in your browser.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 195.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8080#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8180#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -111,9 +113,9 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 320.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8180">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -170,7 +172,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://localhost:8080&quot;">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://localhost:8180&quot;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -186,7 +188,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 110.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 140.0]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -230,7 +232,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Requests">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 275.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -240,7 +242,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Responses">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 130.0]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -256,7 +258,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 300.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 330.0]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -272,7 +274,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Request errors">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 215.0]">
         </property>
     </entity>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -302,7 +304,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 150.0]">
         </property>
         <property name="interval" class="ptolemy.data.expr.Parameter" value="3000.0">
         </property>
@@ -315,13 +317,11 @@
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;REST.error&quot;,x=270.0,y=110.0}, tail={id=&quot;Display3.input&quot;,x=410.0,y=180.0}, points={270.0,180.0} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{270.0, 300.0}">
+        <vertex name="vertex1" value="[270.0, 330.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.request&quot;,x=350.0,y=300.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={} },{ head={id=&quot;Display.input&quot;,x=320.0,y=245.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={270.0,245.0} },{ head={id=&quot;WebServer.request&quot;,x=155.0,y=290.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={} } }">
         </property>

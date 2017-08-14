@@ -11,21 +11,21 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 928, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 981, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[747, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0622358730115775">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.78662109375006, 369.12413807744565}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for the UDPSocketListener accessor.&#10;&#10;NOTE: This socket listens on the specified port and outputs any packet received on that port.&#10;The received packets will appear in the display ReceivedUDPPackets. To send UDP packets to&#10;the port to which this accessor is listening , there is a Node.js program which sends one packet&#10;each execution in the same demo directory, namely, UDPPacketGen.js.&#10;You can run this program as follows:&#10;     &gt; node UDPPacketGen.js&#10;after running this demo.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,23 +33,23 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 395.0]">
         </property>
     </property>
     <entity name="ReceivedUDPPackets" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 140, 1032, 628}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={89, 164, 1016, 612}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1016, 568]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 70.0]">
         </property>
     </entity>
     <entity name="Listening" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 131, 1032, 628}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 131, 1016, 612}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1016, 568]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 125.0]">
         </property>
     </entity>
     <entity name="UDPSocketListener" class="org.terraswarm.accessor.JSAccessor">
@@ -75,7 +75,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 80.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor listens for UDP (datagram) messages on the specified&#10; host interface and port. If the value of the &lt;code&gt;port&lt;/code&gt; input is&#10; initially negative, then this accessor waits until it receives a&#10; non-negative &lt;code&gt;port&lt;/code&gt; input before initiating listening. Otherwise,&#10; it begins listening during initialization. If at any time during&#10; execution it receives a &lt;code&gt;port&lt;/code&gt; input, then it will close any open&#10; socket and, if the new &lt;code&gt;port&lt;/code&gt; value is non-negative, open a new&#10; socket to the current &lt;code&gt;host&lt;/code&gt; and &lt;code&gt;port&lt;/code&gt;.&lt;/p&gt;&#10;&lt;p&gt; When the connection is established, a &lt;code&gt;true&lt;/code&gt; boolean is sent to&#10; the &lt;code&gt;listening&lt;/code&gt; output. If the connection is broken during&#10; execution, then a &lt;code&gt;false&lt;/code&gt; boolean is sent to the &lt;code&gt;listening&lt;/code&gt;&#10; output. The swarmlet could respond to this by retrying to connect&#10; (send an event to the &lt;code&gt;port&lt;/code&gt; input).&lt;/p&gt;&#10;&lt;p&gt; The receive type can be any of those supported by the host.  The&#10; list of supported types will be provided as options for the and&#10; &lt;code&gt;receiveType&lt;/code&gt; parameter. For the Ptolemy II host, these include at&#10; least 'string', 'number', 'image', and a variety of numeric types.&lt;/p&gt;&#10;&lt;p&gt; Note that UDP, unlike TCP, has the notion of a &amp;quot;message&amp;quot; (a&#10; datagram). A message can contain more than one byte.  The&#10; &lt;code&gt;receiveType&lt;/code&gt; determines the type of the elements of the output of&#10; this accessor.&lt;/p&gt;">

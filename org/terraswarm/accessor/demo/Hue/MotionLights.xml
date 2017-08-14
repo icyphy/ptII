@@ -12,23 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 817}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 23, 1440, 873}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 707]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0742665602296384">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{552.0438590116277, 335.52949672965127}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Marten Lohstroh, Ilge Akkaya">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 345.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{603.0, 381.5}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The clock driving the video subsystem runs faster than the lighting subsystem &#10;to provide accurate motion detection and display a smooth moving image &#10;without overwhelming the lighting system with too many requests.">
@@ -50,6 +40,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Motion detected in the camera image translates into Hue lightbulbs reacting.&#10;The coordinates of the center of gravity of the detected movement determine &#10;the color shown by the bulbs.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 390.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Marten Lohstroh, Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 490.0]">
         </property>
     </property>
     <entity name="30Hz Clock" class="ptolemy.actor.lib.DiscreteClock">

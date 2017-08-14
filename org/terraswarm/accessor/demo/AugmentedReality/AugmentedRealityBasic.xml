@@ -11,16 +11,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1090, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1164, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[856, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[930, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9870122560400748">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{430.566106865876, 379.81927178375906}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{465.0, 262.0}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -36,7 +36,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model looks for AR tags in an image, then using the ID of the AR tag, looks up an&#10;accessor, reifies it, and then overlays the sensor data provided by the accessor on the image.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 295.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
@@ -76,7 +76,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 115.0]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -98,7 +98,7 @@
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="MechanicalRoom.jpg">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 350.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 235.0]">
         </property>
     </entity>
     <entity name="TagToAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -114,7 +114,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 115.0]">
         </property>
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -146,7 +146,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 40.0]">
         </property>
         <property name="holdCount" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -173,7 +173,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 50.0]">
         </property>
         <port name="reset" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -236,7 +236,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 50.0]">
         </property>
         <property name="header" class="ptolemy.data.expr.Parameter" value="&lt;title&gt;AugmentedReality Demo&lt;/title&gt;&#10;&lt;style&gt;&#10;#container {&#10;  position: relative;&#10;  background: black;&#10;  width: 1000px;&#10;  height: 600px;&#10;}&#10;#image {&#10;  display: block;&#10;}&#10;#image:hover {&#10;  opacity: 0.5;&#10;}&#10;#overlay {&#10;  position: absolute;&#10;  background-color: rgba(255,255,255,0.7);&#10;  color: black;&#10;  font-size: 12px;&#10;  font-family: sans-serif;&#10;  padding: 6px 6px;&#10;}&#10;table, th, td {&#10;  border: 1px solid black;&#10;  border-collapse: collapse;&#10;  padding: 2px;&#10;}&#10;&lt;/style&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -298,7 +298,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 350.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 235.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -333,7 +333,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 180.0]">
         </property>
         <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -371,13 +371,13 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{220.0, 350.0}">
+        <vertex name="vertex1" value="[230.0, 235.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{320.0, 240.0}">
+        <vertex name="vertex1" value="[330.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -399,7 +399,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{600.0, 350.0}">
+        <vertex name="vertex1" value="[610.0, 235.0]">
         </vertex>
     </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>

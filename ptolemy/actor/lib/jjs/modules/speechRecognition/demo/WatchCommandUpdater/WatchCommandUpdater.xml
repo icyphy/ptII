@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 166, 1120, 781}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 115, 1120, 781}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[886, 671]">
     </property>
@@ -248,6 +248,8 @@
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/SpeechRecognition.js">
         </property>
+        <property name="checkoutOrUpdateAccessorsRepository" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Speech recognition accessor.  This accessor opens an audio channel, listens&#10;for speech, then returns text.&lt;/p&gt;">
             </property>
@@ -268,11 +270,11 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="dictionaryPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/WatchCommandUpdater/phrases.dic">
+        <property name="dictionaryPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/phrases.dic">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="languageModelPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/WatchCommandUpdater/phrases.lm">
+        <property name="languageModelPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/phrases.lm">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
