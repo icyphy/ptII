@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{484.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{494.0, 262.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -21,23 +21,23 @@
         </property>
         <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 25}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates publish/subscribe for a Vert.x event bus.&#10;VertxPublish and VertxSubscribe discover each other using multicast and&#10;then send/receive messages.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 25.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 145.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -45,7 +45,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 245.0]">
         </property>
     </entity>
     <entity name="VertxPublish" class="org.terraswarm.accessor.JSAccessor">
@@ -65,7 +65,7 @@
         </property>
         <property name="busHostPort" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 135.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Publish to a Vert.x event bus, which is a peer-to-peer publish-and-subscribe system.&#10; The published data will be sent to any subscriber that subscribes to the same&#10; address and runs in the same Vertx cluster (see the VertxSubscribe accessor).&#10; The Vertx cluster normally includes all machines that hear multicast packets&#10; sent by the machine hosting this accessor.&lt;/p&gt;&#10;&lt;p&gt; The input to be published can be any data type supported by accessors that&#10; has a string representation in JSON syntax. The data will be converted to a&#10; string in JSON format and sent to the event bus. The VertxSubscribe accessor&#10; will parse that string and output the data in the native format of its host.&lt;/p&gt;&#10;&lt;p&gt; If the broadcast input is set to false, then instead of broadcasting the&#10; message to all subscribers, the Vertx bus will pick exactly one subscriber&#10; and send the message to it.  The bus picks the subscribers in an approximately&#10; round-robin fashion. If the subscriber replies to this message, then that&#10; will reply (required to be also be a JSON object) will be produced on the&#10; reply output port.&lt;/p&gt;&#10;&lt;p&gt; The busHost input specifies the name of the network interface through which&#10; to connect to the Vert.x event bus cluster, and busHostPort specifies the&#10; port to use for this. Normally, you can leave these at their default values&#10; unless you need to need to use a network interface that is not 'localhost'&#10; or you need to use a particular port. These two inputs are examined only&#10; at initialization time, so changing them during execution of a swarmlet&#10; will have no effect.&lt;/p&gt;">
@@ -123,7 +123,7 @@
         </property>
         <property name="busHostPort" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 245.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor subscribes to a Vert.x event bus, which is a peer-to-peer&#10; publish-and-subscribe system. This accessor will receive data that is&#10; sent by any subscriber that publishes to the same address and runs in&#10; the same Vertx cluster (see the VertxPublish accessor).&#10; The Vertx cluster normally includes all machines that hear multicast&#10; packets sent by the machine hosting this accessor.&lt;/p&gt;&#10;&lt;p&gt; The output produced by this accessor may be any data type supported by&#10; accessors that has a string representation in JSON syntax.&#10; The data sent by a VertxPublish accessor is first converted to a string&#10; in JSON format and sent to the event bus. This VertxSubscribe accessor&#10; will parse that string and output the data in the native format of its host.&lt;/p&gt;&#10;&lt;p&gt; If the reply input is set to a non-empty value, then whenever this accessor&#10; receives a point-to-point message from the event bus (see VertxPublish),&#10; then it will reply with the specified message, acknowledging receipt.&#10; The reply can also be any data type that has a JSON string representation.&lt;/p&gt;&#10;&lt;p&gt; The busHost input specifies the name of the network interface through&#10; which to connect to the Vert.x event bus cluster, and busHostPort specifies&#10; the port to use for this. Normally, you can leave these at their default&#10; values unless you need to need to use a network interface that is not&#10; 'localhost' or you need to use a particular port.&#10; These two inputs are examined only at initialization time,&#10; so changing them during execution of a swarmlet will have no effect.&lt;/p&gt;">

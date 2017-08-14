@@ -28,7 +28,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 565.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1282, 278, 958, 698}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={326, 23, 958, 698}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 588]">
     </property>
@@ -68,9 +68,9 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Alternatively, there is also a Node.js server, which you can start with:&#10;     &gt; node NodeServer.js&#10;before running this demo. NodeServer.js is in the same demo directory.  You may need&#10;to install the 'ws' module using something like:&#10;     &gt; sudo npm install ws&#10;&#10;You may also need to install node-gyp:&#10;     &gt; sudo npm install node-gyp&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Alternatively, there is also a Node.js server, which you can start with:&#10;     &gt; node NodeServer.js&#10;before running this demo. NodeServer.js is in the same demo directory.  You may need&#10;to install the 'ws' module using something like:&#10;     &gt; npm install ws&#10;&#10;You may also need to install node-gyp:&#10;     &gt; npm install node-gyp&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 375.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 375.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -81,7 +81,7 @@
         </property>
     </entity>
     <entity name="MessageFromServer" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={905, 514, 535, 386}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={860, 487, 535, 386}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 342]">
         </property>
@@ -133,7 +133,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8080">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8183">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 140.0}">
         </property>

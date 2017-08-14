@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[970, 551]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1886601041237">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.81602641056423, 134.74879717512005}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{485.0, 275.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -19,7 +19,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-90.0, -65.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -29,7 +29,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstrate sending to two distinct clients.&#10;One gets even numbers, the other gets odd numbers.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, -95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 20.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -67,7 +67,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 295.0]">
         </property>
     </entity>
     <entity name="Client1Received" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -75,7 +75,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 135.0]">
         </property>
     </entity>
     <entity name="TCPSocketClient1" class="org.terraswarm.accessor.JSAccessor">
@@ -101,7 +101,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 125.0]">
         </property>
         <property name="reconnectAttempts" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -246,7 +246,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 305.0]">
         </property>
         <property name="toSendID" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -344,7 +344,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 135.0]">
         </property>
     </entity>
     <entity name="TCPSocketClient2" class="org.terraswarm.accessor.JSAccessor">
@@ -370,7 +370,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 125.0]">
         </property>
         <property name="reconnectAttempts" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -478,7 +478,7 @@
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 350.0]">
         </property>
     </entity>
     <entity name="ServerErrors" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -486,15 +486,15 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 395.0]">
         </property>
     </entity>
     <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 355.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 440.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -508,7 +508,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 440.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -520,11 +520,11 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 295.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 210.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -536,7 +536,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[35.0, 180.0]">
+        <vertex name="vertex1" value="[195.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -546,7 +546,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[365.0, 180.0]">
+        <vertex name="vertex1" value="[525.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -558,7 +558,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[170.0, 95.0]">
+        <vertex name="vertex1" value="[330.0, 210.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">

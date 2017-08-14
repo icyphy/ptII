@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 537]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0639171528060416">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.89453125, 341.6696604665397}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{464.5, 268.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -19,7 +19,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[98.5, 145.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -29,7 +29,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transmit a binary sequence of&#10;unsigned short integers over a&#10;TCP socket as raw bytes&#10;(with no message framing).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-135.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[38.5, 30.0]">
         </property>
     </property>
     <property name="type" class="ptolemy.data.expr.StringParameter" value="unsignedshort">
@@ -48,13 +48,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[183.5, 140.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Add 1 to received&#10;data and sends the&#10;result back.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[20.0, 35.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[15.0, 35.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -74,7 +74,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This client is set to&#10;send and receive raw&#10;bytes with no message&#10;length header.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-70.0, 60.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-75.0, 60.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="TCPSocketClient">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -84,7 +84,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This server is set to&#10;send and receive raw&#10;bytes with no message&#10;length header.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-75.0, 65.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-80.0, 65.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="TCPSocketServer">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -96,7 +96,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 400.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[423.5, 335.0]">
         </property>
     </entity>
     <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -104,7 +104,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[423.5, 240.0]">
         </property>
     </entity>
     <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -112,7 +112,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 270.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[283.5, 205.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -124,7 +124,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[508.5, 190.0]">
         </property>
     </entity>
     <entity name="ClientReceived" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -132,7 +132,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[666.5, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 210.0]">
         </property>
     </entity>
     <entity name="TCPSocketClient" class="org.terraswarm.accessor.JSAccessor">
@@ -158,7 +158,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[526.5, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 200.0]">
         </property>
         <property name="rawBytes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -299,7 +299,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 315.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[133.5, 250.0]">
         </property>
         <property name="rawBytes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -399,7 +399,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 455.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[448.5, 390.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -408,7 +408,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 455.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[273.5, 390.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -416,7 +416,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{200.0, 305.0}">
+        <vertex name="vertex1" value="[373.5, 240.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=335.0,y=255.0}, tail={id=&quot;relation4.vertex1&quot;,x=200.0,y=305.0}, points={200.0,255.0} },{ head={id=&quot;ServerConnected.input&quot;,x=250.0,y=305.0}, tail={id=&quot;relation4.vertex1&quot;,x=200.0,y=305.0}, points={} },{ head={id=&quot;TCPSocketServer.connection&quot;,x=-40.0,y=315.0}, tail={id=&quot;relation4.vertex1&quot;,x=200.0,y=305.0}, points={} } }">
         </property>
@@ -442,7 +442,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{200.0, 400.0}">
+        <vertex name="vertex1" value="[373.5, 335.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=200.0,y=400.0}, tail={id=&quot;Expression.received&quot;,x=275.0,y=455.0}, points={200.0,365.0,450.0,365.0,450.0,455.0} },{ head={id=&quot;ServerReceived.input&quot;,x=250.0,y=400.0}, tail={id=&quot;relation8.vertex1&quot;,x=200.0,y=400.0}, points={} },{ head={id=&quot;TCPSocketServer.received&quot;,x=-40.0,y=315.0}, tail={id=&quot;relation8.vertex1&quot;,x=200.0,y=400.0}, points={60.0,325.0,60.0,400.0} } }">
         </property>

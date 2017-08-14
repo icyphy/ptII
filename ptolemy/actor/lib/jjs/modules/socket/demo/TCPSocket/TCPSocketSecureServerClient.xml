@@ -14,20 +14,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 30.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 23, 934, 789}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 23, 955, 761}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 679]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 651]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1047249757653461">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.294921875, 304.97193444293475}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.5, 325.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstrate the secure servers and clients over SSL/TLS.&#10;SSL/TLS is enabled for both the servers and clients.&#10;Required files are stored in&#10;org/terraswarm/accessor/demo/TCPSocket/certs/CACert.pem&#10;&#10;See certs/README for generation of required files.&#10;&#10;ServerA does not require a certificate for the client in this demo.&#10;&#10;ServerB requires a certificate for the client.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstrate the secure servers and clients over SSL/TLS.&#10;SSL/TLS is enabled for both the servers and clients.&#10;Required files are stored in&#10;ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/CACert.pem&#10;&#10;See certs/README for generation of required files.&#10;&#10;ServerA does not require a certificate for the client in this demo.&#10;&#10;ServerB requires a certificate for the client.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 10.0]">
         </property>
@@ -155,7 +155,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/certs/CACert.pem">
+        <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/CACert.pem">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -276,7 +276,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/certs/Server.pfx">
+        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/Server.pfx">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -430,7 +430,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/certs/Server.pfx">
+        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/Server.pfx">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -448,7 +448,7 @@
         </property>
         <property name="sslTls" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/certs/CACert.pem">
+        <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/CACert.pem">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -556,7 +556,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/certs/CACert.pem">
+        <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/CACert.pem">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -568,7 +568,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/certs/Client.pfx">
+        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/Client.pfx">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>

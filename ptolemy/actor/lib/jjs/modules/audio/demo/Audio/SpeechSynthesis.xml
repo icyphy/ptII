@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 35.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={294, 231, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={294, 231, 1076, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[842, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{421.0, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Synthesis speech using the Mary Text To Speech web service.&#10;Type text into the &quot;Text&quot; accessor and run the model to hear speech.&#10;&#10;This demo uses the public web service.  If we use this a lot, we should install MaryTTS locally.&#10;Documentation:  http://mary.dfki.de:59125/documentation.html&#10;To download:  http://mary.dfki.de/&#10;License: LGPL3.&#10;&#10;The model stops after 10 seconds.  For longer text, please increase the DEDirector stop time.&#10;&#10;This model uses the default voice.  Other voices are available.">

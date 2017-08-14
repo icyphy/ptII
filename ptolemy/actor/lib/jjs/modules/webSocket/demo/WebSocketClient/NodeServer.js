@@ -22,7 +22,7 @@
 //
 var WebSocketServer = require('ws').Server,
     wss = new WebSocketServer({
-        port: 8080
+        port: 8183
     });
 
 var replyCnt = 0;
@@ -32,7 +32,7 @@ wss.on('connection', function (ws) {
         console.log('received: %s', JSON.stringify(message));
         replyCnt++;
         ws.send(JSON.stringify({
-            'port': 8080,
+            'port': 8183,
             'reply count': replyCnt
         }));
     });

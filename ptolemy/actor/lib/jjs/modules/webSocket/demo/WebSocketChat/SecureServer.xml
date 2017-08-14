@@ -16,9 +16,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.276133455081842">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.07970118522644, 203.5712358719312}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -37,7 +37,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This application illustrates the design of a custom&#10;accessor that uses the webSocket module to implement&#10;a secure chat server based on a secure web socket.&#10;Look inside the JavaScript actor to see its design.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 170.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,9 +45,40 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This starts a chat server&#10;on localhost:8080.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This starts a chat server&#10;on localhost:8182.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the SecureServer model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 260.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -83,11 +114,13 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/certs/Server.pfx">
+        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/certs/Server.pfx">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="sslTls" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8182">
         </property>
         <port name="log" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

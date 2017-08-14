@@ -11,16 +11,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 158, 1340, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 158, 1340, 703}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 529]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 593]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6169516540726326">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1371.9221021075582, 485.4567587209301}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{553.0, 296.5}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -36,7 +36,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model looks for AR tags in an image, then using the ID of the AR tag, looks up an&#10;accessor, reifies it, and then overlays the sensor data provided by the accessor on the image.&#10;If the accessor provides a schema, then it will also construct a form for data entry to be sent&#10;back to the accessor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 300.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -44,13 +44,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: As this display shows, the&#10;form data received via post is empty.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 355.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Created a variant of the augmented reality demo. In the original, TagToAccessor knows upon initialization &#10;the mapping between april tag index and accessor. In the interest of making the demo more realistic,&#10;TagMapAccessorAR uses an accessor to get the mapping. For now there is just a dummy TagMap accessor, but in&#10;the future this could be replaced with a real accessor for a swarmbox which could return the mapping &#10;particular to the room where the swarmlet is run.&#10;&#10;Changes to the original demo are minor, but now the TagToAccessor must first wait for the IdToResource&#10;to be obtained from DummyTagMapAccessor before it can start sending accessors to the MutableAccessor.&#10;As a result, the new version fails to display data on the first actionable index obtained from IndexGenerator. It&#10;might be possible to 'fix' this problem by having the IndexGenerator wait another tick before sending&#10;an index, but once the dummy accessor is replaced by a real one we'd be in the same situation.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 380.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
@@ -90,7 +90,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{585.0, 215.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 170.0]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -148,7 +148,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1470.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 45.0]">
         </property>
         <property name="graphic" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -208,7 +208,7 @@
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="MechanicalRoom.jpg">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 180.0]">
         </property>
     </entity>
     <entity name="GraphicOverlay" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -224,7 +224,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1280.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 155.0]">
         </property>
         <port name="svg" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -269,7 +269,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 235.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -288,7 +288,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{940.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 225.0]">
         </property>
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -323,7 +323,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1100.0, 245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 245.0}">
         </property>
         <property name="accessor" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -375,7 +375,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{760.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 105.0]">
         </property>
         <property name="holdCount" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -402,7 +402,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1620.0, 245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 195.0]">
         </property>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -424,7 +424,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1905.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 315.0]">
         </property>
     </entity>
     <entity name="DummyTagMapAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -440,7 +440,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 235.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -492,7 +492,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1810.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 195.0]">
         </property>
         <port name="html" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -514,61 +514,39 @@
         </port>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.translate&quot;,x=1470.0,y=200.0}, tail={id=&quot;GraphicOverlay.latestTranslation&quot;,x=1280.0,y=190.0}, points={1385.0,230.0,1385.0,200.0} } }">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.graphic&quot;,x=1470.0,y=200.0}, tail={id=&quot;GraphicOverlay.svg&quot;,x=1280.0,y=190.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{1850.0, 305.0}">
+        <vertex name="vertex1" value="[940.0, 265.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=1905.0,y=305.0}, tail={id=&quot;relation11.vertex1&quot;,x=1850.0,y=305.0}, points={} },{ head={id=&quot;MutableAccessor.control&quot;,x=1100.0,y=245.0}, tail={id=&quot;relation11.vertex1&quot;,x=1850.0,y=305.0}, points={1025.0,255.0,1025.0,305.0} },{ head={id=&quot;Browser.post&quot;,x=1775.0,y=245.0}, tail={id=&quot;relation11.vertex1&quot;,x=1850.0,y=305.0}, points={1835.0,245.0,1835.0,305.0} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{700.0, 225.0}">
+        <vertex name="vertex1" value="[475.0, 105.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;IndexGenerator.tags&quot;,x=760.0,y=165.0}, tail={id=&quot;relation3.vertex1&quot;,x=700.0,y=225.0}, points={700.0,165.0} },{ head={id=&quot;ObjectRecognizer.tags&quot;,x=585.0,y=215.0}, tail={id=&quot;relation3.vertex1&quot;,x=700.0,y=225.0}, points={} },{ head={id=&quot;TagToAccessor.tags&quot;,x=940.0,y=225.0}, tail={id=&quot;relation3.vertex1&quot;,x=700.0,y=225.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MutableAccessor.schema&quot;,x=1100.0,y=245.0}, tail={id=&quot;JavaScript.spec&quot;,x=1620.0,y=245.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.output&quot;,x=1470.0,y=200.0}, tail={id=&quot;JavaScript.image&quot;,x=1620.0,y=245.0}, points={1555.0,200.0,1555.0,235.0} } }">
-        </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TagToAccessor.accessor&quot;,x=940.0,y=225.0}, tail={id=&quot;MutableAccessor.accessor&quot;,x=1100.0,y=245.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TagToAccessor.index&quot;,x=940.0,y=225.0}, tail={id=&quot;IndexGenerator.index&quot;,x=760.0,y=165.0}, points={845.0,215.0,845.0,175.0} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GraphicOverlay.json&quot;,x=1280.0,y=190.0}, tail={id=&quot;MutableAccessor.data&quot;,x=1100.0,y=245.0}, points={1195.0,200.0,1195.0,235.0} } }">
-        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GraphicOverlay.translation&quot;,x=1280.0,y=190.0}, tail={id=&quot;TagToAccessor.translation&quot;,x=940.0,y=225.0}, points={1025.0,190.0,1025.0,215.0} } }">
-        </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{1195.0, 155.0}">
+        <vertex name="vertex1" value="[655.0, 95.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GraphicOverlay.reset&quot;,x=1280.0,y=190.0}, tail={id=&quot;relation17.vertex1&quot;,x=1195.0,y=155.0}, points={1195.0,180.0} },{ head={id=&quot;IndexGenerator.reset&quot;,x=760.0,y=165.0}, tail={id=&quot;relation17.vertex1&quot;,x=1195.0,y=155.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{135.0, 280.0}">
+        <vertex name="vertex1" value="[155.0, 235.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation16.vertex1&quot;,x=135.0,y=280.0}, tail={id=&quot;DummyTagDomainAccessor.trigger&quot;,x=350.0,y=280.0}, points={} },{ head={id=&quot;TestSpontaneous.output&quot;,x=20.0,y=280.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=280.0}, points={} },{ head={id=&quot;ImageReader.trigger&quot;,x=215.0,y=225.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=280.0}, points={135.0,225.0} } }">
         </property>
@@ -578,16 +556,12 @@
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{395.0, 225.0}">
+        <vertex name="vertex1" value="[315.0, 180.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ObjectRecognizer.input&quot;,x=585.0,y=215.0}, tail={id=&quot;relation.vertex1&quot;,x=395.0,y=225.0}, points={} },{ head={id=&quot;relation8.vertex1&quot;,x=280.0,y=135.0}, tail={id=&quot;relation.vertex1&quot;,x=395.0,y=225.0}, points={280.0,225.0} },{ head={id=&quot;ImageReader.output&quot;,x=215.0,y=225.0}, tail={id=&quot;relation.vertex1&quot;,x=395.0,y=225.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{280.0, 135.0}">
+        <vertex name="vertex1" value="[315.0, 65.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.image&quot;,x=1470.0,y=200.0}, tail={id=&quot;relation8.vertex1&quot;,x=280.0,y=135.0}, points={1385.0,220.0,1385.0,135.0} } }">
-        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
     </relation>

@@ -112,7 +112,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="clipURL" class="ptolemy.actor.parameters.PortParameter" value="http://ptolemy.eecs.berkeley.edu/mp3/USAD2016_06-RhapsodyInBlue.mp3">
+        <property name="clipURL" class="ptolemy.actor.parameters.PortParameter" value="https://ptolemy.eecs.berkeley.edu/mp3/USAD2016_06-RhapsodyInBlue.mp3">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -136,7 +136,7 @@
     <entity name="SecondURL" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;http://ptolemy.eecs.berkeley.edu/mp3/LouisArmstrong-WhatAWonderfulWorld.mp3&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;https://ptolemy.eecs.berkeley.edu/mp3/LouisArmstrong-WhatAWonderfulWorld.mp3&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[52.5, 109.921875]">
         </property>

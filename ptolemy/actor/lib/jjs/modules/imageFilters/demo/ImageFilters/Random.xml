@@ -9,7 +9,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={657, 23, 782, 640}, maximized=false}">
@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.0, 255.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.0, 265.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies an randomly chosen filters&#10;to a video stream from the camera.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-5.0, 50.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[15.0, 85.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -36,7 +36,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 270.0]">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -46,7 +46,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 260.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -72,7 +72,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 270.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for a camera on the local host. This can be a built-in camera or&#10; a USB-connected camera. This accessor has two modes of operation, &amp;quot;triggered&amp;quot;&#10; and &amp;quot;open loop.&amp;quot; In triggered mode, it captures an image whenever a trigger&#10; input is received and produces that image on its output. In open-loop mode,&#10; it captures every image produced by the camera, at the speed of the camera,&#10; and produces on the output a stream of such images.&lt;/p&gt;">
@@ -116,7 +116,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 260.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor filters images provided at the input to produce modified images&#10;on the output. This accessor requires an 'imageFilters' module implemented on&#10;the accessor host. The filters that are available will depend on the particular&#10;host implementation of this module and will be provided as select alternatives for the&#10;'filter' parameter. The options that each filter can accept will also depend on the&#10;module implementation on the host.  The filters that are implemented by the Ptolemy II&#10;host and their options are documented in the&#10;&lt;a href=&quot;https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/module-imageFilters.html&quot;&gt;imageFilters module&lt;/a&gt;&#10;Demos for these filters can be found in the Ptolemy II tree at&#10;org/terraswarm/accessor/demo/ImageFilters.&lt;/p&gt;">
@@ -160,7 +160,7 @@
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 135.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 170.0]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -176,7 +176,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 135.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 170.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -190,7 +190,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -204,7 +204,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[240.0, 135.0]">
+        <vertex name="vertex1" value="[260.0, 170.0]">
         </vertex>
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
