@@ -11,30 +11,30 @@
     <!-- $Id$ -->
     <!--
 
-	  demosPtinyKepler.htm is derived from this file by including
-	  anything between the tags vergilDoc and /vergilDoc (don't ask
-	  why those tags are used here).
-	  A makefile rule uses $PTII/doc/javahtml.awk to read in this
-	  file and generate demosPtinyKepler.htm.
+	demosPtinyKepler.htm is derived from this file by including
+	anything between the tags vergilDoc and /vergilDoc (don't ask
+	why those tags are used here).
+	A makefile rule uses $PTII/doc/javahtml.awk to read in this
+	file and generate demosPtinyKepler.htm.
 
-	  NOTE: Normally, every demo should only be mentioned and listed by its
-	  top-level domain. The only exception is GR, which in practice
-	  is not used as a top-level domain. However, demos that focus on
-	  integrating multiple domains can be put instead in the System Demos
-	  category.
+	NOTE: Normally, every demo should only be mentioned and listed by its
+	top-level domain. The only exception is GR, which in practice
+	is not used as a top-level domain. However, demos that focus on
+	integrating multiple domains can be put instead in the System Demos
+	category.
 
-	  The $PTII/ptolemy/configs/doc/completeDemos.htm file is used
-	  to generate various files that are used by the documentation system.
+	The $PTII/ptolemy/configs/doc/completeDemos.htm file is used
+	to generate various files that are used by the documentation system.
 
-	  For example, the Ptolemy actor documentation includes links to
-	  models that use each actor.  How this is generated is as follows:
+	For example, the Ptolemy actor documentation includes links to
+	models that use each actor.  How this is generated is as follows:
 
-	  $PTII/ptolemy/configs/doc/completeDemos.htm is read and 
-	  $PTII/ptolem/configs/doc/models.txt is created by running make
+	$PTII/ptolemy/configs/doc/completeDemos.htm is read and 
+	$PTII/ptolem/configs/doc/models.txt is created by running make
 
-	  Please keep demos alphabetical.
+	Please keep demos alphabetical.
 
-	-->
+      -->
     <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
   </head>
 <body>
@@ -133,7 +133,7 @@
       <li><a href="../../domains/continuous/demo/Friction/Friction.xml">Friction</a> </li>
 
       <!-- FMU is not shipped with Ptiny because it uses JNA, but FMU is included with bcvtb -->
-	<!--vergilDocs-->
+      <!--vergilDocs-->
 
       <!--vergilDocs-->
 
@@ -236,7 +236,7 @@
 
       <li><a href="../../data/type/demo/Router/Router.xml">Router</a>
 
-	<!--vergilDocs-->
+      <!--vergilDocs-->
 
       <!--vergilDocs-->
       <li><a href="../../domains/de/demo/SmartSender/SmartSender.xml">Smart Sender</a></li>
@@ -270,8 +270,8 @@
       <li><a href="../../domains/modal/demo/ModalBSC/ModalBSC.xml">ModalBSC</a> 
       <li><a href="../../domains/modal/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a> 
       <li><a href="../../../ptolemy/domains/modal/demo/PersistentIO/PersistentIO.xml">PersistentIO</a>(New in Ptolemy II 11.0)</li>
-	<!--/bcvtbDocs-->
-	<!-- StateTracker includes DEDirector, which is not shipped with BCVTB -->
+      <!--/bcvtbDocs-->
+      <!-- StateTracker includes DEDirector, which is not shipped with BCVTB -->
       <li><a href="../../domains/modal/demo/StateTracker/StateTracker.xml">StateTracker</a> 
 	<!--bcvtbDocs-->
 
@@ -324,9 +324,9 @@
       <li>Communications demos:
 	<a href="../../actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml">ConvolutionalCoder</a>,
       <li><a href="../../../ptolemy/actor/lib/comm/demo/HuffmanDecoder/HuffmanDecoder.xml">HuffmanDecoder</a>(New in Ptolemy II 11.0)</li>
-	<a href="../../actor/lib/comm/demo/Scrambler/Scrambler.xml">Scrambler</a>,
-	<a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>,
-	<a href="../../actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml">ViterbiDecoder</a>
+      <a href="../../actor/lib/comm/demo/Scrambler/Scrambler.xml">Scrambler</a>,
+      <a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>,
+      <a href="../../actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml">ViterbiDecoder</a>
 
       <li><a href="../../actor/lib/hoc/demo/DFTSubSet/DFTSubSet.xml">DFT Subset</a> 
 
@@ -336,8 +336,8 @@
       <li><a href="../../domains/sdf/demo/Eye/Eye.xml">Eye Diagram</a>
       <li><a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">Fixed-Point FIR Filter</a>
       <li><a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">Fixed-Point Arithmetic</a></li>
-        <!-- Excel is incomplete. -->
-        <!-- ../../ptolemy/actor/lib/excel/demo/Excel/Excel.xml-->
+      <!-- Excel is incomplete. -->
+      <!-- ../../ptolemy/actor/lib/excel/demo/Excel/Excel.xml-->
 	<!--vergilDocs-->
       <li><a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>
 	<!--vergilDocs-->
@@ -348,20 +348,20 @@
       <!--vergilDocs-->
 
       <!-- Do not ship Joystick, uses GPL'd code at runtime ->
-      <!-- ../../../ptolemy/actor/lib/joystick/demo/Joystick/Joystick.xml -->
+           <!-- ../../../ptolemy/actor/lib/joystick/demo/Joystick/Joystick.xml -->
 
       <li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMS Adaptive Filter</a> 
       <li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>
       <li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">Maximum Entropy Spectrum</a> 
 
         <!-- Do not include the OpenCV demos, they were never properly completed. -->
-      <!-- ../../../ptolemy/actor/lib/opencv/demo/OpenCVReader/OpenCVReader.xml -->
-      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraFlipView/CameraFlipView.xml -->
-      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraSmoothView/CameraSmoothView.xml -->
-      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraView/CameraView.xml -->
-      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageCopySmoothView/ImageCopySmoothView.xml -->
-      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageCopyView/ImageCopyView.xml -->
-      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageView/ImageView.xml -->
+        <!-- ../../../ptolemy/actor/lib/opencv/demo/OpenCVReader/OpenCVReader.xml -->
+        <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraFlipView/CameraFlipView.xml -->
+        <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraSmoothView/CameraSmoothView.xml -->
+        <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraView/CameraView.xml -->
+        <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageCopySmoothView/ImageCopySmoothView.xml -->
+        <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageCopyView/ImageCopyView.xml -->
+        <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageView/ImageView.xml -->
 
 	<!--Kepler does not include Javamail-->
 	<!--ptinyKeplerDocs-->
@@ -387,7 +387,7 @@
 	<!-- Uses the R program, which is not shipped -->
       <li><a href="../../actor/lib/r/demo/R3DPlot/R3DPlot.xml">R3DPlot</a> (Requires the R statistical language) (New in Ptolemy II 11.0)</li>
       <li><a href="../../actor/lib/r/demo/RRecordToDataframe/RRecordToDataframe.xml">R Record To Dataframe</a> (Requires the R statistical language) (New in Ptolemy II 11.0)</li>
-	<!-- Rijndael includes domains.fsm, which is not shipped with bcvtb -->
+      <!-- Rijndael includes domains.fsm, which is not shipped with bcvtb -->
       <li><a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">Rijndael Encryption</a>
 	<!--bcvtbDocs-->
 
@@ -448,9 +448,9 @@
     
     <!--ptinyKeplerDocs-->
 
-    <!--ptinyKeplerDocs-->
+        <!--ptinyKeplerDocs-->
 
-    <!--ptinyKeplerDocs-->
+        <!--ptinyKeplerDocs-->
 
 </body>
 </html>

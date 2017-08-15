@@ -68,14 +68,8 @@ $CLASSPATH/org/terraswarm/accessor/demo/Hue/Hue.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/HueToggle.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/MotionLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/OccupancyLights.xml
-$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
-$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml
-$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketImage.xml
-$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketSecureServerClient.xml
-$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketTwoClients.xml
-$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketUnsignedShort.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WatchHandRaisingLight/WatchHandRaisingLight.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml
@@ -191,7 +185,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPToWebSocket/GDPToWebSocket.
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/StockTick.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/SwarmAcousticService.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient.xml
@@ -233,6 +226,11 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketSecureServerClient.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketTwoClients.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketUnsignedShort.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml
