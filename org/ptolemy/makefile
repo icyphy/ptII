@@ -45,6 +45,8 @@ DIRS = classloading \
 	qss \
 	ssm
 
+	#(PTSCALA_DIR)
+
 # Root of Ptolemy II directory
 ROOT =		../..
 

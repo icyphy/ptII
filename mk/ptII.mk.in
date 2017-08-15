@@ -101,6 +101,9 @@ KVM_DIR = @KVM_DIR@
 # Directory the Palm Pilot Hot Sync program looks for downloads
 PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
 
+# The scala binary.
+SCALA =	@SCALA@
+
 # Jar files used Soot - a Java Optimization Framework
 SOOT_CLASSES = @SOOT_CLASSES@
 
@@ -1076,6 +1079,13 @@ RXTX_JAR =   		@RXTX_JAR@
 
 # PTRXTX_PACKAGES is used in ptII/doc/makefile
 PTRXTX_PACKAGES =	@PTRXTX_PACKAGES@
+
+# PTSCALA_DIR is set to scala and used in
+# $PTII/org/ptolemy/makefile if the scala binary was found
+PTSCALA_DIR =		@PTSCALA_DIR@
+
+# PTSCALA_PACKAGES is used in $PTII/doc/makefile
+PTSCALA_PACKAGES =	@PTSCALA_PACKAGES@
 
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see

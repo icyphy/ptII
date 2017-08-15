@@ -5446,6 +5446,31 @@ if test -z "$PTRTOOL_JARS"; then
 fi
 
 #--------------------------------------------------------------------
+#       Scala is a programming language that creates .class files
+#--------------------------------------------------------------------
+
+# PTSCALA_DIR is set to scala if scala is found
+PTSCALA_DIR=
+
+# We only enable scala if $PTSCALA_USER_DIR is present
+PTSCALA_USER_DIR="org/ptolemy/scala"
+
+if test ! -d "$PTSCALA_USER_DIR"; then
+    PT_MSG_STATUS([$PTSCALA_USER_DIR is not present])
+else
+    AC_PATH_PROG(SCALA, scala)
+    if test -x "$SCALA"; then
+       PTSCALA_DIR=scala
+    else
+       AC_MSG_WARN([Failed to find the scala binary,
+    so org/ptolemy/scala will be excluded])
+
+        updateExcludes "org/ptolemy/scala"
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
 #       See if there was a command-line option for where Soot is
@@ -7453,6 +7478,13 @@ AC_SUBST(PTRTOOL_PACKAGES)
 # PTRXTX_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTRXTX_PACKAGES)
 
+# PTSCALA_DIR is set to scala and used in
+# $PTII/org/ptolemy/makefile if the scala binary was found
+AC_SUBST(PTSCALA_DIR)
+
+# PTSCALA_PACKAGES is used in $PTII/doc/makefile
+AC_SUBST(PTSCALA_PACKAGES)
+
 # PTSERIAL_DIR is set to serial and used in
 # $PTII ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
 AC_SUBST(PTSERIAL_DIR)
@@ -7549,6 +7581,9 @@ AC_SUBST(RXTX_JAR)
 
 # If Rxtx is present, then set to yes, otherwise set to no
 AC_SUBST(RXTX_PRESENT)
+
+# The scala binary.
+AC_SUBST(SCALA)
 
 # tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
 AC_SUBST(SOOT_CLASSES)
