@@ -668,6 +668,8 @@ PTSERVER_JARS
 PTSERVER_PACKAGES
 PTSERVER_DIR
 PTSERIAL_DIR
+PTSCALA_PACKAGES
+PTSCALA_DIR
 PTRXTX_PACKAGES
 PTRTOOL_PACKAGES
 PTRTOOL_JNLP_JARS
@@ -910,6 +912,7 @@ ANT_EXCLUDE
 ANT_CLASSPATH
 ANT_ALWAYS_EXCLUDE
 ANT_PATH
+SCALA
 PTOMC
 PTMATLAB_CC
 MATLAB
@@ -12599,6 +12602,73 @@ if test -z "$PTRTOOL_JARS"; then
 fi
 
 #--------------------------------------------------------------------
+#       Scala is a programming language that creates .class files
+#--------------------------------------------------------------------
+
+# PTSCALA_DIR is set to scala if scala is found
+PTSCALA_DIR=
+
+# We only enable scala if $PTSCALA_USER_DIR is present
+PTSCALA_USER_DIR="org/ptolemy/scala"
+
+if test ! -d "$PTSCALA_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSCALA_USER_DIR is not present" >&5
+$as_echo "$PTSCALA_USER_DIR is not present" >&6; }; fi
+else
+    # Extract the first word of "scala", so it can be a program name with args.
+set dummy scala; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_SCALA+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $SCALA in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_SCALA="$SCALA" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_SCALA="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+SCALA=$ac_cv_path_SCALA
+if test -n "$SCALA"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SCALA" >&5
+$as_echo "$SCALA" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+    if test -x "$SCALA"; then
+       PTSCALA_DIR=scala
+    else
+       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the scala binary,
+    so org/ptolemy/scala will be excluded" >&5
+$as_echo "$as_me: WARNING: Failed to find the scala binary,
+    so org/ptolemy/scala will be excluded" >&2;}
+
+        updateExcludes "org/ptolemy/scala"
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
 #       See if there was a command-line option for where Soot is
@@ -15013,6 +15083,13 @@ fi
 # PTRXTX_PACKAGES is used in ptII/doc/makefile
 
 
+# PTSCALA_DIR is set to scala and used in
+# $PTII/org/ptolemy/makefile if the scala binary was found
+
+
+# PTSCALA_PACKAGES is used in $PTII/doc/makefile
+
+
 # PTSERIAL_DIR is set to serial and used in
 # $PTII ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
 
@@ -15108,6 +15185,9 @@ fi
 
 
 # If Rxtx is present, then set to yes, otherwise set to no
+
+
+# The scala binary.
 
 
 # tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
