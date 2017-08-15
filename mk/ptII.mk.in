@@ -102,7 +102,7 @@ KVM_DIR = @KVM_DIR@
 PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
 
 # The scala binary.
-SCALA =	@SCALA@
+SCALAC =	@SCALAC@
 
 # Jar files used Soot - a Java Optimization Framework
 SOOT_CLASSES = @SOOT_CLASSES@
