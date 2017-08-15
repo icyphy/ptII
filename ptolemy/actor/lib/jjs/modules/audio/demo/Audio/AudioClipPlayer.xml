@@ -112,7 +112,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="clipURL" class="ptolemy.actor.parameters.PortParameter" value="https://ptolemy.eecs.berkeley.edu/mp3/USAD2016_06-RhapsodyInBlue.mp3">
+        <property name="clipURL" class="ptolemy.actor.parameters.PortParameter" value="https://ptolemy.eecs.berkeley.edu/mp3/USAD2016_06-RhapsodyInBlueTrimmed.mp3">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
