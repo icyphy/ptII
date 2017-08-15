@@ -218,10 +218,14 @@ sources::	$(SRCS) $(EXTRA_SRCS) $(HDRS) $(MISC_FILES) makefile
 ##############
 # Java rules
 
-.SUFFIXES: .class .java
+.SUFFIXES: .class .java .scala
 .java.class:
 	rm -f `basename $< .java`.class
 	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVAC)" $(JFLAGS) $<
+
+.scala.class:
+	rm -f `basename $< .scala`.class
+	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(SCALA)" $(SCALA_FLAGS) $<
 
 # Build all the Java class files.
 # Run in the subdirs first in case the subpackages need to be compiled first.
