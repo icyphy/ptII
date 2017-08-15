@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -50,7 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	FaceDetector/FaceDetector.jar \
 	FaceDetectorCamera/FaceDetectorCamera.jar \
-	OccupanceyCount/OccupancyCount.jar
+	OccupancyCount/OccupancyCount.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
