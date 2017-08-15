@@ -195,7 +195,7 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
             code.append(_INDENT1 + "this." + inputOrOutput + "('" + port.getName() + "'");
             String targetType = targetType(port.getType());
             if (!targetType.equals("unknown")) {
-                code.append(", {'type':'" + targetType + "'");
+                code.append(", {'type' : '" + targetType + "'");
                 if (port instanceof ParameterPort) {
                     code.append(", 'value':"
                             + targetExpression(((ParameterPort)port).getParameter()));
