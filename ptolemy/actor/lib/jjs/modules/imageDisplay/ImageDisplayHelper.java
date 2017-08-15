@@ -100,7 +100,7 @@ public class ImageDisplayHelper {
         if (_frame == null) {
             _frame = new JFrame();
             _frame.setDefaultCloseOperation
-                (JFrame.EXIT_ON_CLOSE);
+                (JFrame.DISPOSE_ON_CLOSE);
 
             if (_picture == null) {
                 // Create the pane.
