@@ -301,6 +301,7 @@ public class ExportModelJUnitTest {
                 "AMS_AMSSim", // FMU does not reliably build everywhere.
                 "wireless/demo/AntennaPattern/AntennaModel.xml", // Used by other models.
                 "AntennaPattern.xml", // Has links to other models
+                "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
                 "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
                 "AugmentedReality.xml", // Has links to other models.
                 "AugmentedRealityGDP.xml", // Has links to other models.                          
@@ -383,6 +384,7 @@ public class ExportModelJUnitTest {
                 "ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml",  // Publisher needs to run.
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
+                "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
                 "TokenTransmissionTime/Sender.xml", // Requires that Receiver be running.
                 "RecordManipulation", // Python demo pops up a dialog.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
