@@ -362,6 +362,7 @@ public class ExportModelJUnitTest {
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
                 "HappySadStock.xml", // Run only if there is a Hue on the local network.
                 "HierarchyFlattening.xml", // gt
+                "org/terraswarm/accessor/demo/Hue/Hue.xml", // Has links to other demos.
                 "IMUSensor.xml", // Uses the serial port.
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "ImageFilters.xml", // Has links to other demos.
@@ -387,6 +388,7 @@ public class ExportModelJUnitTest {
                 "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
                 "TokenTransmissionTime/Sender.xml", // Requires that Receiver be running.
                 "RecordManipulation", // Python demo pops up a dialog.
+                "jjs/modules/httpClient/demo/REST/REST.xml", // Has links to other demos.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
                 "ros/demo/Ros", // Need a robot.
                 "RobotMPC", // Has links to other demos.
