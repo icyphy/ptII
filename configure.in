@@ -5458,7 +5458,7 @@ PTSCALA_USER_DIR="org/ptolemy/scala"
 if test ! -d "$PTSCALA_USER_DIR"; then
     PT_MSG_STATUS([$PTSCALA_USER_DIR is not present])
 else
-    AC_PATH_PROG(SCALAC, scalaC)
+    AC_PATH_PROG(SCALAC, scalac)
     if test -x "$SCALAC"; then
        PTSCALA_DIR=scala
     else
