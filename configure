@@ -12615,8 +12615,8 @@ if test ! -d "$PTSCALA_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSCALA_USER_DIR is not present" >&5
 $as_echo "$PTSCALA_USER_DIR is not present" >&6; }; fi
 else
-    # Extract the first word of "scalaC", so it can be a program name with args.
-set dummy scalaC; ac_word=$2
+    # Extract the first word of "scalac", so it can be a program name with args.
+set dummy scalac; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
 if ${ac_cv_path_SCALAC+:} false; then :
