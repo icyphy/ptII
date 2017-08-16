@@ -65,4 +65,4 @@ test AccessorSSHCodeGenerator-5.1 {generateCode(StringBuffer)} {
     $generatorUserHostParameter setExpression localhost
     set result [$codeGenerator {generateCode StringBuffer} $stringBuffer]
     list $result [string range [$stringBuffer toString] 0 120]
-} {0 exports.setup\ =\ function()\ \{\n\ \ \ \ //\ \ This\ composite\ accessor\ was\ created\ by\ Cape\ Code.\n\ \ \ \ //\ \ To\ run\ the\ code,\ run:\ \n\ \ \ }
+} {0 exports.setup\ =\ function\ ()\ \{\n\ \ \ \ //\ \ This\ composite\ accessor\ was\ created\ by\ Cape\ Code.\n\ \ \ \ //\ \ To\ run\ the\ code,\ run:\ \n\ \ }
