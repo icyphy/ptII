@@ -223,6 +223,7 @@ sources::	$(SRCS) $(EXTRA_SRCS) $(HDRS) $(MISC_FILES) makefile
 	rm -f `basename $< .java`.class
 	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVAC)" $(JFLAGS) $<
 
+SCALAC_FLAGS= -d "$(ROOT)"
 .scala.class:
 	rm -f `basename $< .scala`.class
 	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(SCALAC)" $(SCALAC_FLAGS) $<
