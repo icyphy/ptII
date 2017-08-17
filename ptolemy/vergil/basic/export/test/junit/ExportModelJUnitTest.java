@@ -302,7 +302,10 @@ public class ExportModelJUnitTest {
                 "wireless/demo/AntennaPattern/AntennaModel.xml", // Used by other models.
                 "AntennaPattern.xml", // Has links to other models
                 "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
+                "AudioCapture.xml", // Wrong Audio Hardware on the test machine.
                 "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
+                "AudioRecorder.xml", // Wrong Audio Hardware on the test machine.
+                "AudioSynthesis.xml", // Wrong Audio Hardware on the test machine.
                 "AugmentedReality.xml", // Has links to other models.
                 "AugmentedRealityGDP.xml", // Has links to other models.                          
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
