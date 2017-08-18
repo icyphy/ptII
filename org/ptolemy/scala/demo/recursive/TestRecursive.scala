@@ -49,7 +49,7 @@ class TestRecursive(workspace: Workspace) extends ApplicationActor{
 
 	val sequence   = new Sequence (this, "sequence").set("values", "{10,11,12,13,14,15,16,17}")
 	val bitReverse = BitReverse("BitReverse", 3)
-	val display      = Display ("display")
+	val display    = Display ("display")
 
 	sequence -->  bitReverse --> display
 }

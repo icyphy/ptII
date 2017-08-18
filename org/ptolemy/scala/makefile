@@ -1,6 +1,6 @@
-# Makefile for Scala Ptolemy classes
+# Makefile for Scala Ptolemy Actor classes
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -29,16 +29,15 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# This directory contains scala actors.
 
 ME =		org/ptolemy/scala
 
-DIRS = 		actor #cg demo domains implicits
+DIRS = 		actor  cg  domains  
 
 # Root of the Java directory
 ROOT =		../../..
 
-# Do not add diva.jar to the CLASSPATH in actor/lib/makefile
-# instead, move any actors that require diva.jar into actor/lib/gui -cxh
 CLASSPATH =	$(ROOT)
 
 # Get configuration info
@@ -47,27 +46,16 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	scala
-PTCLASSJAR =
-
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	lib/lib.jar
-
-#	cg/cg.jar
-#	domains/domains.jar
-#	implicit/implicit
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
+SCALA_SRCS = 
+
 OTHER_FILES_TO_BE_JARED =
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
+EXTRA_SRCS =	$(SCALA_SRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -75,16 +63,17 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	cg \
-	demo \
-	domains \
-	implicit
+OPTIONAL_FILES = actor  cg  demo  domains  implicits
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS = $(SCALA_SRCS:%.scala=%.class)
 
-all: jclass
-install: jclass jars
+#all: jclass
+#install: jclass jars
+
+
+all: $(JCLASS) subjclass
+install: $(JCLASS) subjclass jars
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
