@@ -246,6 +246,23 @@ subjclass:
 		done ; \
 	fi
 
+# Run in the top level first, then the subdirs.
+# org/ptolemy/scala uses this.
+jclasstop:	$(DERIVED_JSRCS) $(JSRCS) $(JCLASS) subjclasstop
+
+subjclasstop:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making jclasstop in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) jclasstop ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
+
 # Compile the classes that require JDK1.1 and later.
 jclass1_1: $(JSRCS1_1) $(JCLASS1_1)
 
