@@ -71,8 +71,8 @@ JCLASS = $(SCALA_SRCS:%.scala=%.class)
 #install: jclass jars
 
 
-all: $(JCLASS) subjclass
-install: $(JCLASS) subjclass jars
+all: $(JCLASS) subjclasstop
+install: $(JCLASS) subjclasstop jars
 
 
 # Get the rest of the rules
