@@ -87,6 +87,7 @@ SHELL_FILES = \
 BAT_FILES = $(foreach file, $(SHELL_FILES), $(file).bat)
 
 EXTRA_EXECUTABLE_SRCS = \
+	ant \
 	cyphysim \
 	hyvisual \
 	startjini \

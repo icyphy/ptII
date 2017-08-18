@@ -2,7 +2,7 @@
 #
 # @Version: $Id$
 #
-# Copyright (c) 1995-2015 The Regents of the University of California.
+# Copyright (c) 1995-2017 The Regents of the University of California.
 # All rights reserved. 
 #
 # Permission is hereby granted, without written agreement and without
@@ -131,6 +131,7 @@ EXTRA_SRCS = \
 # want make checkjunk to report an error on them.
 MISC_FILES = \
 	$(DIRS) \
+	ant \
 	bin \
 	config \
 	lbnl \
@@ -169,14 +170,22 @@ KRUFT = \
 DISTCLEAN_STUFF = \
 	mk/ptII.mk config.log config.status config.cache
 
-# The first rule is make fast so that if a user types 'make' they will 
-# get make fast
-default: antAllMessage fast 
-
-antAllMessage:
-	@echo "----------------"
-	@echo "Warning: Please consider running 'ant' instead of make, it is faster.  See $$PTII/doc/coding/ant.htm.  Then run (cd $$PTII/bin; make)."
-	@echo "----------------"
+# The first rule runs ant so that if a user types 'make' they will 
+# run ant.
+default:
+	@if [ -x "$(ANT_PATH)" ]; then \
+		echo "Running $(ANT_PATH) build-all"; \
+		echo "Ant is much faster than make.  If you really want to run make, use 'make fast'"; \
+		echo ""; \
+		$(ANT_PATH) build-all; \
+	else \
+		echo "ANT_PATH: $(ANT_PATH) is not executable or not found"; \
+		echo "Warning: Please consider running 'ant' instead of make, it is faster.  See $$PTII/doc/coding/ant.htm.  Then run (cd $$PTII/bin; make)."; \
+		echo "Running 'make fast' instead."; \
+		echo "Go get coffee."; \
+		echo ""; \
+		$(MAKE) fast; \
+        fi
 
 # Make copyright.txt readonly so that when we open up the text editor
 # we open up a readonly texteditor
