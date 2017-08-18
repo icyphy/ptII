@@ -122,8 +122,13 @@ util.inherits(exports.HttpServer, EventEmitter);
  *   that was emitted as a 'request' event.
  *  @param response A complete text/html response.
  */
-exports.HttpServer.prototype.respond = function (requestID, response) {
-    this.helper.respond(requestID, response);
+exports.HttpServer.prototype.respond = function (requestID, response, responseCode) {
+	if (responseCode !== null && typeof responseCode !== 'undefined') {
+		this.helper.respond(requestID, response, responseCode);
+	} else {
+		this.helper.respond(requestID, response, 200);
+	}
+    
 };
 
 /** Start the server. */
@@ -149,11 +154,41 @@ exports.HttpServer.prototype.stop = function () {
  *  @param path The path of the request.
  *  @param body The body of the request, if any.
  */
-exports.HttpServer.prototype._request = function (requestID, method, path, body) {
+exports.HttpServer.prototype._request = 
+	function (requestID, method, path, body, headers, params) {
+	var headersObject = {};
+	var paramsObject = {};
+	
+	// headers is an array of name=value.
+	if (headers !== null && typeof headers !== 'undefined') {
+		for (var i = 0; i < headers.length; i++) {
+			var header = headers[i].toString();
+			var sign = header.indexOf('=');
+			if (sign > 0) {
+				headersObject[header.substring(0, sign)] = 
+					header.substring(sign+1, headers[i].length);
+			}
+		}
+	}
+	
+	// params is an array of name : value.
+	if (params !== null && typeof params !== 'undefined') {
+		for (var i = 0; i < params.length; i++) {
+			var param = params[i].toString();
+			var sign = param.indexOf(':');
+			if (sign > 0) {
+				paramsObject[param.substring(0, sign)] = 
+					param.substring(sign+2, headers[i].length);
+			}
+		}
+	}
+	
     var request = {
+    	'headers' : headersObject,	
         'requestID': requestID,
         'method': method,
-        'path': path
+        'path': path,
+        'params' : paramsObject
     };
     if (body !== null) {
         request.body = body;

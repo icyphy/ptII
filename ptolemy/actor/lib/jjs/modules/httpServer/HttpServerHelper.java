@@ -32,6 +32,7 @@ package ptolemy.actor.lib.jjs.modules.httpServer;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
+import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
@@ -41,6 +42,7 @@ import io.vertx.core.http.HttpServerResponse;
 import java.lang.Runnable;
 import java.util.HashMap;
 
+import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.kernel.util.IllegalActionException;
@@ -111,7 +113,7 @@ public class HttpServerHelper extends VertxHelperBase {
      *  @param requestID The request ID.
      *  @param responseText The text with which to respond.
      */
-    public void respond(int requestID, String responseText) {
+    public void respond(int requestID, String responseText, int responseCode) {
         // If request has already timed out, then ignore this response.
         if (_pendingRequests.get(requestID) != null) {
             HttpServerRequest request = _pendingRequests.remove(requestID);
@@ -119,8 +121,8 @@ public class HttpServerHelper extends VertxHelperBase {
             _actor.clearTimeout(requestID);
 
             HttpServerResponse response = request.response();
-            // Response code 200 is "OK".
-            response.setStatusCode(200);
+            
+            response.setStatusCode(responseCode);
             response.headers()
                 .add("Content-Length", String.valueOf(responseText.length()))
                 .add("Content-Type", "text/html");
@@ -143,11 +145,12 @@ public class HttpServerHelper extends VertxHelperBase {
                         request.exceptionHandler((throwable) -> {
                             _error("Request failed.", throwable);
                         });
-                        // FIXME: Get request.headers(), a MultiMap.
-                        // FIXME: Get request.params(), a MultiMap.
 
                         final String method = request.method().toString();
                         final String path = request.path();
+                        
+                        MultiMap headers = request.headers();
+                        MultiMap params = request.params();
 
                         // For POST, wait until full body arrives before issuing request.
                         if (request.method() == HttpMethod.POST) {
@@ -163,7 +166,7 @@ public class HttpServerHelper extends VertxHelperBase {
                                         TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
                                         // FIXME: Only handling string bodies for now.
                                         _currentObj.callMember(
-                                                "_request", timeoutResponse.getTimeoutID(), method, path, buffer.toString());
+                                                "_request", timeoutResponse.getTimeoutID(), method, path, buffer.toString(), headers.entries(), params.entries());
                                     });
                                 }
                             });
@@ -176,7 +179,7 @@ public class HttpServerHelper extends VertxHelperBase {
                                 // FIXME: timeout 10000 needs to be an option given in JS constructor.
                                 TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
                                 _currentObj.callMember(
-                                        "_request", timeoutResponse.getTimeoutID(), method, path);
+                                        "_request", timeoutResponse.getTimeoutID(), method, path, null, headers.entries(), params.entries());
                             });
                         }
                     }
