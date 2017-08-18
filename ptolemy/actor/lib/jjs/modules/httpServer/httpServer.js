@@ -178,7 +178,7 @@ exports.HttpServer.prototype._request =
 			var sign = param.indexOf(':');
 			if (sign > 0) {
 				paramsObject[param.substring(0, sign)] = 
-					param.substring(sign+2, headers[i].length);
+					param.substring(sign+2, params[i].length);
 			}
 		}
 	}
