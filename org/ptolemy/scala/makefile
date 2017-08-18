@@ -33,7 +33,7 @@
 
 ME =		org/ptolemy/scala
 
-DIRS = 		actor  cg  domains  
+DIRS = 		actor cg  domains  
 
 # Root of the Java directory
 ROOT =		../../..
@@ -71,8 +71,8 @@ JCLASS = $(SCALA_SRCS:%.scala=%.class)
 #install: jclass jars
 
 
-all: $(JCLASS) subjclasstop
-install: $(JCLASS) subjclasstop jars
+suball: $(JCLASS) 
+subinstall: $(JCLASS) jars
 
 
 # Get the rest of the rules
