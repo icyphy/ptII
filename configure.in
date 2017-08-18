@@ -5460,12 +5460,20 @@ if test ! -d "$PTSCALA_USER_DIR"; then
 else
     AC_PATH_PROG(SCALAC, scalac)
     if test -x "$SCALAC"; then
-       PTSCALA_DIR=scala
-    else
-       AC_MSG_WARN([Failed to find the scala binary,
+        AC_PATH_PROG(SCALA, scala)
+        if test -x "$SCALA"; then
+            PTSCALA_DIR=scala
+        else
+            AC_MSG_WARN([Failed to find the scala binary,
     so org/ptolemy/scala will be excluded])
 
-        updateExcludes "org/ptolemy/scala"
+            updateExcludes "org/ptolemy/scala/"        
+        fi
+    else
+       AC_MSG_WARN([Failed to find the scalac binary,
+    so org/ptolemy/scala will be excluded])
+
+        updateExcludes "org/ptolemy/scala/"
     fi
 fi
 
@@ -7583,6 +7591,9 @@ AC_SUBST(RXTX_JAR)
 AC_SUBST(RXTX_PRESENT)
 
 # The scala binary.
+AC_SUBST(SCALA)
+
+# The scalac binary.
 AC_SUBST(SCALAC)
 
 # tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
