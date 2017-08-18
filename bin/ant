@@ -1,0 +1,28 @@
+#!/bin/sh
+# $Id$
+
+# bin/ant - a wrapper script for Apache ant that runs
+# $PTII/ant/bin/ant if it is present, otherwise execs ant, which
+# better be in the path,
+
+if [ -z "$PTII" ]; then
+   echo "$0: \$PTII must be set."
+   exit 3
+fi
+
+if [ ! -e "$PTII" ]; then
+   echo "$0: \$PTII is $PTII, which does not exist?"
+   exit 4
+fi
+
+ANT="$PTII/ant/bin/ant"
+if [ -f "$ANT" ]; then
+   if [ ! -x "$ANT" ]; then
+      chmod a+x "$ANT"
+   fi
+   echo "$0: Running $ANT $@"
+   export ANT_HOME="$PTII/ant"
+   exec $ANT $@
+else
+   exec ant $@
+fi

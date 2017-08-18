@@ -129,6 +129,7 @@
             <description>CapeCode: Ptolemy Actors for use with Accessors.
             </description>
             <file src="../dists/ptII11.0.devel/README.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.devel/ant" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
 

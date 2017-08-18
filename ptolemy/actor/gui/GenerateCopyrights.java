@@ -212,6 +212,13 @@ public class GenerateCopyrights {
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
+        // ant is used by JSAccessor, but we can't have a class have
+        // two licenses associated with it, so we look for
+        // AccessorLibrary and include apache-ant-license.htm
+        _addIfClassPresent(copyrightsMap,
+                "org.terraswarm.accessor.AccessorLibrary",
+                "ant/apache-ant-license.htm");
+
         _addIfClassPresent(copyrightsMap,
                 "org.terraswarm.accessor.JSAccessor",
                 "org/terraswarm/accessor/accessors/web/accessors-license.htm");

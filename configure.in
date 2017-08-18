@@ -1309,9 +1309,30 @@ ANT_WEBSENSOR_SOURCEPATH=''
 # and if $PTII/ptolemy/apps/websensor was found.
 ANT_WEBSENSOR_SRC=''
 
-AC_PATH_PROG(ANT, ant)
-if test ! -x "$ANT"; then
-    AC_MSG_WARN([Couldn't find Apache Ant, which is the best way to build Ptolemy II from sources.
+AC_MSG_CHECKING([for the Apache ant binary])
+
+ANT="$PTII/bin/ant"
+if test -d "$PTII/ant"; then
+   case "`uname -s`" in
+         CYGWIN_NT-*)
+         # Not sure if we should use ant.bat or ant.cmd here
+         ANT=$PTII/ant/bin/ant.cmd
+         ;;
+   *) ANT=$PTII/ant/bin/ant
+   esac
+fi
+
+if test -f "$ANT" -a ! -x "$ANT"; then
+   chmod a+x "$ANT"
+fi
+
+if test ! -f "$ANT"; then
+    AC_MSG_WARN([$ANT not found?
+    Apche Ant, is the best way to build Ptolemy II from sources.
+
+    Usually, a copy of Apache Ant may be found in $PTII/ant/bin/ant and
+    $PTII/bin/ant will execute $PTII/ant/bin/ant.
+    
     Apache Ant is available from http://ant.apache.org/bindownload.cgi])
     case "`uname -s`" in
         Darwin) 
@@ -1319,9 +1340,17 @@ if test ! -x "$ANT"; then
     MacPorts from https://www.macports.org/ and then run
         sudo port install apache-ant])
     esac
+else
+    if test ! -x "$ANT"; then
+    AC_MSG_WARN([$ANT is present, but not executable?])
+    else
+        PT_MSG_RESULT($ANT)
+        # Path to the ant binary, stored in lib/ptII.properteries, used
+        # while importing accessors in
+        # org/terraswarm/accessor/JSAccessor.java
+        ANT_PATH="$ANT"
+    fi
 fi
-# Path to the ant binary, stored in lib/ptII.properteries, used while importing accessors in org/terraswarm/accessor/JSAccessor.java
-ANT_PATH="$ANT"
 
 #--------------------------------------------------------------------
 #       Look for the "gawk" command, used by maven
