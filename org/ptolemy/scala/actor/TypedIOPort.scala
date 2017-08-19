@@ -32,7 +32,7 @@ package org.ptolemy.scala.actor
 //import ptolemy.kernel.ComponentEntity  
 import ptolemy.kernel.util.Workspace
 
-import org.ptolemy.scala.implicits._
+//import org.ptolemy.scala.implicits._
 import org.ptolemy.scala.actor._
 
 /**
