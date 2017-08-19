@@ -31,7 +31,7 @@ package org.ptolemy.scala.actor
 import language.dynamics
 import scala.collection.mutable.HashMap
 
-import org.ptolemy.scala.implicits._
+// import org.ptolemy.scala.implicits._
 
 /**
  * @author Moez Ben Hajhmida
