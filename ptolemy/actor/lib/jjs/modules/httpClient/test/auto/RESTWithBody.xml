@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={391, 341, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={391, 339, 934, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.181640625}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test POST request with string body.&#10;Port 8001.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test POST request with string body.&#10;Port 8101.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
         </property>
@@ -163,7 +163,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 270.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8001">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8101">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -280,7 +280,7 @@
         </port>
     </entity>
     <entity name="Request" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('body');&#10;	this.output('headers', {'type' : 'string'});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('trigger', function() {&#10;		var headers = '{\&quot;headers\&quot;:{\&quot;Content-Type\&quot;:\&quot;application/x-www-form-urlencoded\&quot;}, ' +&#10;		               '\&quot;method\&quot;:\&quot;POST\&quot;, \&quot;url\&quot;:\&quot;http://localhost:8001\&quot;}';&#10;		&#10;		self.send('body', 'test=hello');&#10;		self.send('headers', headers);&#10;	});&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('body');&#10;	this.output('headers', {'type' : 'string'});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('trigger', function() {&#10;		var headers = '{\&quot;headers\&quot;:{\&quot;Content-Type\&quot;:\&quot;application/x-www-form-urlencoded\&quot;}, ' +&#10;		               '\&quot;method\&quot;:\&quot;POST\&quot;, \&quot;url\&quot;:\&quot;http://localhost:8101\&quot;}';&#10;		&#10;		self.send('body', 'test=hello');&#10;		self.send('headers', headers);&#10;	});&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
