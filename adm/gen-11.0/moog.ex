@@ -26,7 +26,6 @@ PtolemyServer.log
 */tags
 alljsimpletests.tcl
 alljtests.tcl
-ant
 bin/ptcg.bat
 bin/copernicus.bat
 bin/copernicusjhdl.bat
