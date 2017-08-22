@@ -150,7 +150,7 @@ if [ "$commit" = "true" ]; then
     if [ ! -z "$ptIIRepoCommits" ]; then
         echo "$0: Commit to the ptII repo."
         echo "$0: ptIIRepoCommits: $ptIIRepoCommits"
-        (cd $PTII; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." ptIIRepoCommits)
+        (cd $PTII; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." $ptIIRepoCommits)
     else
         echo "$0: No files need be committed in the ptII repo."
     fi        
