@@ -68,10 +68,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[115.0, -70.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
