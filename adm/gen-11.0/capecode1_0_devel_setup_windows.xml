@@ -77,6 +77,7 @@
     -->
     <resources>
         <!-- res id="packsLang.xml_eng" src="packsLang.xml_eng"/ -->
+	<res id="CustomLangPack.xml" src="CustomLangPack.xml"/> 
         <res id="HTMLInfoPanel.info" src="indexCapeCode.htm"/> 
         <res id="HTMLLicencePanel.licence" src="licenseCapeCode.htm"/>
         <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.txt"/>
@@ -98,6 +99,11 @@
         <res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/>
     </resources>
     
+    <variables>
+      <variable name="TargetPanel.dir.windows" value="c:/Ptolemy/capecode1.0.devel"/>
+      <variable name="TargetPanel.dir.unix" value="/usr/local/bin"/>
+    </variables> 
+
     <jar src="izpacksetup.jar" stage="install"/>
 
     <!-- 
