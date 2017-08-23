@@ -25,7 +25,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for the UDPSocketListener accessor.&#10;&#10;NOTE: This socket listens on the specified port and outputs any packet received on that port.&#10;The received packets will appear in the display ReceivedUDPPackets. To send UDP packets to&#10;the port to which this accessor is listening , there is a Node.js program which sends one packet&#10;each execution in the same demo directory, namely, UDPPacketGen.js.&#10;You can run this program as follows:&#10;     &gt; node UDPPacketGen.js&#10;after running this demo.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 135.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">

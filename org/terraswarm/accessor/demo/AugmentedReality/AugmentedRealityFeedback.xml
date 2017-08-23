@@ -11,7 +11,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 155.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1139, 634}, maximized=false}">
@@ -37,6 +37,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model looks for AR tags in an image, then using the ID of the AR tag, looks up an&#10;accessor, reifies it, and then overlays the sensor data provided by the accessor on the image.&#10;If the accessor provides a schema, then it will also construct a form for data entry to be sent&#10;back to the accessor.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 430.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
@@ -304,7 +312,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 350.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 350.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

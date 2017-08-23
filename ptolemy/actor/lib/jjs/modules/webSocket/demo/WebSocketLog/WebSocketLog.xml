@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.0, 362.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.3298782703489, 362.037722565407}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -85,7 +85,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="* Configured for terra.eecs.  If testing locally, use localhost for hostInterface and 443 for port *&#10;The above creates a web socket server on terra.eecs.berkeley.edu that supplies data from TestSpontaneous.&#10;&#10;The web page defined here can access that data feed:&#10;&#10;accessors/web/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;The above web page assumes that accessor server is running on your local machine.&#10;&#10;1. On your machine, start the accessor testServer with:&#10;  cd accessors/web/host/browser/test&#10;  node testServer.js&#10;&#10;For more information,&#10;click here to view accessors/web/hosts/browser/test/README.txt&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[15.0, 220.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{15.0, 220.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/accessors/web/hosts/browser/test/README.txt">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -111,6 +111,22 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. Run this model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 485.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1001.0, 479.0}">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Osyk">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 690.0]">
         </property>
     </property>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">

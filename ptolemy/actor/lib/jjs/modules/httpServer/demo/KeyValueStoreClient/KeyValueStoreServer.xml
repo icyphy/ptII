@@ -9,16 +9,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.0, 67.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 51, 1235, 854}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={205, 42, 1235, 854}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 744]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{453.5306958575581, 294.0869276889535}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{500.5, 372.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8077/keyvalue that stores key-value pairs.&#10;Run this model and click on this message to get documentation, or&#10;point your browser to http://localhost:8077/keyvalue/help.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, -5.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8077/keyvalue/help#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -47,6 +47,14 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 50}">
             </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 600.0]">
         </property>
     </property>
     <entity name="WebServer" class="org.terraswarm.accessor.JSAccessor">
@@ -86,7 +94,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 285.0]">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8077">
         </property>
@@ -115,7 +123,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 285.0]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -137,7 +145,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 295.0]">
         </property>
         <port name="help" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -165,7 +173,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 295.0]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -195,7 +203,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 360.0]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -214,11 +222,11 @@
         </property>
         <property name="loggingDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/logs">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 485.0]">
         </property>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 450.0]">
         </property>
     </entity>
     <entity name="ConstructLookup" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -234,7 +242,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 510.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 545.0]">
         </property>
         <port name="readKey" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -268,7 +276,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{690.0, 510.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 545.0]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -292,7 +300,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[810.0, 135.0]">
+        <vertex name="vertex1" value="[815.0, 170.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -300,7 +308,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[325.0, 315.0]">
+        <vertex name="vertex1" value="[330.0, 350.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -308,7 +316,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[295.0, 385.0]">
+        <vertex name="vertex1" value="[300.0, 420.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -324,11 +332,11 @@
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[550.0, 440.0]">
+        <vertex name="vertex1" value="[555.0, 475.0]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[305.0, 430.0]">
+        <vertex name="vertex1" value="[310.0, 465.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

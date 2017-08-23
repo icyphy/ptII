@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 72, 934, 790}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={178, 25, 952, 870}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 680]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 760]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8214569222424836">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8796730889290565">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.9855046058769, 408.99365234374994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{389.1452674407959, 433.4763684272766}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each time the model is run, create a new log.&#10;&#10;">
@@ -79,6 +79,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Unfortunately, running this model requires that a number of libraries be installed.&#10;To install these packages, invoke &#10;$PTII/org/terraswarm/accessor/accessors/web/gdp/adm/gdp-setup.sh&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 755.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 835.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">

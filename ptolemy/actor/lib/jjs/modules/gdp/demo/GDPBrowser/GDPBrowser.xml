@@ -4,13 +4,13 @@
 <entity name="GDPBrowser" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 59, 1065, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 59, 1074, 728}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[831, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[840, 618]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.3770356514085, 229.39708956866195}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{370.8770356514085, 276.39708956866195}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -172,6 +172,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Plot data points from&#10;a GDP Log">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 30.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 470.0]">
         </property>
     </property>
     <entity name="GDPLogRead" class="org.terraswarm.accessor.JSAccessor">
