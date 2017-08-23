@@ -136,7 +136,7 @@ if [ "$commit" = "true" ]; then
     jsaccessorsNoVendors=`cat $jsaccessors | grep -v /vendors/`
     jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}' | grep -v diva.jar`
 
-    accessorsRepoCommits=`svn status $PTII/org/terraswarm/accessor/accessors/web | sed 's@org/terraswarm/accessors/accessors/web@@g' | egrep "^M" | awk '{print $2}' | egrep -v "js$|xml$"`
+    accessorsRepoCommits=`svn status $PTII/org/terraswarm/accessor/accessors/web | sed 's@org/terraswarm/accessors/accessors/web@@g' | egrep "^M" | awk '{print $2}' | egrep "js$|xml$"`
 
     if [ ! -z "$accessorsRepoCommits" ]; then
         echo "$0: Commit to the accessor repo"
