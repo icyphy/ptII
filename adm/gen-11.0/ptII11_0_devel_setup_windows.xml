@@ -80,6 +80,7 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
+	<res id="CustomLangPack.xml" src="CustomLangPack.xml"/> 
         <res id="HTMLInfoPanel.info" src="index.htm"/> 
         <res id="HTMLLicencePanel.licence" src="copyright.htm"/>
         <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.txt"/>
@@ -101,6 +102,10 @@
         <res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/>
     </resources>
     
+    <variables>
+      <variable name="TargetPanel.dir.windows" value="c:/Ptolemy/ptII11.0.devel"/>
+    </variables> 
+
     <jar src="izpacksetup.jar" stage="install"/>
 
     <!-- 
