@@ -64,7 +64,15 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The code generator will generate a swarmlet that&#10;may be run by the Node accessor host.&#10;&#10;Note that the swarmlet requires the opencv&#10;npm module, which is installed when the&#10;swarmlet is run.&#10;&#10;Unfortunately, the opencv npm module does&#10;not always install correctly.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[28.0, 360.125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 260.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 430.0]">
         </property>
     </property>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">

@@ -51,11 +51,11 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the SecureServer model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the SecureClient model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 260.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -74,11 +74,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
             </property>
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 305.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">

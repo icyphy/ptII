@@ -45,7 +45,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every 4 seconds, trigger a read from&#10;the kay-value store. The trigger&#10;input esures that this occurs after&#10;the write that occurs at the same time.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-45.0, 80.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-45.0, 80.0}">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="DiscreteClock2">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -136,6 +136,14 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
             </property>
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 440.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">

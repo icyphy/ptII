@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9583333333333334">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.00000000000006, 255.3555536684783}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.0000000000001, 255.35555366847842}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -24,6 +24,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Take a snapshot from a Foscam webcam.&#10;This model assumes that the camera IP address&#10;is 10.0.0.46, and that it is listening to port 80.&#10;To change those assumptions, change the parameters.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, -15.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 245.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">

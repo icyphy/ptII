@@ -677,7 +677,7 @@ See $PTII/doc/coding/maven.htm
     <repository>
       <id>ptolemy_repo</id>
       <name>Ptolemy II Repository</name>
-      <url>http://chess.eecs.berkeley.edu/ptexternal/src/maven</url>
+      <url>https://chess.eecs.berkeley.edu/ptexternal/src/maven</url>
     </repository>
     <!-- 
     <repository>

@@ -9,16 +9,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 65.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 865, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1706827309236947">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.2298456260721, 206.71165777765867}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -37,13 +37,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This application interacts with a server by&#10;sending messages and displaying&#10;any messages it receives in return.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 95.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the Server model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 255.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -71,8 +71,16 @@
             </property>
         </property>
     </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
+        </property>
+    </property>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 210.0]">
         </property>
     </entity>
     <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
@@ -140,7 +148,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8181">
         </property>
@@ -172,7 +180,7 @@
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 336, 646, 439}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive dialog on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 210.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

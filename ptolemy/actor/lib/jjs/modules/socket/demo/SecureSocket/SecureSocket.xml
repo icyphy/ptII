@@ -9,27 +9,27 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 120.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to set up and use a secure socket connection between a client and server.&#10;This uses a PFX format file (https://en.wikipedia.org/wiki/PKCS_12) which contains a self-signed certificate&#10;and the associated private key. The file name is Server.pfx, and it is stored in the same directory as this demo.&#10;&#10;This PFX format file was created using following openssl commands:&#10;&#10;$ openssl genrsa -out ServerKey.pem 2048&#10;$ openssl req -new -key ServerKey.pem -sha256 -out ServerReq.pem&#10;&#10;Country Name (2 letter code) [AU]:US&#10;State or Province Name (full name) [Some-State]:CA&#10;Locality Name (eg, city) []:Berkeley&#10;Organization Name (eg, company) [Internet Widgits Pty Ltd]:UC Berkeley&#10;Organizational Unit Name (eg, section) []:Ptolemy Project&#10;Common Name (e.g. server FQDN or YOUR name) []:ptolemy.org&#10;Email Address []:&#10;&#10;A challenge password []:&#10;An optional company name []:&#10;&#10;$ openssl x509 -req -in ServerReq.pem -sha256 -extensions v3_ca -signkey ServerKey.pem -out ServerCert.pem&#10;$ openssl pkcs12 -export -out Server.pfx -inkey ServerKey.pem -in ServerCert.pem -password pass:ptolemy&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{375.0, 185.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[50.0, 215.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1175, 787}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[941, 677]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1415844216183335">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{748.9228515625, 282.01088064748944}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.5, 338.5}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send a sequence of strings.&#10;This is set to use SSL/TLS&#10;and to trust all servers.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-180.0, 45.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-180.0, 50.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Client">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -39,11 +39,19 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is set to use&#10;the certificate and private key&#10;in the local demo directory.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-75.0, 90.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-75.0, 95.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Server">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
             </property>
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 600.0]">
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -59,7 +67,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{685.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 65.0]">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -78,7 +86,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 60.0]">
         </property>
         <port name="listening" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -95,7 +103,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 150.0]">
         </property>
     </entity>
     <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -103,7 +111,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 100.0]">
         </property>
     </entity>
     <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -111,11 +119,11 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{900.0, 20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 50.0]">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 25.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -124,7 +132,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 65.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
