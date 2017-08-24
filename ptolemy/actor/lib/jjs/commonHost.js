@@ -1424,7 +1424,9 @@ Accessor.prototype.input = function (name, options) {
     this.inputs[name] = mergeObjects(this.inputs[name], options);
 };
 
-/** Instantiate the specified accessor as a contained accessor given its class name.
+/** Instantiate the specified accessor given its class name. By default, the new 
+ *  accessor is instantiated as a contained one. But if standAlone parameter is 
+ *  provided and set to true, then the new accessor will not be contained.
  *  This will throw an exception if no getAccessorCode() function
  *  has been specified.
  *  @param instanceName A name to give to this instance, which will be prepended
@@ -1432,8 +1434,11 @@ Accessor.prototype.input = function (name, options) {
  *   contains an object with that name, then an index will be appended to the name,
  *   starting with 2, to ensure that the name is unique in the container.
  *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
+ *  @param standAlone Indicates whether the new accessor will be standalone or 
+ *   contained.
+ *  @return return the new instance
  */
-Accessor.prototype.instantiate = function (instanceName, accessorClass) {
+Accessor.prototype.instantiate = function (instanceName, accessorClass, standAlone) {
     if (!this.getAccessorCode) {
         throw new Error('instantiate() is not supported by this swarmlet host.');
     }
@@ -1442,12 +1447,14 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
     var insideBindings = this.getDefaultInsideBindings(accessorClass);
     instanceName = this.accessorName + '.' + instanceName;
     instanceName = uniqueName(instanceName, this);
-    var containedInstance = instantiateAccessor(
+    var instance = instantiateAccessor(
         instanceName, accessorClass, this.getAccessorCode, insideBindings);
-    allAccessors.push(containedInstance);
-    containedInstance.container = this;
-    this.containedAccessors.push(containedInstance);
-    return containedInstance;
+    if (!standAlone) {
+    	allAccessors.push(instance);
+    	instance.container = this;
+    	this.containedAccessors.push(instance);
+    }
+    return instance;
 };
 
 /** Instantiate the specified accessor as a contained accessor given the code
@@ -1457,8 +1464,11 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
  *   contains an object with that name, then an index will be appended to the name,
  *   starting with 2, to ensure that the name is unique in the container.
  *  @param code The code for the accessor.
+ *  @param standAlone Indicates whether the new accessor will be standalone or 
+ *   contained.
+ *  @return return the new instance
  */
-Accessor.prototype.instantiateFromCode = function (instanceName, code) {
+Accessor.prototype.instantiateFromCode = function (instanceName, code, standAlone) {
     // Only need the getAccessorCode function if the code uses inheritance, so
     // we don't require it.
     var getAccessorCode = null;
@@ -1474,12 +1484,14 @@ Accessor.prototype.instantiateFromCode = function (instanceName, code) {
 
     // Last two arguments are extendedBy and implementedBy
     // None of these apply.
-    var containedInstance = new Accessor(
+    var instance = new Accessor(
         instanceName, code, getAccessorCode, bindings, null, null);
-    allAccessors.push(containedInstance);
-    containedInstance.container = this;
-    this.containedAccessors.push(containedInstance);
-    return containedInstance;
+    if (!standAlone) {
+    	allAccessors.push(instance);
+    	instance.container = this;
+    	this.containedAccessors.push(instance);
+    }
+    return instance;
 };
 
 /** Return the latest value produced on this output, or null if no
@@ -1959,23 +1971,13 @@ Accessor.prototype.reify = function (accessor) {
             // For functions that access ports, etc., we want the default implementation
             // when instantiating the contained accessor.
             var accessorClass = accessor;
-            var insideBindings = this.getDefaultInsideBindings(null);
-            var accessorInstance = instantiateAccessor(
-                instanceName, accessorClass, this.getAccessorCode, insideBindings);
-            console.log('that was an accessor accessorClass: ' + accessorInstance);
-            accessorInstance.accessorClass = accessorClass;
+            accessorInstance = thiz.instantiate(instanceName, accessorClass, true);
         } catch(e) {
             // If an error is catched, the provided parameter is likely to be the
             // the accessorCode
             try {
                 var accessorCode = accessor;
-                var getAccessorCode = null;
-                if (this.getAccessorCode) {
-                    getAccessorCode = this.getAccessorCode;
-                };
-                var insideBindings = this.getDefaultInsideBindings(null);
-                accessorInstance = new Accessor(
-                    instanceName, accessorCode, getAccessorCode, insideBindings, null, null);
+                accessorInstance = thiz.instantiateFromCode(instanceName, accessorCode, true);
             } catch(ee) {
                 thiz.error('Parameter supplied is not a valid accessor object, accessor class or accessor code: ' + ee);
                 return false;
@@ -1987,11 +1989,13 @@ Accessor.prototype.reify = function (accessor) {
     var mapObject = this.reifiableBy(accessorInstance);
 
     if (mapObject) {
-        this.unreify();
+        if (this.state === 'reified') {
+        	this.unreify();
+        };
         // Add the accessor to the list of all accessors if it is a new one
         if (isNewAccessor) {
             allAccessors.push(accessorInstance);
-        }
+        };
 
         // Establish containment
         thiz.containedAccessors.push(accessorInstance);
@@ -2551,7 +2555,7 @@ Accessor.prototype.unreify = function () {
     var thiz = this.root;
 
     // Check if there is already a reification
-    if (thiz.containedAccessors.length != 1) {
+    if (thiz.containedAccessors.length !== 1) {
         console.log('unreify(): No contained accessor.');
         return false;
     }
