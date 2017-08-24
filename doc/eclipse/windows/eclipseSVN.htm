@@ -8,18 +8,18 @@
   <body>
     <h1>Eclipse is aware of the Subversion aspects of the project.</h1>
     <i>(Use both the Eclipse Subversion plug-in (Subversive) and the
-    shell <code>svn</code> command).</i>
+      shell <code>svn</code> command).</i>
 
     <p>You can use both Eclipse and the TortoiseSVN version of
-    Subversion or the Cygwin bash shell version of Subversion to
-    update the tree.
+      Subversion or the Cygwin bash shell version of Subversion to
+      update the tree.
 
-    <br/>This choice is the <b>preferred</b> choice for collaborating with
-    the Ptolemy group because it means that your Ptolemy II tree can get
-    recent changes.
+      <br/>This choice is the <b>preferred</b> choice for collaborating with
+      the Ptolemy group because it means that your Ptolemy II tree can get
+      recent changes.
 
-    <br/>The downside is that that the development tree is under
-    development, so there may be bugs or instability.</p>
+      <br/>The downside is that that the development tree is under
+      development, so there may be bugs or instability.</p>
 
 
     <p>For other ways to set up Eclipse and Ptolemy II, see
@@ -45,7 +45,7 @@
 	what is available.
       </li>
       <li>Expand the "Collaboration" tab and check the box next to
-      "Subversive SVN Team Provider"</li>
+        "Subversive SVN Team Provider"</li>
       
       <li>Then click <code>Next</code>, <code>Next</code> again and click
 	through the license agreement and hit <code>Finish</code>.  
@@ -74,14 +74,14 @@
           <li>Click on <code>Next</code>, <code>Next</code>, accept the license and restart Eclipse.</li>
           <li>Then retry going to the <code>SVN Connector</code> preference as described above.</li>
         </ol>
-            
+        
       </li>
       <li> In the "Subversion Connector Discovery" window, select a
-      Subversion connector compatible with the version of svn
-      installed on your machine.
+        Subversion connector compatible with the version of svn
+        installed on your machine.
 	<br/>If you don't have Subversion installed on your machine, then skip to the <a href="#selectedSVNKit">next step</a>.
 	<br/>To determine which version of Subversion is being run, start up a DOS or Cygwin shell and
-run <code>svn --version</code>.  To start  a DOS Shell:
+        run <code>svn --version</code>.  To start  a DOS Shell:
 	<dl>
 	  <dt>Windows Server 2003 or Windows XP:</dt>
 	  <dd>Click on Start &gt; Run &gt and type <code>cmd</code></dd>
@@ -113,7 +113,7 @@ run <code>svn --version</code>.  To start  a DOS Shell:
 	<p>Then do "Finish", "Next", "Next", Accept the license and then
 	  "Finish".</p>
       </li>
-	
+      
       <li><a name="selectedSVNKit">If</a> you get a security warning about unsigned software, click
 	"OK".
       </li>
@@ -221,56 +221,7 @@ run <code>svn --version</code>.  To start  a DOS Shell:
 	</li>
 
 
-        <li><b>If you have read/write access to the <a href="https://accessors.org/#in_browser" target="_top">accessors</a> repository</b>, <b>and</b> your repo.eecs.berkeley.edu account name is an external name that is your email address, then check out it out as follows
-          <br/>(<i>If your repo.eecs.berkeley.edu account name is the same as your login
-            and you are checking out the ptII repo read/write and you have read/write access
-            to the TerraSwarm accessors repo, then you may skip this step</i>)
-          <br/>(<i>If you don't have read/write access, then skip this step</i>):
-          <ol>
-            <li>In Eclipse, add the <b>accessors</b> SVN Repository:
-              <code>Window</code> | <code>Show View</code> | <code>Other</code> | <code>SVN</code> | <code>SVN Repositories</code>
-            </li>
-            <li>In the SVN Repository view, right click,
-	      select <code>New</code> | <code>Repository Location</code> and
-	      set the url.
-              <pre>
-                https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/
-              </pre>
-	      As you have read/write access, you may want to check "Save authentication".
-	      <p>Click "Finish"</p>
-              <p>You may be prompted for your password</p>
-            </li>
-            <li>In the SVN Repository view <b>of the accessors repo</b>, expand the accessors repository by
-	      clicking in the triangle at the left, then right click
-	      on <code>trunk</code> and select <code>Find/Check out As</code>
-              <blockquote>
-	        <table border="1">
-	          <tr>
-	            <td>
-	              Be sure to check out the <b><code>trunk</code></b> not the
-	              entire tree, which include all the branches and the trunk.
-	            </td>
-	          </tr>
-	        </table>
-              </blockquote>
-              Follow the wizard, creating selections as follows:
-              <ol>
-	        <li> In the "Check Out As" window:
-	          <code>Check out as a folder into existing project</code>, then hit <code>Next</code>.
-	          <center>
-	            <p><img src="../../img/eclipseAccessorsCheckOutAs.png" alt="AccessorsEclipse Check Out As Window" width="633" height="498"></p>
-	          </center>
-	        </li>
-	        <li> In the "Check Out Into Project" window, browse to ptII/org/terraswarm/accessor, Click "Finish".  The accessors repo will be checked out.
-	          <center>
-	            <p><img src="../../img/eclipseAccessorsNewProject.png" alt="Eclipse New Project" width="633" height="500"></p>
-	          </center>
-	        </li>
-              </ol>
-              <p>The goal here is to create <code>org/terraswarm/accessor/accessors/web</code>. 
-            </li>
-
-	    <li><b>If you have read/write access to the ptII repo</b> go to <a href="setupSubversion.htm" target="main">Setup the Subversion Configuration to Sane Settings</a> so that if you commit files, they will have the appropriate settings.
+	<li><b>If you have read/write access to the ptII repo</b> go to <a href="setupSubversion.htm" target="main">Setup the Subversion Configuration to Sane Settings</a> so that if you commit files, they will have the appropriate settings.
 	</li>
 
 	<li>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>

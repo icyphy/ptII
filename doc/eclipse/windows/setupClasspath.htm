@@ -42,12 +42,17 @@
 
     <ol>
       <li>
-	Choose <b>one</b> of the options below
+	Choose <b>one</b> of the options below.
+
+        <p>If you intend to use CapeCode for work with accessors, then
+        you must install Cygwin so that the svn binary is present.
+        Installing Cygwin is the second option.</p>
+
 	<h4>A. Copy .classpath to .classpath.default</h4>
 	<ul>
 	  <ol>
 	    <li>In the Windows file browser, find the Ptolemy II source distribution,
-	      <br/>If you installed from the installer, the Ptolemy source distribution will be at  <code>c:\Ptolemy\ptII8.1.devel</code>.
+	      <br/>If you installed from the installer, the Ptolemy source distribution will be at  <code>c:\Ptolemy\ptII11.devel</code>.
 	      <br/>If you downloaded Ptolemy II via Subversion, then the Ptolemy II source distribution will be at 
 	      <dl>
 		<dt>Windows 7:</dt>
@@ -80,15 +85,18 @@
 	<p><b>OR</b></p>
 	<h4><a name="#runConfigure">B. Run ./configure</a></h4> 
 
-	Ptolemy II includes a number of packages that rely on software that
+	<p>Ptolemy II includes a number of packages that rely on software that
 	you may or may not have installed, such as MATLAB, the rxtx
 	package (for serial port connections), Java
 	Advanced Imaging (JAI), the Java Media Framework (JMF), and Java
 	3D.  If you wish to use or extend these features, you will need to
 	perform a few extra steps.  These steps require execution of a
 	script called <code>configure</code> in the Ptolemy II home
-	directory.
+	directory.</p>
 
+        <p>In addition if you intend to use CapeCode, the IoT
+        framework, you will need Subversion installed, which is best done using Cygwin.</p>
+        
 	<p>The procedure below will modify the <code>.classpath</code> file
 	  that is provided in the version control repository to customize it
 	  for the software that you have installed.</p>
@@ -97,11 +105,19 @@
 	  <li>Unfortunately Windows does not ship with Unix shell commands
 	like <code>make</code>.  The workaround is to install Cygwin,
 	see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a></li>
+          <li> It is a good idea to be sure that <code>c:\cygwin64\bin</code> is in your Windows Path.
+            <ol>
+              <li>Right click on My Computer, select Properties -> Advanced System Settings -> Environment Variables</li>
+              <li>Under "System variables", scroll to the PATH line and click Edit ...</li>
+              <li>Insert <code>c:\Cygwin64\bin;</code> at the start of the path</li>
+              <li>If you have not yet done so, insert the path the the JVM as well: <code>C:\Program Files\Java\jdk1.8.0_121\bin;</code></li>
+            </ol>
+          </li>
 	  <li> Start up the Cygwin Bash shell: <code>Start</code> | <code>Run</code> | <code>Cygwin</code>
 	  <li> Change to the directory where the Ptolemy II source code was
 	    installed.  For example:
 	    <pre>
-	      cd c:/Ptolemy/ptII8.1.devel
+	      cd c:/Ptolemy/ptII11.0.devel
             </pre>
 	    Note that if there are <b>spaces</b> in the path name to the directory
 	    where your Ptolemy installation is located, then you should use
@@ -111,9 +127,10 @@
 	  </pre></li>
 	  <li> Set <code>$PTII</code> to the location of the Ptolemy II source tree:
 	    <pre>
-	      export PTII=c:/Ptolemy/ptII8.1.devel
+	      export PTII=c:/Ptolemy/ptII11.0.devel
 	    </pre>
-	    Again, if there are spaces in the path, use double quotes:
+            <b>Note that Ptolemy II does not work well if there are spaces in the path</b>
+	    If you insist on using a directory that has spaces in the path, use double quotes:
             <code> export PTII="c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"</code> 
 	  <li>  Run:
 	    <pre>
