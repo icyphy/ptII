@@ -221,55 +221,6 @@
 	  fix the errors in the next step with the <code>.classpath.default</code> file.
 	</li>
 
-        <li><b>If you have read/write access to the <a href="https://accessors.org/#in_browser" target="_top">accessors</a> repository</b>, <b>and</b> your repo.eecs.berkeley.edu account name is an external name that is your email address, then check out it out as follows
-          <br/>(<i>If your repo.eecs.berkeley.edu account name is the same as your login
-            and you are checking out the ptII repo read/write and you have read/write access
-            to the TerraSwarm accessors repo, then you may skip this step</i>)
-          <br/>(<i>If you don't have read/write access, then skip this step</i>):
-          <ol>
-            <li>In Eclipse, add the <b>accessors</b> SVN Repository:
-              <code>Window</code> | <code>Show View</code> | <code>Other</code> | <code>SVN</code> | <code>SVN Repositories</code>
-            </li>
-            <li>In the SVN Repository view, right click,
-	      select <code>New</code> | <code>Repository Location</code> and
-	      set the url.
-              <pre>
-                https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/
-              </pre>
-	      As you have read/write access, you may want to check "Save authentication".
-	      <p>Click "Finish"</p>
-              <p>You may be prompted for your password</p>
-            </li>
-            <li>In the SVN Repository view <b>of the accessors repo</b>, expand the accessors repository by
-	      clicking in the triangle at the left, then right click
-	      on <code>trunk</code> and select <code>Find/Check out As</code>
-              <blockquote>
-	        <table border="1">
-	          <tr>
-	            <td>
-	              Be sure to check out the <b><code>trunk</code></b> not the
-	              entire tree, which include all the branches and the trunk.
-	            </td>
-	          </tr>
-	        </table>
-              </blockquote>
-              Follow the wizard, creating selections as follows:
-              <ol>
-	        <li> In the "Check Out As" window:
-	          <code>Check out as a folder into existing project</code>, then hit <code>Next</code>.
-	          <center>
-	            <p><img src="../../img/eclipseAccessorsCheckOutAs.png" alt="AccessorsEclipse Check Out As Window" width="633" height="498"></p>
-	          </center>
-	        </li>
-	        <li> In the "Check Out Into Project" window, browse to ptII/org/terraswarm/accessor, Click "Finish".  The accessors repo will be checked out.
-	          <center>
-	            <p><img src="../../img/eclipseAccessorsNewProject.png" alt="Eclipse New Project" width="633" height="500"></p>
-	          </center>
-	        </li>
-              </ol>
-              <p>The goal here is to create <code>org/terraswarm/accessor/accessors/web</code>. 
-            </li>
-
 	<li><b>If you have read/write access</b> go to <a href="setupSubversion.htm" target="main">Setup the Subversion Configuration to Sane Settings</a> so that if you commit files, they will have the appropriate settings.
 	</li>
 
