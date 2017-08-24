@@ -36,7 +36,7 @@ import org.ptolemy.scala.actor.gui.CompositeActorApplication
  * @author Moez Ben Hajhmida
  *
  */
-object ActorGenerator {
+object ActorGenerator extends App{
   val copyright = "/**\nCopyright (c) 2013-2017 The Regents of the University of California.\nAll rights reserved.\nPermission is hereby granted, without written agreement and without\nlicense or royalty fees, to use, copy, modify, and distribute this\nsoftware and its documentation for any purpose, provided that the above\ncopyright notice and the following two paragraphs appear in all copies\nof this software.\n\nIN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY\nFOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES\nARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF\nTHE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF\nSUCH DAMAGE.\n\nTHE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,\nINCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE\nPROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF\nCALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,\nENHANCEMENTS, OR MODIFICATIONS.\n\nPT_COPYRIGHT_VERSION_2\nCOPYRIGHTENDKEY\n*/"
   def createFieldDeclaration(field: java.lang.reflect.Field, objectName: String, writer: FileWriter): Unit = {
     if (field.getModifiers == 1) //public field
@@ -122,16 +122,24 @@ object ActorGenerator {
       //end of class
       writer.write("}\n")
       writer.close()
-      System.out.println("file " + path + className.replaceFirst("ptolemy", "org.ptolemy.scala").replaceAll("[.]", "/") + ".scala successfuly created")
+      println("success: file " + path + className.replaceFirst("ptolemy", "org/ptolemy/scala").replace('.', '/') + ".scala successfuly created")
     } catch { // how should we manage? DSL language checker?
-      case noMethod: NoSuchMethodException           => System.out.println(noMethod.getMessage.toString())
-      case nullpointer: NullPointerException         => System.out.println(nullpointer.getMessage.toString())
-      case noClass: java.lang.ClassNotFoundException => System.out.println(className + " not found\n")
+      case noMethod: NoSuchMethodException           => println(noMethod.getMessage.toString())
+      case nullpointer: NullPointerException         => println(nullpointer.getMessage.toString())
+      case noClass: java.lang.ClassNotFoundException => println("error: file " +path+className.replace('.', '/') + ".java not found")
     }
 
   }
-  def main(args: Array[String]): Unit = {
-    args.foreach(cls => codeGenerate(cls, "/home/moez/ptII/"))
+  
+  override def  main(args: Array[String]): Unit = {
+    try {
+    val ptolemyHome: String =  sys.env("PTII")    
+    args.foreach(cls => codeGenerate(cls, ptolemyHome+"/"))
+    }catch {
+      case noElement: java.util.NoSuchElementException => println("error: You must set the PTII environment variable before generating code"); println(noElement.getMessage.toString())
+    }
+    
+        
 
   }
 
