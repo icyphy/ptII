@@ -15,10 +15,9 @@ if [ ! -f $fmuBaseName.c ]; then
    exit 4
 fi
 
-# For hybrid_co-simulation:
-include="-DFMI_COSIMULATION -I."
 # For co-simulation:
-#include="-DFMI_COSIMULATION -I."
+include="-DFMI_COSIMULATION -I."
+
 # For model exchange:
 #include="-I."
 
@@ -30,7 +29,7 @@ case "`uname -s`" in
      Linux)   arch=linux
      	      pic=-fPIC
      	      sharedLibrarySuffix=so;;
-esac
+esac     
 
 # Number of bits, default to 64
 bits=64
@@ -47,12 +46,20 @@ esac
 if [ $arch = linux ]; then
     if [ $bits = 32 ]; then
 	CBITSFLAGS="-m32 -fvisibility=hidden"
-    else
+    else 
 	CBITSFLAGS="-fvisibility=hidden"
     fi
+fi
+
+if [ -x userCflags ]; then
+    # If we unjar a source distribution, then userCflags might not be executable.
+    if [ ! -x userFlags ]; then
+        chmod a+x userCflags
+    fi        
+    userCflags=`./userCflags`
 fi
 
 set -x
 echo `pwd`; \
 make dirclean; \
-make ARCH=${arch}${bits} CBITSFLAGS="${CBITSFLAGS}" INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} $fmuBaseName.fmu
+make ARCH=${arch}${bits} CBITSFLAGS="${CBITSFLAGS}" INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix}  USER_CFLAGS="${userCflags}" $fmuBaseName.fmu $fmuBaseName.fmu

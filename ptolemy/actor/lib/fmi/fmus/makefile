@@ -62,7 +62,14 @@ FMUS_2_0_CS =	$(FMUSDK2_FMUS_2_0_CS) bouncingBall20RC1 \
 		scale20pt scale20RC1 stairsA20RC1F tankOpen values20RC1 \
 		vanDerPol20RC1 $(HYBRID_FMUS_2_0_CS)
 
-FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
+# Hybrid FMUs created by Fabio Cremona
+FMUS_HYBRID = AdderIT CTClockIT CTClockW CheckEqualityFP \
+	CheckEqualityIT ClockFP ClockIT ClockW ConstantIT DelayIT DelayW \
+	IntegratorIT SamplerFP SamplerIT ZeroCrossingDetectorIT	\
+	bouncingBallHybrid
+
+
+FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS) $(FMUS_HYBRID)
 
 # All the CS FMUSDK2 FMUs.
 FMUSDK2_FMUS_CS = $(FMUSDK2_FMUS_1_0_CS) $(FMUSDK2_FMUS_2_0_CS)
@@ -76,24 +83,20 @@ FMUSDK2_FMUS_CS = $(FMUSDK2_FMUS_1_0_CS) $(FMUSDK2_FMUS_2_0_CS)
 FMUSDK2_FMUS_1_0_ME = bouncingBallME1 dqME1 incME1 valuesME1 vanDerPolME1 
 FMUS_PRE_2_0_ME = heaterFlowResistance pumpConstantSpeed tankOpen 
 
+FMUS_1_0_ME = $(FMUSDK2_FMUS_1_0_ME) $(FMUS_PRE_2_0_ME)
+
 # FMUs that have have fmiVersion >= 2.0
 
 # Model-exchange FMUS from FMUSDK2.0.3.  These fmus should not be modified, instead copy them and change the copy.
 FMUSDK2_FMUS_2_0_ME = bouncingBallME20 dqME20 helloWorldME2 incME20 valuesME20 vanDerPolME20
 
 # New Model Exchange FMUS should be added here.
-FMUS_2_0_ME = fourInputsFourOutputsME20 helloWorldME2 
+FMUS_2_0_ME = fourInputsFourOutputsME20 helloWorldME2
 
 FMUS_ME =	$(FMUSDK2_FMUS_1_0_ME) $(FMUSDK2_FMUS_2_0_ME) $(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
 
-# Hybrid FMUs created by Fabio Cremona
-FMUS_HYBRID = AdderIT CTClockIT CTClockW CheckEqualityFP \
-	CheckEqualityIT ClockFP ClockIT ClockW ConstantIT DelayIT DelayW \
-	IntegratorIT SamplerFP SamplerIT ZeroCrossingDetectorIT	\
-	bouncingBallHybrid
-
 # All FMUs.
-FMUS = $(FMUS_CS) $(FMUS_ME) $(FMUS_HYBRID)
+FMUS = $(FMUS_CS) $(FMUS_ME)
 
 # All the ME FMUSDK2 FMUs.
 FMUSDK2_FMUS_ME = $(FMUSDK2_FMUS_1_0_ME) $(FMUSDK2_FMUS_2_0_ME)
@@ -195,6 +198,10 @@ update:
 		done ; \
 	fi
 
+	(cd ../test/auto; cp bouncingBall.fmu    dq.fmu    inc.fmu	 values.fmu    vanDerPol.fmu bouncingBall20.fmu  dq20.fmu  inc20.fmu  values20.fmu  vanDerPol20.fmu /cygdrive/c/Users/Administrator/PTII/org/ptolemy/fmi/fmu/cs)
+
+	(cd ../test/auto; cp bouncingBallME1.fmu   dqME1.fmu   incME1.fmu   valuesME1.fmu   vanDerPolME1.fmu bouncingBallME20.fmu  dqME20.fmu  incME20.fmu  valuesME20.fmu  vanDerPolME20.fmu /org/ptolemy/fmi/fmu/me)
+
 # Update just the FMI-1.0 CS files in../test/auto/.
 update_1_0_CS:
 	@if [ "x$(FMUS_1_0_CS)" != "x" ]; then \
@@ -211,6 +218,19 @@ update_1_0_CS:
 update_1_0_ME:
 	@if [ "x$(FMUS_1_0_ME)" != "x" ]; then \
 		set $(FMUS_1_0_ME); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making update in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) clean update ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
+
+update_2_0_ME:
+	@if [ "x$(FMUS_2_0_ME)" != "x" ]; then \
+		set $(FMUS_2_0_ME); \
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
@@ -268,7 +288,9 @@ update_jfmi:
 
 
 # Update fmu.mk, build_fmu and build_fmu.bat from the files in the template/ directory.
-update_files:
+update_files: update_cs_files update_me_files
+
+update_cs_files:
 	@if [ "x$(FMUS_CS)" != "x" ]; then \
 		set $(FMUS_CS); \
 		for x do \
@@ -281,6 +303,7 @@ update_files:
 		done ; \
 	fi
 
+update_me_files:
 	@if [ "x$(FMUS_ME)" != "x" ]; then \
 		set $(FMUS_ME); \
 		for x do \
@@ -288,12 +311,12 @@ update_files:
 			sed 's@#include modelExchange.mk@include modelExchange.mk@' template/sources/fmu.mk > $$x/src/sources/fmu.mk; \
 			echo "copying template/sources/build_fmu to $$x/src/sources and updating for ME"; \
 			sed -e 's@include="-DFMI_COSIMULATION -I."@#include="-DFMI_COSIMULATION -I."@' \
-				-e 's@#include="-I."@include="-I."@' template/sources/build_fmu > $$x/src/sources/build_fmu.mk; \
+				-e 's@#include="-I."@include="-I."@' template/sources/build_fmu > $$x/src/sources/build_fmu; \
 			echo "copying template/sources/build_fmu.bat to $$x/src/sources and updating for ME"; \
 			sed -e 's@FMI for Co-Simulation 1.0@FMI for Model Exchange 1.0@' \
 				-e 's@/DFMI_COSIMULATION@@' template/sources/build_fmu.bat > $$x/src/sources/build_fmu.bat; \
-			echo "copyng template/sources/fmuTemplate.c to $$x/src/sources"; \
-			cp template/sources/fmuTemplate.c $$x/src/sources/fmuTemplate.c; \
+			echo "copying template/sources/modelExchange.mk to $$x/src/sources"; \
+			cp template/sources/modelExchange.mk $$x/src/sources; \
 		done ; \
 	fi
 
