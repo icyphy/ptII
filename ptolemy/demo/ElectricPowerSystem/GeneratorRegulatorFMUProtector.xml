@@ -6,7 +6,7 @@
     </property>
     <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.data.expr.Parameterk&quot;,&quot;ptolemy/data/ontologies/ontologies.jar&quot;},{&quot;ptolemy.kernel.attributes.VersionAttribute&quot;,&quot;ptolemy/domains/de/de.jar&quot;},{&quot;ptolemy.kernel.util.StringAttribute&quot;,&quot;ptolemy/actor/lib/aspect/aspect.jar&quot;},{&quot;ptolemy.kernel.util.Location&quot;,&quot;ptolemy/domains/sdf/sdf.jar&quot;},{&quot;ptolemy.actor.gui.SizeAttribute&quot;,&quot;ptolemy/actor/lib/fmi/fmi.jar&quot;},{&quot;ptolemy.kernel.util.ColorAttribute&quot;,&quot;ptolemy/domains/ptides/ptides.jar&quot;}}">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 179, 1140, 717}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 179, 1134, 720}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 607]">
     </property>
@@ -110,7 +110,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FMI doesn't support the&#10;notion of an &quot;absent&quot;&#10;input, so we have to&#10;provide an input here&#10;each time the actor fires.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-140.0, 115.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-140.0, 115.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="MostRecent">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
