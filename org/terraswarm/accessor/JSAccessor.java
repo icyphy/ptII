@@ -1250,12 +1250,40 @@ public class JSAccessor extends JavaScript {
                     }
                 }
                 if (!FileUtilities.inPath("ant")) {
-                    System.out.println("Could not find the \"ant\" executable in your path, to build the accessor docs, please install ant from http://ant.apache.org/");
-                    MessageHandler.status("Could not find \"ant\". Accessor docs will not be generated.");
+                    // If ptolemy.ant.path will only be set if
+                    // ./configure has been run.  If ptolemy.ant.path
+                    // is not set, then look for the ant shell script
+                    // or ant.cmd Windows file by hand.
 
-                    return -1;
+                    File ptIIAntFile = null;
+
+                    String defaultAntPath = "$CLASSPATH/ant/bin/ant";
+
+                    String osName = StringUtilities.getProperty("os.name");
+                    if (osName != null && osName.startsWith("Windows")) {
+                        defaultAntPath = "$CLASSPATH/ant/bin/ant.cmd";
+                    }
+
+                    defaultAnt = "Could not find ant in " + defaultAntPath
+                        + "  Accessors docs will not be generated.";
+                    try {
+                        ptIIAntFile = FileUtilities.nameToFile(defaultAntPath, null);
+                        if (ptIIAntFile.exists()) {
+                            antPath = ptIIAntFile.getCanonicalPath();
+                        } else {
+                            System.out.println("FIXME: we should consider unjar'ing the ant.jar file.");
+                        }
+                    } catch (IOException ex) {
+                        defaultAnt += " Exception was: " + ex;
+                    }
+                    if (!ptIIAntFile.exists()) {
+                        System.out.println(defaultAnt);
+                        MessageHandler.status(defaultAnt);
+                        return -1;
+                    }
                 }
 
+                // FIXME: We should ship Node in $PTII/vendors, see https://www.icyphy.org/accessors/wiki/Notes/Windows
                 if (!FileUtilities.inPath("node")) {
                     System.out.println("Could not find the \"node\" executable in your path, to build the accessor docs, please install ant from https://nodejs.org/");
                     MessageHandler.status("Could not find \"node\". Accessor docs will not be generated.");
