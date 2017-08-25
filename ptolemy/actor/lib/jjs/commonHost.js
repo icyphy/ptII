@@ -160,10 +160,14 @@
  *
  *  Mutable accessors are a particular type of composite accessors. They have the ability
  *  to dynamically change their behavior by substituting a contained accessor X by another
- *  accessor X'. The condition is that X, as well as X', both are type refinement of the
- *  mutable accessor. By calling 'reifiableBy', accessors are tested for the condition.
- *
- *  When calling 'reify' function on a particular accessor X, the mutableAccessor
+ *  accessor X'. The Mutable accessor can be used as a placeholder where a designer can
+ *  plug in a discovered accessor. In this version, reification mechanism is quit open,
+ *  assuming that the correctness is checked by third party (such as a Broker accessor...).
+ *  Nevertheless, reification condition, in the sense of interface refinement, as pointed 
+ *  out in 'Introduction to Embedded Systems' textbook (by Lee & Seshia) can be called as
+ *  a commomHost function, that is isReifyableBy(). 
+ *  
+ *  When calling 'reify' function on a particular accessor X, the Mutable Accessor
  *  will connect to X, making it equivalent to X itself. This is enabled by the composition
  *  mechanism. And this is done on runtime. If there is a previous reified accessor, it is
  *  unreified.
@@ -171,7 +175,7 @@
  *  The choice of the accessor to be used for reification can be handled by another accessor
  *  or actor. 
  * 
- *  At any time, a previous reification can be removed. This will make the mutableAccessor
+ *  At any time, a previous reification can be removed. This will make the Mutable Accessor
  *  equivalent to an interface again. Consequently, another reification may be performed,
  *  enabling thus dynamic substitution.
  *
@@ -263,29 +267,22 @@ var deterministicTemporalSemantics = require('./modules/deterministicTemporalSem
  *    This is used by this.removeInputHandler(). If the handler is one
  *    for any input, then nameOfInput is null and arrayIndexOfHandler
  *    specifies the position of the handler in the anyInputHandlers array.
- *  * **realizesList**: An array of realized features names (see below).
- *  * **realizes**: An object with one property per realized feature (see below).
  *
- *  Inputs, outputs, and parameters, in addition to realized features in an accessor
- *  have a defined order. The ```inputList``` property is an array giving the
- *  name of each input in the order in which it is defined in the setup() function.
- *  For each entry in that array, there is a property by that name in the
- *  ```inputs``` object, indexed by the name. The value of that property is the
- *  options object given to the ```input()``` function, possibly with additional
- *  properties such as 'destination', which is used for composite accessors.
- *  Similarly, parameters and outputs are represented in the
- *  data structure by an array of names and an object with the options values.
- *  ```realizes``` objects describe the added values of the accessor, for example
- *  'Light', 'Camera'... This information is particularly useful when an accessor
- *  is tested for reification of a mutableAccessor. Such test is better solved
- *  using ontologies, rather equality.
- *  FIXME: Ontologies are to be added.
+ *  Inputs, outputs, and parameters have a defined order. The ```inputList``` 
+ *  property is an array giving the name of each input in the order in which it 
+ *  is defined in the setup() function. For each entry in that array, there is 
+ *  a property by that name in the ```inputs``` object, indexed by the name. 
+ *  The value of that property is the options object given to the ```input()``` 
+ *  function, possibly with additional properties such as 'destination', which 
+ *  is used for composite accessors. Similarly, parameters and outputs are 
+ *  represented in the data structure by an array of names and an object with the 
+ *  options values.
  *
  *  The returned instance may also include the following properties:
  *
  *  * **accessorClass**: The class name of the accessor, if not anonymous.
  *  * **containedAccessors**: A list of contained accessors, if this is a composite
- *    accessor or a mutableAccessor.
+ *    accessor or a mutable Accessor.
  *  * **container**: A reference to the containing accessor, if this instance is
  *    instantiated by a composite accessor.
  *  * **extendedBy**: A reference to the accessor that this is extended by, if there is
@@ -297,24 +294,21 @@ var deterministicTemporalSemantics = require('./modules/deterministicTemporalSem
  *    will reference it in their root property.
  *  * **ssuper**: If this accessor extends another, this is a reference to the instance
  *    of the accessor it extends.
- *  * **isMutable**: If this accessor is a mutableAccessor, this attribute will be set.
  *
- *  If the returned instance is a mutableAccessor, then it will include these additional
+ *  If the returned instance is a mutable accessor, then it will include these additional
  *  properties:
- *  * **state**: indicates the current state among all the states of the lifecycle of a
- *    given mutableAccessor
- *  * **reifyingAccessorsList**: An array of the reifying accessors, together with some
- *    information (such as Location...) that will be relevant for sorting. This list should
- *    be ordered using a given sorting function.
- *  * **inputsMap**: An object that maps the mutableAccessor inputs to the reifying accessor
+ *  * **isMutable**: set to true if the accessor is a mutable one.
+ *  * **state**: indicates the current state of the mutable accessor. It can be 'reified' or
+ *    'unreified'.
+ *  * **inputsMap**: An object that maps the mutable accessor inputs to the reifying accessor
  *    inputs.
- *  * **outputsMap**: An object that maps the mutableAccessor outputs to the reifying accessor
+ *  * **outputsMap**: An object that maps the mutable accessor outputs to the reifying accessor
  *    outputs.
- *  * **parametersMap**: An object that maps the non mapped mutableAccessor inputs to, possibly,
- *    the reifying accessor non connected inputs.
- *  Notes: (i) When a mutableAccessor is reified, the attribute containedAccessors will contain
- *  the selected accessor for reification (ii) A mutableAccessor cannot extend another accessor.
- *  FIXME: Check if a  mutableAccessor can implement another accessor.
+ *  * **reifyingAccessor**: reference to the reifying accessor among all possible contained 
+ *    accessors.
+ *  Notes: (i) When a mutable accessor is reified, the attribute containedAccessors will contain
+ *  the selected accessor for reification (ii) A mutable accessor cannot extend another accessor.
+ *  FIXME: Check if a  mutable accessor can implement another accessor.
  *
  *  The bindings parameter provides function bindings for functions that are used by
  *  accessors.  Any that are not provided will be provided with defaults.
@@ -351,8 +345,6 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     this.code = code;
 
     this.bindings = bindings;
-    
-    this.isMutable = false;
 
     ///////////////////////////////////////////////////////////////////
     //// Override using specified bindings.
@@ -403,13 +395,6 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
 
         this.parameterList = [];
         this.parameters = {};
-
-        ////////////////////////////////////////////////////////////////////
-        //// Define the properties that define realized functions.
-
-        this.realizesList = [];
-        this.realizes = {};
-
 
         ////////////////////////////////////////////////////////////////////
         //// Support for composite accessors.
@@ -678,6 +663,10 @@ clearTimeout',
                         this.containedAccessors[i].wrapup();
                     }
                 }
+            }
+            // If mutable, should unreify
+            if (this.isMutable) {
+            	this.unreify();
             }
             if (typeof this.exports.wrapup === 'function') {
                 // Call with 'this' being the accessor instance, not the exports
@@ -1519,22 +1508,26 @@ Accessor.prototype.module = {
     'id': 'unspecified'
 };
 
-/** Default implementation of the function to define a mutableAccessor.
- *  If this is a mutableAccessor, then add attibutes to the accessor, 
- *  such as the mapping objects and reification monitoring objects.
+/** Default implementation of the function to define a mutable accessor.
+ *  If this is a mutable accessor, then add attributes to the accessor, such
+ *  as isMutable, state, inputs and outputs Map objects and the reifying
+ *  accessor.
+ *  
  *  @param value The value, which should be 'true' in case this a mutable
  */
 Accessor.prototype.mutable = function (value) {
+	// Here, we have to use this.root because of the prototype chain.
+	var thiz = this.root;
     if (value) {
-        this.root.isMutable = true;
-
-        ////////////////////////////////////////////////////////////////////
-        //// For a mutableAccessor, define additional attributes
-
-        this.inputsMap = {};
-        this.outputsMap = {};
-
-        this.state = 'instantiated';
+    	thiz.isMutable = true;
+        thiz.state = 'unreified';
+        
+        // Mapping objects to be used for mapping ports.
+        thiz.inputsMap = {};
+        thiz.outputsMap = {};
+        
+        // Reference to the reified accessor among all contained accessors
+        thiz.reifyingAccessor = null;
     }
 };
 
@@ -1792,169 +1785,35 @@ Accessor.prototype.readURL = function () {
     throw new Error('This swarmlet host does not support readURL().');
 };
 
-/** Default implementation of the function to define an accessor realized features.
- *  Accessors that override this should probably invoke this default explicitly
- *  by referencing the prototype.
- *  @param name The name of the realized feature.
- *  @param options The options for the realized feature. Cen be used to reference 
- *   the ontology of the provided 'name'.
- */
-Accessor.prototype.realize = function (name, options) {
-    if (!this || !this.realizesList) {
-        throw new Error('Function realize() is being called without "this" being defined. ' +
-                        'Perhaps use "this.realize(...)" instead of "realize(...)".');
-    }
-    // The input may have been previously defined in a base accessor.
-    pushIfNotPresent(name, this.realizesList);
-    this.realizes[name] = mergeObjects(this.realizes[name], options);
-};
-
-/** Evaluates if the 'mutableAccessor' (this) is reifiable by the 'accessor' given
- *  as parameter.
- *  Two conditions are considered for the reification test to hold. 
- *  ** The first consists on checking if the accessor realizes all the mutableAccessor
- *     realized functions.
- *  ** The second is interface type refinement. The conditions are: 
- *     ** the set of 'accessor' inputs are included in the set of 'mutableAccessor'
- *        inputs.
- *     ** and the set of outputs of 'mutableAccessor' are included in the set of
- *        outputs of 'accessor'.
- *  For port inclusion to hold, the following conditions are checked:
- *  ** Same port name
- *  ** If the ports contain an attribute called 'type', then they need to be
- *     checked for equality.
- *  TODO: augment type checking with subtyping.
+/** Reifies the accessor given as parameter. The parameter can be an object instance 
+ *  of accessor, a string describing a fully qualified accessor class or path, or a 
+ *  string with the accessor code.
+ *  If instantiating the accessor succeeds, then reification will consist on:
+ *  ** removing previous reification, if any,
+ *  ** establishing containment,
+ *  ** Find mappings between the inputs and the outputs of the mutable accessor and 
+ *     the reifying accessor,
+ *  ** Finally, connect the mapped port of both accessors and initialize the reifying 
+ *     one.
  *
- *  The following objects are constructed: inputsMap and outputsMap and, will be
- *  returned if all tests pass.
- *
- *  @param accessor An instantiated Accessor object
- *  @return false if not reifyableBy, else return an object with the inputsMap and 
- *   outputsMap objets
- */
-Accessor.prototype.reifiableBy = function (accessor) {
-    // Note that we could just use this instead of this.root because of the
-    // prototype chain, but in a deep hierarchy, this will be more efficient.
-    var thiz = this.root; 
-    var i;
-
-    // Check that this is a mutableAccessor
-    if (!thiz.isMutable) {
-        this.error('Only mutableAccessors can be tested for reification.');
-        return false;
-    }
-
-    if (!accessor || !accessor.accessorName) {
-        this.error('reifiableBy(): the paremeter should be an accessor.');
-        return false;
-    }
-
-    // Check if all the features realized by the mutableAccessor are realized
-    // by the given accessor
-    if (thiz.realizesList.length === 0 || accessor.realizesList.length === 0) {
-        // FIXME: decide what to do...
-        console.log('reifiableBy(): Realized features are needed to check reification.');
-        // For compatibility reasons with the previous accessors, the function
-        // will continue executing.
-        // return false;
-    }
-    // Check if realized features are compatible.
-    // As a first iteration, this is reduced to equality checking.
-    // The next step is to perform this task using ontologies
-    for (i = 0; i < thiz.realizesList.length; i++) {
-        var myRealizesInList = thiz.realizesList[i];
-        var myRealizes = thiz.realizes[myRealizesInList];
-        var accRealizesInList = accessor.realizesList[accessor.realizesList.indexOf(myRealizesInList)];
-        var accRealizes = accessor.realizes[accRealizesInList];
-        if (!accRealizesInList) {
-            return false;
-        }
-        // FIXME: To be further improved by adding ontologies
-    }
-
-    // Mapping objects for inputs and outputs between the mutableAccessor
-    // and the accessor
-    var inputsMap = {};
-    var outputsMap = {};
-
-    // Look for mapping the accessor inputs to the mutableAccesssor inputs
-    var myInputInList, myInput, accInputInList, accInput;
-
-    for (i = 0; i < accessor.inputList.length; i++) {
-        accInputInList = accessor.inputList[i];
-        accInput = accessor.inputs[accInputInList];
-
-        myInputInList = thiz.inputList[thiz.inputList.indexOf(accInputInList)];
-        myInput = thiz.inputs[myInputInList];
-
-        // Check the input name
-        if (!myInputInList) {
-            return false;
-        }
-
-        // Then check the type, if such attribute exists
-        if (accInput.type !== myInput.type) {
-            return false;
-        }
-
-        inputsMap[myInputInList] = accInputInList;
-    }
-
-    // Look for mapping the mutableAccesssor outputs to the accessor outputs
-    for (i = 0; i < thiz.outputList.length; i++) {
-        var myOutputInList = thiz.outputList[i];
-        var myOutput = thiz.outputs[myOutputInList];
-
-        var accOutputInList = accessor.outputList[accessor.outputList.indexOf(myOutputInList)];
-        var accOutput = accessor.outputs[accOutputInList];
-
-        // Check the output name
-        if (!accOutputInList) {
-            return false;
-        }
-        // Then check the type, if such attribute exists
-        if (accOutput.type !== myOutput.type) {
-            return false;
-        }
-
-        outputsMap[accOutputInList] = myOutputInList;
-    }
-
-    // Create the object to be saved in the mutableAccessor reifyingAccessorsList
-    var reifying = {};
-    reifying.inputsMap = inputsMap;
-    reifying.outputsMap = outputsMap;
-
-    return reifying;
-};
-
-/** Reifies the accessor given as parameter by:
- *  ** First, check the type of the passed parameter. If this a accessor class
- *     or an accessor code, then instantate it.
- *  ** Second, calling reifyableBy, is order to get the mapping objects.
- *  ** If reification conditions hold, remove previous reification, if any.
- *  ** Finally, establish the connections between the mutableAccessor and the 
- *     accessor.
- *
- *  @param accessor This parameter can be either an accessor object, a fully 
+ *  @param accessor This parameter can be either an accessor instance, a fully 
  *   qualified accessor class or an accessor code
  *  @return true if the reification was achieved successfully, false otherwise.
  */
 Accessor.prototype.reify = function (accessor) {
-    // Note that we could just use this instead of this.root because of the
-    // prototype chain, but in a deep hierarchy, this will be more efficient.
+	// Here, we have to use this.root because of the prototype chain.
     var thiz = this.root;
-    
-    // Check that this is a mutableAccessor
+     
+    // Check that this is a mutable accessor
     if (!thiz.isMutable) {
         thiz.error('Cannot call reify on an accessor that is not Mutable.');
         return false;
     }
 
     var accessorInstance;
+    var isNewAccessor = true;
     var instanceName = this.accessorName + '.' + "tempAccessorName";
     instanceName = uniqueName(instanceName, this);
-    var isNewAccessor = true;
 
     // Check the accessor parameter type
     if (!accessor) {
@@ -1965,17 +1824,15 @@ Accessor.prototype.reify = function (accessor) {
         // Case where and accessor object is passed
         accessorInstance = accessor;
         isNewAccessor = false;
-    } else if(typeof accessor == 'string') {
-        // Check if accessor is an accessor code
+    } else if(typeof accessor === 'string') {
+        // Attempt to instantiate the accessor
         try {
-            // For functions that access ports, etc., we want the default implementation
-            // when instantiating the contained accessor.
+            // Check if the parameter is a class name   
             var accessorClass = accessor;
             accessorInstance = thiz.instantiate(instanceName, accessorClass, true);
         } catch(e) {
-            // If an error is catched, the provided parameter is likely to be the
-            // the accessorCode
             try {
+            	// Check if the parameter is an accessor code 
                 var accessorCode = accessor;
                 accessorInstance = thiz.instantiateFromCode(instanceName, accessorCode, true);
             } catch(ee) {
@@ -1985,46 +1842,84 @@ Accessor.prototype.reify = function (accessor) {
         };
     };
 
-    // Check that the accessor instance is a possible reification
-    var mapObject = this.reifiableBy(accessorInstance);
+    // Remove previous reification, if any
+	thiz.unreify();
+    
+    // Add the accessor to the list of all accessors if it is a new one
+    // FIXME: Do we really need this?
+    if (isNewAccessor) {
+        allAccessors.push(accessorInstance);
+    };
 
-    if (mapObject) {
-        if (this.state === 'reified') {
-        	this.unreify();
+    // Establish reference to the reified accessor and containment
+    thiz.reifyingAccessor = accessorInstance;
+    thiz.containedAccessors.push(accessorInstance);
+    accessorInstance.container = thiz;
+
+    var myInputInList, myInput, accInputInList, accInput;
+    
+    // Look for mapping the accessor instance inputs to the mutable accesssor inputs
+    for (var i = 0; i < accessorInstance.inputList.length; i++) {
+        accInputInList = accessorInstance.inputList[i];
+        accInput = accessorInstance.inputs[accInputInList];
+
+        myInputInList = thiz.inputList[thiz.inputList.indexOf(accInputInList)];
+        myInput = thiz.inputs[myInputInList];
+
+        // Check the input name
+        if (myInputInList) {
+        	if (accInput.type && myInput.type) {
+        		if (accInput.type === myInput.type) {
+        			// FIXME: type checking should be augmented by sub-typing checking
+        			thiz.inputsMap[myInputInList] = accInputInList;
+        		} else {
+        			// If the types do not match, then no mapping
+        		};
+        	} else {	
+        		thiz.inputsMap[myInputInList] = accInputInList;
+        	};
         };
-        // Add the accessor to the list of all accessors if it is a new one
-        if (isNewAccessor) {
-            allAccessors.push(accessorInstance);
+    };
+
+    // Look for mapping the mutable accesssor outputs to the accessor instance outputs
+    for (var i = 0; i < thiz.outputList.length; i++) {
+        var myOutputInList = thiz.outputList[i];
+        var myOutput = thiz.outputs[myOutputInList];
+
+        var accOutputInList = accessorInstance.outputList[accessorInstance.outputList.indexOf(myOutputInList)];
+        var accOutput = accessorInstance.outputs[accOutputInList];
+
+        // Check the output name
+        if (accOutputInList) {
+        	if (accOutput.type && myOutput.type) {
+        		if (accOutput.type === myOutput.type) {
+        			// FIXME: type checking should be augmented by sub-typing checking
+        			thiz.outputsMap[accOutputInList] = myOutputInList;
+        		} else {
+        			// If the types do not match, then no mapping
+        		};
+        	} else {	
+        		thiz.outputsMap[accOutputInList] = myOutputInList;
+        	};
         };
+    };
 
-        // Establish containment
-        thiz.containedAccessors.push(accessorInstance);
-        accessorInstance.container = thiz;
+    // Establish the connections
+    Object.keys(thiz.inputsMap).forEach(function (key) {
+        thiz.connect(key, accessorInstance, thiz.inputsMap[key]);
+    });
+    Object.keys(thiz.outputsMap).forEach(function (key) {
+        thiz.connect(accessorInstance, key, thiz.outputsMap[key]);
+    });
 
-        // Get mapping objects
-        thiz.inputsMap = mapObject.inputsMap;
-        thiz.outputsMap = mapObject.outputsMap;
+    // Initialize the instance
+    accessorInstance.initialize();
 
-        // Establish the connections
-        Object.keys(thiz.inputsMap).forEach(function (key) {
-            thiz.connect(key, accessorInstance, thiz.inputsMap[key]);
-        });
-        Object.keys(thiz.outputsMap).forEach(function (key) {
-            thiz.connect(accessorInstance, key, thiz.outputsMap[key]);
-        });
+    // Update the mutable accessor state and history
+    thiz.state = 'reified';
+    thiz.emit('reified');
 
-        // Initialize the instance
-        accessorInstance.initialize();
-
-        // Update the mutableAccessor state and history
-        thiz.state = 'reified';
-
-        thiz.emit('reified');
-        return true;
-    } else {
-        thiz.error('Accessor supplied cannot reify the mutableAccessor: ' + thiz.accessorName);
-        return false;
-    }
+    return true;
 };
 
 /** Remove the input handler with the specified handle, if it exists.
@@ -2160,7 +2055,7 @@ Accessor.prototype.scheduleEvent = function (accessor, priority) {
             queue.splice(i + 1, 0, accessor);
             return;
         }
-        if (myPriority == theirPriority) {
+        if (myPriority == theirPriority) {inputsMap
             // Already on the queue.
             return;
         }
@@ -2544,30 +2439,30 @@ Accessor.prototype.stopMonitoring = function() {
     return monitor;
 }
 
-/** Unreifies the mutableAccessor. Therefore, containment relation is removed.
+/** Unreifies the mutable accessor. Therefore, containment relation is removed.
  *  Then the connections between both objects and between their corresponding 
  *  inputs and outputs are removed. And finally the contained accessor wrapup.
- *  @return True is the mutable was successfully reified, false otherwise
+ *  
+ *  @return True is the mutable was successfully unreified, false otherwise
  */
 Accessor.prototype.unreify = function () {
-    // Note that we could just use this instead of this.root because of the
-    // prototype chain, but in a deep hierarchy, this will be more efficient.
+    // Here, we have to use this.root because of the prototype chain.
     var thiz = this.root;
 
     // Check if there is already a reification
-    if (thiz.containedAccessors.length !== 1) {
-        console.log('unreify(): No contained accessor.');
+    if (!thiz.reifyingAccessor) {
         return false;
     }
 
     // Remove the containment relationship and wrapup
-    var acc = thiz.containedAccessors.pop();
+    thiz.containedAccessors.pop(thiz.reifyingAccessor);
+    var acc = thiz.reifyingAccessor;
     acc.wrapup();
     if (acc.container) {
         acc.container = null;
     }
 
-    // Disconnect the mutableAccessor from the reifying one
+    // Disconnect the mutable accessor from the reifying one
     Object.keys(thiz.inputsMap).forEach(function (key) {
         thiz.disconnect(key, acc, thiz.inputsMap[key]);
     });
@@ -2575,12 +2470,13 @@ Accessor.prototype.unreify = function () {
         thiz.disconnect(acc, key, thiz.outputsMap[key]);
     });
 
-    // Empty mapping objects 
+    // Empty mapping objects and dereference the reifyingAccessor
     thiz.inputsMap = {};
     thiz.outputsMap = {};
+    thiz.reifyingAccessor = null;
 
-    // Update the mutableAccessor state and history
-    thiz.state = 'instantiated';
+    // Update the mutable accessor state and history
+    thiz.state = 'unreified';
     thiz.emit('unreified');
 
     return true;
@@ -2787,6 +2683,77 @@ function instantiateAccessor(
     instance.accessorClass = accessorClass;
     allAccessors.push(instance);
     return instance;
+}
+
+/** Evaluates if mutable is reifiable by the accessor given as parameters.
+ *  Reification conditions are based on interface refinement theory. The conditions are: 
+ *  ** the set of accessor inputs are included in the set of 'mutable accessor'
+ *     inputs.
+ *  ** and the set of outputs of mutable accessor are included in the set of
+ *     outputs of accessor.
+ *  For port inclusion to hold, the following conditions are checked:
+ *  ** Same port name
+ *  ** If the ports contain an attribute called 'type', then they need to be
+ *     checked for equality.
+ *  FIXME: augment type checking with subtyping.
+ *  FIXME: augment the function to accept interface names, urls, ontologies...
+ *
+ *  @param mutable an instantiated accessor that can be a mutable
+ *  @param accessor An instantiated Accessor object
+ *  @return false if mutable is not reifyable by accessor, else return true.
+ */
+function isReifiableBy (mutable, accessor) {
+    // Note that we could just use this instead of this.root because of the
+    // prototype chain, but in a deep hierarchy, this will be more efficient.
+    var thiz = mutable.root; 
+    var i;
+
+
+    if (!mutable || ! mutable.accessorName || !accessor || !accessor.accessorName) {
+        this.error('isReifiableBy(): the paremeters should be instances of Accessor.');
+        return false;
+    }
+
+    // Look for mapping the accessor inputs to the mutable inputs
+    var myInputInList, myInput, accInputInList, accInput;
+
+    for (i = 0; i < accessor.inputList.length; i++) {
+        accInputInList = accessor.inputList[i];
+        accInput = accessor.inputs[accInputInList];
+
+        myInputInList = thiz.inputList[thiz.inputList.indexOf(accInputInList)];
+        myInput = thiz.inputs[myInputInList];
+
+        // Check the input name
+        if (!myInputInList) {
+            return false;
+        }
+
+        // Then check the type, if such attribute exists
+        if (accInput.type && myInput.type && (accInput.type !== myInput.type)) {
+            return false;
+        }
+    }
+
+    // Look for mapping the mutableAccesssor outputs to the accessor outputs
+    for (i = 0; i < thiz.outputList.length; i++) {
+        var myOutputInList = thiz.outputList[i];
+        var myOutput = thiz.outputs[myOutputInList];
+
+        var accOutputInList = accessor.outputList[accessor.outputList.indexOf(myOutputInList)];
+        var accOutput = accessor.outputs[accOutputInList];
+
+        // Check the output name
+        if (!accOutputInList) {
+            return false;
+        }
+        // Then check the type, if such attribute exists
+        if (accOutput.type && myOutput.type && (accOutput.type !== myOutput.type)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /** Merge the specified objects. If the two have common properties, the merged object
@@ -3063,7 +3030,7 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
 }
 
 /** Push the specified item onto the specified list if it is not already there.
- *  @param item Item to push.
+ *  @param item Item to push.reifying
  *  @param list List onto which to push it.
  */
 function pushIfNotPresent(item, list) {
@@ -3160,6 +3127,7 @@ var _accessorInstanceTable = {};
 exports.Accessor = Accessor;
 exports.allowTrustedAccessors = allowTrustedAccessors;
 exports.instantiateAccessor = instantiateAccessor;
+exports.isReifiableBy = isReifiableBy;
 exports.getTopLevelAccessors = getTopLevelAccessors;
 exports.processCommandLineArguments = processCommandLineArguments;
 exports.stopAllAccessors = stopAllAccessors;

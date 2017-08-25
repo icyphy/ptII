@@ -532,5 +532,6 @@ var Accessor = commonHost.Accessor;
 var getTopLevelAccessors = commonHost.getTopLevelAccessors;
 var stopAllAccessors = commonHost.stopAllAccessors;
 var uniqueName = commonHost.uniqueName;
+var isReifiableBy = commonHost.isReifiableBy;
 
 // FIXME: Handle exit calls like how we do in nodeHost?
