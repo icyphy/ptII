@@ -98,7 +98,13 @@ win64:
 	# Make users should try mingw32.  build_fmu.bat will run cl
 	#cl /LD /wd04090 /nologo $(ARCH_DIR)$< 
 	# FIXME: mingw32-gcc might not be in the path.
-	i686-pc-mingw32-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS)
+	@if [ "$(ARCH)" = "win64" ]; then \
+		echo "fmu.mk: building for win64"; \
+		x86_64-w64-mingw32-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS); \
+	else \
+		echo "fmu.mk: building for win32"; \
+		i686-pc-cygwin-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS); \
+	fi
 
 # Include the c file on the link line so that the debug .dylib.dSYM directory is created.
 %.dylib: %.c

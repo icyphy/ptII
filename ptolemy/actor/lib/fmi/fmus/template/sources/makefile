@@ -62,7 +62,8 @@ OTHER_FILES_TO_BE_JARED = \
 	fmuTemplate_fmiv10.c \
 	fmuTemplate_fmiv10.h \
 	fmuTemplate_fmiv20.c \
-	fmuTemplate_fmiv20.h
+	fmuTemplate_fmiv20.h \
+	modelExchange.mk
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 

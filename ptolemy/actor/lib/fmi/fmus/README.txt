@@ -167,4 +167,14 @@ _ Add the new FMU to ptolemy/actor/lib/fmi/fmus/makefile to
 PTCLASSALLJARS so that we jar up the sources for use in the
 installers.
 
+Updating FMUs
+-------------
+
+Each FMU directory contains scripts and makefile fragments from templates/sources.
+
+To update the copies of these files, run "make update_files".
+
+To update the fmus themselves, run "make update"
+
+
 ---End---

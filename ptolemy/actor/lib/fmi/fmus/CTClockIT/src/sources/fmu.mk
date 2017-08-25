@@ -5,6 +5,14 @@
 # Instead, update fmus/fmu.mk and run "make update_makefiles"
 
 # The build_fmu script calls make with the appropriate makefile variables set.
+#
+# The makefile sets some variables and then includes fmu.mk.
+#
+# Useful variables to set in the makefile are:
+# FMU_NAME - always needs to be set
+# CFLAGS
+# USERLIBS
+
 # Below are the defaults for our environment.
 
 # The architecture: linux32, linux64, darwin32, darwin64
@@ -12,10 +20,8 @@ ARCH = darwin64
 
 ARCH_DIR = ../binaries/$(ARCH)/
 
-# This is for hybrid co-simulation
-INCLUDE = -DFMI_HYBRID_COSIMULATION -DFMI_COSIMULATION -I.
 # This is for co-simulation
-#INCLUDE = -DFMI_COSIMULATION -I.
+INCLUDE = -DFMI_COSIMULATION -I.
 # This is for model exhange
 #INCLUDE =  -I.
 
@@ -82,7 +88,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS)
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
@@ -92,7 +98,13 @@ win64:
 	# Make users should try mingw32.  build_fmu.bat will run cl
 	#cl /LD /wd04090 /nologo $(ARCH_DIR)$< 
 	# FIXME: mingw32-gcc might not be in the path.
-	i686-pc-mingw32-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< 
+	@if [ "$(ARCH)" = "win64" ]; then \
+		echo "fmu.mk: building for win64"; \
+		x86_64-w64-mingw32-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS); \
+	else \
+		echo "fmu.mk: building for win32"; \
+		i686-pc-cygwin-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS); \
+	fi
 
 # Include the c file on the link line so that the debug .dylib.dSYM directory is created.
 %.dylib: %.c
@@ -100,7 +112,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CC) -dynamiclib -g $(INCLUDE) $(CFLAGS) -o $(ARCH_DIR)$@ $< $(USERLIBS)
 
 FMUDIR=..
 

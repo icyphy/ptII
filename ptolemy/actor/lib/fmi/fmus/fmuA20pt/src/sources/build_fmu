@@ -51,7 +51,15 @@ if [ $arch = linux ]; then
     fi
 fi
 
+if [ -x userCflags ]; then
+    # If we unjar a source distribution, then userCflags might not be executable.
+    if [ ! -x userFlags ]; then
+        chmod a+x userCflags
+    fi        
+    userCflags=`./userCflags`
+fi
+
 set -x
 echo `pwd`; \
 make dirclean; \
-make ARCH=${arch}${bits} CBITSFLAGS="${CBITSFLAGS}" INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} $fmuBaseName.fmu
+make ARCH=${arch}${bits} CBITSFLAGS="${CBITSFLAGS}" INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix}  USER_CFLAGS="${userCflags}" $fmuBaseName.fmu $fmuBaseName.fmu

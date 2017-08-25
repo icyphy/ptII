@@ -1,10 +1,10 @@
-rem @echo off 
+@echo off
 rem ------------------------------------------------------------
 rem $Id$
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
 
-rem Copyright (c) 2013-2015 The Regents of the University of California.
+rem Copyright (c) 2013-2017 The Regents of the University of California.
 rem All rights reserved.
 rem 
 rem Permission is hereby granted, without written agreement and without
@@ -57,7 +57,7 @@ rem This license is also present in org/ptolemy/fmi/driver/fmusdk-license.htm
 rem ------------------------------------------------------------
 
 echo -----------------------------------------------------------
-echo building FMU %1 - FMI for Co-Simulation 1.0
+echo building FMU %1 - FMI for Model Exchange 1.0
 
 rem save env variable settings
 set PREV_PATH=%PATH%
@@ -65,16 +65,17 @@ if defined INCLUDE set PREV_INCLUDE=%INCLUDE%
 if defined LIB     set PREV_LIB=%LIB%
 if defined LIBPATH set PREV_LIBPATH=%LIBPATH%
 
-rem setup the compiler
-if defined VS250COMNTOOLS (call "%VS250COMNTOOLS%\vsvars32.bat") else ^
-if defined VS240COMNTOOLS (call "%VS240COMNTOOLS%\vsvars32.bat") else ^
-if defined VS230COMNTOOLS (call "%VS230COMNTOOLS%\vsvars32.bat") else ^
-if defined VS220COMNTOOLS (call "%VS220COMNTOOLS%\vsvars32.bat") else ^
-if defined VS210COMNTOOLS (call "%VS210COMNTOOLS%\vsvars32.bat") else ^
-if defined VS200COMNTOOLS (call "%VS200COMNTOOLS%\vsvars32.bat") else ^
-if defined VS190COMNTOOLS (call "%VS190COMNTOOLS%\vsvars32.bat") else ^
-if defined VS180COMNTOOLS (call "%VS180COMNTOOLS%\vsvars32.bat") else ^
-if defined VS170COMNTOOLS (call "%VS170COMNTOOLS%\vsvars32.bat") else ^
+rem First, build for win32, then build for win64
+set FMI_ARCH=win32
+
+rem Setup the compiler.
+
+rem VS2017: Running vsdevcmd seems to change the current working directory
+set PREV_CWD=%cd%
+
+if defined VS190COMNTOOLS (call "%VS190COMNTOOLS%\vsdevcmd.bat") else ^
+if defined VS180COMNTOOLS (call "%VS180COMNTOOLS%\vsdevcmd.bat") else ^
+if defined VS170COMNTOOLS (call "%VS170COMNTOOLS%\vsdevcmd.bat") else ^
 if defined VS160COMNTOOLS (call "%VS160COMNTOOLS%\vsvars32.bat") else ^
 if defined VS150COMNTOOLS (call "%VS150COMNTOOLS%\vsvars32.bat") else ^
 if defined VS140COMNTOOLS (call "%VS140COMNTOOLS%\vsvars32.bat") else ^
@@ -87,32 +88,44 @@ if defined VS90COMNTOOLS (call "%VS90COMNTOOLS%\vsvars32.bat") else ^
 if defined VS80COMNTOOLS (call "%VS80COMNTOOLS%\vsvars32.bat") else ^
 goto noCompiler
 
-rem create the %1.dll in the temp dir
+cd %PREV_CWD%
+
+rem Create the %1.dll in the temp dir
 if not exist temp mkdir temp 
 pushd temp
 if exist *.dll del /Q *.dll
 
-rem /wd4090 disables warnings about different 'const' qualifiers
+echo "The compiler version should mention x86 and not x64"
+cl
 
+echo "Compiling %1.c for %FMI_ARCH%"
+rem /wd4090 disables warnings about different 'const' qualifiers
 rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
-cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.
+cl /LD /wd4090 /nologo  ..\%1.c /I ..\.
 rem cl /LD /wd4090 /nologo ..\%1.c /I ..\.
 dumpbin /exports %1.dll
 
 if not exist %1.dll goto compileError
 
-rem copy the .dll to binaries/win32
-if not exist ..\..\binaries\win32 mkdir ..\..\binaries\win32
-cp %1.dll ..\..\binaries\win32
+rem copy the .dll to binaries/%FMI_ARCH%
+if not exist ..\..\binaries\%FMI_ARCH% mkdir ..\..\binaries\%FMI_ARCH%
+cp %1.dll ..\..\binaries\%FMI_ARCH%
 
 rem create FMU dir structure with root 'fmu'
-set BIN_DIR=fmu\binaries\win32
+set BIN_DIR=fmu\binaries\%FMI_ARCH%
 set SRC_DIR=fmu\sources
 set DOC_DIR=fmu\documentation
+
+rem Copy binaries from other architectures
+echo "Copying files from ..\..\binaries"
+if not exist fmu\binaries mkdir fmu\binaries
+xcopy /S ..\..\binaries fmu\binaries
+
+echo "Creating fmu directory."
 if not exist %BIN_DIR% mkdir %BIN_DIR%
 if not exist %SRC_DIR% mkdir %SRC_DIR%
 if not exist %DOC_DIR% mkdir %DOC_DIR%
-move /Y %1.dll %BIN_DIR%
+rem move /Y %1.dll %BIN_DIR%
 if exist ..\%1\*~ del /Q ..\%1\*~
 type ..\..\modelDescription.xml > fmu\modelDescription.xml
 copy ..\..\model.png fmu
@@ -125,6 +138,60 @@ copy ..\..\documentation\*.html %DOC_DIR%
 copy ..\..\documentation\*.png  %DOC_DIR%
 rem del %DOC_DIR%\model.png 
 
+
+rem Now build for win64
+set FMI_ARCH=win64
+
+rem VS2017: Running vsdevcmd seems to change the current working directory
+set PREV_CWD=%cd%
+
+rem Set up the compiler for win64
+rem Unfortunately, how to generate 64-bit .dll files varies between versions
+rem of VisualStudio. So sad.
+rem There is good chance that the 64-bit settings will need adjusting.
+rem If you change this file in a .fmu file, please consider updating
+rem $PTII/ptolemy/actor/lib/fmi/fmus/template/sources/build_fmu.bat
+
+if defined VS190COMNTOOLS (call "%VS190COMNTOOLS%\vsdevcmd.bat" -arch=x64) else ^
+if defined VS180COMNTOOLS (call "%VS180COMNTOOLS%\vsdevcmd.bat" -arch=x64) else ^
+if defined VS170COMNTOOLS (call "%VS170COMNTOOLS%\vsdevcmd.bat" -arch=x64) else ^
+if defined VS160COMNTOOLS (call "%VS160COMNTOOLS%\..\..\VC\vcvarsall.bat" x86_amd64 ) else ^
+if defined VS150COMNTOOLS (call "%VS150COMNTOOLS%\..\..\VC\vcvarsall.bat" x86_amd64 ) else ^
+if defined VS140COMNTOOLS (call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" x86_amd64 ) else ^
+if defined VS130COMNTOOLS (call "%VS130COMNTOOLS%\..\..\VC\vcvarsall.bat" x86_amd64 ) else ^
+if defined VS120COMNTOOLS (call "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" x86_amd64 ) else ^
+if defined VS110COMNTOOLS (call "%VS110COMNTOOLS%\..\..\VC\vcvarsall.bat" x86_amd64 ) else ^
+if defined VS100COMNTOOLS (call "%VS100COMNTOOLS%\..\..\VC\vcvarsall.bat" x86_amd64 ) else ^
+goto noCompiler
+
+rem We should be in the temp directory
+cd %PREV_CWD%
+
+if exist *.dll del /Q *.dll
+
+echo "The compiler version should mention x64 and not x86"
+cl
+
+echo "Compiling %1.c for %FMI_ARCH%"
+rem /wd4090 disables warnings about different 'const' qualifiers
+rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
+cl /LD /wd4090 /nologo  ..\%1.c /I ..\.
+rem cl /LD /wd4090 /nologo ..\%1.c /I ..\.
+dumpbin /exports %1.dll
+
+if not exist %1.dll goto compileError
+
+rem copy the .dll to binaries/%FMI_ARCH%
+if not exist ..\..\binaries\%FMI_ARCH% mkdir ..\..\binaries\%FMI_ARCH%
+cp %1.dll ..\..\binaries\%FMI_ARCH%
+
+
+
+
+
+rem If the local copy of 7z exists, then use it.
+if EXIST %PTII%\ptolemy\actor\lib\fmi\fmus\win32\7z.exe set PATH=%PATH%;%PTII%\ptolemy\actor\lib\fmi\fmus\win32
+
 rem If the 7z.exe binary is found, then
 rem zip the directory tree and move to fmu directory 
 for %%X in (7z.exe) do set FOUND=%%~$PATH:X
@@ -136,7 +203,7 @@ if defined FOUND (
   modelDescription.xml model.png binaries sources documentation
 ) else (
   echo Warning: Not building the .fmu file because 7z.exe is not found
-  echo 7z.exe is available as part of the fmusdk or %PTII%\ptolemy\actor\lib\fmu\fmus\win32\7z.exe
+  echo 7z.exe is available as part of the fmusdk or %PTII%\ptolemy\actor\lib\fmi\fmus\win32\7z.exe
 )
 goto cleanup
 
