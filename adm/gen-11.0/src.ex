@@ -119,6 +119,7 @@ lib/cachedir
 lib/javax.comm.properties
 lib/kepler-configs.jar
 lib/kepler-icons.jar
+lib/opencv_java320.dll
 lib/ptolemy.jar
 lib/ptolemy-doc.jar
 lib/ptII.properties

@@ -321,6 +321,7 @@ clean:	full_clean_setup
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
+	rm -f $(OPENCV_DLL)
 	rm -rf $(PTII_SRC_JAR) src_jar
 	rm -rf $(PTIIDIST) src installshield/*
 	rm -rf $(CAPECODE_SRC_JAR)
@@ -342,11 +343,16 @@ FINDCLEAN = $(GENDIR)/findclean
 # Don't use javadoc from Java 1.6 here, it will hang
 JAVADOC=javadoc
 
+OPENCV_DLL=opencv_java320.dll
+opencv_dll: $(OPENCV_DLL)
+$(OPENCV_DLL):
+	wget https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
+
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST)
-$(PTIIDIST):
+$(PTIIDIST): $(OPENCV_DLL)
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -376,6 +382,8 @@ $(PTIIDIST):
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
+	# Copy 35Mb OpenCV dll into lib.
+	cp $(GENDIR)/$(OPENCV_DLL) $(PTIIDIST)/lib
 	# Remove the duktape binaries.
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 	#

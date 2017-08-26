@@ -151,6 +151,8 @@
             <file src="../dists/ptII11.0.devel/capecode.exe" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/doc/img/capecode.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
+	    <!-- opencv_java320.dll is 35Mb! So, we only ship it with the Windows installer. -->
+            <file src="../dists/ptII11.0.devel/lib/opencv_java320.dll" targetdir="$INSTALL_PATH/lib"/>
 <!--MacOSInclude-->
 
             <file src="../dists/ptII11.0.devel/lib/libgdp.0.8.so"
