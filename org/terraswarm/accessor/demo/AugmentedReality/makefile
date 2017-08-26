@@ -56,7 +56,6 @@ OTHER_FILES_TO_BE_JARED = \
 	TagMapAccessorAR.xml \
 	TagURIMapAR.xml \
 	TemperatureSensor.js \
-	TemperatureSensorTemp.js \
 	VariantAccessors \
 	VibrationSensor.js
 
