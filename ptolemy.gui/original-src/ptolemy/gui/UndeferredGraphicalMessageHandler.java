@@ -1,6 +1,6 @@
 /* Singleton class for displaying exceptions, errors, warnings, and messages.
 
- Copyright (c) 1999-2014 The Regents of the University of California.
+ Copyright (c) 1999-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -318,12 +318,30 @@ public class UndeferredGraphicalMessageHandler extends
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
      *
+     *  If the length of the question is greater than
+     *  {@link ptolemy.util.StringUtilities#ELLIPSIS_LENGTH_LONG},
+     *  then the question is displayed in a JTextArea.
+     *
      *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
     @Override
     protected boolean _yesNoQuestion(String question) {
-        Object[] message = new Object[1];
+        Object[] message;
+
+        // If the question is long, then display a scrollable JTextArea.
+        if (question.length() <= StringUtilities.ELLIPSIS_LENGTH_LONG) {
+            message = new Object[1];
+        } else {
+            message = new Object[2];
+            JTextArea text = new JTextArea(question, 60, 80);
+            JScrollPane stext = new JScrollPane(text);
+            stext.setPreferredSize(new Dimension(600, 300));
+            text.setCaretPosition(0);
+            text.setEditable(false);
+            message[1] = stext;
+        }
+
         message[0] = _messageComponent(StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG));
 

@@ -1,6 +1,6 @@
 /* A port supporting message passing.
 
- Copyright (c) 1997-2015 The Regents of the University of California.
+ Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -1389,6 +1389,18 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Get the listeners for IOPortEvents.
+     * @return The a copy of the list of listeners for IOPortEvents,
+     * if any. Otherwise an empty list.
+     */
+    public List<IOPortEventListener> getIOPortEventListeners() {
+        List<IOPortEventListener> listeners = new LinkedList<IOPortEventListener>();
+        if (_hasPortEventListeners) {
+            listeners.addAll(_portEventListeners);
+        }
+        return listeners;
+    }
+    
     /**
      * Retrieve the index of the relation at the port.
      * In case the relation is not connected with this port -1
@@ -1789,7 +1801,7 @@ public class IOPort extends ComponentPort {
             if (!isOutput()) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
-            
+
             int width = getWidth();
 
             if (width <= 0) {
@@ -4139,7 +4151,7 @@ public class IOPort extends ComponentPort {
                             if (receiver[j] != null) {
                                 result.append(receiver[j].getClass().getName());
                             }
-                            
+
                             result.append("}\n");
                         }
                     }

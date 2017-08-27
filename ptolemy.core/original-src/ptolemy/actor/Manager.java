@@ -1,6 +1,6 @@
 /* A Manager governs the execution of a model.
 
- Copyright (c) 1997-2015 The Regents of the University of California.
+ Copyright (c) 1997-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -145,7 +145,6 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager() {
         super();
-        _registerShutdownHook();
     }
 
     /** Construct a manager in the default workspace with the given name.
@@ -157,7 +156,6 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager(String name) throws IllegalActionException {
         super(name);
-        _registerShutdownHook();
     }
 
     /** Construct a manager in the given workspace with the given name.
@@ -173,7 +171,6 @@ public class Manager extends NamedObj implements Runnable {
     public Manager(Workspace workspace, String name)
             throws IllegalActionException {
         super(workspace, name);
-        _registerShutdownHook();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -351,6 +348,11 @@ public class Manager extends NamedObj implements Runnable {
 
         try {
             try {
+                // Register the shutdown hook each time we register as
+                // opposed to each time a Manager is instantiated.
+                // See
+                // https://projects.ecoinformatics.org/ecoinfo/issues/7189
+                _registerShutdownHook();
                 initialize();
                 _afterInitTime = System.currentTimeMillis();
                 if (_afterInitTime - startTime > minimumStatisticsTime) {
@@ -447,6 +449,10 @@ public class Manager extends NamedObj implements Runnable {
                     _notifyListenersOfSuccessfulCompletion();
                 }
 
+                // Remove the _shutdownThread.
+                // See https://projects.ecoinformatics.org/ecoinfo/issues/7189
+                _disposeOfThreads();
+
                 // Handle throwable with exception handlers,
                 // if there are any.
                 if (initialThrowable != null) {
@@ -542,9 +548,12 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_state == IDLE) {
-            if (_thread != null) {
-                _disposeOfThreads();
-            }
+            // Don't need to invoke _disposeOfThreads()
+            // here because it is invoked in the finally clause
+            // of execute().
+            // if (_thread != null || _shutdownThread != null) {
+            //     _disposeOfThreads();
+            // }
             return;
         }
 
@@ -596,7 +605,7 @@ public class Manager extends NamedObj implements Runnable {
     public NamedObj getContainer() {
         if (_container == null) {
             return null;
-        } 
+        }
         return _container.get();
     }
 
@@ -677,7 +686,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @see #setWaitingThread(Thread)
      */
     public Thread getWaitingThread() {
-    	return _waitingThread;
+            return _waitingThread;
     }
 
     /** Initialize the model.  This calls the preinitialize() method of
@@ -978,7 +987,7 @@ public class Manager extends NamedObj implements Runnable {
 
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
-                        "The model is already running.");
+                        "The model is not idle, it is " + _state.getDescription());
             }
 
             if (_container == null || _container.get() == null) {
@@ -1254,8 +1263,12 @@ public class Manager extends NamedObj implements Runnable {
             // If running tried to load in some native code using JNI
             // then we may get an Error here
             notifyListenersOfThrowable(throwable);
-        } finally {
-            _disposeOfThreads();
+
+            // Used to call _disposeOfThreads() here, but now exeucte()
+            // calls it in its finally block.
+            // } finally {
+            //  _disposeOfThreads();
+            
         }
     }
 
@@ -1280,7 +1293,7 @@ public class Manager extends NamedObj implements Runnable {
     public void setStatusMessage(String message) {
         _statusMessage = message;
     }
-    
+
     /** Indicate that the specified thread is waiting and can be
      *  interrupted in the event that a change request is made.
      *  @param thread The thread that is waiting, or null to indicate
@@ -1288,7 +1301,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @see #getWaitingThread()
      */
     public void setWaitingThread(Thread thread) {
-    	_waitingThread = thread;
+            _waitingThread = thread;
     }
 
     /** Return a short description of the throwable.
@@ -1472,56 +1485,62 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Wrap up the model by invoking the wrapup method of the toplevel
-     *  composite actor.  The state of the manager will be set to
-     *  WRAPPING_UP.
+     *  composite actor.
+     *  At the end of this model, the state is set to idle.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is idle or already
      *   wrapping up, or if there is no container.
      */
     public void wrapup() throws KernelException, IllegalActionException {
-        // NOTE: This method used to be synchronized, but we cannot
-        // hold the lock on the director during wrapup because it
-        // will cause deadlock. Instead, we use a small barrier
-        // here to check and set the state.
-        synchronized (this) {
-            if (_state == IDLE || _state == WRAPPING_UP) {
-                throw new IllegalActionException(this,
-                        "Cannot wrap up. The current state is: "
-                                + _state.getDescription());
+        try {
+            // NOTE: This method used to be synchronized, but we cannot
+            // hold the lock on the director during wrapup because it
+            // will cause deadlock. Instead, we use a small barrier
+            // here to check and set the state.
+            synchronized (this) {
+                if (_state == IDLE || _state == WRAPPING_UP) {
+                    throw new IllegalActionException(this,
+                                                     "Cannot wrap up. The current state is: "
+                                                     + _state.getDescription());
+                }
+
+                if (_container == null || _container.get() == null) {
+                    throw new IllegalActionException(this, "No model to run!");
+                }
+
+                _setState(WRAPPING_UP);
             }
 
-            if (_container == null || _container.get() == null) {
-                throw new IllegalActionException(this, "No model to run!");
+            // Wrap up the topology
+            _container.get().wrapup();
+
+            // Process all change requests. If the model reaches this wrap up
+            // state due to the occurrence of an exception during execution,
+            // some change requests may be pending. If these requests
+            // are not processed, they will be left to the next execution.
+            // Also, wrapping up execution may cause change requests to be queued.
+            // Also, at the same time, re-enable immediate execution of
+            // change requests.
+            setDeferringChangeRequests(false);
+
+            // NOTE: This used to increment the workspace
+            // version, which would require that everything
+            // be re-done on subsequent runs. EAL 9/16/06
+            // _workspace.incrVersion();
+
+            if (_exitAfterWrapup) {
+                // If the ptolemy.ptII.exitAfterWrapup property is set,
+                // then we don't actually exit.
+                StringUtilities.exit(0);
             }
-
-            _setState(WRAPPING_UP);
+        } finally {
+            // We must set the state to IDLE here even if
+            // we entered wrapup() and the state was IDLE or WRAPPING_UP.
+            // If we don't set the state to IDLE, then if an accessor
+            // has an error in wrapup, the model will always be
+            // stuck in WRAPPING_UP.
+            _setState(IDLE);
         }
-
-        // Wrap up the topology
-        _container.get().wrapup();
-
-        // Process all change requests. If the model reaches this wrap up
-        // state due to the occurrence of an exception during execution,
-        // some change requests may be pending. If these requests
-        // are not processed, they will be left to the next execution.
-        // Also, wrapping up execution may cause change requests to be queued.
-        // Also, at the same time, re-enable immediate execution of
-        // change requests.
-        setDeferringChangeRequests(false);
-
-        // NOTE: This used to increment the workspace
-        // version, which would require that everything
-        // be re-done on subsequent runs. EAL 9/16/06
-        // _workspace.incrVersion();
-
-        if (_exitAfterWrapup) {
-            // If the ptolemy.ptII.exitAfterWrapup property is set,
-            // then we don't actually exit.
-            StringUtilities.exit(0);
-        }
-
-        // Wrapup completed successfully
-        _setState(IDLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1686,7 +1705,7 @@ public class Manager extends NamedObj implements Runnable {
         // then have a version of doneReading that cleans up?
         // FIXME: Should we check to see if the Manager is idle here?
         _thread = null;
-        
+
         // FIXME: Should this be synchronized?
         if (_shutdownThread != null) {
             Runtime.getRuntime().removeShutdownHook(_shutdownThread);
@@ -1765,7 +1784,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // The thread that is passed to Runtime.addShutdowHook().
     private Thread _shutdownThread = null;
-    
+
     // The state of the execution.
     private volatile State _state = IDLE;
 
@@ -1782,7 +1801,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
-    
+
     /** A thread that is waiting, e.g. synchronized to real time, or null if there is none. */
     private Thread _waitingThread;
 

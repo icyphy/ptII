@@ -1,6 +1,6 @@
 /* Filter for simple class name changes
 
- Copyright (c) 2002-2015 The Regents of the University of California.
+ Copyright (c) 2002-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -227,6 +227,10 @@ public class ClassChanges extends MoMLFilterSimple {
         // AccessorOne
         _classChanges.put("org.terraswarm.kernel.AccessorOne",
                 "org.terraswarm.accessor.JSAccessor");
+
+        // Rhino JavaScript
+        _classChanges.put("ptolemy.actor.lib.js.JavaScript",
+                "ptolemy.actor.lib.jjs.JavaScript");
 
         // Location
         _classChanges.put("ptolemy.moml.Location",
@@ -544,8 +548,8 @@ public class ClassChanges extends MoMLFilterSimple {
                         "org.hlacerti.lib."+hlaPt2Classes[i]);
             }
         }
-        
-        // KIELER LayoutHint was moved 
+
+        // KIELER LayoutHint was moved
         _classChanges.put("ptolemy.vergil.basic.layout.kieler.LayoutHint",
                 "ptolemy.vergil.actor.LayoutHint");
 
