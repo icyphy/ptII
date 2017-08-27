@@ -64,12 +64,17 @@ FMUS_2_0_CS =	$(FMUSDK2_FMUS_2_0_CS) bouncingBall20RC1 \
 
 # Hybrid FMUs created by Fabio Cremona
 FMUS_HYBRID = AdderIT CTClockIT CTClockW CheckEqualityFP \
-	CheckEqualityIT ClockFP ClockIT ClockW ConstantIT DelayIT DelayW \
-	IntegratorIT SamplerFP SamplerIT ZeroCrossingDetectorIT	\
+	CheckEqualityIT ClockFP DelayIT \
+	IntegratorIT SamplerFP ZeroCrossingDetectorIT	\
 	bouncingBallHybrid
 
+FMUS_HYBRID_NO_BUILD_FMU_UPDATE = CheckEqualityIT SamplerIT DelayW ConstantIT ClockIT ClockW
 
-FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS) $(FMUS_HYBRID)
+# All the Cosimulation FMUS, including ones that should not have build_fmu updated.
+FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS) $(FMUS_HYBRID) $(FMUS_HYBRID_NO_BUILD_FMU_UPDATE)
+
+# All the Cosimulation FMUS that should be updated.
+FMUS_CS_UPDATE =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS) $(FMUS_HYBRID)
 
 # All the CS FMUSDK2 FMUs.
 FMUSDK2_FMUS_CS = $(FMUSDK2_FMUS_1_0_CS) $(FMUSDK2_FMUS_2_0_CS)
@@ -291,8 +296,9 @@ update_jfmi:
 update_files: update_cs_files update_me_files
 
 update_cs_files:
-	@if [ "x$(FMUS_CS)" != "x" ]; then \
-		set $(FMUS_CS); \
+	@echo "Not updating $(FMUS_HYBRID_NO_BUILD_FMU_UPDATE) because they have a custom build_fmu";
+	@if [ "x$(FMUS_CS_UPDATE)" != "x" ]; then \
+		set $(FMUS_CS_UPDATE); \
 		for x do \
 			echo "copying template/sources/fmu.mk to $$x/src/sources"; \
 			cp template/sources/fmu.mk $$x/src/sources/; \
