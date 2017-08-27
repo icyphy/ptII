@@ -2055,7 +2055,7 @@ Accessor.prototype.scheduleEvent = function (accessor, priority) {
             queue.splice(i + 1, 0, accessor);
             return;
         }
-        if (myPriority == theirPriority) {inputsMap
+        if (myPriority == theirPriority) {
             // Already on the queue.
             return;
         }
