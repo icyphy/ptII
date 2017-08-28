@@ -97,7 +97,9 @@ exports.supportedSendTypes = function () {
  *  with the only exception being that the messages it emits are not instances
  *  of Buffer, but rather appropriate data types as specified by the receiveType
  *  argument to setReceiveType(). Similarly, the data provided to send() will be
- *  converted to a Buffer according to the type set by setSendType().
+ *  converted to a Buffer according to the type set by setSendType(). It is also
+ *  possible to deal with the data to send as raw bytes, if setRawBytes is called
+ *  with value true.
  *
  *  @param type One of "udp4" or "udp6", which is ignored in Cape Code.
  */
@@ -152,6 +154,13 @@ exports.Socket.prototype.send = function (data, port, hostname, callback) {
         callback = null;
     }
     this.socket.send(data, port, hostname, callback);
+};
+
+/** Set if the exchanged packets will be considered as raw bytes or not. 
+ *  @param value Boolean set set or reset raw byte
+ */
+exports.Socket.prototype.setRawBytes = function (value) {
+	this.socket.setRawBytes(value);
 };
 
 /** Set the receive type. If this is not called, the type defaults to "string".
