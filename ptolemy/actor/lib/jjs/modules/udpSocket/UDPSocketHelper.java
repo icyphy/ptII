@@ -241,15 +241,24 @@ public class UDPSocketHelper extends VertxHelperBase {
                     // One idea would be to traverse the keys and only
                     // create an array if all the keys were numbers
                     // starting with 1 and increasing monotonically.
-
-                    for (Object element : ((ScriptObjectMirror) data).values()) {
-                        if (element != null) {
-                            _appendToBuffer(element, _sendType, _sendImageType, buffer);
+                    if (!_rawBytes) {
+                        for (Object element : ((ScriptObjectMirror) data).values()) {
+                            if (element != null) {
+                                _appendToBuffer(element, _sendType, _sendImageType, buffer);
+                            }
+                        }
+                    } else {   
+                        for (Object element : ((ScriptObjectMirror) data).values()) {
+                            if (element != null) {
+                                byte lowByte = (byte)(((Integer)element) & 0xFF);    
+                                buffer.appendByte(lowByte);
+                            }
                         }
                     }
                 } else {
                     _appendToBuffer(data, _sendType, _sendImageType, buffer);
                 }
+                
                 // Send a Buffer
                 _socket.send(buffer, port, hostname,
                         new Handler<AsyncResult<DatagramSocket>>() {
@@ -267,6 +276,13 @@ public class UDPSocketHelper extends VertxHelperBase {
                     }
                 });
             });
+        }
+
+        /** Set raw bytes support. If this is not called, the attribute defaults to false.
+         *  @param rawBytes The value of rawBytes.
+         */
+        public void setRawBytes(boolean rawBytes) {
+            _rawBytes = rawBytes;
         }
 
         /** Set the receive type. If this is not called, the type defaults to "string".
@@ -368,6 +384,9 @@ public class UDPSocketHelper extends VertxHelperBase {
          */
         private boolean _isOpen;
 
+        /** If set to true, then the string data to send will be interpreted as bytes. */
+        private boolean _rawBytes = false;
+        
         /** The receive type. */
         private DATA_TYPE _receiveType = DATA_TYPE.STRING;
 
