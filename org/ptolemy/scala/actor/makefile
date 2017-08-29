@@ -54,10 +54,10 @@ JSRCS =
 SCALA_SRCS = \
 	ApplicationActor.scala \
 	ComponentEntity.scala \
-	TypedAtomicActor.scala \
-	TypedCompositeActor.scala \
 	TypedIOPort.scala \
-	TypedIORelation.scala
+	TypedIORelation.scala\
+	TypedAtomicActor.scala \
+	TypedCompositeActor.scala 
 
 OTHER_FILES_TO_BE_JARED =
 

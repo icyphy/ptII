@@ -80,15 +80,25 @@ package object implicits {
      *  @return Pair of Double
      */
     implicit def int2Double(x: (Int, Int)) = (x._1.asInstanceOf[Double], x._2.asInstanceOf[Double])
+    
+    /**
+     *  Convert implicitly a Port of type  org.ptolemy.scala.actor.TypedIOPort to 
+     *  port of type ptolemy.actor.TypedIOPort.
+     *  The compiler automatically detects and applies the conversion whenever it is needed
+     *  @param scalaPort Port of type org.ptolemy.scala.actor.TypedIOPort
+     *  @return Port of type ptolemy.actor.TypedIOPort
+     */
+    implicit def scala2JavaPort(scalaPort: TypedIOPort): ptolemy.actor.TypedIOPort = scalaPort.getActor()
+    
 
-            /**
-             *  Create a ptolemy.actor.TypedIOPort as Input.
-             *  @param container The container
-             *  @param name Name of the port
-             *  @return The instantiated port
-             */
-            def addTypedInputPort(container: ComponentEntity, name: String): ptolemy.actor.TypedIOPort = {
-                    new ptolemy.actor.TypedIOPort(container.getActor(), name, true, false)
+    /**
+     *  Create a ptolemy.actor.TypedIOPort as Input.
+     *  @param container The container
+     *  @param name Name of the port
+     *  @return The instantiated port
+     */
+    def addTypedInputPort(container: ComponentEntity, name: String): TypedIOPort = {
+            new TypedIOPort(container, name, true, false)
     }
     /**
      *  Create a ptolemy.actor.TypedIOPort as Output.
@@ -96,8 +106,8 @@ package object implicits {
      *  @param name Name of the port
      *  @return The instantiated port
      */
-    def addTypedOutputPort(container: ComponentEntity, name: String): ptolemy.actor.TypedIOPort = {
-            new ptolemy.actor.TypedIOPort(container.getActor(), name, false, true)
+    def addTypedOutputPort(container: ComponentEntity, name: String): TypedIOPort = {
+            new TypedIOPort(container, name, false, true)
     }
     /**
      *  Create a ptolemy.actor.TypedIOPort as InputOutput.
@@ -105,9 +115,11 @@ package object implicits {
      *  @param name Name of the port
      *  @return The instantiated port
      */
-    def addTypedIOutputPort(container: ComponentEntity, name: String): ptolemy.actor.TypedIOPort = {
-            new ptolemy.actor.TypedIOPort(container.getActor(), name, true, true)
+    def addTypedIOutputPort(container: ComponentEntity, name: String): TypedIOPort = {
+            new TypedIOPort(container, name, true, true)
     }
+    
+    
 
     /**
      * Invokes the method 'setExpression(String expression)' of the Parameter named 'parameterName'
@@ -212,6 +224,7 @@ package object implicits {
             
             case _ =>{   
                 ports.foreach(port => {
+                  
                     val relation = container.connect(actor.outputPortList().get(0), port)
                             if (connectionWidth > 0) {
                                 relation.asInstanceOf[ptolemy.actor.IORelation].width.setExpression(connectionWidth.toString())
@@ -415,14 +428,11 @@ package object implicits {
                     hocRelation
         }
 
-        /**
-         * Connects actor output to  another actor (actor2) input.
-         * Each actor should be a subclass of  ptolemy.actor.TypedCompositeActor.
-         */
+        
 
         /**
-         * Connect one-to-one all output ports of the actor to
-         * all input ports of the actor passed in parameter.
+         * Connect in parallel output ports of the actor to
+         * input ports of the actor passed in parameter.
          * Set the relation width to the value of relationWidth, if positive.
          * @param actors The actor to connect to.
          * @param container The container.
@@ -430,8 +440,8 @@ package object implicits {
          * @exception If the actor is a MultiInstance Actor.
          */
         def ==>[B <: ComponentEntity](actor2: B)(implicit container: CompositeEntity): B = {
-                if(actor.isInstanceOf[MultiInstance[ComponentEntity]])
-                  throw new IllegalActionException(actor, "'==>' operator cannot be applied to MultiInstance Actor")
+               if(actor.isInstanceOf[MultiInstance[ComponentEntity]]) 
+                  throw new IllegalActionException( "'==>' operator cannot be applied to MultiInstance Actor")
                 if (connectionWidth > 0) {
                     var relation: ptolemy.actor.IORelation = null
                             for (i <- 0 to actor.outputPortList().size() - 1) {
@@ -843,6 +853,63 @@ package object implicits {
         }
 
     }
+    
+    
+    /**
+     *     class ImplicitRelation
+     * Implicit Class to add methods to an object of type TypedIORelation.
+     * Implicit conversion: when the compiler finds p --> x , with p of type  "TypedIORelation"
+     * it considers p as an instance of class TypedIORelation and tries to match  x
+     * to one of the applicable types declared below.
+     */
+    implicit class ImplicitRelation(node: TypedIORelation) {
+        /**
+         * Sets the variable relationWidth to the value of width.
+         * Permits to write a composite operator  '--/width-->'.
+         * @param width The width of the relation.
+         * @return Reference to the current object.
+         */
+        def --/(width: Int): TypedIORelation = {
+                connectionWidth = width
+                        node
+        }
+        
+        /**
+         * Connect the Relation to a to a High Order Component actor.
+         * 
+         * @param hocActor The HOC actor to connect to.
+         * @param container The container.
+         * @return Reference to the HOC actor passed in parameter.
+         */
+        def -->[B <: ComponentEntity](hocActor: MultiInstance[B])(implicit container: CompositeEntity): MultiInstance[B] = {
+                      
+                if (connectionWidth > 0) {
+                    if (first || last) {
+                        if (first) {
+                            hocActor.actors.dropRight(numberOfElements).foreach(actor2 => node --/ connectionWidth --> actor2)
+                            first = false
+                        } else {
+                            hocActor.actors.drop(numberOfElements).foreach(actor2 => node --/ connectionWidth --> actor2)
+                            last = false
+                        }
+                    } else
+                        hocActor.actors.foreach(actor2 => node --/ connectionWidth --> actor2)
+                        connectionWidth = -1
+                } else if (first || last) {
+                    if (first) {
+                        hocActor.actors.dropRight(numberOfElements).foreach(actor2 => node --> actor2)
+                        first = false
+                    } else {
+                        hocActor.actors.drop(numberOfElements).foreach(actor2 => node --> actor2)
+                        last = false
+                    }
+                } else
+                    hocActor.actors.foreach(actor2 => node --> actor2)
+
+                    hocActor
+        }
+    }
+    
 
     /**
      *     class ImplicitTypedIOPort
@@ -872,6 +939,12 @@ package object implicits {
          * @return Reference to the first port passed in parameters list.
          */
         def -->(ports: ptolemy.actor.IOPort*)(implicit container: CompositeEntity): ptolemy.actor.IOPort = {
+                // If the port was dynamically instantiated, and it is input port,
+                // then, change the port as Output port.
+                if (port.isDynamicInstance && port.getActor().isInput() && !port.getActor().isOutput()){
+                  port.getActor().setInput(false)
+                  port.getActor().setOutput(true)
+                }
                 ports.foreach(port2 => {
                     val relation = container.connect(port.getActor(), port2)
                             if (connectionWidth > 0) {
@@ -889,6 +962,12 @@ package object implicits {
          * @return Reference to the first port passed in parameters list.
          */
         def -->(ports: TypedIOPort*)(implicit container: CompositeEntity): TypedIOPort = {
+                 // If the port was dynamically instantiated, and it is input port,
+                // then, change the port as Output port.
+                if (port.isDynamicInstance && port.getActor().isInput() && !port.getActor().isOutput()){
+                  port.getActor().setInput(false)
+                  port.getActor().setOutput(true)
+                }
                 ports.foreach(port2 => {
                     val relation = container.connect(port.getActor(), port2.getActor())
                             if (connectionWidth > 0) {
@@ -907,6 +986,12 @@ package object implicits {
          * @return Reference to the first relation passed in parameters list.
          */
         def -->(relations: TypedIORelation*): TypedIORelation = {
+                // If the port was dynamically instantiated, and it is input port,
+                // then, change the port as Output port.
+                if (port.isDynamicInstance && port.getActor().isInput() && !port.getActor().isOutput()){
+                  port.getActor().setInput(false)
+                  port.getActor().setOutput(true)
+                }          
                 relations.foreach(relation => port.getActor().link(relation.typedIORelation))
                 if (connectionWidth > 0) {
                     relations.foreach(relation => relation.typedIORelation.width.setExpression(connectionWidth.toString()))
@@ -923,6 +1008,12 @@ package object implicits {
          * @return Reference to the first actor passed in parameters list.
          */
         def -->[B <: ComponentEntity](actors: B*)(implicit container: CompositeEntity): B = {
+                // If the port was dynamically instantiated, and it is input port,
+                // then, change the port as Output port.
+                if (port.isDynamicInstance && port.getActor().isInput() && !port.getActor().isOutput()){
+                  port.getActor().setInput(false)
+                  port.getActor().setOutput(true)
+                }          
                 actors.foreach(actor => {
                     val relation = container.connect(port.getActor(), actor.inputPortList().get(0))
                             if (connectionWidth > 0) {
@@ -940,6 +1031,12 @@ package object implicits {
          * @return Reference to the HOC actor passed in parameter.
          */
         def -->[B <: ComponentEntity](hocActor: MultiInstance[B])(implicit container: CompositeEntity): MultiInstance[B] = {
+                // If the port was dynamically instantiated, and it is input port,
+                // then, change the port as Output port.
+                if (port.isDynamicInstance && port.getActor().isInput() && !port.getActor().isOutput()){
+                  port.getActor().setInput(false)
+                  port.getActor().setOutput(true)
+                }          
                 if (connectionWidth > 0) {
                     if (first || last) {
                         if (first) {
@@ -971,6 +1068,12 @@ package object implicits {
          * @return Reference to the HOC  relation passed in parameter.
          */
         def -->(hocRelation: MultiInstanceRelation)(implicit container: CompositeEntity): MultiInstanceRelation = {
+                // If the port was dynamically instantiated, and it is input port,
+                // then, change the port as Output port.
+                if (port.isDynamicInstance && port.getActor().isInput() && !port.getActor().isOutput()){
+                  port.getActor().setInput(false)
+                  port.getActor().setOutput(true)
+                }          
                 if (connectionWidth > 0) {
                     if (first || last) {
                         if (first) {

@@ -38,7 +38,7 @@ package org.ptolemy.scala.actor
  * while handling Ptolemy actors.
  */
 
-trait ComponentEntity extends ptolemy.kernel.ComponentEntity[ptolemy.kernel.ComponentPort] {
+trait ComponentEntity {//extends ptolemy.kernel.ComponentEntity[ptolemy.kernel.ComponentPort] {
   /**
    * Returns a reference to the wrapped actor.
    * This method returns the Ptolemy actor (java) wrapped  by the scala actor.

@@ -124,8 +124,11 @@ case class FFT(name: String, N: Integer)(implicit var container: CompositeEntity
 								val connectionList = nodes.relations.zip(allTuples)
 
 								// for each tuple (node_i,(x_i, y_i)) in the list apply  node_i --> (x_i, y_i)   
-								connectionList.foreach(tuple =>tuple._1 --/1--> tuple._2)
+								connectionList.foreach(tuple =>tuple._1 --/1--> tuple._2.asInstanceOf[ComponentEntity])
+								
+								
 
+								
 								// connects one-to-one  actors of the 2 HOC actors
 								// for (i form 1 toN):  gain_i --/1--> adder_i
 								gains --/1--> adders
