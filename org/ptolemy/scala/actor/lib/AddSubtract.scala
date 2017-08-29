@@ -43,7 +43,7 @@ import org.ptolemy.scala.actor.ComponentEntity
  * @author Moez Ben Hajhmida
  *
  */
-case class AddSubtract(name: String)(implicit container: CompositeEntity) extends TypedAtomicActor {
+case class AddSubtract(name: String)(implicit container: CompositeEntity) extends TypedAtomicActor { 
   /**
    *  This field is a reference to the Java actor.
    *   It makes possible to access all attributes and methods

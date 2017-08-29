@@ -69,5 +69,14 @@ case class DEDirector(name: String)(implicit container: CompositeEntity) {
     setExpression(director, paramaterName, expression)
     this
   }
+  
+  /**
+   * Overloading constructor 
+   * Permits call a Class constructor like in PtolemyII Java classes
+   * val actor  = new SDFDirector(container, name)
+   * @param container The container.
+   * @param name The name of this director
+   */  
+  def this (container: CompositeEntity, name: String) {  this (name)(container)} 
 
 }

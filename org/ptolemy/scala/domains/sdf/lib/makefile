@@ -1,4 +1,4 @@
-# Makefile for Scala Ptolemy Discrete Event domain actor library
+# Makefile for Scala Ptolemy SDF actor library
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #

@@ -33,7 +33,7 @@
 
 ME =		org/ptolemy/scala/domains
 
-DIRS = 		de df
+DIRS = 		de sdf
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -65,7 +65,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	de \
-	df
+	sdf
 
 JCLASS = $(SCALA_SRCS:%.scala=%.class)
 

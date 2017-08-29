@@ -50,7 +50,7 @@ class Butterfly(workspace: Workspace) extends ApplicationActor {
   val expression =
     Expression("Expression").set("expression", "-2.0*cos(4.0*ramp) + "
       + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)")
-  expression.ramp = addTypedInputPort(expression, "ramp")
+  //expression.ramp = addTypedInputPort(expression, "ramp")
   val polarToCartesian = PolarToCartesian("Polar to Cartesian")
   val xyPlotter = XYPlotter("xyPlotter").set("grid", false).set("xRange", (-3, 4)).set("yRange", (-4, 4))
   // Create a relation link to relation
@@ -58,7 +58,9 @@ class Butterfly(workspace: Workspace) extends ApplicationActor {
 
   //link output to relation
   ramp.output --> node --> (expression.ramp, polarToCartesian.angle)
-
+  
+  
+  
   //point-to-point connections
   expression.output --> polarToCartesian.magnitude
   polarToCartesian ==> xyPlotter

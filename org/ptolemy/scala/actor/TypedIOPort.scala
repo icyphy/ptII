@@ -36,17 +36,20 @@ import ptolemy.kernel.util.Workspace
 import org.ptolemy.scala.actor._
 
 /**
- *  Overloading constructor.
+ * Overloading constructor.
  * @param container The container.
- *  @param name The name of this port
- *  @param  isInput True if the port is an input
- *  @param  isOutput True if the port is an output
+ * @param name The name of this port
+ * @param  isInput True if the port is an input
+ * @param  isOutput True if the port is an output
  */
 /**
  * @author Moez Ben Hajhmida
  *
  */
 case class TypedIOPort(container: ComponentEntity, name: String, isInput: Boolean, isOutput: Boolean) {
+   /**
+   *  The Java Actor Port wrapper by this Scala Class.
+   */
   var typedIOPort: ptolemy.actor.TypedIOPort = new ptolemy.actor.TypedIOPort(container.getActor(), name, isInput, isOutput)
 
   /**
@@ -90,6 +93,13 @@ case class TypedIOPort(container: ComponentEntity, name: String, isInput: Boolea
   def apply(workspace: Workspace) = {
     typedIOPort = new ptolemy.actor.TypedIOPort(workspace)
   }
+  
+  
+  /**
+   * True if the port is dynamically created. 
+   * See selectDynamic() in org.ptolemy.scala.actor.TypedAtomicActor. 
+   */
+  var isDynamicInstance = false
 
 }
 

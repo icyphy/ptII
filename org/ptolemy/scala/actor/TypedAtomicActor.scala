@@ -31,13 +31,13 @@ package org.ptolemy.scala.actor
 import language.dynamics
 import scala.collection.mutable.HashMap
 
-// import org.ptolemy.scala.implicits._
+import org.ptolemy.scala.implicits._
 
 /**
  * @author Moez Ben Hajhmida
  *
  */
-abstract class TypedAtomicActor extends ComponentEntity with Dynamic {
+abstract class TypedAtomicActor extends ptolemy.actor.TypedAtomicActor with ComponentEntity with Dynamic {
 
   /**
    * Creates a map between a name and a ptolemy.actor.TypedIOPort.
@@ -45,7 +45,7 @@ abstract class TypedAtomicActor extends ComponentEntity with Dynamic {
    * Used to dynamically (during runtime) add and manage dynamic(new) fields to an object.
    */
 
-  private val map = new HashMap[String, ptolemy.actor.TypedIOPort]
+  private val map = new HashMap[String, TypedIOPort]
 
   /**
    * Returns a reference to the wrapped actor.
@@ -62,7 +62,14 @@ abstract class TypedAtomicActor extends ComponentEntity with Dynamic {
    * @param name The name of the field to be dynamically added to the object.
    */
 
-  def selectDynamic(name: String): ptolemy.actor.TypedIOPort = return map(name)
+  def selectDynamic(name: String): TypedIOPort = {
+    if (!map.contains(name)){
+      val port =  new TypedIOPort(this, name, true, false)
+      port.isDynamicInstance = true
+       map(name) = port
+    }
+    return map(name)
+  }
 
   /**
    * Allows to write field updates.
@@ -70,7 +77,7 @@ abstract class TypedAtomicActor extends ComponentEntity with Dynamic {
    * @param name The name of the dynamic field of the object.
    * @param value The Ptolemy port to be added top the object (Ptolemy actor)
    */
-  def updateDynamic(name: String)(value: ptolemy.actor.TypedIOPort) = {
+  def updateDynamic(name: String)(value: TypedIOPort) = {
     map(name) = value
   }
 
@@ -78,7 +85,7 @@ abstract class TypedAtomicActor extends ComponentEntity with Dynamic {
    * List all the output ports.
    *  @return A list of output TypedIOPort objects.
    */
-  def outputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
+  override def outputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
     getActor().outputPortList()
   }
 
@@ -86,7 +93,7 @@ abstract class TypedAtomicActor extends ComponentEntity with Dynamic {
    * List all the input ports.
    *  @return A list of input TypedIOPort objects.
    */
-  def inputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
+  override def inputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
     getActor().inputPortList()
   }
 }

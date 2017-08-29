@@ -73,62 +73,62 @@ case class TypedIORelation(name: String)(implicit container: CompositeEntity) {
     this
   }
   /**
-   * Connects the object relation to a Ptolemy port of type IOPort.
+   * Connects the object relation to one or many Ptolemy ports of type ptolemy.actor.IOPort.
    * Sets the relation width to the value of relationWidth, if positive.
-   * @param port The Ptolemy port.
-   * @return reference to the current object.
+   * @param ports The 1/many Ptolemy ports.
+   * @return Reference to the first port passed in parameters list.
    */
-  def -->(port: ptolemy.actor.IOPort): TypedIORelation = {
-    port.link(typedIORelation)
-    if (relationWidth > 0) {
-      typedIORelation.width.setExpression(relationWidth.toString())
-      relationWidth = -1
-    }
-    this
+  def -->(ports: ptolemy.actor.IOPort*): ptolemy.actor.IOPort = {
+          ports.foreach(port => {
+              port.link(typedIORelation)
+
+              if (relationWidth > 0) {
+                  typedIORelation.width.setExpression(relationWidth.toString())
+                  relationWidth = -1
+              }
+          })
+          ports(0)
   }
+  
+  /**
+   * Connects the object relation to one or many Ptolemy ports of type TypedIOPort.
+   * Sets the relation width to the value of relationWidth, if positive.
+   * @param ports The 1/many Ptolemy ports.
+   * @return Reference to the first port passed in parameters list.
+   */
+  def -->(ports: TypedIOPort*): TypedIOPort = {
+          ports.foreach(port => {
+              port.getActor().link(typedIORelation)
+
+              if (relationWidth > 0) {
+                  typedIORelation.width.setExpression(relationWidth.toString())
+                  relationWidth = -1
+              }
+          })
+          ports(0)
+  }
+
+ 
 
   /**
-   * Connects the object relation to a pair of Ptolemy ports of type IOPort.
+   * Connects the object relation to one or many Ptolemy actors.
    * Sets the relation width to the value of relationWidth, if positive.
-   * @param port The pair of Ptolemy ports.
+   * @param actors The List of 1/many Ptolemy actors.
+   * @return Reference to the first actor passed in parameters list.
    */
-  def -->(port: (ptolemy.actor.IOPort, ptolemy.actor.IOPort)) = {
-    port._1.link(typedIORelation)
-    port._2.link(typedIORelation)
-    if (relationWidth > 0) {
-      typedIORelation.width.setExpression(relationWidth.toString())
-      relationWidth = -1
-    }
+  def -->[B <: ComponentEntity](actors: B*): B = {
+          actors.foreach(port => {
+              port.inputPortList().get(0).link(typedIORelation)
+
+              if (relationWidth > 0) {
+                  typedIORelation.width.setExpression(relationWidth.toString())
+                  relationWidth = -1
+              }
+          })
+          actors(0)
   }
 
-  /**
-   * Connects the object relation to a Ptolemy actor.
-   * Sets the relation width to the value of relationWidth, if positive.
-   * @param actor The Ptolemy actor.
-   * @return reference to the actor.
-   */
-  def -->[B <: ComponentEntity](actor: B): B = {
-    actor.inputPortList().get(0).link(typedIORelation)
-    if (relationWidth > 0) {
-      typedIORelation.width.setExpression(relationWidth.toString())
-      relationWidth = -1
-    }
-    actor
-  }
-
-  /**
-   * Connects the object relation to a pair of Ptolemy actors.
-   * Sets the relation width to the value of relationWidth, if positive.
-   * @param actor The pair of Ptolemy actors.
-   */
-
-  def -->[B <: ComponentEntity](actors: (B, B))(implicit d: DummyImplicit) = {
-    actors._1.inputPortList().get(0).link(typedIORelation)
-    actors._2.inputPortList().get(0).link(typedIORelation)
-    if (relationWidth > 0) {
-      typedIORelation.width.setExpression(relationWidth.toString())
-      relationWidth = -1
-    }
-  }
+  
+ 
 
 }

@@ -37,8 +37,9 @@ import scala.collection.mutable.HashMap
  * @author Moez Ben Hajhmida
  *
  */
-abstract class TypedCompositeActor extends ComponentEntity with Dynamic {
-
+abstract class TypedCompositeActor extends ptolemy.actor.TypedCompositeActor with  ComponentEntity with Dynamic {
+  
+ 
   /**
    * Creates a map between a name and a ptolemy.actor.TypedIOPort.
    * Used by selectDynamic(name: String) and updateDynamic(name:String)(value: ptolemy.actor.TypedIOPort).
@@ -46,6 +47,7 @@ abstract class TypedCompositeActor extends ComponentEntity with Dynamic {
    */
 
   private val map = new HashMap[String, ptolemy.actor.TypedIOPort]
+  
 
   /**
    * Returns a reference to the wrapped actor.
@@ -93,7 +95,7 @@ abstract class TypedCompositeActor extends ComponentEntity with Dynamic {
    * List all the output ports.
    *  @return A list of output TypedIOPort objects.
    */
-  def outputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
+  override def outputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
     getActor().outputPortList().asInstanceOf[java.util.List[ptolemy.actor.TypedIOPort]]
   }
 
@@ -101,7 +103,7 @@ abstract class TypedCompositeActor extends ComponentEntity with Dynamic {
    * List all the input ports.
    *  @return A list of input TypedIOPort objects.
    */
-  def inputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
+  override def inputPortList(): java.util.List[ptolemy.actor.TypedIOPort] = {
     getActor().inputPortList().asInstanceOf[java.util.List[ptolemy.actor.TypedIOPort]]
   }
 }
