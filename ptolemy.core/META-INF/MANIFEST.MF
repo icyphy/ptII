@@ -2,19 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Core
 Bundle-SymbolicName: ptolemy.core
-Bundle-Version: 11.0.0.qualifier
+Bundle-Version: 11.1.0.qualifier
 Bundle-Vendor: CHESS
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.ptolemy.classloading;version="11.0.0",
+Export-Package: org.ptolemy.classloading;version="11.1.0",
  org.ptolemy.classloading.osgi;version="11.0.0",
- ptolemy.actor;version="11.0.0",
+ ptolemy.actor;version="11.1.0",
  ptolemy.actor.parameters;version="11.0.0",
  ptolemy.actor.sched;version="11.0.0",
  ptolemy.actor.util;version="11.0.0",
- ptolemy.data;version="11.0.0",
- ptolemy.data.expr;version="11.0.0",
- ptolemy.data.type;version="11.0.0",
+ ptolemy.data;version="11.1.0",
+ ptolemy.data.expr;version="11.1.0",
+ ptolemy.data.type;version="11.1.0",
  ptolemy.data.unit;version="11.0.0",
  ptolemy.graph;version="11.0.0",
  ptolemy.graph.analysis;version="11.0.0",
@@ -24,9 +24,9 @@ Export-Package: org.ptolemy.classloading;version="11.0.0",
  ptolemy.kernel;version="11.0.0",
  ptolemy.kernel.attributes;version="11.0.0",
  ptolemy.kernel.undo;version="11.0.0",
- ptolemy.kernel.util;version="11.0.0",
+ ptolemy.kernel.util;version="11.1.0",
  ptolemy.math;version="11.0.0",
- ptolemy.util;version="11.0.0"
+ ptolemy.util;version="11.1.0"
 Import-Package: org.osgi.framework;version="1.3.0",
  org.osgi.util.tracker;version="1.5.1",
  org.ptolemy.commons;version="11.0.0"
