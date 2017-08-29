@@ -43,9 +43,6 @@
 "use strict";
 
 exports.setup = function() {
-    // Indicate that this can reify a MutableAccessor that expects a controllableSensor.
-    this.realize('controllableSensor');
-
 	this.input('control', {
 		'type': 'JSON',
 		'value': {'step': 10}
