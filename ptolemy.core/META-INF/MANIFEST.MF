@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Core
 Bundle-SymbolicName: ptolemy.core
 Bundle-Version: 11.1.0.qualifier
-Bundle-Vendor: CHESS
+Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.ptolemy.classloading;version="11.1.0",

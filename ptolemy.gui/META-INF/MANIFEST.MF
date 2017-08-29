@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Gui support
 Bundle-SymbolicName: ptolemy.gui
 Bundle-Version: 11.1.0.qualifier
-Bundle-Vendor: CHESS
+Bundle-Vendor: Ptolemy Project, Berkeley, California
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-BuddyPolicy: registered
 Import-Package: com.microstar.xml;version="11.0.0",

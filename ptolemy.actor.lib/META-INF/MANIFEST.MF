@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy actor lib
 Bundle-SymbolicName: ptolemy.actor.lib
 Bundle-Version: 11.1.0.qualifier
-Bundle-Vendor: CHESS
+Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-RegisterBuddy: ptolemy.moml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.7.0",

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Moml
 Bundle-SymbolicName: ptolemy.moml
 Bundle-Version: 11.1.0.qualifier
-Bundle-Vendor: CHESS
+Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.8.0",

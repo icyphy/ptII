@@ -3,7 +3,7 @@
       id="org.ptolemy.tycho.feature"
       label="Feature"
       version="1.0.0.qualifier"
-      provider-name="Ptolemy Project">
+      provider-name="Ptolemy Project, Berkeley, California">
 
    <description url="https://wiki.eclipse.org/Triquetrum/Ptolemy/osgi-2-0">
       Ptolemy II actors and other code used by Triquetrum.

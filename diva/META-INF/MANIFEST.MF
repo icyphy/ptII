@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Diva
 Bundle-SymbolicName: diva
 Bundle-Version: 11.0.0.qualifier
-Bundle-Vendor: CHESS
+Bundle-Vendor: Ptolemy Project, Berkeley, California
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: com.microstar.xml;version="11.0.0",
  org.w3c.dom.svg;version="1.1.0"
