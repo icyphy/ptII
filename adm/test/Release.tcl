@@ -180,6 +180,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 !       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance.xml} {
 !       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml} {
 ?       .maven} {
+?       adm/gen-11.0/opencv_java320.dll} {
 ?       capeCodeNonGUI} {
 ?       cobertura.ser} {
 ?       generated-sources} {
@@ -198,7 +199,8 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       reports} {
 ?       vendors/jogl} {
 ?       vendors/universalJavaApplicationStub} {
-M       lib/diva.jar}}
+M       lib/diva.jar} {
+M       lib/ptliblicenses.jar}}
         if { $result == $result2 } {
 	    puts "Result was:\n$result\nWhich is ok"
             set resultMessage {}
