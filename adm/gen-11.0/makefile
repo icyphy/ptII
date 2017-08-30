@@ -348,11 +348,28 @@ opencv_dll: $(OPENCV_DLL)
 $(OPENCV_DLL):
 	wget https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
+NODE_VERSION=8.4.0
+node:
+	if [ ! -d node ]; then \
+		mkdir node; \
+	fi
+NODE_WIN = node/node-v$(NODE_VERSION)-win-x64.zip
+$(NODE_WIN): node
+	if [ ! -f "$@" ]; then \
+		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
+	fi
+
+NODE_DARWIN = node/node-v$(NODE_VERSION)-darwin-x64.tar.gz
+$(NODE_DARWIN): node
+	if [ ! -f "$@" ]; then \
+		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.gz); \
+	fi
+
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
 # then we tar it up.
-ptiidist: $(PTIIDIST)
-$(PTIIDIST): $(OPENCV_DLL)
+ptiidist: $(PTIIDIST) 
+$(PTIIDIST): $(OPENCV_DLL) $(NODE_WIN) $(NODE_DARWIN)
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -384,6 +401,10 @@ $(PTIIDIST): $(OPENCV_DLL)
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	# Copy 35Mb OpenCV dll into lib.
 	cp $(GENDIR)/$(OPENCV_DLL) $(PTIIDIST)/lib
+	# Set up node directories
+	mkdir -p $(PTIIDIST)/vendors/node
+	(cd $(PTIIDIST)/vendors/node; unzip $(GENDIR)/$(NODE_WIN))
+	(cd $(PTIIDIST)/vendors/node; tar -zxf $(GENDIR)/$(NODE_DARWIN))
 	# Remove the duktape binaries.
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 	#
@@ -3548,12 +3569,14 @@ $(CAPECODE_SETUP_64).exe: $(CAPECODE_SETUP_DEPENDENCIES) \
 
 ptiny.exe: $(PTIIDIST)/ptiny.exe
 $(PTIIDIST)/ptiny.exe:
-	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
+	@echo " Creating $(PTIIDIST)/ptiny.exe"
+	$(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 $(PTIIDIST)/ptbook.exe:
 	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 $(PTIIDIST)/capecode.exe:
+	@echo " Creating $(PTIIDIST)/capecode.exe"
 	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
@@ -3784,6 +3807,7 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- MacNodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-mac-x64" targetdir="$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
