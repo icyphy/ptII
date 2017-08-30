@@ -43,6 +43,14 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
+https://april.eecs.umich.edu/software/apriltag.html contains a set of
+pregenerated tags as png and PostScript files.  However, these are of
+low resolution.  To scale them, use linear interpolation to avoid blurring.
+Or, search the web for "tag 36H11".
+
+In the Ptolemy tree, a sample file may be found at
+$PTII/ptolemy/actor/lib/jjs/modules/aprilTags//demo/AprilTags/tag36_11_00586.pdf
+
 @module aprilTags
 @author Edward A. Lee
  */

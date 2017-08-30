@@ -88,6 +88,15 @@ import ptolemy.kernel.util.IllegalActionException;
  *  The options for the filter are the ones that have setter methods. For example,
  *  the TagFamily option as a setTagFamily() method.
  *
+ *  <a href="https://april.eecs.umich.edu/software/apriltag.html#in_browser">https://april.eecs.umich.edu/software/apriltag.html</a>
+ *  contains a set of pregenerated tags as png and PostScript files.
+ *  However, these are of low resolution.  To scale them, use linear
+ *  interpolation to avoid blurring.  Or, search the web for "tag
+ *  36H11".
+ *
+ *  In the Ptolemy tree, a sample file may be found at
+ *  $PTII/ptolemy/actor/lib/jjs/modules/aprilTags//demo/AprilTags/tag36_11_00586.pdf
+ *
  *  @author Edwin Bolson and Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
