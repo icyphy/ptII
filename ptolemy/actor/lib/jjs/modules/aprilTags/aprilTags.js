@@ -46,6 +46,11 @@ https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 https://april.eecs.umich.edu/software/apriltag.html contains a set of
 pregenerated tags as png and PostScript files.  However, these are of
 low resolution.  To scale them, use linear interpolation to avoid blurring.
+
+For example, with ImageMagik, use:
+
+mogrify -scale 1000x1000 *.png; convert *.png tag36h11.pdf
+
 Or, search the web for "tag 36H11".
 
 In the Ptolemy tree, a sample file may be found at
