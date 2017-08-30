@@ -179,10 +179,16 @@ bin_install_dir:
 # don't use it and use 'make' instead.
 # EXTRA_TARGETS is used in ptolemy/actor/lib/security/demo/Signature/makefile
 fast:
-	@if [ "x$(EXTRA_TARGETS)" != "x" ]; then \
-                $(MAKE) $(EXTRA_TARGETS); \
-        fi
-	@if [ "x$(DIRS)" != "x" ]; then \
+	@if [ "$(ME)" = "." ]; then \
+		echo ""; \
+		echo "$(ROOT)/mk/ptcommon.mk: Running $(ROOT)/bin/ant instead of make fast at the top level because ant is faster."; \
+		echo ""; \
+		$(ROOT)/bin/ant; \
+	fi
+	@if [ "$(ME)" != "." -a "x$(EXTRA_TARGETS)" != "x" ]; then \
+		$(MAKE) $(EXTRA_TARGETS); \
+	fi
+	@if [ "$(ME)" != "." -a "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
 		    if [ -w $$x ] ; then \
@@ -193,11 +199,11 @@ fast:
 		    fi ; \
 		done ; \
 	fi
-	if [ "x$(JSRCS)" != "x" ]; then \
+	@if [ "$(ME)" != "." -a "x$(JSRCS)" != "x" ]; then \
 		echo "fast build with 'CLASSPATH=\"$(CLASSPATH)$(AUXCLASSPATH)\" \"$(JAVAC)\" $(JFLAGS) *.java' in `pwd`"; \
 		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVAC)" $(JFLAGS) *.java; \
 	fi
-	@if [ "x$(PTLIB)" != "x" ]; then \
+	@if [ "$(ME)" != "." -a "x$(PTLIB)" != "x" ]; then \
 		$(MAKE) $(PTLIB); \
 	fi
 
