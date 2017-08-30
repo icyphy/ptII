@@ -284,6 +284,7 @@ replay_pid*.log
 updateMoMLFiles.xml
 vendors/jogl
 vendors/jsdoc
+vendors/node
 socket.cfg
 devel
 htmlchek*
