@@ -97,6 +97,8 @@ EXTRA_EXECUTABLE_SRCS = \
 	mkptdemo \
 	mkptlivelinkdemo \
 	mkpttest \
+	node \
+	npm \
 	ptjunit \
 	reloadAllAccessors \
 	updateFmu \

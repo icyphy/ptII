@@ -1,0 +1,49 @@
+#!/bin/sh
+# $Id$
+
+# bin/node - a wrapper script for Node.js that runs a version
+# of node in $PTII/vendors/node if it is present.
+
+if [ -z "$PTII" ]; then
+   echo "$0: \$PTII must be set."
+   exit 3
+fi
+
+if [ ! -e "$PTII" ]; then
+   echo "$0: \$PTII is $PTII, which does not exist?"
+   exit 4
+fi
+
+NODE_VERSION=$PTII/vendors/node/node-v8.4.0
+OS=`uname -s`
+MACHINE=`uname -m`
+case $OS in
+    Cygwin*)
+        if [ "$MACHINE" = "x86_64" ]; then
+            NODE_DIR=${NODE_VERSION}-win-x64
+        else
+            NODE_DIR=${NODE_VERSION}-win-32
+        fi
+        ;;
+    Darwin)
+        NODE_DIR=${NODE_VERSION}-darwin-x64;;
+    Linux)
+        if [ "$MACHINE" = "x86_64" ]; then
+            NODE_DIR=${NODE_VERSION}-linux-x64
+        else
+            NODE_DIR=${NODE_VERSION}-linux-32
+        fi
+        ;;
+    *) NODE_DIR=${NODE_VERSION}-unknownArch;;
+esac
+
+NODE="$NODE_DIR/bin/node"
+if [ -f "$NODE" ]; then
+   if [ ! -x "$NODE" ]; then
+      chmod a+x "$NODE"
+   fi
+   echo "$0: Running $NODE $@"
+   exec "$NODE" $@
+else
+   exec node $@
+fi
