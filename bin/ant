@@ -22,7 +22,7 @@ if [ -f "$ANT" ]; then
    fi
    echo "$0: Running $ANT $@"
    export ANT_HOME="$PTII/ant"
-   exec $ANT $@
+   exec "$ANT" $@
 else
    exec ant $@
 fi

@@ -1,0 +1,49 @@
+#!/bin/sh
+# $Id$
+
+# bin/npm - a wrapper script for Node.js that runs a version
+# of npm in $PTII/vendors/node if it is present.
+
+if [ -z "$PTII" ]; then
+   echo "$0: \$PTII must be set."
+   exit 3
+fi
+
+if [ ! -e "$PTII" ]; then
+   echo "$0: \$PTII is $PTII, which does not exist?"
+   exit 4
+fi
+
+NODE_VERSION=$PTII/vendors/node/node-v8.4.0
+OS=`uname -s`
+MACHINE=`uname -m`
+case $OS in
+    Cygwin*)
+        if [ "$MACHINE" = "x86_64" ]; then
+            NODE_DIR=${NODE_VERSION}-win-x64
+        else
+            NODE_DIR=${NODE_VERSION}-win-32
+        fi
+        ;;
+    Darwin)
+        NODE_DIR=${NODE_VERSION}-darwin-x64;;
+    Linux)
+        if [ "$MACHINE" = "x86_64" ]; then
+            NODE_DIR=${NODE_VERSION}-linux-x64
+        else
+            NODE_DIR=${NODE_VERSION}-linux-32
+        fi
+        ;;
+    *) NODE_DIR=${NODE_VERSION}-unknownArch;;
+esac
+
+NPME="$NODE_DIR/bin/node"
+if [ -f "$NPM" ]; then
+   if [ ! -x "$NPM" ]; then
+      chmod a+x "$NPM"
+   fi
+   echo "$0: Running $NPM $@"
+   exec "$NPM" $@
+else
+   exec node $@
+fi
