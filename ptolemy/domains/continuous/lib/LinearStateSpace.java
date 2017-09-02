@@ -296,7 +296,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         DoubleMatrixToken c = (DoubleMatrixToken) C.getToken();
         int r = c.getRowCount();
 
-        /* DoubleMatrixToken d = (DoubleMatrixToken)*/D.getToken();
+        DoubleMatrixToken d = (DoubleMatrixToken) D.getToken();
 
         /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/initialStates
         .getToken();
@@ -335,6 +335,9 @@ public class LinearStateSpace extends TypedCompositeActor {
                 for (int j = 0; j < n; j++) {
                     // We don't create the Scale if the corresponding element
                     // in the A matrix is 0.
+                    if (a.getElementAt(i, j) == 0.0) {
+                        continue;
+                    }
                     feedback[i][j] = new Scale(this, "feedback_" + i + "_" + j);
                     feedback[i][j].factor.setExpression("A(" + i + ", " + j
                             + ")");
@@ -373,9 +376,12 @@ public class LinearStateSpace extends TypedCompositeActor {
                 outputAdders[l] = new AddSubtract(this, "outputAdder" + l);
                 connect(outputAdders[l].output, output);
 
-                // Create the output scales only if the corresponding
-                // 'c' element is not 0.
                 for (int i = 0; i < n; i++) {
+                    // Create the output scales only if the corresponding
+                    // 'c' element is not 0.
+                    if (c.getElementAt(l, i) == 0.0) {
+                        continue;
+                    }
                     outputScales[l][i] = new Scale(this, "outputScale_" + l
                             + "_" + i);
                     outputScales[l][i].factor.setExpression("C(" + l + ", " + i
@@ -390,7 +396,10 @@ public class LinearStateSpace extends TypedCompositeActor {
 
             for (int l = 0; l < r; l++) {
                 for (int j = 0; j < m; j++) {
-                    // Create the scale only if the element is not 0.
+                    // Create the scale only if the element is not 0:
+                    if (d.getElementAt(l, j) == 0.0) {
+                        continue;
+                    }
                     feedThrough[l][j] = new Scale(this, "feedThrough_" + l
                             + "_" + j);
                     feedThrough[l][j].factor.setExpression("D(" + l + ", " + j
