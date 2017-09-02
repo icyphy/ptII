@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2016 The Regents of the University of California.
+# @Copyright (c) 2016-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules/gdp/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
