@@ -43,32 +43,32 @@
  *
  */
 exports.LifxLight = function (ipAddress, port, macAddress, label) {
-	if (ipAddress && typeof ipAddress === 'string') {
-		this.ipAddress = ipAddress;	
-	} else {
-		this.ipAddress = '';
-	}
+    if (ipAddress && typeof ipAddress === 'string') {
+        this.ipAddress = ipAddress;        
+    } else {
+        this.ipAddress = '';
+    }
 
-	if (port && typeof port === 'int') {
-		this.port = port;	
-	} else {
-		this.port = 56700;
-	}	
+    if (port && typeof port === 'number') {
+        this.port = Math.round(port);        
+    } else {
+        this.port = 56700;
+    }        
 
-	if (macAddress && typeof macAddress === 'string') {
-		this.macAddress = macAddress;	
-	} else {
-		this.macAddress = '';
-	}
+    if (macAddress && typeof macAddress === 'string') {
+        this.macAddress = macAddress;        
+    } else {
+        this.macAddress = '';
+    }
 
-	if (label && typeof label === 'string') {
-		this.label = label;	
-	} else {
-		this.label = '';
-	}
+    if (label && typeof label === 'string') {
+        this.label = label;        
+    } else {
+        this.label = '';
+    }
 
-	this.color = {};
-	this.power = false;
+    this.color = {};
+    this.power = false;
 }
 
 /** Switch the light on. First, the packet options are set. Then, the
@@ -78,21 +78,21 @@ exports.LifxLight = function (ipAddress, port, macAddress, label) {
  *  @param socket The socket used for sending the udp message
  */
 exports.LifxLight.prototype.switchOn = function(socket) {
-	// Set the options for switching the light on
-	var options = {};
-	options.size = '2a';
-	options.ackRequired = 1; options.resRequired = 1;
-	options.setPower = {}; options.setPower.on = true;
+    // Set the options for switching the light on
+    var options = {};
+    options.size = '2a';
+    options.ackRequired = 1; options.resRequired = 1;
+    options.setPower = {}; options.setPower.on = true;
 
-	// Build the hexadecimal packet and then convert it to an array of bytes
-	var hexPacket = buildPacket.call(this, options);
-	console.log('prePacket = ' + hexPacket);
-	var packet = convertHexStringToByteArray(hexPacket);
+    // Build the hexadecimal packet and then convert it to an array of bytes
+    var hexPacket = buildPacket.call(this, options);
+    console.log('prePacket = ' + hexPacket);
+    var packet = convertHexStringToByteArray(hexPacket);
 
-	// Send the packet over the provided socket
-	socket.send(packet, this.port, this.ipAddress, function () {
-		console.log('Switch light on ' + this.macAddress + ' at ' + this.ipAddress + ':' + this.port + ' msg = ' + message);
-	});
+    // Send the packet over the provided socket
+    socket.send(packet, this.port, this.ipAddress, function () {
+        console.log('Switch light on ' + this.macAddress + ' at ' + this.ipAddress + ':' + this.port + ' msg = ' + message);
+    });
 };
 
 /** Switch the light off. First, the packet options are set. Then, the
@@ -102,20 +102,20 @@ exports.LifxLight.prototype.switchOn = function(socket) {
  *  @param socket The socket used for sending the udp message
  */
 exports.LifxLight.prototype.switchOff = function(socket) {
-	// Set the options for switching the light off
-	var options = {};
-	options.size = '2a';
-	options.ackRequired = 1; options.resRequired = 1;
-	options.setPower = {}; options.setPower.on = false;
+    // Set the options for switching the light off
+    var options = {};
+    options.size = '2a';
+    options.ackRequired = 1; options.resRequired = 1;
+    options.setPower = {}; options.setPower.on = false;
 
-	// Build the hexadecimal packet and then convert it to an array of bytes
-	var hexPacket = buildPacket.call(this, options);
-	var packet = convertHexStringToByteArray(hexPacket);
+    // Build the hexadecimal packet and then convert it to an array of bytes
+    var hexPacket = buildPacket.call(this, options);
+    var packet = convertHexStringToByteArray(hexPacket);
 
-	// Send the packet over the provided socket
-	socket.send(packet, this.port, this.ipAddress, function () {
-		console.log('Switch light off ' + this.macAddress + ' at ' + this.ipAddress + ':' + this.port + ' msg = ' + message);
-	});
+    // Send the packet over the provided socket
+    socket.send(packet, this.port, this.ipAddress, function () {
+        console.log('Switch light off ' + this.macAddress + ' at ' + this.ipAddress + ':' + this.port + ' msg = ' + message);
+    });
 };
 
 /** Broadcasts UPD discovery messages. If Lifx bubls are in the network, they will 
@@ -124,13 +124,13 @@ exports.LifxLight.prototype.switchOff = function(socket) {
  *  @param socket The sicket instance to use for sending the discovery message
  */
 exports.discoverLifx = function (socket) {
-	// needs more elaboration
-	var hexPacket = '240000341111111100000000000000000000000000000000000000000000000002000000';
-	var packet = convertHexStringToByteArray(hexPacket);
+    // needs more elaboration
+    var hexPacket = '240000341111111100000000000000000000000000000000000000000000000002000000';
+    var packet = convertHexStringToByteArray(hexPacket);
 
-	socket.send(packet, 56700, '255.255.255.255', function () {
-		console.log('Start discovery: Broadcast at 255.255.255.255:56700... ');
-	});
+    socket.send(packet, 56700, '255.255.255.255', function () {
+        console.log('Start discovery: Broadcast at 255.255.255.255:56700... ');
+    });
 }
 
 /** Returns a JSON object that describes the received message.
@@ -139,26 +139,26 @@ exports.discoverLifx = function (socket) {
  *  @return JSON object describing the device and the message features.
  */
 exports.parseReceivedMessage = function (message) {
-	var hexMessage = convertStringToHexString(message);
-	var messageCode = hexMessage.substring(64, 2);
-	var messageMacAddress = hexMessage.substring(16, 12);
+    var hexMessage = convertStringToHexString(message);
+    var messageCode = hexMessage.substring(64, 2);
+    var messageMacAddress = hexMessage.substring(16, 12);
 
-	var response = {};
+    var response = {};
 
-	// The received message is a State message (code 107)
-	if (messageCode === '6b') { 
-		//parsePayload();
-	} else if (messageCode === '76') {
-	// The received message is a State Power message (code 118)
-		// parsePayload();	
-		// under construction	
-	} else if (messageCode === '79') {
-	// The received message is a StateInfrared message (code 121)
-		// parsePayload();	
-		// under construction
-	}
-	// ...
-	return hexMessage;
+    // The received message is a State message (code 107)
+    if (messageCode === '6b') { 
+        //parsePayload();
+    } else if (messageCode === '76') {
+        // The received message is a State Power message (code 118)
+        // parsePayload();        
+        // under construction        
+    } else if (messageCode === '79') {
+        // The received message is a StateInfrared message (code 121)
+        // parsePayload();        
+        // under construction
+    }
+    // ...
+    return hexMessage;
 }
 
 /** Convinience function for converting a string, which each character is an
@@ -170,13 +170,13 @@ exports.parseReceivedMessage = function (message) {
  *  @return converted hexString into ArrayBuffer
  */
 var convertHexStringToByteArray = function (hexString) {
-	var buffer = new ArrayBuffer();
-	var i = 0;
-	for (i = 0 ; i < hexString.length ; i=i+2 ) {
-		var hs = hexString.slice(i, i+2);
-		buffer[ i / 2] = (parseInt(hs, 16)) & 0xFF;
-	}
-	return buffer; 
+    var buffer = new ArrayBuffer();
+    var i = 0;
+    for (i = 0 ; i < hexString.length ; i=i+2 ) {
+        var hs = hexString.slice(i, i+2);
+        buffer[ i / 2] = (parseInt(hs, 16)) & 0xFF;
+    }
+    return buffer; 
 }
 
 /** Convinience function for converting a string str to another string hexString
@@ -187,13 +187,13 @@ var convertHexStringToByteArray = function (hexString) {
  *  @return converted str to a string of hexa values.
  */
 var convertStringToHexString = function (str) {
-	var hexString = '';
-	var i = 0;
-	for (i = 0 ; i < str.length ; i++ ) {
-		hex = str.charCodeAt(i).toString(16);
+    var hexString = '';
+    var i = 0;
+    for (i = 0 ; i < str.length ; i++ ) {
+        hex = str.charCodeAt(i).toString(16);
         hexString += ("000"+hex).slice(-2);
-	}
-	return hexString; 
+    }
+    return hexString; 
 }
 
 /** Builds a UDP packet to be sent, based on the provided options.
@@ -204,79 +204,79 @@ var convertStringToHexString = function (str) {
  *  @return UDP Packet to be sent 
  */
 var buildPacket = function (options) {
-	var packet = '';
+    var packet = '';
 
-	// ============================= Construct the header
+    // ============================= Construct the header
     // ----------------------- Frame
     // -- size = 16bits
     packet += options.size + '00';
     // -- origin+tagged+addressable+protocol = 16bits
     if (options.toAll) {
-    	packet += '0034';
+        packet += '0034';
     } else {
-    	packet += '0014';
+        packet += '0014';
     }
     // -- source: set by the client (if all 0 then response broadcast) 32bits
     packet += '11111111';
 
-	// ----------------------- Frame address
-	// -- target mac address (48bits)+0000
-	if (options.toAll) {
-		packet += '000000000000' +'0000';
-	} else {
-		packet += this.macAddress + '0000';	
-	}
-	// -- reserved (48bits)
-	packet += '000000000000';
-	// -- reserved + ack_required + res_required (8bits);
-	if (!options.ackRequired && !options.resRequired) {
-		packet += '00';
-	} else if (!options.resRequired) {
-		packet += '02';
-	} else {
-		packet += '01';
-	};
-	// -- sequence (8bits): reference to the message
-	if (options.sequence) {
-		packet += ''+ options.sequence;
-	} else {
-		packet += '00';
-	}
+    // ----------------------- Frame address
+    // -- target mac address (48bits)+0000
+    if (options.toAll) {
+        packet += '000000000000' +'0000';
+    } else {
+        packet += this.macAddress + '0000';        
+    }
+    // -- reserved (48bits)
+    packet += '000000000000';
+    // -- reserved + ack_required + res_required (8bits);
+    if (!options.ackRequired && !options.resRequired) {
+        packet += '00';
+    } else if (!options.resRequired) {
+        packet += '02';
+    } else {
+        packet += '01';
+    };
+    // -- sequence (8bits): reference to the message
+    if (options.sequence) {
+        packet += ''+ options.sequence;
+    } else {
+        packet += '00';
+    }
 
-	// ----------------------- Protocol header
-	// -- reserved (64bits)
-	packet += '0000000000000000'; 
-	// -- message type (16bits) + reserved (16bits)
-	if (options.get) {
-		packet += '6500' + '0000'; // Get --> 101
-	} else if (options.setColor) { 
-		packet += '6600' + '0000'; // SetColor --> 102
-	} else 	if (options.getPower) {
-		packet += '7400' + '0000'; // GetPower --> 116
-	} else if (options.setPower) { 
-		packet += '7500' + '0000'; // SetPower --> 117
-	} else if (options.getInfrared) {
-		packet += '7800' + '0000'; // GetInfrared --> 120
-	} else if (options.setInfrared) { 
-		packet += '7a00' + '0000'; // SetInfrared --> 122
-	}
+    // ----------------------- Protocol header
+    // -- reserved (64bits)
+    packet += '0000000000000000'; 
+    // -- message type (16bits) + reserved (16bits)
+    if (options.get) {
+        packet += '6500' + '0000'; // Get --> 101
+    } else if (options.setColor) { 
+        packet += '6600' + '0000'; // SetColor --> 102
+    } else         if (options.getPower) {
+        packet += '7400' + '0000'; // GetPower --> 116
+    } else if (options.setPower) { 
+        packet += '7500' + '0000'; // SetPower --> 117
+    } else if (options.getInfrared) {
+        packet += '7800' + '0000'; // GetInfrared --> 120
+    } else if (options.setInfrared) { 
+        packet += '7a00' + '0000'; // SetInfrared --> 122
+    }
 
-	// ============================= Construct the Payload
-	if (options.setPower) {
-		if (options.setPower.on) {
-			packet += 'ffff00000000';
-		} else {
-			packet += '000000000000';
-		}
-	}
+    // ============================= Construct the Payload
+    if (options.setPower) {
+        if (options.setPower.on) {
+            packet += 'ffff00000000';
+        } else {
+            packet += '000000000000';
+        }
+    }
 
-	if (options.setColor) {
-		// under construction
-	}
+    if (options.setColor) {
+        // under construction
+    }
 
-	if (options.setInfrared) {
-		// under construction
-	}
+    if (options.setInfrared) {
+        // under construction
+    }
 
-	return packet;
+    return packet;
 }
