@@ -93,7 +93,22 @@ import ptolemy.util.MessageHandler;
  *     cd $PTII
  *     ./configure
  *  </pre>
- *  <p>In Eclipse, you will then need to refresh the project.</p> *
+ *  <p>In Eclipse, you will then need to refresh the project.</p>
+ *
+ *  <p>If you are using Google as your smtp provider, then you may
+ *  need to modify your Google account to 
+ *  <a href="https://support.google.com/accounts/answer/6010255?hl=en#in_browser">Allow less secure apps to access your account</a>.
+ *  </p>
+ *
+ *  <p>This is because this actor does not support OAuth 2.0. 
+ *  <a href="https://support.google.com/a/answer/6260879?hl=en#in_browser">Allow less secure apps to access accounts Frequently Asked Questions (FAQ)</a> says:</p>
+ *  <blockquote>
+ *    <p><b>What criteria is used to identify an application as being “less secure”?</b>
+ *    <br/>Applications that rely on plain username/password
+ *    authentication to access an account programmatically are
+ *    considered less secure than those using modern day security
+ *    standards such as OAuth 2.0.</b>
+ *  </blockquote>
  *
  * @author Edward A. Lee
  * @version $Id$
