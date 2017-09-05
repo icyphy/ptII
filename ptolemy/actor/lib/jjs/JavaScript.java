@@ -1800,22 +1800,6 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         return result;
     }
 
-    /** If there are any pending self-produced inputs, then request a firing
-     *  at the current time.
-     *  @exception IllegalActionException If the superclass throws it or the
-     *   refiring request fails.
-     */
-    @Override
-    public boolean postfire() throws IllegalActionException {
-        for (IOPort input : inputPortList()) {
-            // Skip the scriptIn input.
-            if (input == script.getPort()) {
-                continue;
-            }
-        }
-        return super.postfire();
-    }
-
     /** Create a new JavaScript engine, load the default functions,
      *  and evaluate the script parameter.
      *  @exception IllegalActionException If a port name is either a
