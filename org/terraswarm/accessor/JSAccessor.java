@@ -113,6 +113,16 @@ import ptolemy.util.StringUtilities;
    and thus requires Nashorn, which is present in Java-1.8 and
    later.</p>
 
+   <p>This actor will run <code>svn</code> and <code>node<code>, which
+   require network access.  To skip running things that require network
+   access, set the <code>PT_NO_NET</code> environment variable to a
+   non-empty string.  For example, under bash:</p>
+   <pre>
+   export PT_NO_NET=true
+   </pre>
+   <p>Note that if <code>PT_NO_NET</code> is set to any value, then
+   the actor will attempt to avoid using the network.</p>
+
    <h2>References</h2>
 
    <p><a name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
@@ -349,6 +359,15 @@ public class JSAccessor extends JavaScript {
         final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
         boolean newCheckout = false;
         boolean updated = false;
+
+        if (_doNotUpdateOrRunJSDoc()) {
+            if (!_printedPtNoNetMessage) {
+                _printedPtNoNetMessage = true;
+                System.out.println("JSAccessor: PT_NO_NET environment variable is set, so svn update and ptdoc are not being run.");
+            }
+            return;
+        }
+
         try {
             List execCommands = new LinkedList<String>();
             // If the org/terraswarm/accessor/accessors directory
@@ -963,13 +982,23 @@ public class JSAccessor extends JavaScript {
                 } catch (IOException ex) {
                     try {
                         // Attempt to run "ant ptdoc".  This requires ant, node, npm and a network connection.
-                        if (_ptDocFailed || JSAccessor._ptDoc() != 0) {
-                            // Epicycles all the way down.
-                            _ptDocFailed = true;
-                            System.out.println("Building ptdoc failed, so we are going to try the website.");
-                            result.append(_getPtDoc(urlSpec));
-                        } else {
-                            result.append(_getPtDoc(accessorURL.toExternalForm()));
+                        if (_ptDocFailed) {
+                            int ptDocReturnValue = JSAccessor._ptDoc();
+                            if (ptDocReturnValue == _NO_NET ) {
+                                if (!_printedPtNoNetMessage) {
+                                    _printedPtNoNetMessage = true;
+                                    result.append("PT_NO_NET was set, so we are not trying to run ptdoc.");
+                                }
+                            } else {
+                                if (ptDocReturnValue != 0 ) {
+                                    // Epicycles all the way down.
+                                    _ptDocFailed = true;
+                                    System.out.println("Building ptdoc failed, so we are going to try the website.");
+                                    result.append(_getPtDoc(urlSpec));
+                                } else {
+                                    result.append(_getPtDoc(accessorURL.toExternalForm()));
+                                }
+                            }
                         }
                     } catch (IOException ex2) {
                         System.err.println("\nWarning: Cannot find PtDoc file for "
@@ -1077,6 +1106,21 @@ public class JSAccessor extends JavaScript {
                 in.close();
             }
         }
+    }
+
+    /** Return true if the PT_NO_NET environment variable is set.
+     */   
+    private static boolean _doNotUpdateOrRunJSDoc() {
+        String PT_NO_NET = "";
+        try {
+            PT_NO_NET = System.getenv("PT_NO_NET");
+        } catch (Throwable throwable) {
+            // Ignore
+        }
+        if (PT_NO_NET != null && PT_NO_NET.length() > 0) {
+            return true;
+        }
+        return false;
     }
 
     /** Get the PtDoc for an accessor or create a link to a html file.
@@ -1219,6 +1263,13 @@ public class JSAccessor extends JavaScript {
      *  @return 0 if ant and node were found and ant returned 0.   
      */
     private static int _ptDoc() throws IOException {
+        if (_doNotUpdateOrRunJSDoc()) {
+            if (!_printedPtNoNetMessage) {
+                _printedPtNoNetMessage = true;
+                System.out.println("JSAccessor: PT_NO_NET environment variable is set, so svn update and ptdoc are not being run.");
+            }
+            return 3;
+        }
         File accessorsRepoWebDirectory = new File(JSAccessor._accessorDirectory(), "accessors/web");
         if (accessorsRepoWebDirectory.isDirectory()) {
             // This is similar to code in ptolemy/vergil/actor/DocBuilder.java
@@ -1340,6 +1391,9 @@ public class JSAccessor extends JavaScript {
     /** Last time of accessor respository update. */
     private static long _lastRepoUpdateTime = -1L;
 
+    /** _ptDoc() returns _NO_NET if PT_NO_NET is set in the environment variable. */
+    private static int _NO_NET = 42;
+
     /** Previous value of the script parameter, or null if it has
      *  not been set.
      */
@@ -1349,6 +1403,9 @@ public class JSAccessor extends JavaScript {
      *  Indicating that "ant ptdoc" failed.
      */        
     private static boolean _ptDocFailed = false;
+
+    /** Set to true if the PT_NO_NET message has been printed. */
+    private static boolean _printedPtNoNetMessage = false;
 
     /** The end text used used for the MoML value of the script parameter. */
     private static final String _SCRIPT_MOML_END = "\"/>";
