@@ -47,10 +47,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AugmentedRealityFeedback.xml \
 	AugmentedReality.xml \
 	AugmentedRealityBasic.xml \
+	AugmentedRealityFeedback.xml \
+	AugmentedRealityFeedbackGDP.xml \
 	ControllableSensor.js \
+	GDPSensor.js \
 	MechanicalRoom.jpg \
 	PressureSensor.js \
 	TagMapAccessorAR.xml \
