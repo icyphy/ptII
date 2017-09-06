@@ -1788,13 +1788,11 @@ Accessor.prototype.readURL = function () {
 /** Reifies the accessor given as parameter. The parameter can be an object instance 
  *  of accessor, a string describing a fully qualified accessor class or path, or a 
  *  string with the accessor code.
- *  If instantiating the accessor succeeds, then reification will consist on:
+ *  If instantiating the accessor succeeds, then reification will consist of:
  *  ** removing previous reification, if any,
  *  ** establishing containment,
- *  ** Find mappings between the inputs and the outputs of the mutable accessor and 
- *     the reifying accessor,
- *  ** Finally, connect the mapped port of both accessors and initialize the reifying 
- *     one.
+ *  ** connecting the port of the reifying accessor, and
+ *  ** initializing the reifying accessor.
  *
  *  @param accessor This parameter can be either an accessor instance, a fully 
  *   qualified accessor class or an accessor code
@@ -1817,30 +1815,33 @@ Accessor.prototype.reify = function (accessor) {
 
     // Check the accessor parameter type
     if (!accessor) {
-        // Report an error if no parameter is passed
-        thiz.error('reify(): Missing parameter.');
+        // No accessor specified.
+        // Remove previous reification, if any.
+        thiz.unreify();
         return false;
-    } else if(accessor.accessorName) {
-        // Case where and accessor object is passed
+    } else if (accessor.accessorName) {
+        // An accessor object is provided.
         accessorInstance = accessor;
         isNewAccessor = false;
-    } else if(typeof accessor === 'string') {
+    } else if (typeof accessor === 'string') {
         // Attempt to instantiate the accessor
         try {
-            // Check if the parameter is a class name   
+            // Check to see if the parameter is a class name.  
             var accessorClass = accessor;
             accessorInstance = thiz.instantiate(instanceName, accessorClass, true);
         } catch(e) {
             try {
-            	// Check if the parameter is an accessor code 
+            	// Check to see if the parameter is accessor code.
                 var accessorCode = accessor;
                 accessorInstance = thiz.instantiateFromCode(instanceName, accessorCode, true);
             } catch(ee) {
-                thiz.error('Parameter supplied is not a valid accessor object, accessor class or accessor code: ' + ee);
+                thiz.error('Reify parameter is not a valid accessor object, accessor class, or accessor code: ' + ee);
                 return false;
             };
         };
-    };
+    } else {
+        thiz.error("Argument is not an accessor: " + accessor);
+    }
 
     // Remove previous reification, if any
 	thiz.unreify();
