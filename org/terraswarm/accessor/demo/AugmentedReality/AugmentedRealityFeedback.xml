@@ -140,66 +140,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 350.0}">
         </property>
     </entity>
-    <entity name="TagToAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var IdToResource = {&#10;	'127': 'PressureSensor.js',&#10;	'435': 'VibrationSensor.js',&#10;	'105': 'TemperatureSensor.js'	&#10;};&#10;&#10;exports.setup = function() {&#10;	// Inputs&#10;	this.input('tags');&#10;	this.input('index', {&#10;		'type':'int', &#10;		'value':0&#10;	});&#10;	&#10;	// Outputs&#10;	this.output('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	this.output('translation');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var previousIndex = -1;&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		var index = thiz.get('index');&#10;		&#10;		if (index != previousIndex) {&#10;			// Index has changed. Look up an accessor and produce it.&#10;			if (tags &amp;&amp; tags.length &gt; index) {&#10;				var id = tags[index].id;&#10;				var file = IdToResource[id];&#10;				if (file) {&#10;					var accessor = getResource(file, 2000);&#10;					if (accessor) {&#10;						thiz.send('accessor', accessor);&#10;					}&#10;				} else {&#10;					thiz.send('accessor', '');&#10;				}&#10;			} else {&#10;				thiz.send('accessor', '');&#10;			}&#10;			previousIndex = index;&#10;		}&#10;		if (tags &amp;&amp; tags.length &gt; index) {&#10;			thiz.send('translation', tags[index].center);&#10;		}&#10;	});&#10;}&#10;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 230.0]">
-        </property>
-        <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
-        </property>
-        <port name="index" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="tags" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="translation" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="accessor" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="IndexGenerator" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Upon receiving the first non-empty array of tags at the input, this script&#10;// outputs a 0 to specify to use the first tag. Whenever it receives an&#10;// empty *next* input, it switches to the next tag in the list, wrapping&#10;// around to the first one when it has scrolled through the tags.&#10;&#10;exports.setup = function() {&#10;	this.input('tags');&#10;	this.input('next');&#10;	this.output('reset', {&#10;		'type': 'boolean'&#10;	});&#10;	this.output('index', {&#10;		'type': 'int'&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var first = true;&#10;	var index = 0;&#10;	var nextTag = false;&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		if (first &amp;&amp; tags &amp;&amp; tags.length &gt; 0) {&#10;			thiz.send('index', index);&#10;			first = false;&#10;			thiz.send('reset', true);&#10;			return;&#10;		}&#10;		if (nextTag) {&#10;			nextTag = false;&#10;			// Only switch if there is more than one tag.&#10;			if (tags &amp;&amp; tags.length &gt; 1) {&#10;				index++;&#10;				if (index &gt;= tags.length) {&#10;					index = 0;&#10;				}&#10;				thiz.send('index', index);&#10;				thiz.send('reset', true);&#10;			}&#10;		}&#10;		if (!tags) {&#10;			thiz.send('reset', true);&#10;		}&#10;	});&#10;	&#10;	this.addInputHandler('next', function() {&#10;		var next = thiz.get('next');&#10;		if (typeof next === 'string') {&#10;			next = JSON.parse(next);&#10;		}&#10;		if (!next || (Object.keys(next).length === 0 &#10;				&amp;&amp; next.constructor === Object)) {&#10;			// Empty object or null received.&#10;			nextTag = true;&#10;		}&#10;	});&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 155.0]">
-        </property>
-        <port name="tags" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="reset" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="index" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="next" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="ConstructUI" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// First attempt based on: https://stackoverflow.com/questions/12905849/generating-html-forms-from-json-or-xml-feed-using-jquery&#10;// A proper Form generator will require a DOM parser to insert things into an existing HTML source. This is just a one-off accessor.&#10;&#10;exports.setup = function() {&#10;	this.input('reset');&#10;	this.input('translate');&#10;	this.input('data');&#10;	this.input('spec', {'type':'JSON'});&#10;	this.input('image');&#10;	this.output('html', {'type':'string'});&#10;	this.output('resources');&#10;	this.output('update', {'type':'JSON'});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	var htmlSent = false;&#10;	&#10;	this.addInputHandler('spec', function() {&#10;		var spec = self.get('spec');&#10;		var id = &quot;input&quot;;&#10;       	var property = &quot;html&quot;;&#10;       	var content = '&lt;h2&gt;Inputs:&lt;/h2&gt;&lt;form action=&quot;/&quot; method=&quot;post&quot; target=&quot;blankIframe&quot; id=&quot;form&quot;/&gt;&lt;table&gt;';&#10;		// FIXME: Handle types other than object, e.g. string, number.&#10;		if (spec.type === 'object') {&#10;			for (prop in spec.properties) {&#10;				var name = prop;&#10;				var entry = spec.properties[prop];&#10;				if (entry['title']) {&#10;					name = entry['title'];&#10;				}&#10;				var type = 'string';&#10;				// FIXME: could use entry['type'] if it exists, but HTML5&#10;				// types and JSON schema types do not match.&#10;				content += '&lt;tr&gt;&lt;td&gt;'&#10;						+ name&#10;						+ '&lt;/td&gt;&lt;td&gt;'&#10;						+ '&lt;input type=&quot;'&#10;						+ type&#10;						+ '&quot; name=&quot;' &#10;						+ prop&#10;						+ '&quot; form=&quot;form&quot;/&gt;'&#10;						+ '&lt;/td&gt;&lt;/tr&gt;';&#10;			}&#10;		}&#10;		content += '&lt;/table&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; form=&quot;form&quot;&gt;';&#10;		&#10;       	self.send('update', {&#10;       		'id': id,&#10;       		'property': property,&#10;       		'content': content,&#10;       	});&#10;	});&#10;&#10;	this.addInputHandler('image', function() {&#10;		var image = self.get('image');&#10;		// Send the new image, updating the resource named 'image.jpg'.&#10;		self.send('resources', {&#10;			'image.jpg': {&#10;				'data': image,&#10;				'contentType': 'image/jpeg'&#10;			}&#10;		});&#10;		// Send an update to force the browser to update the DOM img element.&#10;		self.send('update', {&#10;			'id':'image',&#10;			'property':'src',&#10;			'content':'image.jpg'&#10;		});&#10;		var html = '&lt;h1&gt;Augmented Reality Demo&lt;/h1&gt;\n';&#10;		&#10;		html += '&lt;div id=&quot;container&quot;&gt;\n\&#10;		    &lt;img src=&quot;image.jpg&quot; id=&quot;image&quot; alt=&quot;Mechanical Room Image&quot;&gt;\n\&#10;		    &lt;div id=&quot;overlay&quot; style=&quot;top:50%;left:50%;&quot;&gt;\n\&#10;		        &lt;div id=&quot;output&quot;&gt;No data&lt;/div&gt;&lt;br/&gt;\n\&#10;		        &lt;div id=&quot;input&quot;&gt;&lt;/div&gt;\n\&#10;		    &lt;/div&gt;\n\&#10;		&lt;/div&gt;\n\&#10;		&lt;form action=&quot;/&quot; method=&quot;post&quot; target=&quot;blankIframe&quot;&gt;\n\&#10;			&lt;input type=&quot;submit&quot; value=&quot;Next Tag&quot; name=&quot;next&quot;/&gt;\n\&#10;		&lt;/form&gt;\n';&#10;		&#10;		// Firefox insists on displaying the response to the post,&#10;		// so we direct the response to a small iframe.&#10;		html += '&lt;iframe name=&quot;blankIframe&quot; id=&quot;blankIframe&quot; height=0 width=0/&gt;';&#10;		&#10;		if (!htmlSent) {&#10;			self.send('html', html);&#10;			htmlSent = true;&#10;		}&#10;	});&#10;	&#10;	this.addInputHandler('translate', function() {&#10;		var translate = self.get('translate');&#10;		if (translate !== null &amp;&amp; translate[0] !== null &amp;&amp; translate[1] !== null) {&#10;            var id = &quot;overlay&quot;;&#10;            var property = &quot;style&quot;;&#10;            // FIXME: Hardcoded to container width of 1000px and Height 600.&#10;            // Assume image is not scaled.&#10;            var left = 100*translate[0]/1000;&#10;            var top = 100*translate[1]/600;&#10;            var content = &quot;top:&quot; + top + &quot;%;left:&quot; + left + &quot;%;&quot;;&#10;            self.send('update', {&#10;            	'id': id,&#10;            	'property': property,&#10;            	'content': content,&#10;            });&#10;        }&#10;	});&#10;	&#10;	this.addInputHandler('data', function() {&#10;		var id = &quot;output&quot;;&#10;        var property = &quot;html&quot;;&#10;        var content = '&lt;table&gt;';&#10;        &#10;        var json = self.get('data');&#10;		try {&#10;			json = JSON.parse(json);&#10;		} catch(err) {&#10;			json = {'error': err.message};&#10;		}&#10;		&#10;		if (!json || Object.keys(json).length === 0) {&#10;			content += '&lt;tr&gt;&lt;td&gt;No Data&lt;/td&gt;&lt;/tr&gt;';&#10;		} else {&#10;			for (prop in json) {&#10;				var value = util.inspect(json[prop]);&#10;				content += '&lt;tr&gt;&lt;td&gt;' + prop + '&lt;/td&gt;&lt;td&gt;' + value + '&lt;/td&gt;&lt;/tr&gt;';&#10;			}&#10;		}&#10;		content += '&lt;/table&gt;';&#10;&#10;        self.send('update', {&#10;        	'id': id,&#10;           	'property': property,&#10;           	'content': content,&#10;        });&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -408,6 +348,80 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="TagToAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;var IdToResource = {&#10;    '127': 'PressureSensor.js',&#10;    '435': 'VibrationSensor.js',&#10;    '105': 'TemperatureSensor.js'   &#10;    //'435': 'VibrationSensor.js',&#10;&#10;};&#10;&#10;exports.setup = function() {&#10;    // Inputs&#10;    this.input('tags');&#10;    this.input('id', {&#10;        'type':'int', &#10;        'value':-1&#10;    });&#10;    &#10;    // Outputs&#10;    this.output('accessor', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.output('translation');&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var previousId = -1;&#10;    &#10;    this.addInputHandler('tags', function() {&#10;        var tags = thiz.get('tags');&#10;        var id = thiz.get('id');&#10;        &#10;        if (id != previousId) {&#10;            // Index has changed. Look up an accessor and produce it.&#10;            if (tags &amp;&amp; tags.length &gt; 0) {&#10;                var file = IdToResource[id];&#10;                if (file) {&#10;                    var accessor = getResource(file, 2000);&#10;                    if (accessor) {&#10;                        thiz.send('accessor', accessor);&#10;                    }&#10;                } else {&#10;                    thiz.send('accessor', '');&#10;                }&#10;            } else {&#10;                thiz.send('accessor', '');&#10;            }&#10;            previousId = id;&#10;        }&#10;        if (tags &amp;&amp; tags.length &gt; 0) {&#10;            for(var i = 0; i &lt; tags.length; i++){&#10;                if(tags[i].id == id){&#10;                    thiz.send('translation', tags[i].center);&#10;                    break;&#10;                }&#10;            }&#10;        }&#10;    });&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 215.0]">
+        </property>
+        <property name="id" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        </property>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="id" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="accessor" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="translation" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="IdGenerator" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Upon receiving the first non-empty array of tags at the input, this script&#10;// outputs an id for the tag with the least numerical id. Whenever it receives an&#10;// empty *next* input, it advances to the next least id for a visible tag, wrapping&#10;// around to the overal smallest visible id one when it has scrolled through the tags.&#10;&#10;exports.setup = function() {&#10;    this.input('tags');&#10;    this.input('next');&#10;    this.output('reset', {&#10;        'type': 'boolean'&#10;    });&#10;    this.output('id', {&#10;        'type': 'int'&#10;    });&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var id = -1;&#10;    var first = true;&#10;    var nextTag = false;&#10;    &#10;    this.addInputHandler('tags', function() {&#10;        var tags = thiz.get('tags');&#10;&#10;        tags.sort( function(a,b){&#10;            if (a.id &lt; b.id){&#10;                return -1;&#10;            }&#10;            if (a.id &gt; b.id){&#10;                return 1;&#10;            }&#10;            return 0;&#10;        });&#10;&#10;&#10;        if (first &amp;&amp; tags &amp;&amp; tags.length &gt; 0) {     &#10;            id = tags[0].id;&#10;            thiz.send('id', id );&#10;            first = false;&#10;            thiz.send('reset', true);&#10;            return;  &#10;        }&#10;&#10;        if (nextTag) {&#10;            nextTag = false;&#10;            // Even if there is only one tag, the last ID may be off screen.&#10;            if (tags &amp;&amp; tags.length &gt; 0) {&#10;                if(id &gt;= tags[tags.length -1].id ){&#10;                    //wrap around to the least (first) tag ID&#10;                    id = tags[0].id;&#10;                } else {&#10;                    //find the next smallest tag ID&#10;                    for(var i = 0; i &lt; tags.length; i++){&#10;                        if(tags[i].id &gt; id){&#10;                            id = tags[i].id;&#10;                            break;&#10;                        }&#10;                    }&#10;                }&#10;&#10;                thiz.send('id', id);&#10;                thiz.send('reset', true);&#10;            }&#10;        }&#10;&#10;        if (!tags) {&#10;            thiz.send('reset', true);&#10;        }&#10;    });   &#10;&#10;    this.addInputHandler('next', function() {&#10;        var next = thiz.get('next');&#10;        if (typeof next === 'string') {&#10;            next = JSON.parse(next);&#10;        }&#10;        if (!next || (Object.keys(next).length === 0 &#10;                &amp;&amp; next.constructor === Object)) {&#10;            // Empty object or null received.&#10;            nextTag = true;&#10;        }&#10;    });&#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 155.0]">
+        </property>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="next" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="reset" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="id" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[205.0, 350.0]">
         </vertex>
@@ -418,13 +432,7 @@
         <vertex name="vertex1" value="[340.0, 240.0]">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -448,24 +456,22 @@
         <vertex name="vertex1" value="[355.0, 385.0]">
         </vertex>
     </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>
     <link port="ObjectRecognizer.tags" relation="relation3"/>
     <link port="ImageReader.output" relation="relation"/>
     <link port="ImageReader.trigger" relation="relation16"/>
-    <link port="TagToAccessor.index" relation="relation4"/>
-    <link port="TagToAccessor.tags" relation="relation3"/>
-    <link port="TagToAccessor.translation" relation="relation5"/>
-    <link port="TagToAccessor.accessor" relation="relation14"/>
-    <link port="IndexGenerator.tags" relation="relation3"/>
-    <link port="IndexGenerator.reset" relation="relation6"/>
-    <link port="IndexGenerator.index" relation="relation4"/>
-    <link port="IndexGenerator.next" relation="relation13"/>
-    <link port="ConstructUI.reset" relation="relation6"/>
-    <link port="ConstructUI.translate" relation="relation5"/>
+    <link port="ConstructUI.reset" relation="relation4"/>
+    <link port="ConstructUI.translate" relation="relation2"/>
     <link port="ConstructUI.data" relation="relation15"/>
     <link port="ConstructUI.html" relation="relation7"/>
     <link port="ConstructUI.resources" relation="relation8"/>
@@ -477,10 +483,18 @@
     <link port="UserInterface.post" relation="relation12"/>
     <link port="UserInterface.update" relation="relation9"/>
     <link port="Clock.output" relation="relation16"/>
-    <link port="Mutable.accessor" relation="relation14"/>
+    <link port="Mutable.accessor" relation="relation5"/>
     <link port="Mutable.control" relation="relation12"/>
     <link port="Mutable.data" relation="relation15"/>
     <link port="Mutable.schema" relation="relation11"/>
+    <link port="TagToAccessor.tags" relation="relation3"/>
+    <link port="TagToAccessor.id" relation="relation14"/>
+    <link port="TagToAccessor.accessor" relation="relation5"/>
+    <link port="TagToAccessor.translation" relation="relation2"/>
+    <link port="IdGenerator.tags" relation="relation3"/>
+    <link port="IdGenerator.next" relation="relation13"/>
+    <link port="IdGenerator.reset" relation="relation4"/>
+    <link port="IdGenerator.id" relation="relation14"/>
     <link relation1="relation" relation2="relation10"/>
     <link relation1="relation12" relation2="relation13"/>
 </entity>
