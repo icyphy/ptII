@@ -4,18 +4,18 @@
 <entity name="DramThermalModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 87, 1440, 675}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 134, 1690, 766}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 565]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1456, 656]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1261356029453955">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3350609268490095">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{635.6757812499999, 291.2909731657609}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{640.8766132314581, 286.8095708974202}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="time is in sec">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Time is in sec">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 205.0]">
         </property>
     </property>
     <property name="gem5Period" class="ptolemy.data.expr.Parameter" value="0.0005">
@@ -34,7 +34,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 240.0]">
         </property>
     </property>
     <property name="gem5Iterations" class="ptolemy.data.expr.Parameter" value="200">
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 240.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -110,7 +110,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 220.0]">
         </property>
     </property>
     <property name="downSamplingFactorForExp" class="ptolemy.data.expr.Parameter" value="50">
@@ -129,15 +129,48 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 175.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 200.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the gem5 computer&#10;architecture simulator, which must&#10;be installed and the Gem5Wrapper actor&#10;must be updated to point to the installation.&#10;&#10;Click on this annotation to go to&#10;http://gem5.org.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptolemy II model uses the gem5 computer architectural&#10;simulator. A gem5 simulator modified for the intergration&#10;with this model can be obtained from the gem5-Ptolemy&#10;repository on GitHub.&#10;&#10;Click on this annotation to visit the repository:&#10;https://github.com/gem5-ptolemy/gem5-ptolemy.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 65.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://gem5.org#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://github.com/gem5-ptolemy/gem5-ptolemy#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{330, 145}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 495.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here for our workshop paper on the integration of&#10;gem5 and Ptolemy using this model as a case study.&#10;https://chess.eecs.berkeley.edu/pubs/1194.html">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 360.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://chess.eecs.berkeley.edu/pubs/1194.html#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1798,9 +1831,9 @@
                 <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-4">
                 </property>
             </property>
-            <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.005">
+            <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
-            <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.05">
+            <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="4">
             </property>
@@ -2020,13 +2053,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 250.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1945, 949}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={615, 232, 1945, 949}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1711, 839]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4770364720408713">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9003936006153062">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{430.0071928174085, 394.72104824525525}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{370.96890592575073, 382.3225118184637}">
         </property>
         <port name="readThroughput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2749,7 +2782,7 @@
         <link relation1="relation24" relation2="relation25"/>
     </entity>
     <entity name="AMBTemperaturePlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1431, 486, 1050, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 178, 1050, 634}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1050, 590]">
         </property>
@@ -2762,13 +2795,13 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.0998"/>
-<yRange min="27.0" max="27.000006055748212"/>
+<xRange min="0.0" max="0.0995"/>
+<yRange min="27.0" max="27.00000603742323"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="DramTemperaturePlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1087, 394, 1010, 473}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={430, 301, 1010, 473}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1010, 429]">
         </property>
@@ -2781,13 +2814,13 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.0998"/>
-<yRange min="27.0" max="27.000002667488843"/>
+<xRange min="0.0" max="0.0995"/>
+<yRange min="27.0" max="27.000002659426286"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="AMBPower" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 707, 444, 285}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={359, 215, 444, 285}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[444, 241]">
         </property>
@@ -2800,13 +2833,13 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="4.0E-4" max="0.0998"/>
+<xRange min="4.0E-4" max="0.0994"/>
 <yRange min="4.000336766242981" max="4.026422053575516"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="DRAMPower" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={749, 740, 638, 325}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={802, 575, 638, 325}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[638, 281]">
         </property>
@@ -2819,7 +2852,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="2.0E-4" max="0.0998"/>
+<xRange min="2.0E-4" max="0.0994"/>
 <yRange min="0.9853524971008301" max="1.0816243696212768"/>
 </plot>?>
         </configure>
@@ -2921,9 +2954,9 @@
         </property>
     </entity>
     <entity name="Gem5Wrapper" class="ptolemy.actor.lib.gem5.Gem5Wrapper">
-        <property name="pipePathPrifix" class="ptolemy.data.expr.StringParameter" value="/Users/hokeunkim/Development/ee219dproject/gem5-stable_2015_09_03/">
+        <property name="pipePathPrefix" class="ptolemy.data.expr.StringParameter" value="/Users/hokeunkim/Development/gem5-ptolemy/gem5-stable_2015_09_03">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 400.0}">
         </property>
     </entity>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
