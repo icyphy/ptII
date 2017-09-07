@@ -1431,6 +1431,9 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass, standAlo
     if (!this.getAccessorCode) {
         throw new Error('instantiate() is not supported by this swarmlet host.');
     }
+    if (!accessorClass) {
+        throw new Error('instantiate(): Must specify an accessorClass.');
+    }
     // For functions that access ports, etc., we want the default implementation
     // when instantiating the contained accessor.
     var insideBindings = this.getDefaultInsideBindings(accessorClass);
@@ -1454,7 +1457,7 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass, standAlo
  *   starting with 2, to ensure that the name is unique in the container.
  *  @param code The code for the accessor.
  *  @param standAlone Indicates whether the new accessor will be standalone or 
- *   contained.
+ *   contained by this accessor.
  *  @return return the new instance
  */
 Accessor.prototype.instantiateFromCode = function (instanceName, code, standAlone) {
@@ -1881,6 +1884,8 @@ Accessor.prototype.reify = function (accessor) {
         	};
         };
     };
+    
+    var outputsMatch = true;
 
     // Look for mapping the mutable accesssor outputs to the accessor instance outputs
     for (var i = 0; i < thiz.outputList.length; i++) {
@@ -1898,6 +1903,9 @@ Accessor.prototype.reify = function (accessor) {
         			thiz.outputsMap[accOutputInList] = myOutputInList;
         		} else {
         			// If the types do not match, then no mapping
+        		    thiz.error('Output name for reifying accessor matches, but not the type: '
+        		            + accOutputInList);
+        		    outputsMatch = false;
         		};
         	} else {	
         		thiz.outputsMap[accOutputInList] = myOutputInList;
@@ -1912,6 +1920,11 @@ Accessor.prototype.reify = function (accessor) {
     Object.keys(thiz.outputsMap).forEach(function (key) {
         thiz.connect(accessorInstance, key, thiz.outputsMap[key]);
     });
+    
+    if (!outputsMatch) {
+        thiz.unreify();
+        return false;
+    }
 
     // Initialize the instance
     accessorInstance.initialize();
