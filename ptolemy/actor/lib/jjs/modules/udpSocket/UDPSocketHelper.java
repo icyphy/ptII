@@ -271,7 +271,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                             if (callback != null) {
                                 callback.call(_currentObj, asyncResult.cause());
                             }
-                            _error(_currentObj, "Bind failed: " + asyncResult.cause());
+                            _error(_currentObj, "Send failed: " + asyncResult.cause());
                         }
                     }
                 });
