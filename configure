@@ -5425,7 +5425,7 @@ fi
 #	 of software and hardware components"
 #
 #	For more information,
-#       see http://www-cad.eecs.berkeley.edu/~tah/chic/
+#       see https://embedded.eecs.berkeley.edu/research/chic/
 #--------------------------------------------------------------------
 
 # PTCHIC_DIR is set to chic and used in
@@ -13567,7 +13567,7 @@ $as_echo "$GIOTTO_DIR/gdk.jar" >&6; }; fi
     You need not download Giotto unless you plan on generating code for
     Giotto models.
     The Giotto SDK can be
-    downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
+    downloaded from https://embedded.eecs.berkeley.edu/giotto/
     Copy gdk.jar to $PTII/vendors/giotto, for example:
         mkdir -p $PTII/vendors/giotto
         cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/" >&5
@@ -13576,7 +13576,7 @@ $as_echo "$as_me: WARNING: Failed to find giotto/gdk.jar
     You need not download Giotto unless you plan on generating code for
     Giotto models.
     The Giotto SDK can be
-    downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
+    downloaded from https://embedded.eecs.berkeley.edu/giotto/
     Copy gdk.jar to $PTII/vendors/giotto, for example:
         mkdir -p $PTII/vendors/giotto
         cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/" >&2;}
