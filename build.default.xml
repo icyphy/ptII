@@ -262,6 +262,7 @@
     <exclude name="org/ptolemy/terraswarm/gdp" />
     <exclude name="org/terraswarm/accessor/accessors/web/node_modules/" />
     <exclude name="org/terraswarm/accessor/accessors/web/hosts/cordova/demo/" />
+    <exclude name="org/terraswarm/accessor/accessors/web/hosts/cordova/plugins/" />
     <exclude name="ptdb/" />
     <exclude name="pt-modules/" />
     <exclude name="ptolemy/actor/corba/" />
