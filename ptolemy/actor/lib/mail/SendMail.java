@@ -1,6 +1,6 @@
 /** Send email.
 
- @Copyright (c) 2011-2014 The Regents of the University of California.
+ @Copyright (c) 2011-2017 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -103,7 +103,7 @@ import ptolemy.util.MessageHandler;
  *  <p>This is because this actor does not support OAuth 2.0. 
  *  <a href="https://support.google.com/a/answer/6260879?hl=en#in_browser">Allow less secure apps to access accounts Frequently Asked Questions (FAQ)</a> says:</p>
  *  <blockquote>
- *    <p><b>What criteria is used to identify an application as being “less secure”?</b>
+ *    <p><b>What criteria is used to identify an application as being "less secure"?</b>
  *    <br/>Applications that rely on plain username/password
  *    authentication to access an account programmatically are
  *    considered less secure than those using modern day security
