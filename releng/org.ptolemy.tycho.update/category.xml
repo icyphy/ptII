@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-  <feature url="features/org.ptolemy.tycho.feature_1.0.0.qualifier.jar"
+  <feature url="features/org.ptolemy.tycho.feature_11.1.0.qualifier.jar"
            id="org.ptolemy.tycho.feature"
-           version="1.0.0.qualifier">
+           version="11.1.0.qualifier">
       <category name="ptolemy"/>
    </feature>
 
@@ -14,7 +14,7 @@
 
    <feature
            id="org.ptolemy.tycho.feature.source"
-           version="1.0.0.qualifier">
+           version="11.1.0.qualifier">
       <category name="source_components"/>
    </feature>
    <category-def name="source_components" label="Developer Resources"/>

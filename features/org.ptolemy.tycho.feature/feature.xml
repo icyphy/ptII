@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.ptolemy.tycho.feature"
-      label="Feature"
-      version="1.0.0.qualifier"
-      provider-name="Ptolemy Project, Berkeley, California">
+      label="Ptolemy II Actors and Core"
+      version="11.1.0.qualifier"
+      provider-name="Ptolemy Project">
 
    <description url="https://wiki.eclipse.org/Triquetrum/Ptolemy/osgi-2-0">
       Ptolemy II actors and other code used by Triquetrum.
@@ -64,7 +64,7 @@ Ptolemy II includes other third party material, see the about.html files in each
    </license>
 
    <url>
-      <update label="Ptolemy II osgi-2-0" url="https://chess.eecs.berkeley.edu/triq/p2/osgi-2-0/"/>
+      <update label="Ptolemy II osgi-2-0-2" url="https://chess.eecs.berkeley.edu/triq/p2/osgi-2-0-2/"/>
    </url>
 
    <plugin
@@ -123,14 +123,6 @@ Ptolemy II includes other third party material, see the about.html files in each
          version="0.0.0"
          unpack="false"/>
 
-<!-- 
-   <plugin
-         id="org.terraswarm.accessor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
--->
    <plugin
          id="ptolemy.core"
          download-size="0"
