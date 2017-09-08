@@ -716,6 +716,20 @@ See $PTII/doc/coding/maven.htm
 	  <excludes>
 	   <!-- grep excluding .classpath.in | awk -F "|" '{for(i=2;i<NF;i++) {print "           <exclude>" $i "</exclude>"}}' | sed 's@/</exclude>@/**</exclude>@' -->
 	   <exclude>**/.svn/**</exclude>
+	   <exclude>**/com/jhlabs/**</exclude>
+	   <exclude>org/hlacerti/**</exclude>
+	   <exclude>org/ptolemy/opencv/**</exclude>
+	   <exclude>org/ptolemy/ssm/**</exclude>
+           <exclude>org/terraswarm/accessor/accessors/web/node_modules/**</exclude>
+           <exclude>org/terraswarm/accessor/accessors/web/hosts/cordova/demo/**</exclude>
+           <exclude>org/terraswarm/accessor/accessors/web/hosts/cordova/plugins/**</exclude>
+	   <exclude>pt-modules/**</exclude>
+	   <exclude>ptdb/**</exclude>
+	   <exclude>ptolemy/actor/lib/joystick/**</exclude>
+	   <exclude>ptolemy/actor/lib/mail/**</exclude>
+	   <exclude>ptolemy/homer/**</exclude>
+	   <exclude>ptolemy/vergil/basic/imprt/g4ltl/**</exclude>
+	   <exclude>ptserver/**</exclude>
            <exclude>**/adm/**</exclude>
            <exclude>**/build/**</exclude>
            <exclude>**/codeDoc/**</exclude>
@@ -723,44 +737,34 @@ See $PTII/doc/coding/maven.htm
            <exclude>**/diva/util/java2d/svg/**</exclude>
            <exclude>**/ptolemy/backtrack/eclipse/**</exclude>
            <exclude>**/ptolemy/backtrack/test/**</exclude>
-	   <exclude>**/com/jhlabs/**</exclude>
-	   <exclude>org/ptolemy/opencv/**</exclude>
-	   <exclude>org/ptolemy/ssm/**</exclude>
-	   <exclude>org/hlacerti/**</exclude>
            <exclude>doc/coding/templates/**</exclude>
-	   <exclude>ptdb/**</exclude>
-           <exclude>ptolemy/copernicus/kernel/fragment/**</exclude>
-           <exclude>ptolemy/distributed/**</exclude>
            <exclude>doc/doclets/**</exclude>
-           <exclude>ptolemy/apps/**</exclude>
-           <exclude>ptolemy/actor/lib/jjs/**</exclude>
-           <exclude>ptolemy/actor/lib/r/**</exclude>
-           <exclude>ptolemy/actor/lib/vertx/**</exclude>
-           <exclude>ptolemy/domains/ct/demo/Saber/**</exclude>
-           <exclude>ptolemy/domains/gr/**</exclude>
-           <exclude>ptolemy/domains/gr/lib/experimental/**</exclude>
-           <exclude>ptolemy/domains/ptinyos/util/nc2moml/**</exclude>
-           <exclude>ptolemy/domains/ptinyos/util/ncapp2moml/**</exclude>
-           <exclude>ptolemy/domains/pdf/**</exclude>
-           <exclude>ptolemy/domains/space/**</exclude>
-           <exclude>ptolemy/plot/servlet/**</exclude>
-           <exclude>vendors/**</exclude>
-           <exclude>ptolemy/copernicus/jhdl/**</exclude>
            <exclude>ptolemy/actor/lib/excel/**</exclude>
            <exclude>ptolemy/actor/lib/io/comm/**</exclude>
            <exclude>ptolemy/actor/lib/jai/**</exclude>
+           <exclude>ptolemy/actor/lib/jjs/**</exclude>
            <exclude>ptolemy/actor/lib/jmf/**</exclude>
-	   <exclude>ptolemy/actor/lib/joystick/**</exclude>
-	   <exclude>ptolemy/actor/lib/mail/**</exclude>
            <exclude>ptolemy/actor/lib/opencv/**</exclude>
+           <exclude>ptolemy/actor/lib/r/**</exclude>
+           <exclude>ptolemy/actor/lib/vertx/**</exclude>
+           <exclude>ptolemy/apps/**</exclude>
+           <exclude>ptolemy/copernicus/jhdl/**</exclude>
+           <exclude>ptolemy/copernicus/kernel/fragment/**</exclude>
+           <exclude>ptolemy/distributed/**</exclude>
+           <exclude>ptolemy/domains/ct/demo/Saber/**</exclude>
+           <exclude>ptolemy/domains/gr/**</exclude>
+           <exclude>ptolemy/domains/gr/lib/experimental/**</exclude>
            <exclude>ptolemy/domains/gr/lib/quicktime/**</exclude>
-	   <exclude>ptolemy/homer/**</exclude>
+           <exclude>ptolemy/domains/pdf/**</exclude>
+           <exclude>ptolemy/domains/ptinyos/util/nc2moml/**</exclude>
+           <exclude>ptolemy/domains/ptinyos/util/ncapp2moml/**</exclude>
+           <exclude>ptolemy/domains/space/**</exclude>
            <exclude>ptolemy/moml/test/NoPackageActor.java</exclude>
-	   <exclude>ptolemy/vergil/basic/imprt/g4ltl/**</exclude>
-	   <exclude>ptserver/**</exclude>
+           <exclude>ptolemy/plot/servlet/**</exclude>
            <exclude>reports/**</exclude>
            <exclude>src/**</exclude>
            <exclude>target/**</exclude>
+           <exclude>vendors/**</exclude>
 	  </excludes>
 	</configuration>
       </plugin>
