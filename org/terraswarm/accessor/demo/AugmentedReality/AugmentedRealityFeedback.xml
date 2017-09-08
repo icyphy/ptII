@@ -365,25 +365,19 @@
         </property>
         <property name="id" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
-        <port name="tags" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
         <port name="id" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
         <port name="accessor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="translation" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="IdGenerator" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -403,23 +397,15 @@
         </property>
         <port name="tags" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="next" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="reset" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="id" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -487,8 +473,8 @@
     <link port="Mutable.control" relation="relation12"/>
     <link port="Mutable.data" relation="relation15"/>
     <link port="Mutable.schema" relation="relation11"/>
-    <link port="TagToAccessor.tags" relation="relation3"/>
     <link port="TagToAccessor.id" relation="relation14"/>
+    <link port="TagToAccessor.tags" relation="relation3"/>
     <link port="TagToAccessor.accessor" relation="relation5"/>
     <link port="TagToAccessor.translation" relation="relation2"/>
     <link port="IdGenerator.tags" relation="relation3"/>
