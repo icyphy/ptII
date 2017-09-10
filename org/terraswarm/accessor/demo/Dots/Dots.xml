@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.4761264534884, 214.1447401889535}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Dots on a Map.&#10;&#10;Read temperature data from the GDP using an accessor and plot data on a map &#10;using x, y coords.  If GDP data cannot be read, sample data will be used.&#10;If sample data is used, the labels will be prefixed with &quot;sample&quot;.  &#10;&#10;The code in HTMLGenerator and UserInterface is copied from:&#10;/org/terraswarm/accessor/accessors/web/hosts/browser/dots/dots.html&#10;&#10;The demo is &quot;cheating&quot; a bit, since it just opens a browser window, &#10;then loads accessors through the browser.  A &quot;native&quot; CapeCode demo&#10;using CapeCode GDP accessors should also be possible.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Dots on a Map.&#10;&#10;Read temperature data from the GDP using an accessor and plot data on a map &#10;using x, y coords.  If GDP data cannot be read, sample data will be used.&#10;If sample data is used, the labels will be prefixed with &quot;sample&quot;.  &#10;&#10;The code in HTMLGenerator and UserInterface is copied from:&#10;(with image link changed to /accessors/web/hosts/browser/src/dots/livingroom.jpg):&#10;/org/terraswarm/accessor/accessors/web/hosts/browser/src/dots/dots.html&#10;&#10;The demo is &quot;cheating&quot; a bit, since it just opens a browser window, &#10;then loads accessors through the browser.  A &quot;native&quot; CapeCode demo&#10;using CapeCode GDP accessors should also be possible.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 5.0]">
         </property>
@@ -61,7 +61,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="header" class="ptolemy.data.expr.Parameter" value="    &lt;meta charset=&quot;utf-8&quot;&gt;&#10;    &lt;title&gt; Dots on a Map &lt;/title&gt;&#10;    &#10;    &lt;!-- Styling for table with accessor parameters, inputs and outputs.&#10;         It's not used here, since we hide the accessor, but just FYI. --&gt;&#10;    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/accessors/hosts/browser/accessorStyle.css&quot;&gt;&#10;    &#10;    &lt;!-- Custom dots on a map styling. --&gt;&#10;    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/accessors/hosts/browser/demo/dots/dots.css&quot;&gt;&#10;    &#10;    &lt;!-- Load your favorite visualization library.  This demo uses D3. --&gt;&#10;    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js&quot;&gt;&lt;/script&gt;&#10;    &#10;    &lt;!-- Custom dots on a map script. --&gt;&#10;     &lt;script src=&quot;/accessors/hosts/browser/demo/dots/dots.js&quot;&gt;&lt;/script&gt;&#10;    &#10;    &lt;!-- If viewing in the browser, load the browser host.&#10;         Cordova does not need this line.  Cape Code may optionally use it if &#10;         you want the generated web page to run accessors. Otherwise omit it.--&gt;&#10;    &lt;script src=&quot;/accessors/hosts/browser/browser.js&quot;&gt;&lt;/script&gt;">
+        <property name="header" class="ptolemy.data.expr.Parameter" value="    &lt;meta charset=&quot;utf-8&quot;&gt;&#10;    &lt;title&gt; Dots on a Map &lt;/title&gt;&#10;    &#10;    &lt;!-- Styling for table with accessor parameters, inputs and outputs.&#10;         It's not used here, since we hide the accessor, but just FYI. --&gt;&#10;    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/accessors/hosts/browser/accessorStyle.css&quot;&gt;&#10;    &#10;    &lt;!-- Custom dots on a map styling. --&gt;&#10;    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/accessors/hosts/browser/demo/src/dots/dots.css&quot;&gt;&#10;    &#10;    &lt;!-- Load your favorite visualization library.  This demo uses D3. --&gt;&#10;    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js&quot;&gt;&lt;/script&gt;&#10;    &#10;    &lt;!-- Custom dots on a map script. --&gt;&#10;     &lt;script src=&quot;/accessors/hosts/browser/demo/src/dots/dots.js&quot;&gt;&lt;/script&gt;&#10;    &#10;    &lt;!-- If viewing in the browser, load the browser host.&#10;         Cordova does not need this line.  Cape Code may optionally use it if &#10;         you want the generated web page to run accessors. Otherwise omit it.--&gt;&#10;    &lt;script src=&quot;/accessors/hosts/browser/browser.js&quot;&gt;&lt;/script&gt;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -69,7 +69,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 300.0]">
         </property>
         <port name="html" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -119,7 +119,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 290.0]">
         </property>
         <property name="delay" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -128,7 +128,7 @@
         </port>
     </entity>
     <entity name="HTMLGenerator" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('html', {'type' : 'string'});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	// Supply HTML here so picture is loaded from server and not from cache first time.&#10;	this.addInputHandler('trigger', function() {&#10;		var html = '&lt;!-- Reference your image here.  Dots will be overlaid. --&gt; \n' +&#10;			'&lt;div style=&quot;background:url(/accessors/hosts/browser/demo/dots/livingroom.jpg); width:584px; height:488px; background-repeat:no-repeat;&quot; id=&quot;svg&quot; &gt; \n' +&#10;		    '&lt;/div&gt; \n' +&#10;			'&lt;!-- Load the accessor.  The display:none hides it. --&gt; \n' + &#10;		    '&lt;div class=&quot;poster_div&quot;&gt; \n' + &#10;		    'Click or mouseover dots to see GDP data.  Click on data table to dismiss. ' +&#10;			'&lt;button id=&quot;showAccessor&quot;&gt; Show Accessor &lt;/button&gt; \n' + &#10;		    '&lt;/div&gt; \n' + &#10;			'&lt;div class=&quot;accessor&quot; \n'+ &#10;   			'src=&quot;net/REST&quot; \n' + &#10;   			'id=&quot;REST&quot; \n' + &#10;   			'style=&quot;display:none&quot;&gt;&lt;/div&gt; \n';&#10;&#10;		self.send('html', html);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('html', {'type' : 'string'});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	// Supply HTML here so picture is loaded from server and not from cache first time.&#10;	this.addInputHandler('trigger', function() {&#10;		var html = &#10;			'&lt;!-- Reference your image here.  Dots will be overlaid. \n' + &#10;     		'Use div classes to avoid terraswarm website css clashes. --&gt; \n' + &#10;			'&lt;div class=&quot;mapdiv&quot; style=&quot;background:url(/accessors/hosts/browser/demo/src/dots/livingroom.jpg); width:584px; height:488px; background-repeat:no-repeat;&quot; id=&quot;svg&quot; &gt; \n' + &#10;			'&lt;/div&gt; \n' + &#10;			'&lt;!-- Load the accessor.  The display:none hides it. --&gt; \n' + &#10;			'&lt;div class=&quot;poster_div&quot;&gt; \n' + &#10;			'Click/tap or mouseover dots to see GDP data.  Click/tap on a data table to dismiss it. &lt;br&gt;&lt;br&gt; \n' + &#10;			'&lt;button id=&quot;showAccessor&quot;&gt; Show Accessor &lt;/button&gt; \n' + &#10;			'&lt;/div&gt; \n' + &#10;			'&lt;div class=&quot;accessor&quot; \n' + &#10;   			'src=&quot;net/REST&quot; \n' + &#10;   			'id=&quot;REST&quot; \n' + &#10;   			'style=&quot;display:none&quot;&gt;&lt;/div&gt; \n';&#10;&#10;		self.send('html', html);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -140,7 +140,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 290.0]">
         </property>
         <port name="html" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
