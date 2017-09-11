@@ -237,6 +237,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpda
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceBrowser.xml
