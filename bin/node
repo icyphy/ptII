@@ -5,13 +5,13 @@
 # of node in $PTII/vendors/node if it is present.
 
 if [ -z "$PTII" ]; then
-   echo "$0: \$PTII must be set."
-   exit 3
+    echo "$0: \$PTII must be set."
+    exit 3
 fi
 
 if [ ! -e "$PTII" ]; then
-   echo "$0: \$PTII is $PTII, which does not exist?"
-   exit 4
+    echo "$0: \$PTII is $PTII, which does not exist?"
+    exit 4
 fi
 
 NODE_VERSION=$PTII/vendors/node/node-v8.4.0
@@ -39,11 +39,32 @@ esac
 
 NODE="$NODE_DIR/bin/node"
 if [ -f "$NODE" ]; then
-   if [ ! -x "$NODE" ]; then
-      chmod a+x "$NODE"
-   fi
-   echo "$0: Running $NODE $@"
-   exec "$NODE" $@
+    if [ ! -x "$NODE" ]; then
+        chmod a+x "$NODE"
+    fi
+    echo "$0: Running $NODE $@"
+    exec "$NODE" $@
+    retval=$?
+    exit $?
 else
-   exec node $@
+    (
+        IFS=:
+        for p in $PATH; do
+            # Find the first node that is not $PTII/bin/node
+            #echo "Looping through path: $p/node"
+            if [ -x "$p/node" ]; then
+                #echo "$0: $p/node is executable: $0"
+                # Ideally, we would use -ef here, but it is an extension
+                if [ "$p/node" != "$0" ]; then
+                    #echo "$0: $p/node is not the same as $0"
+                    echo "$0: Running $p/node $@"
+                    exec "$p/node" $@
+                    retval=$?
+                    exit $?
+                fi
+            fi
+        done
+        echo "$0: Could not find node in $PATH, perhaps node is not installed?  See https://nodejs.org/en/download/"
+        exit 2
+    )
 fi
