@@ -47,5 +47,24 @@ if [ -f "$NPM" ]; then
     retval=$?
     exit $?
 else
-
+    (
+        IFS=:
+        for p in $PATH; do
+            # Find the first npm that is not $PTII/bin/npm
+            #echo "Looping through path: $p/npm"
+            if [ -x "$p/npm" ]; then
+                #echo "$0: $p/npm is executable: $0"
+                # Ideally, we would use -ef here, but it is an extension
+                if [ "$p/npm" != "$0" ]; then
+                    #echo "$0: $p/npm is not the same as $0"
+                    echo "$0: Running $p/npm $@"
+                    exec "$p/npm" $@
+                    retval=$?
+                    exit $?
+                fi
+            fi
+        done
+        echo "$0: Could not find npm in $PATH, perhaps npm is not installed?  See https://nodejs.org/en/download/"
+        exit 2
+    )
 fi
