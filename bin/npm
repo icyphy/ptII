@@ -5,13 +5,13 @@
 # of npm in $PTII/vendors/node if it is present.
 
 if [ -z "$PTII" ]; then
-   echo "$0: \$PTII must be set."
-   exit 3
+    echo "$0: \$PTII must be set."
+    exit 3
 fi
 
 if [ ! -e "$PTII" ]; then
-   echo "$0: \$PTII is $PTII, which does not exist?"
-   exit 4
+    echo "$0: \$PTII is $PTII, which does not exist?"
+    exit 4
 fi
 
 NODE_VERSION=$PTII/vendors/node/node-v8.4.0
@@ -37,13 +37,15 @@ case $OS in
     *) NODE_DIR=${NODE_VERSION}-unknownArch;;
 esac
 
-NPME="$NODE_DIR/bin/node"
+NPM="$NODE_DIR/bin/npm"
 if [ -f "$NPM" ]; then
-   if [ ! -x "$NPM" ]; then
-      chmod a+x "$NPM"
-   fi
-   echo "$0: Running $NPM $@"
-   exec "$NPM" $@
+    if [ ! -x "$NPM" ]; then
+        chmod a+x "$NPM"
+    fi
+    echo "$0: Running ptII-specific npm: $NPM $@"
+    exec "$NPM" $@
+    retval=$?
+    exit $?
 else
-   exec node $@
+
 fi
