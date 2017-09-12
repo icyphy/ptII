@@ -82,6 +82,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.Diff;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StreamExec;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
@@ -452,14 +453,23 @@ public class JSAccessor extends JavaScript {
             }
         }
         _lastRepoUpdateTime = System.currentTimeMillis();
-        if (!updated || exec.buffer.toString().contains("At revision ")) {
-            _checkoutOrUpdateFailed = false;
-            // Presumably, there is no reason to update the docs, since there was no update.
-            return;
-        } else {
-            _checkoutOrUpdateFailed = true;
-        }
 
+        // If PT_RUN_PTDOC is set, then always run ptdoc.
+        String PT_RUN_PTDOC = "";
+        try {
+            PT_RUN_PTDOC = System.getenv("PT_RUN_PTDOC");
+        } catch (Throwable throwable) {
+            // Ignore
+        }
+        if (PT_RUN_PTDOC == null || PT_RUN_PTDOC.length() == 0) {
+            if (!updated || exec.buffer.toString().contains("At revision ")) {
+                _checkoutOrUpdateFailed = false;
+                // Presumably, there is no reason to update the docs, since there was no update.
+                return;
+            } else {
+                _checkoutOrUpdateFailed = true;
+            }
+        }
         JSAccessor._ptDoc();
     }
 
@@ -1300,6 +1310,8 @@ public class JSAccessor extends JavaScript {
                         antPath = "ant";
                     }
                 }
+                String osName = StringUtilities.getProperty("os.name");
+                String osArch = StringUtilities.getProperty("os.arch");
                 if (!FileUtilities.inPath("ant")) {
                     // If ptolemy.ant.path will only be set if
                     // ./configure has been run.  If ptolemy.ant.path
@@ -1309,8 +1321,6 @@ public class JSAccessor extends JavaScript {
                     File ptIIAntFile = null;
 
                     String defaultAntPath = "$CLASSPATH/ant/bin/ant";
-
-                    String osName = StringUtilities.getProperty("os.name");
                     if (osName != null && osName.startsWith("Windows")) {
                         defaultAntPath = "$CLASSPATH/ant/bin/ant.cmd";
                     }
@@ -1334,13 +1344,54 @@ public class JSAccessor extends JavaScript {
                     }
                 }
 
-                // FIXME: We should ship Node in $PTII/vendors, see https://www.icyphy.org/accessors/wiki/Notes/Windows
-                if (!FileUtilities.inPath("node")) {
-                    System.out.println("Could not find the \"node\" executable in your path, to build the accessor docs, please install ant from https://nodejs.org/");
-                    MessageHandler.status("Could not find \"node\". Accessor docs will not be generated.");
-                    return -2;
+                if (!FileUtilities.inPath("node")
+                    || !FileUtilities.inPath("npm")) {
+                    String nodeVersion = "$CLASSPATH/vendors/node/node-v8.4.0";
+                    String nodeBinary = "";
+                    String npmBinary = "";
+                    if (osName != null) {
+                        if (osName.startsWith("Linux")) {
+                            if (osArch.indexOf(32) != -1) {
+                                nodeBinary = nodeVersion + "-linux-x32/bin/node";
+                                npmBinary = nodeVersion + "-linux-x32/bin/npm";
+                            } else {
+                                nodeBinary = nodeVersion + "-linux-x64/bin/node";
+                                npmBinary = nodeVersion + "-linux-x64/bin/npm";
+                            }
+                        } else if (osName.startsWith("Mac")) {
+                            nodeBinary = nodeVersion + "-darwin-x64/bin/node";
+                            npmBinary = nodeVersion + "-darwin-x64/bin/npm";
+                        } else if (osName.startsWith("Windows")) {
+                            if (osArch.indexOf(32) != -1) {
+                                nodeBinary = nodeVersion + "-win-x32/bin/node.exe";
+                                npmBinary = nodeVersion + "-win-x32/bin/npm.exe";
+                            } else {
+                                nodeBinary = nodeVersion + "-win-x64/bin/node.exe";
+                                npmBinary = nodeVersion + "-win-x64/bin/npm.exe";
+
+                            }
+                            nodeBinary = nodeBinary.replace('/', File.separatorChar);
+                        }
+                        File nodeBinaryFile = FileUtilities.nameToFile(nodeBinary, null);
+                        if (!nodeBinaryFile.canExecute()) {
+                            System.out.println("Could not find the \"node\" executable in your path as \"" + nodeBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
+                            MessageHandler.status("Could not find \"node\". Accessor docs will not be generated.");
+                            return -2;
+                        }
+                        File npmBinaryFile = FileUtilities.nameToFile(npmBinary, null);
+                        if (!npmBinaryFile.canExecute()) {
+                            System.out.println("Could not find the \"npm\" executable in your path as \"" + npmBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
+                            MessageHandler.status("Could not find \"npm\". Accessor docs will not be generated.");
+                            return -2;
+                        }
+                        // Attempt to add the directory where node is found.
+                        System.out.println("JSAccessor: Adding " + nodeBinaryFile.getParent() + " to the path of the ant process.");
+                        antExec.appendToPath(nodeBinaryFile.getParent());
+                    }
                 }
+
                 execCommands.add(antPath + " ptdoc");
+
                 antExec.setCommands(execCommands);
                 antExec.setWaitForLastSubprocess(true);
                 antExec.start();
