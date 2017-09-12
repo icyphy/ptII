@@ -1312,7 +1312,14 @@ public class JSAccessor extends JavaScript {
                 }
                 String osName = StringUtilities.getProperty("os.name");
                 String osArch = StringUtilities.getProperty("os.arch");
-                if (!FileUtilities.inPath("ant")) {
+		String commandExtension = "";
+		String executableExtension = "";
+		if (osName != null && osName.startsWith("Windows")) {
+		    commandExtension = ".cmd";
+		    executableExtension = ".exe";
+		}
+                if (!FileUtilities.inPath("ant" + executableExtension)) {
+		    System.out.println("JSAccessor: ant" + executableExtension + " was not found in the path");
                     // If ptolemy.ant.path will only be set if
                     // ./configure has been run.  If ptolemy.ant.path
                     // is not set, then look for the ant shell script
@@ -1322,7 +1329,8 @@ public class JSAccessor extends JavaScript {
 
                     String defaultAntPath = "$CLASSPATH/ant/bin/ant";
                     if (osName != null && osName.startsWith("Windows")) {
-                        defaultAntPath = "$CLASSPATH/ant/bin/ant.cmd";
+			// ant.exe does not exist?  But ant.bat does??
+                        defaultAntPath = "$CLASSPATH/ant/bin/ant.bat";
                     }
 
                     defaultAnt = "Could not find ant in " + defaultAntPath
@@ -1341,11 +1349,16 @@ public class JSAccessor extends JavaScript {
                         System.out.println(defaultAnt);
                         MessageHandler.status(defaultAnt);
                         return -1;
-                    }
-                }
+                    } else {
+			System.out.println("JSAccessor: Found ant at " + antPath);
+		    }
+                } else {
+		    System.out.println("JSAccessor: ant was found in the path: " + System.getenv("PATH"));
+		}
 
-                if (!FileUtilities.inPath("node")
-                    || !FileUtilities.inPath("npm")) {
+
+                if (!FileUtilities.inPath("node" + executableExtension)
+		    || !FileUtilities.inPath("npm" + commandExtension)) {
                     String nodeVersion = "$CLASSPATH/vendors/node/node-v8.4.0";
                     String nodeBinary = "";
                     String npmBinary = "";
@@ -1390,6 +1403,7 @@ public class JSAccessor extends JavaScript {
                     }
                 }
 
+		System.out.println("JSAccessor.java: About to execute " + antPath + " ptdoc");
                 execCommands.add(antPath + " ptdoc");
 
                 antExec.setCommands(execCommands);
