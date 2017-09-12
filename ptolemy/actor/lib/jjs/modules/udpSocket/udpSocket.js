@@ -27,7 +27,7 @@
  * @author Hokeun Kim and Edward A. Lee
  * @version $$Id$$
  */
-
+  
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, actor, exports, require, util */
