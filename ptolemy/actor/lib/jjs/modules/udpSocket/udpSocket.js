@@ -45,11 +45,16 @@ var EventEmitter = require('events').EventEmitter;
  *  @param type One of "udp4" or "udp6". Defaults to "udp4" if not given.
  *  @param callback Optional function to bind to "message" events.
  */
-exports.createSocket = function (type, callback) {
+exports.createSocket = function (type, callback, enableBroadcast) {
     if (!type) {
         type = "udp4";
     }
-    var socket = new exports.Socket(type);
+    var socket;
+    if (enableBroadcast) {
+    	socket = new exports.Socket(type, true);
+    } else {
+    	socket = new exports.Socket(type, false);
+    }
     if (callback) {
         socket.on("message", callback);
     }
@@ -102,11 +107,17 @@ exports.supportedSendTypes = function () {
  *  with value true.
  *
  *  @param type One of "udp4" or "udp6", which is ignored in Cape Code.
+ *  @param enableBroadcast boolean, setting to true enables the socket broadcast 
+ *   messages.
  */
-exports.Socket = function (type) {
+exports.Socket = function (type, enableBroadcast) {
     // FIXME: type is ignored.
     var helper = UDPSocketHelper.getOrCreateHelper(actor, this);
-    this.socket = helper.createSocket(this);
+    if (enableBroadcast) {
+        this.socket = helper.createSocket(this, true);
+    } else {
+    	this.socket = helper.createSocket(this, false);
+    }
 };
 
 util.inherits(exports.Socket, EventEmitter);
