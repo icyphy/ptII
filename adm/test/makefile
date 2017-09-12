@@ -134,7 +134,7 @@ missingMakefiles: $(JAVAFILENAMES)
 missingDocPackages: $(JAVAFILENAMES)
 	@cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/missingDocPackages.p
 	@(cd $(ROOT)/doc; $(MAKE) echo | sort > /tmp/missingDocPackages.d)
-	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|test\.junit|test\.system|test\.system\.junit|vendors\.|\.jsoriginal|hosts/cordova/plugins)"; rm -f /tmp/missingDocPackages.d /tmp/missingDocPackages.p
+	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|test\.junit|test\.system|test\.system\.junit|vendors\.|\.jsoriginal|hosts.cordova.plugins)"; rm -f /tmp/missingDocPackages.d /tmp/missingDocPackages.p
 
 reloadAllAccessors:
 	(cd $(PTII);./bin/reloadAllAccessors -reload -cg -commit -updateCommonHost) | tee /tmp/reloadAllAccessors.$$$$.out
