@@ -36,6 +36,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.datagram.DatagramPacket;
 import io.vertx.core.datagram.DatagramSocket;
+import io.vertx.core.datagram.DatagramSocketOptions;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -77,12 +78,14 @@ public class UDPSocketHelper extends VertxHelperBase {
 
     /** Create the UDP socket.
      *  @param scriptObjectMirror The JavaScript instance invoking the shell.
+     *  @param enableBroadcast enabling or not message broadcasting
      *  @return The UDP socket helper.
      */
     public UDPSocket createSocket(
-            ScriptObjectMirror scriptObjectMirror) {
+            ScriptObjectMirror scriptObjectMirror,
+            boolean enableBroadcast) {
         // FIXME: Support send and receive types.
-        return new UDPSocket(scriptObjectMirror);
+        return new UDPSocket(scriptObjectMirror, enableBroadcast);
     }
 
     /** Get or create a helper for the specified actor.
@@ -132,10 +135,14 @@ public class UDPSocketHelper extends VertxHelperBase {
         /** Construct a socket.
          *  @param currentObj The corresponding JavaScript Socket object.
          */
-        public UDPSocket(ScriptObjectMirror currentObj) {
+        public UDPSocket(ScriptObjectMirror currentObj, boolean enableBroadcast) {
             _currentObj = currentObj;
             _isOpen = false;
-            _socket = _vertx.createDatagramSocket();
+            if (enableBroadcast == true) {
+                _socket = _vertx.createDatagramSocket(new DatagramSocketOptions().setBroadcast(true));
+            } else {
+                _socket = _vertx.createDatagramSocket();
+            }
         }
 
         /** Listen for datagram messages on the specified port and optional address.
@@ -161,7 +168,8 @@ public class UDPSocketHelper extends VertxHelperBase {
                                 public void handle(final DatagramPacket packet) {
                                     // Emit the message in the director thread.
                                     _issueResponse(() -> {
-                                        _emitMessage(packet.data());
+                                        String sender = packet.sender().toString();
+                                        _emitMessage(packet.data(), sender);
                                     });
                                 }
                             });
@@ -315,12 +323,18 @@ public class UDPSocketHelper extends VertxHelperBase {
         }
 
         /** Convert the buffer to a message depending on the specified receive type
-         *  and emit a 'message' event.
+         *  and emit a 'message' event. Both the message and sender address are emitted.
          *  @param buffer The buffer containing the message.
+         *  @param sender A string containing the IP address and port of the sender.
          */
-        protected void _emitMessage(Buffer buffer) {
+        protected void _emitMessage(Buffer buffer, String sender) {
             if (_receiveType == DATA_TYPE.STRING) {
-                _currentObj.callMember("emit", "message", buffer.getString(0, buffer.length()));
+                if (!_rawBytes) {
+                    _currentObj.callMember("emit", "message", buffer.getString(0, buffer.length()), sender);
+                } else { 
+                    byte[] bytes = buffer.getBytes();
+                    _currentObj.callMember("emit", "message", bytes, sender);
+                }
             } else if (_receiveType == DATA_TYPE.IMAGE) {
                 try {
                     byte[] bytes = buffer.getBytes();
@@ -328,7 +342,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                     BufferedImage image = ImageIO.read(byteStream);
                     if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
                         ImageToken token = new AWTImageToken(image);
-                        _currentObj.callMember("emit", "message", token);
+                        _currentObj.callMember("emit", "message", token, sender);
                     } else {
                         _error(_currentObj, "Received corrupted image.");
                     }
@@ -347,7 +361,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                     int length = buffer.length();
                     int numberOfElements = length / size;
                     if (numberOfElements == 1) {
-                        _currentObj.callMember("emit", "message", _extractFromBuffer(buffer, _receiveType, 0));
+                        _currentObj.callMember("emit", "message", _extractFromBuffer(buffer, _receiveType, 0), sender);
                     } else if (numberOfElements > 1) {
                         // Using message framing, so we output a single array.
                         Object[] result = new Object[numberOfElements];
@@ -361,11 +375,11 @@ public class UDPSocketHelper extends VertxHelperBase {
                         // dance here which is probably very inefficient (almost
                         // certainly... the array gets copied).
                         try {
-                            _currentObj.callMember("emit", "message", _actor.toJSArray(result));
+                            _currentObj.callMember("emit", "message", _actor.toJSArray(result), sender);
                         } catch (Exception e) {
                             _error(_currentObj, "Failed to convert to a JavaScript array: "
                                     + e);
-                            _currentObj.callMember("emit", "message", result);
+                            _currentObj.callMember("emit", "message", result, sender);
                         }
                     } else {
                         _error(_currentObj, "Expect to receive type "
@@ -376,7 +390,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                 }
             }
         }
-
+        
         /** True if the socket is open, false otherwise.  Vert.x does not seem
          * to offer a way to check the socket status.  Needed to prevent calling
          * close() on a closed socket - doing so causes multiple close events
