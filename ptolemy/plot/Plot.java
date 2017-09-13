@@ -3347,6 +3347,8 @@ public class Plot extends PlotBox implements PlotInterface {
 
         // Set the color
         if (_usecolor) {
+            // NOTE: Temporary to use the same color three times.
+            // int color = (dataset/3) % _colors.length;
             int color = dataset % _colors.length;
             graphics.setColor(_colors[color]);
         } else {

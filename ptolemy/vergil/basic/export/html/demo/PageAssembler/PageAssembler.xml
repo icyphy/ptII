@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PageAssembler" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1068, 660]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.869817839196, 247.7501570351759}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{444.069817839196, 289.3501570351759}">
     </property>
     <property name="lineSeperator" class="ptolemy.data.expr.StringParameter" value="\r\n">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -39,18 +39,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 25.0]">
         </property>
     </property>
-    <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+    <entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler">
         <property name="saveToFile" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Save the new HTML page to a separate file"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[515.125, 123.75]">
         </property>
-        <port name="bodyContent" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
         <port name="script" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -86,66 +80,15 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1296, 776}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1280, 717]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1440, 830]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.125, 123.75]">
         </property>
     </entity>
-    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;div id=&quot;script&quot;&gt;&lt;/div&gt;">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.125, 23.75]">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-    </entity>
-    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;div id=&quot;info&quot;&gt;&lt;/div&gt;">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.125, 48.75]">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-    </entity>
-    <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;div id=&quot;panel&quot;&gt;&lt;/div&gt;">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.125, 73.75]">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-    </entity>
     <entity name="StringConst4" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;p&gt;Plese enter your personal information:&lt;/p&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;p&gt;Please enter your personal information:&lt;/p&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -162,7 +105,7 @@
         </property>
     </entity>
     <entity name="StringConst6" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="First Name: &lt;input id=&quot;firstName&quot; type=&quot;text&quot; value=&quot;Firstname&quot;/&gt;&lt;br&gt;&#10;Last Name: &lt;input id=&quot;lastName&quot; type=&quot;text&quot; value=&quot;Lastname&quot;/&gt;&lt;br&gt;&#10;Gender: &#10;&lt;select id=&quot;gender&quot;&gt;&#10;  &lt;option &gt;Female&lt;/option&gt;&#10;  &lt;option selected=&quot;selected&quot;&gt;Male&lt;/option&gt;&#10;&lt;/select&gt;&lt;br&gt;&#10;&lt;input type=&quot;button&quot; onclick=&quot;showInfo()&quot; value=&quot;Submit&quot; id=&quot;submit&quot; /&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="First Name: &lt;input id=&quot;firstName&quot; type=&quot;text&quot; value=&quot;Firstname&quot;&gt;&lt;br&gt;&#10;Last Name: &lt;input id=&quot;lastName&quot; type=&quot;text&quot; value=&quot;Lastname&quot;&gt;&lt;br&gt;&#10;Gender: &#10;&lt;select id=&quot;gender&quot;&gt;&#10;  &lt;option&gt;Female&lt;/option&gt;&#10;  &lt;option selected=&quot;selected&quot;&gt;Male&lt;/option&gt;&#10;&lt;/select&gt;&lt;br&gt;&#10;&lt;input type=&quot;button&quot; onclick=&quot;showInfo()&quot; value=&quot;Submit&quot; id=&quot;submit&quot;&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -173,7 +116,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.375, 246.25]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 255.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -182,12 +125,6 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -195,9 +132,6 @@
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HTMLPageAssembler.output" relation="relation2"/>
-    <link port="HTMLPageAssembler.bodyContent" relation="relation3"/>
-    <link port="HTMLPageAssembler.bodyContent" relation="relation4"/>
-    <link port="HTMLPageAssembler.bodyContent" relation="relation5"/>
     <link port="HTMLPageAssembler.script" relation="relation6"/>
     <link port="HTMLPageAssembler.info" relation="relation7"/>
     <link port="HTMLPageAssembler.panel" relation="relation10"/>
@@ -205,9 +139,6 @@
     <link port="StringSplit.input" relation="relation"/>
     <link port="StringSplit.output" relation="relation6"/>
     <link port="Display.input" relation="relation2"/>
-    <link port="StringConst.output" relation="relation3"/>
-    <link port="StringConst2.output" relation="relation4"/>
-    <link port="StringConst3.output" relation="relation5"/>
     <link port="StringConst4.output" relation="relation7"/>
     <link port="StringConst6.output" relation="relation10"/>
 </entity>
