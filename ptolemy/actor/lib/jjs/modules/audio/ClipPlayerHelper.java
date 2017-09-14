@@ -84,7 +84,14 @@ public class ClipPlayerHelper extends HelperBase {
         }
               
         // Wait for stop callback?
-        _player = new MediaPlayer(new Media(url));
+        try {
+            _player = new MediaPlayer(new Media(url));
+        } catch (UnsupportedOperationException ex) {
+            throw new UnsupportedOperationException("Failed to create a Media or MediaPlayer based on \"" + url +
+                                                    "\". Note that Java 1.8.0 before 8u72 have a bug that prevent https from working." +
+                                                    "The solution is to update to a version of the Java Development Kit (JDK) after 1.8.0_72, " +
+                                                    "See https://bugs.openjdk.java.net/browse/JDK-8091132.", ex);
+        }
         _player.setOnError(new Runnable() {
                 @Override
                 public void run() {
