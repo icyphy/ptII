@@ -1,0 +1,8 @@
+<svg x="-75" y="-30" style="overflow: visible">
+<rect x="-75" y="-30" width="150" height="60" style="fill:white;stroke:black"/>
+<text x="-70" y="-10" style="font-size:14">
+x(k+1) = Ax(k) + Bu(k) </text>
+<text x="-70" y="10" style="font-size:14">
+    y(k) = Cx(k) + Du(k)</text>
+</svg>
+

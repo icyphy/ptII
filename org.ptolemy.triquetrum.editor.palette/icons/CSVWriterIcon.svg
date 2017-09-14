@@ -1,0 +1,6 @@
+<svg x="-25" y="-20" style="overflow: visible">
+<rect x="-25" y="-20" width="50" height="40" style="fill:white;stroke:black"/>
+<polygon points="-15,-10 -12,-10 -8,-14 -1,-14 3,-10 15,-10 15,10, -15,10" style="fill:red;stroke:black"/>
+<text x="-11" y="4" style="font-size:11; fill:white; font-family:SansSerif">CSV</text>
+</svg>
+

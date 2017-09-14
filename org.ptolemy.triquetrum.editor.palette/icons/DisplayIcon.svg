@@ -1,0 +1,9 @@
+<svg x="-20" y="-15" style="overflow: visible">
+<rect x="-20" y="-15" width="40" height="30" style="fill:lightGrey;stroke:black"/>
+<rect x="-15" y="-10" width="30" height="20" style="fill:white;stroke:black"/>
+<line x1="-13" y1="-6" x2="-4" y2="-6" style="stroke:grey"/>
+<line x1="-13" y1="-2" x2="0" y2="-2" style="stroke:grey"/>
+<line x1="-13" y1="2" x2="-8" y2="2" style="stroke:grey"/>
+<line x1="-13" y1="6" x2="4" y2="6" style="stroke:grey"/>
+</svg>
+

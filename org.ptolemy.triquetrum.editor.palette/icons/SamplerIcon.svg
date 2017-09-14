@@ -1,0 +1,7 @@
+<svg x="-30" y="-20" style="overflow: visible">
+<rect x="-30" y="-20" width="60" height="40" style="fill:white;stroke:black"/>
+<polyline points="0,20 0,0" style="fill:none;stroke:black"/>
+<polyline points="-30,-0 -10,0 10,-7" style="fill:none;stroke:black"/>
+<polyline points="10,0 30,0" style="fill:none;stroke:black"/>
+</svg>
+
