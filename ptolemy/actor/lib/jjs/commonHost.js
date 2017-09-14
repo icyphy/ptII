@@ -570,7 +570,7 @@ clearTimeout',
     } else if (implementedBy) {
         // This accessor interface is being implemented.
         Object.setPrototypeOf(this, implementedBy);
-        // Note that these now no relationship between the exports properties,
+        // Note that there is now no relationship between the exports properties,
         // and there are no ssuper properties provided.
 
         this.root = implementedBy.root;
@@ -1926,6 +1926,9 @@ Accessor.prototype.reify = function (accessor) {
         return false;
     }
 
+    // Now that we have a new contained accessor, we need to set its
+    // priority.
+    accessorInstance.priority = 0;
     // Initialize the instance
     accessorInstance.initialize();
 
