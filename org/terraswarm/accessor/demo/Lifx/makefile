@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Hue demo
+# Makefile for Ptolemy II Lifx demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/Hue
+ME =		org/terraswarm/accessor/demo/Lifx
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,15 +41,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Hue
+PTPACKAGE = 	Lifx
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Hue.xml \
+	Lifx.xml \
 	HappySadStock.xml \
-	HueToggle.xml \
+	LifxToggle.xml \
 	MotionLights.xml \
 	OccupancyLights.xml
 
@@ -78,16 +78,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Hue.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer Lifx.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Hue.xml
+	"$(PTII)/bin/ptolemy" Lifx.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Hue.xml
+	"$(PTII)/bin/vergil" Lifx.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
