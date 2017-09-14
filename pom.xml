@@ -25,7 +25,6 @@ $Id$
   <packaging>pom</packaging>
 
   <modules>
-    <module>features</module>
     <module>diva</module>
     <!-- org.json is not a module
     <module>org.json</module>
@@ -49,6 +48,8 @@ $Id$
     <module>ptolemy.domains.sdf</module>
     <module>ptolemy.gui</module>
     <module>ptolemy.moml</module>
+    <module>org.ptolemy.triquetrum.editor.palette</module>
+    <module>features</module>
     <module>releng</module>
   </modules>
 
