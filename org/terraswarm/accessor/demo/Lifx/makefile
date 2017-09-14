@@ -47,11 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Lifx.xml \
-	HappySadStock.xml \
-	LifxToggle.xml \
-	MotionLights.xml \
-	OccupancyLights.xml
+	Lifx.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \

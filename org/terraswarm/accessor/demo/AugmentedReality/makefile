@@ -51,9 +51,11 @@ OTHER_FILES_TO_BE_JARED = \
 	AugmentedRealityBasic.xml \
 	AugmentedRealityFeedback.xml \
 	AugmentedRealityFeedbackGDP.xml \
+	AugmentedRealityMessageBoard.xml \
 	ControllableSensor.js \
 	GDPSensor.js \
 	MechanicalRoom.jpg \
+	MessageBoard.js \
 	PressureSensor.js \
 	TagMapAccessorAR.xml \
 	TagURIMapAR.xml \
