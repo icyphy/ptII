@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Default Triquetrum editor palette (Incubation)
-Bundle-SymbolicName: org.eclipse.triquetrum.workflow.editor.palette;singleton:=true
+Bundle-Name: Ptolemy II editor palette for Eclipse Triquetrum
+Bundle-SymbolicName: org.ptolemy.triquetrum.editor.palette;singleton:=true
 Bundle-Version: 11.1.0.qualifier
 Import-Package: ptolemy.actor;version="11.0.0",
  ptolemy.actor.lib;version="11.0.0",
@@ -9,4 +9,4 @@ Import-Package: ptolemy.actor;version="11.0.0",
  ptolemy.domains.sdf.kernel;version="11.0.0",
  ptolemy.vergil.kernel.attributes;version="11.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-Vendor: Eclipse Triquetrum
+Bundle-Vendor: Ptolemy Project, Berkeley, California
