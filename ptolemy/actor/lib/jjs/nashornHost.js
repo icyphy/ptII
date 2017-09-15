@@ -145,16 +145,41 @@ function alert(message) {
 
 /** Get a resource, which may be a relative file name or a URL, and return the
  *  value of the resource as a string.
+ *
  *  Implementations of this function may restrict the locations from which
  *  resources can be retrieved. This implementation restricts relative file
  *  names to be in the same directory where the swarmlet model is located or
  *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
  *  classpath of the current Java process.
- *  @param uri A specification for the resource.
- *  @param timeout The timeout in milliseconds.
+ *
+ *  If the accessor is not restricted, the $KEYSTORE is resolved to
+ *  $HOME/.ptKeystore. *
+ *
+ *  The options parameter may have the following values:
+ *  * If the type of the options parameter is a Number, then it is assumed
+ *    to be the timeout in milliseconds.
+ *  * If the type of the options parameter is a Number, then it is assumed
+ *    to be the encoding, for examle "UTF-8".  If the value is "Raw" or "raw"
+ *    then the data is returned as an unsigned array of bytes.  For backward
+ *    compatibility, the default encoding is "String"
+ *  * If the type of the options parameter is an Object, then it may
+ *    have the following fields:
+ *  ** encoding {string} The encoding of the file, see above for values.
+ *  ** timeout {number} The timeout in milliseconds.
+ *
+ *  If the callback parameter is not present, then getResource() will
+ *  be synchronous read like Node.js's
+ *  {@link https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options|fs.readFileSync()}.
+ *  If the callback argument is present, then getResource() will be asynchronous like
+ *  {@link https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback|fs.readFile()}.
+ *
+ *  @param path {string} The URI or path to the resource
+ *  @param options The options for reading the resource
+ *  @param callback The callback function.  The first argument is the error,
+ *  if any, the second argument is the data, if any.
  */
-function getResource(uri, timeout) {
-    return actor.getResource(uri, timeout);
+function getResource(path, options, callback) {
+    return actor.getResource(path, options, callback);
 }
 
 /** Clear an interval timer with the specified handle.

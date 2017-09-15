@@ -2855,7 +2855,7 @@ function nullHandlerFunction() {}
  *  they appear in the argument list.
  *
  *  The command-line arguments are file names, accessor class names (such as
- *  net/REST), or any of the following options:
+ *  net/REST), or any of the following optionso:
  *
  *  * -e|--e|-echo|--echo: Echo the command-line arguments.
  *    This is helpful for use under Ant apply.
