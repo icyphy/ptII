@@ -3848,7 +3848,7 @@ JVERSION_TARGET=`echo "$JVERSION" | sed 's/\([1-9]*\.[^._]*\).*/\1/'`
 cd "$startdir"
 
 #--------------------------------------------------------------------
-#	We require JDK1.6, JDK 1.8 preferred
+#	We require JDK 1.8 preferred
 #--------------------------------------------------------------------
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking the JDK version" >&5
@@ -3884,7 +3884,8 @@ $as_echo "$as_me: WARNING: Java 1.6.x is the first JVM in your path.
     To adjust the path in Bash, use
     export PATH=/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/bin:\${PATH}" >&2;}
                esac
-	       ;;
+	       UPGRADE_JVM=yes;;
+	1.7.*) UPGRADE_JVM=yes;;
        	*)     ;;
 esac
 
@@ -3897,7 +3898,8 @@ if test "$UPGRADE_JVM" = "yes"; then
 	    upgradeMessage="";;
     esac
 
-		as_fn_error $? "Ptolemy II requires JDK 1.5 or later.
+		as_fn_error $? "Ptolemy II requires JDK 1.8 or later.
+
     JDK 1.2.2 has a bug involving compiling inner classes with protected
     methods.
     The RTOS domain uses java.util.Timer, which is present in JDK 1.3
@@ -3910,7 +3912,8 @@ if test "$UPGRADE_JVM" = "yes"; then
 	- backtrack
 	- ptalon
     JDK 1.6 or later is needed for ptdb to use javax.swing.GroupLayout.
-    Please upgrade your JDK to 1.6 or later and try again.
+    JDK 1.8 is needed for Nashorn, nio and many other features.
+    Please upgrade your JDK to 1.8 or later and try again.
     $upgradeMessage" "$LINENO" 5
 else
    # -breakiterator is only present in jdk1.4 and later
@@ -4540,7 +4543,7 @@ PTJAVA18_PACKAGES=
 
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
-    pre1_8packages="org/hlacerti/ org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/fmi/ ptolemy/actor/lib/conversions/ ptolemy/actor/lib/jjs/ ptolemy/actor/lib/jjs/modules/ ptolemy/actor/lib/jjs/modules/cameras/ ptolemy/actor/lib/jjs/modules/imageDisplay/ ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/ /ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/ ptolemy/vergil/basic/imprt/accessor/ ptolemy/vergil/basic/imprt/fmu/ org/terraswarm/accessor/ ptolemy/domains/wireless/lib/bluetooth/"
+    pre1_8packages="org/hlacerti/ org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/fmi/ ptolemy/actor/lib/conversions/ ptolemy/actor/lib/jjs/ ptolemy/actor/lib/jjs/modules/ ptolemy/actor/lib/jjs/modules/cameras/ ptolemy/actor/lib/jjs/modules/imageDisplay/ ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/ /ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/ ptolemy/vergil/basic/imprt/accessor/ ptolemy/vergil/basic/imprt/fmu/ org/terraswarm/accessor/ ptolemy/domains/wireless/lib/bluetooth/ ptolemy/actor/lib/security/ ptolemy/domains/atc/ ptolemy/domains/tcs/"
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
     The following packages will not be compiled:
         $pre1_8packages" >&5
