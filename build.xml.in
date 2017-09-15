@@ -107,6 +107,9 @@
        See also the timeout= values in ptolemy/util/test/junit/*.java. -->
   <property name="timeout.longest" value="19000000" />
 
+  <!-- The timeout in milliseconds for the Node Package Manager (npm) -->
+  <property name="timeout.npm" value="45000" />
+
   <!-- Ant paths to optional jar files set by the configure script. -->
   <path id="ptII.classpath.optional">
     @ANT_CLASSPATH@
@@ -255,7 +258,10 @@
     </condition>
   </target>
 
-  <!-- Check to see if node is in the path. -->
+  <!-- Check to see if node is in the path.
+       Set node.in.path to true if node.exe or node are found.
+       Set node.executable to node.exe or node.
+  -->
   <target name="-check-node">
     <property environment="env" />
     <condition property="node.in.path">
@@ -270,6 +276,31 @@
 	       value="node.exe"/>
       </or>
     </condition>
+    <condition property="node.executable" value="node">
+      <available file="node"
+	       filepath="${env.PATH}"/>
+    </condition>
+    <condition property="node.executable" value="node.exe">
+      <available file="node.exe"
+	       filepath="${env.PATH}"/>
+    </condition>
+  </target>
+
+  <target name="-check-node-works"
+          depends="-check-node"
+          if="${node.in.path}">
+    <exec executable="node"
+          failonerror="false"
+          timeout="${timeout.npm}"
+          resultproperty="return.code">
+
+      <arg value="--version"/>
+    </exec>
+    <condition property="node.works">
+      <not>
+        <isfailure code="${return.code}"/>
+      </not>
+    </condition>
   </target>
 
   <!-- Under Windows, npm.cmd and npm are in the path, so we check
@@ -282,10 +313,21 @@
     <condition property="npm.executable"
 	       value="npm.cmd"
 	       else="npm">
-      <available file="node.exe"
-	       filepath="${env.PATH}"
-               property="npm.executable"
-	       value="node.exe"/>
+      <available file="npm.exe"
+	       filepath="${env.PATH}"/>
+    </condition>
+  </target>
+
+  <target name="-check-npm-works"
+          depends="-check-node-works, -check-npm"
+          if="${node.works}">
+    <exec executable="${npm.executable}"
+          failonerror="false"
+          timeout="${timeout.npm}">
+      <arg value="--version"/>
+    </exec>
+    <condition property="npm.works">
+      <isfailure code="0"/>
     </condition>
   </target>
 
@@ -741,8 +783,8 @@ For example:
   </target>
 
   <target name="jsdoc-install"
-	  depends="-check-jsdoc, -check-node, -check-npm"
-          if="${node.in.path}"
+	  depends="-check-jsdoc, -check-node-works, -check-npm-works"
+          if="${node.works}"
 	  unless="jsdoc.command.exists">
     <mkdir dir="${basedir}/node_modules"/>
     <exec executable="${npm.executable}"
@@ -753,8 +795,8 @@ For example:
   </target>
 
   <target name="jsdoc-update"
-	  depends="jsdoc-install, -check-npm"
-          if="${node.in.path}">
+	  depends="jsdoc-install, -check-npm-works"
+          if="${node.works}">
     <exec executable="${npm.executable}"
           timeout="${timeout}">
       <arg value="update"/>
@@ -794,7 +836,7 @@ For example:
   </target>
 
   <target name="jshint-install"
-	  depends="-check-jshint-executable, -check-npm"
+	  depends="-check-jshint-executable, -check-npm-works"
           description="Install jshint in ${env.HOME} using npm"
 	  unless="${jshint.executable.exists}">
     <exec dir="${env.HOME}"
@@ -830,14 +872,14 @@ For example:
   <target name="ptdoc"
           depends="jsdoc-update, -ptdoc-no-node"
           description="Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy"
-          if="${node.in.path}">
+          if="${node.works}">
     <subant target="ptdoc" genericantfile="${basedir}/org/terraswarm/accessor/accessors/web/build.xml">
       <dirset dir="." includes="org/terraswarm/accessor/accessors/web"/>
     </subant>
   </target>
 
   <target name="-ptdoc-no-node"
-          unless="${node.in.path}">
+          unless="${node.works}">
       <echo>
         Node was not found in the path, so 'ant ptdoc' will not be run.
         This means that documentation for Accessors will not be available.
