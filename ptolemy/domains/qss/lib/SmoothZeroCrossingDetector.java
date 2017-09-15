@@ -252,15 +252,16 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         if (inputToken instanceof SmoothToken) {
             // At this point, either a new token has arrived, or a projected crossing
             // has occurred (in which case, the value of inputToken is identically 0.0.
-            double inputValue = inputToken.doubleValue();
+            final double targetValue = _level;
+            final double inputValue = inputToken.doubleValue();
 
             // Check whether we should produce an output.
             if (_previousInput != null) {
                 // If either the input is zero or the sign of the input is opposite of
                 // the previous input, then produce an output if the direction matches.
                 double previousValue = _previousInput.doubleValue();
-                boolean inputIsRising = inputValue >= 0.0 && previousValue < 0.0;
-                boolean inputIsFalling = inputValue <= 0.0 && previousValue > 0.0;
+                boolean inputIsRising = inputValue >= targetValue && previousValue < targetValue;
+                boolean inputIsFalling = inputValue <= targetValue && previousValue > targetValue;
                 if (_detectFallingCrossing && inputIsFalling
                         || _detectRisingCrossing && inputIsRising) {
                     output.send(0, value.getToken());
@@ -281,9 +282,9 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                         || (derivatives.length > 2 && derivatives[1] == 0.0 && derivatives[2] == 0.0)) {
                     // There is a predictable zero crossing only if the derivative
                     // and value have opposite signs.
-                    if (_detectRisingCrossing && inputValue < 0.0 && derivatives[0] > 0.0
-                            || _detectFallingCrossing && inputValue > 0.0 && derivatives[0] < 0.0) {
-                        future = currentTime.add(- inputValue / derivatives[0]);
+                    if (_detectRisingCrossing && inputValue < targetValue && derivatives[0] > 0.0
+                            || _detectFallingCrossing && inputValue > targetValue && derivatives[0] < 0.0) {
+                        future = currentTime.add((targetValue - inputValue) / derivatives[0]);
                     }
                 } else if (derivatives.length == 2
                         || (derivatives.length > 2 && derivatives[2] == 0.0)) {
@@ -292,7 +293,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                     // that solves the following quadratic (from the Taylor series expansion):
                     //   0 = (d2*t^2)/2 + d1*t + x,
                     // where d1 is the first derivative and d2 is the second.
-                    double delta = PolynomialRoot.findMinimumPositiveRoot2(derivatives[1]/2.0, derivatives[0], inputValue);
+                    double delta = PolynomialRoot.findMinimumPositiveRoot2(derivatives[1]/2.0, derivatives[0], inputValue - targetValue);
                     if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
                         future = currentTime.add(delta);
                     }
@@ -303,7 +304,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                     //   0 = (d3*t^3)/6 + (d2*t^2)/2 + d1*t + x,
                     // where d1 is the first derivative, d2 is the second, and d3 is the third.
                     double delta = PolynomialRoot.findMinimumPositiveRoot3(
-                            derivatives[2]/6.0, derivatives[1]/2.0, derivatives[0], inputValue, _errorTolerance, 0.0);
+                            derivatives[2]/6.0, derivatives[1]/2.0, derivatives[0], inputValue - targetValue, _errorTolerance, 0.0);
                     if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
                         future = currentTime.add(delta);
                     }
