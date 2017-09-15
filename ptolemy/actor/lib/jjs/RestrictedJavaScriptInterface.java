@@ -132,7 +132,7 @@ public class RestrictedJavaScriptInterface {
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public String getResource(String uri, int timeout) throws IllegalActionException {
+    public Object getResource(String uri, int timeout) throws IllegalActionException {
         return _actor.getResource(uri, timeout);
     }
 
