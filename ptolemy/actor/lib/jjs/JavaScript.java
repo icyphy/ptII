@@ -1141,7 +1141,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public String getResource(String uri, int timeout) throws IllegalActionException {
+    public Object getResource(String uri, int timeout) throws IllegalActionException {
         URI baseDirectory = null;
         uri = uri.trim();
         int colon = uri.indexOf(":");
