@@ -1132,16 +1132,45 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
      *  names to be in the same directory where the model is located or
      *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
      *  classpath of the current Java process.
+     *
      *  If the accessor is not restricted, the $KEYSTORE is resolved to
      *  $HOME/.ptKeystore.
+     *
+     *  The options parameter may have the following values:
+     *  <ul>
+     *  <li>If the type of the options parameter is a Number, then it is assumed
+     *    to be the timeout in milliseconds.</li>
+     *  <li> If the type of the options parameter is a String, then it is assumed
+     *    to be the encoding, for examle "UTF-8".  If the value is "Raw" or "raw"
+     *    then the data is returned as an unsigned array of bytes.  For backward
+     *    compatibility, if the encoding is not set, it is assumed to be
+     *    the default encoding of the platform, see
+     *    <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html#in_browser">Charset</a>
+     *  </li>
+     *  <li> If the type of the options parameter is an Object, then it may
+     *    have the following optional fields:
+     *    <ul>
+     *      <li> encoding {string} The encoding of the file, see above for values.</li>
+     *      <li> timeout {number} The timeout in milliseconds.</li>
+     *    </ul>
+     *  </li>
+     *
+     *  If the callback parameter is not present, then getResource() will
+     *  be synchronous read like Node.js's
+     *  <a href="https://nodejs.org/api/fs.html#in_browser">fs.readFileSync()</a>
+     *  If the callback argument is present, then getResource() will be asynchronous like
+     *  <a href="https://nodejs.org/api/fs.html#in_browser">fs.readFile()</a>.
+     *
      *  @param uri A specification for the resource.
-     *  @param timeout The timeout in milliseconds (this is ignored in this implementation).
-     *  @return The resource
+     *  @param options The options for reading the resource.  See above for details.
+     *  @param callback The callback function.  The first argument is the error,
+     *  if any, the second argument is the data, if any.
+     *  @return The contents of the resource.
      *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public Object getResource(String uri, int timeout) throws IllegalActionException {
+    public Object getResource(String uri, Object options, Runnable callback) throws IllegalActionException {
         URI baseDirectory = null;
         uri = uri.trim();
         int colon = uri.indexOf(":");
@@ -1160,6 +1189,32 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             throw new IllegalActionException(this, "Illegal file name for resource: " + uri);
         }
 
+        // If options is a String, then if it is a number, it is the
+        // timeout, if it is a String, it is the encoding.
+        // Otherwise, it is a Map.
+        int timeout = -1;
+        String encoding = null;
+        Map<String,Object> optionsMap = null;
+        if (options instanceof String) {
+            try {
+                timeout = Integer.parseInt((String)options);
+                System.err.println("JavaScript.java: getResource() invoked with a timeout of " + timeout
+                           + ", which is not yet supported.");
+            } catch (NumberFormatException ex) {
+                encoding = (String) options;
+            }
+        } else if (options instanceof Map) {
+            optionsMap = (Map<String,Object>) options;
+        } else {
+            throw new IllegalActionException("options was a " + options.getClass() +
+                                             ", which is neither a String nor a Map<String,Object>");
+        }
+            
+        if (callback != null) {
+            System.err.println("JavaScript.java: getResource() invoked with a callback of " + callback
+                       + ", which is not yet supported.");
+        }
+
         if (colon < 0) {
             // Relative file name is given.
             if (_restricted && uri.startsWith("/")) {
@@ -1174,6 +1229,8 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
 
         // If the uri starts with $KEYSTORE, then try to create
         // the directory and subsitute the name.
+        // To test this code, try:
+        // $PTII/bin/capecode $PTII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml 
         if ( uri.startsWith("$KEYSTORE")) {
             String home = System.getenv("HOME");
             if (home == null || home.length() == 0) {
@@ -1192,28 +1249,49 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             }
         }
 
+        // Read the resource.  If the encoding is [Rr][Aa][Ww], then
+        // read it as a raw binary.  Otherwise read it using the encoding as the
+        // Charset.  If there is no encoding, use the default Charset.
         try {
             URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(new InputStreamReader(
-                        url.openStream(), java.nio.charset.Charset.defaultCharset()));
-                StringBuffer contents = new StringBuffer();
-                String input;
-                while ((input = in.readLine()) != null) {
-                    contents.append(input);
-                    contents.append("\n");
+            if (encoding != null && encoding.toLowerCase().equals("raw")) {
+                return FileUtilities.binaryReadURLToByteArray(url);
+            } else {
+                Charset charset = Charset.defaultCharset();
+                if (encoding != null) {
+                    charset = Charset.forName(encoding);
                 }
-                return contents.toString();
-            } finally {
-                if (in != null) {
-                    in.close();
+                BufferedReader in = null;
+                try {
+                    in = new BufferedReader(new InputStreamReader(url.openStream(), charset));
+                    StringBuffer contents = new StringBuffer();
+                    String input;
+                    while ((input = in.readLine()) != null) {
+                        contents.append(input);
+                        contents.append("\n");
+                    }
+                    return contents.toString();
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
                 }
             }
-
         } catch (IOException e) {
             throw new IllegalActionException(this, e, "Failed to read URI: " + uri);
         }
+    }
+
+    /** Get the resource.
+     *  
+     *  @param uri A specification for the resource.
+     *  @param timeout The timeout in milliseconds.
+     *  @return The contents of the resource.
+     *  @deprecated This method is only here for backward compatibility. 
+     *  Use {@link #getResource(String, Object, Runnable)} instead.
+     */
+    public Object getResource(String uri, int timeout) throws IllegalActionException {
+        return getResource(uri, Integer.toString(timeout), null);
     }
 
     /** Create a new JavaScript engine, load the default functions, and
