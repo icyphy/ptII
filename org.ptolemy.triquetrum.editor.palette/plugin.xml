@@ -17,100 +17,111 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
   <extension
       name="Default Ptolemy II actors for the Triquetrum editor palette"
       point="org.eclipse.triquetrum.workflow.editor.paletteContribution">
+     <group
+           displayName="Ptolemy Actors"
+           priority="500">
+        <group
+              displayName="Sources"
+              priority="2000">
+           <group
+                 displayName="Generic Sources"
+                 priority="800">
+              <entry
+                    class="ptolemy.actor.lib.Const"
+                    displayName="Const"
+                    icon="icons/ConstIcon.svg"
+                    iconType="svg"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.StringConst"
+                    displayName="StringConstant"
+                    icon="icons/StringConstIcon.svg"
+                    iconType="svg"
+                    type="Actor">
+              </entry>
+           </group>
+           <group
+                 displayName="Timed Sources"
+                 priority="600">
+              <entry
+                    class="ptolemy.actor.lib.CurrentDate"
+                    displayName="CurrentDate"
+                    icon="icons/CurrentDateIcon.xml"
+                    iconType="ptolemy"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.CurrentMicrostep"
+                    displayName="CurrentMicrostep"
+                    icon="icons/CurrentMicrostepIcon.svg"
+                    iconType="svg"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.CurrentTime"
+                    displayName="CurrentTime"
+                    icon="icons/CurrentTimeIcon.svg"
+                    iconType="svg"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.DiscreteClock"
+                    displayName="DiscreteClock"
+                    icon="icons/DiscreteClockIcon.svg"
+                    iconType="svg"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.MicrostepDelay"
+                    displayName="MicrostepDelay"
+                    icon="icons/MicrostepDelayIcon.xml"
+                    iconType="ptolemy"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.PoissonClock"
+                    displayName="PoissonClock"
+                    icon="icons/PoissonClockIcon.svg"
+                    iconType="svg"
+                    type="Actor">
+              </entry>
+           </group>
+           <group
+                 displayName="Sequence Sources"
+                 priority="400">
+              <entry
+                    class="ptolemy.actor.lib.Ramp"
+                    displayName="Ramp"
+                    icon="icons/RampIcon.svg"
+                    iconType="svg"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.Pulse"
+                    displayName="Pulse"
+                    icon="icons/PulseIcon.xml"
+                    iconType="ptolemy"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.Sequence"
+                    displayName="Sequence"
+                    icon="icons/SequenceIcon.xml"
+                    iconType="ptolemy"
+                    type="Actor">
+              </entry>
+              <entry
+                    class="ptolemy.actor.lib.Sinewave"
+                    displayName="Sinewave"
+                    icon="icons/SinewaveIcon.xml"
+                    iconType="ptolemy"
+                    type="CompositeActor">
+              </entry>
+           </group>
+        </group>
 
-    <group displayName="Sources" priority="800">
-      <group displayName="Generic Sources" priority="800">
-        <entry
-            class="ptolemy.actor.lib.Const"
-            displayName="Const"
-            icon="icons/ConstIcon.svg"
-            iconType="svg"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.StringConst"
-            displayName="StringConstant"
-            icon="icons/StringConstIcon.svg"
-            iconType="svg"
-            type="Actor">
-        </entry>
-      </group>
-      <group displayName="Timed Sources" priority="600">
-        <entry
-            class="ptolemy.actor.lib.CurrentDate"
-            displayName="CurrentDate"
-            icon="icons/CurrentDateIcon.xml"
-            iconType="ptolemy"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.CurrentMicrostep"
-            displayName="CurrentMicrostep"
-            icon="icons/CurrentMicrostepIcon.svg"
-            iconType="svg"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.CurrentTime"
-            displayName="CurrentTime"
-            icon="icons/CurrentTimeIcon.svg"
-            iconType="svg"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.DiscreteClock"
-            displayName="DiscreteClock"
-            icon="icons/DiscreteClockIcon.svg"
-            iconType="svg"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.MicrostepDelay"
-            displayName="MicrostepDelay"
-            icon="icons/MicrostepDelayIcon.xml"
-            iconType="ptolemy"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.PoissonClock"
-            displayName="PoissonClock"
-            icon="icons/PoissonClockIcon.svg"
-            iconType="svg"
-            type="Actor">
-        </entry>
-      </group>
-      <group displayName="Sequence Sources" priority="400">
-        <entry
-            class="ptolemy.actor.lib.Ramp"
-            displayName="Ramp"
-            icon="icons/RampIcon.svg"
-            iconType="svg"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.Pulse"
-            displayName="Pulse"
-            icon="icons/PulseIcon.xml"
-            iconType="ptolemy"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.Sequence"
-            displayName="Sequence"
-            icon="icons/SequenceIcon.xml"
-            iconType="ptolemy"
-            type="Actor">
-        </entry>
-        <entry
-            class="ptolemy.actor.lib.Sinewave"
-            displayName="Sinewave"
-            icon="icons/SinewaveIcon.xml"
-            iconType="ptolemy"
-            type="CompositeActor">
-        </entry>
-      </group>
-    </group>
-    <group displayName="Sinks" priority="700">
+    <group displayName="Sinks" priority="1900">
       <group displayName="Generic Sinks" priority="700">
         <entry
             class="ptolemy.actor.lib.Discard"
@@ -142,7 +153,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
         </entry>
       </group>
     </group>
-    <group displayName="Array" priority="700">
+    <group displayName="Array" priority="1800">
       <entry
           class="ptolemy.actor.lib.ArrayAccumulate"
           displayName="ArrayAccumulate"
@@ -277,7 +288,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Conversions" priority="800">
+    <group displayName="Conversions" priority="1700">
       <entry
           class="ptolemy.actor.lib.conversions.AnythingToDouble"
           displayName="AnythingToDouble"
@@ -483,16 +494,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Data Stores" priority="500">
-      <entry
-          class="ptolemy.actor.lib.Dictionary"
-          displayName="Dictionary"
-          icon="icons/DictionaryIcon.xml"
-          iconType="ptolemy"
-          type="Actor">
-      </entry>
-    </group>
-    <group displayName="Flow control" priority="500">
+    <group displayName="Flow control" priority="1600">
       <group displayName="Aggregators" priority="500">
         <entry
             class="ptolemy.actor.lib.BusAssembler"
@@ -621,7 +623,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
             type="Actor">
         </entry>
       </group>
-      <group displayName="Boolean Flow Control" priority="500">
+      <group displayName="Boolean Flow Control" priority="400">
         <entry
             class="ptolemy.actor.lib.BooleanMultiplexor"
             displayName="BooleanMultiplexor"
@@ -658,7 +660,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
             type="Actor">
         </entry>
       </group>
-      <group displayName="Sequence Control" priority="500">
+      <group displayName="Sequence Control" priority="300">
         <entry
             class="ptolemy.actor.lib.Default"
             displayName="Default"
@@ -674,13 +676,13 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
             type="Actor">
         </entry>
       </group>
-      <group displayName="Execution Control" priority="500">
+      <group displayName="Execution Control" priority="200">
         <entry
             class="ptolemy.actor.lib.CatchExceptionAttribute"
             displayName="CatchExceptionAttribute"
             icon="icons/DefaultActorIcon.svg"
             iconType="svg"
-            type="Parameter">
+            type="Attribute">
         </entry>
         <entry
             class="ptolemy.actor.lib.Exit"
@@ -708,18 +710,31 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
             displayName="ThrowException"
             icon="icons/DefaultActorIcon.svg"
             iconType="svg"
-            type="Parameter">
+            type="Actor">
         </entry>
         <entry
             class="ptolemy.actor.lib.ThrowModelError"
             displayName="ThrowModelError"
             icon="icons/DefaultActorIcon.svg"
             iconType="svg"
-            type="Parameter">
+            type="Actor">
         </entry>
       </group>
     </group>
-    <group displayName="IO">
+    <group
+          displayName="Data Stores"
+          priority="1500">
+       <entry
+             class="ptolemy.actor.lib.Dictionary"
+             displayName="Dictionary"
+             icon="icons/DictionaryIcon.xml"
+             iconType="ptolemy"
+             type="Actor">
+       </entry>
+    </group>
+    <group
+          displayName="IO"
+          priority="1400">
       <entry
           class="ptolemy.actor.lib.io.CSVReader"
           displayName="CSVReader"
@@ -763,7 +778,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Logic" priority="300">
+    <group displayName="Logic" priority="1300">
       <entry
           class="ptolemy.actor.lib.logic.Comparator"
           displayName="Comparator"
@@ -807,7 +822,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Math" priority="300">
+    <group displayName="Math" priority="1200">
       <entry
           class="ptolemy.actor.lib.AbsoluteValue"
           displayName="AbsoluteValue"
@@ -949,7 +964,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Matrix" priority="300">
+    <group displayName="Matrix" priority="1100">
       <entry
           class="ptolemy.actor.lib.ArrayToMatrix"
           displayName="ArrayToMatrix"
@@ -972,7 +987,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Random" priority="300">
+    <group displayName="Random" priority="1000">
       <entry
           class="ptolemy.actor.lib.Bernoulli"
           displayName="Bernoulli"
@@ -1023,7 +1038,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Realtime" priority="300">
+    <group displayName="Realtime" priority="900">
       <entry
           class="ptolemy.actor.lib.DelayStart"
           displayName="DelayStart"
@@ -1050,7 +1065,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           displayName="SynchronizeToRealTime"
           icon="icons/SynchronizeToRealTimeIcon.xml"
           iconType="ptolemy"
-          type="Parameter">
+          type="Attribute">
       </entry>
       <entry
           class="ptolemy.actor.lib.VariableSleep"
@@ -1067,8 +1082,8 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-    <group displayName="Signal Processing" priority="300">
-      <group displayName="Filtering" priority="300">
+    <group displayName="Signal Processing" priority="800">
+      <group displayName="Filtering" priority="500">
         <entry
             class="ptolemy.actor.lib.GradientAdaptiveLattice"
             displayName="GradientAdaptiveLattice"
@@ -1128,7 +1143,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
             type="Actor">
         </entry>
       </group>
-      <group displayName="Statistical" priority="300">
+      <group displayName="Statistical" priority="100">
         <entry
             class="ptolemy.actor.lib.ComputeHistogram"
             displayName="ComputeHistogram"
@@ -1138,7 +1153,7 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
         </entry>
       </group>
     </group>
-    <group displayName="String" priority="300">
+    <group displayName="String" priority="700">
       <entry
           class="ptolemy.actor.lib.string.StringCompare"
           displayName="StringCompare"
@@ -1203,7 +1218,9 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
-      <group displayName="RegressionTest">
+      <group
+            displayName="RegressionTest"
+            priority="600">
       <entry
           class="ptolemy.actor.lib.Test"
           displayName="Test"
@@ -1233,6 +1250,8 @@ See https://wiki.eclipse.org/Triquetrum/Extending_Triquetrum
           type="Actor">
       </entry>
     </group>
+         </group>
+    
   </extension>
 
 </plugin>
