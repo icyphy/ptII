@@ -128,10 +128,11 @@ function inspect(obj, opts) {
         if (ctx.colors) ctx.stylize = stylizeWithColor;
         return formatValue(ctx, obj, ctx.depth);
     } catch (e) {
+        // Use obj and not obj.toString() because obj.toString() may
+        // fail here.
         return "$PTII/ptolemy/actor/lib/jjs/node/util.js: util.inspect("
-                + obj.toString()
-                + " fails with "
-                + e;
+                + obj
+                + ") fails with: " + e;
     }
 }
 exports.inspect = inspect;
