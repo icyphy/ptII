@@ -1395,11 +1395,36 @@ EoF
           if test -d "$PTII/ptolemy/apps/websensor" ; then
               PT_MSG_RESULT([ok])
 	      ANT_MAVEN_BUILD_WEBSENSOR="
-  <target name=\"build-websensor\">
+  <!-- Maven ant task is from http://maven.apache.org/ant-tasks/
+       It is no longer supported by the maven community.
+       ant-task should be found at $PTII/ant/lib/maven-ant-tasks-2.1.3.jar
+       $PTII/configure checks to see if maven ant task is present,
+       but the nightly build failed once because configure was expecting
+       maven ant task to be present, but at ant runtime, it was not present.
+       -->
+  <target name=\"-check-maven-ant-task\">
+    <condition property=\"maven-ant-task-exists\">
+      <typefound uri=\"antlib:org.apache.maven.artifact.ant\" name=\"artifact\"/>
+    </condition>
+  </target>
+
+  <!-- The build-websensor target depends on maven and
+       maven ant tasks being installed.
+       $PTII/configure checks for these conditions,
+       as does the -check-maven-ant-task condition.
+       If you get errors with this target, then try
+       rerunning (cd $PTII; ./configure)
+   -->
+       
+  <target name=\"build-websensor\"
+          depends=\"-check-maven-ant-task\"
+          if=\"${maven-ant-task-exists}\"
+          >
     <artifact:mvn pom=\"ptolemy/apps/websensor/pom.xml\">
       <arg value=\"compile\"/>
     </artifact:mvn>
   </target>"
+
 	      ANT_MAVEN_SUBPROJECTS=',build-websensor'
       	      ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
 	      ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
@@ -6625,7 +6650,7 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
 	    PTFMIPP_PACKAGES="ptolemy.actor.lib.fmi.fmipp ptolemy.actor.lib.fmi.fmipp.swig"
         else
             AC_MSG_WARN([Failed to find boost/numeric/odeint.hpp, so FMI ++
-    will not be compiled. FMI++ is an extension of the Funcional Mockup Interface, see
+    will not be compiled. FMI++ is an extension of the Functional Mockup Interface, see
     http://sourceforge.net/p/fmipp/wiki/Home/])
             updateExcludes "ptolemy/actor/lib/fmi/fmipp/"
         fi
