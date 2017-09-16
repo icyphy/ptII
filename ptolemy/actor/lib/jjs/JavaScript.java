@@ -1209,14 +1209,13 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         int timeout = -1;
         String encoding = null;
         Map<String,Object> optionsMap = null;
-        if (options instanceof String) {
-            try {
-                timeout = Integer.parseInt((String)options);
-                System.err.println("JavaScript.java: getResource() invoked with a timeout of " + timeout
-                           + ", which is not yet supported.");
-            } catch (NumberFormatException ex) {
-                encoding = ((String)options).trim();
-            }
+        if (options instanceof Integer) {
+            // This is tested by
+            // $PTII/bin/capecode /Users/cxh/src/ptII11.0.devel/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
+            // Which calls getResource() with an integer timeout.
+            timeout = ((Integer)options).intValue();
+        } else if (options instanceof String) {
+            encoding = ((String)options).trim();
         } else if (options instanceof Map) {
             optionsMap = (Map<String,Object>) options;
         } else {
@@ -1269,8 +1268,10 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         try {
             URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
             if (encoding != null && encoding.toLowerCase().equals("raw")) {
-                // System.out.println("JavaScript.js: Reading raw data from " + url);
-                return FileUtilities.binaryReadURLToByteArray(url);
+                System.out.println("JavaScript.js: Reading raw data from " + url);
+                byte [] dataBytes = FileUtilities.binaryReadURLToByteArray(url);
+                System.out.println("JavaScript.js: read " + dataBytes.length + "bytes.");
+                return dataBytes;
             } else {
                 Charset charset = Charset.defaultCharset();
                 if (encoding != null && encoding.length() > 0) {
