@@ -153,15 +153,16 @@ function alert(message) {
  *  classpath of the current Java process.
  *
  *  If the accessor is not restricted, the $KEYSTORE is resolved to
- *  $HOME/.ptKeystore. *
+ *  $HOME/.ptKeystore.
  *
  *  The options parameter may have the following values:
  *  * If the type of the options parameter is a Number, then it is assumed
  *    to be the timeout in milliseconds.
- *  * If the type of the options parameter is a Number, then it is assumed
- *    to be the encoding, for examle "UTF-8".  If the value is "Raw" or "raw"
- *    then the data is returned as an unsigned array of bytes.  For backward
- *    compatibility, the default encoding is "String"
+ *  * If the type of the options parameter is a String, then it is assumed
+ *    to be the encoding, for example "UTF-8".  If the value is "Raw" or "raw"
+ *    then the data is returned as an unsigned array of bytes.
+ *    The default encoding is the default encoding of the system.
+ *    In CapeCode, the default encoding is returned by Charset.defaultCharset().
  *  * If the type of the options parameter is an Object, then it may
  *    have the following fields:
  *  ** encoding {string} The encoding of the file, see above for values.

@@ -124,16 +124,21 @@ public class RestrictedJavaScriptInterface {
      *  is restricted (e.g., it is an accessor), then restrict relative file
      *  names to be in the same directory where the model is located or
      *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
-     *  classpath of the current Java process.
      *  @param uri A specification for the resource.
-     *  @param timeout The timeout in milliseconds.
+     *  @param arguments A variable number of arguments, where the
+     *  first optional argument is an Object that can be a String (the
+     *  encoding), an integer (the timeout) or a JSON object with
+     *  encoding and timeout fields, see 
+     *  {@link ptolemy.actor.lib.jjs.JavaScript#getResource(String, Object...)}.
+     *  The second optional argument is a callback, the first argument to 
+     *  the callback is the error, if any, the second element is the data, if any.
      *  @return The resource
      *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public Object getResource(String uri, int timeout) throws IllegalActionException {
-        return _actor.getResource(uri, timeout);
+    public Object getResource(String uri, Object... arguments) throws IllegalActionException {        
+        return _actor.getResource(uri, arguments);
     }
 
     /** Create a new input port if it does not already exist.

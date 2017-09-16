@@ -1162,15 +1162,29 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
      *  <a href="https://nodejs.org/api/fs.html#in_browser">fs.readFile()</a>.
      *
      *  @param uri A specification for the resource.
-     *  @param options The options for reading the resource.  See above for details.
-     *  @param callback The callback function.  The first argument is the error,
-     *  if any, the second argument is the data, if any.
+     *  @param arguments A variable number of arguments, where the
+     *  first optional argument is an Object that can be a String (the
+     *  encoding), an integer (the timeout) or a JSON object with
+     *  encoding and timeout fields, See above.
+     *  The second optional argument is a callback, the first argument to 
+     *  the callback is the error, if any, the second element is the data, if any.
      *  @return The contents of the resource.
      *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public Object getResource(String uri, Object options, Runnable callback) throws IllegalActionException {
+    public Object getResource(String uri, Object... arguments) throws IllegalActionException {
+        // We need to use a varargs method because in JavaScript we
+        // want the options and callback args to be optional.  See
+        // https://stackoverflow.com/questions/25603191/nashorn-bug-when-calling-overloaded-method-with-varargs-parameter
+        Object options = null;
+        Runnable callback = null;
+        if (arguments.length > 0) {
+            options = arguments[0];
+        }
+        if (arguments.length > 1) {
+            callback = (Runnable) arguments[1];
+        }
         URI baseDirectory = null;
         uri = uri.trim();
         int colon = uri.indexOf(":");
@@ -1201,7 +1215,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
                 System.err.println("JavaScript.java: getResource() invoked with a timeout of " + timeout
                            + ", which is not yet supported.");
             } catch (NumberFormatException ex) {
-                encoding = (String) options;
+                encoding = ((String)options).trim();
             }
         } else if (options instanceof Map) {
             optionsMap = (Map<String,Object>) options;
@@ -1255,11 +1269,17 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         try {
             URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
             if (encoding != null && encoding.toLowerCase().equals("raw")) {
+                // System.out.println("JavaScript.js: Reading raw data from " + url);
                 return FileUtilities.binaryReadURLToByteArray(url);
             } else {
                 Charset charset = Charset.defaultCharset();
-                if (encoding != null) {
-                    charset = Charset.forName(encoding);
+                if (encoding != null && encoding.length() > 0) {
+                    try {
+                        charset = Charset.forName(encoding);
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(this, throwable, "\"" + encoding +
+                                                         "\" is not a legal Charset name.  Try UTF-8 or Raw.");
+                    }
                 }
                 BufferedReader in = null;
                 try {
@@ -1280,18 +1300,6 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         } catch (IOException e) {
             throw new IllegalActionException(this, e, "Failed to read URI: " + uri);
         }
-    }
-
-    /** Get the resource.
-     *  
-     *  @param uri A specification for the resource.
-     *  @param timeout The timeout in milliseconds.
-     *  @return The contents of the resource.
-     *  @deprecated This method is only here for backward compatibility. 
-     *  Use {@link #getResource(String, Object, Runnable)} instead.
-     */
-    public Object getResource(String uri, int timeout) throws IllegalActionException {
-        return getResource(uri, Integer.toString(timeout), null);
     }
 
     /** Create a new JavaScript engine, load the default functions, and
