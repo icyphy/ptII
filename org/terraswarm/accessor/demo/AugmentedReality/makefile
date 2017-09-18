@@ -50,8 +50,10 @@ OTHER_FILES_TO_BE_JARED = \
 	AugmentedReality.xml \
 	AugmentedRealityBasic.xml \
 	AugmentedRealityFeedback.xml \
+	AugmentedRealityFeedbackBlee.xml \
 	AugmentedRealityFeedbackGDP.xml \
 	AugmentedRealityMessageBoard.xml \
+	BleeSensor.js \
 	ControllableSensor.js \
 	GDPSensor.js \
 	MechanicalRoom.jpg \
