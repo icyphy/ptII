@@ -1180,10 +1180,15 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         Object options = null;
         Runnable callback = null;
         if (arguments.length > 0) {
-            options = arguments[0];
+            // Sometimes the second argument will be jdk.nashorn.internal.runtime.Undefined, so we skip it.
+            if (!arguments[0].toString().equals("undefined")) {
+                options = arguments[0];
+            }
         }
         if (arguments.length > 1) {
-            callback = (Runnable) arguments[1];
+            if (!arguments[1].toString().equals("undefined")) {
+                callback = (Runnable) arguments[1];
+            }
         }
         URI baseDirectory = null;
         uri = uri.trim();
@@ -1218,9 +1223,9 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             encoding = ((String)options).trim();
         } else if (options instanceof Map) {
             optionsMap = (Map<String,Object>) options;
-        } else {
+        } else if (options != null) {
             throw new IllegalActionException("options was a " + options.getClass() +
-                                             ", which is neither a String nor a Map<String,Object>");
+                                             ", which is neither an Integer, String nor a Map<String,Object>");
         }
             
         if (callback != null) {
