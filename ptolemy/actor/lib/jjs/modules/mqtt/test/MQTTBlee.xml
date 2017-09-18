@@ -1,0 +1,211 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MQTTBlee" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 76, 934, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo uses the &#10;Bluetooth Low Energy Environment Sensors (Blees)&#10;from https://github.com/lab11/blees&#10;Click here to see more information.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 20.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://github.com/lab11/blees#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 60}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this demo, you need to find the name&#10;or IP address of a MQTT broker that is publishing&#10;topics.  One way to find local BLE resources is&#10;to use the Summon app on you iOS or Android device.&#10;Once you have an IP address of a MQTT broker,&#10;set the brokerHost parameter of the MqttSubscriber.&#10;&#10;If you don't have a local MQTT broker, then try&#10;iot.eclipse.org&#10;&#10;Click here to go to https://github.com/lab11/summon&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 330.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://github.com/lab11/summon#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 60}">
+            </property>
+        </property>
+    </property>
+    <entity name="MqttSubscriber" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor is used for subscribing MQTT protocol messages.&#10; *&#10; *  This accessor requires the 'mqtt' module.&#10; *&#10; *  @input subscribe The topic name to subscribe to.&#10; *  @input unsubscribe A topic to unsubscribe from.&#10; *  @output connection Output on which a string is sent when a&#10; *   connection to the broker has been established.&#10; *  @output subscription Output on which a string is sent when a&#10; *   subscription is initiated or terminated.&#10; *  @output received Output on which received data is produced.&#10; *  @output receivedTopic Output indicating the topic of received data.&#10; *  @param broker The IP address or domain name of the MQTT broker.&#10; *  @param brokerPort The port for the MQTT broker.&#10; *  &#10; *  @accessor net/MqttSubscriber&#10; *  @author Hokeun Kim&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*global console, exports, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var mqtt = require('mqtt');&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    // FIXME: Should be renamed topic&#10;    this.input('subscribe', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('unsubscribe');&#10;    this.output('connection', {&#10;        spontaneous: true&#10;    });&#10;    this.output('subscription');&#10;    this.output('received', {&#10;        spontaneous: true&#10;    });&#10;    this.output('receivedTopic');&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type: 'int',&#10;        value: 1883&#10;    });&#10;    this.parameter('qosLevel', {&#10;        type: 'int',&#10;        value: 0&#10;    });&#10;};&#10;&#10;var self;&#10;var mqttClient;&#10;&#10;function onMessage(topic, data) {&#10;    self.send('received', data);&#10;    self.send('receivedTopic', topic);&#10;}&#10;&#10;function onConnect() {&#10;    self.send('connection', 'connected to broker');&#10;    // In case there is a topic, subscribe to it.&#10;    exports.subscribeInputHandler.call(self);&#10;}&#10;&#10;exports.subscribeInputHandler = function () {&#10;    // FIXME: Unsubscribe to previous topic.&#10;    var topic = this.get('subscribe');&#10;    if (topic === '') {&#10;        // No topic is given.&#10;        return;&#10;    }&#10;    if (mqttClient.connected) {&#10;        mqttClient.subscribe(topic);&#10;        this.send('subscription', 'Topic: ' + topic + ' - subscribed');&#10;    } else {&#10;        this.error('Client is not connected to broker, subscribe failed. Topic: ' + topic);&#10;    }&#10;};&#10;&#10;exports.unsubscribeInputHandler = function () {&#10;    var topic = this.get('unsubscribe');&#10;    if (mqttClient.connected) {&#10;        mqttClient.unsubscribe(topic);&#10;        this.send('subscription', 'Topic: ' + topic + ' - unsubscribed');&#10;    } else {&#10;        this.error('Client is not connected to broker, unsubscribe failed. Topic: ' + topic);&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    self = this;&#10;    this.addInputHandler('subscribe', exports.subscribeInputHandler.bind(this));&#10;    this.addInputHandler('unsubscribe', exports.unsubscribeInputHandler.bind(this));&#10;    mqttClient = mqtt.createClient(this.getParameter('brokerPort'), this.getParameter('brokerHost'));&#10;    mqttClient.on('connect', onConnect.bind(this));&#10;    mqttClient.on('message', onMessage.bind(this));&#10;    mqttClient.start();&#10;};&#10;&#10;exports.wrapup = function () {&#10;    mqttClient.end();&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/MqttSubscriber.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="subscribe" class="ptolemy.actor.parameters.PortParameter" value="#">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="192.168.2.15">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 155.0]">
+        </property>
+        <property name="brokerPort" class="ptolemy.data.expr.Parameter" value="1883">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor is used for subscribing MQTT protocol messages.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires the 'mqtt' module.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="unsubscribe (port)" class="ptolemy.kernel.util.StringAttribute" value="A topic to unsubscribe from.">
+            </property>
+            <property name="connection (port)" class="ptolemy.kernel.util.StringAttribute" value="Output on which a string is sent when a&#10;  connection to the broker has been established.">
+            </property>
+            <property name="subscription (port)" class="ptolemy.kernel.util.StringAttribute" value="Output on which a string is sent when a&#10;  subscription is initiated or terminated.">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="Output on which received data is produced.">
+            </property>
+            <property name="receivedTopic (port)" class="ptolemy.kernel.util.StringAttribute" value="Output indicating the topic of received data.">
+            </property>
+            <property name="subscribe (port)" class="ptolemy.kernel.util.StringAttribute" value="The topic name to subscribe to.">
+            </property>
+        </property>
+        <port name="subscribe" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="unsubscribe" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="connection" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="subscription" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="receivedTopic" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={903, 36, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Connection">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={903, 245, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Subscription">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={903, 663, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Received">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={903, 454, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="receivedTopic">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 310.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MqttSubscriber.connection&quot;,x=100.0,y=155.0}, tail={id=&quot;Display.input&quot;,x=295.0,y=135.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MqttSubscriber.subscription&quot;,x=100.0,y=155.0}, tail={id=&quot;Display2.input&quot;,x=295.0,y=195.0}, points={240.0,145.0,240.0,195.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MqttSubscriber.received&quot;,x=100.0,y=155.0}, tail={id=&quot;Display3.input&quot;,x=295.0,y=250.0}, points={225.0,165.0,225.0,250.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MqttSubscriber.receivedTopic&quot;,x=100.0,y=155.0}, tail={id=&quot;Display4.input&quot;,x=295.0,y=310.0}, points={210.0,175.0,210.0,310.0} } }">
+        </property>
+    </relation>
+    <link port="MqttSubscriber.connection" relation="relation"/>
+    <link port="MqttSubscriber.subscription" relation="relation2"/>
+    <link port="MqttSubscriber.received" relation="relation3"/>
+    <link port="MqttSubscriber.receivedTopic" relation="relation4"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="Display2.input" relation="relation2"/>
+    <link port="Display3.input" relation="relation3"/>
+    <link port="Display4.input" relation="relation4"/>
+</entity>

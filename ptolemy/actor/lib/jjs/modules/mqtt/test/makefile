@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : mkpttest 72874 2015-07-26 21:01:52Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
@@ -58,7 +58,7 @@ JSIMPLE_TESTS = 	dummy.tcl
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	MQTTBlee.xml $(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
