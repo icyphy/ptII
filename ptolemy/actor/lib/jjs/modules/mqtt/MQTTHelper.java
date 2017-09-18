@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
    A helper class for the MQTT module in JavaScript.
-   Creates one Paho MQTT client per MqttHelper.
+   Creates one Paho MQTT client per MQTTHelper.
 
    @author Hokeun Kim
    @version $Id$
@@ -61,15 +61,15 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class MqttHelper extends HelperBase {
+public class MQTTHelper extends HelperBase {
 
-    /** Construct a Mqtthelper for the specified JavaScript object.
+    /** Construct a MQTThelper for the specified JavaScript object.
      *  The argument can be a JavaScript actor or an instance of a
      *  JavaScript class.
      *  @param actor The actor that this is helping.
      *  @param helping The JS object that this is helping.
      */
-    public MqttHelper(Object actor, ScriptObjectMirror helping) {
+    public MQTTHelper(Object actor, ScriptObjectMirror helping) {
         super(actor, helping);
     }
 
@@ -82,15 +82,15 @@ public class MqttHelper extends HelperBase {
      *  @param actor Either a JavaScript actor or a
      *  RestrictedJavaScriptInterface.
      *  @param helping The JavaScript object that this is helping.
-     *  @return The MqttHelper.
+     *  @return The MQTTHelper.
      */
-    public static MqttHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
+    public static MQTTHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
         if (_mqttHelper == null) {
             // FIXME: This isn't right. Instead of a static
             // _mqttHelper, this should use a mechanism like in
             // VertHelperBase to associate helpers with
             // actors. Perhaps this should subclass VertxHelperBase?
-            _mqttHelper = new MqttHelper(actor, helping);
+            _mqttHelper = new MQTTHelper(actor, helping);
         }
         return _mqttHelper;
     }
@@ -113,14 +113,14 @@ public class MqttHelper extends HelperBase {
     /** Share the Random object. */
     private static Random _random = new Random();
 
-    /** Share the MqttHelper object. */
-    private static MqttHelper _mqttHelper = null;
+    /** Share the MQTTHelper object. */
+    private static MQTTHelper _mqttHelper = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public classes                    ////
 
     /** A wrapper for a Paho MQTT client. */
-    public class MqttClientWrapper {
+    public class MQTTClientWrapper {
         /**
          * This constructor creates one Paho MQTT client inside using given parameters.
          *
@@ -131,7 +131,7 @@ public class MqttHelper extends HelperBase {
 	 * @param rawBytes True if the payload is raw bytes.
          * @exception MqttException
          */
-        public MqttClientWrapper(ScriptObjectMirror currentObj,
+        public MQTTClientWrapper(ScriptObjectMirror currentObj,
                 int port, String host, String clientId, boolean rawBytes) throws MqttException {
             _currentObj = currentObj;
 
