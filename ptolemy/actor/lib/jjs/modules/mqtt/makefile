@@ -48,7 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	MqttHelper.java
+	MQTTHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
@@ -66,11 +66,11 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'MqttHelper$$1.class' \
-	'MqttHelper$$2.class' \
-	'MqttHelper$$MqttClientWrapper$$1.class' \
-	'MqttHelper$$MqttClientWrapper$$2.class' \
-	'MqttHelper$$MqttClientWrapper.class'
+	'MQTTHelper$$1.class' \
+	'MQTTHelper$$2.class' \
+	'MQTTHelper$$MQTTClientWrapper$$1.class' \
+	'MQTTHelper$$MQTTClientWrapper$$2.class' \
+	'MQTTHelper$$MQTTClientWrapper.class'
 
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -39,7 +39,7 @@
 "use strict";
 
 var EventEmitter = require('events').EventEmitter;
-var MqttHelper = Java.type('ptolemy.actor.lib.jjs.modules.mqtt.MqttHelper');
+var MQTTHelper = Java.type('ptolemy.actor.lib.jjs.modules.mqtt.MQTTHelper');
 
 module.exports.createClient = function (port, host, options) {
     return new Client(port, host, options);
@@ -71,16 +71,16 @@ function Client(port, host, options) {
     }
 
     if (options.clientId === undefined) {
-        options.clientId = MqttHelper.getDefaultId();
+        options.clientId = MQTTHelper.getDefaultId();
     }
 
     if (options.rawBytes === null) {
         options.rawBytes = false;
     }
 
-    var helper = MqttHelper.getOrCreateHelper(actor, this);
+    var helper = MQTTHelper.getOrCreateHelper(actor, this);
 
-    this.javaClient = new MqttHelper.MqttClientWrapper(helper, this, port, host, options.clientId, options.rawBytes);
+    this.javaClient = new MQTTHelper.MQTTClientWrapper(helper, this, port, host, options.clientId, options.rawBytes);
 
     // When "use strict" was added, the following exception occurred because of this.connected = undefined.
     //
