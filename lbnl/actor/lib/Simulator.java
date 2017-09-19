@@ -91,6 +91,8 @@ import lbnl.actor.lib.net.Server;
 import lbnl.util.ClientProcess;
 import lbnl.util.WarningWindow;
 import lbnl.util.XMLWriter;
+import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
@@ -168,6 +170,10 @@ public class Simulator extends SDFTransformer {
         showConsoleWindow.setTypeEquals(BaseType.BOOLEAN);
         showConsoleWindow.setToken(BooleanToken.TRUE);
 
+        synchronizeWithClient = new Parameter(this, "synchronizeWithClient");
+        synchronizeWithClient.setTypeEquals(BaseType.BOOLEAN);
+        synchronizeWithClient.setToken(BooleanToken.FALSE);
+
         // expert settings
         socketPortNumber = new Parameter(this, "socketPortNumber");
         socketPortNumber
@@ -220,6 +226,8 @@ public class Simulator extends SDFTransformer {
                 .getAttribute("workingDirectory");
         newObject.showConsoleWindow = (Parameter) newObject
                 .getAttribute("showConsoleWindow");
+        newObject.synchronizeWithClient = (Parameter) newObject
+                .getAttribute("synchronizeWithClient");
 
         return newObject;
     }
@@ -233,7 +241,18 @@ public class Simulator extends SDFTransformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
+        if (((BooleanToken) showConsoleWindow.getToken()).booleanValue()) {
+            this.fireAndSynchronize();
+        } else {
+            this.fireAndSanityCheck();
+        }
+    }
 
+    /** The legacy firing behavior.
+     * Checks that the client and the simulator are synchronized.
+     * Maintained only for backwards-compatibility.
+     */
+    public void fireAndSanityCheck() throws IllegalActionException {
         // Check the input port for a token.
         if (input.hasToken(0)) {
             if (server.getClientFlag() == 0) {
@@ -303,6 +322,79 @@ public class Simulator extends SDFTransformer {
         output.send(0, outTok);
     }
 
+    /** The new firing behavior.
+     * Attempts to synchronize the simulator's timing with that of the client.
+     */
+    public void fireAndSynchronize() throws IllegalActionException {
+        final Director director = getDirector();
+        final Time simTim = director.getModelTime();
+        double[] outTokRea = null;  // If null, we do not need to update the output token 
+        if (server.getSimulationTimeReadFromClient() - simTim.getDoubleValue() <= simTimAbsTol) {
+            // We need to update the output token
+            outTokRea = server.getDoubleArray();
+        }
+
+        // Check the input port for a token.
+        if (input.hasToken(0)) {
+            if (server.getClientFlag() == 0) {
+                // If clientflag is non-zero, do not read anymore
+                _writeToServer();
+                // before the read happens, the client program will advance one time step
+                _readFromServer();
+                if (server.getClientFlag() == 0) {
+                    final Time simTimRea = new Time(director, server.getSimulationTimeReadFromClient());
+                    // Make sure that simulation times are synchronized
+                    if (simTimRea.compareTo(simTim) > 0) {
+                        // Our simulation time is behind -- wait for it to advance first
+                        director.fireAt(this, simTimRea);
+                    } else if (simTimRea.subtract(simTim).getDoubleValue() <= simTimAbsTol) {
+                        // We're firing at the current time... update the output
+                        outTokRea = server.getDoubleArray();
+                    } else {
+                        // Our simulation time is ahead (and it's not just a rounding error)
+                        // Generally this is a bug, implying either our firing was canceled or the client's time has reversed 
+                        if (firstFire) {
+                            firstFire = false;
+                        } else {
+                            final String em = "Simulation time of "
+                                    + this.getFullName()
+                                    + " is not synchronized." + LS
+                                    + "Time in Ptolemy = " + simTim.getDoubleValue() + LS
+                                    + "Time in client = " + simTimRea;
+                            throw new IllegalActionException(this, em);
+                        }
+                    }
+                }
+
+            } else { // Either client is down or this is the first time step.
+                if (clientTerminated) {
+                    // Client terminated in last call, but Ptolemy keeps doing a
+                    // (at least one) more time step. Hence we issue a warning.
+                    // Start a new thread for the warning window so that the simulation can continue.
+                    if (warWin == null) {
+                        if (!isHeadless) {
+                            warWin = new Thread(new WarningWindow(
+                                    terminationMessage));
+                            warWin.start();
+                        }
+                        System.err.println("*** " + terminationMessage);
+                    }
+                }
+                // Consume token
+                input.get(0);
+
+            }
+        }
+
+        if (outTokRea != null) {
+            outTok = new DoubleMatrixToken(outTokRea, outTokRea.length, 1);
+        }
+
+        //////////////////////////////////////////////////////
+        // send output token
+        output.send(0, outTok);
+    }
+
     /** Output the first token during initialize.
      *  @exception IllegalActionException If there the client flag
      *  is non-zero, or the double array returned by the server
@@ -360,7 +452,7 @@ public class Simulator extends SDFTransformer {
         dblWri = _getDoubleArray(input.get(0));
         try {
             //                                       Thread.sleep(1000); // in milliseconds
-            server.write(0, tokTim, dblWri);
+            server.write(0, tokTim.getDoubleValue(), dblWri);
         } catch (IOException e) {
             String em = "Error while writing to client: " + LS + e.getMessage();
             throw new IllegalActionException(this, em);
@@ -369,7 +461,7 @@ public class Simulator extends SDFTransformer {
         // client in the next time step, this time step read from the client
         // the output which will be sent to clients in the next time step
         // as inputs
-        tokTim = getDirector().getModelTime().getDoubleValue();
+        tokTim = getDirector().getModelTime();
     }
 
     /** Read the data from the server instance, which will read it
@@ -779,7 +871,7 @@ public class Simulator extends SDFTransformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        tokTim = getDirector().getModelTime().getDoubleValue();
+        tokTim = getDirector().getModelTime();
         firstFire = true;
 
         //////////////////////////////////////////////////////////////
@@ -810,7 +902,7 @@ public class Simulator extends SDFTransformer {
 
             // Server can be null if we are exporting to JNLP.
             if (server != null) {
-                server.write(1, tokTim, dblWri);
+                server.write(1, tokTim.getDoubleValue(), dblWri);
                 // Close the server.
                 server.close();
             }
@@ -892,6 +984,9 @@ public class Simulator extends SDFTransformer {
         shows the console output. */
     public Parameter showConsoleWindow;
 
+    /** If <i>true</i>, attempts to sychronize timing with the client. */
+    public Parameter synchronizeWithClient;
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
@@ -913,10 +1008,12 @@ public class Simulator extends SDFTransformer {
     /** Output tokens. */
     protected DoubleMatrixToken outTok;
 
-    /** Ptolemy's time at the last call of the fire method. */
+    /** Ptolemy's time at the last call of the fire method.
+     * Only used by the legacy firing method. */
     protected double simTimPre;
 
-    /** Time read from the simulation program at the last call of the fire method. */
+    /** Time read from the simulation program at the last call of the fire method.
+     * Only used by the legacy firing method. */
     protected double simTimReaPre;
 
     /** Flag, set to true when the clients terminates the communication. */
@@ -949,7 +1046,10 @@ public class Simulator extends SDFTransformer {
         a client gets the output of other clients at t_{k-1}, which allows the client to
         compute the states and outputs at t_k
      */
-    protected double tokTim;
+    protected Time tokTim;
+
+    /** Absolute floating-point tolerance for events assumed to be simultaneous. */
+    protected double simTimAbsTol = 0.0001;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
