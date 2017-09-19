@@ -7,13 +7,14 @@
 exports.setup = function() {	
     this.output('data', {'type' : 'JSON'});
     
-    var MqttSubscriber = this.instantiate('MqttSubscriber', 'net/MqttSubscriber'); 
-    MqttSubscriber.input('subscribe', {
-	'value':'#'
+    var MQTTSubscriber = this.instantiate('MQTTSubscriber', 'net/MQTTSubscriber'); 
+    MQTTSubscriber.input('subscribe', {
+	// 'value':'#'
+        'value': 'device/BLEES/c098e530005b'
     });
     
     // Hint: Use the lab11 Summon app to find local SwarmBoxes with BLE
-    MqttSubscriber.setParameter('brokerHost', '192.168.2.15');
+    MQTTSubscriber.setParameter('brokerHost', '192.168.2.15');
 
     var code = "\
 	exports.setup = function() {\n\
@@ -28,9 +29,6 @@ exports.setup = function() {
     }";
     var JavaScript = this.instantiateFromCode('JavaScript', code, false);
 
-    //var TestDisplay = this.instantiate('TestDisplay', 'test/TestDisplay.js');
-
     this.connect(JavaScript, 'out', 'data');
-    this.connect(MqttSubscriber, 'received', JavaScript, 'in');
-    //this.connect(MqttSubscriber, 'error', TestDisplay, 'input');
+    this.connect(MQTTSubscriber, 'received', JavaScript, 'in');
 };
