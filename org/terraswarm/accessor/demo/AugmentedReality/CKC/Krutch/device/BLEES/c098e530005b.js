@@ -13,8 +13,17 @@ exports.setup = function() {
         'value': 'device/BLEES/c098e530005b'
     });
     
+    var brokerHostFile = '$KEYSTORE/brokerHostFile';
+    var brokerHost = '';
+    try {
+        brokerHost = getResource(brokerHostFile, 1000).trim();
+    } catch (e) {
+        console.log('BleeSensorr.js: Could not get ' + brokerHostFile + ":  " + e)
+        brokerHost = 'ThisIsNotAPipeNorIsITheBrokerHostIPAddress.UseSummonToFindALocalBroker';
+    }
+
     // Hint: Use the lab11 Summon app to find local SwarmBoxes with BLE
-    MQTTSubscriber.setParameter('brokerHost', '192.168.2.15');
+    MQTTSubscriber.setParameter('brokerHost', brokerHost);
 
     var code = "\
 	exports.setup = function() {\n\
