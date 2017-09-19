@@ -114,7 +114,7 @@ public class LabVIEWSimulator extends Simulator {
         // tokTim is the current time of in the Ptolemy world. This time
         // is to be sent to the LabVIEW program to ensure time advances
         // to the same value.
-        tokTim = getDirector().getModelTime().getDoubleValue();
+        tokTim = getDirector().getModelTime();
         //           if (!firstFire && server.getClientFlag() == 0) {
         if (server.getClientFlag() == 0) {
             // If clientflag is non-zero, do not read anymore
@@ -240,7 +240,7 @@ public class LabVIEWSimulator extends Simulator {
 
         try {
             //                          Thread.sleep(1000); // in milliseconds
-            server.write(0, tokTim, dblWri);
+            server.write(0, tokTim.getDoubleValue(), dblWri);
         } catch (IOException e) {
             String em = "Error while writing to client: " + LS + e.getMessage();
             throw new IllegalActionException(this, em);
@@ -249,7 +249,7 @@ public class LabVIEWSimulator extends Simulator {
         // client in the next time step, this time step read from the client
         // the output which will be sent to clients in the next time step
         // as inputs
-        tokTim = getDirector().getModelTime().getDoubleValue();
+        tokTim = getDirector().getModelTime();
         System.out.println("the current time is " + tokTim);
     }
 }
