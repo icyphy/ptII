@@ -1926,9 +1926,9 @@ Accessor.prototype.reify = function (accessor) {
         return false;
     }
 
-    // Now that we have a new contained accessor, we need to set its
-    // priority.
-    accessorInstance.priority = 0;
+    // Now that we have a new contained accessor, we need to recalculate
+    // priorities.
+    this.assignPriorities();
     // Initialize the instance
     accessorInstance.initialize();
 
