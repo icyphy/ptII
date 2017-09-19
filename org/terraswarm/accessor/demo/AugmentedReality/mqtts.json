@@ -1,0 +1,6 @@
+{
+    "mqtts": [
+        { "topic": "device/BLEES/c098e530005b", "type": "BLEE", "location": "CKC", "room": "Krutch", "atag": "127", "humanName": "Blee near the stage"},
+        { "topic": "device/PowerBlade/c098e570021e", "type": "BLEE", "location": "CKC", "room": "Krutch", "atag": "105", "humanName": "Blee near the stage"}
+    ]
+}

@@ -53,17 +53,22 @@ OTHER_FILES_TO_BE_JARED = \
 	AugmentedRealityFeedbackBlee.xml \
 	AugmentedRealityFeedbackGDP.xml \
 	AugmentedRealityMessageBoard.xml \
-	BleeSensor.js \
+	CKC \
 	ControllableSensor.js \
 	GDPSensor.js \
 	MechanicalRoom.jpg \
 	MessageBoard.js \
 	PressureSensor.js \
+	SoundActuator.js \
+	SoundServer.xml \
+	TestSoundActuator.xml 
 	TagMapAccessorAR.xml \
 	TagURIMapAR.xml \
 	TemperatureSensor.js \
 	VariantAccessors \
-	VibrationSensor.js
+	VibrationSensor.js \
+	bell.wav \
+	mqtts.json
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
