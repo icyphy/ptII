@@ -469,12 +469,6 @@ public class Dictionary extends TypedAtomicActor {
             // Leave off the leading period on the file so it doen't get hidden.
             _logger = new LoggerListener(getFullName().substring(1), directory);
             addDebugListener(_logger);
-            try {
-                MessageHandler.message("Log file being written to "
-                        + directory.getCanonicalPath());
-            } catch (IOException e) {
-                // Ignore.
-            }
         } else {
             if (_logger != null) {
                 removeDebugListener(_logger);
