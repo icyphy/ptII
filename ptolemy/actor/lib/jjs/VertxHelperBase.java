@@ -1,6 +1,6 @@
 /* Embedding of a Vert.x core.
 
-   Copyright (c) 2014-2016 The Regents of the University of California.
+   Copyright (c) 2014-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -313,6 +313,11 @@ public class VertxHelperBase extends HelperBase {
             _vertxHelpers.put(_actor, new WeakReference<VertxHelperBase>(this));
 
             _verticle = new AccessorVerticle();
+
+            if (_vertx == null) {
+                VertxHelperBase._initializeVertx();
+            }
+
             _vertx.deployVerticle(_verticle, result -> {
                 _deploymentID = result.result();
             });
@@ -500,6 +505,30 @@ public class VertxHelperBase extends HelperBase {
     private static Object _sendTypesMutex = new Object();
 
     static {
+        _initializeVertx();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private fields                        ////
+
+    /** Sequence number of the next expected response. */
+    private long _nextResponse = 0L;
+
+    /** Queue of deferred responses. */
+    private HashMap<Long, LinkedList<HandlerInvocation>> _deferredHandlers = new HashMap<Long, LinkedList<HandlerInvocation>>();
+
+    /** Index of Vertx helpers by actor. */
+    private static WeakHashMap<JavaScript, WeakReference<VertxHelperBase>> _vertxHelpers = new WeakHashMap<JavaScript, WeakReference<VertxHelperBase>>();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+
+    /** Initialize _vertx.
+     *  MoMLSimpleApplication tends to hang unless Vertx.close() is called.
+     *  However, when we rerun applications, we need to be sure that 
+     *  _vertx is non-null.
+     */
+    private static void _initializeVertx() {
         try {
             // If the vertx.cacheDirBase property is not set, then set it to $HOME/.vertxPt
             // See https://www.terraswarm.org/testbeds/wiki/Vert/VertxDirectories
@@ -521,18 +550,6 @@ public class VertxHelperBase extends HelperBase {
             throw new RuntimeException(throwable);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     private fields                        ////
-
-    /** Sequence number of the next expected response. */
-    private long _nextResponse = 0L;
-
-    /** Queue of deferred responses. */
-    private HashMap<Long, LinkedList<HandlerInvocation>> _deferredHandlers = new HashMap<Long, LinkedList<HandlerInvocation>>();
-
-    /** Index of Vertx helpers by actor. */
-    private static WeakHashMap<JavaScript, WeakReference<VertxHelperBase>> _vertxHelpers = new WeakHashMap<JavaScript, WeakReference<VertxHelperBase>>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
