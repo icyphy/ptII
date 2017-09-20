@@ -369,7 +369,7 @@
     <entity name="Dictionary" class="ptolemy.actor.lib.Dictionary">
         <property name="file" class="ptolemy.data.expr.FileParameter" value="KeyValueStoreData.txt">
         </property>
-        <property name="updateFile" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="updateFile" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="loggingDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/logs">
         </property>
