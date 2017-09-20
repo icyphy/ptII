@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -493,16 +492,7 @@ public class HTMLAbout {
         }
         System.out.println("Printing '.' for regular models, 'P' for models with LiveLinks.");
         writeDemoURLs(demoFileName, outputFileName);
-        try {
-            Class clazz = Class.forName("ptolemy.actor.lib.jjs.VertxHelperBase");
-            if (clazz != null) {
-                Method method = clazz.getMethod("closeVertx");
-                method.invoke(null);
-            }
-        } catch (Throwable throwable) {
-            System.err.println("HTMLAbout: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: " + throwable);
-        }
-
+        ptolemy.moml.MoMLSimpleApplication.closeVertx();
     }
 
     /** Run all the local .xml files that are linked to from an HTML file.
