@@ -214,14 +214,12 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // of _filterMoMLParser so that the _manager is collected.
         MoMLParser.setMoMLFilters(null);
 
-        synchronized (_parser) {
-            if (_parser != null) {
-                _parser.resetAll();
-                // _parser is a protected variable so setting it to
-                // null will (hopefully) cause the garbage
-                // collector to collect it.
-                _parser = null;
-            }
+        if (_parser != null) {
+            _parser.resetAll();
+            // _parser is a protected variable so setting it to
+            // null will (hopefully) cause the garbage
+            // collector to collect it.
+            _parser = null;
         }
 
         // _manager is a protected variable so setting it to
