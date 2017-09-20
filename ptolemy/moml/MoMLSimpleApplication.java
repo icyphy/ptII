@@ -291,8 +291,6 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _activeCount--;
         _executionFinishedOrError = true;
         if (_activeCount <= 0) {
-            // Don't call cleanup() here, it causes problems with rerun().
-            MoMLSimpleApplication.closeVertx();
             notifyAll();
         }
     }
@@ -322,6 +320,9 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
             ex.printStackTrace();
             StringUtilities.exit(1);
         }
+        // Closing vertx is required by:
+        // $PTII/bin/ptinvoke ptolemy.moml.MoMLSimpleApplication $PTII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/KeyValueStoreClient.xml
+        MoMLSimpleApplication.closeVertx();
     }
 
     /** Execute the same model again.
