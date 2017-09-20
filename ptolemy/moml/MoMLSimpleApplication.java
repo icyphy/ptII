@@ -28,6 +28,7 @@
  */
 package ptolemy.moml;
 
+import java.lang.reflect.Method;
 import java.io.File;
 
 import ptolemy.actor.CompositeActor;
@@ -201,6 +202,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  rerun().
      */
     public void cleanup() {
+        MoMLSimpleApplication.closeVertx();
         // The next line removes the static backward compatibility
         // filters, which is probably not what we want if we
         // want to parse another file.
@@ -212,11 +214,15 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // of _filterMoMLParser so that the _manager is collected.
         MoMLParser.setMoMLFilters(null);
 
-        _parser.resetAll();
-        // _parser is a protected variable so setting it to
-        // null will (hopefully) cause the garbage
-        // collector to collect it.
-        _parser = null;
+        synchronized (_parser) {
+            if (_parser != null) {
+                _parser.resetAll();
+                // _parser is a protected variable so setting it to
+                // null will (hopefully) cause the garbage
+                // collector to collect it.
+                _parser = null;
+            }
+        }
 
         // _manager is a protected variable so setting it to
         // null will (hopefully) cause the garbage
@@ -233,6 +239,22 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // Set workspace to null so that the objects contained
         // by the workspace may be collected.
         _workspace = null;
+    }
+
+    /** If the VertxHelperBase class is present, then invoke the
+     *  closeVertx() method so that this process does not wait around
+     *  for the Vert.x threads.
+     */
+    public static void closeVertx() {
+        try {
+            Class clazz = Class.forName("ptolemy.actor.lib.jjs.VertxHelperBase");
+            if (clazz != null) {
+                Method method = clazz.getMethod("closeVertx");
+                method.invoke(null);
+            }
+        } catch (Throwable throwable) {
+            System.err.println("MoMLSimpleApplication: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: " + throwable);
+        }
     }
 
     /** Report an execution failure.   This method will be called
@@ -271,6 +293,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _activeCount--;
         _executionFinishedOrError = true;
         if (_activeCount <= 0) {
+            cleanup();
             notifyAll();
         }
     }
