@@ -293,7 +293,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _activeCount--;
         _executionFinishedOrError = true;
         if (_activeCount <= 0) {
-            cleanup();
+            // Don't call cleanup() here, it causes problems with rerun().
+            MoMLSimpleApplication.closeVertx();
             notifyAll();
         }
     }
