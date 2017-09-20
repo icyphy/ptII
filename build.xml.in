@@ -313,7 +313,7 @@
     <condition property="npm.executable"
 	       value="npm.cmd"
 	       else="npm">
-      <available file="npm.exe"
+      <available file="npm.cmd"
 	       filepath="${env.PATH}"/>
     </condition>
   </target>
