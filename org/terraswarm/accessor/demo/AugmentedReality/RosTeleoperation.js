@@ -32,7 +32,7 @@ exports.setup = function() {
 
 exports.initialize = function() {
     this.addInputHandler('control', function (){
-        var control = this.get('control');
+        var control =this.get('control');
         var msgJSON;
 
         var stop = control['stop'];
@@ -56,16 +56,16 @@ exports.initialize = function() {
             var angularX = 0.0;
             
             if(control['linearY']){
-                linearY = control['linearY'];
+                linearY = parseFloat(control['linearY']);
             }
             if(control['linearX']){
-                linearX = control['linearX'];
+                linearX = parseFloat(control['linearX']);
             }
             if(control['angularY']){
-                angularY = control['angularY'];
+                angularY = parseFloat(control['angularY']);
             }
             if(control['angularX']){
-                angularX = control['angularX'];
+                angularX = parseFloat(control['angularX']);
             }
 
             msgJSON = {
@@ -81,7 +81,7 @@ exports.initialize = function() {
                 }
             };
         }
-        var msg = JSON.stringify(msgJSON);
+        var msg = msgJSON;
         RosPublisher.send('toSend', msg);
     });
 	// At initialize, send the schema;
