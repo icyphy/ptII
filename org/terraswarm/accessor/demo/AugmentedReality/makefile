@@ -61,7 +61,7 @@ OTHER_FILES_TO_BE_JARED = \
 	PressureSensor.js \
 	SoundActuator.js \
 	SoundServer.xml \
-	TestSoundActuator.xml 
+	TestSoundActuator.xml \
 	TagMapAccessorAR.xml \
 	TagURIMapAR.xml \
 	TemperatureSensor.js \
