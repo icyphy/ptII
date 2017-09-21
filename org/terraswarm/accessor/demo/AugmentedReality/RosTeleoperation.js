@@ -18,9 +18,10 @@ var RosPublisher;
 
 exports.setup = function() {
 	this.implement('ControllableSensor');
-	RosPublisher = this.instantiate('RosPublisher.js', 'robotics/RosPublisher');
+    RosPublisher = this.instantiate('RosPublisher.js', 'robotics/RosPublisher');
 	// FIXME: This should be a parameter?
 	RosPublisher.input('server', {
+        //'value': '192.168.0.104'
 	    'value': 'localhost'
 	});
 	RosPublisher.input('port', {
@@ -50,34 +51,25 @@ exports.initialize = function() {
                 }
             };
         } else {
-            var linearY = 0.0;
-            var linearX = 0.0;
-            var angularY = 0.0;
-            var angularX = 0.0;
+            var linear = 0.0;
+            var angular = 0.0;
             
-            if(control['linearY']){
-                linearY = parseFloat(control['linearY']);
+            if(control['linear']){
+                linear = parseFloat(control['linear']);
             }
-            if(control['linearX']){
-                linearX = parseFloat(control['linearX']);
+            if(control['angular']){
+                angular = parseFloat(control['angular']);
             }
-            if(control['angularY']){
-                angularY = parseFloat(control['angularY']);
-            }
-            if(control['angularX']){
-                angularX = parseFloat(control['angularX']);
-            }
-
             msgJSON = {
                 "linear": {
-                    "y": linearY,
-                    "x": linearX,
+                    "y": 0.0,
+                    "x": linear,
                     "z": 0.0
                 },
                 "angular": {
-                    "y": angularY,
-                    "x": angularX,
-                    "z": 0.0
+                    "y": 0.0,
+                    "x": 0.0,
+                    "z": angular
                 }
             };
         }
@@ -93,25 +85,15 @@ exports.initialize = function() {
 var schema = {
   "type": "object",
   "properties": {
-    "linearY": {
+    "linear": {
       	"type": 'number',
-      	"title": "Y Linear Velocity",
-      	"description": "Linear Velocity in Y direction."
+      	"title": "Linear Velocity",
+      	"description": "Linear Velocity in X direction."
     },
-    "linearX": {
+    "angular": {
         "type": 'number',
-        "title": "X Linear Velocity",
-        "description": "Linear Velocity in X direction."
-    },
-    "angularY": {
-        "type": 'number',
-        "title": "Y Angular Velocity",
-        "description": "Linear Velocity in Y direction."
-    },
-    "angularX": {
-        "type": 'number',
-        "title": "X Angular Velocity",
-        "description": "Linear Velocity in X direction."
+        "title": "Angular Velocity",
+        "description": "Anugular Velocity around Z axis."
     },
     "stop":{
         "type": 'string',
