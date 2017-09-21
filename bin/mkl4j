@@ -122,8 +122,8 @@ cat <<EOF
   <stayAlive>true</stayAlive>
   <icon>${icon}</icon>
   <jre>
-    <minVersion>1.6.0</minVersion>
-    <maxHeapSize>512</maxHeapSize>
+    <minVersion>1.8.0</minVersion>
+    <maxHeapSize>7654</maxHeapSize>
     <path>jre</path>
   </jre>
   <classPath>
@@ -135,7 +135,7 @@ cat <<EOF
     <fileVersion>${fileVersion}</fileVersion>
     <txtFileVersion>${PTVERSION}</txtFileVersion>
     <fileDescription>Ptolemy II Application</fileDescription>
-    <copyright>Copyright (c) 1995-2016 The Regents of the University of California. All rights reserved. http://ptolemy.eecs.berkeley.edu/copyright.htm</copyright>
+    <copyright>Copyright (c) 1995-2017 The Regents of the University of California. All rights reserved. http://ptolemy.eecs.berkeley.edu/copyright.htm</copyright>
     <productVersion>${fileVersion}</productVersion>
     <txtProductVersion>${PTVERSION}</txtProductVersion>
     <productName>Ptolemy II</productName>
