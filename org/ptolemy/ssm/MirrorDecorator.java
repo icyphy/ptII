@@ -139,6 +139,9 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
             }
     }
 
+    /** Return the decorated objects.
+     *  @return The decorated objects.
+     */
     @Override
     public List<NamedObj> decoratedObjects() throws IllegalActionException {
         if (workspace().getVersion() == _decoratedObjectsVersion) {
@@ -159,7 +162,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     }
 
     /**
-     * Returns the added port names.
+     * Return the added port names.
      * @return a list containing the added port names
      */
     public List<String> getAddedPortNames() {
@@ -167,7 +170,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     }
 
     /**
-     * Returns the added port parameter names.
+     * Return the added port parameter names.
      * @return a list containing the added port parameter names
      */
     public List<String> getAddedPortParameterNames() {
@@ -175,7 +178,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     }
 
     /**
-     * Returns the added paramters
+     * Return the added paramters.
      * @return a list containing the added parameters.
      */
     public List<Parameter> getAddedParameters() {

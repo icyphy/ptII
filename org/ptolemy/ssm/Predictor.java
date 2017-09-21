@@ -43,21 +43,40 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+/** A predictor
+ *
+ *  @author Ilge Akkya   
+ *  @version $Id$
+ */
 public class Predictor extends AbstractPredictor
 implements StateSpaceActor {
 
+    /** Instantiate a new predictor.
+     *  @param container The container
+     *  @param name The name
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */   
     public Predictor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _decorator = null;
     }
 
+    /** Instantiate a new predictor.
+     *  @param workspace The workspace in which to instantiate the predictor.   
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public Predictor(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
         _decorator = null;
     }
-
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.

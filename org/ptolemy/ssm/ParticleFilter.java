@@ -58,6 +58,14 @@ and several measurements to be tied with itself via decorators.
 public class ParticleFilter extends AbstractParticleFilter implements
 InferenceActor {
 
+    /** Instantiate a particle filter actor.
+     *  @param container The container
+     *  @param name The name
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */   
     public ParticleFilter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -66,6 +74,13 @@ InferenceActor {
         // TODO Auto-generated constructor stub
     }
 
+    /** Instantiate a particle filter actor.
+     *  @param workspace The workspace in which to instantiate actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ParticleFilter(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);

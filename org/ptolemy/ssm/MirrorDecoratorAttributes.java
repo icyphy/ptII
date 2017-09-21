@@ -52,18 +52,19 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 ////MirrorDecoratorAttributes
 
-/**Attribute generator class for the MirrorDecorator
-
-@see org.ptolemy.ssm.MirrorDecorator
-
-@author Ilge Akkaya
-@version $Id$
-@since Ptolemy II 10.1
-@Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating Red (ilgea)
+/**
+ * Attribute generator class for the MirrorDecorator.
+ *
+ * @see org.ptolemy.ssm.MirrorDecorator
+ * 
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.1
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (ilgea)
 */
 public class MirrorDecoratorAttributes extends DecoratorAttributes
-implements MirrorDecoratorListener{
+implements MirrorDecoratorListener {
 
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
@@ -77,6 +78,12 @@ implements MirrorDecoratorListener{
         _init();
     }
 
+    /** Construct a MirroDecoratorAttributes
+     *  @param target The object being decorated.
+     *  @param name The name.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
+     */
     public MirrorDecoratorAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
         super(target, name);

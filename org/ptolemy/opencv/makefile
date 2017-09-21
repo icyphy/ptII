@@ -69,7 +69,21 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	test
+	test \
+	'ComputerVision$$Blur.class' \
+	'ComputerVision$$Dilate.class' \
+	'ComputerVision$$Erode.class' \
+	'ComputerVision$$FindContours.class' \
+	'ComputerVision$$FindEdges.class' \
+	'ComputerVision$$GaussianBlur.class' \
+	'ComputerVision$$Histogram.class' \
+	'ComputerVision$$MakeBGRA.class' \
+	'ComputerVision$$MakeGray.class' \
+	'ComputerVision$$MakeHSV.class' \
+	'ComputerVision$$MakeYUV.class' \
+	'ComputerVision$$MedianBlur.class' \
+	'FaceRecognizer$$Eyes.class' \
+	'FaceRecognizer$$Faces.class' 
 
 KRUFT =
 

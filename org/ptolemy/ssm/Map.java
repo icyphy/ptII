@@ -158,6 +158,9 @@ public class Map extends TypedAtomicActor implements Decorator {
         map.update();
     }
 
+    /** Return the occupancy grid.
+     *  @return the occupancy grid
+     */
     public int[][] getOccupancyGrid() {
         int [][] copyOccupancy = new int[_occupancyGrid.length][_occupancyGrid[0].length];
         for (int i = 0; i < copyOccupancy.length; i++) {
@@ -166,14 +169,17 @@ public class Map extends TypedAtomicActor implements Decorator {
         return copyOccupancy;
     }
 
+    /** Return the origin.
+     *  @return the origin.
+     */
     public double[] getOrigin() {
         return Arrays.copyOf(_origin, _origin.length);
     }
 
     /**
      * Check if queried (x,y) position is within the valid map area.
-     * @param xCoord
-     * @param yCoord
+     * @param xCoord The x coordinate
+     * @param yCoord The y coordinate
      * @return True if the position is within the valid map area.
      */
     public boolean withinValidMapArea(double xCoord, double yCoord) {
@@ -249,6 +255,9 @@ public class Map extends TypedAtomicActor implements Decorator {
         }
     }
 
+    /** Return the decorated objects.
+     *  @return the decorated objects.
+     */
     @Override
     public List<NamedObj> decoratedObjects() throws IllegalActionException {
         if (workspace().getVersion() == _decoratedObjectsVersion) {

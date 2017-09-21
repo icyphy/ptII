@@ -96,7 +96,7 @@ public class StateSpaceModel extends MirrorDecorator {
     public Parameter processNoise;
 
     /** An expression for a prior distribution from which the initial
-     * particles are sampled
+     * particles are sampled.
      */
     public Parameter priorDistribution;
 

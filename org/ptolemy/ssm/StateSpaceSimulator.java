@@ -56,12 +56,27 @@ Defines an initial value for the state and simulates the model from there.
  */
 public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements StateSpaceActor {
 
+    /** Instantiate a state space actor.
+     *  @param container The container
+     *  @param name The name
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */   
     public StateSpaceSimulator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _decorator = null;
     }
 
+    /** Instantiate a state space actor.
+     *  @param workspace The workspace in which to instantiate actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public StateSpaceSimulator(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);

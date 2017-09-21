@@ -44,16 +44,16 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 ////MeasurementModelAttributes
 
-/** Attribute generator class for the MeasurementModel/
-
-@see org.ptolemy.ssm.MeasurementModel
-
-@author Ilge Akkaya
-@version $Id$
-@since Ptolemy II 10.1
-@Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating
-*/
+/** Attribute generator class for the MeasurementModel.
+ *
+ * @see org.ptolemy.ssm.MeasurementModel
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.1
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating
+ */
 public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
 
     /** Constructor to use when editing a model.

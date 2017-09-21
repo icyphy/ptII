@@ -44,14 +44,16 @@ https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
 package edu.umich.eecs.april.tag;
 
+/** Detect a tag.
+ */
 public class TagDetection {
     /** Is the detection good enough? **/
     public boolean good;
 
-    /** Observed code **/
+    /** Observed code. **/
     public long obsCode;
 
-    /** Matched code **/
+    /** Matched code. **/
     public long code;
 
     /** What was the ID of the detected tag? **/
@@ -75,7 +77,8 @@ public class TagDetection {
 
     /** Measured in pixels, how long was the observed perimeter
      * (i.e., excluding inferred perimeter which is used to
-     * connect incomplete quads) **/
+     * connect incomplete quads).
+     **/
     public double observedPerimeter;
 
     /** A 3x3 homography that computes pixel coordinates from
@@ -83,7 +86,8 @@ public class TagDetection {
      * are 2D homogenous vectors, with y = Hx. y are pixel
      * coordinates, x are tag-relative coordinates. Tag coordinates
      * span from (-1,-1) to (1,1). The orientation of the homography
-     * reflects the orientation of the target. **/
+     * reflects the orientation of the target.
+     **/
     public double homography[][];
 
     /** The homography is relative to image center, whose coordinates
@@ -91,7 +95,12 @@ public class TagDetection {
      **/
     public double hxy[];
 
-    /** interpolate point given (x,y) is in tag coordinate space from (-1,-1) to (1,1) **/
+    /** Interpolate point given (x,y) is in tag coordinate space from
+     * (-1,-1) to (1,1).
+     * @param x The x value
+     * @param y The y value
+     * @return The interpolated point.
+     */
     public double[] interpolate(double x, double y) {
         double z = homography[2][0] * x + homography[2][1] * y
                 + homography[2][2];

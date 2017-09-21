@@ -82,6 +82,7 @@ MISC_FILES =	test #$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'FileUtilities$$StreamAndURL.class' \
 	'RecursiveFileFilter$$1.class' \
 	'RecursiveFileFilter$$FileComparator.class' \
 	'StreamExec$$_StreamReaderThread.class' \

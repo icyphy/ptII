@@ -29,6 +29,15 @@ package org.ptolemy.ssm;
 import ptolemy.actor.Actor;
 import ptolemy.kernel.util.IllegalActionException;
 
+/** An interface for the actors that can be decorated by the state
+ * space model.
+ *
+ *  @author Ilge Akkya   
+ *  @version $Id$
+ */
 public interface StateSpaceActor extends Actor {
+    /** Return true if a valid decorator association exists.
+     *  @return true if a valid decorator association exists.
+     */
     public boolean validDecoratorAssociationExists() throws IllegalActionException;
 }
