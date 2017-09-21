@@ -305,9 +305,9 @@ public class JSAccessor extends JavaScript {
             // then assume that this setting is overriding the default script for the
             // accessor and add an attribute indicating this fact.
             if (_previousScript != null
-                    && !_previousScript.equals(_INITIAL_SCRIPT)
-                    && !newScript.equals(_previousScript)
-                    && !_INITIAL_SCRIPT.equals(newScript)) {
+                && !_previousScript.equals(_INITIAL_SCRIPT)
+                && !newScript.equals(_previousScript)
+                && !_INITIAL_SCRIPT.equals(newScript)) {
                 try {
                     new SingletonAttribute(this, "_localChanges");
                 } catch (NameDuplicationException e) {
@@ -369,87 +369,95 @@ public class JSAccessor extends JavaScript {
             return;
         }
 
-        try {
-            List execCommands = new LinkedList<String>();
-            // If the org/terraswarm/accessor/accessors directory
-            // exists, then run svn update, otherwise try to check out
-            // the repo.
-
-            if (accessorsRepoDirectory.isDirectory()) {
-                exec.setWorkingDirectory(accessorsRepoDirectory);
-                // Use --accept postpone so that the updated proceeds despite local mods.
-                // See http://lists.nceas.ucsb.edu/kepler/pipermail/kepler-dev/2010-January/017045.html
-                String svnUpdateCommand = "svn update --non-interactive --trust-server-cert --accept postpone";
-                execCommands.add(svnUpdateCommand);
-                _commands = "cd " + accessorsRepoDirectory + "\n" + svnUpdateCommand;
-                MessageHandler.status("Updating local copy of the accessors repository.");
-            } else {
-                newCheckout = true;
-                // Default to anonymous, read-only access.
-                String accessorsRepo = "https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors";
-                // If the ptII svn repo is read/write, then try read write access to the accessors repo.
-                if (_ptIISvnRepoIsReadWrite()) {
-                    accessorsRepo = "https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors";
-                }
-                exec.setWorkingDirectory(JSAccessor._accessorDirectory());
-                String svnCommand = "svn co --non-interactive --trust-server-cert " + accessorsRepo;
-                execCommands.add(svnCommand);
-                _commands = "cd " + JSAccessor._accessorDirectory() + "\n" + svnCommand;
-                MessageHandler.status("Checking out the accessors repository.");
+        // The installer might not have the .svn/ directory.
+        File svnDirectory = new File(accessorsRepoDirectory, ".svn");
+        if (accessorsRepoDirectory.isDirectory() && !svnDirectory.isDirectory()) {
+            if (!_printedNoSvnMessage) {
+                System.out.println(accessorsRepoDirectory + " is a directory, but does not contain .svn/, so there is no point in running svn. (This message will be printed only once.)");
             }
+        } else {
+            try {
+                List execCommands = new LinkedList<String>();
+                // If the org/terraswarm/accessor/accessors directory
+                // exists, then run svn update, otherwise try to check out
+                // the repo.
 
-            exec.setCommands(execCommands);
-
-            exec.setWaitForLastSubprocess(true);
-            exec.start();
-            // The following is redundant. Gets reported twice.
-            // _commands += exec.buffer.toString();
-            int returnCode = exec.getLastSubprocessReturnCode();
-            if (returnCode == 0) {
-                updated = true;
-                _checkoutOrUpdateFailed = false;
-                if (newCheckout) {
-                    MessageHandler.status("Checked out accessor repository.");
+                if (accessorsRepoDirectory.isDirectory()) {
+                    exec.setWorkingDirectory(accessorsRepoDirectory);
+                    // Use --accept postpone so that the updated proceeds despite local mods.
+                    // See http://lists.nceas.ucsb.edu/kepler/pipermail/kepler-dev/2010-January/017045.html
+                    String svnUpdateCommand = "svn update --non-interactive --trust-server-cert --accept postpone";
+                    execCommands.add(svnUpdateCommand);
+                    _commands = "cd " + accessorsRepoDirectory + "\n" + svnUpdateCommand;
+                    MessageHandler.status("Updating local copy of the accessors repository.");
                 } else {
-                    MessageHandler.status("Updated accessor repository.");
+                    newCheckout = true;
+                    // Default to anonymous, read-only access.
+                    String accessorsRepo = "https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors";
+                    // If the ptII svn repo is read/write, then try read write access to the accessors repo.
+                    if (_ptIISvnRepoIsReadWrite()) {
+                        accessorsRepo = "https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors";
+                    }
+                    exec.setWorkingDirectory(JSAccessor._accessorDirectory());
+                    String svnCommand = "svn co --non-interactive --trust-server-cert " + accessorsRepo;
+                    execCommands.add(svnCommand);
+                    _commands = "cd " + JSAccessor._accessorDirectory() + "\n" + svnCommand;
+                    MessageHandler.status("Checking out the accessors repository.");
                 }
-            } else {
+
+                exec.setCommands(execCommands);
+
+                exec.setWaitForLastSubprocess(true);
+                exec.start();
+                // The following is redundant. Gets reported twice.
+                // _commands += exec.buffer.toString();
+                int returnCode = exec.getLastSubprocessReturnCode();
+                if (returnCode == 0) {
+                    updated = true;
+                    _checkoutOrUpdateFailed = false;
+                    if (newCheckout) {
+                        MessageHandler.status("Checked out accessor repository.");
+                    } else {
+                        MessageHandler.status("Updated accessor repository.");
+                    }
+                } else {
+                    _checkoutOrUpdateFailed = true;
+                    if (newCheckout) {
+                        MessageHandler.status("Failed to check out the accessors repository.");
+                        throw new IOException("Failed to check out the accessors repository with:\n"
+                                              + _commands + "\n"
+                                              + "The output was: " + exec.buffer);
+                    } else {
+                        String message = "Could not update the accessors repository. Using local version.";
+                        if (exec.buffer.toString().indexOf("Unable to conect to a repository") != -1
+                            || exec.buffer.toString().indexOf("No more credentials or we tried too many times.") != -1) {
+                            String osName = StringUtilities.getProperty("os.name");
+                            if (osName.startsWith("Mac OS X")) {
+                                message += "  Under Mac OS X, this can occur if the svn " +
+                                    "command does not have access to your keychain. " +
+                                    "One possible solution is reboot and run the command " +
+                                    "by hand.  A dialog will pop up asking if the svn " +
+                                    "command should have access to the keychain. " +
+                                    "Select 'Always' and rerun the demo.";
+                            }
+                        }
+                        MessageHandler.status(message);
+                    }
+                }
+            } catch (Throwable throwable) {
                 _checkoutOrUpdateFailed = true;
                 if (newCheckout) {
                     MessageHandler.status("Failed to check out the accessors repository.");
-                    throw new IOException("Failed to check out the accessors repository with:\n"
-                                          + _commands + "\n"
-                                          + "The output was: " + exec.buffer);
+                    IOException ioException = new IOException("Failed to check out the accessors repository with:\n"
+                                                              + _commands + "\n"
+                                                              + "Perhaps you don't have read access?  "
+                                                              + "The accessors repository is under development.\n"
+                                                              + "The output was: " + exec.buffer);
+                    ioException.initCause(throwable);
+                    throw ioException;
                 } else {
-                    String message = "Could not update the accessors repository. Using local version.";
-                    if (exec.buffer.toString().indexOf("Unable to conect to a repository") != -1
-                        || exec.buffer.toString().indexOf("No more credentials or we tried too many times.") != -1) {
-                        String osName = StringUtilities.getProperty("os.name");
-                        if (osName.startsWith("Mac OS X")) {
-                            message += "  Under Mac OS X, this can occur if the svn " +
-                                "command does not have access to your keychain. " +
-                                "One possible solution is reboot and run the command " +
-                                "by hand.  A dialog will pop up asking if the svn " +
-                                "command should have access to the keychain. " +
-                                "Select 'Always' and rerun the demo.";
-                        }
-                    }
-                    MessageHandler.status(message);
+                    MessageHandler.status("Could not update the accessors repository. Using local version.");
                 }
-            }
-        } catch (Throwable throwable) {
-            _checkoutOrUpdateFailed = true;
-            if (newCheckout) {
-                MessageHandler.status("Failed to check out the accessors repository.");
-                IOException ioException = new IOException("Failed to check out the accessors repository with:\n"
-                                                          + _commands + "\n"
-                                                          + "Perhaps you don't have read access?  "
-                                                          + "The accessors repository is under development.\n"
-                                                          + "The output was: " + exec.buffer);
-                ioException.initCause(throwable);
-                throw ioException;
-            } else {
-                MessageHandler.status("Could not update the accessors repository. Using local version.");
             }
         }
         _lastRepoUpdateTime = System.currentTimeMillis();
@@ -1468,6 +1476,9 @@ public class JSAccessor extends JavaScript {
      *  Indicating that "ant ptdoc" failed.
      */        
     private static boolean _ptDocFailed = false;
+
+    /** Set to true if the message about .svn/ missing has been printed. */
+    private static boolean _printedNoSvnMessage = false;
 
     /** Set to true if the PT_NO_NET message has been printed. */
     private static boolean _printedPtNoNetMessage = false;
