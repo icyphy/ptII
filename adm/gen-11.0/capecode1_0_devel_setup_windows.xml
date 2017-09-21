@@ -288,6 +288,9 @@
             <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-nop-1.7.13.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/svgSalamander.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+
 	    <!-- To update: (cd $PTII/lib; ls -1 hazelcast*.jar jackson*.jar netty*.jar vertx*.jar | awk '{print "            <file src=\"../dists/ptII11.0.devel/jar_dist/lib/" $1 "\""; print "                  targetdir=\"$INSTALL_PATH/lib\"/>"}') -->
             <file src="../dists/ptII11.0.devel/jar_dist/lib/hazelcast-3.6.3.jar"
                   targetdir="$INSTALL_PATH/lib"/>
