@@ -108,6 +108,11 @@ derivative works thereof, in binary and source code form.
 ///////////////////////////////////////////////////////
 #ifndef _UTILSOCKET_H_
 #define _UTILSOCKET_H_
+
+#if !defined(_MSC_VER) && defined(_WIN32)
+#define _MSC_VER 1500
+#endif
+
 #ifdef _MSC_VER // Microsoft compiler
 #include <windows.h>
 #include <winsock.h>

@@ -124,10 +124,17 @@ C_DEBUG=-g
 # $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit Linux, it is set to -fPIC
 # $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit Mac OS X, it is set to -m64
 $(PTLIB): $(CSRCS) $(HSRCS)
-	if [ `uname -s` = "Darwin" ]; then \
+	EXTRA_LIBRARIES=-lexpat; \
+	case `uname -s` in \
+		Darwin) \
 		INSTALL_NAME="-install_name @rpath/$(PTLIB)"; \
 		echo "Setting INSTALL_NAME to $$INSTALL_NAME because Darwin requires it for shared libraries."; \
-        fi; \
+		;; \
+		Cygwin*) \
+		 EXTRA_LIBRARIES="-lws2_32 -lexpat -lws2_32"; \
+	       ;; \
+	esac; \
+	echo "EXTRA_LIBRARIES=$$EXTRA_LIBRARIES"; \
 	"$(PTCC)" -shared $(PTJNI_GCC_SHARED_FLAG) \
 		$(C_DEBUG) \
 		$(C_DEFINES) \
@@ -136,7 +143,7 @@ $(PTLIB): $(CSRCS) $(HSRCS)
 		-o $@ \
 		-I.. -I $(LIBEXPAT_INCLUDE_DIR) \
 		$(CSRCS) \
-		-L$(LIBEXPAT_LIB_DIR) -lexpat
+		-L$(LIBEXPAT_LIB_DIR) $$EXTRA_LIBRARIES 
 	if [ "$(PTJNI_SHAREDLIBRARY_SUFFIX)" != "$(PTJNI_SHAREDLIBRARY_SUFFIX2)" -a "$(PTJNI_SHAREDLIBRARY_SUFFIX2)" != "" ]; then \
 		if [ "$(PTJNI_SHAREDLIBRARY_SUFFIX2)" != "so.*" ]; then \
 		    echo "Creating $(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX2)"; \

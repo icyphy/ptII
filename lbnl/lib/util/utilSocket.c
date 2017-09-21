@@ -107,6 +107,7 @@ derivative works thereof, in binary and source code form.
 ///
 ///////////////////////////////////////////////////////
 #include "utilSocket.h"
+#include "utilXml.h"
 
 ////////////////////////////////////////////////////////////////
 /// Appends a character array to another character array.
