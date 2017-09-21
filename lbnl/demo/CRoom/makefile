@@ -105,7 +105,11 @@ SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRAR
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
 $(CCLIENT): cclient.c ../../lib/util/$(SHARED_LIBRARY)
-	$(PTCC) -g -o $@ -I../../lib -I../../lib/util cclient.c -L$(prefix)/lbnl/lib/util -lbcvtb
+	if [ `uname -s` = "Darwin" ]; then \
+		RPATH=-Wl,-rpath,$(PTII)/lbnl/lib/util; \
+		echo "Set RPATH to $$RPATH for use under Darwin."; \
+	fi; \
+	$(PTCC) -g -o $@ -I../../lib -I../../lib/util cclient.c $$RPATH -L$(prefix)/lbnl/lib/util -lbcvtb
 
 ../../lib/util/$(SHARED_LIBRARY):
 	(cd ../../lib/util; $(MAKE))
