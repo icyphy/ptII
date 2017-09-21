@@ -241,7 +241,7 @@ public class Simulator extends SDFTransformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        if (((BooleanToken) showConsoleWindow.getToken()).booleanValue()) {
+        if (((BooleanToken) synchronizeWithClient.getToken()).booleanValue()) {
             this.fireAndSynchronize();
         } else {
             this.fireAndSanityCheck();
