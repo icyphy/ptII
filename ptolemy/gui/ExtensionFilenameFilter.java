@@ -237,7 +237,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
 
     ///////////////////////////////////////////////////////////////////
     ////               private fields                              ////
-    private Set<String> _registeredExtensions = new HashSet<>();
+    private Set<String> _registeredExtensions = new HashSet<String>();
 
     private String _description = null;
 }
