@@ -57,6 +57,14 @@ import ptolemy.kernel.util.Workspace;
 public class UnscentedKalmanFilterSSM extends AbstractUnscentedKalmanFilter
 implements InferenceActor {
 
+    /** Instantiate an unscented Kalman filter.
+     *  @param container The container
+     *  @param name The name
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */   
     public UnscentedKalmanFilterSSM(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -64,14 +72,19 @@ implements InferenceActor {
         _measurementDecorators = new HashMap<>();
     }
 
+    /** Instantiate an unscented Kalman filter.
+     *  @param workspace The workspace in which to instantiate actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public UnscentedKalmanFilterSSM(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
         _decorator = null;
         _measurementDecorators = new HashMap<>();
     }
-
-
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.

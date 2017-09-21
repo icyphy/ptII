@@ -53,6 +53,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	gem5.xml \
+	Gem5WrapperIcon.gif \
 	Gem5WrapperIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -65,8 +66,7 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	'Gem5Wrapper.class' \
-	'Gem5Wrapper$SortByCommandTime.class' \
+	'Gem5Wrapper$$SortByCommandTime.class' \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)

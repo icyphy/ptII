@@ -43,29 +43,33 @@ A  special decorator that defines a Gaussian measurement model.
 public class GaussianMeasurementModel extends MeasurementModel
 implements TrainableGaussianModel {
 
+    /** Construct a GaussianMeasurementModel.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public GaussianMeasurementModel(CompositeEntity container, String name)
-
-
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
 
-
-
     /**
-     * The noise mean
+     * The noise mean.
      */
     public Parameter noiseMean;
 
     /**
-     * The noise covariance
+     * The noise covariance.
      */
     public Parameter noiseCovariance;
+
     /**
      * The measurement equation that will refer to the state space model.
      */
-
     private void _init() throws IllegalActionException, NameDuplicationException {
 
         noiseMean = new Parameter(this, "noiseMean");
@@ -74,15 +78,24 @@ implements TrainableGaussianModel {
         noiseCovariance = new Parameter(this, "noiseCovariance");
         noiseCovariance.setExpression("5.0");
     }
+
+    /** Get the mean.
+     *  @return the mean.
+     */
     @Override
     public double[] getMean() {
         return null;
     }
+
+    /** Get the coveriance.
+     *  @return the coveriance.
+     */
     @Override
     public double[][] getCovariance() {
         // TODO Auto-generated method stub
         return null;
     }
+
     @Override
     public boolean validDecoratorAssociationExists()
             throws IllegalActionException {

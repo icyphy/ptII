@@ -29,16 +29,18 @@ package org.ptolemy.ssm;
 
 import ptolemy.data.expr.Parameter;
 
+/** Listener interface for decorator events.
+ *
+ *  @author Ilge Akkya   
+ *  @version $Id$
+ */
 public interface MirrorDecoratorListener {
-
-
     /**  The event that is sent by the mirror decorator  and processed
      *  by the listener.
      *  @param eventType The type of the event.
      *  @param p The parameter subject to change.
      */
     public void event(MirrorDecorator ssm, DecoratorEvent eventType, Parameter p);
-
 
     /** The event that is sent by the mirror decorator  and processed
      *  by the listener.
@@ -49,14 +51,28 @@ public interface MirrorDecoratorListener {
 
     /** Type of the event. */
     public static enum DecoratorEvent {
-        /** Token was received. */
+        /** Port was added. */
         ADDED_PORT,
+
+        /** Port was removed. */
         REMOVED_PORT,
+
+        /** Parameter was added. */
         ADDED_PARAMETER,
+
+        /** Parameter was removed. */
         REMOVED_PARAMETER,
+
+        /** Parameter was changed. */
         CHANGED_PARAMETER,
+
+        /** PortParameter was added. */
         ADDED_PORT_PARAMETER,
+
+        /** PortParameter was removed. */
         REMOVED_PORT_PARAMETER,
+
+        /** PortParameter was changed. */
         CHANGED_PORT_PARAMETER
     }
 }

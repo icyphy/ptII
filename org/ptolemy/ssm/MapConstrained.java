@@ -1,4 +1,5 @@
 /* An interface for the actors that are constrained by maps.
+ 
  Copyright (c) 2014-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -28,6 +29,15 @@ package org.ptolemy.ssm;
 
 import ptolemy.actor.Actor;
 
+/** An interface for the actors that are constrained by maps.
+ *
+ *  @author Ilge Akkya   
+ *  @version $Id$
+ */
 public interface MapConstrained extends Actor {
+    /** Return true if the the coordinates satisfy the map constraints.
+     *  @param coordinates The coordinates
+     *  @return true if the the coordinates satisfy the map constraints.
+     */
     public boolean satisfiesMapConstraints(double[] coordinates);
 }

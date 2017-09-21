@@ -69,7 +69,8 @@ OTHER_FILES_TO_BE_JARED = \
 	JSAccessorIcon.xml \
 	XMLJSToMoML.xslt
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
+	status
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -94,6 +95,7 @@ OPTIONAL_FILES = \
 	'AccessorIconLoader$$1.class' \
 	'JSAccessor$$1.class' \
 	'JSAccessor$$2.class' \
+	'JSAccessor$$3.class' \
         'JSAccessor$$ActionableAttribute.class'
 
 # Get the rest of the rules

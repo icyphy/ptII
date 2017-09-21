@@ -57,7 +57,8 @@ import javax.imageio.ImageIO;
 
 import edu.umich.eecs.april.util.ReflectUtil;
 
-/** Generic class for all tag encoding families **/
+/** Generic class for all tag encoding families.
+ */
 public class TagFamily {
     /** How many pixels wide is the outer-most white border? This is
      * only used when rendering a tag, not for decoding a tag (since
@@ -102,6 +103,8 @@ public class TagFamily {
         this.codes = codes;
     }
 
+    /** Set the error recovery bits.
+     */
     public void setErrorRecoveryBits(int b) {
         errorRecoveryBits = b;
     }
