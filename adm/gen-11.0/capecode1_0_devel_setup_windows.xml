@@ -76,7 +76,8 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
-        <!-- res id="packsLang.xml_eng" src="packsLang.xml_eng"/ -->
+        <res id="packsLang.xml" src="packsLang.xml">
+        <res id="userInputLang.xml" src="userInputLang.xml">
 	<res id="CustomLangPack.xml" src="CustomLangPack.xml"/> 
         <res id="HTMLInfoPanel.info" src="indexCapeCode.htm"/> 
         <res id="HTMLLicencePanel.licence" src="licenseCapeCode.htm"/>
