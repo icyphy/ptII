@@ -124,10 +124,15 @@ C_DEBUG=-g
 # $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit Linux, it is set to -fPIC
 # $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit Mac OS X, it is set to -m64
 $(PTLIB): $(CSRCS) $(HSRCS)
+	if [ `uname -s` = "Darwin" ]; then \
+		INSTALL_NAME="-install_name @rpath/$(PTLIB)"; \
+		echo "Setting INSTALL_NAME to $$INSTALL_NAME because Darwin requires it for shared libraries."; \
+        fi; \
 	"$(PTCC)" -shared $(PTJNI_GCC_SHARED_FLAG) \
 		$(C_DEBUG) \
 		$(C_DEFINES) \
 		$(PTJNI_SHAREDLIBRARY_LDFLAG) \
+		$$INSTALL_NAME \
 		-o $@ \
 		-I.. -I $(LIBEXPAT_INCLUDE_DIR) \
 		$(CSRCS) \
