@@ -108,7 +108,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node ../hosts/node/nodeHostInvoke.js cg/@modelName@");
+        runCommand.setExpression("@node@ ../hosts/node/nodeHostInvoke.js cg/@modelName@");
 
         modules = new StringParameter(this, "modules");
         modules.setExpression("");
@@ -314,12 +314,6 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 String npm = "npm";
                 try {
                     npm = JSAccessor.npmBinary();
-                    // If we got back a path, then add the parent to the path.
-                    if (npm.indexOf('/') != -1 || npm.indexOf('\\') != -1) {
-                        File npmBinary = new File(npm);
-                        System.out.println("Added parent of " + npm + " to the path");
-                        _executeCommands.appendToPath(npmBinary.getParent());
-                    }
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex, "Failed to find \"npm\".");
                 }
@@ -329,6 +323,24 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 commands.add(command);
             }
         }
+
+        String node = "node";
+        try {
+            node = JSAccessor.nodeBinary();
+            // If we got back a path, then add the parent to the path.
+            if (node.indexOf('/') != -1 || node.indexOf('\\') != -1) {
+                File nodeBinary = new File(node);
+                System.out.println("Added parent of " + node + " to the path");
+                System.out.println("_executeCommands: " + _executeCommands);
+                _executeCommands.appendToPath(nodeBinary.getParent());
+            }
+        } catch (IOException ex) {
+            // Just print to stdout, maybe it will work out.
+            System.out.println("AccessorCodeGenerator: Failed to find \"node\": " + ex);
+        }
+
+        _substituteMap.put("@node@", node);
+
         return commands;
     }
 
