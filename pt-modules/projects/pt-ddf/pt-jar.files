@@ -1,9 +1,0 @@
-# files for pt-ddf @ /Users/hal/java/workspaces/ptolemy/ptII/pt-modules/build/../projects/pt-ddf
-/ptolemy/actor/QueueReceiver.java
-/ptolemy/actor/lib/SingleTokenCommutator.java
-/ptolemy/domains/ddf/kernel/ActorEnablingStatus.java
-/ptolemy/domains/ddf/kernel/DDFDirector.java
-/ptolemy/domains/ddf/lib/ActorRecursion.java
-/ptolemy/domains/ddf/lib/DDFBooleanSelect.java
-/ptolemy/domains/ddf/lib/DDFSelect.java
-/ptolemy/domains/ddf/lib/DDFSingleTokenCommutator.java
