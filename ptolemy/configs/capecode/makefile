@@ -77,6 +77,7 @@ OTHER_FILES_TO_BE_JARED = \
 	sinks.xml \
 	sources.xml \
 	sr.xml \
+	tour.htm \
 	welcomeWindow.xml \
 	wireless.xml
 
