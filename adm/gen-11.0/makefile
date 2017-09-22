@@ -154,7 +154,6 @@ PTII_TOPDIR=	.cshrc \
 		pom.xml \
 		ptdb \
 		ptKeystore.properties \
-		pt-modules \
 		ptolemy \
 		ptserver \
 		thales \
@@ -1242,18 +1241,6 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	# Check out the jsdoc repo.
 	(cd src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant jsdoc-install)
 	#
-	# build.xml.in: Remove build-pt-modules from the depends.
-	sed 's/depends="build-pt-modules/depends="/' src_jar/$(CAPECODE_CAPECODE_VERSION)/build.xml.in \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/build.xml.in.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/build.xml.in.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/build.xml.in
-	#
-	# build.default.xml: Remove build-pt-modules from the depends.
-	sed 's/depends="build-pt-modules/depends="/' src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml
-	#
 	# bin/makefile: Remove unused scripts
 	egrep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile.tmp
@@ -1289,7 +1276,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/tutorial/makefile
 	#
 	# Fix up makefile
-	egrep -v ".eclipse.epf|doc/codeDoc.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|lbnl|ptolemy/domains/experimentalDomains.jar|ptolemy/domains/de/demo/demo.jar|ptolemy/domains/sdf/demo/demo.jar|pt-modules|ptserver|thales|vergil/gt/gt.jar|vergil.*.jnlp.in" \
+	egrep -v ".eclipse.epf|doc/codeDoc.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|lbnl|ptolemy/domains/experimentalDomains.jar|ptolemy/domains/de/demo/demo.jar|ptolemy/domains/sdf/demo/demo.jar|ptserver|thales|vergil/gt/gt.jar|vergil.*.jnlp.in" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp \
@@ -3906,6 +3893,9 @@ $(CAPECODE_SETUP_LINUX).jar: $(CAPECODE_SETUP_LINUX).xml $(PTIIDIST)/jar_dist $(
 		ls -l $@; \
 	fi
 
+capecode_setup_linux_tar: $(CAPECODE_SETUP_LINUX).tar.gz
+$(CAPECODE_SETUP_LINUX).tar.gz: $(CAPECODE_SETUP_LINUX).jar
+	tar -zcf $@ $<
 
 
 IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
@@ -4156,6 +4146,7 @@ update_moog:
 	   $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_64)-`date +%Y-%m-%d`.exe \
 	   $(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_LINUX)-`date +%Y-%m-%d`.app.tar.gz \
 	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
 	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
 	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
@@ -4167,6 +4158,7 @@ update_moog:
 	   $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_64)-`date +%Y-%m-%d`.exe \
 	   $(PTEXTERNAL_NIGHTLY)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
+	   $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_LINUX)-`date +%Y-%m-%d`.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
@@ -4204,6 +4196,8 @@ update_moog:
 		$(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(CAPECODE_SETUP_MAC).app.tar.gz \
 		$(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz
+	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(CAPECODE_SETUP_LINUX).tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_LINUX)-`date +%Y-%m-%d`.tar.gz
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/logs/ptIInightly_mail.txt \
 		$(MOOG_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/logs/ptIInightly.htm \
@@ -4230,6 +4224,8 @@ update_moog:
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_LINUX)-`date +%Y-%m-%d`.tar.gz \
+		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/capeCodeNonGUI.tar.gz \
@@ -4252,6 +4248,10 @@ update_moog:
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.setup.mac.app.tar.gz
 	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/capecode-latest.setup.mac.app.tar.gz
+	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_LINUX)-`date +%Y-%m-%d`.tar.gz \
+	   $(PTEXTERNAL_NIGHTLY)/builds/capecode-latest.setup.linux.tar.gz
+
+
 
 # Invoke the coverity scan.
 coverity:
