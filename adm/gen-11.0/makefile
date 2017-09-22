@@ -242,10 +242,10 @@ release_terra_linux:
 
 
 release_terra_jenkins_setup:
-	$(MAKE) USER=jenkin PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar setup
+	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar setup
 
 release_terra_jenkins_test_capecode_setup:
-	$(MAKE) USER=jenkin PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar setup test_capecode_setup
+	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar setup test_capecode_setup
 
 
 release_terra_remote4_test:
