@@ -198,7 +198,8 @@ CAPECODE_CAPECODE_WINDOWS_VERSION = capecode$(CAPECODE_WINDOWS_VERSION)
 
 CAPECODE_SETUP = $(CAPECODE_CAPECODE_WINDOWS_VERSION)_setup_windows
 CAPECODE_SETUP_64 = $(CAPECODE_SETUP)_64
-CAPECODE_SETUP_MAC = $(CAPECODE_CAPECODE_VERSION).setup.mac
+CAPECODE_SETUP_MAC = $(CAPECODE_CAPECODE_VERSION).setup.linux
+CAPECODE_SETUP_LINUX = $(CAPECODE_CAPECODE_VERSION).setup.mac
 CAPECODE_SRC_JAR = $(CAPECODE_CAPECODE_VERSION).src.jar
 CAPECODE_SRC_TAR = $(CAPECODE_CAPECODE_VERSION).tar.gz
 
@@ -287,6 +288,10 @@ release_mac_setup:
 release_mac_test_capecode_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar test_capecode_setup
 
+release_mac_capecode_linux:
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_linux_jar
+
+
 release_mac2_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar src.jar setup
 
@@ -337,6 +342,7 @@ clean:	full_clean_setup
 	rm -rf $(CAPECODE_SRC_JAR) $(CAPECODE_SRC_TAR)
 	rm -rf $(CAPECODE_SETUP_64).xml $(CAPECODE_SETUP).jar $(CAPECODE_SETUP_64).exe
 	rm -rf $(CAPECODE_SETUP_MAC).app $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).dmg $(CAPECODE_SETUP_MAC).jar $(CAPECODE_SETUP_MAC).xml
+	rm -rf $(CAPECODE_SETUP_LINUX).tar.gz $(CAPECODE_SETUP_LINUX).jar $(CAPECODE_SETUP_LINUX).xml
 	rm -rf $(CAPECODE_SETUP).exe $(CAPECODE_SETUP).jar
 	rm -rf $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_64).jar
 	rm -rf capeCodeNonGUI.tar.gz
@@ -3625,7 +3631,7 @@ jre64:
 	fi
 
 # This is the main target for creating installers.
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_LINUX).tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
@@ -3826,6 +3832,15 @@ $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
+capecode_setup_linux: $(CAPECODE_SETUP_LINUX).xml
+$(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk $(CAPECODE_APP) #makefile
+	awk -f linuxInclude.awk $(CAPECODE_SETUP).xml | \
+	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
+	    -e 's@os="windows"@os="mac"@' \
+	    > $@
+
 PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
 Ptiny.app: $(PTINY_APP)
 $(PTINY_APP): 
@@ -3863,6 +3878,21 @@ setup_mac_jar: $(CAPECODE_SETUP_MAC).jar
 $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): $@"
+	@echo "# `date`"
+	ls -ldg $(PTINY_APP)
+	ls -l $(PTIIDIST)/lib/linux-x86-64-rhel/
+	# Disable logging, see https://groups.google.com/forum/#!topic/izpack-user/87fwTxSz3jA
+	$(IZPACK_COMMAND) $@ $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
+setup_linux_jar: $(CAPECODE_SETUP_LINUX).jar
+$(CAPECODE_SETUP_LINUX).jar: $(CAPECODE_SETUP_LINUX).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc izpacksetup.jar
+	@echo "#"
+	@echo "# Now building target setup_linux_jar: (CAPECODE_SETUP_LINUX): $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
 	ls -l $(PTIIDIST)/lib/linux-x86-64-rhel/
