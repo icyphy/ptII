@@ -198,8 +198,8 @@ CAPECODE_CAPECODE_WINDOWS_VERSION = capecode$(CAPECODE_WINDOWS_VERSION)
 
 CAPECODE_SETUP = $(CAPECODE_CAPECODE_WINDOWS_VERSION)_setup_windows
 CAPECODE_SETUP_64 = $(CAPECODE_SETUP)_64
-CAPECODE_SETUP_MAC = $(CAPECODE_CAPECODE_VERSION).setup.linux
-CAPECODE_SETUP_LINUX = $(CAPECODE_CAPECODE_VERSION).setup.mac
+CAPECODE_SETUP_MAC = $(CAPECODE_CAPECODE_VERSION).setup.mac
+CAPECODE_SETUP_LINUX = $(CAPECODE_CAPECODE_VERSION).setup.linux
 CAPECODE_SRC_JAR = $(CAPECODE_CAPECODE_VERSION).src.jar
 CAPECODE_SRC_TAR = $(CAPECODE_CAPECODE_VERSION).tar.gz
 
@@ -236,6 +236,9 @@ release_terra_setup:
 
 release_terra_test_capecode_setup:
 	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc test_capecode_setup
+
+release_terra_linux:
+	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc capecode_setup_linux_jar
 
 
 
@@ -3889,12 +3892,11 @@ $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTIN
 		ls -l $@; \
 	fi
 
-setup_linux_jar: $(CAPECODE_SETUP_LINUX).jar
+capecode_setup_linux_jar: $(CAPECODE_SETUP_LINUX).jar
 $(CAPECODE_SETUP_LINUX).jar: $(CAPECODE_SETUP_LINUX).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target setup_linux_jar: (CAPECODE_SETUP_LINUX): $@"
 	@echo "# `date`"
-	ls -ldg $(PTINY_APP)
 	ls -l $(PTIIDIST)/lib/linux-x86-64-rhel/
 	# Disable logging, see https://groups.google.com/forum/#!topic/izpack-user/87fwTxSz3jA
 	$(IZPACK_COMMAND) $@ $<
