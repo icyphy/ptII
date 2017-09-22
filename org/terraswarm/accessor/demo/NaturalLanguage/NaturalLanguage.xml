@@ -117,9 +117,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output goes to the console.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output goes to stdout.&#10;&#10;To view the output, select View-&gt;Console">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 220.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
