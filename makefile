@@ -114,7 +114,6 @@ EXTRA_SRCS = \
 	jars.xml \
 	plugin.xml \
 	pom.xml \
-	pt-modules \
 	vergil.jnlp.in \
 	vergilBCVTB.jnlp.in \
 	vergilCapeCode.jnlp.in \

@@ -591,7 +591,6 @@ For example:
   </target>
 
   <target name="build-subprojects"
-	  depends="build-pt-modules"
 	  description="Build subprojects. "/>
 
   <target name="build-project">
@@ -609,13 +608,6 @@ For example:
       <patternset refid="ptII.excludes" />
       <classpath refid="ptII.classpath" />
     </javac>
-  </target>
-
-  <target name="build-pt-modules"
-	  description="Build $PTII/pt-modules, a subset of Ptolemy II.">
-    <ant antfile="build.xml"
-	 dir="pt-modules/build"
-	 target="build-all"/>
   </target>
 
   <!-- Bundle for Java 1.8 under Mac OS X.  See $PTII/doc/coding/installers.htm 
@@ -792,7 +784,6 @@ For example:
   </target>
 
   <target name="jars"
-	  depends="build-pt-modules"
 	  description="Create jar files." >
     <subant antfile="jars.xml"
 	    buildpath="${basedir}"
@@ -807,7 +798,6 @@ For example:
   </target>
 
   <target name="jars.vergil"
-	  depends="build-pt-modules"
 	  description="Run vergil using jar files." >
     <subant antfile="jars.xml"
 	    buildpath="${basedir}"
@@ -1085,19 +1075,8 @@ For example:
 	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
 
   <target name="test"
-	  depends="build, test.pt-modules, test.short, test.32bit, test.long, test.longest"
+	  depends="build, test.short, test.32bit, test.long, test.longest"
 	  description="Build and run the all the junit tests." />
-
-  <target name="test.pt-modules"
-	  description="Test the jars in pt-modules.">
-    <ant antfile="build.xml"
-	 dir="pt-modules/build"
-	 inheritAll="false"
-	 target="test"
-	 >
-      <property name="javachdir" value="ptolemy/util/test/junit/javachdir"/>
-    </ant>
-  </target>
 
   <target name="test.32bit"
 	  description="Run the 32-bit JVM tests in auto32/..">
