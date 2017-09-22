@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <!-- $Id$ -->
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>
+          <img vspace="6" valign="top" src="CapeCode.png" alt="CapeCode Logo">
+          <p style="font-size:x-small">(source: <a href="https://commons.wikimedia.org/wiki/File:Cape_Cod_-_Landsat_7.jpg#in_browser">Wikipedia</a>)</p>
+        </td>
+        <td>
+          <h1>CapeCode Tour</h1>
+          <i>The modular Internet of Things, based on Ptolemy II.</i>
+          <ul>
+            <li><a href="demonstrations.htm" target="_blank">Demonstrations</a>
+            <li><a href="docs.htm" target="_blank">Documentation</a>
+            <li><a href="authors.htm" target="_blank">Authors</a>
+            <li><a href="about:copyright" target="_blank">Copyright</a>
+          </ul>
+
+          <p>CapeCode ships with a number of models, some of which require hardware or software that is not shipped with CapeCode.</p>
+
+          <p>To run the models in CapeCode,
+            click on the green triangle in the toolbar. The
+            diagrams are fully editable, so feel free to explore.</p>
+
+          <h2>Camera</h2>
+          <p>Perhaps the most portable models are the models that use the camera.</p>
+          <p>If you do not have a camera, then a default stream of images will be generated.</p>
+          <ul>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>: Cycle through image filters in a random order.
+          </ul>
+
+          <h2>REST</h2>
+          <ul>
+            <li>TBD - select the best REST demo
+          </ul>
+
+          <h2>WebSockets</h2>
+          CapeCode can interface to WebSockets:
+          <ul>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a></li>
+          </ul>
+
+          <h2>Node</h2>
+          <p>The CapeCode Accessor Host can generate Node.js files suitable for the Node Accessor Host</p>
+          <ul>
+            <li><a href="../../../org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml">NaturalLanguage</a> (using API.AI)
+              <ul>
+                <li>When run in CapeCode, this model generates output to stdout. </li>
+                <li>To view the output click on View -> Console</li>
+                <li>To generate code, click on the AccessoCodeGenerator icon in the lower
+                  right, then click on generate.
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <p>To create a CapeCode model, select File -&gt; New -&gt;
+          Cape Code Model from the menu bar. See the
+          <a href="http://ptolemy.eecs.berkeley.edu/#in_browser" target="_top">Ptolemy Project web page</a>
+          for more information about the Ptolemy II.
+          </p>
+
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
