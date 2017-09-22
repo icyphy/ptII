@@ -514,7 +514,7 @@ public class StreamExec implements ExecuteCommands {
      */
     private List _commands;
 
-    private final boolean _debug = true;
+    private final boolean _debug = false;
 
     /** End of line character. */
     private static final String _eol;

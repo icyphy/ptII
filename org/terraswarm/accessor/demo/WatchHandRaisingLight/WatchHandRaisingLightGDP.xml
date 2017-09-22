@@ -39,7 +39,7 @@
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node nodeHostInvoke.js node_modules/@accessors-hosts/node/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="@node@ nodeHostInvoke.js node_modules/@accessors-hosts/node/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 45.0}">
         </property>
