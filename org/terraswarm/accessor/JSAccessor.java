@@ -124,6 +124,11 @@ import ptolemy.util.StringUtilities;
    <p>Note that if <code>PT_NO_NET</code> is set to any value, then
    the actor will attempt to avoid using the network.</p>
 
+   <p>To always run ptdoc, set the <code>PT_RUN_PTDOC</code>
+   environment variable.  Otherwise, if PT_NO_NET is not set, then the
+   ptdocs are only regenerated when the svn update modifies a
+   file.</p>
+
    <h2>References</h2>
 
    <p><a name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
@@ -477,6 +482,8 @@ public class JSAccessor extends JavaScript {
             } else {
                 _checkoutOrUpdateFailed = true;
             }
+        } else {
+            System.out.println("PT_RUN_PTDOC was set, so we are always running ptdoc.");
         }
         JSAccessor._ptDoc();
     }
@@ -608,6 +615,26 @@ public class JSAccessor extends JavaScript {
                 }
             };
         context.requestChange(request);
+    }
+
+    /** Return the node binary that is in the path or, if node is not
+     *  found in the path, return the node binary in
+     *  $PTII/vendors/node. 
+     *  @return The node binary or "node".
+     *  @exception IOException If there is a problem finding the node binary.
+     */   
+    public static String nodeBinary() throws IOException {
+        return _nodeOrNpmBinary("node");
+    }
+
+    /** Return the npm binary that is in the path or, if npm is not
+     *  found in the path, return the npm binary in
+     *  $PTII/vendors/node. 
+     *  @return The npm binary or "npm".
+     *  @exception IOException If there is a problem finding the npm binary.
+     */   
+    public static String npmBinary() throws IOException {
+        return _nodeOrNpmBinary("npm");
     }
 
     /** Reload an accessor.  The svn repository containing the
@@ -1225,6 +1252,87 @@ public class JSAccessor extends JavaScript {
         */
     }
 
+    /** Return the node binary that is in the path or, if node is not
+     *  found in the path, return the node binary in
+     *  $PTII/vendors/node.
+     *  @param binaryName Either "node" or "npm".
+     *  @return The node binary
+     */   
+    private static String _nodeOrNpmBinary(String binaryName) throws IOException {
+        if (!binaryName.equals("node") 
+            && !binaryName.equals("npm")) {
+            throw new IOException("_nodeOrNpmBinary must be called with "
+                                  + "either \"node\" or \"npm\", not \""
+                                  + binaryName + "\"");
+        }            
+
+        String commandExtension = null;
+        String executableExtension = "";
+        String osName = StringUtilities.getProperty("os.name");
+        String osArch = StringUtilities.getProperty("os.arch");
+        if (osName != null && osName.startsWith("Windows")) {
+            commandExtension = ".cmd";
+            executableExtension = ".exe";
+        }
+
+        if (FileUtilities.inPath(binaryName + executableExtension)) {
+            System.out.println("JSAccessor: found " + binaryName + executableExtension);
+            return binaryName + executableExtension;
+        }
+        if (commandExtension != null) {
+            if (FileUtilities.inPath(binaryName + commandExtension)) {
+                System.out.println("JSAccessor: found " + binaryName + commandExtension);
+                return binaryName + commandExtension;
+            }
+        }
+
+        String nodeVersion = "$CLASSPATH/vendors/node/node-v8.4.0";
+        String nodeBinary = "";
+        String npmBinary = "";
+        if (osName != null) {
+            if (osName.startsWith("Linux")) {
+                if (osArch.indexOf(32) != -1) {
+                    nodeBinary = nodeVersion + "-linux-x32/bin/node";
+                    npmBinary = nodeVersion + "-linux-x32/bin/npm";
+                } else {
+                    nodeBinary = nodeVersion + "-linux-x64/bin/node";
+                    npmBinary = nodeVersion + "-linux-x64/bin/npm";
+                }
+            } else if (osName.startsWith("Mac")) {
+                nodeBinary = nodeVersion + "-darwin-x64/bin/node";
+                npmBinary = nodeVersion + "-darwin-x64/bin/npm";
+            } else if (osName.startsWith("Windows")) {
+                if (osArch.indexOf(32) != -1) {
+                    nodeBinary = nodeVersion + "-win-x32/bin/node.exe";
+                    npmBinary = nodeVersion + "-win-x32/bin/npm.cmd";
+                } else {
+                    nodeBinary = nodeVersion + "-win-x64/bin/node.exe";
+                    npmBinary = nodeVersion + "-win-x64/bin/npm.cmd";
+                    
+                }
+                nodeBinary = nodeBinary.replace('/', File.separatorChar);
+                npmBinary = nodeBinary.replace('/', File.separatorChar);
+            }
+        }
+
+        String binary = npmBinary;
+        if (binaryName.equals("node")) {
+            binary = nodeBinary;
+        }
+
+        File binaryFile = FileUtilities.nameToFile(binary, null);
+        if (binaryFile.canExecute()) {
+            System.out.println("JSAccessor: found " + binary);
+            // Get the absolute path, not the canonical path in case
+            // npm is a symbolic link, which it is under Darwin.
+            return binaryFile.getAbsolutePath();
+        }
+
+        // Fail, might as well return name of the binary and hope for the best.
+        return binaryName;
+    }
+
+
     /** Return true if the ptII tree was checked out with svn
      *  read/write access.  Return false if the ptII tree was not
      *  checked out of svn or if the ptII tree was checked out with
@@ -1367,51 +1475,29 @@ public class JSAccessor extends JavaScript {
 
                 if (!FileUtilities.inPath("node" + executableExtension)
 		    || !FileUtilities.inPath("npm" + commandExtension)) {
-                    String nodeVersion = "$CLASSPATH/vendors/node/node-v8.4.0";
-                    String nodeBinary = "";
-                    String npmBinary = "";
-                    if (osName != null) {
-                        if (osName.startsWith("Linux")) {
-                            if (osArch.indexOf(32) != -1) {
-                                nodeBinary = nodeVersion + "-linux-x32/bin/node";
-                                npmBinary = nodeVersion + "-linux-x32/bin/npm";
-                            } else {
-                                nodeBinary = nodeVersion + "-linux-x64/bin/node";
-                                npmBinary = nodeVersion + "-linux-x64/bin/npm";
-                            }
-                        } else if (osName.startsWith("Mac")) {
-                            nodeBinary = nodeVersion + "-darwin-x64/bin/node";
-                            npmBinary = nodeVersion + "-darwin-x64/bin/npm";
-                        } else if (osName.startsWith("Windows")) {
-                            if (osArch.indexOf(32) != -1) {
-                                nodeBinary = nodeVersion + "-win-x32/bin/node.exe";
-                                npmBinary = nodeVersion + "-win-x32/bin/npm.exe";
-                            } else {
-                                nodeBinary = nodeVersion + "-win-x64/bin/node.exe";
-                                npmBinary = nodeVersion + "-win-x64/bin/npm.exe";
 
-                            }
-                            nodeBinary = nodeBinary.replace('/', File.separatorChar);
-                        }
-                        File nodeBinaryFile = FileUtilities.nameToFile(nodeBinary, null);
-                        if (!nodeBinaryFile.canExecute()) {
-                            System.out.println("Could not find the \"node\" executable in your path as \"" + nodeBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
-                            MessageHandler.status("Could not find \"node\". Accessor docs will not be generated.");
-                            return -2;
-                        }
-                        File npmBinaryFile = FileUtilities.nameToFile(npmBinary, null);
-                        if (!npmBinaryFile.canExecute()) {
-                            System.out.println("Could not find the \"npm\" executable in your path as \"" + npmBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
-                            MessageHandler.status("Could not find \"npm\". Accessor docs will not be generated.");
-                            return -2;
-                        }
-                        // Attempt to add the directory where node is found.
-                        System.out.println("JSAccessor: Adding " + nodeBinaryFile.getParent() + " to the path of the ant process.");
-                        antExec.appendToPath(nodeBinaryFile.getParent());
+                    String nodeBinary = JSAccessor.nodeBinary();
+                    File nodeBinaryFile = FileUtilities.nameToFile(nodeBinary, null);
+                    if (!nodeBinaryFile.canExecute()) {
+                        System.out.println("Could not find the \"node\" executable in your path as \"" + nodeBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
+                        MessageHandler.status("Could not find \"node\". Accessor docs will not be generated.");
+                        return -2;
                     }
+
+                    String npmBinary = JSAccessor.npmBinary();
+                    File npmBinaryFile = FileUtilities.nameToFile(npmBinary, null);
+                    if (!npmBinaryFile.canExecute()) {
+                        System.out.println("Could not find the \"npm\" executable in your path as \"" + npmBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
+                        MessageHandler.status("Could not find \"npm\". Accessor docs will not be generated.");
+                        return -2;
+                    }
+
+                    // Attempt to add the directory where node is found.
+                    System.out.println("JSAccessor: Adding " + nodeBinaryFile.getParent() + " to the path of the ant process.");
+                    antExec.appendToPath(nodeBinaryFile.getParent());
                 }
 
-		System.out.println("JSAccessor.java: About to execute " + antPath + " ptdoc");
+                System.out.println("JSAccessor.java: About to execute " + antPath + " ptdoc");
                 execCommands.add(antPath + " ptdoc");
 
                 antExec.setCommands(execCommands);

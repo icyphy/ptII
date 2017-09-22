@@ -252,6 +252,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	com/jhlabs/jhlabs.jar \
 	doc/codeDocCapeCode.jar \
 	edu/umich/eecs/april/april.jar \
+	lib/svgSalamander.jar \
 	org/json/json.jar \
 	org/terraswarm/accessor/accessor.jar \
 	org/terraswarm/accessor/accessors/accessors.jar \
