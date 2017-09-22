@@ -9,7 +9,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 80.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 865, 634}, maximized=false}">
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Chat Client">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 20.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,13 +37,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This application interacts with a server by&#10;sending messages and displaying&#10;any messages it receives in return.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 45.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the Server model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -76,11 +76,42 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 330.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the SecureClient model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 295.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
         </property>
     </property>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 225.0]">
         </property>
     </entity>
     <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
@@ -148,7 +179,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 215.0]">
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8181">
         </property>
@@ -180,13 +211,9 @@
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 336, 646, 439}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive dialog on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 225.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=40.0,y=160.0}, tail={id=&quot;WebSocketClient.received&quot;,x=380.0,y=150.0}, points={-15.0,160.0,-15.0,110.0,480.0,110.0,480.0,160.0} } }">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebSocketClient.toSend&quot;,x=380.0,y=150.0}, tail={id=&quot;InteractiveDialog.output&quot;,x=200.0,y=160.0}, points={} } }">
         </property>
@@ -195,10 +222,14 @@
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveDialog.input&quot;,x=200.0,y=160.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=40.0,y=160.0}, points={} } }">
         </property>
     </relation>
-    <link port="MicrostepDelay.input" relation="relation3"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[45.0, 140.0]">
+        </vertex>
+    </relation>
+    <link port="MicrostepDelay.input" relation="relation4"/>
     <link port="MicrostepDelay.output" relation="relation2"/>
     <link port="WebSocketClient.toSend" relation="relation"/>
-    <link port="WebSocketClient.received" relation="relation3"/>
+    <link port="WebSocketClient.received" relation="relation4"/>
     <link port="InteractiveDialog.input" relation="relation2"/>
     <link port="InteractiveDialog.output" relation="relation"/>
 </entity>

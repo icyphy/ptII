@@ -35,6 +35,8 @@ import java.nio.file.Paths;
 import java.net.URI;
 import java.util.List;
 
+import org.terraswarm.accessor.JSAccessor;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
@@ -309,8 +311,20 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 directory = directory.getParentFile();
             }
             if (missingModules) {
+                String npm = "npm";
+                try {
+                    npm = JSAccessor.npmBinary();
+                    // If we got back a path, then add the parent to the path.
+                    if (npm.indexOf('/') != -1 || npm.indexOf('\\') != -1) {
+                        File npmBinary = new File(npm);
+                        System.out.println("Added parent of " + npm + " to the path");
+                        _executeCommands.appendToPath(npmBinary.getParent());
+                    }
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex, "Failed to find \"npm\".");
+                }
                 String command = CodeGeneratorUtilities
-                    .substitute("npm install @modules@",
+                    .substitute(npm + " install @modules@",
                                 _substituteMap);
                 commands.add(command);
             }
