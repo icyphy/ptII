@@ -187,6 +187,18 @@ public class FileUtilities {
         //                           + currentRelativePath.toAbsolutePath());
         // }
 
+        if (Files.isSymbolicLink(newLink)) {
+            if (Files.isSameFile(target, Files.readSymbolicLink(newLink))) {
+                System.out.println("FileUtilities.java: createLink(): " + target
+                                   + " and " + Files.readSymbolicLink(newLink)
+                                   + " are the same.");
+                return;
+            }
+            System.out.println("FileUtilities.java: createLink(): " + target
+                               + " and " + Files.readSymbolicLink(newLink)
+                               + " are not the same.");
+        }
+
         boolean moveBack = false;
         if (Files.isReadable(newLink)) {
             try {
@@ -204,7 +216,7 @@ public class FileUtilities {
         try {
             Files.createSymbolicLink(newLink, target);
         } catch (IOException ex) {
-            String message = "Failed to create symbolic link or hard link from "
+            String message = "Failed to create symbolic link from "
                 + newLink + " to " + target + ": " + ex;
             if (moveBack) {
                 try {
@@ -224,7 +236,7 @@ public class FileUtilities {
                 // System.out.println("Creating link from " + newLink + " to " + temporary);
                 Files.createLink(newLink, target);
             } catch (Throwable ex3) {
-                String message = "Failed to create symbolic link or hard link from "
+                String message = "Failed to create a hard link from "
                     + newLink + " to " + target + ": " + ex3;
 
                 if (moveBack) {

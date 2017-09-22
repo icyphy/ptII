@@ -1303,11 +1303,11 @@ public class JSAccessor extends JavaScript {
                 npmBinary = nodeVersion + "-darwin-x64/bin/npm";
             } else if (osName.startsWith("Windows")) {
                 if (osArch.indexOf(32) != -1) {
-                    nodeBinary = nodeVersion + "-win-x32/bin/node.exe";
-                    npmBinary = nodeVersion + "-win-x32/bin/npm.cmd";
+                    nodeBinary = nodeVersion + "-win-x32/node.exe";
+                    npmBinary = nodeVersion + "-win-x32/npm.cmd";
                 } else {
-                    nodeBinary = nodeVersion + "-win-x64/bin/node.exe";
-                    npmBinary = nodeVersion + "-win-x64/bin/npm.cmd";
+                    nodeBinary = nodeVersion + "-win-x64/node.exe";
+                    npmBinary = nodeVersion + "-win-x64/npm.cmd";
                     
                 }
                 nodeBinary = nodeBinary.replace('/', File.separatorChar);
@@ -1325,10 +1325,23 @@ public class JSAccessor extends JavaScript {
             System.out.println("JSAccessor: found " + binary);
             // Get the absolute path, not the canonical path in case
             // npm is a symbolic link, which it is under Darwin.
+            System.out.println("JSAccessor _nodeOrNpmBinary(" + binaryName + ")"
+                               + " returning " + binaryFile.getAbsolutePath());
             return binaryFile.getAbsolutePath();
         }
 
-        // Fail, might as well return name of the binary and hope for the best.
+        // Windows seems to fail to report that files 
+        if (osName != null && osName.startsWith("Windows")) {
+            // Fail, might as well return name of the binary and hope for the best.
+            String returnValue = "cmd /c " + binaryFile.getAbsolutePath().replace("%5c", "\\");
+            // System.out.println("JSAccessor _nodeOrNpmBinary(" + binaryName + ")"
+            //                    + "suggests " + binary
+            //                    + ". However, " + binaryFile + "could not be executed"
+            //                    + " binaryFile.exists(): " + binaryFile.exists()
+            //                    + ". Returning " + returnValue);
+
+            return returnValue;
+        }
         return binaryName;
     }
 
@@ -1471,6 +1484,13 @@ public class JSAccessor extends JavaScript {
 		    System.out.println("JSAccessor: ant was found in the path: " + System.getenv("PATH"));
 		}
 
+                System.out.println("JSAccessor.java: node inPath: "
+                                   + !FileUtilities.inPath("node" + executableExtension)
+                                   + ", npm inPath: "
+                                   + !FileUtilities.inPath("npm" + commandExtension)
+                                   + ", node: " + "node" + executableExtension
+                                   + ", npm: " + "npm" + commandExtension
+                                   );
 
                 if (!FileUtilities.inPath("node" + executableExtension)
 		    || !FileUtilities.inPath("npm" + commandExtension)) {
