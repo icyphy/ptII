@@ -1311,7 +1311,7 @@ public class JSAccessor extends JavaScript {
                     
                 }
                 nodeBinary = nodeBinary.replace('/', File.separatorChar);
-                npmBinary = nodeBinary.replace('/', File.separatorChar);
+                npmBinary = npmBinary.replace('/', File.separatorChar);
             }
         }
 
@@ -1427,7 +1427,6 @@ public class JSAccessor extends JavaScript {
                     }
                 }
                 String osName = StringUtilities.getProperty("os.name");
-                String osArch = StringUtilities.getProperty("os.arch");
 		String commandExtension = "";
 		String executableExtension = "";
 		if (osName != null && osName.startsWith("Windows")) {
@@ -1479,7 +1478,7 @@ public class JSAccessor extends JavaScript {
                     String nodeBinary = JSAccessor.nodeBinary();
                     File nodeBinaryFile = FileUtilities.nameToFile(nodeBinary, null);
                     if (!nodeBinaryFile.canExecute()) {
-                        System.out.println("Could not find the \"node\" executable in your path as \"" + nodeBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
+                        System.out.println("Could not find the \"node\" executable in your path as \"" + nodeBinaryFile + "\".  To build the accessor docs, please install node from https://nodejs.org/");
                         MessageHandler.status("Could not find \"node\". Accessor docs will not be generated.");
                         return -2;
                     }
@@ -1487,7 +1486,7 @@ public class JSAccessor extends JavaScript {
                     String npmBinary = JSAccessor.npmBinary();
                     File npmBinaryFile = FileUtilities.nameToFile(npmBinary, null);
                     if (!npmBinaryFile.canExecute()) {
-                        System.out.println("Could not find the \"npm\" executable in your path as \"" + npmBinaryFile + "\".  To build the accessor docs, please install ant from https://nodejs.org/");
+                        System.out.println("Could not find the \"npm\" executable in your path as \"" + npmBinaryFile + "\".  To build the accessor docs, please install node from https://nodejs.org/");
                         MessageHandler.status("Could not find \"npm\". Accessor docs will not be generated.");
                         return -2;
                     }
