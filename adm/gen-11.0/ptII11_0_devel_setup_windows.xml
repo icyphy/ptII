@@ -887,7 +887,6 @@ The Ptiny pack is required.
 	    <file src="src/ptII11.0.devel/plugin.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/pom.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/ptdb" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII11.0.devel/pt-modules" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/ptolemy" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/ptserver" targetdir="$INSTALL_PATH"/>
