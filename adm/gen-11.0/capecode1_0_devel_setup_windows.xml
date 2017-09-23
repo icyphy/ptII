@@ -160,6 +160,7 @@
            </executable>
 
 <!--/MacOSInclude-->
+<!--/LinuxInclude -->
 
             <file src="../dists/ptII11.0.devel/capecode.exe" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/doc/img/capecode.ico"
@@ -167,6 +168,7 @@
 	    <!-- opencv_java320.dll is 35Mb! So, we only ship it with the Windows installer. -->
             <file src="../dists/ptII11.0.devel/lib/opencv_java320.dll" targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-win-x64" targetdir="$INSTALL_PATH/vendors/node"/>
+<!--LinuxInclude -->
 <!--MacOSInclude-->
 
 <!-- Mac: The makefile substitutes a directive to include the darwin Node directory for the next line. -->
@@ -175,6 +177,19 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/lib/linux-x86-64-rhel/libgdp.0.8.so"
                   targetdir="$INSTALL_PATH/lib/linux-x86-64-rhel"/>
+
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/diva.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/ptliblicenses.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/matlab.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/kieler.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+
+
+<!-- No need to include the jar files under Linux -->
+<!--/LinuxInclude -->
 
 	    <!-- The next line gets substituted for the mac by the makefile. -->
 	    <!-- CapeCode.app -->
@@ -204,20 +219,12 @@
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../dists/ptII11.0.devel/jar_dist/doc/docConfig.jar"
                   targetdir="$INSTALL_PATH/doc"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/diva.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/ptliblicenses.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/domains.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/matlab/matlab.jar"
                   targetdir="$INSTALL_PATH/ptolemy/matlab"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/matlab/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/matlab/demo"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/matlab.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/kieler.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/layout/layout.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/layout"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/vergil.jar"
@@ -228,18 +235,12 @@
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../dists/ptII11.0.devel/jar_dist/doc/docConfig.jar"
                   targetdir="$INSTALL_PATH/doc"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/diva.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/ptliblicenses.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/domains.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/matlab/matlab.jar"
                   targetdir="$INSTALL_PATH/ptolemy/matlab"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/matlab/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/matlab/demo"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/matlab.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/com/cureos/cureos.jar"
                   targetdir="$INSTALL_PATH/com/cureos"/>
             <file src="../dists/ptII11.0.devel/jar_dist/com/jhlabs/jhlabs.jar"
@@ -282,6 +283,7 @@
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
+<!--LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.mail.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/nrjavaserial-3.11.0.devel.jar"
@@ -353,12 +355,16 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-api-1.7.13.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/colt/colt.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/ptcolt.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+
+<!--/LinuxInclude -->
+
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/colt/colt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt"/>
+
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/gui/jnlp/CapeCodeApplication.jar"
@@ -373,16 +379,25 @@
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/web"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/pdfrenderer/pdfrenderer.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/pdfrenderer"/>
+
+<!--LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/lib/PDFRenderer.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+<!--/LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/gui/syntax/syntax.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/gui/syntax"/>
+<!--LinuxInclude -->
+
             <file src="../dists/ptII11.0.devel/jar_dist/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+
+<!--/LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
+<!--LinuxInclude -->
+
             <file src="../dists/ptII11.0.devel/jar_dist/lib/gdp-0.8-0.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
@@ -399,6 +414,7 @@
 		  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/smackx.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
+<!--/LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/opencv/opencv.jar"
 		  targetdir="$INSTALL_PATH/org/ptolemy/opencv"/>
             <file src="../dists/ptII11.0.devel/jar_dist/org/terraswarm/accessor/accessors/accessors.jar"
@@ -407,11 +423,14 @@
 		  targetdir="$INSTALL_PATH/ptolemy/actor/lib/conversions/json"/>
    	    <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/cg/cgAccessor.jar"
 		  targetdir="$INSTALL_PATH/ptolemy/cg"/>
+<!--LinuxInclude -->
 
 <!--/MacOSInclude-->
+<!--/LinuxInclude -->
             <file src="../dists/ptII11.0.devel/ptolemy/matlab/ptmatlab.dll"
                   targetdir="$INSTALL_PATH/ptolemy/matlab"
 		  os="windows"/>
+<!--LinuxInclude -->
 <!--MacOSInclude-->
 
             <!-- We can't get these files from jar files -->
@@ -425,8 +444,10 @@
         <pack name="Docs" required="no">
             <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
 <!--/MacOSInclude-->
+<!--/LinuxInclude -->
             <file src="../dists/ptII11.0.devel/ptbook.exe" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+<!--LinuxInclude -->
 <!--MacOSInclude-->
             <file src="../dists/ptII11.0.devel/doc/books/systems/PtolemyII_DigitalV1_02.pdf" targetdir="$INSTALL_PATH/doc/books/systems/"/>
 	    <!-- Java 1.7 and later produces html that is not properly rendered by JScrollPane, so we can't use
@@ -442,13 +463,15 @@
         </pack>
 
 <!--/MacOSInclude-->
+<!--/LinuxInclude -->
         <pack name="JRE" required="no">
             <description>Java Runtime Environment (JRE) v1.8.0_51.  This JRE includes JAI, Java 3D, Joystick,  JMF, and Rxtx.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).  Install the JRE if you want to use the included optional packages.  Alternatively, install optionall packages by hand.  If you plan on recompiling Ptolemy II, you will need a JDK, not a JRE.</description>
             <file src="jre" targetdir="$INSTALL_PATH"/>
         </pack>
+<!--LinuxInclude -->
 <!--MacOSInclude-->
 
-        <pack name="Sources" required="no">
+        <pack name="Sources" required="yes">
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
