@@ -1296,6 +1296,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile
 	#
+	# Fix up ptolemy/actor/gui/jnlp/makefile
+	egrep -v "ViptosApplication.jar" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/jnlp/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/jnlp/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/jnlp/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/jnlp/makefile
+	#
 	# Fix up ptolemy/actor/gui/test/makefile
 	egrep -v "HTMLAbout.tcl|PtolemyApplication.tcl" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/test/makefile \
