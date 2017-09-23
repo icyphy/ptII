@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.85351562499994, 236.58836286547304}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model writes a sequence of numeric values into a key-value store web service.&#10;It reads the values back at half the rate, so you should see every other value.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model writes a sequence of numeric values into a key-value store web service&#10;and reads them back.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, -5.0]">
         </property>
