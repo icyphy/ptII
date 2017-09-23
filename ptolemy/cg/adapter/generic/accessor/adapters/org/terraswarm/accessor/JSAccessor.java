@@ -76,7 +76,8 @@ public class JSAccessor
 
         // If the script has local modifications, then emit the contents of the script.
         // This code is needed for the Mutable accessors.
-        if (actor.script.isOverridden()) {
+        boolean isOverridden = actor.getAttribute("_localChanges") != null;
+        if (isOverridden) {
             code.append(_INDENT1 + "// The script has local modifications, so it is being emitted." + _eol);
             code.append(super.generateAccessor());
             return code.toString();
