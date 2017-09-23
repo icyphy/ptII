@@ -366,11 +366,6 @@ node:
 	if [ ! -d node ]; then \
 		mkdir node; \
 	fi
-NODE_WIN = node/node-v$(NODE_VERSION)-win-x64.zip
-$(NODE_WIN): node
-	if [ ! -f "$@" ]; then \
-		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
-	fi
 
 NODE_DARWIN = node/node-v$(NODE_VERSION)-darwin-x64.tar.gz
 $(NODE_DARWIN): node
@@ -378,11 +373,24 @@ $(NODE_DARWIN): node
 		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.gz); \
 	fi
 
+NODE_LINUX = node/node-v$(NODE_VERSION)-linux-x64.tar.xz
+$(NODE_LINUX): node
+	if [ ! -f "$@" ]; then \
+		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz); \
+	fi
+
+NODE_WIN = node/node-v$(NODE_VERSION)-win-x64.zip
+$(NODE_WIN): node
+	if [ ! -f "$@" ]; then \
+		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
+	fi
+
+
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST) 
-$(PTIIDIST): $(OPENCV_DLL) $(NODE_WIN) $(NODE_DARWIN)
+$(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -416,8 +424,9 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_WIN) $(NODE_DARWIN)
 	cp $(GENDIR)/$(OPENCV_DLL) $(PTIIDIST)/lib
 	# Set up node directories
 	mkdir -p $(PTIIDIST)/vendors/node
-	(cd $(PTIIDIST)/vendors/node; unzip $(GENDIR)/$(NODE_WIN))
 	(cd $(PTIIDIST)/vendors/node; tar -zxf $(GENDIR)/$(NODE_DARWIN))
+	(cd $(PTIIDIST)/vendors/node; tar -Jxf $(GENDIR)/$(NODE_LINUX))
+	(cd $(PTIIDIST)/vendors/node; unzip $(GENDIR)/$(NODE_WIN))
 	# Remove the duktape binaries.
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 	#
@@ -3830,12 +3839,12 @@ $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP
 	    > $@
 
 capecode_setup_linux: $(CAPECODE_SETUP_LINUX).xml
-$(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk $(CAPECODE_APP) #makefile
+$(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk $(CAPECODE_APP) makefile
 	awk -f linuxInclude.awk $(CAPECODE_SETUP).xml | \
-	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
-	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
-	    -e 's@os="windows"@os="mac"@' \
+	    sed -e 's@ptmatlab.dll@libptmatlab.b@' \
+	    -e 's@condition="capeCodePackSelected" id="startApplicationPanelCapeCode"@id="startApplicationPanelConfigure"@' \
+	    -e 's@os="windows"@os="macc"@' \
+	    -e 's@<!-- MacNodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-linux-x64" targetdir="$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    > $@
 
 PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
@@ -3902,6 +3911,7 @@ $(CAPECODE_SETUP_LINUX).jar: $(CAPECODE_SETUP_LINUX).xml $(PTIIDIST)/jar_dist $(
 
 capecode_setup_linux_tar: $(CAPECODE_SETUP_LINUX).tar.gz
 $(CAPECODE_SETUP_LINUX).tar.gz: $(CAPECODE_SETUP_LINUX).jar
+	chmod a+x $<
 	tar -zcf $@ $<
 
 
