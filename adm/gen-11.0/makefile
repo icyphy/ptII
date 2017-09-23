@@ -3834,8 +3834,10 @@ $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- MacNodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-darwin-x64" targetdir="$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
+	    -e '<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
 
 capecode_setup_linux: $(CAPECODE_SETUP_LINUX).xml
@@ -3843,8 +3845,9 @@ $(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk $(CAPECODE_A
 	awk -f linuxInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.b@' \
 	    -e 's@condition="capeCodePackSelected" id="startApplicationPanelCapeCode"@id="startApplicationPanelConfigure"@' \
-	    -e 's@os="windows"@os="macc"@' \
 	    -e 's@<!-- MacNodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-linux-x64" targetdir="$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@os="windows"@os="unix"@' \
+	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
 
 PTINY_APP = $(PTIIDIST)/bin/Ptiny.app

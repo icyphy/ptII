@@ -2,14 +2,45 @@
 
   <!-- Linux -->
   <panel id="startApplicationPanelConfigure">
+    <createForPack name="CapeCode" />
     <field type="check" variable="startConfigure">
       <spec txt="Would you like to build and start CapeCode next?" true="true" false="false"
 	    id="startConfigureCheck"
 	    set="true"/>
     </field>
+    <field type="staticText"
+	   txt="If you select no, then see $INSTALL_PATH/doc/install.htm, but basically do"
+	   id="unix.line1"/>
+    <field type="staticText"
+	   txt="export PTII=$INSTALL_PATH"
+	   id="unix.line2"/>
+    <field type="staticText"
+	   txt="cd $PTII"
+	   id="unix.line3"/>
+    <field type="staticText"
+	   txt="./configure"
+	   id="unix.line4"/>
+    <field type="staticText"
+	   txt="$PTII/bin/ant"
+	   id="unix.line5"/>
+    <field type="staticText"
+	   txt="$PTII/bin/capecode"
+	   conditionid="capeCodePackSelected"
+	   id="unix.line6.capecode"/>
+    <field type="staticText"
+	   txt="If you say yes, then after the installer successfully builds and exits, to run CapeCode again, do:"
+	   id="unix.line6"/>
+    <field type="staticText"
+	   txt="export PTII=$INSTALL_PATH"
+	   id="unix.line7"/>
+    <field type="staticText"
+	   txt="$PTII/bin/capecode"
+	   conditionid="capeCodePackSelected"
+	   id="unix.line7.capecode"/>
   </panel>
 
   <panel id="startApplicationPanelCapeCode">
+    <createForPack name="CapeCode" />
     <!-- createForUnselectedPack name="Full" / -->
     <!-- createForUnselectedPack name="Ptiny" / -->
     <os family="mac/"/>
