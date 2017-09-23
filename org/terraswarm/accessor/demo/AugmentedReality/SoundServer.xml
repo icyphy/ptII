@@ -16,14 +16,114 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0395980314008224">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{456.99775886535656, 250.43066406250003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{464.5, 261.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model starts a web socket server and, upon receiving&#10;messages, plays a sound. In addition, it publishes to a key-value&#10;store an accessor that can be instantiated to access this service.&#10;Finally, it displays an AR tag whose ID matches the key in the key-value&#10;store so that an application can select the accessor based on recognizing&#10;this tag in its environment. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace the IP address in the accessor with the IP&#10;address of the host running this model:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 305.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Display an AR tag.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 260.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, run the companion&#10;KeyValueStoreServer.xml model, which provides an&#10;implementation of the key-value store on the&#10;local host, by clicking on the link below:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 135.0]">
+        </property>
+    </property>
+    <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServer Model">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 205.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An augmented reality&#10;demo using this service&#10;is here:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 240.0]">
+        </property>
+    </property>
+    <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityKeyValueStore">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 295.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityKeyValueStore.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
     </property>
     <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
         <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="bell.wav">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 180.0]">
         </property>
     </entity>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -91,7 +191,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 180.0]">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,32 +212,24 @@
             </property>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 174, 347, 174}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 130]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 95}">
-        </property>
-    </entity>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="tag36_11_00105.png">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="tag36_11_00586.png">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 275.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 295}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 275.0]">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 600, 644}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 601, 644}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 600]">
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[873, 829]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{545, 295}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 275.0]">
         </property>
     </entity>
     <entity name="IPAddress" class="org.terraswarm.accessor.JSAccessor">
@@ -167,7 +259,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 400}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 380.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -175,14 +267,6 @@
         <port name="IPAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-    </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={732, 126, 615, 675}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[615, 631]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 400.0]">
-        </property>
     </entity>
     <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
         <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="128.32.47.81">
@@ -192,7 +276,7 @@
         <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 380.0]">
         </property>
     </entity>
     <entity name="GetResource" class="org.terraswarm.accessor.JSAccessor">
@@ -236,7 +320,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 455.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 435.0]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -298,11 +382,11 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="105">
+        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="586">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{690, 325}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 360.0]">
         </property>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -329,32 +413,26 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+    <entity name="Errors" class="ptolemy.actor.lib.gui.TimedDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 425.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[355.0, 180.0]">
-        </vertex>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{270.0, 295.0}">
+        <vertex name="vertex1" value="[180.0, 275.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[420.0, 400.0]">
+        <vertex name="vertex1" value="[300.0, 380.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -362,21 +440,21 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{615.0, 400.0}">
+        <vertex name="vertex1" value="[525.0, 380.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ClipPlayer.trigger" relation="relation2"/>
     <link port="WebSocketServer.received" relation="relation2"/>
-    <link port="Display.input" relation="relation2"/>
     <link port="ImageReader.output" relation="relation3"/>
     <link port="ImageReader.trigger" relation="relation4"/>
     <link port="SingleEvent.output" relation="relation4"/>
     <link port="ImageDisplay.input" relation="relation3"/>
     <link port="IPAddress.trigger" relation="relation4"/>
     <link port="IPAddress.IPAddress" relation="relation5"/>
-    <link port="Display2.input" relation="relation7"/>
     <link port="StringReplace.replacement" relation="relation5"/>
     <link port="StringReplace.stringToEdit" relation="relation"/>
     <link port="StringReplace.output" relation="relation7"/>
@@ -385,5 +463,5 @@
     <link port="KeyValueStore.error" relation="relation6"/>
     <link port="KeyValueStore.value" relation="relation7"/>
     <link port="KeyValueStore.trigger" relation="relation7"/>
-    <link port="TimedDisplay.input" relation="relation6"/>
+    <link port="Errors.input" relation="relation6"/>
 </entity>

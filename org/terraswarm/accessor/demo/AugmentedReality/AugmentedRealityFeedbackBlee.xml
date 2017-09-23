@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={489, 23, 1148, 714}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 23, 1148, 714}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[914, 604]">
     </property>
@@ -50,7 +50,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this demo, you need to find the name or IP address of a MQTT broker that is publishing&#10;topics.  One way to find local BLE resources is to use the Summon app on you iOS or Android device.&#10;Once you have an IP address of a MQTT broker, add it to ~/.ptKeystore/brokerHostFile.&#10;&#10;If you don't have a local MQTT broker, then try iot.eclipse.org&#10;&#10;Click here to go to https://github.com/lab11/summon&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 405.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 410.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://github.com/lab11/summon#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
