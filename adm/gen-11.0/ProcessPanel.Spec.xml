@@ -4,11 +4,26 @@
 		   xmlns:izpack="http://izpack.org/schema/processing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		   xsi:schemaLocation="http://izpack.org/schema/processing http://izpack.org/schema/5.0/izpack-processing-5.0.xsd">
 
+  <logfiledir>$INSTALL_PATH</logfiledir>
+
   <!-- Create @accessor-hosts symbolic link. -->
   <job name="setup">
     <executeclass name="IzpackSetup">
       <arg>$INSTALL_PATH</arg>
     </executeclass>
+  </job>
+
+  <job name="Build" condition="startConfigure">
+      <executefile name="/bin/sh"
+		   workingDir="$INSTALL_PATH">
+	<env>PTII=$INSTALL_PATH</env>.
+	<arg>configure</arg>
+      </executefile>
+      <executefile name="$INSTALL_PATH/ant/bin/ant"
+		   workingDir="$INSTALL_PATH"/>
+      <executefile name="$INSTALL_PATH/bin/capecode"
+		   workingDir="$INSTALL_PATH"/>
+
   </job>
 
   <job name="Execute CapeCode.app" condition="startCapeCode">

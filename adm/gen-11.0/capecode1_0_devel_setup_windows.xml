@@ -31,6 +31,10 @@
 	<name>startCapeCode</name>
 	<value>true</value>
       </condition>
+      <condition type="variable" id="startConfigure">
+	<name>startConfigure</name>
+	<value>true</value>
+      </condition>
       <condition type="variable" id="startPtiny">
 	<name>startPtiny</name>
 	<value>true</value>
@@ -122,7 +126,7 @@
         <panel classname="InstallPanel"/>
         <panel classname="ShortcutPanel" condition="showShortCutPanel"/>
  	<panel classname="UserInputPanel" condition="capeCodePackSelected" id="startApplicationPanelCapeCode"/>
-        <panel classname="ProcessPanel" condition="startCapeCode|startPtiny|startVergil"/>
+        <panel classname="ProcessPanel" condition="startConfigure|startCapeCode|startPtiny|startVergil"/>
         <!-- panel classname="SimpleFinishPanel"/ -->
         <panel classname="FinishPanel"/>
     </panels>
@@ -150,8 +154,9 @@
 
            <file src="src/ptII11.0.devel/ant" targetdir="$INSTALL_PATH"/>
            <executable stage="never">
+             <fileset targetdir="$INSTALL_PATH" includes="configure"/>
              <fileset targetdir="$INSTALL_PATH/ant/bin" includes="ant,antRun,antRun.pl,complete-ant-cmd.pl,runant.pl,runant.py"/>
-             <fileset targetdir="$INSTALL_PATH/bin" includes="ant,node,npm"/>
+             <fileset targetdir="$INSTALL_PATH/bin" includes="ant,capecode,capecode.bat,comm.policy,comm.policy.in,convertToLazy.bat,cyphysim,homer,homer.bat,hyvisual,IncrementalFMU_wrap.dll,libfmipp.dll,macContents,makeapp,makefile,mkjnlp,mkl4j,mkosgi,mkptdemo,mkptlivelinkdemo,mkpttest,node,npm,persist,policy.all,ptcodegen,ptcodegen.bat,ptcygpath,ptinvoke,ptinvoke.in,ptjunit,ptweb,ptweb.bat,reloadAllAccessors,sandbox.policy,startjini,updateFmu,vergil,viptos"/>
            </executable>
 
 <!--/MacOSInclude-->

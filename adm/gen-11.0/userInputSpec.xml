@@ -1,8 +1,19 @@
 <izpack:userinput version="5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:izpack="http://izpack.org/schema/userinput" xsi:schemaLocation="http://izpack.org/schema/userinput http://izpack.org/schema/5.0/izpack-userinput-5.0.xsd">
 
+  <!-- Linux -->
+  <panel id="startApplicationPanelConfigure">
+    <field type="check" variable="startConfigure">
+      <spec txt="Would you like to build and start CapeCode next?" true="true" false="false"
+	    id="startConfigureCheck"
+	    set="true"/>
+    </field>
+  </panel>
+
   <panel id="startApplicationPanelCapeCode">
     <!-- createForUnselectedPack name="Full" / -->
     <!-- createForUnselectedPack name="Ptiny" / -->
+    <os family="mac/"/>
+    <os family="windows/"/>
     <field type="check" variable="startCapeCode">
       <spec txt="Would you like to start CapeCode next?" true="true" false="false"
 	    id="startCapeCodeCheck"
@@ -12,6 +23,8 @@
 
   <panel id="startApplicationPanelFull">
     <createForPack name="Full" />
+    <os family="mac/"/>
+    <os family="windows"/>
     <field type="check" variable="startVergil">
       <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
 	    id="startVergilCheck"
@@ -21,6 +34,8 @@
 
   <panel id="startApplicationPanelPtiny">
     <!-- createForUnselectedPack name="Full" / -->
+    <os family="mac/"/>
+    <os family="windows"/>
     <field type="check" variable="startPtiny">
       <spec txt="Would you like to start Ptiny Ptolemy next?" true="true" false="false"
 	    id="startPtinyCheck"
