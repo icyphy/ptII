@@ -3837,7 +3837,7 @@ $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP
 	    -e 's@<!-- MacNodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-darwin-x64" targetdir="$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
-	    -e '<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
+	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
 
 capecode_setup_linux: $(CAPECODE_SETUP_LINUX).xml
