@@ -123,7 +123,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 340.0]">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8180">
         </property>
@@ -268,7 +268,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 350.0]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -331,18 +331,18 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[270.0, 330.0]">
+        <vertex name="vertex1" value="[235.0, 350.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.request&quot;,x=350.0,y=300.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={} },{ head={id=&quot;Display.input&quot;,x=320.0,y=245.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={270.0,245.0} },{ head={id=&quot;WebServer.request&quot;,x=155.0,y=290.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;REST.trigger&quot;,x=270.0,y=110.0}, tail={id=&quot;TestSpontaneous.output&quot;,x=75.0,y=120.0}, points={} } }">
         </property>
     </relation>
-    <link port="WebServer.response" relation="relation3"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{45.0, 410.0}">
+        </vertex>
+    </relation>
+    <link port="WebServer.response" relation="relation6"/>
     <link port="WebServer.request" relation="relation4"/>
     <link port="REST.error" relation="relation5"/>
     <link port="REST.trigger" relation="relation"/>
@@ -350,7 +350,7 @@
     <link port="Display.input" relation="relation4"/>
     <link port="Display2.input" relation="relation2"/>
     <link port="JavaScript.request" relation="relation4"/>
-    <link port="JavaScript.response" relation="relation3"/>
+    <link port="JavaScript.response" relation="relation6"/>
     <link port="Display3.input" relation="relation5"/>
     <link port="TestSpontaneous.output" relation="relation"/>
 </entity>
