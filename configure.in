@@ -75,11 +75,11 @@ AC_DEFUN([PT_MSG_STATUS],
 
 # Fix permissions on files.
 # If the distribution was in a jar file, then some files might not be executable.
-execFiles=ptolemy/util/test/junit/javachdir
+execFiles="ptolemy/util/test/junit/javachdir configure bin/ant"
 for file in $execFiles
 do
     if test -f $file -a ! -x $file; then
-       PT_MSG_RESULT(Making $file executable.)
+        # PT_MSG_RESULT(Making $file executable.)
         chmod a+x $file
     fi
 done
