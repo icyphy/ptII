@@ -410,6 +410,11 @@ public class JSAccessor extends JavaScript {
                     MessageHandler.status("Checking out the accessors repository.");
                 }
 
+                if (!_printedPtNoNetMessage) {
+                    _printedPtNoNetMessage = true;
+                    System.out.println("JSAccessor: If running svn hangs, then try setting the PT_NO_NET environment variable to skip running svn and jsdoc.");
+                }
+
                 exec.setCommands(execCommands);
 
                 exec.setWaitForLastSubprocess(true);
