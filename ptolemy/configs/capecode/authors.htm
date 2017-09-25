@@ -1,23 +1,49 @@
 <html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<!-- $Id$ -->
-<title>Authors</title>
-<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1>Principal Authors of CapeCode</h1>
-<!-- Please feel free to add yourself. -->
-<ul>
-<li> Christopher Brooks </li>
-<li> Chadlia Jerad </li>
-<li> Beth Latronico </li>
-<li> Edward A. Lee  </li>
-<li> Marten Lohstroh </li>
-</ul>
-<h1>Contributors</h1>
-<p>
-CapeCode is built on top of Ptolemy II, which
-has many <a href="../../../doc/authors.htm">authors and contributors</a>.
-</body>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <!-- $Id$ -->
+    <title>Authors</title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Principal Authors of CapeCode</h1>
+    <!-- Please feel free to add yourself. -->
+    <!-- 
+       To update use svn2cl.  Note that r851 or r852 crash svn2cl
+
+       ~/src/svn2cl-0.14/svn2cl.sh -i -r 853:2164
+       mv ChangeLog ChangeLog.1
+       ~/src/svn2cl-0.14/svn2cl.sh -i -r 1:850
+       mv ChangeLog ChangeLog.0
+       cat ChangeLog.0 ChangeLog.1 > ChangeLog
+    egrep "^2" ChangeLog | awk '{print $3}'  | sort | uniq -c | sort -nr
+    -->
+
+    <ul>
+      <li> Christopher Brooks </li>
+      <li> Chadlia Jerad </li>
+      <li> Hokeun Kim </li>
+      <li> Beth Latronico </li>
+      <li> Edward A. Lee  </li>
+      <li> Marten Lohstroh </li>
+      <li> Victor Nouvellet</li>
+      <li> Matt Weber</li>
+    </ul>
+
+    <h1>Contributors</h1>
+    <p>
+      CapeCode is built on top of Ptolemy II, which
+      has many <a href="../../../doc/authors.htm">authors and contributors</a>.</p>
+
+    <p>Contributors to CapeCode include:</p>
+    <ul>
+      <li>Ilge Akkaya</li>
+      <li>Brad Campbell</li>
+      <li>Long Le</li>
+      <li>Anne Ngu</li>
+      <li>Marcus Pan</li>
+      <li>Eloi Pereira</li>
+      <li>Atul Sandur</li>
+    </ul>
+  </body>
 </html>
