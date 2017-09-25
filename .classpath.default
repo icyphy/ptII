@@ -68,7 +68,7 @@
 	<classpathentry kind="lib" path="lib/saxon8-dom.jar"/>
 	<classpathentry kind="lib" path="lib/saxon8.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.13.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-nop-1.7.13.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.13.jar"/>
 	<classpathentry kind="lib" path="lib/smack.jar"/>
 	<classpathentry kind="lib" path="lib/smackx.jar"/>
 	<classpathentry kind="lib" path="lib/sootclasses.jar"/>
