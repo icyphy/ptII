@@ -12,42 +12,49 @@
         </td>
         <td>
           <h1>CapeCode Tour</h1>
-          <i>The modular Internet of Things, based on Ptolemy II.</i>
+          CapeCode is a development environment for modular Internet of Things applications. It is based on Ptolemy II. Below is a quick tour. Other resources:
           <ul>
-            <li><a href="demonstrations.htm" target="_blank">Demonstrations</a>
+            <li><a href="demonstrations.htm" target="_blank">Complete list of demonstrations</a>
             <li><a href="docs.htm" target="_blank">Documentation</a>
             <li><a href="authors.htm" target="_blank">Authors</a>
             <li><a href="about:copyright" target="_blank">Copyright</a>
           </ul>
 
-          <p>CapeCode ships with a number of models, some of which require hardware or software that is not shipped with CapeCode.</p>
-
-          <p>To run the models in CapeCode,
+          <p>CapeCode includes some models that require hardware or software that is not included. Those models will not run for you, but they can serve as demonstrators for applications you can build. The models shown below should run on most platforms. A more complete list of demonstrations can be found by following the link above.
+          To run the models in CapeCode,
             click on the green triangle in the toolbar. The
             diagrams are fully editable, so feel free to explore.</p>
+        </td>
+      </tr>
+    </table>
 
-          <h2>Camera</h2>
-          <p>Perhaps the most portable models are the models that use the camera.</p>
-          <p>If you do not have a camera, then a default stream of images will be generated.</p>
+          <h2>Camera and Image Processing</h2>
+          <p>Most platforms have a camera and hence will be able to run demos that use the camera. 
+          If you do not have a camera, then a default stream of images will be used.</p>
           <ul>
-            <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>: Cycle through image filters in a random order.
+            <li><a href="../../../org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedback.xml">AugmentedRealityFeedback</a>: Overlay device data/controls on image.</li>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml">ImageAnnotate</a>: Annotate an image with an SVG graphic.</li>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/MotionDetector/MotionDetector.xml">MotionDetector</a>: Detect motion in a video stream.</li>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>: Cycle through a variety of image filters in a random order.
           </ul>
 
-          <h2>REST</h2>
+          <h2>Network Connections</h2>
           <ul>
-            <li>TBD - select the best REST demo
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml">TCPSocketImage</a>: Send a sequence of images over a TCP socket.</li>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml">SecureSocket</a>: Set up a secure socket link.</li>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a>: Simple web server and client.</li>
+
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">Server</a> and
+              <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml">Client</a>: A simple WebSockets-based Chat server and client</li>
           </ul>
 
-          <h2>WebSockets</h2>
-          CapeCode can interface to WebSockets:
+          <h2>User Interface</h2>
           <ul>
-            <li>
-              <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">WebSocket Server</a>,
-              <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml">WebSocket Client</a>: A very simple WebSockets-based Chat server and client
-            </li>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml">UserInterfaceVideo</a>: Route images to a Browser.</li>
+            <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml">UserInterfaceInteractive</a>: Use HTML 5 and a browser for a user interface.</li>
           </ul>
 
-          <h2>Node</h2>
+          <h2>Code Generation for Node</h2>
           <p>The CapeCode Accessor Host can generate Node.js files suitable for the Node Accessor Host</p>
           <ul>
             <li><a href="../../../org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml">NaturalLanguage</a> (using API.AI)
@@ -65,8 +72,5 @@
             Cape Code Model from the menu bar.
           </p>
 
-        </td>
-      </tr>
-    </table>
   </body>
 </html>
