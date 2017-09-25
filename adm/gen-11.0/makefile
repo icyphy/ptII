@@ -3771,18 +3771,18 @@ test_capecode_setup_ant: test/capeCodeTest
 	# $@ Test configure and build.xml.in
 	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		chmod a+x ./configure; PTII=`pwd` ./configure; \
-		PTII=`pwd` ant clean; \
-		PTII=`pwd` ant build test.report reports; \
-		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
+		PTII=`pwd` $PTII/bin/ant clean; \
+		PTII=`pwd` $PTII/bin/ant build test.report reports; \
+		PTII=`pwd` $PTII/bin/ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 	# $@ Run the accessors tests.
 	(cd test/capeCodeTest/org/terraswarm/accessor/accessors/web; echo "DISPLAY=$$DISPLAY"; \
-		find . -name "*.h" -ls; ant clean; ant; find . -name "*.h" -ls; \
-		ant tests.jenkins)
+		find . -name "*.h" -ls; $PTII/bin/ant clean; $PTII/bin/ant; find . -name "*.h" -ls; \
+		$PTII/bin/ant tests.jenkins)
 	# $@ Test build.default.xml first, which does not compile everything.
 	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		cp build.default.xml build.xml; \
-		PTII=`pwd` ant clean; PTII=`pwd` ant; \
-		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
+		PTII=`pwd` $PTII/bin/ant clean; PTII=`pwd` $PTII/bin/ant; \
+		PTII=`pwd` $PTII/bin/ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 
 test_capecode_setup_end: test_capecode_setup_XvfbStop
 
