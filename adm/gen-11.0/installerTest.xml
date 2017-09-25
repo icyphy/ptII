@@ -4,18 +4,28 @@
 <com.izforge.izpack.panels.htmlinfo.HTMLInfoPanel id="HTMLInfoPanel_1"/>
 <com.izforge.izpack.panels.htmllicence.HTMLLicencePanel id="HTMLLicencePanel_2"/>
 <com.izforge.izpack.panels.target.TargetPanel id="TargetPanel_3">
-<installpath>/tmp/cc25a</installpath>
+<installpath>test/installerTest</installpath>
 </com.izforge.izpack.panels.target.TargetPanel>
 <com.izforge.izpack.panels.packs.PacksPanel id="PacksPanel_4">
-<pack index="0" name="CapeCode" selected="true"/>
-<pack index="1" name="Docs" selected="true"/>
-<pack index="2" name="Sources" selected="true"/>
+<pack index="0" name="Ptiny" selected="true"/>
+<pack index="1" name="Full" selected="true"/>
+<pack index="2" name="Docs" selected="true"/>
+<pack index="3" name="FullDocs" selected="true"/>
+<pack index="4" name="JRE" selected="true"/>
+<pack index="5" name="Sources" selected="true"/>
 </com.izforge.izpack.panels.packs.PacksPanel>
 <com.izforge.izpack.panels.summary.SummaryPanel id="SummaryPanel_5"/>
 <com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_6"/>
-<com.izforge.izpack.panels.userinput.UserInputPanel id="startApplicationPanelConfigure">
-<entry key="startConfigure" value="true"/>
+<com.izforge.izpack.panels.shortcut.ShortcutPanel id="ShortcutPanel_7">
+<createMenuShortcuts>false</createMenuShortcuts>
+<programGroup>Ptolemy\ptII11.0.devel</programGroup>
+<createDesktopShortcuts>false</createDesktopShortcuts>
+<createStartupShortcuts>false</createStartupShortcuts>
+<shortcutType>user</shortcutType>
+</com.izforge.izpack.panels.shortcut.ShortcutPanel>
+<com.izforge.izpack.panels.userinput.UserInputPanel id="startApplicationPanelFull">
+<entry key="startVergil" value="true"/>
 </com.izforge.izpack.panels.userinput.UserInputPanel>
-<com.izforge.izpack.panels.process.ProcessPanel id="ProcessPanel_8"/>
-<com.izforge.izpack.panels.finish.FinishPanel id="FinishPanel_9"/>
+<com.izforge.izpack.panels.process.ProcessPanel id="ProcessPanel_11"/>
+<com.izforge.izpack.panels.finish.FinishPanel id="FinishPanel_12"/>
 </AutomatedInstallation>

@@ -13,16 +13,9 @@
 </com.izforge.izpack.panels.packs.PacksPanel>
 <com.izforge.izpack.panels.summary.SummaryPanel id="SummaryPanel_5"/>
 <com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_6"/>
-<com.izforge.izpack.panels.shortcut.ShortcutPanel id="ShortcutPanel_7">
-<createMenuShortcuts>false</createMenuShortcuts>
-<programGroup>Ptolemy\ptII11.0.devel</programGroup>
-<createDesktopShortcuts>false</createDesktopShortcuts>
-<createStartupShortcuts>false</createStartupShortcuts>
-<shortcutType>user</shortcutType>
-</com.izforge.izpack.panels.shortcut.ShortcutPanel>
-<com.izforge.izpack.panels.userinput.UserInputPanel id="startApplicationPanelCapeCode">
-<entry key="startCapeCode" value="false"/>
+<com.izforge.izpack.panels.userinput.UserInputPanel id="startApplicationPanelConfigure">
+<entry key="startConfigure" value="true"/>
 </com.izforge.izpack.panels.userinput.UserInputPanel>
-<com.izforge.izpack.panels.process.ProcessPanel id="ProcessPanel_9"/>
-<com.izforge.izpack.panels.finish.FinishPanel id="FinishPanel_10"/>
+<com.izforge.izpack.panels.process.ProcessPanel id="ProcessPanel_8"/>
+<com.izforge.izpack.panels.finish.FinishPanel id="FinishPanel_9"/>
 </AutomatedInstallation>
