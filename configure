@@ -661,7 +661,7 @@ PTSPHINX4_CORE_JAR
 PTSPACEDOMAIN_PACKAGES
 PTSPACEDOMAIN_JAR
 PTSPACE_DIR
-PTSLF4J_NOP_JAR
+PTSLF4J_SIMPLE_JAR
 PTSLF4J_API_JAR
 PTSERVLET_JAR
 PTSERVER_JARS
@@ -1059,7 +1059,7 @@ with_tini
 with_giotto
 with_waba
 with_slf4j_api
-with_slf4j_nop
+with_slf4j_simple
 with_webcam_capture
 with_expat_include
 '
@@ -1832,8 +1832,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-slf4j-api=SLF4J_API_JAR     use slf4j-api SLF4J_API_JAR
                           defaults to \$PTII/lib/slf4j-api-1.7.13.jar
-  --with-slf4j-nop=SLF4J_NOP_JAR     use slf4j-nop SLF4J_NOP_JAR
-                              defaults to \$PTII/lib/slf4j-nop-1.7.13.jar
+  --with-slf4j-simple=SLF4J_SIMPLE_JAR     use slf4j-simple SLF4J_SIMPLE_JAR
+                              defaults to \$PTII/lib/slf4j-simple-1.7.13.jar
   --with-webcam-capture=WEBCAMCAPTURE_JAR     use webcam-capture WEBCAMCAPTURE_JAR
                           defaults to \$PTII/lib/webcam-capture-0.3.10.jar
   --with-xbjlib=DIR       use Java Serial Port Interface rxtx from DIR,
@@ -2692,13 +2692,11 @@ fi
 
 # Fix permissions on files.
 # If the distribution was in a jar file, then some files might not be executable.
-execFiles=ptolemy/util/test/junit/javachdir
+execFiles="ptolemy/util/test/junit/javachdir configure bin/ant"
 for file in $execFiles
 do
     if test -f $file -a ! -x $file; then
-       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Making $file executable." >&5
-$as_echo "Making $file executable." >&6; }; fi
+        # PT_MSG_RESULT(Making $file executable.)
         chmod a+x $file
     fi
 done
@@ -13878,9 +13876,9 @@ WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules/cameras
 # XBJLIB is here because both xbjlib and webcam-capture use slf4j-api and sl4j-nop.
 XBJLIB_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/xbee"
 
-# Look for slf4j-api and slf4j-nop jar files
+# Look for slf4j-api and slf4j-simple jar files
 PTSLF4J_API_JAR=""
-PTSLF4J_NOP_JAR=""
+PTSLF4J_SIMPLE_JAR=""
 if test -d "$WEBCAMCAPTURE_USER_DIR" -o -d "$XBJLIB_USER_DIR"; then
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for slf4-api" >&5
 $as_echo_n "checking for slf4-api... " >&6; }
@@ -13900,22 +13898,22 @@ $as_echo "$PTSLF4J_API_JAR" >&6; }; fi
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for slf4-nop" >&5
 $as_echo_n "checking for slf4-nop... " >&6; }
 
-# Check whether --with-slf4j-nop was given.
-if test "${with_slf4j_nop+set}" = set; then :
-  withval=$with_slf4j_nop; PTSLF4J_NOP_JAR=$withval
+# Check whether --with-slf4j-simple was given.
+if test "${with_slf4j_simple+set}" = set; then :
+  withval=$with_slf4j_simple; PTSLF4J_SIMPLE_JAR=$withval
 else
-  PTSLF4J_NOP_JAR=$PTII/lib/slf4j-nop-1.7.13.jar
+  PTSLF4J_SIMPLE_JAR=$PTII/lib/slf4j-simple-1.7.13.jar
 fi
 
-        if test -f "$PTSLF4J_NOP_JAR"; then
+        if test -f "$PTSLF4J_SIMPLE_JAR"; then
             if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSLF4J_NOP_JAR" >&5
-$as_echo "$PTSLF4J_NOP_JAR" >&6; }; fi
-            updateClasspath "$PTSLF4J_NOP_JAR"
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSLF4J_SIMPLE_JAR" >&5
+$as_echo "$PTSLF4J_SIMPLE_JAR" >&6; }; fi
+            updateClasspath "$PTSLF4J_SIMPLE_JAR"
         else
-            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_NOP_JAR, so the accessors in
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_SIMPLE_JAR, so the accessors in
     $WEBCAMCAPTURE_USER_DIR and $XBJLIB_USER_DIR will not work." >&5
-$as_echo "$as_me: WARNING: Failed to find $PTSLF4J_NOP_JAR, so the accessors in
+$as_echo "$as_me: WARNING: Failed to find $PTSLF4J_SIMPLE_JAR, so the accessors in
     $WEBCAMCAPTURE_USER_DIR and $XBJLIB_USER_DIR will not work." >&2;}
         fi
     else
@@ -13934,7 +13932,7 @@ if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
 $as_echo "$WEBCAMCAPTURE_USER_DIR is not present,
     so we need not find webcam-capture." >&6; }; fi
 else
-    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_NOP_JAR"; then
+    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_SIMPLE_JAR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for webcam-capture" >&5
 $as_echo_n "checking for webcam-capture... " >&6; }
 
@@ -14008,7 +14006,7 @@ $as_echo "$XBJLIB_USER_DIR is not present,
     # Use curly brackets around PTII so that if xbjlib is not present
     # then ${PTII} will appear in ptinvoke.
 else
-    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_NOP_JAR"; then
+    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_SIMPLE_JAR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for xbjlib directory" >&5
 $as_echo_n "checking for xbjlib directory... " >&6; }
 
@@ -15187,7 +15185,7 @@ fi
 # slf4j-api*.jar, used by webcam-capture and xbjlib (XBee).
 
 
-# slf4j-nop*.jar, used by webcam-capture and xbjlib (XBee).
+# slf4j-simple*.jar, used by webcam-capture and xbjlib (XBee).
 
 
 # PTSPACE_DIR is set to space and used in
