@@ -6422,9 +6422,9 @@ WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules/cameras
 # XBJLIB is here because both xbjlib and webcam-capture use slf4j-api and sl4j-nop.
 XBJLIB_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/xbee"
 
-# Look for slf4j-api and slf4j-nop jar files
+# Look for slf4j-api and slf4j-simple jar files
 PTSLF4J_API_JAR=""
-PTSLF4J_NOP_JAR=""
+PTSLF4J_SIMPLE_JAR=""
 if test -d "$WEBCAMCAPTURE_USER_DIR" -o -d "$XBJLIB_USER_DIR"; then
     AC_MSG_CHECKING([for slf4-api])
     AC_ARG_WITH(slf4j-api, [  --with-slf4j-api=SLF4J_API_JAR     use slf4j-api SLF4J_API_JAR
@@ -6435,15 +6435,15 @@ if test -d "$WEBCAMCAPTURE_USER_DIR" -o -d "$XBJLIB_USER_DIR"; then
         PT_MSG_RESULT([$PTSLF4J_API_JAR])
         updateClasspath "$PTSLF4J_API_JAR"
         AC_MSG_CHECKING([for slf4-nop])
-        AC_ARG_WITH(slf4j-nop, [  --with-slf4j-nop=SLF4J_NOP_JAR     use slf4j-nop SLF4J_NOP_JAR
-                              defaults to \$PTII/lib/slf4j-nop-1.7.13.jar],
-	    PTSLF4J_NOP_JAR=$withval,
-	    PTSLF4J_NOP_JAR=$PTII/lib/slf4j-nop-1.7.13.jar)
-        if test -f "$PTSLF4J_NOP_JAR"; then
-            PT_MSG_RESULT([$PTSLF4J_NOP_JAR])
-            updateClasspath "$PTSLF4J_NOP_JAR"
+        AC_ARG_WITH(slf4j-simple, [  --with-slf4j-simple=SLF4J_SIMPLE_JAR     use slf4j-simple SLF4J_SIMPLE_JAR
+                              defaults to \$PTII/lib/slf4j-simple-1.7.13.jar],
+	    PTSLF4J_SIMPLE_JAR=$withval,
+	    PTSLF4J_SIMPLE_JAR=$PTII/lib/slf4j-simple-1.7.13.jar)
+        if test -f "$PTSLF4J_SIMPLE_JAR"; then
+            PT_MSG_RESULT([$PTSLF4J_SIMPLE_JAR])
+            updateClasspath "$PTSLF4J_SIMPLE_JAR"
         else
-            AC_MSG_WARN([Failed to find $PTSLF4J_NOP_JAR, so the accessors in
+            AC_MSG_WARN([Failed to find $PTSLF4J_SIMPLE_JAR, so the accessors in
     $WEBCAMCAPTURE_USER_DIR and $XBJLIB_USER_DIR will not work.])
         fi
     else
@@ -6458,7 +6458,7 @@ if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
     PT_MSG_STATUS([$WEBCAMCAPTURE_USER_DIR is not present,
     so we need not find webcam-capture.])
 else
-    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_NOP_JAR"; then
+    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_SIMPLE_JAR"; then
         AC_MSG_CHECKING([for webcam-capture])
         AC_ARG_WITH(webcam-capture, [  --with-webcam-capture=WEBCAMCAPTURE_JAR     use webcam-capture WEBCAMCAPTURE_JAR
                           defaults to \$PTII/lib/webcam-capture-0.3.10.jar],
@@ -6515,7 +6515,7 @@ if test ! -d "$XBJLIB_USER_DIR"; then
     # Use curly brackets around PTII so that if xbjlib is not present
     # then ${PTII} will appear in ptinvoke.
 else
-    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_NOP_JAR"; then
+    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_SIMPLE_JAR"; then
         AC_MSG_CHECKING([for xbjlib directory])
         AC_ARG_WITH(rxtx, [  --with-xbjlib=DIR       use Java Serial Port Interface rxtx from DIR,
                           defaults to $XBJLIB_JAR_DEFAULT],
@@ -7571,8 +7571,8 @@ AC_SUBST(PTSERVLET_JAR)
 # slf4j-api*.jar, used by webcam-capture and xbjlib (XBee).
 AC_SUBST(PTSLF4J_API_JAR)
 
-# slf4j-nop*.jar, used by webcam-capture and xbjlib (XBee).
-AC_SUBST(PTSLF4J_NOP_JAR)
+# slf4j-simple*.jar, used by webcam-capture and xbjlib (XBee).
+AC_SUBST(PTSLF4J_SIMPLE_JAR)
 
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.

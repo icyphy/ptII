@@ -180,7 +180,6 @@
     <pathelement location="lib/saxon8-dom.jar" />
     <pathelement location="lib/saxon8.jar" />
     <pathelement location="lib/slf4j-api-1.7.13.jar" />
-    <pathelement location="lib/slf4j-nop-1.7.13.jar" />
     <pathelement location="lib/slf4j-simple-1.7.13.jar" />
     <pathelement location="lib/smack.jar" />
     <pathelement location="lib/smackx.jar" />
