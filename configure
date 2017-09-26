@@ -821,6 +821,8 @@ PTDATABASE_PACKAGES
 PTDATABASE_JNLP_JARS
 PTDATABASE_DIR
 PTCUNIT_DIR
+PTCORBA_PACKAGES
+PTCORBA_DIR
 PTCOPERNICUS_DIR
 PTCOMM_PACKAGES
 PTCOMM_DIR
@@ -5631,6 +5633,58 @@ if test -z "$PTCOLT_DIR"; then
    updateExcludes "ptolemy/actor/lib/colt/"
 fi
 
+
+#--------------------------------------------------------------------
+#       org.omg.CORBA.Object is part of the JDK 1.9 module system
+#       The error is:
+#   [javac]   (package org.omg.CORBA is declared in module java.corba, which is not in the module graph)
+#
+#--------------------------------------------------------------------
+
+# PTCORBA_DIR is used in ptolemy/actor/makefile
+PTCORBA_DIR=
+
+# PTCORBA_PACKAGES is used in ptII/doc/makefile
+PTCORBA_PACKAGES=
+
+# We only need look for Corba if this directory exists
+CORBA_USER_DIR="$PTII/ptolemy/actor/corba"
+if test ! -d "$CORBA_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CORBA_USER_DIR is not present,
+    so we need not check for CORBA." >&5
+$as_echo "$CORBA_USER_DIR is not present,
+    so we need not check for CORBA." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CORBA" >&5
+$as_echo_n "checking for CORBA... " >&6; }
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=$PTII
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" CORBATest.java ; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: CORBA found in the default classpath" >&5
+$as_echo "CORBA found in the default classpath" >&6; }; fi
+        # PTCORBA_DIR is used in ptolemy/actor/lib/jjs/modules
+        PTCORBA_DIR=corba
+        # PTCORBA_PACKAGES is used in ptII/doc/makefile
+        PTCORBA_PACKAGES=ptolemy.actor.corba ptolemy.actor.corba.util
+    else
+       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" CORBATest.java' failed.
+    perhaps you are running an JDK 1.9?
+    You will not be able to run the ptolemy.actor.corba actors,
+    which is probably not a problem." >&5
+$as_echo "$as_me: WARNING: '\"$JAVAC\" CORBATest.java' failed.
+    perhaps you are running an JDK 1.9?
+    You will not be able to run the ptolemy.actor.corba actors,
+    which is probably not a problem." >&2;}
+       updateExcludes "ptolemy/actor/corba/"
+       updateExcludes "ptolemy/domains/openmodelica/"
+    fi
+    cd "$startdir"
+
+fi
 
 #--------------------------------------------------------------------
 #       Cobertura is used for code coverage
@@ -14612,6 +14666,11 @@ fi
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 
+
+# PTCORBA_DIR is used in ptolemy/actor/makefile
+
+
+# PTCORBA_PACKAGES is used in ptII/doc/makefile
 
 
 # PTCUNIT_DIR is set to test and used in
