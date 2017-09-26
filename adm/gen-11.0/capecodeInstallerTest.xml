@@ -14,7 +14,7 @@
 <com.izforge.izpack.panels.summary.SummaryPanel id="SummaryPanel_5"/>
 <com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_6"/>
 <com.izforge.izpack.panels.userinput.UserInputPanel id="startApplicationPanelConfigure">
-<entry key="startConfigure" value="true"/>
+<entry key="startConfigure" value="false"/>
 </com.izforge.izpack.panels.userinput.UserInputPanel>
 <com.izforge.izpack.panels.process.ProcessPanel id="ProcessPanel_8"/>
 <com.izforge.izpack.panels.finish.FinishPanel id="FinishPanel_9"/>

@@ -190,6 +190,7 @@ PTII_SRCS = 	$(PTII_FULL) $(basename $(PTII_FULL)) $(PTII_FULL_ZIP)
 PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 
 PTSETUP_MAC = ptII$(VERSION).setup.mac
+PTSETUP_LINUX = ptII$(VERSION).setup.linux
 
 
 CAPECODE_CAPECODE_VERSION = capecode$(CAPECODE_VERSION)
@@ -329,6 +330,7 @@ clean:	full_clean_setup
 	rm -rf $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_64).jar
 	rm -rf capeCodeNonGUI.tar.gz
 	rm -rf $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).app.tar.gz $(PTSETUP_MAC).dmg $(PTSETUP_MAC).jar $(PTSETUP_MAC).xml
+	rm -rf $(PTSETUP_LINUX).jar $(PTSETUP_MAC).xml
 	rm -rf $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_SRC) $(PTII_SRC_JAR)
 
 FINDCLEAN = $(GENDIR)/findclean
@@ -3617,7 +3619,7 @@ jre64:
 	fi
 
 # This is the main target for creating installers.
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_LINUX).tar.gz
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(PTSETUP_LINUX).tar.gz $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_LINUX).tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
@@ -3647,7 +3649,7 @@ _test_setup_installerTest_clean:
 test/installerTest:
 	if [ ! -f test/installerTest ]; then \
 		echo "Invoking java -jar $(PTSETUP).jar installerTest.xml to create test/installerTest"; \
-		java -jar $(PTSETUP).jar installerTest.xml; \
+		java -jar $(PTSETUP_LINUX).jar installerTest.xml; \
 	fi
 
 test_setup_XvfbStart:
@@ -3809,6 +3811,15 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
+ptsetup_setup_linux: $(PTSETUP_LINUX).xml
+$(PTSETUP_LINUX).xml: $(PTSETUP).xml linuxInclude.awk makefile
+	awk -f linuxInclude.awk $(PTSETUP).xml | \
+	    sed -e 's@ptmatlab.dll@libptmatlab.so@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@os="windows"@os="unix"@' \
+	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
+	    > $@
+
 capecode_setup_mac: $(CAPECODE_SETUP_MAC).xml
 $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP) #makefile
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
@@ -3821,7 +3832,7 @@ $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP
 	    > $@
 
 capecode_setup_linux: $(CAPECODE_SETUP_LINUX).xml
-$(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk $(CAPECODE_APP) makefile
+$(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk makefile
 	awk -f linuxInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.b@' \
 	    -e 's@condition="capeCodePackSelected" id="startApplicationPanelCapeCode"@id="startApplicationPanelConfigure"@' \
@@ -3863,7 +3874,26 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 		ls -l $@; \
 	fi
 
-setup_mac_jar: $(CAPECODE_SETUP_MAC).jar
+setup_linux_jar: $(PTSETUP_LINUX).jar
+$(PTSETUP_LINUX).jar: $(PTSETUP_LINUX).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIIDIST)/bin/vergil cleanSrc izpacksetup.jar
+	@echo "#"
+	@echo "# Now building target setup_linux_jar: (PTSETUP_LINUX).jar: $@"
+	@echo "# `date`"
+	ls -ldg $(PTINY_APP) $(PTIIDIST)/jdk
+	$(IZPACK_COMMAND) $@ $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
+setup_linux_tar: $(PTSETUP_LINUX).tar.gz
+$(PTSETUP_LINUX).tar.gz: $(PTSETUP_LINUX).jar
+	chmod a+x $<
+	tar -zcf $@ $<
+
+
+capecode_setup_mac_jar: $(CAPECODE_SETUP_MAC).jar
 $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): $@"

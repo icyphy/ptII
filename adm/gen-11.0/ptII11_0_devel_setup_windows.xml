@@ -31,6 +31,10 @@
 	<name>startCapeCode</name>
 	<value>true</value>
       </condition>
+      <condition type="variable" id="startConfigure">
+	<name>startConfigure</name>
+	<value>true</value>
+      </condition>
       <condition type="variable" id="startPtiny">
 	<name>startPtiny</name>
 	<value>true</value>
@@ -127,7 +131,7 @@
  	<panel classname="UserInputPanel" condition="capeCodePackSelected" id="startApplicationPanelCapeCode"/>
  	<panel classname="UserInputPanel" condition="@fullPackSelected&amp;&amp;!capeCodePackSelected" id="startApplicationPanelFull"/>
  	<panel classname="UserInputPanel" condition="@ptinyPackSelected&amp;&amp;!capeCodePackSelected&amp;&amp;!fullPackSelected" id="startApplicationPanelPtiny"/>
-        <panel classname="ProcessPanel" condition="startCapeCode|startPtiny|startVergil"/>
+        <panel classname="ProcessPanel" condition="startConfigure|startCapeCode|startPtiny|startVergil"/>
         <!-- panel classname="SimpleFinishPanel"/ -->
         <panel classname="FinishPanel"/>
     </panels>
