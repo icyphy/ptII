@@ -1,82 +1,83 @@
-<izpack:userinput version="5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:izpack="http://izpack.org/schema/userinput" xsi:schemaLocation="http://izpack.org/schema/userinput http://izpack.org/schema/5.0/izpack-userinput-5.0.xsd">
+<izpack:userinput version="5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:izpack="http://izpack.org/schema/userinput" xsi:schemaLocation="http://izpack.org/schema/userinput http://izpack.org/schema/5.0/izpack-userinput-5.0.xsd" >
 
   <!-- Linux -->
-  <panel id="startApplicationPanelConfigure">
+  <panel id="startApplicationPanelConfigure" >
     <createForPack name="CapeCode" />
-    <field type="check" variable="startConfigure">
+    <os family="unix" />
+    <field type="check" variable="startConfigure" >
       <spec txt="Would you like to build and start CapeCode next?" true="true" false="false"
 	    id="startConfigureCheck"
-	    set="true"/>
+	    set="true" />
     </field>
     <field type="staticText"
 	   txt="If you select no, then see $INSTALL_PATH/doc/install.htm, but basically do"
-	   id="unix.line1"/>
+	   id="unix.line1" />
     <field type="staticText"
 	   txt="export PTII=$INSTALL_PATH"
-	   id="unix.line2"/>
+	   id="unix.line2" />
     <field type="staticText"
 	   txt="cd $PTII"
-	   id="unix.line3"/>
+	   id="unix.line3" />
     <field type="staticText"
 	   txt="export PATH=$INSTALL_PATH/bin:${PATH}"
-	   id="unix.line3.5"/>
+	   id="unix.line3.5" />
     <field type="staticText"
 	   txt="./configure"
-	   id="unix.line4"/>
+	   id="unix.line4" />
     <field type="staticText"
 	   txt="$PTII/bin/ant"
-	   id="unix.line5"/>
+	   id="unix.line5" />
     <field type="staticText"
 	   txt="$PTII/bin/capecode"
 	   conditionid="capeCodePackSelected"
-	   id="unix.line6.capecode"/>
+	   id="unix.line6.capecode" />
     <field type="staticText"
 	   txt="If you say yes, then after the installer successfully builds and exits, to run CapeCode again, do:"
-	   id="unix.line6"/>
+	   id="unix.line6" />
     <field type="staticText"
 	   txt="export PTII=$INSTALL_PATH"
-	   id="unix.line7"/>
+	   id="unix.line7" />
     <field type="staticText"
 	   txt="export PATH=$INSTALL_PATH/bin:${PATH}"
-	   id="unix.line8"/>
+	   id="unix.line8" />
     <field type="staticText"
 	   txt="$PTII/bin/capecode"
 	   conditionid="capeCodePackSelected"
-	   id="unix.line8.capecode"/>
+	   id="unix.line8.capecode" />
   </panel>
 
-  <panel id="startApplicationPanelCapeCode">
+  <panel id="startApplicationPanelCapeCode" >
     <createForPack name="CapeCode" />
     <!-- createForUnselectedPack name="Full" / -->
     <!-- createForUnselectedPack name="Ptiny" / -->
-    <os family="mac/"/>
-    <os family="windows/"/>
-    <field type="check" variable="startCapeCode">
+    <os family="mac" />
+    <os family="windows" />
+    <field type="check" variable="startCapeCode" >
       <spec txt="Would you like to start CapeCode next?" true="true" false="false"
 	    id="startCapeCodeCheck"
-	    set="true"/>
+	    set="true" />
     </field>
   </panel>
 
-  <panel id="startApplicationPanelFull">
+  <panel id="startApplicationPanelFull" >
     <createForPack name="Full" />
-    <os family="mac/"/>
-    <os family="windows"/>
-    <field type="check" variable="startVergil">
+    <os family="mac" />
+    <os family="windows" />
+    <field type="check" variable="startVergil" >
       <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
 	    id="startVergilCheck"
-	    set="true"/>
+	    set="true" />
     </field>
   </panel>
 
-  <panel id="startApplicationPanelPtiny">
+  <panel id="startApplicationPanelPtiny" >
     <!-- createForUnselectedPack name="Full" / -->
-    <os family="mac/"/>
-    <os family="windows"/>
-    <field type="check" variable="startPtiny">
+    <os family="mac" />
+    <os family="windows" />
+    <field type="check" variable="startPtiny" >
       <spec txt="Would you like to start Ptiny Ptolemy next?" true="true" false="false"
 	    id="startPtinyCheck"
-	    set="true"/>
+	    set="true" />
     </field>
   </panel>
 
