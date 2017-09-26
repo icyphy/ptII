@@ -18,6 +18,9 @@
 	   txt="cd $PTII"
 	   id="unix.line3"/>
     <field type="staticText"
+	   txt="export PATH=$INSTALL_PATH/bin:${PATH}"
+	   id="unix.line3.5"/>
+    <field type="staticText"
 	   txt="./configure"
 	   id="unix.line4"/>
     <field type="staticText"
@@ -34,9 +37,12 @@
 	   txt="export PTII=$INSTALL_PATH"
 	   id="unix.line7"/>
     <field type="staticText"
+	   txt="export PATH=$INSTALL_PATH/bin:${PATH}"
+	   id="unix.line8"/>
+    <field type="staticText"
 	   txt="$PTII/bin/capecode"
 	   conditionid="capeCodePackSelected"
-	   id="unix.line7.capecode"/>
+	   id="unix.line8.capecode"/>
   </panel>
 
   <panel id="startApplicationPanelCapeCode">

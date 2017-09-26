@@ -162,6 +162,15 @@ The Ptiny pack is required.
            </executable>
 
 <!--/MacOSInclude-->
+<!--/LinuxInclude -->
+
+            <file src="../dists/ptII11.0.devel/capecode.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.devel/doc/img/capecode.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/>
+	    <!-- opencv_java320.dll is 35Mb! So, we only ship it with the Windows installer. -->
+            <file src="../dists/ptII11.0.devel/lib/opencv_java320.dll" targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-win-x64" targetdir="$INSTALL_PATH/vendors/node"/>
+
             <file src="../dists/ptII11.0.devel/ptiny.exe" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/doc/img/ptiny.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
@@ -176,8 +185,11 @@ The Ptiny pack is required.
 
 	    <!-- opencv_java320.dll is 35Mb! So, we only ship it with the Windows installer. -->
             <file src="../dists/ptII11.0.devel/lib/opencv_java320.dll" targetdir="$INSTALL_PATH/lib"/>
+<!--LinuxInclude -->
 <!--MacOSInclude-->
 
+<!-- Mac and Linux: The makefile substitutes a directive to include the Mac and Linux Node directory for the next line. -->
+<!-- NodeDirectory -->
             <file src="../dists/ptII11.0.devel/lib/libgdp.0.8.so"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/lib/linux-x86-64-rhel/libgdp.0.8.so"

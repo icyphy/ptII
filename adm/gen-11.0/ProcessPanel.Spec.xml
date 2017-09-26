@@ -19,11 +19,19 @@
 	<env>PTII=$INSTALL_PATH</env>.
 	<arg>configure</arg>
       </executefile>
+      <executefile name="make"
+		   workingDir="$INSTALL_PATH/bin">
+	<env>PTII=$INSTALL_PATH</env>
+      </executefile>
       <executefile name="$INSTALL_PATH/ant/bin/ant"
-		   workingDir="$INSTALL_PATH"/>
+		   workingDir="$INSTALL_PATH">
+	<env>PTII=$INSTALL_PATH</env>
+	<env>PATH=$INSTALL_PATH/bin:${ENV[PATH]}</env>
+      </executefile>
       <executefile name="$INSTALL_PATH/bin/capecode"
-		   workingDir="$INSTALL_PATH"/>
-
+		   workingDir="$INSTALL_PATH">
+	<env>PTII=$INSTALL_PATH</env>
+      </executefile>
   </job>
 
   <job name="Execute CapeCode.app" condition="startCapeCode">

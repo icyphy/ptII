@@ -52,7 +52,35 @@ public class IzpackSetup {
         newLink = Paths.get(installDirectory + "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common");
         temporary = Paths.get(installDirectory + "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.IzpackSetupTemp");
         target = Paths.get("..", "common");
-        results.append(IzpackSetup.createLink(newLink, temporary, target));
+
+        String commonMessage = IzpackSetup.createLink(newLink, temporary, target);
+        if (commonMessage.length() > 0) {
+            results.append("\n" + commonMessage);
+        }
+
+        // Darwin and Linux: Fix node/*/bin/npm
+        String arch = null;
+        String osName = System.getProperty("os.name");
+        if (osName != null) {
+            if (osName.startsWith("Darwin")) {
+                arch = "darwin";
+            } else if (osName.startsWith("Linux")) {
+                arch = "linux";
+            }
+        }
+
+        if (arch != null) {
+            newLink = Paths.get(installDirectory, "vendors", "node", "node-v8.4.0-" + arch + "-x64", "bin", "npm");
+            temporary = Paths.get(installDirectory + "vendors", "node", "node-v8.4.0-" + arch + "-x64", "bin","npm.tmp");
+            target = Paths.get("..", "lib", "node_modules", "npm", "bin", "npm-cli.js");
+            String npmMessage = IzpackSetup.createLink(newLink, temporary, target);
+            if (npmMessage.length() > 0) {
+                results.append("\n" + npmMessage);
+            }
+            Path npmCli = Paths.get(installDirectory + "vendors", "node", "node-v8.4.0-" + arch + "-x64", "lib", "node_modules", "npm", "bin", "npm-cli.js");
+            npmCli.toFile().setExecutable(true);
+        }
+
         return results.toString();
     }
 

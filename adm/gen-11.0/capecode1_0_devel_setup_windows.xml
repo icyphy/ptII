@@ -171,8 +171,8 @@
 <!--LinuxInclude -->
 <!--MacOSInclude-->
 
-<!-- Mac: The makefile substitutes a directive to include the darwin Node directory for the next line. -->
-<!-- MacNodeDirectory -->
+<!-- Mac and Linux: The makefile substitutes a directive to include the darwin Node directory for the next line. -->
+<!-- NodeDirectory -->
             <file src="../dists/ptII11.0.devel/lib/libgdp.0.8.so"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/lib/linux-x86-64-rhel/libgdp.0.8.so"
