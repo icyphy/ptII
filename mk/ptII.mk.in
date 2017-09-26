@@ -558,6 +558,12 @@ JAVA3D_JARS =	@JAVA3D_JARS@
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 PTJAVA3D_DIR = @PTJAVA3D_DIR@
 
+# PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+PTJAVAFX_DIR =	@PTJAVAFX_DIR@
+
+# PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+PTJAVAFX_PACKAGES =	@PTJAVAFX_PACKAGES@
+
 # Set to kvm and used in $PTII/ptolemy/makefile if the PalmOS KVM was found
 PTKVM_DIR =	@PTKVM_DIR@
 

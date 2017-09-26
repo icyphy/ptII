@@ -37,6 +37,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTHTTPCLIENT_DIR is set to httpClient if the Vertx jars are found by configure.
 # PTHTTPCLIENT_DIR is set to httpServer if the Vertx jars are found by configure.
 # PTIMUSENSOR_DIR is set to IMUSensor if the Java Communications API (RXTX) jars are found by configure.
+# PTJAVAFX_DIR is set to audio if JavaFX was found.  OpenJDK might not have OpenFX.
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
 # PTSERIAL_DIR is set to serial if the Java Communication API is found by configure.
 # PTSPHINX4_DIR is set to speechRecognition if the Sphinx4 jar files are found
@@ -45,7 +46,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto computerVision dataConverter discovery dsp $(PTEVENTBUS_DIR) faceDetector $(PTGDP_DIR) geoLocator $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay imageFilters $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTUSERINTERFACE_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
+DIRS = 		$(JAVAFX_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto computerVision dataConverter discovery dsp $(PTEVENTBUS_DIR) faceDetector $(PTGDP_DIR) geoLocator $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay imageFilters $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTUSERINTERFACE_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
