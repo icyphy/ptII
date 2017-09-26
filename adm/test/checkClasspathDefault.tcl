@@ -4,7 +4,7 @@
 #
 # $Id: Release.tcl 63463 2012-05-02 02:47:37Z hudson $
 #
-# @Copyright (c) 2016 The Regents of the University of California.
+# @Copyright (c) 2016-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -62,6 +62,6 @@ test checkEclipseUpdate-2.0 {Check that $PTII/.classpath.default refers to jar f
     set results [exec make --no-print-directory --silent checkClasspathDefaultMissing]
 } {Below are jar files in $PTII/lib that are not in .classpath.default:
 lib/jna-4.1.0-variadic.jar
-lib/nrjavaserial-3.11.0.devel.debug.jar
-lib/slf4j-simple-1.7.13.jar}
+lib/nrjavaserial-3.11.0.devel.debug.jar}
+
 
