@@ -1850,6 +1850,49 @@ fi
 
 
 #--------------------------------------------------------------------
+#       org.omg.CORBA.Object is part of the JDK 1.9 module system
+#       The error is:
+#   [javac]   (package org.omg.CORBA is declared in module java.corba, which is not in the module graph)
+#       
+#--------------------------------------------------------------------
+
+# PTCORBA_DIR is used in ptolemy/actor/makefile
+PTCORBA_DIR=
+
+# PTCORBA_PACKAGES is used in ptII/doc/makefile
+PTCORBA_PACKAGES=
+
+# We only need look for Corba if this directory exists
+CORBA_USER_DIR="$PTII/ptolemy/actor/corba"
+if test ! -d "$CORBA_USER_DIR"; then
+    PT_MSG_STATUS([$CORBA_USER_DIR is not present,
+    so we need not check for CORBA.])
+else
+    AC_MSG_CHECKING([for CORBA])
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=$PTII
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" CORBATest.java ; then
+        PT_MSG_RESULT(CORBA found in the default classpath)
+        # PTCORBA_DIR is used in ptolemy/actor/lib/jjs/modules
+        PTCORBA_DIR=corba
+        # PTCORBA_PACKAGES is used in ptII/doc/makefile
+        PTCORBA_PACKAGES=ptolemy.actor.corba ptolemy.actor.corba.util
+    else
+       AC_MSG_WARN(['"$JAVAC" CORBATest.java' failed.
+    perhaps you are running an JDK 1.9?
+    You will not be able to run the ptolemy.actor.corba actors,
+    which is probably not a problem.])
+       updateExcludes "ptolemy/actor/corba/"
+       updateExcludes "ptolemy/domains/openmodelica/"
+    fi
+    cd "$startdir"
+
+fi
+
+#--------------------------------------------------------------------
 #       Cobertura is used for code coverage
 #	
 #	
@@ -7014,6 +7057,11 @@ AC_SUBST(PTCOMM_PACKAGES)
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
 
+# PTCORBA_DIR is used in ptolemy/actor/makefile
+AC_SUBST(PTCORBA_DIR)
+
+# PTCORBA_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTCORBA_PACKAGES)
 
 # PTCUNIT_DIR is set to test and used in 
 # ptolemy/cg/kernle/generic/program/procedural/c/type

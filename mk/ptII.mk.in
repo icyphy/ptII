@@ -462,6 +462,12 @@ PTCOMM_PACKAGES =	@PTCOMM_PACKAGES@
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 
+# PTCORBA_DIR is used in ptolemy/actor/makefile
+PTCORBA_DIR =	@PTCORBA_DIR@
+
+# PTCORBA_PACKAGES is used in ptII/doc/makefile
+PTCORBA_PACKAGES = @PTCORBA_PACKAGES@
+
 # PTCUNIT_DIR is set to test and used in 
 # $PTII/ptolemy/cg/kernle/generic/program/procedural/c/type
 # if CUnit is found

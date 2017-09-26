@@ -39,7 +39,7 @@ ME =		ptolemy/actor
 # will fail.
 #
 DIRS = 	util sched process continuous gui injection lib \
-	corba \
+	$(PTCORBA_DIR) \
 	parameters \
 	gt \
 	designs \
