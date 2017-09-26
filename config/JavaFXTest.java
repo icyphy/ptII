@@ -42,7 +42,7 @@ import javafx.scene.media.Media;
     @Pt.ProposedRating Green (cxh)
     @Pt.AcceptedRating Red
 */
-public class JAITest {
+public class JavaFXTest {
     public static void main(String[] args) {
         System.out.print(System.getProperty("java.version"));
     }

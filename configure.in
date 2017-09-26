@@ -2802,62 +2802,6 @@ if test ! -d "$JAI_USER_DIR"; then
     so we need not find JAI - The Java Advanced Imaging API.])
 else
     AC_MSG_CHECKING([for Java Advanced Imaging (JAI) API])
-    # We need to run javac in the config directory so that javac from jdk1.1.6
-    # under NT and cygwin works properly
-    startdir=$PTII
-    cd "$srcdir/config"
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" JAITest.java ; then
-       PT_MSG_RESULT(JAI found in the default classpath)
-       PTJAI_DIR=jai
-       # PTJAI_PACKAGES is used in ptII/doc/makefile
-       PTJAI_PACKAGES=ptolemy.actor.lib.jai
-	AC_MSG_CHECKING([for the jai jar files])
-	if "$JAVAC" FindClass.java ; then
-	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.jai.RenderedOp`
-	    if test -f "$JAI_JAR" ; then
-	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
-	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
-	       PT_MSG_RESULT($JAI_JARS)
-	       # Here, we should not be adding JAI_JAR to Eclipse
-	       # if jai.jar was in the jre
-               case "`uname -s`" in
-	       Darwin) 
-  	            AC_MSG_WARN([Not including
-   $JAI_JARS_DIR/{jai_core.jar,jai_codec.jar}
-   to the Eclipse classpath under Darwin because it is already present.]);;
-               *)
-	           updateClasspath "$JAI_JARS_DIR/jai_core.jar"
-		   updateClasspath "$JAI_JARS_DIR/jai_codec.jar"
-		   ;;
-               esac
-	    else 
-       	       AC_MSG_WARN([Either we could not find 
-    javax.media.jai.RenderOp or else it was already in the JRE.
-    Searching for jai-core.jar returned:
-      $JAI_JAR
-    If the class cannot be found, then Eclipse might not be able to find
-    the JAI files.  
-    This is only a problem if you are using Eclipse.
-    If the class was in the JRE, then Eclipse should compile the JAI files
-    without problems])
-	       JAI_JAR=
-            fi
-	else
-	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
-    This means that Eclipse might not be able to find the JAI files.
-    This is only a problem if you are using Eclipse])
-        fi
-    else
-       AC_MSG_WARN(['"$JAVAC" JAITest.java' failed.
-    perhaps the Java Advanced Imaging API is not installed?
-    You need not download Jai unless you plan on using the video
-    actors in $JAI_USER_DIR
-    The JAI API can be downloaded from 
-    https://jai.dev.java.net/])
-    fi
-    cd "$startdir"
 fi
 
 if test -z "$PTJAI_DIR"; then
@@ -3092,6 +3036,46 @@ else
     Ptolemy optionally includes one or more FMUs that use JModelica.
     To install JModelica, see https://svn.jmodelica.org/trunk/INSTALL])
     fi
+fi
+
+#--------------------------------------------------------------------
+#       JavaFX is used the the audio ClipPlayer demo under CapeCode
+#       
+#--------------------------------------------------------------------
+
+# PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+PTJAVAFX_DIR=
+
+# PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+PTJAVAFX_PACKAGES=
+
+# We only need look for JavaFX if this directory exists
+JAVAFX_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/audio"
+if test ! -d "$JAVAFX_USER_DIR"; then
+    PT_MSG_STATUS([$JAVAFX_USER_DIR is not present,
+    so we need not check for JavaFX.])
+else
+    AC_MSG_CHECKING([for JavaFX])
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=$PTII
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" JavaFXTest.java ; then
+        PT_MSG_RESULT(JavaFX found in the default classpath)
+        # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+        PTJAVAFX_DIR=audio
+        # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+        PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
+    else
+       AC_MSG_WARN(['"$JAVAC" JavaFXTest.java' failed.
+    perhaps you are running an OpenJDK JDK instead of an
+    Oracle JDK?
+    This means that the audio accessors will not work under CapeCode.])
+       updateExcludes "ptolemy/actor/lib/jjs/modules/audio/"
+    fi
+    cd "$startdir"
+
 fi
 
 #--------------------------------------------------------------------
@@ -7219,6 +7203,12 @@ AC_SUBST(PTJAVA32_DIR)
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 AC_SUBST(PTJAVA3D_DIR)
+
+# PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+AC_SUBST(PTJAVAFX_DIR)
+
+# PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTJAVAFX_PACKAGES)
 
 # Set to mail and used in
 # $PTII/ptolemy/actor/lib/makefile if JavaMail's javax.mail.jar was found.
