@@ -232,7 +232,7 @@ PTNRJAVASERIAL_JAR = lib/nrjavaserial-3.11.0.devel.jar
 # If these get changed, also update $PTII/configure.in and adm/gen-NN.0/ptIINN_0_devel_setup_windows.xml
 PTXBEE_JARS = \
 	lib/xbjlib-1.1.0.nrjavaserial.jar \
-	lib/slf4j-nop-1.7.13.jar \
+	lib/slf4j-simple-1.7.13.jar \
 	lib/slf4j-api-1.7.13.jar
 
 #######
