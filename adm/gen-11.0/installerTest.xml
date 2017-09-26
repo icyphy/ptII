@@ -24,7 +24,7 @@
 <shortcutType>user</shortcutType>
 </com.izforge.izpack.panels.shortcut.ShortcutPanel>
 <com.izforge.izpack.panels.userinput.UserInputPanel id="startApplicationPanelFull">
-<entry key="startVergil" value="true"/>
+<entry key="startVergil" value="false"/>
 </com.izforge.izpack.panels.userinput.UserInputPanel>
 <com.izforge.izpack.panels.process.ProcessPanel id="ProcessPanel_11"/>
 <com.izforge.izpack.panels.finish.FinishPanel id="FinishPanel_12"/>
