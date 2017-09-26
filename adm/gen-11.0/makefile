@@ -207,26 +207,6 @@ CAPECODE_SRC_TAR = $(CAPECODE_CAPECODE_VERSION).tar.gz
 all: $(PTII_FULL) $(PTII_SRC) $(PTII_FULL_ZIP) $(CAPECODE_SRC_TAR) #$(PTII_DEVEL_SRC)
 
 ####
-release_ampere_all:
-	$(MAKE) PTII=c:/Users/Administrator/src/ptII11.0.devel/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII11.0.devel COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar clean all src.jar setup
-
-
-release_ampere_foo:
-	$(MAKE) PTII=c:/Users/Administrator/src/ptII11.0.devel/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII11.0.devel COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar foo
-
-release_ampere_setup:
-	$(MAKE) PTII=c:/Users/Administrator/src/ptII11.0.devel/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII11.0.devel COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar setup
-
-release_joule_all:
-	$(MAKE) PTII=/cygdrive/c/Users/cxh.EECS/ptII11.0.devel/adm/gen-10.0 USER=cxh PTIIHOME=/cygdrive/c/Users/cxh.EECS/ptII11.0.devel COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=/cygdrive/c/Users/cxh.EECS/ptII/adm/gen-10.0/test/ptII$(VERSION)
-
-release_joul_setup:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar setup
-
-release_joule_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=/tmp/cxh/ptII11.0.devel/adm/gen-7.0/test/ptII$(VERSION)
-
-####
 release_terra:
 	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar
 

@@ -292,7 +292,7 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-api-1.7.13.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-nop-1.7.13.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-simple-1.7.13.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
             <file src="../dists/ptII11.0.devel/jar_dist/lib/svgSalamander.jar"
@@ -350,10 +350,6 @@
                   targetdir="$INSTALL_PATH/lib"/>
 
             <file src="../dists/ptII11.0.devel/jar_dist/lib/xbjlib-1.1.0.nrjavaserial.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-nop-1.7.13.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-api-1.7.13.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/ptcolt.jar"
                   targetdir="$INSTALL_PATH/lib"/>
