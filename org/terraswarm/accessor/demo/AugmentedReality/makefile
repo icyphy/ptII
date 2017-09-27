@@ -47,28 +47,32 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AugmentedReality.xml \
-	AugmentedRealityBasic.xml \
-	AugmentedRealityFeedback.xml \
 	AugmentedRealityFeedbackBlee.xml \
 	AugmentedRealityFeedbackGDP.xml \
+	AugmentedRealityFeedback.xml \
+	AugmentedRealityKeyValueStore.xml \
 	AugmentedRealityMessageBoard.xml \
+	AugmentedRealityVideo.xml \
+	AugmentedReality.xml \
+	bell.wav \
 	CKC \
 	ControllableSensor.js \
 	GDPSensor.js \
 	MechanicalRoom.jpg \
 	MessageBoard.js \
+	mqtts.json \
+	Office.jpg \
 	PressureSensor.js \
+	RosTeleoperation.js \
 	SoundActuator.js \
 	SoundServer.xml \
-	TestSoundActuator.xml \
+	tag36_11_00105.png \
+	tag36_11_00586.png \
 	TagMapAccessorAR.xml \
 	TagURIMapAR.xml \
 	TemperatureSensor.js \
-	VariantAccessors \
-	VibrationSensor.js \
-	bell.wav \
-	mqtts.json
+	TestSoundActuator.xml \
+	VibrationSensor.js
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
