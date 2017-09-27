@@ -50,7 +50,7 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityFeedbackBlee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 205.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedbackBlee.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -91,7 +91,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Get sensor data by subscribing to MQTT topics.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 205.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -134,13 +134,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The following models require additional hardware or software:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 170.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityFeedbackGDP">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 230.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedbackGDP.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -173,7 +173,40 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Get sensor data by subscribing to GDP (global data plane) feeds.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 230.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityVideo.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 135.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityVideo.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Same as before except using video input.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 135.0]">
         </property>
     </property>
 </entity>
