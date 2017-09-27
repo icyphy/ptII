@@ -1288,7 +1288,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile
 	#
 	# Fix up ptolemy/actor/gui/jnlp/makefile
-	egrep -v "ViptosApplication.jar" \
+	egrep -v "ViptosApplication.jar \\" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/jnlp/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/jnlp/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/jnlp/makefile.tmp \

@@ -228,6 +228,18 @@ VisualSenseApplication.jar: VisualSenseApplication.class MenuApplication.class
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
+ViptosApplication.jar: ViptosApplication.class MenuApplication.class
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy Application specific classes from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp ViptosApplication.class MenuApplication.class \
+		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
