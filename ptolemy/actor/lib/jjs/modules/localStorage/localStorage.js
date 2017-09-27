@@ -56,7 +56,7 @@ module.exports.initSync = function (opts) {
     } else {
         persistenceDir = opts.dir;
     }
-    storage = new LocalStorageHelper(persistenceDir, actor.getContainer().getName() + '-' + actor.getName());
+    storage = new LocalStorageHelper(persistenceDir, this.accessorName);
 };
 
 ////////////////////
