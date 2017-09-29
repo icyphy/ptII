@@ -28,6 +28,7 @@ package diva.canvas;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 
 /** An abstract implementation of Site. This class provides default
  * implementations of several methods in the Site interface, to
@@ -84,9 +85,12 @@ public abstract class AbstractSite implements Site {
      */
     @Override
     public Point2D getPoint(TransformContext tc) {
-        return getTransformContext().getTransform(tc).transform(getPoint(),
+        TransformContext transformContext = getTransformContext();
+        if (transformContext != null) {
+            return getTransformContext().getTransform(tc).transform(getPoint(),
                 null);
-
+        }
+        return new Point2D.Double(0,0);
         // Formerly used deprecated method. EAL 6/12/05
         // return CanvasUtilities.transformInto(getPoint(), getTransformContext(), tc);
     }
@@ -119,7 +123,13 @@ public abstract class AbstractSite implements Site {
      */
     @Override
     public TransformContext getTransformContext() {
-        return getFigure().getParent().getTransformContext();
+        if (getFigure() != null
+            && getFigure().getParent() != null) {
+            return getFigure().getParent().getTransformContext();
+        }
+        System.err.println("Warning: diva/canvas/AbstractSite.java: getTransformContext(): getFigure(): " + getFigure()
+                           + (getFigure() != null ? "getFigure().getParent(): " + getFigure().getParent() : ""));
+        return null;
     }
 
     /** Get the x-coordinate of the site, in the enclosing
