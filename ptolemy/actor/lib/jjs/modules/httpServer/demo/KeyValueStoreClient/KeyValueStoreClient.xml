@@ -69,11 +69,11 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, run the companion&#10;KeyValueStoreServer.xml model, which provides an&#10;implementation of the key-value store on the&#10;local host by clicking on the link below:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, run the companion&#10;KeyValueStoreServerJS.xml model, which provides an&#10;implementation of the key-value store on the&#10;local host by clicking on the link below:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 40.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="KeyValueStoreServer.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="KeyValueStoreServerJS.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -94,11 +94,11 @@
         </property>
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServer Model">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServerJS Model">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 115.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerJS.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
