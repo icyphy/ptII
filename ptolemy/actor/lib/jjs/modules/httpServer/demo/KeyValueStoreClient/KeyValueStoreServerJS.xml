@@ -1,0 +1,503 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="KeyValueStoreServerJS" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.0, 67.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 461, 1386, 854}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1152, 744]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000009">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{450.04651162790685, 411.6930232558144}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8077/keyvalue that stores key-value pairs.&#10;Run this model and click on this message to get documentation, or&#10;point your browser to http://localhost:8077/keyvalue/help.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8077/keyvalue/help#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 50}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 600.0]">
+        </property>
+    </property>
+    <entity name="WebServer" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor starts a server that listens for HTTP requests&#10; *  on the specified hostInterface and port and issues responses.&#10; *  The hostInterface specifies what network interface (e.g. Ethernet,&#10; *  WiFi, or localhost) to use. The default is 'localhost', which (usually)&#10; *  means that the server listens only for requests coming from the local machine.&#10; *  This is useful for testing. To listen for requests on all IPv4 addresses on&#10; *  the local machine, specify '0.0.0.0'. This will make the server accessible&#10; *  to any machine that has access to an IP address for the local machine.&#10; *&#10; *  When this server receives an http requests from the network (or from&#10; *  the local machine), it produces a JavaScript object on the output that&#10; *  includes at least the following properties:&#10; *  &#10; *  * body: The body of the request, or null if there is no body.&#10; *  * method: A string that describes the HTTP method of the request, which&#10; *    may be &quot;GET&quot;, &quot;PUT&quot;, etc.&#10; *  * path: The path in the URL of the request, such as &quot;/&quot; when there is no&#10; *    path.&#10; *  * requestID: An identifier for the request.&#10; *  &#10; *&#10; *  To produce a response, this accessor waits for an input on its *response*&#10; *  port that is a JavaScript object containing the following properties:&#10; *  &#10; *  * requestID: An identifier matching a request for which a response has not&#10; *    already been issued.&#10; *  * response: The body of the response, such as HTML to display to the&#10; *    requester or a JavaScript object with a JSON representation (the JSON&#10; *    representation will be sent back as the response). If this property is&#10; *    not included in the input, then the input will be stringified as a JSON&#10; *    object and sent. This will include the requestID property.&#10; *  &#10; *&#10; *  If there is no pending request with a matching ID, then an error will be&#10; *  issued.&#10; *  &#10; *  A simple use case is to connect the *request* output to some other actor&#10; *  that generates a response, and then to feed that response back to the&#10; *  *response* input. Be sure to include the requestID property in the response.&#10; *&#10; *  When `wrapup()` is invoked, this accessor closes the  server.&#10; *&#10; *  This accessor requires the module httpServer.&#10; *&#10; *  @accessor net/WebServer&#10; *  @parameter {string} hostInterface The IP address or domain name of the&#10; *    network interface to listen to.&#10; *  @parameter {int} port The port to listen on.&#10; *&#10; *  @input response The response to issue to a request. &#10; *  @input shutdown Shutdown the web server.&#10; *  @output {int} listening When the server is listening for connections, this output&#10; *    will produce the port number that the server is listening on&#10; *  @output request The request that came into the server.&#10; *  &#10; *  @author Edward A. Lee amd Elizabeth Osyk&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;var httpServer = require('@accessors-modules/http-server');&#10;var util = require('util');&#10;&#10;/** Sets up the accessor by defining inputs and outputs. */&#10;exports.setup = function() {&#10;    this.parameter('hostInterface', {&#10;        value: &quot;localhost&quot;,&#10;        type: &quot;string&quot;&#10;    });&#10;    this.parameter('port', {&#10;        value: 80,&#10;        type: &quot;int&quot;&#10;    });&#10;    this.input('response');&#10;    this.output('listening', {'type':'int'});&#10;    this.output('request', {'spontaneous': true});&#10;};&#10;&#10;/** Starts the server.&#10; */&#10;exports.initialize = function() {&#10;    var self = this;&#10;    &#10;    if (!self.server) {&#10;        console.log('WebServer: Creating new server.');&#10;        self.server = new httpServer.HttpServer({&#10;                'port': self.getParameter('port'),&#10;                'hostInterface': self.getParameter('hostInterface')&#10;        });&#10;        // Using 'self.exports' rather than just 'exports' in the following allows&#10;        // these functions to be overridden in derived accessors.&#10;        self.server.on('listening', self.exports.onListening.bind(self));&#10;        self.server.on('request', self.exports.request.bind(self));&#10;        self.server.on('error', function (message) {&#10;            self.error(message);&#10;        });&#10;        self.server.start();&#10;    }&#10;&#10;    self.addInputHandler('response', function() {&#10;        var response = self.get('response');&#10;        if (!response.hasOwnProperty('requestID')) {&#10;            error('Response has no requestID property.');&#10;            return;&#10;        }&#10;        var id = response.requestID;&#10;        if (!self.pendingRequests.hasOwnProperty(id)) {&#10;            error('No pending request with ID ' + id);&#10;            return;&#10;        }&#10;        delete self.pendingRequests[id];&#10;        // Default body of the response is the whole response object.&#10;        var body = response;&#10;        if (response.hasOwnProperty('response')) {&#10;            body = response.response;&#10;        }&#10;        if (typeof body !== 'string') {&#10;            body = JSON.stringify(body);&#10;        }&#10;        if (response.hasOwnProperty('responseCode')) {&#10;        	this.server.respond(response.requestID, body, response.responseCode);&#10;        } else {&#10;        	this.server.respond(response.requestID, body);&#10;        }&#10;    });&#10;    &#10;    // Initialize pendingRequests to an empty object.&#10;    self.pendingRequests = {};&#10;};&#10;&#10;exports.onListening = function() {&#10;    console.log('WebServer: Listening for requests.');&#10;    this.send('listening', this.getParameter('port'));&#10;};&#10;&#10;exports.request = function(request) {&#10;    console.log('Server received request: ' + util.inspect(request));&#10;    if (this.server) {&#10;        this.send('request', request);&#10;        this.pendingRequests[request.requestID] = request;&#10;    } else {&#10;        console.log('WARNING: server does not exist.');&#10;    }&#10;};&#10;&#10;/** Removes all inputHandlers from sockets.&lt;br&gt;&#10; * Unregisters event listeners from sockets.&lt;br&gt;&#10; * Closes server.&#10; */&#10;exports.wrapup = function(){&#10;    if (this.server !== null &amp;&amp; typeof this.server !== 'undefined') {&#10;        console.log('WebServer: Stopping the server.');&#10;        this.server.removeAllListeners();&#10;        this.server.stop();&#10;        this.server = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/WebServer.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor starts a server that listens for HTTP requests&#10; on the specified hostInterface and port and issues responses.&#10; The hostInterface specifies what network interface (e.g. Ethernet,&#10; WiFi, or localhost) to use. The default is 'localhost', which (usually)&#10; means that the server listens only for requests coming from the local machine.&#10; This is useful for testing. To listen for requests on all IPv4 addresses on&#10; the local machine, specify '0.0.0.0'. This will make the server accessible&#10; to any machine that has access to an IP address for the local machine.&lt;/p&gt;&#10;&lt;p&gt; When this server receives an http requests from the network (or from&#10; the local machine), it produces a JavaScript object on the output that&#10; includes at least the following properties:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;body: The body of the request, or null if there is no body.&lt;/li&gt;&#10;&lt;li&gt;method: A string that describes the HTTP method of the request, which&#10;may be &amp;quot;GET&amp;quot;, &amp;quot;PUT&amp;quot;, etc.&lt;/li&gt;&#10;&lt;li&gt;path: The path in the URL of the request, such as &amp;quot;/&amp;quot; when there is no&#10;path.&lt;/li&gt;&#10;&lt;li&gt;requestID: An identifier for the request.&lt;/li&gt;&#10;&lt;/ul&gt;&#10;&lt;p&gt; To produce a response, this accessor waits for an input on its &lt;em&gt;response&lt;/em&gt;&#10; port that is a JavaScript object containing the following properties:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;requestID: An identifier matching a request for which a response has not&#10;already been issued.&lt;/li&gt;&#10;&lt;li&gt;response: The body of the response, such as HTML to display to the&#10;requester or a JavaScript object with a JSON representation (the JSON&#10;representation will be sent back as the response). If this property is&#10;not included in the input, then the input will be stringified as a JSON&#10;object and sent. This will include the requestID property.&lt;/li&gt;&#10;&lt;/ul&gt;&#10;&lt;p&gt; If there is no pending request with a matching ID, then an error will be&#10; issued.&lt;/p&gt;&#10;&lt;p&gt; A simple use case is to connect the &lt;em&gt;request&lt;/em&gt; output to some other actor&#10; that generates a response, and then to feed that response back to the&#10; &lt;em&gt;response&lt;/em&gt; input. Be sure to include the requestID property in the response.&lt;/p&gt;&#10;&lt;p&gt; When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the  server.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires the module httpServer.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee amd Elizabeth Osyk">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="The response to issue to a request.">
+            </property>
+            <property name="listening (port)" class="ptolemy.kernel.util.StringAttribute" value="When the server is listening for connections, this output&#10;   will produce the port number that the server is listening on">
+            </property>
+            <property name="request (port)" class="ptolemy.kernel.util.StringAttribute" value="The request that came into the server.">
+            </property>
+            <property name="hostInterface (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the&#10;   network interface to listen to.">
+            </property>
+            <property name="port (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port to listen on.">
+            </property>
+            <property name="shutdown (port)" class="ptolemy.kernel.util.StringAttribute" value="Shutdown the web server.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 285.0]">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8077">
+        </property>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="listening" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="HelpResponse" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = self.get('request');&#10;		var response = {&#10;			requestID: request.requestID,&#10;			response: &quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Key-Value Store Service&lt;/h1&gt;&lt;p&gt; &quot; + &#10;&quot;This server and provides a key-value store service. &quot; + &#10;&quot;You can store data indexed by a key and retrieve it from a browser as follows: &quot; + &#10;&quot;&lt;/p&gt;&quot; + &#10;&quot;&lt;ul&gt;&lt;li&gt; To get a help screen (HTML):&lt;pre&gt;&quot; + &#10;&quot;   http://localhost:8077/keyvalue/help&quot; + &#10;&quot;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&lt;pre&gt;&quot; + &#10;&quot;   http://localhost:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&quot; + &#10;&quot;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To retrieve the value, use&lt;pre&gt;&quot; + &#10;&quot;   http://localhost:8077/keyvalue/get?id=MY_ID&quot; + &#10;&quot;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To remove a value, use&lt;pre&gt;&quot; + &#10;&quot;   http://localhost:8077/keyvalue/delete?id=MY_ID&quot; + &#10;&quot;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;To list all keys (a JSON array of strings), use&lt;pre&gt;&quot; + &#10;&quot;   http://localhost:8077/keyvalue/list&quot; + &#10;&quot;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&quot; +&#10;&quot;Technically, an application should issue the \&quot;set\&quot; command using an&quot; +&#10;&quot;HTTP POST, not an HTTP GET, but this server will accept either.&quot; +&#10;&quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;&#10;		};&#10;		self.send('response', response);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 285.0]">
+        </property>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="PageGenerator" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;// Needed since the WebServer response port can only have one connection.&#10;&#10;exports.setup = function() {&#10;	this.input('help');&#10;	this.input('list');&#10;	this.input('other');&#10;	this.output('output');&#10;};&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('help', function() {&#10;		self.send('output', self.get('help'));&#10;	});&#10;	&#10;	this.addInputHandler('list', function() {&#10;		self.send('output', self.get('list'));&#10;	});&#10;	&#10;	this.addInputHandler('other', function() {&#10;		self.send('output', self.get('other'));&#10;	});&#10;	&#10;	/*&#10;	this.addInputHandler('list', sendOutput(self.get('list')));&#10;	this.addInputHandler('other', sendOutput(self.get('other')));&#10;		&#10;	var sendOutput = function(data) {&#10;		console.log('sending ' + data);&#10;		self.send('output', data);&#10;	}&#10;	*/&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 295.0]">
+        </property>
+        <port name="help" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="list" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="other" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Router" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;exports.setup = function() {&#10;	this.input('request');&#10;	this.output('help');&#10;	this.output('list');&#10;	this.output('other');&#10;};&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = self.get('request');&#10;		if (request.path !== null &amp;&amp; typeof request.path !== 'undefined') {&#10;			if (request.path == '/keyvalue/help') {&#10;				self.send('help', request);&#10;			} else if (request.path == '/keyvalue/list') {&#10;				self.send('list', request);&#10;			} else {&#10;				self.send('other', request);&#10;			}&#10;		} else {&#10;			self.send('other', request);&#10;		}&#10;	});&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 295.0]">
+        </property>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="help" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="list" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="other" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ListResponse" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.input('keys');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('keys', function() {&#10;		var keys = self.get('keys');&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: keys&#10;		};&#10;		self.send('response', response);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[594.5412902832031, 359.5288848876953]">
+        </property>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="keys" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 440.0]">
+        </property>
+    </entity>
+    <entity name="ConstructLookup" class="ptolemy.actor.lib.jjs.JavaScript">
+        <display name="Construct&#10;Lookup"/>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;exports.setup = function() {&#10;	this.input('request');&#10;	this.output('key', {'type': 'string'});&#10;	this.output('remove', {'type': 'boolean'});&#10;	this.output('trigger', {'type': 'boolean'});&#10;	this.output('response', {'type': 'string'});&#10;	this.output('responseCode', {'type': 'int'});&#10;    this.output('value', {'type': 'string'});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = self.get('request');&#10;		&#10;		if (request !== null &amp;&amp; typeof request !== 'undefined' &amp;&amp;&#10;				request.path !== null &amp;&amp; typeof request.path !== 'undefined') {&#10;			var path = request.path;&#10;			var parameters = request.params;&#10;			&#10;			if (path.indexOf('/keyvalue/get') == 0) {&#10;				// Request is get.&#10;				if (parameters.id) {&#10;					self.send('key', parameters.id);&#10;					self.send('trigger', true);&#10;				} else {&#10;					self.send('response',&#10;	      				'&lt;html&gt;Error (400): Bad Request. Got parameters: '&#10;	      				+ JSON.stringify(parameters)&#10;	      				+ '&lt;/html&gt;');&#10;      				self.send('responseCode', 400);&#10;				}&#10;			} else if(path.indexOf('/keyvalue/set') == 0) {&#10;				// Request is set.&#10;				if (parameters.id) {&#10;      				//self.send('remove', true);&#10;      				// For backward compatibility, a value parameter is allowed.&#10;      				if (typeof parameters.value !== 'undefined') {&#10;      					self.send('key', parameters.id);&#10;      					self.send('value', parameters.value);&#10;      					self.send('trigger', true);&#10;      				} else {&#10;      					// Assume a post request, in which case the value&#10;      					// is in the body.&#10;      					self.send('key', parameters.id);&#10;      					self.send('value', request.body);&#10;      				}&#10;      				self.send('response',&#10;      					'&lt;html&gt;'&#10;      					+ parameters.id&#10;      					+ ' set to: '&#10;      					+ parameters.value&#10;      					+ '&lt;/html&gt;');&#10;		    	} else {&#10;		      		self.send('response',&#10;		      			'&lt;html&gt;Error (400): Bad Request. Got parameters: '&#10;		      			+ JSON.stringify(parameters)&#10;		      			+ '&lt;/html&gt;');&#10;		      		self.send('responseCode', 400);&#10;		    	}&#10;			} else if(path.indexOf('/keyvalue/delete') == 0) {&#10;				// Request is delete.&#10;				if (parameters.id) {&#10;      				self.send('remove', true);&#10;      				self.send('response',&#10;      					'&lt;html&gt;' + parameters.id&#10;      					+ ' deleted from store&lt;/html&gt;');&#10;    			} else {&#10;      				self.send('response',&#10;      					'&lt;html&gt;Error (400): Bad Request. Got parameters: '&#10;      					+ JSON.stringify(parameters)&#10;      					+ '&lt;/html&gt;');&#10;      				self.send('responseCode', 400);&#10;    			}&#10;			} else {&#10;				// Request is not recognized.&#10;				self.send('response', '&lt;html&gt;Error (400): Unrecognized Request. Got URI: ' + path + '&lt;/html&gt;');&#10;      			self.send('responseCode', 400);&#10;			}&#10;					&#10;		} else {&#10;			// Request is not recognized.&#10;      		self.send('response', '&lt;html&gt;Error (400): Empty Request. &lt;/html&gt;');&#10;      		self.send('responseCode', 400);&#10;		}&#10;	});&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 535.0}">
+        </property>
+        <port name="key" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="responseCode" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="remove" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="KeyValueResponse" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('getResult');&#10;	this.input('request');&#10;	this.input('responseBody');&#10;	this.input('responseCode');&#10;	this.input('notFound');&#10;	this.output('response');&#10;}&#10;var util = require('util');&#10;var lastRequest = null;&#10;var lastRequestID = -1;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;	// Send a response for set and delete requests.&#10;	this.addInputHandler('responseBody', function() {&#10;		console.log('handling body');&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: self.get('responseBody')&#10;		};&#10;		&#10;		var responseCode = self.get('responseCode');&#10;		if (responseCode !== null) {&#10;			response.responseCode = responseCode;&#10;		}&#10;		if (lastRequestID !== requestID) {&#10;			lastRequestID = requestID;&#10;		    console.log('KeyValueResponse.responseBody: about to respond to ' + requestID);&#10;		    self.send('response', response);&#10;		}&#10;	});&#10;	&#10;	// If we get a request, save it for later.&#10;	this.addInputHandler('request', function() {&#10;		lastRequest = self.get('request');&#10;		console.log('KeyValueResponse.getRequest: request: ' + util.inspect(lastRequest));&#10;	});&#10;	&#10;	// Send a response for a successful get request.&#10;	this.addInputHandler('getResult', function() {&#10;		var value = self.get('getResult');&#10;		var request = self.get('request');&#10;		if (request === null || typeof request === 'undefined') {&#10;			request = lastRequest;&#10;		} else {&#10;			// Check to see if we already handled this request&#10;			console.log('KeyValueResponse.getRequest: request.requestID: ' + request.requestID + ', lastRequest.requestID: ' + lastRequest.requestID);&#10;			if (request.requestID === lastRequest.requestID) {&#10;				return;&#10;			}&#10;			lastRequest = request;&#10;		}&#10;		console.log('KeyValueResponse.getResult: value: ' + value + ', request: ' + util.inspect(request));&#10;		if (request !== null &amp;&amp; typeof request !== 'undefined') {&#10;			var requestID = request.requestID;&#10;			if (lastRequestID !== requestID) {&#10;				lastRequestID = requestID;&#10;				var response = {&#10;					requestID: requestID,&#10;					response: value&#10;				}&#10;				console.log('KeyValueResponse.getResult: about to respond to ' + requestID);&#10;				self.send('response', response);&#10;			}&#10;		}&#10;	});&#10;	&#10;	// Send a response for an unsuccessful get request.&#10;	this.addInputHandler('notFound', function() {&#10;		var value =  '&lt;html&gt;Error (404): Not Found.  No value for key.';&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: value,&#10;			responseCode: 404&#10;		} &#10;		console.log('KeyValueResponse.notFound: about to respond to ' + requestID);&#10;		self.send('response', response);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 525.0]">
+        </property>
+        <port name="request" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="responseBody" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="responseCode" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="notFound" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="getResult" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="LocalStorage" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Save and retrieve a value from local storage.&#10;&#10;// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** &#10; *  Save and retrieve a value from local storage. &#10; *&#10; *  @accessor utilities/LocalStorage&#10; *  @input {string} baseDirectory The directory in which to store the data&#10; *  If there is no value used, then the default value is /tmp/LocalStorage&lt;Random&gt;&#10; *  where &lt;Random&gt; is a random number.&#10; *  @input {string} storeLocation The URL of the key-value store service.&#10; *  The storeLocation is converted into a legal filename via substitution&#10; *  @input {string} key The key to be updated or retrieved.&#10; *  @input {boolean} remove If true, then remove the key from the store;&#10; *   otherwise, retrieve the value for the key.&#10; *  @input {string} value The value to store in the key-value store,&#10; *   or empty to not store anything.&#10; *  @input trigger The trigger input.&#10; *  @output {string} result The value retrieved from or written to&#10; *   the key-value store.&#10; *  @output {string} debug Debug messages.&#10; *&#10; *  @author Christopher Brooks, based on KeyValueStore by Edward A. Lee and LocalStorage demo by Hokeun Kim.&#10; *  @version $$Id$$&#10; */&#10;&#10;// FIXME: LocalStorage and KeyValueStore have lots of duplicate text.&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*global console, error, exports, readURL */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var storage = require('@accessors-modules/local-storage');&#10;&#10;exports.setup = function () {&#10;    this.input('baseDirectory', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('storeLocation', {&#10;        'type': 'string',&#10;        'value': 'http://localhost:8077/keyvalue'&#10;    });&#10;    this.input('key', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('remove', {&#10;        'type': 'boolean',&#10;        'value': false&#10;    });&#10;    this.input('value', {&#10;        'type': 'string'&#10;    });&#10;    this.input('trigger');&#10;    this.output('result', {&#10;        'type': 'string',&#10;        'spontaneous': true&#10;    });&#10;    this.output('debug', {&#10;        'type': 'string',&#10;        'spontaneous': true&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;    this.addInputHandler('trigger', handleInputs.bind(this));&#10;}&#10;&#10;/** Return the contents of the store.&#10; *  @return the contents of the store.&#10; */&#10;function currentStatus() {&#10;    var result = &quot;&quot;;&#10;    var len = storage.length();&#10;    for (var i = 0; i &lt; len; i++) {&#10;        var curKey = storage.key(i);&#10;        var curValue = storage.getItem(curKey);&#10;        result = result + '(' + curKey + ', ' + curValue + ')';&#10;        if (i &lt; (len - 1)) {&#10;            result = result + ', '&#10;        }&#10;    }&#10;    return result;&#10;}&#10;&#10;var lastBaseDirectory = null;&#10;var lastStoreLocation = null;&#10;&#10;function handleInputs() {&#10;    var theBaseDirectory = this.get('baseDirectory');&#10;    var theStoreLocation = this.get('storeLocation');&#10;    var theKey = this.get('key');&#10;    var theValue = this.get('value');&#10;    var toRemove = this.get('remove');&#10;    this.send('debug', &quot;LocalStorage: key: &quot; + theKey + &quot;, value: &quot; + theValue + &quot;, remove: &quot; + toRemove);&#10;&#10;    // If necessary initialize the storage.&#10;    if (theBaseDirectory !== lastBaseDirectory || theStoreLocation !== lastStoreLocation) {&#10;        lastBaseDirectory = theBaseDirectory;&#10;        lastStoreLocation = theStoreLocation&#10;&#10;        var baseDirectory;&#10;        if (theBaseDirectory !== null &amp;&amp; theBaseDirectory == '') {&#10;            baseDirectory = theBaseDirectory;&#10;        }&#10;&#10;        // FIXME: it is possible for two storageLocations that differ only by&#10;        // special characters to map to the same string.&#10;        // The fix would be to use a MD5 or something similar.&#10;        if (theStoreLocation !== null &amp;&amp; theStoreLocation == '') {&#10;            baseDirectory += theStoreLocation.replace(/[^a-z0-9_-]/gi, '_').toLowerCase();&#10;        }&#10;        if (baseDirectory === null || baseDirectory === '') {&#10;            baseDirectory = &quot;/tmp/LocalStorage&quot; + Math.random();&#10;        }&#10;&#10;        this.send('debug', 'Using a storage directory of ' + baseDirectory);&#10;&#10;        storage.initSync({dir: baseDirectory});&#10;    }&#10;&#10;    if (toRemove) {&#10;        if (theKey !== &quot;&quot;) {&#10;            storage.remove(theKey);&#10;        }&#10;    } else { &#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue !== &quot;&quot; &amp;&amp; theValue !== null) {&#10;            this.send('debug', 'Inserting (Key,Value) = (' + theKey + ', ' + theValue + ')');&#10;            storage.setItem(theKey, theValue);&#10;            this.send('result', theValue);&#10;        } else {&#10;            this.send('debug', 'Retrieving Key: ' + theKey);&#10;            var foundValue = storage.getItem(theKey);&#10;            this.send('result', foundValue);&#10;        }&#10;    }&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/LocalStorage.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Save and retrieve a value from local storage.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, based on KeyValueStore by Edward A. Lee and LocalStorage demo by Hokeun Kim.">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="baseDirectory (port)" class="ptolemy.kernel.util.StringAttribute" value="The directory in which to store the data&#10; If there is no value used, then the default value is /tmp/LocalStorage&lt;Random&gt;&#10; where &lt;Random&gt; is a random number.">
+            </property>
+            <property name="storeLocation (port)" class="ptolemy.kernel.util.StringAttribute" value="The URL of the key-value store service.&#10; The storeLocation is converted into a legal filename via substitution">
+            </property>
+            <property name="key (port)" class="ptolemy.kernel.util.StringAttribute" value="The key to be updated or retrieved.">
+            </property>
+            <property name="remove (port)" class="ptolemy.kernel.util.StringAttribute" value="If true, then remove the key from the store;&#10;  otherwise, retrieve the value for the key.">
+            </property>
+            <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="The value to store in the key-value store,&#10;  or empty to not store anything.">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="The trigger input.">
+            </property>
+            <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="The value retrieved from or written to&#10;  the key-value store.">
+            </property>
+            <property name="debug (port)" class="ptolemy.kernel.util.StringAttribute" value="Debug messages.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="baseDirectory" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8077/keyvalue">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 565.0]">
+        </property>
+        <property name="_localChanges" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="baseDirectory" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="key" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="result" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="debug" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data on the console using util.inspect().&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var util = require('util');&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        console.log(util.inspect(inputValue));&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console using util.inspect().&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 610.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[815.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[330.0, 350.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[300.0, 420.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[565.0, 555.0]">
+        </vertex>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[345.0, 505.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="WebServer.response" relation="relation8"/>
+    <link port="WebServer.request" relation="relation3"/>
+    <link port="HelpResponse.request" relation="relation2"/>
+    <link port="HelpResponse.response" relation="relation"/>
+    <link port="PageGenerator.help" relation="relation"/>
+    <link port="PageGenerator.list" relation="relation4"/>
+    <link port="PageGenerator.other" relation="relation7"/>
+    <link port="PageGenerator.output" relation="relation8"/>
+    <link port="Router.request" relation="relation3"/>
+    <link port="Router.help" relation="relation2"/>
+    <link port="Router.list" relation="relation10"/>
+    <link port="Router.other" relation="relation12"/>
+    <link port="ListResponse.request" relation="relation10"/>
+    <link port="ListResponse.response" relation="relation4"/>
+    <link port="ListResponse.keys" relation="relation9"/>
+    <link port="TokenToJSON.output" relation="relation9"/>
+    <link port="ConstructLookup.key" relation="relation17"/>
+    <link port="ConstructLookup.response" relation="relation6"/>
+    <link port="ConstructLookup.responseCode" relation="relation16"/>
+    <link port="ConstructLookup.request" relation="relation12"/>
+    <link port="ConstructLookup.remove" relation="relation11"/>
+    <link port="ConstructLookup.trigger" relation="relation14"/>
+    <link port="ConstructLookup.value" relation="relation5"/>
+    <link port="KeyValueResponse.request" relation="relation12"/>
+    <link port="KeyValueResponse.response" relation="relation7"/>
+    <link port="KeyValueResponse.responseBody" relation="relation6"/>
+    <link port="KeyValueResponse.responseCode" relation="relation16"/>
+    <link port="KeyValueResponse.getResult" relation="relation19"/>
+    <link port="LocalStorage.key" relation="relation17"/>
+    <link port="LocalStorage.remove" relation="relation11"/>
+    <link port="LocalStorage.trigger" relation="relation14"/>
+    <link port="LocalStorage.result" relation="relation19"/>
+    <link port="LocalStorage.debug" relation="relation13"/>
+    <link port="LocalStorage.value" relation="relation5"/>
+    <link port="TestDisplay.input" relation="relation13"/>
+</entity>
