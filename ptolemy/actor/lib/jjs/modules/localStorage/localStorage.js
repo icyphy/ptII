@@ -76,7 +76,7 @@ module.exports.setItem = function (key, value) {
 };
 
 /** Take a key and remove it from the local storage. */
-module.exports.removeItem = function (key) {
+module.exports.remove = function (key) {
     storage.removeItem(key);
 };
 
