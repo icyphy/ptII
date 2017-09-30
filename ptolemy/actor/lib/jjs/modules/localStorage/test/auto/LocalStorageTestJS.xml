@@ -74,6 +74,10 @@
             </property>
             <property name="debug (port)" class="ptolemy.kernel.util.StringAttribute" value="Debug messages.">
             </property>
+            <property name="list (port)" class="ptolemy.kernel.util.StringAttribute" value="If true, then generate a list of all the&#10; keys and values on the result.">
+            </property>
+            <property name="notFound (port)" class="ptolemy.kernel.util.StringAttribute" value="True if the key was not found.">
+            </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -137,13 +141,9 @@
         </port>
         <port name="list" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="notFound" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>

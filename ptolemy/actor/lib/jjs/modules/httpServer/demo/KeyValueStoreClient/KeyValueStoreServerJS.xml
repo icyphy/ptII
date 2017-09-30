@@ -390,6 +390,10 @@
             </property>
             <property name="debug (port)" class="ptolemy.kernel.util.StringAttribute" value="Debug messages.">
             </property>
+            <property name="list (port)" class="ptolemy.kernel.util.StringAttribute" value="If true, then generate a list of all the&#10; keys and values on the result.">
+            </property>
+            <property name="notFound (port)" class="ptolemy.kernel.util.StringAttribute" value="True if the key was not found.">
+            </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
