@@ -499,13 +499,13 @@
     <entity name="TagToAccessor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 185.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={530, 62, 934, 632}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={462, 34, 934, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 428.6015625}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
         </property>
         <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="$storeLocation">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -526,6 +526,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 325.0]">
             </property>
         </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Given an ID and a list of tags with translations, match them,&#10;look up an accessor in the key-value value store, and produce&#10;that accessor. If no accessor is found, produce null.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 90.0]">
+            </property>
+        </property>
         <port name="id" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -544,7 +550,7 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 220.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 230.0]">
             </property>
         </port>
         <port name="translation" class="ptolemy.actor.TypedIOPort">
@@ -555,7 +561,7 @@
             </property>
         </port>
         <entity name="TagListToKey" class="ptolemy.actor.lib.jjs.JavaScript">
-            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;exports.setup = function() {&#10;    // Inputs&#10;    this.input('tags');&#10;    this.input('id', {&#10;        'type':'int', &#10;        'value':-1&#10;    });&#10;    &#10;    // Outputs&#10;    this.output('key', {&#10;        'type': 'string'&#10;    });&#10;    this.output('translation');&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var previousId = -1;&#10;    &#10;    this.addInputHandler('tags', function() {&#10;        var tags = thiz.get('tags');&#10;        var id = thiz.get('id');&#10;        &#10;        console.log('previousId:' + previousId + &quot;, id:&quot; + id);&#10;        &#10;        if (id != previousId) {&#10;            // Index has changed. Look up an accessor and produce it.&#10;            thiz.send('key', id);&#10;            previousId = id;&#10;        }&#10;        if (tags &amp;&amp; tags.length &gt; 0) {&#10;            for(var i = 0; i &lt; tags.length; i++){&#10;                if(tags[i].id == id){&#10;                    thiz.send('translation', tags[i].center);&#10;                    break;&#10;                }&#10;            }&#10;        }&#10;    });&#10;    this.addInputHandler('id', function() {&#10;        var tags = thiz.get('tags');&#10;        var id = thiz.get('id');&#10;		// If there are no tags and the id is negative,&#10;		// then just pass on the id.&#10;		if (!tags &amp;&amp; id &lt; 0) {&#10;            thiz.send('key', id);&#10;            previousId = id;	&#10;		}&#10;    });&#10;};&#10;&#10;">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;exports.setup = function() {&#10;    // Inputs&#10;    this.input('tags');&#10;    this.input('id', {&#10;        'type':'int', &#10;        'value':-1&#10;    });&#10;    &#10;    // Outputs&#10;    this.output('key', {&#10;        'type': 'string'&#10;    });&#10;    this.output('translation');&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var previousId = -1;&#10;    &#10;    this.addInputHandler('tags', function() {&#10;        var tags = thiz.get('tags');&#10;        var id = thiz.get('id');&#10;        &#10;        if (id != previousId) {&#10;            // Index has changed. Look up an accessor and produce it.&#10;            thiz.send('key', id);&#10;            previousId = id;&#10;        }&#10;        if (tags &amp;&amp; tags.length &gt; 0) {&#10;            for(var i = 0; i &lt; tags.length; i++){&#10;                if(tags[i].id == id){&#10;                    thiz.send('translation', tags[i].center);&#10;                    break;&#10;                }&#10;            }&#10;        }&#10;    });&#10;    this.addInputHandler('id', function() {&#10;        var tags = thiz.get('tags');&#10;        var id = thiz.get('id');&#10;		// If there are no tags and the id is negative,&#10;		// then just pass on the id.&#10;		if (!tags &amp;&amp; id &lt; 0) {&#10;            thiz.send('key', id);&#10;            previousId = id;	&#10;		}&#10;    });&#10;};&#10;&#10;">
                 <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                     <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                     </property>
@@ -657,20 +663,43 @@
             </port>
         </entity>
         <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={923, 111, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 111, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 285.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 325.0]">
             </property>
         </entity>
-        <entity name="TimedDisplay2" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={897, 276, 499, 208}, maximized=false}">
+        <entity name="CheckForError" class="ptolemy.actor.lib.jjs.JavaScript">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('result');&#10;	this.input('err');&#10;	this.output('accessor');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('result', function() {&#10;		var result = thiz.get('result');&#10;		thiz.send('accessor', result);&#10;	});&#10;	this.addInputHandler('err', function() {&#10;		thiz.send('accessor', null);&#10;	});&#10;}">
+                <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                    <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                    </property>
+                </property>
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+                </property>
+                <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+                </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 385}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 230.0]">
             </property>
+            <port name="result" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="err" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
+            <port name="accessor" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -688,32 +717,36 @@
             <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;translation._location&quot;,x=225.0,y=200.0}, tail={id=&quot;TagListToKey.translation&quot;,x=110.0,y=210.0}, points={} } }">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;accessor._location&quot;,x=490.0,y=220.0}, tail={id=&quot;KeyValueStore.result&quot;,x=380.0,y=220.0}, points={} } }">
-            </property>
-        </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedDisplay.input&quot;,x=510.0,y=285.0}, tail={id=&quot;KeyValueStore.error&quot;,x=380.0,y=220.0}, points={380.0,285.0} } }">
-            </property>
-        </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;id._location&quot;,x=20.0,y=200.0}, tail={id=&quot;TagListToKey.id&quot;,x=110.0,y=210.0}, points={} } }">
             </property>
         </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{445.0, 275.0}">
+            </vertex>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="id" relation="relation2"/>
         <link port="tags" relation="relation3"/>
-        <link port="accessor" relation="relation5"/>
+        <link port="accessor" relation="relation6"/>
         <link port="translation" relation="relation4"/>
         <link port="TagListToKey.id" relation="relation2"/>
         <link port="TagListToKey.tags" relation="relation3"/>
         <link port="TagListToKey.translation" relation="relation4"/>
         <link port="TagListToKey.key" relation="relation"/>
-        <link port="KeyValueStore.error" relation="relation6"/>
+        <link port="KeyValueStore.error" relation="relation7"/>
         <link port="KeyValueStore.key" relation="relation"/>
         <link port="KeyValueStore.result" relation="relation5"/>
         <link port="KeyValueStore.trigger" relation="relation"/>
-        <link port="TimedDisplay.input" relation="relation6"/>
-        <link port="TimedDisplay2.input" relation="relation"/>
+        <link port="TimedDisplay.input" relation="relation7"/>
+        <link port="CheckForError.result" relation="relation5"/>
+        <link port="CheckForError.err" relation="relation7"/>
+        <link port="CheckForError.accessor" relation="relation6"/>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images.&#10; *&#10; *  @accessor cameras/Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *   The value is ignored and can be anything.&#10; *  @output {Object} image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode.&#10; *   Otherwise, use open-loop mode. This is a boolean that defaults to true.&#10; *  @parameter {string} camera The name of the camera to use.&#10; *   A list of available cameras is presented as options.&#10; *   This is a string that defaults to &quot;default camera&quot;,&#10; *   which uses the system default, if there is one.&#10; *  @parameter {{width: number, height: number}} viewSize The view size&#10; *   to use for capture, in pixels. A list of available view sizes for&#10; *   the selected camara is presented as options. This is a JSON specification&#10; *   with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global addInputHandler, error, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var cameras = require(&quot;@accessors-modules/cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('image');&#10;    this.parameter('triggered', {&#10;        'type': 'boolean',&#10;        'value': true&#10;    });&#10;    // NOTE: The following assumes that setup() is reinvoked whenever a parameter&#10;    // value changes, since the camera will change and so will the available options.&#10;    this.parameter('camera', {&#10;        'type': 'string',&#10;        'value': 'default camera'&#10;    });&#10;    this.parameter('viewSize', {&#10;        'type': 'JSON'&#10;    });&#10;    // This is in a try-catch so that this accessor can be instantiated even if the&#10;    // host does not provide a cameras module.&#10;    try {&#10;        this.parameter('camera', {&#10;            'options': cameras.cameras()&#10;        });&#10;        camera = new cameras.Camera(this.getParameter('camera'));&#10;        this.parameter('viewSize', {&#10;            'value': camera.getViewSize(),&#10;            'options': camera.viewSizes()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function () {&#10;    camera.setViewSize(this.getParameter('viewSize'));&#10;    camera.open();&#10;    var self = this;&#10;    if (this.getParameter('triggered')) {&#10;        // Request a snapshot.  Note the video stream might not be playing.&#10;        // An event will be generated when a snapshot is available.&#10;        camera.on('snapshot', function (image) {&#10;            self.send('image', image);&#10;        });&#10;&#10;        handle = this.addInputHandler('trigger', function () {&#10;            camera.snapshot();&#10;        });&#10;    } else {&#10;        camera.on('image', function (image) {&#10;            self.send('image', image);&#10;        });&#10;    }&#10;};&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function () {&#10;    camera.removeAllListeners('image');&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;    camera.close();&#10;};&#10;">
