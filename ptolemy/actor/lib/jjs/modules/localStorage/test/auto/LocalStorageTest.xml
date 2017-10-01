@@ -148,13 +148,9 @@
         </port>
         <port name="list" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="notFound" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
