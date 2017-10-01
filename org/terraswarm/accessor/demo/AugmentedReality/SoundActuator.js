@@ -19,7 +19,6 @@
 exports.setup = function() {
 	this.implement('ControllableSensor');
 	var WebSocketClient = this.instantiate('WebSocketClient', 'net/WebSocketClient');
-	// FIXME: This should be a parameter?
 	WebSocketClient.input('server', {
 	    'value': '128.32.47.81'
 	});
