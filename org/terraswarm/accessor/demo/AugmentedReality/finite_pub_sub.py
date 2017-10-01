@@ -7,35 +7,122 @@ import re
 import requests
 #import httplib
 import urllib
+import json
 from geometry_msgs.msg import Twist
 from std_msgs.msg import UInt8
 
-#keyValueServer = "192.168.0.101/keyvalue/set:8077"
 keyValueServer = "192.168.0.101:8077"
-#keyValueServer = "terra.eecs.berkeley.edu:8090"
 
 cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
 rospy.init_node('finite_pub_sub')
 
+#duration (s) for an individual timedMovement component of an action
+tick = 0.2
 
+#multiplier for the speed of a timedMovement 
+scale = 0.2
+
+#number of timedMovement ticks to include in a qualitative movement
+moveTicks = 10
+
+#angular velocity to hold for the circle movement
+circleAngular = 2
+
+#linear velocity to hold for the circle movement
+circleLinear = 1
+
+#duration (s) for circle manuever
+circleTime = 6.0
+
+
+stop = Twist()
 
 #x is linear velocity, z is angular velocity, time is seconds to move before stopping
 def timedMovement( x, z, time ):
-	stop = Twist()
 	go = Twist()
 	go.linear.x = x
 	go.angular.z = z
 	cmd_vel_pub.publish(go)
 	rospy.sleep(time)
-	cmd_vel_pub.publish(stop)
+
+
+def forward():
+    #accelerate forward
+    for i in range(0, moveTicks):
+        timedMovement(i * scale, 0, tick)
+        
+    #accelerate backward
+    for i in range(moveTicks -2, -moveTicks, -1):
+        timedMovement(i * scale, 0, tick)
+        
+    #accelerate forward
+    for i in range(-moveTicks + 1, 1):
+        timedMovement( i * scale, 0, tick)
+
+    #stop
+    cmd_vel_pub.publish(stop)
+
+def spin():
+    #accelerate forward
+    for i in range(0, moveTicks):
+        timedMovement(0, i * scale, tick)
+        
+    #accelerate backward
+    for i in range(moveTicks -2, -moveTicks, -1):
+        timedMovement(0, i * scale, tick)
+        
+    #accelerate forward
+    for i in range(-moveTicks + 1, 1):
+        timedMovement(0, i * scale, tick)
+    
+    #stop
+    cmd_vel_pub.publish(stop)
+
+def circle():
+    #This movement doesn't accelerate or deccelerate because that makes this complicated
+    
+    #cruise
+    timedMovement(circleLinear, circleAngular, circleTime)
+
+    #stop
+    cmd_vel_pub.publish(stop)
+    
+
+def square():
+    for j in range(0, 4):
+        print
+        #linear accelerate forward
+        for i in range(0, moveTicks):
+            timedMovement(i * scale, 0, tick)
+            
+        #linear accelerate backward to stop
+        for i in range(moveTicks -2, -1, -1):
+            timedMovement(i * scale, 0, tick)
+        
+        #angular accelerate forward
+        for i in range(0, moveTicks):
+            timedMovement(0, i * scale, tick)
+        
+        #angular accelerate backward to stop
+        for i in range(moveTicks -2, -1, -1):
+            timedMovement(0, i * scale, tick)
+            
+    #stop
+    cmd_vel_pub.publish(stop)
 
 def callback(msg):
 	if msg.data == 1:
 		print ("Forward")
-		timedMovement(1.0, 0, 3)
+		forward()
 	elif msg.data == 2:
-		print ("Spinning")
-		timedMovement(0, 1.0, 3)
+		print ("Spin")
+		spin()
+	elif msg.data == 3:
+	    print ("Circle")
+	    circle()
+	elif msg.data == 4:
+	    print ("Square")
+	    square()
 	else:
 		print("Received Noop")
 
@@ -59,11 +146,16 @@ def getIpAddress(ifname):
 
 ipAddress = getIpAddress('wlp1s0')
 accessor = re.sub("localhost",ipAddress, accessor)
+#Replaces all occurances. Must replace input for the RosSubscriber and the RosPublisher
 
-params = urllib.urlencode({'id': "18" , 'value' : accessor } )
-url = "http://" + keyValueServer + "/keyvalue/set?" + params
+#params = urllib.urlencode({'id': "18" , 'value' : accessor } )
+params = json.dumps({'id': "18" , 'value' : accessor })
+print params
+#url = "http://" + keyValueServer + "/keyvalue/set?" + params
+url = "http://" + keyValueServer + "/keyvalue/set"
 print url
-r = requests.get(url)
+#r = requests.get(url)
+r = requests.post(url, params)
 print r
 
 #post accessor to key value store
