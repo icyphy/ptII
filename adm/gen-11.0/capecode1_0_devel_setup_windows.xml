@@ -105,8 +105,9 @@
     </resources>
     
     <variables>
+      <variable name="TargetPanel.dir.mac" value="/Applications/capecode1.0.devel"/>
+      <variable name="TargetPanel.dir.unix" value="/usr/local/capecode1.0.devel"/>
       <variable name="TargetPanel.dir.windows" value="c:/Ptolemy/capecode1.0.devel"/>
-      <variable name="TargetPanel.dir.unix" value="/usr/local/bin"/>
     </variables> 
 
     <jar src="izpacksetup.jar" stage="install"/>
