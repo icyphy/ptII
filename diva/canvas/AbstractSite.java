@@ -87,7 +87,7 @@ public abstract class AbstractSite implements Site {
     public Point2D getPoint(TransformContext tc) {
         TransformContext transformContext = getTransformContext();
         if (transformContext != null) {
-            return getTransformContext().getTransform(tc).transform(getPoint(),
+            return transformContext.getTransform(tc).transform(getPoint(),
                 null);
         }
         return new Point2D.Double(0,0);
@@ -112,9 +112,13 @@ public abstract class AbstractSite implements Site {
      */
     @Override
     public Point2D getPoint(TransformContext tc, double normal) {
-        AffineTransform transform = getTransformContext().getTransform(tc);
-        Point2D point = getPoint(normal);
-        return transform.transform(point, point);
+        TransformContext transformContext = getTransformContext();
+        if (transformContext != null) {
+            AffineTransform transform = transformContext.getTransform(tc);
+            Point2D point = getPoint(normal);
+            return transform.transform(point, point);
+        }
+        return new Point2D.Double(0,0);        
     }
 
     /** Get the enclosing transform context of this site.
