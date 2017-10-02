@@ -23,7 +23,7 @@ exports.setup = function() {
 	    'value': '128.32.47.81'
 	});
 	WebSocketClient.input('port', {
-	    'value': '8080'
+	    'value': '8078'
 	});
     this.connect('control', WebSocketClient, 'toSend');
     this.connect(WebSocketClient, 'received', 'data');
@@ -36,13 +36,16 @@ exports.initialize = function() {
 	this.send('data', null);
 };
 
+// NOTE: Using "options" instead of "choices" below will result in
+// a pull-down list rather than a radio button.
 var schema = {
   "type": "object",
   "properties": {
     "sound": {
       	"type": "string",
       	"title": "Name of the sound to produce",
-      	"description": "The name of the sound to produce"
+      	"description": "The name of the sound to produce",
+      	"choices": ["strum", "bell", "laughter", "thunder", "train", "ring"]
     }
   }
 };

@@ -98,6 +98,11 @@ var schema = {
       "type": "number",
       "title": "valve",
       "description": "The valve opening, which determines by how much the pressure is increased each second"
+    },
+    "choices": {
+    	"type": "string",
+    	"title": "choices",
+    	"choices": ["A", "B", "C"]
     }
   }
 };
