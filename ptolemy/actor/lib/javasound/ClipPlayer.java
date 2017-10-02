@@ -42,6 +42,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
@@ -228,8 +229,6 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
         super.fire();
 
-        fileOrURL.update();
-
         // If refired to send an output, do only that.
         // This actor will be refired once per output.  Send exactly one token
         // per refiring.  (0 tokens if outputting only on STOP and refiring
@@ -282,21 +281,33 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     clip.stop();
                 }
             }
-
-            if (!hasTrigger) {
-                return;
-            }
         }
+        // If there is no trigger input, nothing more to do.
+        if (!hasTrigger) {
+            return;
+        }
+        
+        fileOrURL.update();
+        Token newValue = fileOrURL.getToken();
+        boolean fileOrURLChanged = false;
+        if (_previousFileOrURL == null || !_previousFileOrURL.equals(newValue)) {
+            fileOrURLChanged = true;
+        }
+        _previousFileOrURL = newValue;
+        // FIXME
+        System.out.println(newValue);
 
         boolean overlayValue = ((BooleanToken) overlay.getToken())
                 .booleanValue();
-        if (overlayValue || _clips.size() == 0) {
+        if (fileOrURLChanged || overlayValue || _clips.size() == 0) {
             // If there is an inactive clip in the list, then use that.
             // Otherwise, create a new one.
-            for (Clip clip : _clips) {
-                if (!clip.isActive()) {
-                    clip.setFramePosition(0);
-                    clip.start();
+            if (!fileOrURLChanged) {
+                for (Clip clip : _clips) {
+                    if (!clip.isActive()) {
+                        clip.setFramePosition(0);
+                        clip.start();
+                    }
                 }
             }
             try {
@@ -382,21 +393,25 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      */
     @Override
     public void update(LineEvent event) {
+        boolean refire = false;
         if (event.getType().equals(LineEvent.Type.STOP)) {
             synchronized (_outputEvents) {
                 _outputEvents.add(BooleanToken.FALSE);
                 _outputEvents.notifyAll();
+                refire = true;
             }
         } else if (event.getType().equals(LineEvent.Type.START)) {
             synchronized (_outputEvents) {
                 _outputEvents.add(BooleanToken.TRUE);
                 _outputEvents.notifyAll();
+                refire = true;
             }
         }
 
         // Don't need to refire in case of playToCompletion, since actor
-        // will block waiting for a STOP output event.
-        if (!_playToCompletion) {
+        // will block waiting for a STOP output event. Also do not refire
+        // on OPEN or CLOSE events.
+        if (!_playToCompletion && refire) {
             try {
                 getDirector().fireAtCurrentTime(this);
             } catch (IllegalActionException e) {
@@ -447,4 +462,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     /** True if the actor should block until the end of the clip is reached. */
     private boolean _playToCompletion;
+    
+    /** Previous fileOrURL so we can tell when it has changed. */
+    private Token _previousFileOrURL = null;
 }
