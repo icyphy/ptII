@@ -109,6 +109,8 @@
     </resources>
     
     <variables>
+      <variable name="TargetPanel.dir.mac" value="/Applications/ptII11.0.devel"/>
+      <variable name="TargetPanel.dir.unix" value="/usr/local/ptII11.0.devel"/>
       <variable name="TargetPanel.dir.windows" value="c:/Ptolemy/ptII11.0.devel"/>
     </variables> 
 
