@@ -96,6 +96,11 @@ var schema = {
       "type": "number",
       "title": "step size",
       "description": "The increment by which data is increased each second"
+    },
+    "options": {
+    	"type": "string",
+    	"title": "options",
+    	"options": ["A", "B", "C"]
     }
   }
 };
