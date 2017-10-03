@@ -320,6 +320,12 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     // Handle jar urls from WebStart or the installer
                     URL possibleJarURL = ClassUtilities
                             .jarURLEntryResource(fileOrURL.getExpression());
+                    if (possibleJarURL == null) {
+                        throw new IllegalActionException(this, ex,
+                                                         "Could not open "
+                                                         + fileOrURL.getExpression()
+                                                         + " as a jar URL.");
+                    }
                     stream = AudioSystem.getAudioInputStream(possibleJarURL);
                 }
 
