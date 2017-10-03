@@ -48,7 +48,9 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	KeyValueStoreClient.xml \
-	KeyValueStoreServer.xml
+	KeyValueStoreServer.xml \
+	KeyValueStoreServerJS.xml \
+	KeyValueStoreServerTerra.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
