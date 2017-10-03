@@ -103,7 +103,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 415.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityTerra/SoundServerTerra.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/SoundServerTerra.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

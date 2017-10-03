@@ -59,7 +59,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 280.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityVideoTerra.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/AugmentedRealityVideoTerra.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
