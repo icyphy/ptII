@@ -61,27 +61,16 @@ exports.initialize = function() {
         if(command == "spin"){
             RosPublisher.send('toSend', {"data": 2 } );
         }
-        if(command == "circle"){
+        if(command == "patrol"){
             RosPublisher.send('toSend', {"data": 3 } );
-        }
-        if(command == "square"){
-            RosPublisher.send('toSend', {"data": 4 } );
         }
         var msg = msgJSON;
     });
     this.addInputHandler('velocities', function (){
         var vels = this.get('velocities');
         var data = {
-            "angular": {
-                "name": "Angular Velocity",
-                "units": "radians/second",
-                "Angular Velocity": vels.msg.angular.z
-            },
-            "linear": {
-                "name": "Linear Velocity",
-                "units": "meters/second",
-                "Linear Velocity": vels.msg.linear.x
-            }
+            "Angular Velocity (rad/s)": vels.msg.angular.z,
+            "Linear Velocity (m/s)": vels.msg.linear.x
         };  
         this.send('data', data);
     });
@@ -109,8 +98,9 @@ var schema = {
   "properties": {
     "action": {
           "type": "string",
-          "title": "Robot Action: 'forward', 'spin', 'circle', 'square'",
-          "description": "Command for the robot to perform."
+          "title": "Robot Action",
+          "description": "Command for the robot to perform.",
+          "choices": ["forward", "spin", "patrol"]
     }
   }
 };
