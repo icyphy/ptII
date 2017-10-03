@@ -92,13 +92,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="terra.eecs.berkeley.edu">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 285.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8077">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8099">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
