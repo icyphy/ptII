@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II AugmentedRealityTerra demo
+# Makefile for Ptolemy II AugmentedRealityVideoTerra demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/AugmentedRealityTerra
+ME =		org/terraswarm/accessor/demo/AugmentedRealityVideoTerra
 
 # Root of the Java directory
 ROOT =		../../../../../
