@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 75981 2017-04-23 00:23:53Z beth@berkeley.edu $
 #
-# @Copyright (c) 2016 The Regents of the University of California.
+# @Copyright (c) 2016-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules/faceDetector/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

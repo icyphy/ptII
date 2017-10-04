@@ -37,7 +37,7 @@ ME =		ptolemy/actor/lib/jjs/modules/faceDetector/test/junit
 ROOT =		../../../../../../../..
 
 # JUNIT_JAR is searched for by /Users/cxh/src/ptII11.0.devel/configure and set in /Users/cxh/src/ptII11.0.devel/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
