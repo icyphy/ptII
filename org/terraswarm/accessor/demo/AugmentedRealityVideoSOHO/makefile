@@ -47,10 +47,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	AugmentedRealityFeedbackBleeSOHO.xml \
 	AugmentedRealityVideoSOHO.xml \
 	ControllableSensor.js \
+	GenerateMQTTAccessors.xml \
+	KeyValueStoreData.txt \
 	KeyValueStoreServerSOHO.xml \
-	SoundServerSOHO.xml
+	MQTTAccessorTemplate.js \
+	MQTTBlee.xml \
+	SoundServerSOHO.xml \
+	mqtts.json
 
 EXTRA_SRCS = \
 	$(JSRCS) \
