@@ -3,7 +3,7 @@
 #
 # @Authors: Christopher Brooks
 #
-# @Version: : mkpttest 72056 2015-04-21 14:33:21Z cxh $
+# @Version $Id$
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.

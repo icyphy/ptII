@@ -124,7 +124,7 @@ cat > makefile <<EoF
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: \$Id\$
 #
 # @Copyright (c) $YEAR The Regents of the University of California.
 # All rights reserved.
