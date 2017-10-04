@@ -1,7 +1,7 @@
 /* An application that executes non-graphical
  models specified on the command line.
 
- Copyright (c) 2001-2016 The Regents of the University of California.
+ Copyright (c) 2001-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -250,6 +250,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
                 Method method = clazz.getMethod("closeVertx");
                 method.invoke(null);
             }
+        } catch (NoClassDefFoundError ex) {
+            // Ignore this, it means that MoMLSimpleApplication was invoked without the Vert.x jar files.
         } catch (Throwable throwable) {
             System.err.println("MoMLSimpleApplication: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: " + throwable);
         }
