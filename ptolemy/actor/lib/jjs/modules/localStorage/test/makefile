@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules/localStorage/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)$(CLASSPATHSEPARATOR)$(PTPAHO_MQTT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
