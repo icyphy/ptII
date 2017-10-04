@@ -385,7 +385,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="http://192.168.1.217/keyvalue">
+        <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="http://192.168.1.217:8099/keyvalue">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
