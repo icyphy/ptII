@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	AugmentedRealityTerra
+PTPACKAGE = 	AugmentedRealityVideoSOHO
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -54,7 +54,6 @@ OTHER_FILES_TO_BE_JARED = \
 	KeyValueStoreData.txt \
 	KeyValueStoreServerSOHO.xml \
 	MQTTAccessorTemplate.js \
-	MQTTBlee.xml \
 	SoundServerSOHO.xml \
 	mqtts.json
 

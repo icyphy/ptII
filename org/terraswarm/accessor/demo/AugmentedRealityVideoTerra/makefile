@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	AugmentedRealityTerra
+PTPACKAGE = 	AugmentedRealityVideoTerra
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
