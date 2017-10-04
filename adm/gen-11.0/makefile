@@ -503,6 +503,15 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN)
 	mv $(PTIIDIST)/jars.xml_tmp \
 		$(PTIIDIST)/jars.xml
 	#
+	# Fix up ptolemy/actor/gui/jnlp/makefile
+	# Need to be careful here and remove ViptosApplication.jar from OTHER_JARS, but not the from the rule.
+	# So, we use a trailing space.
+	egrep -v "ViptosApplication.jar " \
+		$(PTIIDIST)/ptolemy/actor/gui/jnlp/makefile \
+		> $(PTIIDIST)/ptolemy/actor/gui/jnlp/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/actor/gui/jnlp/makefile.tmp \
+		$(PTIIDIST)/ptolemy/actor/gui/jnlp/makefile
+	#
 	# ptolemy/configs
 	#
 	# Remove apps/hlacerti from cosimulation.xml
