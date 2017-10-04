@@ -94,9 +94,17 @@ import ptolemy.kernel.util.IllegalActionException;
  *  interpolation to avoid blurring.  
  *  For example, with ImageMagik, use:
  *
- *  mogrify -scale 1000x1000 *.png; convert *.png tag36h11.pdf
+ *  mogrify -scale 1000x1000 *.png
  *
  *  Or, search the web for "tag 36H11".
+ *  
+ *  To create a pdf with all the images:
+ *
+ *  convert *.png tag36h11.pdf
+ * 
+ *  To annotate an image with a string:
+ *
+ *  convert tag36_11_00026.png label:'26' -gravity Center -append tag36_11_00026_labeled.png
  *
  *  In the Ptolemy tree, a sample file may be found at
  *  $PTII/ptolemy/actor/lib/jjs/modules/aprilTags//demo/AprilTags/tag36_11_00586.pdf
