@@ -63,7 +63,7 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for $PTII/lib/JNR.jar and other jars and sets PTRTOOL_DIR
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTRTOOL_DIR is empty.
 #
-DIRS = 		aspect conversions gui logic hoc image test \
+DIRS = 		aspect conversions gui logic hoc image \
 		javasound \
 		jjs \
 		jopio \
