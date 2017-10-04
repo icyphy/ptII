@@ -34,7 +34,8 @@ ROOT = ../../../..
 
 DIRS = \
 	AugmentedReality \
-	AugmentedRealityTerra \
+	AugmentedRealityVideoSOHO \
+	AugmentedRealityVideoTerra \
 	Hue \
 	Lifx \
 	NaturalLanguage \
