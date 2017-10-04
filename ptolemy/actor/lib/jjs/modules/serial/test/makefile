@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : mkpttest 72874 2015-07-26 21:01:52Z cxh $
+# @Version $Id$
 #
 # @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
