@@ -233,7 +233,7 @@ test release-4.1 {Check for makefiles in directories that have a test/ directory
     regsub {\\} $output {} output2
     regsub { *} $output2 { } output3
     list $output3
-} {\ ./doc/test/../makefile:DIRS\ =\t\t\n./ptolemy/actor/test/../makefile:DIRS\ =\ \tutil\ sched\ process\ continuous\ gui\ injection\ lib\ \\\n./ptolemy/backtrack/test/../makefile:DIRS\ =\t\t\$(PTBACKTRACK_ECLIPSE_DIR)\ automatic\ manual\ util\ xmlparser\ demo\n./ptolemy/cg/kernel/generic/test/../makefile:DIRS\ =\t\taccessor\ \\\n./ptolemy/cg/lib/test/../makefile:DIRS\ =\ \t\tdemo\ \\\n./ptolemy/configs/test/../makefile:DIRS\ =\t\t\\\n./ptolemy/vergil/test/../makefile:DIRS\ =\ \ttoolbox\ basic\ actor\ kernel\ \\}
+} {\ ./doc/test/../makefile:DIRS\ =\t\t\n./ptolemy/actor/lib/test/../makefile:DIRS\ =\ \t\taspect\ conversions\ gui\ logic\ hoc\ image\ \\\n./ptolemy/actor/test/../makefile:DIRS\ =\ \tutil\ sched\ process\ continuous\ gui\ injection\ lib\ \\\n./ptolemy/backtrack/test/../makefile:DIRS\ =\t\t\$(PTBACKTRACK_ECLIPSE_DIR)\ automatic\ manual\ util\ xmlparser\ demo\n./ptolemy/cg/kernel/generic/test/../makefile:DIRS\ =\t\taccessor\ \\\n./ptolemy/cg/lib/test/../makefile:DIRS\ =\ \t\tdemo\ \\\n./ptolemy/configs/test/../makefile:DIRS\ =\t\t\\\n./ptolemy/vergil/test/../makefile:DIRS\ =\ \ttoolbox\ basic\ actor\ kernel\ \\}
 
 test release-5.1 {Check for models that have $PTII in them.  They should use $CLASSPATH so that they work with jar files.} {
     # If you get messages from grep about "No such file or directory",
