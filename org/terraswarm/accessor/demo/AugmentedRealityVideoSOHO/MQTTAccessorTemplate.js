@@ -1,7 +1,3 @@
-// Stop extra messages from jslint.  Note that there should be no
-// space between the / and the * and global.
-/*globals console, error, exports, require */
-/*jshint globalstrict: true*/
 "use strict";
 
 exports.setup = function() {	
@@ -9,15 +5,15 @@ exports.setup = function() {
     
     var MQTTSubscriber = this.instantiate('MQTTSubscriber', 'net/MQTTSubscriber'); 
     MQTTSubscriber.input('subscribe', {
-	// 'value':'#'
-    // The GenerateBleeAccessors.xml model substitutes in the topic here.
+	/* 'value':'#'*/
+    /* The GenerateBleeAccessors.xml model substitutes in the topic here.*/
         'value': '@topic@'
     });
     
-    // The GenerateBleeAccessors.xml model substitutes in the BrokerHost here.
+    /* The GenerateBleeAccessors.xml model substitutes in the BrokerHost here.*/
     var brokerHost = '@brokerHost@';
 
-    // Hint: Use the lab11 Summon app to find local SwarmBoxes with BLE
+    /* Hint: Use the lab11 Summon app to find local SwarmBoxes with BLE. */
     MQTTSubscriber.setParameter('brokerHost', brokerHost);
 
     var code = "\
@@ -28,7 +24,9 @@ exports.setup = function() {
     exports.initialize = function() {\n\
 	    var thiz = this;\n\
 	    this.addInputHandler('in', function() {\n\
-		    thiz.send('out', JSON.parse(thiz.get('in')));\n\
+	    	var inValue = thiz.get('in');\n\
+	        console.log('MQTTAccessor:' + inValue);\n\
+		    thiz.send('out', JSON.parse(inValue));\n\
 	    });\n\
     }";
     var JavaScript = this.instantiateFromCode('JavaScript', code, false);

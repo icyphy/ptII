@@ -1,6 +1,10 @@
 {
     "mqtts": [
-        { "topic": "device/BLEES/c098e530005b", "type": "BLEE", "location": "CKC", "room": "Krutch", "atag": "127", "humanName": "Blee near the stage"},
-        { "topic": "device/PowerBlade/c098e570021e", "type": "BLEE", "location": "CKC", "room": "Krutch", "atag": "105", "humanName": "Presenter Laptop"}
+        { "topic": "device/BLEES/c098e530005a", "type": "BLEE", "location": "CKC", "room": "Krutch", "atag": "22", "humanName": "Blee near the stage"},
+        { "topic": "device/BLEES/c098e530005b", "type": "BLEE", "location": "Cory", "room": "545Q", "atag": "23", "humanName": "Edwards Office"},
+        { "topic": "device/PowerBlade/c098e570021e", "type": "PowerBlade", "location": "CKC", "room": "Krutch", "atag": "24", "humanName": "NetGear N300"},
+        { "topic": "device/PowerBlade/c098e570020b", "type": "PowerBlade", "location": "CKC", "room": "Krutch", "atag": "25", "humanName": "SwarmNuc1017"},
+        { "topic": "device/PowerBlade/c098e570023e", "type": "PowerBlade", "location": "CKC", "room": "Krutch", "atag": "26", "humanName": "LightBulb"},
+        { "topic": "device/PowerBlade/c098e570023a", "type": "PowerBlade", "location": "Cory", "room": "545Q", "atag": "27", "humanName": "Edwards Office"}
     ]
 }

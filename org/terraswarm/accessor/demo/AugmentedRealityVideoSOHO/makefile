@@ -51,11 +51,14 @@ OTHER_FILES_TO_BE_JARED = \
 	AugmentedRealityVideoSOHO.xml \
 	ControllableSensor.js \
 	GenerateMQTTAccessors.xml \
+	HueAccessorTemplate.js \
 	KeyValueStoreData.txt \
 	KeyValueStoreServerSOHO.xml \
 	MQTTAccessorTemplate.js \
+	MQTTBlee.xml \
 	SoundServerSOHO.xml \
-	mqtts.json
+	mqtts.json \
+	tag36_11_00019_labeled.png
 
 EXTRA_SRCS = \
 	$(JSRCS) \
