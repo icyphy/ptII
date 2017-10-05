@@ -60,10 +60,10 @@ exports.setup = function() {
            var thiz = this;\n\
            this.addInputHandler('in', function() {\n\
                var inValue = thiz.get('in');\n\
-               console.log('HueAccessorTemplate.JavaScriptOut: value of in: ' + inValue);\n\
+               console.log('HueAccessorTemplate.JavaScriptIn: value of in: ' + inValue);\n\
                var util = require('util');\n\
                console.log(util.inspect(inValue));\n\
-               console.log('HueAccessorTemplate.JavaScriptOut: inValue.on: ' + inValue.on);\n\
+               console.log('HueAccessorTemplate.JavaScriptIn: inValue.on: ' + inValue.on);\n\
                var on = true;\n\
                if (inValue.on !== 'on') {;\n\
                    on = false; \n\
@@ -84,8 +84,15 @@ exports.setup = function() {
            this.addInputHandler('in', function() {\n\
                /* var inValue = thiz.get('in'); */\n\
                /* FIXME: Need to get real data from the Hue. */\n\
-               var inValue = '{ \"bridgeIP\": \"@bridgeIP@\", \"id\": \"@id@\", \"userName\": \"@userName@\" }';\n\
-               thiz.send('out', JSON.parse(inValue));\n\
+               /* var inValue = '{ \"bridgeIP\": \"@bridgeIP@\", \"id\": \"@id@\", \"userName\": \"@userName@\" }';*/\n\
+               var inValue = thiz.get('in');\n\
+               var idLight = inValue['@id@'];\n\
+               console.log('HueAccessorTemplate.JavaScriptIn: inValue: ' + inValue);\n\
+               var util = require('util');\n\
+               console.log(util.inspect(inValue));\n\
+               console.log('HueAccessorTemplate.JavaScriptIn: idLight: ' + idLight);\n\
+               console.log(util.inspect(idLight));\n\
+               thiz.send('out', idLight);\n\
            });\n\
         }";
 
