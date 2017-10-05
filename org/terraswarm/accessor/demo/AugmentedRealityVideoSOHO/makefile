@@ -52,7 +52,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ControllableSensor.js \
 	GenerateMQTTAccessors.xml \
 	HueAccessorTemplate.js \
-	KeyValueStoreData.txt \
 	KeyValueStoreServerSOHO.xml \
 	MQTTAccessorTemplate.js \
 	MQTTBlee.xml \
@@ -71,7 +70,8 @@ MISC_FILES = $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	KeyValueStoreData.txt
 
 JCLASS = $(JSRCS:%.java=%.class)
 
