@@ -1,369 +1,396 @@
 <!-- $Id$ -->
 <html>
-<head>
-<Title>Ptplot Frequently Asked Questions</Title>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<link href="default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1><a name="ptplot FAQ">Ptplot Frequently Asked Questions</a></h1>
-Below are some answers to frequently asked questions about ptplot.
-This page contains links to documents about Ptplot internals and
-infrastructure.
-<H2>Contents</H2>
-<MENU>
-<LI> <A HREF="#ptplot faq: general questions"><B>1. General</B></A>
-	<MENU>
-	<LI> <A HREF="#ptplot description (short)"><B>1.1 What Is Ptplot?</B></A>
+  <head>
+    <Title>Ptplot Frequently Asked Questions</Title>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <link href="default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1><a name="ptplot FAQ">Ptplot Frequently Asked Questions</a></h1>
+    Below are some answers to frequently asked questions about ptplot.
+    This page contains links to documents about Ptplot internals and
+    infrastructure.
+    <H2>Contents</H2>
+    <ul>
+      <li> <A HREF="#ptplot faq: general questions"><B>1. General</B></A>
+	<ul>
+	  <li> <A HREF="#ptplot description (short)"><B>1.1 What Is Ptplot?</B></A>
 
-	<LI> <A HREF="#ptplot pronunciation"><B>1.2 How do I pronounce 'ptplot'?</B></A>
+	  <li> <A HREF="#ptplot pronunciation"><B>1.2 How do I pronounce 'ptplot'?</B></A>
 
-	<LI> <A HREF="#ptplot copyright"><B>1.3 What is the copyright?</B></A>
-	<LI> <A HREF="#contact"><B>1.4 How do I contact the authors?</B></A>
-	<LI> <A HREF="#mailing list"><B>1.5 Is there a mailing list?</B></A>
-	<LI> <A HREF="#xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>
-	<LI> <A HREF="#ptolemyII"><B>1.7 What is the relationship between ptplot and Ptolemy II?</B></A>
-	<LI> <A HREF="#encryption"><B>1.8 Does Ptplot contain encryption?</B></A>
-	<LI> <A HREF="#ECCN"><B>1.9 Does Ptplot have a US Export Control Classification Number?</B></A>
-	</MENU>
+	  <li> <A HREF="#ptplot copyright"><B>1.3 What is the copyright?</B></A>
+	  <li> <A HREF="#contact"><B>1.4 How do I contact the authors?</B></A>
+	  <li> <A HREF="#mailing list"><B>1.5 Is there a mailing list?</B></A>
+	  <li> <A HREF="#xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>
+	  <li> <A HREF="#ptolemyII"><B>1.7 What is the relationship between ptplot and Ptolemy II?</B></A>
+	  <li> <A HREF="#encryption"><B>1.8 Does Ptplot contain encryption?</B></A>
+	  <li> <A HREF="#ECCN"><B>1.9 Does Ptplot have a US Export Control Classification Number?</B></A>
+	</ul>
 
-<LI> <A HREF="#ptplot faq: installation"><B>2. Installation questions</B></A>
-	<MENU>
-	<LI> <A HREF="#downloading Ptplot"><B>2.1 How do I download
-	ptplot?</B></A>
+      <li> <A HREF="#ptplot faq: installation"><B>2. Installation questions</B></A>
+	<ul>
+	  <li> <A HREF="#downloading Ptplot"><B>2.1 How do I download
+	        ptplot?</B></A>
 
-	<LI> <A HREF="#platforms that Ptplot runs under"><B>2.2 What
-	platforms does ptplot run under?</B></A>
+	  <li> <A HREF="#platforms that Ptplot runs under"><B>2.2 What
+	        platforms does ptplot run under?</B></A>
 
-	<LI> <A HREF="#ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
+	  <li> <A HREF="#ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
 
-	<LI> <A HREF="#ptplot troubleshooting overview"><B>2.4	Troubleshooting</B></A>
-	<LI> <A HREF="#ptplot bug list"><B>2.5	Is there a bug list?</B></A>
-	<LI> <A HREF="#ptplot potential features"><B>2.6 What features might you someday implement?</B></A>
-	</MENU>
+	  <li> <A HREF="#ptplot troubleshooting overview"><B>2.4	Troubleshooting</B></A>
+	  <li> <A HREF="#ptplot bug list"><B>2.5	Is there a bug list?</B></A>
+	  <li> <A HREF="#ptplot potential features"><B>2.6 What features might you someday implement?</B></A>
+	</ul>
 
-<LI> <A HREF="#ptplot faq: How do I . . ."><B>3. How do I  . . .</B></A>
-	<MENU>
-	<LI> <A HREF="#mydata"><B>3.1 Plot my own data?</B></A>
-	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
-	<LI> <A HREF="#endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
-	<LI> <A HREF="#appletprinting"><B>3.4 How do I print a plot from a Plot applet or application?</B></A>
-	<LI> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet?</B></A>
+      <li> <A HREF="#ptplot faq: How do I . . ."><B>3. How do I  . . .</B></A>
+	<ul>
+	  <li> <A HREF="#mydata"><B>3.1 Plot my own data?</B></A>
+	  <li> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
+	  <li> <A HREF="#endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
+	  <li> <A HREF="#appletprinting"><B>3.4 How do I print a plot from a Plot applet or application?</B></A>
+	  <li> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet?</B></A>
 
-	<LI> <A HREF="#twoplots"><B>3.6 How do I have two separate plots?</B></A>
-	<LI> <A HREF="#simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
-	<LI> <A HREF="#simpleapplet"><B>3.8 Why is the HTML so complex for the applets?</B></A>
-	<LI> <A HREF="#simpleapplet"><B>3.9 How do I create a simple standalone Plot applet?</B></A>
-	<LI> <A HREF="#logaxesranges"><B>3.10 How do I set the ranges for a plot that is using log axes?</B></A>
-      	<LI> <A HREF="#3dplot"><B>3.11 Does Ptplot support 3-D plots?</B></A>
-	</MENU>
+	  <li> <A HREF="#twoplots"><B>3.6 How do I have two separate plots?</B></A>
+	  <li> <A HREF="#simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
+	  <li> <A HREF="#simpleapplet"><B>3.8 Why is the HTML so complex for the applets?</B></A>
+	  <li> <A HREF="#simpleapplet"><B>3.9 How do I create a simple standalone Plot applet?</B></A>
+	  <li> <A HREF="#logaxesranges"><B>3.10 How do I set the ranges for a plot that is using log axes?</B></A>
+      	  <li> <A HREF="#3dplot"><B>3.11 Does Ptplot support 3-D plots?</B></A>
+	</ul>
 
-</MENU>
-<HR>
+    </ul>
+    <HR>
 
-<H2><A NAME="ptplot faq: general questions"><B>1. General</B></A></H2>
+    <H2><A NAME="ptplot faq: general questions"><B>1. General</B></A></H2>
 
-<DL>
-<DT> <A NAME="ptplot description (short)"><B>1.1 What Is Ptplot?</B></A>
-<DD> Ptplot is a Java 2-D graphing component.  Ptplot can be used
-in applets and applications.  The
-<A HREF="main.htm">top-level Ptplot page</A> describes Ptplot
-further.
+    <dl>
+      <dt> <A NAME="ptplot description (short)"><B>1.1 What Is Ptplot?</B></A>
+      </dt>
+      <dd> Ptplot is a Java 2-D graphing component.  Ptplot can be used
+        in applets and applications.  The
+        <A HREF="main.htm">top-level Ptplot page</A> describes Ptplot
+        further.
+      </dd>
+      <dt> <A NAME="ptplot pronunciation"><B>1.2 How do I pronounce 'ptplot'?</B></A>
+      </dt>
+      <dd> pee-tee-plot.  Unlike with Ptolemy, the initial p in the pt is pronounced.
+      </dd>
+      <dt> <A NAME="ptplot copyright"><B>1.3 What is the copyright?</B></A>
+      </dt>
+      <dd> Ptplot is released under the fairly liberal UC Berkeley copyright,
+        see <a href="../../../copyright.txt">copyright.txt</a>.
+        Most files have the copyright at the top, for example, see
+        <A HREF="../Plot.java"><CODE>Plot.java</CODE></A>.
 
-<DT> <A NAME="ptplot pronunciation"><B>1.2 How do I pronounce 'ptplot'?</B></A>
-<DD> pee-tee-plot.  Unlike with Ptolemy, the initial p in the pt is pronounced.
+        <p>Ptplot is free for academic and commercial use.  You an incorporate it
+          into products, but you need to include follow the instructions in the
+          copyright notice.
 
-<DT> <A NAME="ptplot copyright"><B>1.3 What is the copyright?</B></A>
-<DD> Ptplot is released under the fairly liberal UC Berkeley copyright,
-see <a href="../../../copyright.txt">copyright.txt</a>.
-Most files have the copyright at the top, for example, see
-<A HREF="../Plot.java"><CODE>Plot.java</CODE></A>.
+        <p>This copyright is based on the Tcl copyright that was used when
+          Prof. Ousterhout was developing Tcl here at UC Berkeley.  This
+          copyright was also used in Ptolemy Classic, which has been used in
+          commercial products.
 
- <p>Ptplot is free for academic and commercial use.  You an incorporate it
-into products, but you need to include follow the instructions in the
-copyright notice.
+        <p>If you use Ptplot in a product, and you would like us to include
+          a pointer to your use in our <a href="thirdparty.htm">Third Party uses of Ptplot</a> page, then send email to
+          ptplot at ptolemy eecs berkeley edu.
 
- <p>This copyright is based on the Tcl copyright that was used when
-Prof. Ousterhout was developing Tcl here at UC Berkeley.  This
-copyright was also used in Ptolemy Classic, which has been used in
-commercial products.
+        <p> This style of copyright is often referred to the community as a
+          "BSD" copyright because it was used for the "Berkeley Standard
+          Distribution" of Unix. It is much more liberal that the commonly used
+          "GPL" or "GNU Public License," which encumbers the software and
+          derivative works with the requirement that they carry the source code
+          and the same copyright agreement. The BSD copyright requires that the
+          software and derivative work carry the identity of the copyright
+          owner, as embodied in the lines:
+          <pre>
+            Copyright (c) 1999-2014 The Regents of the University of California.
+            All rights reserved.
+        </pre></p>
 
- <p>If you use Ptplot in a product, and you would like us to include
-a pointer to your use in our <a href="thirdparty.htm">Third Party uses of Ptplot</a> page, then send email to
-ptplot at ptolemy eecs berkeley edu.
+        <p>The copyright also requires that copies and derivative works include
+          the disclaimer of liability in BOLD. It specifically does not require
+          that copies of the software or derivative works carry the middle
+          paragraph, so such copies and derivative works need not grant
+          similarly liberal rights to users of the software.</p>
 
-<p> This style of copyright is often referred to the community as a
-"BSD" copyright because it was used for the "Berkeley Standard
-Distribution" of Unix. It is much more liberal that the commonly used
-"GPL" or "GNU Public License," which encumbers the software and
-derivative works with the requirement that they carry the source code
-and the same copyright agreement. The BSD copyright requires that the
-software and derivative work carry the identity of the copyright
-owner, as embodied in the lines:
-<pre>
-Copyright (c) 1999-2014 The Regents of the University of California.
-All rights reserved.
-</pre></p>
+        <p>The intent of the BSD copyright is to maximize the potential impact of
+          the software by enabling uses of the software that are inconsistent
+          with disclosing the source code or granting free redistribution
+          rights. For example, a commercial enterprise can extend the software,
+          adding value, and sell the original software embodied with the
+          extensions. Economic principles indicate that granting free
+          redistribution rights may render the enterprise business model
+          untenable, so many business enterprises avoid software with GPL
+          licenses. Economic principles also indicate that, in theory, fair
+          pricing of derivative works must be based on the value of the
+          extensions, the packaging, or the associated services provided by the
+          enterprise. The pricing cannot reflect the value of the free software,
+          since an informed consumer will, in theory, obtain that free software
+          from another source.</p>
 
-<p>The copyright also requires that copies and derivative works include
-the disclaimer of liability in BOLD. It specifically does not require
-that copies of the software or derivative works carry the middle
-paragraph, so such copies and derivative works need not grant
-similarly liberal rights to users of the software.</p>
+        <p>Software with a BSD license can also be more easily included in
+          defense or national-security related applications, where free
+          redistribution of source code and licenses may be inconsistent with
+          the mission of the software.  Ptolemy II can include other software
+          with copyrights that are different from the BSD copyright. In general,
+          we do not include software with the GNU General Public License (GPL)
+          license, because provisions of the GPL license require that software
+          with which GLP'd code is integrated also be encumbered by the GPL
+          license. In the past, we have made an exception for GPL'd code that is
+          aggregated with Ptolemy II but not directly combined with Ptolemy
+          II. For example cvs2cl.pl was shipped with Ptolemy II.  This file is a
+          GPL'd Perl script that access the CVS database and generates a
+          ChangeLog file. This script is not directly called by Ptolemy II, and
+          bwe include it as a ``mere aggregation'' and thus Ptolemy II does not
+          fall under the GPL. Note that we do not include GPL'd Java files that
+          are compiled and then called from Ptolemy II because this would
+          combine Ptolemy II with the GPL'd code and thus encumber Ptolemy II
+          with the GPL.</p>
 
-<p>The intent of the BSD copyright is to maximize the potential impact of
-the software by enabling uses of the software that are inconsistent
-with disclosing the source code or granting free redistribution
-rights. For example, a commercial enterprise can extend the software,
-adding value, and sell the original software embodied with the
-extensions. Economic principles indicate that granting free
-redistribution rights may render the enterprise business model
-untenable, so many business enterprises avoid software with GPL
-licenses. Economic principles also indicate that, in theory, fair
-pricing of derivative works must be based on the value of the
-extensions, the packaging, or the associated services provided by the
-enterprise. The pricing cannot reflect the value of the free software,
-since an informed consumer will, in theory, obtain that free software
-from another source.</p>
+        <p>Another GNU license is the GNU Library General Public License now
+          known as the GNU Lesser General Public License (LGPL). We try to avoid
+          packages that have this license, but we on occasion we have included
+          them with Ptolemy II. The LGPL license is less strict than the GPL -
+          the LGPL permits linking with other packages without encumbering the
+          other package.  In general, it is best if you avoid GNU code. If you
+          are considering using code with the GPL or LGPL, we encourage you to
+          carefully read the license and to also consult the GNU GPL FAQ at
+          <a href="http://www.gnu.org/licenses/gpl-faq.html#in_browser" target="_top"><code>http://www.gnu.org/licenses/gpl-faq.html</code></a>.</p>
 
-<p>Software with a BSD license can also be more easily included in
-defense or national-security related applications, where free
-redistribution of source code and licenses may be inconsistent with
-the mission of the software.  Ptolemy II can include other software
-with copyrights that are different from the BSD copyright. In general,
-we do not include software with the GNU General Public License (GPL)
-license, because provisions of the GPL license require that software
-with which GLP'd code is integrated also be encumbered by the GPL
-license. In the past, we have made an exception for GPL'd code that is
-aggregated with Ptolemy II but not directly combined with Ptolemy
-II. For example cvs2cl.pl was shipped with Ptolemy II.  This file is a
-GPL'd Perl script that access the CVS database and generates a
-ChangeLog file. This script is not directly called by Ptolemy II, and
-bwe include it as a ``mere aggregation'' and thus Ptolemy II does not
-fall under the GPL. Note that we do not include GPL'd Java files that
-are compiled and then called from Ptolemy II because this would
-combine Ptolemy II with the GPL'd code and thus encumber Ptolemy II
-with the GPL.</p>
+        <p>We also avoid including software with proprietary copyrights that do
+          not permit redistribution of the software.</p>
+      </dd>
+      <dt> <A NAME="contact"><B>1.4 How do I contact the authors?</B></A>
+      </dt>
+      <dd> The primary author of Ptplot is Professor Edward A. Lee.
+        Christopher Brooks is a coauthor.  William Wu and Lukito Muliadi
+        contributed code.
+        You can contact the authors via
+        ptplot at ptolemy eecs berkeley edu.
+      </dd>
+      <dt> <A NAME="mailing list"><B>1.5 Is there a mailing list?</B></A>
+      </dt>
+      <dd> We maintain the <CODE>ptplot-announce</CODE> alias for announcing
+        new ptplot releases.  This alias is for Ptplot announcements only.  Thus,
+        you cannot post to this group.  To subscribe to this group,
+        See <a href="https://lists.eecs.berkeley.edu/sympa/subscribe/ptplot-announce"  target="_top">https://lists.eecs.berkeley.edu/sympa/subscribe/ptplot-announce</a>.
+      </dd>
+      <dt> <A NAME="xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>
+      </dt>
+      <dd> The introduction contains a <A HREF="main.htm#xgraph">description</A> of the relationship between <CODE>xgraph</CODE> and ptplot.
+        <br> Note that you can download sources and binaries for <CODE>pxgraph</CODE>, an extension to <CODE>xgraph</CODE> from
+        <a href="http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm</CODE></a>
+      </dd>
+      <dt> <A NAME="ptolemyII"><B>1.7 What is the relationship between ptplot and Ptolemy II?</B></A>
+      </dt>
+      <dd> 
+        Ptolemy II is a set of Java packages supporting heterogeneous, concurrent modeling and design.  One of the packages that is shipped with Ptolemy II
+        is Ptplot.  For more information about Ptolemy II, see
+        <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/</CODE></a>.
+        We usually do a release of Ptolemy II once a year.  As part of the Ptolemy II
+        release process, we usually do a standalone Ptplot release.
 
-<p>Another GNU license is the GNU Library General Public License now
-known as the GNU Lesser General Public License (LGPL). We try to avoid
-packages that have this license, but we on occasion we have included
-them with Ptolemy II. The LGPL license is less strict than the GPL -
-the LGPL permits linking with other packages without encumbering the
-other package.  In general, it is best if you avoid GNU code. If you
-are considering using code with the GPL or LGPL, we encourage you to
-carefully read the license and to also consult the GNU GPL FAQ at
-<a href="http://www.gnu.org/licenses/gpl-faq.html#in_browser" target="_top"><code>http://www.gnu.org/licenses/gpl-faq.html</code></a>.</p>
+      </dd>
+      <dt> <A NAME="encryption"><B>1.8 Does Ptplot contain encryption?</B></A>
+      </dt>
+      <dd> PtPlot does not include encryption.  (We sometimes get asked this
+        question by overseas PtPlot users)
 
-<p>We also avoid including software with proprietary copyrights that do
-not permit redistribution of the software.</p>
-<DT> <A NAME="contact"><B>1.4 How do I contact the authors?</B></A>
-<DD> The primary author of Ptplot is Professor Edward A. Lee.
-Christopher Brooks is a coauthor.  William Wu and Lukito Muliadi
-contributed code.
-You can contact the authors via
-ptplot at ptolemy eecs berkeley edu.
+      </dd>
+      <dt> <A NAME="ECCN"><B>1.9 Does Ptplot have a US Export Control Classification Number?</B></A>
+      </dt>
+      <dd>We do not have a Export Control Classification Number (ECCN).
+      </dd>
+    </dl>
+    <HR>
 
-<DT> <A NAME="mailing list"><B>1.5 Is there a mailing list?</B></A>
-<DD> We maintain the <CODE>ptplot-announce</CODE> alias for announcing
-new ptplot releases.  This alias is for Ptplot announcements only.  Thus,
-you cannot post to this group.  To subscribe to this group,
-See <a href="https://lists.eecs.berkeley.edu/sympa/subscribe/ptplot-announce"  target="_top">https://lists.eecs.berkeley.edu/sympa/subscribe/ptplot-announce</a>.
+    <H2><A NAME="ptplot faq: installation"><B>2. Installation questions</B></A></H2>
+    <dl>
 
-<DT> <A NAME="xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>
-<DD> The introduction contains a <A HREF="main.htm#xgraph">description</A> of the relationship between <CODE>xgraph</CODE> and ptplot.
- <br> Note that you can download sources and binaries for <CODE>pxgraph</CODE>, an extension to <CODE>xgraph</CODE> from
-<a href="http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm</CODE></a>
+      <dt> <A NAME="downloading Ptplot"><B>2.1 How do I download Ptplot?</B></A>
+      </dt>
+      <dd> <A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot/index.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot.htm</CODE></A>
+        has links to the tar and zip files.
+      </dd>
 
-<DT> <A NAME="ptolemyII"><B>1.7 What is the relationship between ptplot and Ptolemy II?</B></A>
-<DD> 
-Ptolemy II is a set of Java packages supporting heterogeneous, concurrent modeling and design.  One of the packages that is shipped with Ptolemy II
-is Ptplot.  For more information about Ptolemy II, see
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/</CODE></a>.
-We usually do a release of Ptolemy II once a year.  As part of the Ptolemy II
-release process, we usually do a standalone Ptplot release.
+      <dt> <A NAME="platforms that Ptplot runs under"><B>2.2 What platforms does Ptplot run under?</B></A>
+      </dt>
+      <dd> Ptplot was developed under JDK 1.4, which requires the
+        <a href="http://www.javasoft.com/products/plugin/#in_browser" target="_top">Java Plug-in</a>.
+        <p>Java 1.4 or later is required, the PlotFrame class uses
+          <pre>
+            import javax.print.attribute.PrintRequestAttributeSet;
+            import javax.print.attribute.HashPrintRequestAttributeSet;
+          </pre>
+          These are part of the java.print package which does not exist in Java 1.3.1
+          or 1.3.2.
 
-<DT> <A NAME="encryption"><B>1.8 Does Ptplot contain encryption?</B></A>
-<DD> PtPlot does not include encryption.  (We sometimes get asked this
-question by overseas PtPlot users)
+        <p>Ptplot will also work under Java 1.4.0, but note that
+          Java 1.4.0 has a bug that prevents some applets from working well if
+          Ptplot is installed in a directory that has spaces in the path name,
+          see the <a href="troubleshooting.htm#spaces">troubleshooting page</a>
+          for details.
 
-<DT> <A NAME="ECCN"><B>1.9 Does Ptplot have a US Export Control Classification Number?</B></A>
-<DD>We do not have a Export Control Classification Number (ECCN).
+        <p>If you don't want to require your users to install the JDK plug-in, then try
+          using Ptplot 3.1 or earlier.
 
-</DL>
- <HR>
+        <p> A small standalone example that uses Ptplot 3.1 can be found at
+          <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/standalone/#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot/standalone/</CODE></a>
 
-<H2><A NAME="ptplot faq: installation"><B>2. Installation questions</B></A></H2>
-<DL>
+        <p>Note that Ptplot 3.1 and later wll not compile with JDK1.1, the
+          Plot class uses the <CODE>clear()</CODE> method from the Vector
+          class, which is not present in JDK1.1.
+        <p>Ptplot 2.0 supported JDK1.1, and Ptplot 1.3 and earlier
+          supported JDK1.0.2, you can find those releases in
+          <a href="http://ptolemy.eecs.berkeley.edu/java/old#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/old</CODE></a>.
+      </dd>
+      <dt> <A NAME="ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
+      </dt>
+      <dd>
+        To use Ptplot, you will need the Java Runtime Environment, (JRE)
+        which
+        can be downloaded from
+        <A HREF="http://www.javasoft.com" target="_top"><CODE>http://www.javasoft.com</CODE></A>.
+        <p>See the <a href="install.htm">Installing Ptplot</a> page
+          for more information
+        <P>You can also run Ptplot as an applet in your local browser by
+          downloading the
+          <a href="http://www.javasoft.com/products/plugin/#in_browser" target="_top">Java Plug-in</a>.
+      </dd>
 
-<DT> <A NAME="downloading Ptplot"><B>2.1 How do I download Ptplot?</B></A>
-<DD> <A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot/index.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot.htm</CODE></A>
-has links to the tar and zip files.
+      <dt> <A NAME="ptplot troubleshooting overview"><B>2.4 Troubleshooting</B></A>
+      </dt>
+      <dd> The <A HREF="troubleshooting.htm">Ptplot Troubleshooting</A> guide
+        has a few hints.
 
-<DT> <A NAME="platforms that Ptplot runs under"><B>2.2 What platforms does Ptplot run under?</B></A>
-<DD> Ptplot was developed under JDK 1.4, which requires the
-<a href="http://www.javasoft.com/products/plugin/#in_browser" target="_top">Java Plug-in</a>.
-<p>Java 1.4 or later is required, the PlotFrame class uses
-<pre>
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-</pre>
-These are part of the java.print package which does not exist in Java 1.3.1
-or 1.3.2.
+        <P>You might find useful information on the Ptplot homepage at
+          <A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>.
 
- <p>Ptplot will also work under Java 1.4.0, but note that
-Java 1.4.0 has a bug that prevents some applets from working well if
-Ptplot is installed in a directory that has spaces in the path name,
-see the <a href="troubleshooting.htm#spaces">troubleshooting page</a>
-for details.
+        <P>If you are really stumped, you can send mail to
+          ptplot at ptolemy eecs berkeley edu.
+          Your mail should include:
+          <OL>
+            <li> What version of Ptplot you are running.
+            <li> What platform you are running under (Solaris, Windows etc.)
+            <li> The version of Java that you are running
+            <li> If the problem is with an applet, then include the type of browser
+              and the version.
+            <li> Exactly how to reproduce the bug.
+          </OL>
+      </dd>
+      <dt> <A NAME="ptplot bug list"><B>2.5 Is there a bug list?</B></A>
+      </dt>
+      <dd>
+        <ul>
+          <li>Most of the known bugs and limitations are listed in the
+            <A HREF="../../../doc/codeDoc/ptolemy/plot/Plot.html#ptplot limitations">javadoc Plot documentation</A>
+          <li>The Todo list is at the top of the
+            <A HREF="../Plot.java"><CODE>Plot.java</CODE></A> file.
 
- <p>If you don't want to require your users to install the JDK plug-in, then try
-using Ptplot 3.1 or earlier.
+          <li> Note that PlotLive works best under Windows and may not
+            work at all under Solaris.
+        </ul>
+      </dd>
+      <dt> <A NAME="ptplot potential features"><B>2.6 What features might you some day implement?</B></A>
+      </dt>
+      <dd> Below is a list of frequently requested features that we might
+        some day implement.  At this point, we have no plans to implement these
+        features, but since the source code is available, anyone can
+        go ahead and implement these features on their own
 
- <p> A small standalone example that uses Ptplot 3.1 can be found at
-<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/standalone/#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot/standalone/</CODE></a>
+        <dl>
 
- <p>Note that Ptplot 3.1 and later wll not compile with JDK1.1, the
-Plot class uses the <CODE>clear()</CODE> method from the Vector
-class, which is not present in JDK1.1.
- <p>Ptplot 2.0 supported JDK1.1, and Ptplot 1.3 and earlier
-supported JDK1.0.2, you can find those releases in
-<a href="http://ptolemy.eecs.berkeley.edu/java/old#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/old</CODE></a>.
+          <dt> Handling Dates
+          </dt>
+          <dd> It would be nice if Ptplot could properly display dates
+            on the axes.
+            It turns out that the code that labels the axes is fairly tricky
+            to get right and have it look good.  
 
-<DT> <A NAME="ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
-<DD>
-To use Ptplot, you will need the Java Runtime Environment, (JRE)
-which
-can be downloaded from
-<A HREF="http://www.javasoft.com" target="_top"><CODE>http://www.javasoft.com</CODE></A>.
- <p>See the <a href="install.htm">Installing Ptplot</a> page
-for more information
- <P>You can also run Ptplot as an applet in your local browser by
-downloading the
-<a href="http://www.javasoft.com/products/plugin/#in_browser" target="_top">Java Plug-in</a>.
+            <br> One way to handle dates is to convert a date such as 2003/03/20
+            to the integeter day of the year since January 1 and then use
+            the XTicks facility to label the starts of the month:
+            <pre>
+              XTicks: Jan 0, Feb 31, Mar 59, Apr 90, May 120
+            </pre>
+            To handle time, once can convert to the number of minutes or seconds
+            since midnight and adjust the ticks accordingly.
+          </dd>
 
-<DT> <A NAME="ptplot troubleshooting overview"><B>2.4 Troubleshooting</B></A>
-<DD> The <A HREF="troubleshooting.htm">Ptplot Troubleshooting</A> guide
-has a few hints.
+          <dt> Making the datapoints more interactive
+          </dt>
+          <dd> It would be nice if the user could mouse on the data points in
+            the graph and various things would happen:
+	    <menu>
+	      <li> The values for the point would pop up as a tooltip
+	      <li> The user could jump to a URL
+	    </menu>	
+            It would be nice if the points could have labels that
+            are displayed in the graph.
 
- <P>You might find useful information on the Ptplot homepage at
-<A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>.
+            <br> The way to implement these sorts of features would be to look at the
+            zoom code and to add a point type that included a url field.
+          </dd>
+          <dt> Selecting data sets
+          </dt>
+          <dd> It would be nice if the user could select which datasets were displayed.
+          </dd>
 
- <P>If you are really stumped, you can send mail to
-ptplot at ptolemy eecs berkeley edu.
-Your mail should include:
-<OL>
-<LI> What version of Ptplot you are running.
-<LI> What platform you are running under (Solaris, Windows etc.)
-<LI> The version of Java that you are running
-<LI> If the problem is with an applet, then include the type of browser
-and the version.
-<LI> Exactly how to reproduce the bug.
-</OL>
-<DT> <A NAME="ptplot bug list"><B>2.5 Is there a bug list?</B></A>
-<DD>
-<MENU>
- <LI>Most of the known bugs and limitations are listed in the
-<A HREF="../../../doc/codeDoc/ptolemy/plot/Plot.html#ptplot limitations">javadoc Plot documentation</A>
- <LI>The Todo list is at the top of the
-<A HREF="../Plot.java"><CODE>Plot.java</CODE></A> file.
+        </dl>
+      </dd>
 
-<li> Note that PlotLive works best under Windows and may not
-work at all under Solaris.
-</MENU>
+    </dl>
 
-<DT> <A NAME="ptplot potential features"><B>2.6 What features might you some day implement?</B></A>
-<DD> Below is a list of frequently requested features that we might
-some day implement.  At this point, we have no plans to implement these
-features, but since the source code is available, anyone can
-go ahead and implement these features on their own
+    <HR>
+    <H2><A NAME="ptplot faq: How do I  . . .">3. How do I  . . .</A>
+    </H2>
 
-<dl>
+    <dl>
+      <dt> <A NAME="mydata"><B>3.1 How do I plot my own data?</B></A>
+      </dt>
+      <dd>
+        There are several ways to plot data using ptplot.  You can read
+        data from a file on the local filesystem, or from a file
+        on the internet via a URL.  You can sketch your own data
+        and then save the file.  Or you can create Java applications
+        or applets that directly call methods of the Plot classes to
+        create the plot.
+        <P>
+          The preferred
+          file format is called PlotML, and is described fully in the
+          <a href="plot.pdf">Plot chapter</a>.  It is a textual format
+          in XML, the popular <i>extensible markup language</i> used widely
+          on the internet.  An older (and more compact) textual format
+          is also supported.  Binary data files are also supported, see
+          <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
+          All three formats are demonstrated in the
+          <a href="../demo/toc.htm" target="toc">demos</a>.
+        <P>
+          If you write Java code, the key method for adding data points
+          is the addPoint() method of the Plot class.
+          The <A HREF="../demo/FourierSeries.htm">Fourier Series demo</A>
+          uses this method.
+        <P>
+          You can also plot data dynamically as shown in the
+          <a href="../demo/Live.htm">live plot</a> demo.
+      </dd>
+      <dt> <A NAME="binarydata"><B>3.2 How do I plot binary data?</B></A>
+      </dt>
+      <dd>Ptplot can plot binary datafiles in an older file format
+        originally created by Joe Buck for the X11 <CODE>pxgraph</CODE> program.
+        For details on the format see the
+        <A HREF="../../../doc/codeDoc/ptolemy/plot/compat/PxgraphParser.html#-binary flag">javadoc Pxgraph documentation</A> for the PxgraphParser class.
 
-<dt> Handling Dates
-<dd> It would be nice if Ptplot could properly display dates
-on the axes.
-It turns out that the code that labels the axes is fairly tricky
-to get right and have it look good.  
+        <p>The Java program below shows how to generate a raw binary
+          data file with two data points in it.
+          <pre>
+            cxh@tycho 25% cat BinaryData.java
+            import java.io.*;
 
- <br> One way to handle dates is to convert a date such as 2003/03/20
-to the integeter day of the year since January 1 and then use
-the XTicks facility to label the starts of the month:
-<pre>
-XTicks: Jan 0, Feb 31, Mar 59, Apr 90, May 120
-</pre>
-To handle time, once can convert to the number of minutes or seconds
-since midnight and adjust the ticks accordingly.
-
-
-<dt> Making the datapoints more interactive
-<dd> It would be nice if the user could mouse on the data points in
-the graph and various things would happen:
-	<menu>
-	<li> The values for the point would pop up as a tooltip
-	<li> The user could jump to a URL
-	</menu>	
-It would be nice if the points could have labels that
-are displayed in the graph.
-
-<br> The way to implement these sorts of features would be to look at the
-zoom code and to add a point type that included a url field.
-
-<dt> Selecting data sets
-<dd> It would be nice if the user could select which datasets were displayed.
-
-</dl>
-
-
-</DL>
-
- <HR>
-<H2><A NAME="ptplot faq: How do I  . . .">3. How do I  . . .</A>
-</H2>
-
-<DL>
-<DT> <A NAME="mydata"><B>3.1 How do I plot my own data?</B></A>
-<DD>
-There are several ways to plot data using ptplot.  You can read
-data from a file on the local filesystem, or from a file
-on the internet via a URL.  You can sketch your own data
-and then save the file.  Or you can create Java applications
-or applets that directly call methods of the Plot classes to
-create the plot.
-<P>
-The preferred
-file format is called PlotML, and is described fully in the
-<a href="plot.pdf">Plot chapter</a>.  It is a textual format
-in XML, the popular <i>extensible markup language</i> used widely
-on the internet.  An older (and more compact) textual format
-is also supported.  Binary data files are also supported, see
-<A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
-All three formats are demonstrated in the
-<a href="../demo/toc.htm" target="toc">demos</a>.
-<P>
-If you write Java code, the key method for adding data points
-is the addPoint() method of the Plot class.
-The <A HREF="../demo/FourierSeries.htm">Fourier Series demo</A>
-uses this method.
- <P>
-You can also plot data dynamically as shown in the
-<a href="../demo/Live.htm">live plot</a> demo.
-
-<DT> <A NAME="binarydata"><B>3.2 How do I plot binary data?</B></A>
-<DD>Ptplot can plot binary datafiles in an older file format
-originally created by Joe Buck for the X11 <CODE>pxgraph</CODE> program.
-For details on the format see the
-<A HREF="../../../doc/codeDoc/ptolemy/plot/compat/PxgraphParser.html#-binary flag">javadoc Pxgraph documentation</A> for the PxgraphParser class.
-
-<p>The Java program below shows how to generate a raw binary
-data file with two data points in it.
-<pre>
-cxh@tycho 25% cat BinaryData.java
-import java.io.*;
-
-class BinaryData {
-    public static void main(String args[]) {
-        try {
+            class BinaryData {
+            public static void main(String args[]) {
+            try {
             FileOutputStream fileOutput = new FileOutputStream("binary.plt");
             DataOutputStream dataOutput = new DataOutputStream(fileOutput);
             // First pair
@@ -374,284 +401,299 @@ class BinaryData {
             dataOutput.writeFloat(3);
             dataOutput.close();
             fileOutput.close();
-        } catch (IOException e) {
-        System.out.println("Failed to open a file: " + e);
-        }
-    }
-}
-cxh@tycho 26% javac BinaryData.java
-cxh@tycho 27% setenv CLASSPATH .
-cxh@tycho 28% java BinaryData
-cxh@tycho 29% od -c binary.plt
-0000000   ? 200  \0  \0   ? 200  \0  \0   @  \0  \0  \0   @   @  \0  \0
-0000020
-cxh@tycho 30% pxgraph -binary binary.plt
+            } catch (IOException e) {
+            System.out.println("Failed to open a file: " + e);
+            }
+            }
+            }
+            cxh@tycho 26% javac BinaryData.java
+            cxh@tycho 27% setenv CLASSPATH .
+            cxh@tycho 28% java BinaryData
+            cxh@tycho 29% od -c binary.plt
+            0000000   ? 200  \0  \0   ? 200  \0  \0   @  \0  \0  \0   @   @  \0  \0
+            0000020
+            cxh@tycho 30% pxgraph -binary binary.plt
 
-</pre>
+          </pre>
 
-<DT> <A NAME="endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
-<DD> Traditional C/C++ programs encode binary data in different formats
-on different platforms.
-<menu>
-<li> Big-endian - SPARCs and the network in general use this format.
-<li> Little-endian - Intel x86 chips use this format.
-</menu>
-Problems can occur when you try to read a binary format file on a
-machine other than the machine it was created on. Java always
-reads binary data in big-endian format, so the <CODE>pxgraph</CODE>
-script and the <CODE>pxgraphargs</CODE> applet parameter take the
-following arguments:
-<menu>
-<li> <CODE>-binary</CODE> - use the endian format of the machine
-that the Java virtual machine is running on.
+      </dd>
+      <dt> <A NAME="endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
+      </dt>
+      <dd> Traditional C/C++ programs encode binary data in different formats
+        on different platforms.
+        <menu>
+          <li> Big-endian - SPARCs and the network in general use this format.
+          <li> Little-endian - Intel x86 chips use this format.
+        </menu>
+        Problems can occur when you try to read a binary format file on a
+        machine other than the machine it was created on. Java always
+        reads binary data in big-endian format, so the <CODE>pxgraph</CODE>
+        script and the <CODE>pxgraphargs</CODE> applet parameter take the
+        following arguments:
+        <menu>
+          <li> <CODE>-binary</CODE> - use the endian format of the machine
+            that the Java virtual machine is running on.
 
-<li> <CODE>-bigendian</CODE> - the file is in big-endian format,
-convert it if the Java virtual machine is running on a little-endian machine.
+          <li> <CODE>-bigendian</CODE> - the file is in big-endian format,
+            convert it if the Java virtual machine is running on a little-endian machine.
 
-<li> <CODE>-littleendian</CODE> - the file is in little-endian format,
-convert it if the Java virtual machine is running on a big-endian machine.
+          <li> <CODE>-littleendian</CODE> - the file is in little-endian format,
+            convert it if the Java virtual machine is running on a big-endian machine.
 
-</menu>
+        </menu>
 
-See the <a href="../demo/Endian.htm">Endian Examples</a> for
-example that use the above flags.
+        See the <a href="../demo/Endian.htm">Endian Examples</a> for
+        example that use the above flags.
 
-The
-<a href="http://www.afu.com/javafaq.htm#in_browser" target="_top">Java Programmer's FAQ</a>
-has more information about endian issues.
+        The
+        <a href="http://www.afu.com/javafaq.htm#in_browser" target="_top">Java Programmer's FAQ</a>
+        has more information about endian issues.
 
-<DT>  <A NAME="appletprinting"><B>3.4 How do I print a plot from a Plot applet or application?</B></A>
-<DD> The JDK1.4 plug-in makes printing applets easier.  Most applets should
-have a print icon on the upper right corner that will bring up a printer
-dialog.
+      </dd>
+      <dt>  <A NAME="appletprinting"><B>3.4 How do I print a plot from a Plot applet or application?</B></A>
+      </dt>
+      <dd> The JDK1.4 plug-in makes printing applets easier.  Most applets should
+        have a print icon on the upper right corner that will bring up a printer
+        dialog.
 
- <p>In an applet, you can copy the plot to the clipboard in Encapsulated PostScript (EPS) format by typing Control-C.
-You can export the plot to standard out in EPS by typing an <CODE>E</CODE>.
+        <p>In an applet, you can copy the plot to the clipboard in Encapsulated PostScript (EPS) format by typing Control-C.
+          You can export the plot to standard out in EPS by typing an <CODE>E</CODE>.
 
- <P>Note that printing is supported from standalone applications (ptplot,
-pxgraph, and histogram).  These applications can also export encapsulated
-postscript files.
+        <P>Note that printing is supported from standalone applications (ptplot,
+          pxgraph, and histogram).  These applications can also export encapsulated
+          postscript files.
 
- <p>To generate a GIF image, you might try first generating PostScript
-by printing to a file or exporting EPS,
-and then using <CODE>pstogif</CODE>, which is part of Ghostview, available
-at
-<a href="http://www.cs.wisc.edu/~ghost" target="_top"><CODE>http://www.cs.wisc.edu/~ghost/</CODE></a>.  Below is an example:
-<pre>
-pxgraph -print -o /tmp/data.ps demo/data.plt
-pstogif /tmp/data.ps
-</pre>
+        <p>To generate a GIF image, you might try first generating PostScript
+          by printing to a file or exporting EPS,
+          and then using <CODE>pstogif</CODE>, which is part of Ghostview, available
+          at
+          <a href="http://www.cs.wisc.edu/~ghost" target="_top"><CODE>http://www.cs.wisc.edu/~ghost/</CODE></a>.  Below is an example:
+          <pre>
+            pxgraph -print -o /tmp/data.ps demo/data.plt
+            pstogif /tmp/data.ps
+          </pre>
 
-Under Windows, you can use Print Screen to capture a screen shot, the
-help system says:
+          Under Windows, you can use Print Screen to capture a screen shot, the
+          help system says:
 
-<BLOCKQUOTE>
-To copy the window or screen contents
+          <BLOCKQUOTE>
+            To copy the window or screen contents
 
-<menu>
-<li> To make a copy of only the active window, press ALT+PRINT SCREEN. 
-<li> To copy the entire screen as it appears on your monitor, press PRINT
-  SCREEN. 
-</menu>
- Note
- <br>To paste the image into a document, click the Edit menu in the
-document window, and then click Paste. 
+            <menu>
+              <li> To make a copy of only the active window, press ALT+PRINT SCREEN. 
+              <li> To copy the entire screen as it appears on your monitor, press PRINT
+                SCREEN. 
+            </menu>
+            Note
+            <br>To paste the image into a document, click the Edit menu in the
+            document window, and then click Paste. 
 
-</BLOCKQUOTE>
+          </BLOCKQUOTE>
 
-You can paste into Paint, which can be started using
-Start-&gt;Programs-&gt;Accessories-&gt;Paint
-From Paint, you can save a gif
-You can open the gif with Start-&gt;Programs-&gt;Accessories-&gt;Imaging
-and save a jpg.
+          You can paste into Paint, which can be started using
+          Start-&gt;Programs-&gt;Accessories-&gt;Paint
+          From Paint, you can save a gif
+          You can open the gif with Start-&gt;Programs-&gt;Accessories-&gt;Imaging
+          and save a jpg.
 
- <p>Under Windows, you may want to try using
-<a href="http://www.techsmith.com/products/snagit/#in_browser" target="_top">Snagit</a>,
-which is a commercially available program.
-
-
-<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/exportPNG-0.0.1.patch.gz#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot/exportPNG-0.0.1.patch.gz</code></a>
-is a gzipped patch to Ptplot 5.2 by Bernard Guillot that "allows Easy Export to PNG. This in turn becomes an easy path to export to GIF and JPG.". Portions of the patch are under the GNU Lesser General Public License 2.1, see 
-<a href="http://www.gnu.org/copyleft/lesser.html#in_browser" target="_top"><code>http://www.gnu.org/copyleft/lesser.html</code></a>
-
-for details.  This patch has _not_ been tested by the Ptplot pteam at
-UC Berkeley.
+        <p>Under Windows, you may want to try using
+          <a href="http://www.techsmith.com/products/snagit/#in_browser" target="_top">Snagit</a>,
+          which is a commercially available program.
 
 
- <p>To generate gifs, the servlet code at 
-<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/ptolemy-plot-servlet.tar.gz#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot/ptolemy-plot-servlet.tar.gz</CODE></a>
-might be of use.
-This is a gzipped tar file that contains sample code to use Ptplot as a
-servlet. The code was written by Alberto Gobbi, and has _not_ been
-tested by the Ptplot pteam at UC Berkeley. 
+          <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/exportPNG-0.0.1.patch.gz#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot/exportPNG-0.0.1.patch.gz</code></a>
+          is a gzipped patch to Ptplot 5.2 by Bernard Guillot that "allows Easy Export to PNG. This in turn becomes an easy path to export to GIF and JPG.". Portions of the patch are under the GNU Lesser General Public License 2.1, see 
+          <a href="http://www.gnu.org/copyleft/lesser.html#in_browser" target="_top"><code>http://www.gnu.org/copyleft/lesser.html</code></a>
 
-<DT>  <A NAME="twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
-<DD>
-In applications (ptplot, pxgraph, and histogram), this is easy:
-just specify the two files on the command line.
-In applets, only PxgraphApplet supports this.
-The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
-more than one file to the plotter.  The <CODE>pxgraphargs</CODE> parameter
-can also pass <CODE>pxgraph</CODE> command line arguments.
-For example, the HTML below would plot two datafiles at once.  The title
-of the plot would be <CODE>Two datafiles</CODE>.
-<PRE>
-&lt;APPLET name="twofiles" CODE="ptolemy.plot.PlotApplet" Height=400 Width=400
-    codebase="../../.."
-    archive="ptolemy/plot/plotapplet.jar"
-    alt="If you had a java-enabled browser, you would see an applet here."
-&gt;
-&lt;param name="pxgraphargs" value="-t 'Two datafiles' file1.plt file2.plt"&gt;
-   &lt;hr&gt;If your browser recognized the applet tag,
-    you would see an applet here.&lt;hr&gt;
-&lt;/APPLET&gt;
-</PRE>
-
-An alternative is to use ptplot to merge the two files into one plot,
-then save as a single file.
-
-<dt>  <A NAME="twoplots"><B>3.6 How do I have two separate plots?</B></A>
-<dd> See <a href="../demo/LogAxes.htm"><CODE>LogAxes.htm</CODE></a>
-for an applet that has two separate plots side by side.
-<p>
-See
-<a href="../demo/TwoPlotExample.java"><CODE>TwoPlotExample.java</CODE></a>
-for a standalone application that has two separate plots side by side.
-
-<dt>  <A NAME="simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
-<dd>
-<A HREF="../PlotApplication.java"><CODE>PlotApplication.java</CODE></A>
-is a standalone application with a menu interface.  It has derived
-classes <A HREF="../plotml/PlotMLApplication.java">PlotMLApplication</a>,
-which adds the ability to read PlotML files, and
-<A HREF="../plotml/EditablePlotMLApplication.java">EditablePlotMLApplication</a>, which adds the ability to edit the data being plotted.
-EditablePlotMLApplication
-is started by the <a href="../../../bin/ptplot"><CODE>$PTII/bin/ptplot</CODE></a>
-startup script.
-
- <p>You can start up the standalone application by hand with:
-<pre>
-java -classpath plotapplication.jar ptolemy.plot.plotml.EditablePlotMLApplication demo/sinusoids.xml
-</pre>
-
- <p><a href="../demo/TwoPlotExample.java"><CODE>ptolemy/plot/demo/TwoPlotExample.java</CODE></a>
-is a simple standalone Java application that uses the Plot class.
-The comment towards the top of the file contains instructions about
-how to compile it.
-
-<dt> <A NAME="simpleapplet"><B>3.8 Why is the HTML so complex for the applets?</B></A>
-<dd>The demonstration applets that we ship use JavaScript so that the applets
-will work on the widest variety of platforms, browsers and versions
-of the Java Plug-in.
-
-<p>However, if you are using a recent version of the Java Plug-in, then
-you can use the simpler 
-<code>&lt;applet&gt; . . . &lt;/applet&gt;</code> style.
-
-<p> For more information about how to write applets that use
-the Java Plug-in, see
-<a href="http://www.java.com/versions.html#in_browser" target="_top"><code>http://www.java.com/versions.html</code></a>
+          for details.  This patch has _not_ been tested by the Ptplot pteam at
+          UC Berkeley.
 
 
+        <p>To generate gifs, the servlet code at 
+          <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/ptolemy-plot-servlet.tar.gz#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot/ptolemy-plot-servlet.tar.gz</CODE></a>
+          might be of use.
+          This is a gzipped tar file that contains sample code to use Ptplot as a
+          servlet. The code was written by Alberto Gobbi, and has _not_ been
+          tested by the Ptplot pteam at UC Berkeley. 
 
-<dt> <A NAME="simpleapplet"><B>3.9 How do I create a simple standalone Plot applet?</B></A>
+      </dd>
+      <dt>  <A NAME="twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
+      </dt>
+      <dd>
+        In applications (ptplot, pxgraph, and histogram), this is easy:
+        just specify the two files on the command line.
+        In applets, only PxgraphApplet supports this.
+        The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
+        more than one file to the plotter.  The <CODE>pxgraphargs</CODE> parameter
+        can also pass <CODE>pxgraph</CODE> command line arguments.
+        For example, the HTML below would plot two datafiles at once.  The title
+        of the plot would be <CODE>Two datafiles</CODE>.
+        <PRE>
+          &lt;APPLET name="twofiles" CODE="ptolemy.plot.PlotApplet" Height=400 Width=400
+          codebase="../../.."
+          archive="ptolemy/plot/plotapplet.jar"
+          alt="If you had a java-enabled browser, you would see an applet here."
+          &gt;
+          &lt;param name="pxgraphargs" value="-t 'Two datafiles' file1.plt file2.plt"&gt;
+          &lt;hr&gt;If your browser recognized the applet tag,
+          you would see an applet here.&lt;hr&gt;
+          &lt;/APPLET&gt;
+        </PRE>
 
-<dd> The applet <CODE>codebase</CODE> parameter controls where
-and applet may look for data files.  See
-<a href="http://download.oracle.com/javase/tutorial/deployment/applet/data.html#in_browser" target="_top"><CODE>http://download.oracle.com/javase/tutorial/deployment/applet/data.html</CODE></a>
-for details.
+        An alternative is to use ptplot to merge the two files into one plot,
+        then save as a single file.
+      </dd>
+      <dt>  <A NAME="twoplots"><B>3.6 How do I have two separate plots?</B></A>
+      </dt>
+      <dd> See <a href="../demo/LogAxes.htm"><CODE>LogAxes.htm</CODE></a>
+        for an applet that has two separate plots side by side.
+        <p>
+          See
+          <a href="../demo/TwoPlotExample.java"><CODE>TwoPlotExample.java</CODE></a>
+          for a standalone application that has two separate plots side by side.
+      </dd>
+      <dt>  <A NAME="simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
+      </dt>
+      <dd>
+        <A HREF="../PlotApplication.java"><CODE>PlotApplication.java</CODE></A>
+        is a standalone application with a menu interface.  It has derived
+        classes <A HREF="../plotml/PlotMLApplication.java">PlotMLApplication</a>,
+        which adds the ability to read PlotML files, and
+        <A HREF="../plotml/EditablePlotMLApplication.java">EditablePlotMLApplication</a>, which adds the ability to edit the data being plotted.
+        EditablePlotMLApplication
+        is started by the <a href="../../../bin/ptplot"><CODE>$PTII/bin/ptplot</CODE></a>
+        startup script.
 
- <p>For example, to move the
-<a href="../demo/MarksSimple.htm"><CODE>../demo/MarksSimple.html</CODE></a>
-file out of the Ptplot tree, follow these steps below:
+        <p>You can start up the standalone application by hand with:
+          <pre>
+            java -classpath plotapplication.jar ptolemy.plot.plotml.EditablePlotMLApplication demo/sinusoids.xml
+          </pre>
 
-<ol>
-<li> Copy the necessary files to the directory where your
-web server serves files:
-<pre>
-mkdir ~/public_html/ptplot
-cd ptplot5.2/ptolemy/plot
-cp plotmlapplet.jar ~/public_html/ptplot
-cp demo/MarksSimple.htm ~/public_html/ptplot
-cp demo/plotmlSample.txt ~/public_html/ptplot
-cp plotml/PlotML_1.dtd ~/public_html/ptplot
-</pre>
+        <p><a href="../demo/TwoPlotExample.java"><CODE>ptolemy/plot/demo/TwoPlotExample.java</CODE></a>
+          is a simple standalone Java application that uses the Plot class.
+          The comment towards the top of the file contains instructions about
+          how to compile it.
+      </dd>
+      <dt> <A NAME="simpleapplet"><B>3.8 Why is the HTML so complex for the applets?</B></A>
+      </dt>
+      <dd>The demonstration applets that we ship use JavaScript so that the applets
+        will work on the widest variety of platforms, browsers and versions
+        of the Java Plug-in.
+
+        <p>However, if you are using a recent version of the Java Plug-in, then
+          you can use the simpler 
+          <code>&lt;applet&gt; . . . &lt;/applet&gt;</code> style.
+
+        <p> For more information about how to write applets that use
+          the Java Plug-in, see
+          <a href="http://www.java.com/versions.html#in_browser" target="_top"><code>http://www.java.com/versions.html</code></a>
 
 
-1) Edit <CODE>~/public_html/ptplot/Marks.htm</CODE>
-and change
- <br>the <CODE>codebase</CODE> from <CODE>"../../.."</CODE> to
-<CODE>"."</CODE>
- <br>and change the <CODE>archive</CODE> from
-	<CODE>ptolemy/plot/plotmlapplet.jar</CODE>
- to <CODE>plotmlapplet.jar</CODE>
+      </dd>
+      <dt> <A NAME="simpleapplet"><B>3.9 How do I create a simple standalone Plot applet?</B></A>
+      </dt>
+      <dd> The applet <CODE>codebase</CODE> parameter controls where
+        and applet may look for data files.  See
+        <a href="http://download.oracle.com/javase/tutorial/deployment/applet/data.html#in_browser" target="_top"><CODE>http://download.oracle.com/javase/tutorial/deployment/applet/data.html</CODE></a>
+        for details.
 
-<pre>
-&lt;APPLET
- code = "ptolemy.plot.plotml.PlotMLApplet"
- codebase = "."
- archive = "plotmlapplet.jar"
- width = "600"
- height = "400"
- &gt;
-&lt;PARAM NAME = "background" VALUE = "#ffffff" &gt;
-&lt;PARAM NAME = "dataurl" VALUE = "plotmlSample.txt" &gt;
-  No Java Plug-in support for applet, see
- &lt;a href="http://www.java.com/"&gt;&lt;code&gt;http://www.java.com/&lt;/code&gt;&lt;/a&gt;
-&lt;/APPLET&gt;
-</pre>
+        <p>For example, to move the
+          <a href="../demo/MarksSimple.htm"><CODE>../demo/MarksSimple.html</CODE></a>
+          file out of the Ptplot tree, follow these steps below:
 
-<li>  Edit <CODE>~/public_html/ptplot/plotmlSample.txt</CODE>
- and change the dtd from <CODE>../plotml/plotml.dtd</CODE>
- to <CODE>PlotML_1.dtd</CODE>:
+          <ol>
+            <li> Copy the necessary files to the directory where your
+              web server serves files:
+              <pre>
+                mkdir ~/public_html/ptplot
+                cd ptplot5.2/ptolemy/plot
+                cp plotmlapplet.jar ~/public_html/ptplot
+                cp demo/MarksSimple.htm ~/public_html/ptplot
+                cp demo/plotmlSample.txt ~/public_html/ptplot
+                cp plotml/PlotML_1.dtd ~/public_html/ptplot
+              </pre>
 
-<pre>
-2c2
-&lt; &lt;!DOCTYPE plot SYSTEM "PlotML_1.dtd"&gt;
----
-&gt; &lt;!DOCTYPE plot SYSTEM "../plotml/plotml.dtd"&gt;
-</pre>
-</ol>
-If you have problems, then be sure to enable the Java plug-in
-console and look for messages there.
 
-<dt> <A NAME="logaxesranges"><B>3.10 How do I set the ranges for a plot that is using log axes?</B></A>
-<dd> The implementation of Log Axes is complex and some what difficult
-to use.  
+              1) Edit <CODE>~/public_html/ptplot/Marks.htm</CODE>
+              and change
+              <br>the <CODE>codebase</CODE> from <CODE>"../../.."</CODE> to
+              <CODE>"."</CODE>
+              <br>and change the <CODE>archive</CODE> from
+	      <CODE>ptolemy/plot/plotmlapplet.jar</CODE>
+              to <CODE>plotmlapplet.jar</CODE>
 
-<br>The grid labels represent powers of 10.  Note that if a logarithmic
-scale is used, then the values must be positive.  Non-positive values
-will be silently dropped.  Note further that when using logarithmic
-axes that the log of input data is taken as the data is added to the
-plot.  This means that <pre>XLog: on</pre> or <pre>YLog: on</pre>
-should appear before any data.  Also, the value of the XTicks, YTicks
-or XRange or YRange directives should be in log units.  So,
-<pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre> at the
-1000 mark.
+              <pre>
+                &lt;APPLET
+                code = "ptolemy.plot.plotml.PlotMLApplet"
+                codebase = "."
+                archive = "plotmlapplet.jar"
+                width = "600"
+                height = "400"
+                &gt;
+                &lt;PARAM NAME = "background" VALUE = "#ffffff" &gt;
+                &lt;PARAM NAME = "dataurl" VALUE = "plotmlSample.txt" &gt;
+                No Java Plug-in support for applet, see
+                &lt;a href="http://www.java.com/"&gt;&lt;code&gt;http://www.java.com/&lt;/code&gt;&lt;/a&gt;
+                &lt;/APPLET&gt;
+              </pre>
 
-<LI> <A NAME="3dplot"><B>3.11 Does Ptplot support 3-D plots?</B></A>
-Ptplot does not support 3D charts.  Extending Ptplot to do 3D plots
-would be tricky, and we have no plans to include 3D plots at this time.
+            <li>  Edit <CODE>~/public_html/ptplot/plotmlSample.txt</CODE>
+              and change the dtd from <CODE>../plotml/plotml.dtd</CODE>
+              to <CODE>PlotML_1.dtd</CODE>:
 
- <p>You could write code that would do a projection of 3D data onto a 2D
-space, but Ptplot has no z axis, so that would not be that useful.
+              <pre>
+                2c2
+                &lt; &lt;!DOCTYPE plot SYSTEM "PlotML_1.dtd"&gt;
+                ---
+                &gt; &lt;!DOCTYPE plot SYSTEM "../plotml/plotml.dtd"&gt;
+              </pre>
+          </ol>
+          If you have problems, then be sure to enable the Java plug-in
+          console and look for messages there.
 
- <p>You could also modify Ptplot so that it would do a waterfall style
-plot, where each successive z value was offsite slightly
+      </dd>
+      <dt> <A NAME="logaxesranges"><B>3.10 How do I set the ranges for a plot that is using log axes?</B></A>
+      </dt>
+      <dd> The implementation of Log Axes is complex and some what difficult
+        to use.  
 
-Figure 5.4 at
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyclassic/almagest/docs/user/html/sdf.doc2.html#5.2.2 Sink stars#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyclassic/almagest/docs/user/html/sdf.doc2.html#5.2.2 Sink stars</CODE></a>
-has an icon of a waterfall plot, which is described as:
+        <br>The grid labels represent powers of 10.  Note that if a logarithmic
+        scale is used, then the values must be positive.  Non-positive values
+        will be silently dropped.  Note further that when using logarithmic
+        axes that the log of input data is taken as the data is added to the
+        plot.  This means that <pre>XLog: on</pre> or <pre>YLog: on</pre>
+        should appear before any data.  Also, the value of the XTicks, YTicks
+        or XRange or YRange directives should be in log units.  So,
+        <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre> at the
+        1000 mark.
+      </dd>
 
-<BLOCKQUOTE>
-  Waterfall Plot   a series of traces in the style of a waterfall
-  plot. This is a type of three-dimensional plot used to show the
-  evolution of signals or spectra. Optionally, each plot can be made
-  opaque, so that lines that would appear behind the plot are eliminated.
-</BLOCKQUOTE>
+      <dt><A NAME="3dplot"><B>3.11 Does Ptplot support 3-D plots?</B></A>
+      </dt>
+      <dd>
+        Ptplot does not support 3D charts.  Extending Ptplot to do 3D plots
+        would be tricky, and we have no plans to include 3D plots at this time.
 
-</DL>
+        <p>You could write code that would do a projection of 3D data onto a 2D
+          space, but Ptplot has no z axis, so that would not be that useful.
 
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
-</body>
+        <p>You could also modify Ptplot so that it would do a waterfall style
+          plot, where each successive z value was offsite slightly
+
+          Figure 5.4 at
+          <a href="http://ptolemy.eecs.berkeley.edu/ptolemyclassic/almagest/docs/user/html/sdf.doc2.html#5.2.2 Sink stars#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyclassic/almagest/docs/user/html/sdf.doc2.html#5.2.2 Sink stars</CODE></a>
+          has an icon of a waterfall plot, which is described as:
+
+          <BLOCKQUOTE>
+            Waterfall Plot   a series of traces in the style of a waterfall
+            plot. This is a type of three-dimensional plot used to show the
+            evolution of signals or spectra. Optionally, each plot can be made
+            opaque, so that lines that would appear behind the plot are eliminated.
+          </BLOCKQUOTE>
+      </dd>
+
+    </dl>
+
+    <p><font size="2" color="#cc0000">Version: $Id$</font>
+  </body>
 </html>
