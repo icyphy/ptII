@@ -1,0 +1,26 @@
+{
+    "hues": [
+        {"id": "4", "manufacturername": "Philips", "modelid": "LWB014", "name": "Hue white lamp 1", "productid": "Philips-LWB014-1-A19DLv3",
+         "state": {
+             "alert": "none", "bri": 0, "on": false, "reachable": false},
+         "swconfigid": "D1D2055F", "swversion": "1.15.0_r18729", "type": "Dimmable light", "uniqueid": "00:17:88:01:02:7e:2d:a6-0b",
+         "atag": "28"
+        },
+
+        { "id": "5", "manufacturername": "Philips", "modelid": "LWB014", "name": "Hue white lamp 2", "productid": "Philips-LWB014-1-A19DLv3",
+          "state": {
+              "alert": "none", "bri": 0, "on": false, "reachable": false},
+          "swconfigid": "D1D2055F", "swversion": "1.15.0_r18729", "type": "Dimmable light", "uniqueid": "00:17:88:01:02:6b:cd:00-0b",
+          "atag": "29"
+        },
+
+        { "id": "6", "manufacturername": "Philips", "modelid": "LCT001", "name": "Hue color lamp 1",
+          "state": {
+              "alert": "none", "bri": 254, "colormode": "ct", "ct": 369, "effect": "none", "hue": 14922, "on": true, "reachable": true, "sat": 144,
+              "xy": [0.4595, 0.4105]
+          },
+          "swversion": "5.5.1.9663", "type": "Extended color light", "uniqueid": "00:17:88:01:00:b9:cf:26-0b",
+          "atag": "27"
+        }
+    ]
+}
