@@ -61,7 +61,14 @@ exports.setup = function() {
            this.addInputHandler('in', function() {\n\
                var inValue = thiz.get('in');\n\
                console.log('HueAccessorTemplate.JavaScriptOut: value of in: ' + inValue);\n\
-               inValue = '{ \"id\": \"@id@\", \"on\": true }';\n\
+               var util = require('util');\n\
+               console.log(util.inspect(inValue));\n\
+               console.log('HueAccessorTemplate.JavaScriptOut: inValue.on: ' + inValue.on);\n\
+               var on = true;\n\
+               if (inValue.on !== 'on') {;\n\
+                   on = false; \n\
+               };\n\
+               inValue = '{ \"id\": \"@id@\", \"on\": ' + on + '}';\n\
                thiz.send('out', JSON.parse(inValue));\n\
            });\n\
         }";
