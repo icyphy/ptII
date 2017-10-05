@@ -5,13 +5,13 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 195.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -151,9 +151,34 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads from the mqtt.json file and generates accessors that are added to the key-value store.&#10;&#10;The file MQTTAccessorTemplate.js is read in and the '@topic@' string is substituted with the topic&#10;from mqtt.json.  The '@brokerHost@' string is substituted with the value of the&#10;MqttBrokerHostNameOrAddress parameter.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads from the mqtt.json file and generates accessors that are added to the key-value store.&#10;&#10;The accessor template file  is read in and the '@topic@' string is substituted with the topic&#10;from mqtt.json.  The '@brokerHost@' string is substituted with the value of the&#10;MqttBrokerHostNameOrAddress parameter.  Click on the link below to open the template:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="MQTTAccessorTemplate.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 115.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/MQTTAccessorTemplate.js">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 125}">
+            </property>
         </property>
     </property>
     <entity name="Errors" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -161,7 +186,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 340.0]">
         </property>
     </entity>
     <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
@@ -207,7 +232,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 275.0]">
         </property>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -247,7 +272,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 275.0]">
         </property>
         <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="$MQTTBrokerHostNameOrAddress">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -268,7 +293,7 @@
         </port>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 275.0]">
         </property>
     </entity>
     <entity name="Accessors" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -276,7 +301,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 330.0]">
         </property>
     </entity>
     <entity name="AprilTagIDs" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -284,7 +309,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 215.0]">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -294,13 +319,13 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[300.0, 270.0]">
+        <vertex name="vertex1" value="[300.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[300.0, 260.0]">
+        <vertex name="vertex1" value="[300.0, 275.0]">
         </vertex>
     </relation>
     <link port="Errors.input" relation="relation6"/>
