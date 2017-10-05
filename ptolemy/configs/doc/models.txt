@@ -65,6 +65,8 @@ $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedbac
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityKeyValueStore.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityVideo.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateHueAccessors.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateMQTTAccessors.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreServerSOHO.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/SoundServerSOHO.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/AugmentedRealityVideoTerra.xml
