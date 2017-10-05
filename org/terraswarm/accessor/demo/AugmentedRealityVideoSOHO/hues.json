@@ -20,7 +20,22 @@
               "xy": [0.4595, 0.4105]
           },
           "swversion": "5.5.1.9663", "type": "Extended color light", "uniqueid": "00:17:88:01:00:b9:cf:26-0b",
-          "atag": "27"
+          "atag": "30"
+        },
+        { "id": "7", "manufacturername": "Philips", "modelid": "LLC012", "name": "Hue bloom 1",
+          "state": {
+              "alert": "none", "bri": 102, "colormode": "hs", "effect": "none", "hue": 12807, "on": true, "reachable": true, "sat": 51,
+              "xy": [0.4574, 0.4119]
+          },
+          "swversion": "5.5.1.9461", "type": "Color light", "uniqueid": "00:17:88:01:00:c3:ad:b3-0b",
+          "atag": "31"
+        },
+        { "id": "8", "manufacturername": "Philips", "modelid": "LCT001", "name": "Hue color lamp 2",
+          "state": {
+              "alert": "none", "bri": 69, "colormode": "hs", "ct": 223, "effect": "none", "hue": 30952, "on": false, "reachable": true, "sat": 141,
+              "xy": [0.3628, 0.3891]
+          }, "swversion": "5.5.1.9663", "type": "Extended color light", "uniqueid": "00:17:88:01:00:e1:29:8f-0b",
+          "atag": "21"
         }
     ]
 }

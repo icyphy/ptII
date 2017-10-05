@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	KeyValueStoreServerSOHO.xml \
 	MQTTAccessorTemplate.js \
 	MQTTBlee.xml \
+	RosAccessorTemplate.js \
 	SoundServerSOHO.xml \
 	mqtts.json \
 	tag36_11_00019_labeled.png
