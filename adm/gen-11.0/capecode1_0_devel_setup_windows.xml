@@ -168,7 +168,7 @@
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 	    <!-- opencv_java320.dll is 35Mb! So, we only ship it with the Windows installer. -->
             <file src="../dists/ptII11.0.devel/lib/opencv_java320.dll" targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-win-x64" targetdir="$INSTALL_PATH/vendors/node"/>
+            <file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-win-x64" targetdir="$INSTALL_PATH/vendors/node"/>
 <!--LinuxInclude -->
 <!--MacOSInclude-->
 
