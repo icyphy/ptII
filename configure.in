@@ -3780,6 +3780,77 @@ else
    updateClasspath "$KIELER_JAR"
 fi 
 
+#--------------------------------------------------------------------
+#       npm is the Node.js package manager, which is
+#       used by CapeCode.
+#       npm5 has a critical bug in that it removed files
+#       from node_modules.
+#       See https://www.icyphy.org/accessors/wiki/Notes/Npm5
+#--------------------------------------------------------------------
+
+# We only need to look for npm if this directory is present
+NPM_USER_DIR="$PTII/org/terraswarm/accessor/accessors"
+
+if test ! -d "$NPM_USER_DIR" ; then
+    PT_MSG_STATUS([$NPM_USER_DIR is not present,
+    so we need not check for npm 5, the Node.js Package Manager])
+else
+    AC_MSG_CHECKING([for node])
+    AC_PATH_PROG(PTNODE, node)
+    if test "${PTNODE:-none}" = "none"; then
+       if test -f "$PTII/bin/node" ; then
+           NODE_VERSION=`$PTII/bin/node --version`
+           status=$?
+           if test "$status" -eq 2; then
+               AC_MSG_WARN([Failed to find the node executable in your path, $PTII/bin/node also failed.])
+           else
+               PTNODE="$PTII/bin/node"
+               AC_MSG_WARN([Failed to find the node executable in your path, but $PTII/bin/node worked.  Please add $PTII/bin to your PATH.])
+           fi
+       fi
+       if test "${PTNODE:-none}" = "none"; then
+           AC_MSG_WARN([Failed to find the node executable, which means that the Node.js Accessor Host
+    To install Node.js, see https://nodejs.org/en/download/
+    It is still possible to run the CapeCode Accessor Host,
+    but generating Swarmlets and running them using Node
+    will only work if the node executable is the path.])
+       fi
+    else
+        AC_MSG_CHECKING([for npm])
+        AC_PATH_PROG(PTNPM, npm)
+        if test "${PTNPM:-none}" = "none"; then
+            if test -f "$PTII/bin/npm" ; then
+                NODE_VERSION=`$PTII/bin/node --version`
+                status=$?
+                if test "$status" -eq 2; then
+                    AC_MSG_WARN([Failed to find the npm executable in your path, $PTII/bin/npm also failed.])
+                else
+                    PTNODE="$PTII/bin/node"
+                    AC_MSG_WARN([Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH.])
+                fi
+           fi
+       fi
+       if test "${PTNPM:-none}" = "none"; then
+           AC_MSG_WARN([Failed to find npm, which means that the Node.js Accessor Host probably won't work.])
+       else
+           AC_MSG_CHECKING([for npm before 5.x])
+           NPM_VERSION=`$PTNPM --version`
+           echo "$NPM_VERSION" | egrep '^[5-9]\.'
+           status=$?
+           if test "$status" -eq 1; then
+              PT_MSG_RESULT([ok, npm is version $NPM_VERSION])
+           else              
+              AC_MSG_WARN([npm is version $NPM_VERSION, which is 5.x or greater.
+    npm 5.x removes files in node_modules so it should not be used.
+    See https://www.icyphy.org/accessors/wiki/Notes/Npm5
+    It is still possible to run the CapeCode Accessor Host,
+    but generating Swarmlets and running them using Node Accessor Host
+    will likely fail in mysterious ways])
+             FINAL_WARNING="$FINAL_WARNING The npm 5.x or greater binary is found in the path, which will cause problems with the Node Accessor host because npm 5.x removes files in node_modules/.  However, the CapeCode accessor host will likely not be affected by npm5.x.  See above for details."
+           fi
+        fi
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       OpenCV is the Computer Vision platform
