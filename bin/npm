@@ -26,7 +26,12 @@ case $commandname in
         ;;
     node|npm)
         ERROR_MESSAGE="$0: Could not find $commandname in $PATH, perhaps $commandname is not installed?  See https://nodejs.org/en/download/"
-        NODE_VERSION=$PTII/vendors/node/node-v8.4.0
+        # Don't use node 8.x because npm 5 removes files in node_modules.  See https://www.icyphy.org/accessors/wiki/Notes/Npm5
+        if [ ! -d "$PTII/vendors/node" ]; then
+            NODE_VERSION=$PTII/vendors/node/node
+        else 
+            NODE_VERSION=$PTII/vendors/node/`(cd $PTII/vendors/node; ls -1d node-v* | grep -v 'node-v8' | sed 's/\(node-v[^-]*\)-.*/\1/'| sort | tail -1)`
+        fi
         OS=`uname -s`
         MACHINE=`uname -m`
         case $OS in
