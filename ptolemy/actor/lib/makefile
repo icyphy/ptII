@@ -70,7 +70,6 @@ DIRS = 		aspect conversions gui logic hoc image \
 		mbed \
 		net \
 		io \
-		test \
 		comm \
 		security \
 		string \
@@ -82,7 +81,8 @@ DIRS = 		aspect conversions gui logic hoc image \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTRTOOL_DIR)
+		$(PTJYTHON_DIR) $(PTRTOOL_DIR) \
+		test
 
 # Root of the Java directory
 ROOT =		../../..
