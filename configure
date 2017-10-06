@@ -924,6 +924,8 @@ MATLAB
 JAVAH
 PTCCJNI
 JJTREE
+PTNPM
+PTNODE
 PTJYTHON_BAT
 PTJYTHON
 ac_ct_CXX
@@ -9934,6 +9936,178 @@ else
    updateClasspath "$KIELER_JAR"
 fi
 
+#--------------------------------------------------------------------
+#       npm is the Node.js package manager, which is
+#       used by CapeCode.
+#       npm5 has a critical bug in that it removed files
+#       from node_modules.
+#       See https://www.icyphy.org/accessors/wiki/Notes/Npm5
+#--------------------------------------------------------------------
+
+# We only need to look for npm if this directory is present
+NPM_USER_DIR="$PTII/org/terraswarm/accessor/accessors"
+
+if test ! -d "$NPM_USER_DIR" ; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $NPM_USER_DIR is not present,
+    so we need not check for npm 5, the Node.js Package Manager" >&5
+$as_echo "$NPM_USER_DIR is not present,
+    so we need not check for npm 5, the Node.js Package Manager" >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for node" >&5
+$as_echo_n "checking for node... " >&6; }
+    # Extract the first word of "node", so it can be a program name with args.
+set dummy node; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_PTNODE+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PTNODE in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTNODE="$PTNODE" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PTNODE="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTNODE=$ac_cv_path_PTNODE
+if test -n "$PTNODE"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTNODE" >&5
+$as_echo "$PTNODE" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+    if test "${PTNODE:-none}" = "none"; then
+       if test -f "$PTII/bin/node" ; then
+           NODE_VERSION=`$PTII/bin/node --version`
+           status=$?
+           if test "$status" -eq 2; then
+               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable in your path, $PTII/bin/node also failed." >&5
+$as_echo "$as_me: WARNING: Failed to find the node executable in your path, $PTII/bin/node also failed." >&2;}
+           else
+               PTNODE="$PTII/bin/node"
+               { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable in your path, but $PTII/bin/node worked.  Please add $PTII/bin to your PATH." >&5
+$as_echo "$as_me: WARNING: Failed to find the node executable in your path, but $PTII/bin/node worked.  Please add $PTII/bin to your PATH." >&2;}
+           fi
+       fi
+       if test "${PTNODE:-none}" = "none"; then
+           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable, which means that the Node.js Accessor Host
+    To install Node.js, see https://nodejs.org/en/download/
+    It is still possible to run the CapeCode Accessor Host,
+    but generating Swarmlets and running them using Node
+    will only work if the node executable is the path." >&5
+$as_echo "$as_me: WARNING: Failed to find the node executable, which means that the Node.js Accessor Host
+    To install Node.js, see https://nodejs.org/en/download/
+    It is still possible to run the CapeCode Accessor Host,
+    but generating Swarmlets and running them using Node
+    will only work if the node executable is the path." >&2;}
+       fi
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for npm" >&5
+$as_echo_n "checking for npm... " >&6; }
+        # Extract the first word of "npm", so it can be a program name with args.
+set dummy npm; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_PTNPM+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PTNPM in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTNPM="$PTNPM" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PTNPM="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTNPM=$ac_cv_path_PTNPM
+if test -n "$PTNPM"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTNPM" >&5
+$as_echo "$PTNPM" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+        if test "${PTNPM:-none}" = "none"; then
+            if test -f "$PTII/bin/npm" ; then
+                NODE_VERSION=`$PTII/bin/node --version`
+                status=$?
+                if test "$status" -eq 2; then
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the npm executable in your path, $PTII/bin/npm also failed." >&5
+$as_echo "$as_me: WARNING: Failed to find the npm executable in your path, $PTII/bin/npm also failed." >&2;}
+                else
+                    PTNODE="$PTII/bin/node"
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH." >&5
+$as_echo "$as_me: WARNING: Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH." >&2;}
+                fi
+           fi
+       fi
+       if test "${PTNPM:-none}" = "none"; then
+           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find npm, which means that the Node.js Accessor Host probably won't work." >&5
+$as_echo "$as_me: WARNING: Failed to find npm, which means that the Node.js Accessor Host probably won't work." >&2;}
+       else
+           { $as_echo "$as_me:${as_lineno-$LINENO}: checking for npm before 5.x" >&5
+$as_echo_n "checking for npm before 5.x... " >&6; }
+           NPM_VERSION=`$PTNPM --version`
+           echo "$NPM_VERSION" | egrep '^5-9\.'
+           status=$?
+           if test "$status" -eq 1; then
+              if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok, npm is version $NPM_VERSION" >&5
+$as_echo "ok, npm is version $NPM_VERSION" >&6; }; fi
+           else
+              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: npm is version $NPM_VERSION, which is 5.x or greater.
+    npm 5.x removes files in node_modules so it should not be used.
+    See https://www.icyphy.org/accessors/wiki/Notes/Npm5
+    It is still possible to run the CapeCode Accessor Host,
+    but generating Swarmlets and running them using Node Accessor Host
+    will likely fail in mysterious ways" >&5
+$as_echo "$as_me: WARNING: npm is version $NPM_VERSION, which is 5.x or greater.
+    npm 5.x removes files in node_modules so it should not be used.
+    See https://www.icyphy.org/accessors/wiki/Notes/Npm5
+    It is still possible to run the CapeCode Accessor Host,
+    but generating Swarmlets and running them using Node Accessor Host
+    will likely fail in mysterious ways" >&2;}
+             FINAL_WARNING="$FINAL_WARNING The npm 5.x or greater binary is found in the path, which will cause problems with the Node Accessor host because npm 5.x removes files in node_modules/.  However, the CapeCode accessor host will likely not be affected by npm5.x.  See above for details."
+           fi
+        fi
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       OpenCV is the Computer Vision platform
