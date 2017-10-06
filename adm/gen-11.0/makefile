@@ -343,7 +343,7 @@ opencv_dll: $(OPENCV_DLL)
 $(OPENCV_DLL):
 	wget https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
-NODE_VERSION=8.4.0
+NODE_VERSION=7.10.1
 node:
 	if [ ! -d node ]; then \
 		mkdir node; \
@@ -3764,18 +3764,18 @@ test_capecode_setup_ant: test/capeCodeTest
 	# $@ Test configure and build.xml.in
 	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		chmod a+x ./configure; PTII=`pwd` ./configure; \
-		PTII=`pwd` $PTII/bin/ant clean; \
-		PTII=`pwd` $PTII/bin/ant build test.report reports; \
-		PTII=`pwd` $PTII/bin/ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
+		PTII=`pwd` ./bin/ant clean; \
+		PTII=`pwd` ./bin/ant build test.report reports; \
+		PTII=`pwd` ./bin/ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 	# $@ Run the accessors tests.
 	(cd test/capeCodeTest/org/terraswarm/accessor/accessors/web; echo "DISPLAY=$$DISPLAY"; \
-		find . -name "*.h" -ls; $PTII/bin/ant clean; $PTII/bin/ant; find . -name "*.h" -ls; \
-		$PTII/bin/ant tests.jenkins)
+		find . -name "*.h" -ls; ../../../../../bin/ant clean; ../../../../../bin/ant; find . -name "*.h" -ls; \
+		../../../../../bin/ant tests.jenkins)
 	# $@ Test build.default.xml first, which does not compile everything.
 	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		cp build.default.xml build.xml; \
-		PTII=`pwd` $PTII/bin/ant clean; PTII=`pwd` $PTII/bin/ant; \
-		PTII=`pwd` $PTII/bin/ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
+		PTII=`pwd` ./bin/ant clean; PTII=`pwd` ./bin/ant; \
+		PTII=`pwd` ./bin/ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 
 test_capecode_setup_end: test_capecode_setup_XvfbStop
 
@@ -3817,7 +3817,7 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -3826,7 +3826,7 @@ ptsetup_setup_linux: $(PTSETUP_LINUX).xml
 $(PTSETUP_LINUX).xml: $(PTSETUP).xml linuxInclude.awk makefile
 	awk -f linuxInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.so@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
@@ -3836,7 +3836,7 @@ $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
@@ -3847,7 +3847,7 @@ $(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk makefile
 	awk -f linuxInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.b@' \
 	    -e 's@condition="capeCodePackSelected" id="startApplicationPanelCapeCode"@id="startApplicationPanelConfigure"@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v8.4.0-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
