@@ -49,7 +49,7 @@ var handle = null;
 
 exports.setup = function() {
     //FIXME: Technically this is a controllable actuator, maybe we should change the interface?
-	this.implement('ControllableSensor');
+    this.implement('ControllableSensor');
 
     this.parameter('url',{
         'type': 'string',
@@ -80,13 +80,29 @@ function sendData( serverResponse ) {
 }
 
 function updateControl() {
-	var control = this.get('control');
+    var control = this.get('control');
     console.log(control);
-	
+    
     var m = control['message'];
     console.log("m: " + m);
     if(m || m === ""){
+        /*
         try{
+            httpClient.get({
+            'body': m,
+            'method': "GET",
+            'url': this.getParameter('url') + "?message=" + m
+            }, sendData.bind(this));
+        }
+        catch (e){
+            this.send('data', {
+            'name': "Message to post",
+            'status': "Error: " + e
+            });
+        }
+        */
+        
+        try {
             httpClient.post({
             'body': m,
             'method': "POST",
@@ -108,11 +124,11 @@ function sendInitData(){
     });
 }
 
-exports.initialize = function() {	
-	// At initialize, send the schema;
-	this.send('schema', schema);
+exports.initialize = function() {    
+    // At initialize, send the schema;
+    this.send('schema', schema);
     sendInitData.call(this);
-	handle = this.addInputHandler('control', updateControl.bind(this));
+    handle = this.addInputHandler('control', updateControl.bind(this));
 };
 
 exports.wrapup = function() {
@@ -125,9 +141,9 @@ var schema = {
   "type": "object",
   "properties": {
     "message": {
-      	"type": "string",
-      	"title": "message",
-      	"description": "The message to display on the message board."
+          "type": "string",
+          "title": "message",
+          "description": "The message to display on the message board."
     }
   }
 };
