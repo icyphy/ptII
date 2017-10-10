@@ -59,7 +59,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ControllableSensor.js \
 	GDPSensor.js \
 	MechanicalRoom.jpg \
-	MessageBoard.js \
 	mqtts.json \
 	Office.jpg \
 	PressureSensor.js \
