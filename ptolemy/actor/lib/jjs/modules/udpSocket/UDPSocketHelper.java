@@ -37,6 +37,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.datagram.DatagramPacket;
 import io.vertx.core.datagram.DatagramSocket;
 import io.vertx.core.datagram.DatagramSocketOptions;
+import io.vertx.core.json.JsonObject;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -168,7 +169,10 @@ public class UDPSocketHelper extends VertxHelperBase {
                                 public void handle(final DatagramPacket packet) {
                                     // Emit the message in the director thread.
                                     _issueResponse(() -> {
-                                        String sender = packet.sender().toString();
+                                    	// Construct a string with the sender information following 
+                                    	// the JSON format
+                                        String sender = "{\"ipAddress\": \"" + packet.sender().host() + "\",";
+                                        sender += "\"port\": " + packet.sender().port() + "}";
                                         _emitMessage(packet.data(), sender);
                                     });
                                 }
