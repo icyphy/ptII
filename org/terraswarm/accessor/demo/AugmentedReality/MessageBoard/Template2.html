@@ -1,0 +1,79 @@
+"<html><head>
+<style>
+
+#tag {
+    float: right;
+}
+
+#logo {
+    float: left;
+}
+
+#header {
+    text-align: center;
+    font-size: 100%;
+}
+
+#message {
+    text-align: center;
+}
+
+.speechBubble {
+    position: relative;
+    background: #25295a;
+    border-radius: .8em;
+    margin-left: 200px;
+    margin-right: 500px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    color: white;
+    font-size: 200%;
+}
+
+.speechBubble:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-top-color: #25295a;
+    border-bottom: 0;
+    border-left: 0;
+    margin-left: -10px;
+    margin-bottom: -20px;
+}
+
+</style>
+
+</head>
+
+<body>
+<div id='logo'>
+  <img src='logo.jpg'/>
+</div>
+
+<div id='tag'>
+  <img src='tag.png' height='500'/>
+</div>
+
+
+<div id='header'>
+  <h1 id='headerText'> Ambient Display 2</h1>
+</div>
+
+
+
+<div id='message'>
+<p id='messageText' class='speechBubble'>
+Your Message Here
+</p>
+
+</div>
+
+
+</body>
+</html>"
