@@ -44,6 +44,7 @@ var EventEmitter = require('events').EventEmitter;
  *  This returns an instance of the Socket class.
  *  @param type One of "udp4" or "udp6". Defaults to "udp4" if not given.
  *  @param callback Optional function to bind to "message" events.
+ *  @param enableBroadcast Boolean to enable broadcasting or not 
  */
 exports.createSocket = function (type, callback, enableBroadcast) {
     if (!type) {
