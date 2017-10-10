@@ -90,7 +90,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 321, 1220, 622}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 385, 1225, 622}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[993, 529]">
     </property>
@@ -137,8 +137,10 @@
             </property>
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
     <entity name="Errors" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={856, 383, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={856, 415, 499, 189}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -188,7 +190,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 250.0]">
         </property>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -215,47 +217,6 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="GenerateLifxAccessors" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;&#10;/** The key is the AprilTag ID, which is an integer and the&#10; *  value is the Hue ID.&#10; */&#10;var IdToLifxId = [];&#10;&#10;/** Setup the input and output ports.&#10; *  Read in the hue.json file and create an array that maps from AprilTag id&#10; *  to the hue ID name.&#10; */&#10;exports.setup = function() {&#10;    // Inputs&#10;    this.input('trigger');&#10;    &#10;    // Outputs&#10;    this.output('accessor', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    this.output('aprilTagId', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    this.parameter('file', {&#10;    	'type': 'string',&#10;    	'value': 'LifxAccessorTemplate.js'&#10;    });&#10;    &#10;    // Read in the lifxs.json file and create an array that maps&#10;	// AprilTag to Accessor.&#10;	var TagToAccessor = [];&#10;&#10;	var lifxs = JSON.parse(getResource('lifxs.json', 10000));&#10;	for (lifx in lifxs.lifxs) {&#10;		var theLifx = lifxs.lifxs[lifx];&#10;		if (typeof theLifx.atag !== 'undefined') {&#10;			var aprilTag = theLifx.atag;&#10;			aprilTag = parseInt(aprilTag, 10);&#10;			IdToLifxId[aprilTag] = theLifx;&#10;			console.log('TagToAccessor: AprilTag: ' + aprilTag + ', LifxId: ' + theLifx.macAddress);&#10;		}&#10;	}&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var aprilTagsSeen = [];&#10;    &#10;    // Each time we get a trigger, substitute in the bridgeIP, userName&#10;    // and id, then output the accessor.&#10;    this.addInputHandler('trigger', function() { &#10;        // The contents of the accessor template file.&#10;	    var lifxAccessorTemplate = getResource(getParameter('file', 2000));&#10;    	// FIXME: We iterate through the array looking for the&#10;    	// next element to emit.  There must be a better way.&#10;    	for (var aprilTag in IdToLifxId) {&#10;    		if (typeof aprilTagsSeen[aprilTag] === 'undefined' ) {&#10;    			aprilTagsSeen[aprilTag] = true;&#10;    			var macAddress = IdToLifxId[aprilTag].macAddress;&#10;    			var ipAddress = IdToLifxId[aprilTag].ipAddress;&#10;    			var port = IdToLifxId[aprilTag].port;&#10;    			var accessor = lifxAccessorTemplate.replace(/@ipAddress@/g, ipAddress);&#10;        		var accessor = accessor.replace(/@macAddress@/g, macAddress);&#10;        		var accessor = accessor.replace(/@port@/g, port);&#10;        		console.log('GenerateLifxAccessors: ' + accessor);&#10;        		thiz.send('aprilTagId', aprilTag);&#10;        		thiz.send('accessor', accessor);&#10;        		return;&#10;    		}&#10;    	}&#10;    	// If we don't return after emitting one accessor,&#10;    	// then we are done! &#10;    	thiz.wrapup();&#10;    });&#10;};&#10;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 275.0]">
-        </property>
-        <property name="file" class="ptolemy.data.expr.Parameter" value="LifxAccessorTemplate.js">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="bridgeIP" class="ptolemy.data.expr.Parameter" value="$bridgeIP">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="userName" class="ptolemy.data.expr.Parameter" value="$userName">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="lifxBulbIpAddress" class="ptolemy.data.expr.Parameter" value="192.168.1.221">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="aprilTagId" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="accessor" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 275.0]">
         </property>
@@ -269,38 +230,73 @@
         </property>
     </entity>
     <entity name="AprilTagIDs" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={902, 581, 499, 189}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={902, 645, 499, 189}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 175.0]">
         </property>
     </entity>
+    <entity name="GenerateLifxAccessors" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;&#10;/** The key is the AprilTag ID, which is an integer and the&#10; *  value is the Hue ID.&#10; */&#10;var IdToLifxId = [];&#10;&#10;/** Setup the input and output ports.&#10; *  Read in the hue.json file and create an array that maps from AprilTag id&#10; *  to the hue ID name.&#10; */&#10;exports.setup = function() {&#10;    // Inputs&#10;    this.input('trigger');&#10;    &#10;    // Outputs&#10;    this.output('accessor', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    this.output('aprilTagId', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    this.parameter('file', {&#10;    	'type': 'string',&#10;    	'value': 'LifxAccessorTemplate.js'&#10;    });&#10;    &#10;    // Read in the lifxs.json file and create an array that maps&#10;	// AprilTag to Accessor.&#10;	var TagToAccessor = [];&#10;&#10;	var lifxs = JSON.parse(getResource('lifxs.json', 10000));&#10;	for (lifx in lifxs.lifxs) {&#10;		var theLifx = lifxs.lifxs[lifx];&#10;		if (typeof theLifx.atag !== 'undefined') {&#10;			var aprilTag = theLifx.atag;&#10;			aprilTag = parseInt(aprilTag, 10);&#10;			IdToLifxId[aprilTag] = theLifx;&#10;			console.log('TagToAccessor: AprilTag: ' + aprilTag + ', LifxId: ' + theLifx.macAddress);&#10;		}&#10;	}&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var aprilTagsSeen = [];&#10;    &#10;    // Each time we get a trigger, substitute in the macAddress, the ipAddress&#10;    // and the port, then output the accessor.&#10;    this.addInputHandler('trigger', function() { &#10;        // The contents of the accessor template file.&#10;	    var lifxAccessorTemplate = getResource(getParameter('file', 2000));&#10;    	// FIXME: We iterate through the array looking for the&#10;    	// next element to emit.  There must be a better way.&#10;    	for (var aprilTag in IdToLifxId) {&#10;    		if (typeof aprilTagsSeen[aprilTag] === 'undefined' ) {&#10;    			aprilTagsSeen[aprilTag] = true;&#10;    			var macAddress = IdToLifxId[aprilTag].macAddress;&#10;    			var ipAddress = IdToLifxId[aprilTag].ipAddress;&#10;    			var port = IdToLifxId[aprilTag].port;&#10;    			var accessor = lifxAccessorTemplate.replace(/@ipAddress@/g, ipAddress);&#10;        		var accessor = accessor.replace(/@macAddress@/g, macAddress);&#10;        		var accessor = accessor.replace(/@port@/g, port);&#10;        		console.log('GenerateLifxAccessors: ' + accessor);&#10;        		thiz.send('aprilTagId', aprilTag);&#10;        		thiz.send('accessor', accessor);&#10;        		return;&#10;    		}&#10;    	}&#10;    	// If we don't return after emitting one accessor,&#10;    	// then we are done! &#10;    	thiz.wrapup();&#10;    });&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 275.0]">
+        </property>
+        <property name="file" class="ptolemy.data.expr.Parameter" value="LifxAccessorTemplate.js">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="accessor" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="aprilTagId" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[300.0, 285.0]">
+        <vertex name="vertex1" value="[280.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[300.0, 265.0]">
+        <vertex name="vertex1" value="[325.0, 285.0]">
         </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Errors.input" relation="relation6"/>
     <link port="KeyValueStore.error" relation="relation6"/>
     <link port="KeyValueStore.key" relation="relation3"/>
     <link port="KeyValueStore.value" relation="relation4"/>
     <link port="KeyValueStore.trigger" relation="relation4"/>
-    <link port="GenerateLifxAccessors.trigger" relation="relation2"/>
-    <link port="GenerateLifxAccessors.aprilTagId" relation="relation3"/>
-    <link port="GenerateLifxAccessors.accessor" relation="relation4"/>
-    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation"/>
     <link port="Accessors.input" relation="relation4"/>
     <link port="AprilTagIDs.input" relation="relation3"/>
+    <link port="GenerateLifxAccessors.trigger" relation="relation"/>
+    <link port="GenerateLifxAccessors.accessor" relation="relation4"/>
+    <link port="GenerateLifxAccessors.aprilTagId" relation="relation3"/>
 </entity>
