@@ -90,7 +90,7 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 385, 1225, 622}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 417, 1225, 622}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[993, 529]">
     </property>
@@ -101,7 +101,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chadlia Jerad&#10;Based on GenerateHueAccessor by Christopher Brooks">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 490.0]">
         </property>
@@ -258,18 +258,12 @@
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="accessor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="aprilTagId" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
