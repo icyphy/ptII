@@ -129,6 +129,25 @@ test RecordToken-1.3 {Create a non-empty instance from string} {
 #######################################################################
 ####
 # 
+test RecordToken-1.4 {Create a non-empty instance from string} {
+    set r4 [java::new {ptolemy.data.RecordToken String} "{\"586\" = \"bar\"}"]
+    list [$r4 toString] [$r4 length]
+} {{{586 = "bar"}} 1}
+
+test RecordToken-1.5 {Create a non-empty instance from string} {
+    catch {
+        set r4 [java::new {ptolemy.data.RecordToken String} {586 = "bar"}]
+    } err
+    list [string range $err 0 137]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:
+"586 = "bar""
+Because:
+Encountered " "=" "= "" at line 1, column 5.
+}}
+
+#######################################################################
+####
+# 
 test RecordToken-2.1 {Create a Record from a Map} {
     # Uses $r from 1.3 above.	
     set map [java::new java.util.HashMap]
