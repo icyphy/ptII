@@ -1,0 +1,372 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LifxResilient" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, -30.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={430, 167, 1304, 801}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1072, 708]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0630180582560194">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.6345038332023, 259.1269907951355}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the resilient/fault-tolerant behavior of the Lifx accessor. &#10;After running discovery and selecting the first discovered bulb, the commands are &#10;generated to blink the light with different colors. &#10;&#10;Every 5s, a probe signal is generated in order to ckeck if the light is still working fine.&#10;If no answer is received, the Lifx accessor will trigger discovery to find out a possibly&#10;available light buld. If it finds one, then it use it and continues to respond to control &#10;commands by blinking the light with different colors.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -65.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chadlia Jerad">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 465.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: All Lifx bulbs need to be connected and configured with the same LAN.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 90.0]">
+        </property>
+    </property>
+    <entity name="AlternateOnOff" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;var cmd = [];&#10;var i = 0;&#10;&#10;cmd.push({&#10;	'on': 'on',&#10;	'color': 'red'&#10;});&#10;&#10;cmd.push({&#10;	'on': 'off',&#10;});&#10;&#10;cmd.push({&#10;	'on': 'on',&#10;	'color': 'blue'&#10;});&#10;&#10;cmd.push({&#10;	'on': 'off',&#10;});&#10;&#10;cmd.push({&#10;	'on': 'on',&#10;	'color': 'green'&#10;});&#10;&#10;cmd.push({&#10;	'on': 'off',&#10;});&#10;&#10;exports.setup = function () {&#10;	this.input('startCmd');&#10;	this.output('generateCmd', {&#10;		'spontaneous': true,&#10;		'type': 'JSON',&#10;		'value': {}&#10;	});&#10;};&#10;&#10;exports.initialize = function () {&#10;	var thiz = this;&#10;	&#10;	this.addInputHandler('startCmd', function() {&#10;		thiz.send('generateCmd', cmd[i]);&#10;		i++; &#10;		if (i === cmd.length) {&#10;			i = 0;&#10;		}&#10;		var handle = setInterval(function () {&#10;			thiz.send('generateCmd', cmd[i]);&#10;			i++; &#10;			if (i === cmd.length) {&#10;				i = 0;&#10;			}&#10;		}, 2000);&#10;		// setTimeout(function() {&#10;		// 	clearInterval(handle);&#10;		//}, 12000);&#10;	});&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 195.0]">
+        </property>
+        <port name="generateCmd" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="startCmd" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once.&#10;//&#10;// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneousOnce&#10; *  @parameter delay The delay in milliseconds before the value is outputk.&#10; *  @parameter value The value to be output after the delay.&#10; *  @output output The output port&#10; *  @author Christopher Brooks and Edward A. Lee. Based on TestSpontaneous by Edward A. Lee&#10; *  @version $$Id: TestSpontaneousOnce.js 1659 2017-05-09 14:26:57Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, require, setTimeout */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('delay', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.parameter('value', {&#10;        'value': true&#10;    }); &#10;    this.output('output');&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;&#10;exports.initialize = function () {&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setTimeout(function () {&#10;        thiz.send('output', thiz.getParameter('value'));&#10;    }, this.getParameter('delay'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearTimeout(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneousOnce.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks and Edward A. Lee. Based on TestSpontaneous by Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestSpontaneousOnce.js 1659 2017-05-09 14:26:57Z cxh $$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The output port">
+            </property>
+            <property name="delay (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The delay in milliseconds before the value is outputk.">
+            </property>
+            <property name="value (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value to be output after the delay.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 330.0]">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1131, 395, 789, 512}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[789, 487]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="SelectLight" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function() {&#10;	this.input('discovered');&#10;	&#10;	this.output('index', {&#10;		'spontaneous': true,&#10;		'type': 'int',&#10;		'value': 0&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('discovered', function() {&#10;		var discovered = thiz.get('discovered');&#10;		thiz.send('index', 0);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 235.0]">
+        </property>
+        <port name="index" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="discovered" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Lifx" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** This accessor discovers and controls a Lifx lightbulb.&#10; *&#10; *  If the bulbs are already set up (through the Lifx mobile app for example),&#10; *  then the host running this accessor needs to be connected to the same LAN.&#10; *&#10; *  Otherwise, with an unconfigured bulb, you can connect your computer to the Lifx&#10; *  network provided by the bulb (an open Wifi network with a name like&#10; *  &quot;LIFX_Axx_xxxxxx&quot;).&#10; *  &#10; *  If you have a bulb that has been configured to operate on some other network, you can&#10; *  reset it to factory defaults by turning it on and off five times in succession.&#10; *&#10; *  While it is possible to interact with Lifx bulbs over the Internet by &#10; *  sending HTTP requests to the Cloud, this module does not provide such&#10; *  mechanism.&#10; *&#10; *  The communication with Lifx light bulbs is done over UDP/IP. Messages are &#10; *  arrays of numeric bytes ordered in little-endian. The packets construction&#10; *  can be found in this link:&#10; *  https://lan.developer.lifx.com/docs/introduction&#10; * &#10; *  Upon initialization, this accessor creates a UDP socket for communication.&#10; *  There are two ways to configure this accessor in order to control a bulb:&#10; *  * the first one consists on discovering Lifx bulbs on the network and then &#10; *    selecting the one to use.&#10; *  * the second is by running a manual setup, where the light parameters are&#10; *    received in the input port. A use case of this scenario is when a server &#10; *    sends information about available devices and their parameters.&#10; *    &#10; *  Discovery starts if an input is provided in 'triggerDiscovery' input port. &#10; *  The accessor will broadcast discovery messages. Since available bulbs will &#10; *  be asynchronously sending State messages, the accessor will be listening.&#10; *  Discovery messages will be repeatedly sent every 'discoveryInterval'&#10; *  parameter value, if no device has been selected. Each newly discovered &#10; *  light bulb will be added to discoveredLifxLights array. Selecting a device  &#10; *  is done by providing the index of the LifxLight in the array of discovered &#10; *  devices in the input port 'selectLight'.&#10; *  &#10; *  Once the light bulb is chosen and successfully configured, discovery will &#10; *  stop and the accessor will start to react to 'control' input.&#10; *&#10; *  The *control* input is a JSON object that may have the following properties:&#10; *  * on: 'on' to turn on; 'off' to turn off.&#10; *  * hue: Color, for bulbs that support color. This is a number in the&#10; *    range 0-65535.&#10; *  * color: Color, for bulbs that support color. This is a string that is converted&#10; *    into a hue number using the colorToHexHue variable.&#10; *&#10; *  HSBK is used to represent the color and color temperature of a light. The&#10; *  color is represented as an HSB (Hue, Saturation, Brightness) value.&#10; *  Please refer to https://en.wikipedia.org/wiki/HSL_and_HSV&#10;&#10; *  A LifxLight is a class that has the following parameters:&#10; *  * **ipAddress**: IP address of the bulb in the LAN.&#10; *  * **port**: integer. It defaults to 56700 as noted in the Lifx developer&#10; *      API.&#10; *  * **macAddress**: a string of 12 hex numbers (6bytes) that refer to the &#10; *      bulb macAddress.&#10; *  * **color**: the current hue values.&#10; *  * **power**: if true, then the bulb is switched on, false if switched off.&#10; *  * **userName**: this is the name of the user. It can be used to filter the &#10; *      received messages.&#10; *      &#10; *  LifxLight class declares a set of functions for light control:&#10; *  * **swithOn()**: switches the light on. The latest selected color is the one&#10; *      used. &#10; *  * **swithOff()**: switches the light off.&#10; *  * **setColor()**: changes the light color.&#10; *  * **probe()**: sends a 'getState' message to ckeck if the light bulb is still&#10; *      working. This feature allows for fault-tolerance.&#10; *  &#10; *   The supported communication schemas between the accessor and the bulbs are the &#10; *   following:&#10; *   * To run discovery, a discovery message will be broadcasted. Bulbs will answer with&#10; *     a 'stateService' message.&#10; *   * To switch the light on or off, a 'setPower' message is sent. The bulb will answer &#10; *     with a 'statePower' message.&#10; *   * To set the light color, a 'setColor' message is sent. The bulb will answer &#10; *     with a 'stateLight' message.&#10; *   * To probe the light, a 'getLight' message is sent. The bulb will answer &#10; *     with a 'stateLight' message.  &#10; *&#10; *  @accessor devices/Lifx&#10; *  @input {JSON} control JSON control for the Hue, for example,&#10; *                {&quot;on&quot; : &quot;on&quot;, &quot;color&quot; : &quot;red&quot;}&#10; *  @input triggerDiscovery signal to start discovery&#10; *  @input {int} selectLight index in discoveredLifxLights array of the light to &#10; *   be configured.&#10; *  @input {JSON} manualBulbSetup JSON object for the light configuration. At least,&#10; *   the mac address and the ip address should be provided. Example:&#10; *            {&quot;ipAddress&quot;: &quot;192.168.1.100&quot;, &quot;macAddress&quot;: &quot;d073d523995c&quot;}&#10; *  @input probe signal to probe the bulb&#10; *  @output {JSON} data Outputs the received information from the bulb&#10; *  @parameter {int} discoveryInterval The time interval to re-send discovery messages,&#10; *   if no light has been configured&#10; *  @parameter {string} listeningIpAddress the IP address of the accessor to listen to the&#10; *   bulb packets. This defaults to 0.0.0.0 to listen to all UDP packets. &#10; *  @parameter {int} listeningPort the port number for listening. If a swarmlet is using two &#10; *   or more instances of Lifx accessor, than each one needs to have its own distinct listening &#10; *   port.&#10; *  @parameter {string} userName Name of the user. Should be 8bytes.&#10; *  @author Chadlia Jerad&#10; *  @version $$Id: Lifx.js 1597 2017-04-29 15:41:50Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals alert, clearTimeout, console, error, exports, httpRequest, require, setTimeout  */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var udpSocket = require('@accessors-modules/udp-socket');&#10;&#10;// Socket for UDP communication&#10;var socket = null;&#10;&#10;// Says if the socket is running or closed&#10;var running = false;&#10;&#10;// Instance of LifxLight class, that is the configured light&#10;var lifxLightBulb = null;&#10;&#10;// Handle for re-triggering discovery if no Bulb is discovered or chosen&#10;var handleDiscovery;&#10;&#10;// Array of the discovered Lifx light bulbs&#10;var discoveredLifxLights = [];&#10;&#10;// Says if the discovery is running of not.&#10;var discoveryMode = false;&#10;&#10;// Says if we are waiting for an answer to light probe&#10;var probe = false;&#10;&#10;exports.setup = function () {&#10;	// Inputs&#10;	this.input('control', {&#10;		'type': 'JSON',&#10;		'value': {}&#10;	});&#10;	this.input('manualBulbSetup', {&#10;		'type': 'JSON',&#10;			'value': {}&#10;	});&#10;	this.input('probe');&#10;	this.input('selectLight', {&#10;		'type': 'int',&#10;		'value': 0&#10;	});&#10;	this.input('triggerDiscovery');&#10;	&#10;	// Outputs&#10;	this.output('data', {&#10;		'type': 'JSON',&#10;		'value': {}&#10;	});&#10;	this.output('discovered');&#10;&#10;	// Parameters&#10;	this.parameter('discoveryInterval', {&#10;		type: 'int',&#10;		value: 3500&#10;	});&#10;	this.parameter('listeningIpAddress', {&#10;		type: 'string',&#10;		value: '0.0.0.0'&#10;	});&#10;	this.parameter('listeningPort', {&#10;		type: 'int',&#10;		value: 50000&#10;	});&#10;	this.parameter('setFaultTolerent', {&#10;		type: 'boolean',&#10;		value: false&#10;	});&#10;	this.parameter('userName', {&#10;		type: 'string',&#10;		value: 'abcdefgh'&#10;	});&#10;};&#10;&#10;exports.initialize = function () {&#10;	var thiz = this;&#10;&#10;	// Initialize and set the socket	&#10;	closeAndOpenSocket.call(this);&#10;	running = true;&#10;	&#10;	// Trigger discovery &#10;	this.addInputHandler('triggerDiscovery', function() {&#10;		lifxLightBulb = null;&#10;		discoveryMode = true;&#10;		discoverLifx(socket);&#10;		&#10;		// Make sure to re-execute discovery if no bulb is already set&#10;		handleDiscovery = setInterval(function () {&#10;			if (!discoveryMode) {&#10;				clearInterval(handleDiscovery);&#10;			} else {&#10;				discoverLifx(socket);&#10;			};&#10;		}, this.getParameter('discoveryInterval'));&#10;	});&#10;	&#10;	// Select a discovered LifxLight, if applicable&#10;	this.addInputHandler('selectLight', function() {&#10;		var selectLight = thiz.get('selectLight');&#10;		if (discoveryMode) {&#10;			if (selectLight &lt; discoveredLifxLights.length) {&#10;				lifxLightBulb = discoveredLifxLights[selectLight];&#10;				// console.log(&quot;selected light at &quot;+selectLight+&quot; with: &quot; + util.inspect(lifxLightBulb));&#10;				discoveryMode = false;&#10;				discoveredLifxLights = [];&#10;			}&#10;		}&#10;	});&#10;	&#10;	// Manual bulb setup&#10;	this.addInputHandler('manualBulbSetup', function() {&#10;		discoveryMode = false;&#10;		discoveredLifxLights = [];&#10;		var bulb = this.get('manualBulbSetup');&#10;		if (bulb.port) {&#10;			lifxLightBulb = new LifxLight(bulb.ipAddress, bulb.port, bulb.macAddress, this.getParameter('userName'));&#10;		} else {&#10;			lifxLightBulb = new LifxLight(bulb.ipAddress, 56700, bulb.macAddress, this.getParameter('userName'));&#10;		}&#10;	});&#10;&#10;	// Input handler for handling control &#10;	this.addInputHandler('control', function () {&#10;		if (lifxLightBulb) {&#10;			var control = this.get('control');&#10;			// Control switching the light on or off&#10;			if (control.on &amp;&amp; control.on === 'on') {&#10;				lifxLightBulb.switchOn(socket);&#10;				thiz.send('data', {'id': lifxLightBulb.macAddress, 'light': 'on'});&#10;			} else if (control.on &amp;&amp; control.on === 'off') {&#10;				lifxLightBulb.switchOff(socket);&#10;				thiz.send('data', {'id': lifxLightBulb.macAddress, 'light': 'off', 'color': lifxLightBulb.color});&#10;			}&#10;			// Control the light color. The color value can be a string (attribute color) or&#10;			// a hue value (number)&#10;			if (control.color) {&#10;				var hue = colorToHexHue[control.color];&#10;				if (hue) {&#10;					lifxLightBulb.setColor(socket, hue);&#10;					thiz.send('data', {'id': lifxLightBulb.macAddress, 'light': lifxLightBulb.power, 'color': lifxLightBulb.color});&#10;				} else {&#10;					console.log('No supported hue value of the color: ' + control.color);&#10;				}&#10;			} else if (control.hue){&#10;				if (typeof control.hue === 'number' &amp;&amp; control.hue &gt;= 0 &amp;&amp; control.hue &lt;= 65535) {&#10;					lifxLightBulb.setColor(socket, getHexStringAt(control.hue, 0));&#10;					thiz.send('data', {'id': lifxLightBulb.macAddress, 'light': lifxLightBulb.power, 'color': lifxLightBulb.color});&#10;				} else {&#10;					console.log('Non valid hue value: ' + control.hue);&#10;				}&#10;			}&#10;		}&#10;	});&#10;&#10;	// Input handler for probe&#10;	this.addInputHandler('probe', function() {&#10;		var thiz = this;&#10;		if (!discoveryMode) {&#10;			if (lifxLightBulb) {&#10;				probe = true;&#10;				setTimeout(function(){&#10;					if (probe) {&#10;						// If the light disappears, launch discovery again&#10;						// FIXME: is launching discovery OK?&#10;						lifxLightBulb = null;&#10;						thiz.provideInput('triggerDiscovery', 1);&#10;						thiz.react();&#10;					}&#10;				}, 3000);&#10;			}&#10;		}&#10;	});&#10;};&#10;&#10;exports.wrapup = function () {&#10;	if (socket) {&#10;		socket.close();&#10;		socket = null;&#10;	}&#10;	lifxLightBulb = null;&#10;	running = false;&#10;	handleDiscovery = null;&#10;	discoveryMode = false;&#10;}&#10;&#10;/////////////////////////////////////////////////////////////////////////&#10;//// Helper functions.&#10;&#10;/** For the passed light characteristics, add it to discoveredLifxLights array only if&#10; *  it is new. The light is new if the macAddress is new.&#10; *  &#10; *  @param packet A JSON object containing the new light bulb characteristics.&#10; *  @return true if added, false if not.&#10; */&#10;var addToDiscovredLightsIfNew = function(packet) {&#10;	var isNew = true;&#10;	discoveredLifxLights.forEach(function(light) {&#10;		if (light.macAddress === packet.macAddress) {&#10;			isNew = false;&#10;			// TODO: Update the color and the power of the lifxLightBulb instance&#10;		}&#10;	});&#10;	if (isNew) {&#10;		discoveredLifxLights.push(new LifxLight(packet.ipAddress,&#10;				packet.port,&#10;				packet.macAddress,&#10;				this.getParameter('userName')));&#10;		return true;&#10;	}&#10;	return false;&#10;}&#10;&#10;/** Builds a UDP packet to be sent, based on the provided options.&#10; *  Please refer to https://lan.developer.lifx.com/docs/building-a-lifx-packet&#10; *  to know about the message format.&#10; *&#10; *  @param options A JSON object that describes the packet features&#10; *  @return UDP Packet to be sent &#10; */&#10;var buildPacket = function (options) {&#10;	console.log('options = '+options);&#10;    var packet = '';&#10;&#10;    // ============================= Construct the header&#10;    // ----------------------- Frame&#10;    // -- size = 16bits&#10;    // The size will be computed and added at the end&#10;    // -- origin+tagged+addressable+protocol = 16bits&#10;    if (options.toAll) {&#10;        packet += '0034';&#10;    } else {&#10;        packet += '0014';&#10;    }&#10;    // -- source: set by the client (if all 0 then response broadcast) 32bits&#10;    packet += this.userName;&#10;&#10;    // ----------------------- Frame address&#10;    // -- target mac address (48bits)+0000&#10;    if (options.toAll) {&#10;        packet += '000000000000' +'0000';&#10;    } else {&#10;        packet += this.macAddress + '0000';        &#10;    }&#10;    // -- reserved (48bits)&#10;    packet += '000000000000';&#10;    // -- reserved + ack_required + res_required (8bits);&#10;    if (!options.ackRequired &amp;&amp; !options.resRequired) {&#10;        packet += '00';&#10;    } else if (!options.resRequired) {&#10;        packet += '02';&#10;    } else {&#10;        packet += '01';&#10;    };&#10;    // -- sequence (8bits): reference to the message&#10;    if (options.sequence) {&#10;        packet += ''+ options.sequence;&#10;    } else {&#10;        packet += '00';&#10;    }&#10;&#10;    // ----------------------- Protocol header&#10;    // -- reserved (64bits)&#10;    packet += '0000000000000000'; &#10;    // -- message type (16bits) + reserved (16bits)&#10;    if (options.getLight) {&#10;        packet += codesForGetMessages['getLight'] + '00' + '0000'; // Get --&gt; 101&#10;    } else if (options.setColor) { &#10;        packet += '6600' + '0000'; // SetColor --&gt; 102&#10;    } else if (options.setPower) {&#10;        packet += '7500' + '0000'; // SetPower --&gt; 117&#10;    }&#10;&#10;    // ============================= Construct the Payload&#10;    if (options.setPower) {&#10;        if (options.setPower.on) {&#10;            packet += 'ffff00000000';&#10;        } else {&#10;            packet += '000000000000';&#10;        }&#10;    } else if (options.setColor) {&#10;    	// -- reserved (8bits)&#10;    	packet += '00';&#10;    	// -- Hue value (16bits)&#10;    	packet += options.setColor.h;&#10;    	// -- Saturation value (16bits)&#10;    	packet += options.setColor.s;&#10;    	// -- Brightness value (16bits)&#10;    	packet += options.setColor.b;&#10;    	// -- Temperature value (16bits).Set to 3500 Kelvin&#10;    	packet += 'ac0d';&#10;    	// -- duration (32bits)&#10;    	packet += '00000000';&#10;    }&#10;    &#10;    // Compute the size, convert it to hexString then add it to the packet.&#10;    // Note that it is a little endian encoding.&#10;    var packetSize = (packet.length + 4) / 2;&#10;    packetSize = (packetSize &amp; 0xFFFF).toString(16);&#10;    if (packetSize.length &lt;= 2) {&#10;		packet = packetSize + '00' + packet;&#10;	} else {&#10;		packetSize = '0' + packetSize;&#10;		packetSize = packetSize.slice(-4);&#10;		var _tp = packetSize.slice(-2);&#10;		packetSize += _tp;&#10;	}&#10;	&#10;    return packet;&#10;}&#10;&#10;/** &#10; * Creates and opens a socket. Also sets the ractions to recieved messages.&#10; */&#10;var closeAndOpenSocket = function () {&#10;	var thiz  = this;&#10;	var listeningPort = null;&#10;&#10;	if (socket) {&#10;		socket.on('close', function() {&#10;			socket = null;&#10;			closeAndOpenSocket.call(thiz);&#10;		});&#10;		socket.close();&#10;	} else {&#10;		var listeningPort = this.getParameter('listeningPort');&#10;		var listeningAddress = this.getParameter('listeningIpAddress');&#10;		var enableBroadcast = true;&#10;		&#10;		socket = udpSocket.createSocket(null, null, enableBroadcast);&#10;		    &#10;	    socket.setReceiveType('string');&#10;	    socket.setSendType('string');&#10;		socket.setRawBytes(true);&#10;	&#10;		socket.on('error', function (message) {&#10;	        error(message);&#10;	    });&#10;		socket.on('message', function (message, sender){&#10;		    if (running) {	        	&#10;		    	var packet = parseReceivedPacket(message, sender);&#10;	    		console.log('Message received from: ' + packet.macAddress +&#10;	    				' * Message code is: ' + packet.messageCode);&#10;	    		if (discoveryMode) {&#10;		    		// Check if this is a state message. Recall that a state message&#10;		    		// is sent after receiving a discovery message&#10;		    		if (packet.messageCode === 'stateService') {&#10;		    			if (addToDiscovredLightsIfNew.call(thiz, packet)) {&#10;		    				var index = discoveredLifxLights.length;&#10;		    				thiz.send('discovered', discoveredLifxLights);&#10;		    				console.log('New discovered Lifx Light Bulb: ' + &#10;		    						packet.macAddress + '@' +  &#10;		    						packet.ipAddress + ':' + packet.port +&#10;		    						' * Added at index: ' + index);&#10;		    			}&#10;		    		}&#10;		    	} else {&#10;		    		if (lifxLightBulb) {&#10;		    			if (lifxLightBulb.ipAddress === packet.ipAddress &amp;&amp;&#10;		    					lifxLightBulb.macAddress === packet.macAddress &amp;&amp;&#10;		    					lifxLightBulb.port === packet.port) {&#10;		    				switch (packet.messageCode) {&#10;		    					case 'stateLight':&#10;		    						lifxLightBulb.power = packet.power;&#10;		    						lifxLightBulb.color = packet.color;&#10;		    						lifxLightBulb.label = packet.label;&#10;		    						if (probe) {&#10;		    							probe =false;&#10;		    						};&#10;		    						break;&#10;		    					case 'statePower':&#10;		    						lifxLightBulb.power = packet.power;&#10;		    						break;&#10;		    				}&#10;		    			}&#10;		    		}&#10;		    	}&#10;		    }&#10;		});&#10;		    		&#10;	    socket.on('listening', function () {&#10;	        if (running) {&#10;	        	console.log('listening: ' + true);&#10;	        }&#10;	    });&#10;	    socket.on('close', function () {&#10;	        if (running) {&#10;	            console.log('listening: ' + false);&#10;	        }&#10;	    });&#10;	&#10;	    try {&#10;	    	socket.bind(listeningPort, listeningAddress, function () {&#10;				console.log('bind success');&#10;			});&#10;	    } catch (e) {&#10;	    	this.setDefault('listeningPort', this.getParameter('listeningPort') + 1);&#10;	    	listeningPort = this.getParameter('listeningPort');&#10;	    	socket.bind(listeningPort, listeningAddress, function () {&#10;				console.log('bind success');&#10;			});&#10;	    }&#10;	}&#10;}&#10;&#10;/** Convenience function for converting a string, which each character is an&#10; *  hexadecimal number to an array buffer of bytes. This latter will contain &#10; *  unsigned bytes with the value of two consecutive characters from the provided&#10; *  string.&#10; *&#10; *  @param hexString String of hexadecimal values in each character&#10; *  @return converted hexString into ArrayBuffer&#10; */&#10;var convertHexStringToByteArray = function (hexString) {&#10;    var buffer = new ArrayBuffer(hexString.length/2);&#10;    var i = 0;&#10;    for (i = 0 ; i &lt; hexString.length ; i=i+2 ) {&#10;        var hs = hexString.slice(i, i+2);&#10;        buffer[ i / 2] = (parseInt(hs, 16)) &amp; 0xFF;&#10;    }&#10;    return buffer; &#10;}&#10;&#10;/** Broadcasts UPD discovery messages. If Lifx bubls are in the network, they will &#10; *  send back a State message.  &#10; * &#10; *  @param socket The socket instance to use for sending the discovery message&#10; */&#10;var discoverLifx = function (socket) {&#10;    // needs more elaboration&#10;    var hexPacket = '24000034abcdefgh00000000000000000000000000000003000000000000000002000000';&#10;    var packet = convertHexStringToByteArray(hexPacket);&#10;&#10;    socket.send(packet, 56700, '255.255.255.255', function (er) {&#10;        console.log('Start discovery: Broadcast at 255.255.255.255:56700... '+er);&#10;    });&#10;}&#10;&#10;/** Convenience function for converting a bytesArray to a string of hexadecimal &#10; *  characters. For this, each character of is mapped into two characters that &#10; *  represent hexadecimal values.&#10; *&#10; *  @param bytesArray Array of raw bytes.&#10; *  @param start index from where to start the conversion.&#10; *  @param end index where to stop the conversion (index not included).&#10; *  @return converted bytes to a string of hexa values.&#10; */&#10;var getHexStringAt = function (bytesArray, start, end) {&#10;    var hexString = '', hex;&#10;    if (!end) {&#10;    	end = bytesArray.length;&#10;    }&#10;    for (var i = start ; i &lt; end ; i++ ) {&#10;        hex = bytesArray[i];&#10;        hex = (hex &amp; 0xFF).toString(16);&#10;        hexString += (&quot;000&quot;+hex).slice(-2);&#10;    }&#10;    return hexString; &#10;}&#10;&#10;/** Returns a JSON object that describes the received packet. This object contains:&#10; *  * ipAddress&#10; *&#10; *  @param messageBytes The received message during listening as a bytes array.&#10; *  @param sender String containing the IP Address and port of the message sender. &#10; *  @return JSON object describing the device and the message features.&#10; */&#10;var parseReceivedPacket = function (messageBytes, sender) {&#10;	var packetObject = {};&#10;	&#10;	// Extract packet information&#10;	if (typeof sender === 'string') {&#10;		sender = JSON.parse(sender);&#10;	};&#10;	packetObject.ipAddress = sender.ipAddress;&#10;	packetObject.port = Number(sender.port);&#10;	packetObject.macAddress = getHexStringAt(messageBytes, 8, 14);&#10;	packetObject.messageCode = getHexStringAt(messageBytes, 32, 33);&#10;	packetObject.messageCode = codesForStateMessages[packetObject.messageCode]; &#10;	&#10;	// TODO: add payload parsing, if applicable&#10;	switch (packetObject.messageCode) {&#10;		case 'stateService':&#10;			break;&#10;		case 'stateLight':&#10;			packetObject.color = {};&#10;			packetObject.color.h = parseInt(&#10;					getHexStringAt(messageBytes, 37, 38) + &#10;					getHexStringAt(messageBytes, 36, 37), 16);&#10;			packetObject.color.s = parseInt(&#10;					getHexStringAt(messageBytes, 39, 40) + &#10;					getHexStringAt(messageBytes, 38, 39), 16);&#10;			packetObject.color.b = parseInt(&#10;					getHexStringAt(messageBytes, 41, 42) + &#10;					getHexStringAt(messageBytes, 40, 41), 16);&#10;			packetObject.color.k = parseInt(&#10;					getHexStringAt(messageBytes, 43, 44) + &#10;					getHexStringAt(messageBytes, 42, 43), 16);&#10;			packetObject.power = parseInt(&#10;					getHexStringAt(messageBytes, 47, 48) + &#10;					getHexStringAt(messageBytes, 46, 48), 16);&#10;			packetObject.label = getHexStringAt(messageBytes, 49, 53);			&#10;			break; &#10;		case 'statePower':&#10;			packetObject.power = parseInt(getHexStringAt(messageBytes, 37, 38) + getHexStringAt(messageBytes, 36, 37), 16);&#10;			break;&#10;	}&#10;	&#10;    return packetObject;&#10;}&#10;&#10;/////////////////////////////////////////////////////////////////////////&#10;//// LifxLight class and its functions.&#10;&#10;/** Create using new a Lifx light bulb object. The created object includes the &#10;*  following properties:&#10;*  * **ipAddress**: The IP address of the bulb in the Local Area Network.&#10;*  * **port**: The port number. This usually defaults to 56700.&#10;*  * **macAddress**: The bulb's mac address.&#10;*  * **userName**: the userName, it is copied from the accessor parameter &#10;*      'userName' and checked to be 8 characters long.&#10;*  * **color**: The current light color&#10;*  * **power**: Boolean. Says if the light is on or off&#10;*&#10;*  @param ipAddress String with the ipAddress of the bulb&#10;*  @param port Bulb's communication port, it defaults to 56700&#10;*  @param macAddress A 12 bytes string of the mac address of the bulb.&#10;*  @param userName An 8 bytes string of the user name. If a wrong value is&#10;*   provided, then it is corrected.&#10;*/&#10;function LifxLight (ipAddress, port, macAddress, userName) {&#10;	if (ipAddress &amp;&amp; typeof ipAddress === 'string') {&#10;	   this.ipAddress = ipAddress;        &#10;	} else {&#10;	   this.ipAddress = '';&#10;	}&#10;	&#10;	if (port &amp;&amp; typeof port === 'number') {&#10;	   this.port = Math.round(port);        &#10;	} else {&#10;	   this.port = 56700;&#10;	}        &#10;	&#10;	if (macAddress &amp;&amp; typeof macAddress === 'string') {&#10;	   this.macAddress = macAddress;        &#10;	} else {&#10;	   this.macAddress = '';&#10;	}&#10;	&#10;	// Force the userName to be 8 characters&#10;	if (userName &amp;&amp; typeof userName === 'string') {&#10;		if (userName.lenght &gt; 8) {&#10;			userName = userName.substring(0, 8);&#10;		} else if (userName.lenght &lt; 8) {&#10;			userName += 'abcdefgh';&#10;			userName = userName.substring(0, 8);&#10;		}&#10;		this.userName = userName;&#10;	} else {&#10;		this.userName = 'abcdefgh';&#10;	}&#10;	&#10;	this.color = {};&#10;	this.power = 0;&#10;}&#10;&#10;/** Switch the light on. First, the packet options are set. Then, the&#10; *  packet is build as a string of hexadecimal numbers. Finally, the packet&#10; *  is converted to a byte array format and sent via the socket.&#10; *&#10; *  @param socket The socket used for sending the udp message&#10; */&#10;LifxLight.prototype.switchOn = function(socket) {&#10;	var thiz = this;&#10;	// Set the options for switching the light on&#10;	console.log('this is switch on and the ip address is: '+this.ipAddress+'\n'+util.inspect(this));&#10;	var options = {};&#10;	options.resRequired = 1;&#10;	options.setPower = {}; &#10;	options.setPower.on = true;&#10;	&#10;	// Build the hexadecimal packet and then convert it to an array of bytes&#10;	var hexPacket = buildPacket.call(this, options);&#10;	console.log('prePacket = ' + hexPacket);&#10;	var packet = convertHexStringToByteArray(hexPacket);&#10;	&#10;	// Send the packet over the provided socket&#10;	socket.send(packet, thiz.port, thiz.ipAddress, function () {&#10;	   console.log('Switch light on ' + thiz.macAddress + '@' + thiz.ipAddress + ':' + thiz.port + ' msg = ' + packet);&#10;	});&#10;};&#10;&#10;/** Switch the light off. First, the packet options are set. Then, the&#10; *  packet is build as a string of hexadecimal numbers. Finally, the packet &#10; *  is converted to a byte array format and sent via the socket.&#10; *&#10; *  @param socket The socket used for sending the udp message&#10;*/&#10;LifxLight.prototype.switchOff = function(socket) {&#10;	// Set the options for switching the light off&#10;	var options = {};&#10;	options.resRequired = 1;&#10;	options.setPower = {}; &#10;	options.setPower.on = false;&#10;	&#10;	// Build the hexadecimal packet and then convert it to an array of bytes&#10;	var hexPacket = buildPacket.call(this, options);&#10;	var packet = convertHexStringToByteArray(hexPacket);&#10;	&#10;	// Send the packet over the provided socket&#10;	socket.send(packet, this.port, this.ipAddress, function () {&#10;	   console.log('Switch light off ' + this.macAddress + ' at ' + this.ipAddress + ':' + this.port + ' msg = ' + message);&#10;	});&#10;};&#10;&#10;/** Set the Lifx light color. &#10; *&#10; *  @param socket The socket used for sending the udp message&#10; *  @param hue A JSON object with 3 hexadecimal-little endian representations&#10; *   of the values of hue, saturation and brightness ranging between 0 and 65535.&#10; */&#10;LifxLight.prototype.setColor = function(socket, hue) {&#10;	// Set the options for switching the light off&#10;	var options = {};&#10;	options.resRequired = 1;&#10;	options.setColor = {}; &#10;	options.setColor.h = hue.h;&#10;	options.setColor.s = hue.s; &#10;	options.setColor.b = hue.b;&#10;	&#10;	// Build the hexadecimal packet and then convert it to an array of bytes&#10;	var hexPacket = buildPacket.call(this, options);&#10;	var packet = convertHexStringToByteArray(hexPacket);&#10;	&#10;	// Send the packet over the provided socket&#10;	socket.send(packet, this.port, this.ipAddress, function () {&#10;	   console.log('Switch light off ' + this.macAddress + ' at ' + this.ipAddress + ':' + this.port + ' msg = ' + message);&#10;	});&#10;}&#10;&#10;/** Probe the Lifx bulb to check if it is working. Probe sends a 'getLight' message.&#10; *  If the bulb is working, it will answer with a 'stateLight' message. If no answer &#10; *  is received within 3000 ms, then the current lifxLightBulb will be removed. &#10; *  &#10; *  @param socket The socket used for sending the udp message&#10; */&#10;LifxLight.prototype.probe = function(socket) {&#10;	// Set the options for switching the light off&#10;	var options = {};&#10;	options.ackRequired = 1; options.resRequired = 1;&#10;	options.getLight = true ;&#10;	&#10;	// Build the hexadecimal packet and then convert it to an array of bytes&#10;	var hexPacket = buildPacket.call(this, options);&#10;	var packet = convertHexStringToByteArray(hexPacket);&#10;	&#10;	// Send the packet over the provided socket&#10;	socket.send(packet, this.port, this.ipAddress, function () {&#10;	   console.log('Switch light off ' + this.macAddress + ' at ' + this.ipAddress + ':' + this.port + ' msg = ' + message);&#10;	});&#10;}&#10;&#10;/////////////////////////////////////////////////////////////////////////&#10;//// Constants &#10;&#10;// The following 3 objects contain a self describing textual values of the codes&#10;// exchanged between the Lifx bulb and its accessor.&#10;// The list is not exhaustive, as only the most useful ones are kept. The remaining &#10;// are omitted. The codes are given in hexadecimal.&#10;&#10;var codesForStateMessages = {&#10;	'03': 'stateService',       // 0x03 = 3 d&#10;	'6b': 'stateLight',         // 0x6b = 107 d  &#10;	'76': 'statePower'          // 0x76 = 118 d  &#10;};&#10;&#10;var codesForSetMessages = {&#10;    'setColor': '66',           // 0x66 = 102 d&#10;    'setPower': '75'            // 0x75 = 117 d&#10;};&#10;&#10;var codesForGetMessages = {&#10;    'getLight': '65',           // 0x65 = 101 d&#10;    'getPower': '74'            // 0x74 = 116 d&#10;};&#10;&#10;var colorToHexHue = {&#10;	'red':   {'h': '0000', 's': 'ffff', 'b': 'ffff'},&#10;	'blue':  {'h': 'aaaa', 's': 'ffff', 'b': 'ffff'},&#10;    'green': {'h': '5555', 's': 'ffff', 'b': 'ffff'},&#10;    'yellow':{'h': '2d28', 's': 'ffff', 'b': 'ffff'},&#10;    'white': {'h': '0000', 's': 'ffff', 'b': 'ffff'}&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/devices/Lifx.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers and controls a Lifx lightbulb.&lt;/p&gt;&#10;&lt;p&gt; If the bulbs are already set up (through the Lifx mobile app for example),&#10; then the host running this accessor needs to be connected to the same LAN.&lt;/p&gt;&#10;&lt;p&gt; Otherwise, with an unconfigured bulb, you can connect your computer to the Lifx&#10; network provided by the bulb (an open Wifi network with a name like&#10; &amp;quot;LIFX_Axx_xxxxxx&amp;quot;).&lt;/p&gt;&#10;&lt;p&gt; If you have a bulb that has been configured to operate on some other network, you can&#10; reset it to factory defaults by turning it on and off five times in succession.&lt;/p&gt;&#10;&lt;p&gt; While it is possible to interact with Lifx bulbs over the Internet by &#10; sending HTTP requests to the Cloud, this module does not provide such&#10; mechanism.&lt;/p&gt;&#10;&lt;p&gt; The communication with Lifx light bulbs is done over UDP/IP. Messages are &#10; arrays of numeric bytes ordered in little-endian. The packets construction&#10; can be found in this link:&#10; https://lan.developer.lifx.com/docs/introduction&lt;/p&gt;&#10;&lt;p&gt; Upon initialization, this accessor creates a UDP socket for communication.&#10; There are two ways to configure this accessor in order to control a bulb:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;the first one consists on discovering Lifx bulbs on the network and then &#10;selecting the one to use.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;the second is by running a manual setup, where the light parameters are&#10;received in the input port. A use case of this scenario is when a server &#10;sends information about available devices and their parameters.&lt;/p&gt;&#10;&lt;p&gt;Discovery starts if an input is provided in 'triggerDiscovery' input port. &#10;The accessor will broadcast discovery messages. Since available bulbs will &#10;be asynchronously sending State messages, the accessor will be listening.&#10;Discovery messages will be repeatedly sent every 'discoveryInterval'&#10;parameter value, if no device has been selected. Each newly discovered &#10;light bulb will be added to discoveredLifxLights array. Selecting a device&lt;br&gt;is done by providing the index of the LifxLight in the array of discovered &#10;devices in the input port 'selectLight'.&lt;/p&gt;&#10;&lt;p&gt;Once the light bulb is chosen and successfully configured, discovery will &#10;stop and the accessor will start to react to 'control' input.&lt;/p&gt;&#10;&lt;p&gt;The &lt;em&gt;control&lt;/em&gt; input is a JSON object that may have the following properties:&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;on: 'on' to turn on; 'off' to turn off.&lt;/li&gt;&#10;&lt;li&gt;hue: Color, for bulbs that support color. This is a number in the&#10;range 0-65535.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;color: Color, for bulbs that support color. This is a string that is converted&#10;into a hue number using the colorToHexHue variable.&lt;/p&gt;&#10;&lt;p&gt;HSBK is used to represent the color and color temperature of a light. The&#10;color is represented as an HSB (Hue, Saturation, Brightness) value.&#10;Please refer to https://en.wikipedia.org/wiki/HSL_and_HSV&#10;A LifxLight is a class that has the following parameters:&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;ipAddress&lt;/strong&gt;: IP address of the bulb in the LAN.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;port&lt;/strong&gt;: integer. It defaults to 56700 as noted in the Lifx developer&#10;  API.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;macAddress&lt;/strong&gt;: a string of 12 hex numbers (6bytes) that refer to the &#10;  bulb macAddress.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;color&lt;/strong&gt;: the current hue values.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;power&lt;/strong&gt;: if true, then the bulb is switched on, false if switched off.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;strong&gt;userName&lt;/strong&gt;: this is the name of the user. It can be used to filter the &#10;  received messages.&lt;/p&gt;&#10;&lt;p&gt;LifxLight class declares a set of functions for light control:&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;swithOn()&lt;/strong&gt;: switches the light on. The latest selected color is the one&#10;  used. &lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;swithOff()&lt;/strong&gt;: switches the light off.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;setColor()&lt;/strong&gt;: changes the light color.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;strong&gt;probe()&lt;/strong&gt;: sends a 'getState' message to ckeck if the light bulb is still&#10;  working. This feature allows for fault-tolerance.&lt;/p&gt;&#10;&lt;p&gt;The supported communication schemas between the accessor and the bulbs are the &#10;following:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;To run discovery, a discovery message will be broadcasted. Bulbs will answer with&#10;a 'stateService' message.&lt;/li&gt;&#10;&lt;li&gt;To switch the light on or off, a 'setPower' message is sent. The bulb will answer &#10;with a 'statePower' message.&lt;/li&gt;&#10;&lt;li&gt;To set the light color, a 'setColor' message is sent. The bulb will answer &#10;with a 'stateLight' message.&lt;/li&gt;&#10;&lt;li&gt;To probe the light, a 'getLight' message is sent. The bulb will answer &#10;with a 'stateLight' message.&lt;/li&gt;&#10;&lt;/ul&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Chadlia Jerad">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Lifx.js 1597 2017-04-29 15:41:50Z cxh $$">
+            </property>
+            <property name="commands (port)" class="ptolemy.kernel.util.StringAttribute" value="JSON commands for the Hue, for example,&#10;               {&quot;on&quot; : true, &quot;color&quot; : 50000}">
+            </property>
+            <property name="triggerDiscovery (port)" class="ptolemy.kernel.util.StringAttribute" value="signal to start discovery">
+            </property>
+            <property name="selectLight (port)" class="ptolemy.kernel.util.StringAttribute" value="index in discoveredLifxLights array of the light to &#10;  be configured.">
+            </property>
+            <property name="manualBulbSetup (port)" class="ptolemy.kernel.util.StringAttribute" value="JSON object for the light configuration. At least,&#10;  the mac address and the ip address should be provided. Example:&#10;           {&quot;ipAddress&quot;: &quot;192.168.1.100&quot;, &quot;macAddress&quot;: &quot;d073d523995c&quot;}">
+            </property>
+            <property name="probe (port)" class="ptolemy.kernel.util.StringAttribute" value="signal to probe the bulb">
+            </property>
+            <property name="state (port)" class="ptolemy.kernel.util.StringAttribute" value="Outputs the received information from the bulb">
+            </property>
+            <property name="discoveryInterval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The time interval to re-send discovery messages,&#10;  if no light has been configured">
+            </property>
+            <property name="listeningIpAddress (parameter)" class="ptolemy.kernel.util.StringAttribute" value="the IP address of the accessor to listen to the&#10;  bulb packets. This defaults to 0.0.0.0 to listen to all UDP packets.">
+            </property>
+            <property name="listeningPort (parameter)" class="ptolemy.kernel.util.StringAttribute" value="the port number for listening. If a swarmlet is using two &#10;  or more instances of Lifx accessor, than each one needs to have its own distinct listening &#10;  port.">
+            </property>
+            <property name="userName (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Name of the user. Should be 8bytes.">
+            </property>
+            <property name="control (port)" class="ptolemy.kernel.util.StringAttribute" value="JSON control for the Hue, for example,&#10;               {&quot;on&quot; : &quot;on&quot;, &quot;color&quot; : &quot;red&quot;}">
+            </property>
+            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="Outputs the received information from the bulb">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="manualBulbSetup" class="ptolemy.actor.parameters.PortParameter" value="{}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="listeningIpAddress" class="ptolemy.data.expr.Parameter" value="0.0.0.0">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="userName" class="ptolemy.data.expr.Parameter" value="abcdefgh">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 295.0]">
+        </property>
+        <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -1.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="60.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="65.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.5}">
+                </property>
+                <property name="rounding" class="ptolemy.data.expr.Parameter" value="15.0">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/terraswarm/accessor/accessors/web/devices/Lifx.jpg">
+                </property>
+                <property name="scale" class="ptolemy.data.expr.Parameter" value="25.0">
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-28.0, -28.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 27, 1847, 1053}, maximized=true}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1615, 960]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+        </property>
+        <property name="selectLight" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <port name="manualBulbSetup" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="control" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="selectLight" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="triggerDiscovery" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="discovered" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="probe" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={638, 397, 1275, 512}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1275, 487]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneous&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id: TestSpontaneous.js 1117 2016-11-23 00:59:47Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearInterval, exports, require, setInterval */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('interval', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.output('output', {&#10;        'type': 'number'&#10;    });&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function () {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setInterval(function () {&#10;        thiz.send('output', count);&#10;        count += 1;&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneous.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestSpontaneous.js 1117 2016-11-23 00:59:47Z cxh $$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 395.0]">
+        </property>
+        <property name="interval" class="ptolemy.data.expr.Parameter" value="5000.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[15.0, 235.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[350.0, 145.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AlternateOnOff.generateCmd" relation="relation2"/>
+    <link port="AlternateOnOff.startCmd" relation="relation6"/>
+    <link port="TestSpontaneousOnce.output" relation="relation"/>
+    <link port="Display.input" relation="relation4"/>
+    <link port="SelectLight.index" relation="relation6"/>
+    <link port="SelectLight.discovered" relation="relation3"/>
+    <link port="Lifx.control" relation="relation2"/>
+    <link port="Lifx.selectLight" relation="relation6"/>
+    <link port="Lifx.triggerDiscovery" relation="relation"/>
+    <link port="Lifx.discovered" relation="relation3"/>
+    <link port="Lifx.data" relation="relation4"/>
+    <link port="Lifx.probe" relation="relation5"/>
+    <link port="Display2.input" relation="relation3"/>
+    <link port="TestSpontaneous.output" relation="relation5"/>
+</entity>
