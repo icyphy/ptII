@@ -1,17 +1,17 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GenerateLifxAccessors" class="ptolemy.actor.TypedCompositeActor">
+<entity name="GenerateLifxAccessors+D" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 265.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -21,15 +21,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An augmented reality&#10;demo using this service&#10;is here:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 445.0]">
         </property>
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityVideoSOHO+Lifx">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityVideoSOHO">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 505.0}">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO+Lifx.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO+Lifx+D.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -56,13 +56,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a key-value store running on &#10;192.168.1.217&#10;You need not start up key-value store, but if you&#10;want to look at it, then click on the link below:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 450.0]">
         </property>
     </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServerSOHOModel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 530.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreServerSOHO.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -90,24 +90,24 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 417, 1225, 622}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 211, 1242, 726}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[993, 529]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1010, 633]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0105263157894737">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{496.5, 264.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{512.4073660714287, 296.20005580357144}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chadlia Jerad&#10;Based on GenerateHueAccessor by Christopher Brooks">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 560.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads from the lifxs.json file and generates accessors that are added to the key-value store.&#10;&#10;The '@macAddress@', '@ipAddress'@ and '@port@' strings are respectiveley substituted with the macAddress, ipAddress &#10;and port fron lifxs.json.&#10;&#10;Click on the link below to open the template:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads from the lifxs.json file the Lifx mac addresses and their corresponding atag.&#10;&#10;After running Lifx discovery, the bulbs (identified through their macAddresses) will have their &#10;corrsponding ipAddress and port number &#10;&#10;The model generates accessors that are added to the key-value store. The '@macAddress@',&#10;'@ipAddress'@ and '@port@' strings are respectiveley substituted with the macAddress, ipAddress &#10;and port from the previous step.&#10;&#10;Click on the link below to open the template:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 5.0]">
         </property>
@@ -115,7 +115,7 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="LifxAccessorTemplate.js">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 180.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/LifxAccessorTemplate.js">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -144,7 +144,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 395.0]">
         </property>
     </entity>
     <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
@@ -190,7 +190,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 340.0]">
         </property>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -217,28 +217,59 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 275.0]">
-        </property>
-    </entity>
     <entity name="Accessors" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={886, 497, 929, 583}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={991, 497, 929, 583}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 558]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 450.0]">
         </property>
     </entity>
     <entity name="AprilTagIDs" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={902, 645, 499, 189}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={902, 741, 499, 189}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 240.0]">
         </property>
     </entity>
-    <entity name="GenerateLifxAccessors" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;&#10;/** The key is the AprilTag ID, which is an integer and the&#10; *  value is the Hue ID.&#10; */&#10;var IdToLifxId = [];&#10;&#10;/** Setup the input and output ports.&#10; *  Read in the hue.json file and create an array that maps from AprilTag id&#10; *  to the hue ID name.&#10; */&#10;exports.setup = function() {&#10;    // Inputs&#10;    this.input('trigger');&#10;    &#10;    // Outputs&#10;    this.output('accessor', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    this.output('aprilTagId', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    this.parameter('file', {&#10;    	'type': 'string',&#10;    	'value': 'LifxAccessorTemplate.js'&#10;    });&#10;    &#10;    // Read in the lifxs.json file and create an array that maps&#10;	// AprilTag to Accessor.&#10;	var TagToAccessor = [];&#10;&#10;	var lifxs = JSON.parse(getResource('lifxs.json', 10000));&#10;	for (lifx in lifxs.lifxs) {&#10;		var theLifx = lifxs.lifxs[lifx];&#10;		if (typeof theLifx.atag !== 'undefined') {&#10;			var aprilTag = theLifx.atag;&#10;			aprilTag = parseInt(aprilTag, 10);&#10;			IdToLifxId[aprilTag] = theLifx;&#10;			console.log('TagToAccessor: AprilTag: ' + aprilTag + ', LifxId: ' + theLifx.macAddress);&#10;		}&#10;	}&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var aprilTagsSeen = [];&#10;    &#10;    // Each time we get a trigger, substitute in the macAddress, the ipAddress&#10;    // and the port, then output the accessor.&#10;    this.addInputHandler('trigger', function() { &#10;        // The contents of the accessor template file.&#10;	    var lifxAccessorTemplate = getResource(getParameter('file', 2000));&#10;    	// FIXME: We iterate through the array looking for the&#10;    	// next element to emit.  There must be a better way.&#10;    	for (var aprilTag in IdToLifxId) {&#10;    		if (typeof aprilTagsSeen[aprilTag] === 'undefined' ) {&#10;    			aprilTagsSeen[aprilTag] = true;&#10;    			var macAddress = IdToLifxId[aprilTag].macAddress;&#10;    			var ipAddress = IdToLifxId[aprilTag].ipAddress;&#10;    			var port = IdToLifxId[aprilTag].port;&#10;    			var accessor = lifxAccessorTemplate.replace(/@ipAddress@/g, ipAddress);&#10;        		var accessor = accessor.replace(/@macAddress@/g, macAddress);&#10;        		var accessor = accessor.replace(/@port@/g, port);&#10;        		console.log('GenerateLifxAccessors: ' + accessor);&#10;        		thiz.send('aprilTagId', aprilTag);&#10;        		thiz.send('accessor', accessor);&#10;        		return;&#10;    		}&#10;    	}&#10;    	// If we don't return after emitting one accessor,&#10;    	// then we are done! &#10;    	thiz.wrapup();&#10;    });&#10;};&#10;&#10;">
+    <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once.&#10;//&#10;// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneousOnce&#10; *  @parameter delay The delay in milliseconds before the value is outputk.&#10; *  @parameter value The value to be output after the delay.&#10; *  @output output The output port&#10; *  @author Christopher Brooks and Edward A. Lee. Based on TestSpontaneous by Edward A. Lee&#10; *  @version $$Id: TestSpontaneousOnce.js 1659 2017-05-09 14:26:57Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, require, setTimeout */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('delay', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.parameter('value', {&#10;        'value': true&#10;    }); &#10;    this.output('output');&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;&#10;exports.initialize = function () {&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setTimeout(function () {&#10;        thiz.send('output', thiz.getParameter('value'));&#10;    }, this.getParameter('delay'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearTimeout(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneousOnce.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks and Edward A. Lee. Based on TestSpontaneous by Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestSpontaneousOnce.js 1659 2017-05-09 14:26:57Z cxh $$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The output port">
+            </property>
+            <property name="delay (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The delay in milliseconds before the value is outputk.">
+            </property>
+            <property name="value (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value to be output after the delay.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 340.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="GenerateLifxAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;&#10;/** The key is the AprilTag ID, which is an integer and the&#10; *  value is the Hue ID.&#10; */&#10;var IdToLifxId = [];&#10;&#10;/** Setup the input and output ports.&#10; *  Read in the hue.json file and create an array that maps from AprilTag id&#10; *  to the hue ID name.&#10; */&#10;exports.setup = function() {&#10;    // Inputs&#10;    this.input('trigger');&#10;    &#10;    // Outputs&#10;    this.output('aprilTagId', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.output('accessor', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    &#10;    this.parameter('file', {&#10;    	'type': 'string',&#10;    	'value': 'LifxAccessorTemplate.js'&#10;    });&#10;    &#10;    // Read in the lifxs.json file and create an array that maps&#10;	// AprilTag to Accessor.&#10;	var TagToAccessor = [];&#10;&#10;	var lifxs = JSON.parse(getResource('lifxsD.json', 10000));&#10;	for (lifx in lifxs.lifxs) {&#10;		var theLifx = lifxs.lifxs[lifx];&#10;		if (typeof theLifx.atag !== 'undefined') {&#10;			var aprilTag = theLifx.atag;&#10;			aprilTag = parseInt(aprilTag, 10);&#10;			IdToLifxId[aprilTag] = theLifx;&#10;			console.log('TagToAccessor: AprilTag: ' + aprilTag + ', LifxId: ' + theLifx.macAddress);&#10;		}&#10;	}&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var aprilTagsSeen = [];&#10;    &#10;    // Each time we get a trigger, substitute in the macAddress, the ipAddress&#10;    // and the port, then output the accessor.&#10;    this.addInputHandler('trigger', function() { &#10;        // Instantiate a standAlone Lifx Accessor&#10;        // in order to run Lifx discovery.&#10;	    var discoverLifx = this.instantiate('discoverLifx', 'devices/Lifx', true);&#10;	    discoverLifx.setParameter('discoveryInterval', 10000);&#10;	    discoverLifx.initialize();&#10;	    discoverLifx.provideInput('triggerDiscovery', 1);&#10;	    discoverLifx.react();&#10;	    &#10;	    var discoveredLifxBulbs;&#10;	    &#10;	    var handleDiscovery = setInterval(function() {&#10;	    	discoveredLifxBulbs = discoverLifx.latestOutput('discovered');&#10;	    	if (discoveredLifxBulbs) {&#10;	    		// Stop discovery&#10;	    		clearInterval(handleDiscovery);&#10;		&#10;	    		// We can distroy now the discoverLifx&#10;	    		discoverLifx.wrapup();&#10;	    		discoverLifx = null;&#10;	    		&#10;	    		// Now generate the accessors&#10;			    var lifxAccessorTemplate = getResource(getParameter('file', 2000));&#10;		    	for (var aprilTag in IdToLifxId) {&#10;		    		if (typeof aprilTagsSeen[aprilTag] === 'undefined' ) {&#10;		    			aprilTagsSeen[aprilTag] = true;&#10;		    			var macAddress = IdToLifxId[aprilTag].macAddress;&#10;		    			discoveredLifxBulbs.forEach(function(lb) {&#10;		    				if (lb.macAddress === macAddress) {&#10;		    					var ipAddress = lb.ipAddress;&#10;		    					var port = lb.port;&#10;		    					var accessor = lifxAccessorTemplate.replace(/@ipAddress@/, ipAddress);&#10;		        				var accessor = accessor.replace(/@macAddress@/, macAddress);&#10;		        				var accessor = accessor.replace(/@port@/, port);&#10;		        				thiz.send('aprilTagId', aprilTag);&#10;		        				thiz.send('accessor', accessor);&#10;		    				}&#10;		    			});&#10;		    		}&#10;		    	}&#10;		    	// We are done! &#10;		    	thiz.wrapup();&#10;	    	};&#10;	    }, 2000);&#10;    });&#10;};&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -250,7 +281,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 340.0]">
         </property>
         <property name="file" class="ptolemy.data.expr.Parameter" value="LifxAccessorTemplate.js">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -259,25 +290,25 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="accessor" class="ptolemy.actor.TypedIOPort">
+        <port name="aprilTagId" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="aprilTagId" class="ptolemy.actor.TypedIOPort">
+        <port name="accessor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[280.0, 265.0]">
-        </vertex>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[325.0, 285.0]">
+        <vertex name="vertex1" value="[370.0, 330.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[320.0, 350.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -287,10 +318,10 @@
     <link port="KeyValueStore.key" relation="relation3"/>
     <link port="KeyValueStore.value" relation="relation4"/>
     <link port="KeyValueStore.trigger" relation="relation4"/>
-    <link port="DiscreteClock.output" relation="relation"/>
     <link port="Accessors.input" relation="relation4"/>
     <link port="AprilTagIDs.input" relation="relation3"/>
-    <link port="GenerateLifxAccessors.trigger" relation="relation"/>
-    <link port="GenerateLifxAccessors.accessor" relation="relation4"/>
-    <link port="GenerateLifxAccessors.aprilTagId" relation="relation3"/>
+    <link port="TestSpontaneousOnce.output" relation="relation"/>
+    <link port="GenerateLifxAccessor.trigger" relation="relation"/>
+    <link port="GenerateLifxAccessor.aprilTagId" relation="relation3"/>
+    <link port="GenerateLifxAccessor.accessor" relation="relation4"/>
 </entity>
