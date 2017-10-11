@@ -1,9 +1,7 @@
 {
     "lifxs": [
         {"macAddress": "d073d523995c",
-         "ipAddress": "192.168.1.3",
-         "port": 56700,
-         "atag": "28"
+         "atag": "25"
         }
     ]
 }
