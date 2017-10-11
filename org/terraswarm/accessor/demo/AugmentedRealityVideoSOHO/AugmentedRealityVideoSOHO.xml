@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1798, 1172}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 59, 1796, 1021}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1564, 1062]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1564, 928]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5790632461994674">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.263250596959574">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{499.06388779556795, 347.10888671875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{598.6690340909093, 356.32279829545456}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -198,13 +198,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="You can also run the companion GenerateMQTTAccessors.xml&#10;model, which generates accessors for MQTT topics listed in&#10;mqtts.json and uploads them to the key-value store:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 430.0]">
         </property>
     </property>
     <property name="Sender4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GenerateMQTTAccessors Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 485.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateMQTTAccessors.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -239,13 +239,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="You can also run the companion GenerateHueAccessors.xml&#10;model, which generates accessors for Hue bulbs listed in&#10;hues.json and uploads them to the key-value store:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 515.0]">
         </property>
     </property>
     <property name="Sender5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GenerateHueAccessors Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 580.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 575.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateHueAccessors.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -280,13 +280,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="You can also run the companion GenerateLifxAccessors.xml&#10;model, which generates accessors for Lifx bulbs listed in&#10;lifxs.json and uploads them to the key-value store:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 605.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 600.0]">
         </property>
     </property>
     <property name="Sender6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GenerateLifxAccessors Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 665.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 660.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateLifxAccessors.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -778,7 +778,7 @@
             </port>
         </entity>
         <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 111, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 263}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -811,7 +811,7 @@
             </port>
         </entity>
         <entity name="TagToAccessorAccessor2" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 111, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 263}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -876,6 +876,30 @@
         <link port="CheckForError.accessor" relation="relation5"/>
         <link port="TagToAccessorAccessor2.input" relation="relation5"/>
     </entity>
+    <entity name="SchemaToHTML" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script accepts a JSON schema (see http://json-schema.org/)&#10;// and produces HTML for entering data that conforms with the specified&#10;// schema. At this point, it is very limited, supporting only a small&#10;// subset of the schema. But it is also extended to allow for hints&#10;// to provide more natural interfaces such as pushbuttons instead of&#10;// entry boxes. The most basic functionality takes a schema like this:&#10;//    { &quot;type&quot;: &quot;object&quot;,&#10;//      &quot;properties&quot;: {&#10;//         &quot;a&quot;: {&#10;//            &quot;type&quot;: &quot;string&quot;,&#10;//            &quot;title&quot;: &quot;A&quot;,&#10;//            &quot;description&quot;: &quot;A description here&quot;,&#10;//			  &quot;choices&quot;: [&quot;first&quot;, &quot;second&quot;]&#10;//          }&#10;//         &quot;b&quot;: {&#10;//             ...&#10;//          }&#10;//       }&#10;// and generates an HTML table with entry boxes labeled with the specified&#10;// title and a &quot;submit&quot; button.&#10;//&#10;// If a property has a &quot;choices&quot; property whose value is an array of&#10;// strings, then a radio button will be used instead of an entry box&#10;// with the specified choices offered as options.&#10;//&#10;// If a property has no &quot;choices&quot; property but instead has an &quot;options&quot;&#10;// property whose value is an array of strings, then a drop-down list&#10;// will br provided instead of an entry box.&#10;exports.setup = function() {&#10;	this.input('schema', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('schema', function() {&#10;		var schema = self.get('schema');&#10;		var content = '&lt;h2&gt;Inputs:&lt;/h2&gt;&lt;form action=&quot;/&quot; method=&quot;post&quot; target=&quot;blankIframe&quot; id=&quot;form&quot;/&gt;&lt;table&gt;';&#10;&#10;        // FIXME: Handle types other than object, e.g. string, number.      	&#10;        if (schema.type === 'object') {&#10;			for (prop in schema.properties) {&#10;				var name = prop;&#10;				var entry = schema.properties[prop];&#10;				if (entry['title']) {&#10;					name = entry['title'];&#10;				}&#10;				// Default type of entry will be a string.&#10;				// Note that this is not the same as the type in the schema,&#10;				// which specifies a JSON type, not an HTML5 type.&#10;				var choices = entry['choices'];&#10;				var options = entry['options'];&#10;				var input = '';&#10;				if (choices &amp;&amp; choices.length) {&#10;					for (var i = 0; i &lt; choices.length; i++) {&#10;						input += '&lt;input type=&quot;radio&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot; value=&quot;'&#10;							+ choices[i]&#10;							+ '&quot; form=&quot;form&quot;/&gt;'&#10;							+ choices[i];&#10;					}&#10;				} else if (options &amp;&amp; options.length) {&#10;					input += '&lt;select form=&quot;form&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot;&gt;';&#10;					for (var i = 0; i &lt; options.length; i++) {&#10;						input += '&lt;option value=&quot;'&#10;							+ options[i]&#10;							+ '&quot;&gt;'&#10;							+ options[i]&#10;							+ '&lt;/option&gt;';&#10;					}&#10;					input += '&lt;/select&gt;';&#10;				} else {&#10;					input = '&lt;input type=&quot;text&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot; form=&quot;form&quot;/&gt;';&#10;				}&#10;				&#10;				content += '&lt;tr&gt;&lt;td&gt;'&#10;						+ name&#10;						+ '&lt;/td&gt;&lt;td&gt;'&#10;						+ input&#10;						+ '&lt;/td&gt;&lt;/tr&gt;';&#10;			}&#10;		}&#10;		content += '&lt;/table&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; form=&quot;form&quot;&gt;';&#10;		&#10;		self.send('html', content);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 335.0]">
+        </property>
+        <port name="schema" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="html" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images.&#10; *&#10; *  @accessor cameras/Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *   The value is ignored and can be anything.&#10; *  @output {Object} image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode.&#10; *   Otherwise, use open-loop mode. This is a boolean that defaults to true.&#10; *  @parameter {string} camera The name of the camera to use.&#10; *   A list of available cameras is presented as options.&#10; *   This is a string that defaults to &quot;default camera&quot;,&#10; *   which uses the system default, if there is one.&#10; *  @parameter {{width: number, height: number}} viewSize The view size&#10; *   to use for capture, in pixels. A list of available view sizes for&#10; *   the selected camara is presented as options. This is a JSON specification&#10; *   with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global addInputHandler, error, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var cameras = require(&quot;@accessors-modules/cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('image');&#10;    this.parameter('triggered', {&#10;        'type': 'boolean',&#10;        'value': true&#10;    });&#10;    // NOTE: The following assumes that setup() is reinvoked whenever a parameter&#10;    // value changes, since the camera will change and so will the available options.&#10;    this.parameter('camera', {&#10;        'type': 'string',&#10;        'value': 'default camera'&#10;    });&#10;    this.parameter('viewSize', {&#10;        'type': 'JSON'&#10;    });&#10;    // This is in a try-catch so that this accessor can be instantiated even if the&#10;    // host does not provide a cameras module.&#10;    try {&#10;        this.parameter('camera', {&#10;            'options': cameras.cameras()&#10;        });&#10;        camera = new cameras.Camera(this.getParameter('camera'));&#10;        this.parameter('viewSize', {&#10;            'value': camera.getViewSize(),&#10;            'options': camera.viewSizes()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function () {&#10;    camera.setViewSize(this.getParameter('viewSize'));&#10;    camera.open();&#10;    var self = this;&#10;    if (this.getParameter('triggered')) {&#10;        // Request a snapshot.  Note the video stream might not be playing.&#10;        // An event will be generated when a snapshot is available.&#10;        camera.on('snapshot', function (image) {&#10;            self.send('image', image);&#10;        });&#10;&#10;        handle = this.addInputHandler('trigger', function () {&#10;            camera.snapshot();&#10;        });&#10;    } else {&#10;        camera.on('image', function (image) {&#10;            self.send('image', image);&#10;        });&#10;    }&#10;};&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function () {&#10;    camera.removeAllListeners('image');&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;    camera.close();&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -884,6 +908,8 @@
             </property>
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/cameras/Camera.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 390.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for a camera on the local host. This can be a built-in camera or&#10; a USB-connected camera. This accessor has two modes of operation, &amp;quot;triggered&amp;quot;&#10; and &amp;quot;open loop.&amp;quot; In triggered mode, it captures an image whenever a trigger&#10; input is received and produces that image on its output. In open-loop mode,&#10; it captures every image produced by the camera, at the speed of the camera,&#10; and produces on the output a stream of such images.&lt;/p&gt;">
@@ -909,7 +935,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="camera" class="ptolemy.data.expr.Parameter" value="HD Pro Webcam C920 0x14200000046d082d">
+        <property name="camera" class="ptolemy.data.expr.Parameter" value="default camera">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -919,36 +945,10 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 390.0]">
-        </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="image" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="SchemaToHTML" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script accepts a JSON schema (see http://json-schema.org/)&#10;// and produces HTML for entering data that conforms with the specified&#10;// schema. At this point, it is very limited, supporting only a small&#10;// subset of the schema. But it is also extended to allow for hints&#10;// to provide more natural interfaces such as pushbuttons instead of&#10;// entry boxes. The most basic functionality takes a schema like this:&#10;//    { &quot;type&quot;: &quot;object&quot;,&#10;//      &quot;properties&quot;: {&#10;//         &quot;a&quot;: {&#10;//            &quot;type&quot;: &quot;string&quot;,&#10;//            &quot;title&quot;: &quot;A&quot;,&#10;//            &quot;description&quot;: &quot;A description here&quot;,&#10;//			  &quot;choices&quot;: [&quot;first&quot;, &quot;second&quot;]&#10;//          }&#10;//         &quot;b&quot;: {&#10;//             ...&#10;//          }&#10;//       }&#10;// and generates an HTML table with entry boxes labeled with the specified&#10;// title and a &quot;submit&quot; button.&#10;//&#10;// If a property has a &quot;choices&quot; property whose value is an array of&#10;// strings, then a radio button will be used instead of an entry box&#10;// with the specified choices offered as options.&#10;//&#10;// If a property has no &quot;choices&quot; property but instead has an &quot;options&quot;&#10;// property whose value is an array of strings, then a drop-down list&#10;// will br provided instead of an entry box.&#10;exports.setup = function() {&#10;	this.input('schema', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('schema', function() {&#10;		var schema = self.get('schema');&#10;		var content = '&lt;h2&gt;Inputs:&lt;/h2&gt;&lt;form action=&quot;/&quot; method=&quot;post&quot; target=&quot;blankIframe&quot; id=&quot;form&quot;/&gt;&lt;table&gt;';&#10;&#10;        // FIXME: Handle types other than object, e.g. string, number.      	&#10;        if (schema.type === 'object') {&#10;			for (prop in schema.properties) {&#10;				var name = prop;&#10;				var entry = schema.properties[prop];&#10;				if (entry['title']) {&#10;					name = entry['title'];&#10;				}&#10;				// Default type of entry will be a string.&#10;				// Note that this is not the same as the type in the schema,&#10;				// which specifies a JSON type, not an HTML5 type.&#10;				var choices = entry['choices'];&#10;				var options = entry['options'];&#10;				var input = '';&#10;				if (choices &amp;&amp; choices.length) {&#10;					for (var i = 0; i &lt; choices.length; i++) {&#10;						input += '&lt;input type=&quot;radio&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot; value=&quot;'&#10;							+ choices[i]&#10;							+ '&quot; form=&quot;form&quot;/&gt;'&#10;							+ choices[i];&#10;					}&#10;				} else if (options &amp;&amp; options.length) {&#10;					input += '&lt;select form=&quot;form&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot;&gt;';&#10;					for (var i = 0; i &lt; options.length; i++) {&#10;						input += '&lt;option value=&quot;'&#10;							+ options[i]&#10;							+ '&quot;&gt;'&#10;							+ options[i]&#10;							+ '&lt;/option&gt;';&#10;					}&#10;					input += '&lt;/select&gt;';&#10;				} else {&#10;					input = '&lt;input type=&quot;text&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot; form=&quot;form&quot;/&gt;';&#10;				}&#10;				&#10;				content += '&lt;tr&gt;&lt;td&gt;'&#10;						+ name&#10;						+ '&lt;/td&gt;&lt;td&gt;'&#10;						+ input&#10;						+ '&lt;/td&gt;&lt;/tr&gt;';&#10;			}&#10;		}&#10;		content += '&lt;/table&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; form=&quot;form&quot;&gt;';&#10;		&#10;		self.send('html', content);&#10;	});&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 335.0]">
-        </property>
-        <port name="schema" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-        <port name="html" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
@@ -984,8 +984,6 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -997,6 +995,8 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>
     <link port="ObjectRecognizer.output" relation="relation16"/>
@@ -1027,10 +1027,10 @@
     <link port="TagToAccessor.tags" relation="relation3"/>
     <link port="TagToAccessor.accessor" relation="relation5"/>
     <link port="TagToAccessor.translation" relation="relation6"/>
-    <link port="Camera.trigger" relation="relation14"/>
-    <link port="Camera.image" relation="relation"/>
     <link port="SchemaToHTML.schema" relation="relation11"/>
     <link port="SchemaToHTML.html" relation="relation17"/>
+    <link port="Camera.trigger" relation="relation14"/>
+    <link port="Camera.image" relation="relation"/>
     <link relation1="relation" relation2="relation10"/>
     <link relation1="relation12" relation2="relation13"/>
 </entity>
