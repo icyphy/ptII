@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PrintingPress_Icons" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+<entity name="PrintingPress_AnimationsOnly" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10000.0">
@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, -85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 22, 1280, 741}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 23, 1301, 741}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 631]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8241715399610137">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{520.8575797032829, 264.2431147411615}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{513.25, 263.92359899775306}">
     </property>
     <property name="Line1" class="ptolemy.vergil.kernel.attributes.LineAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -880,6 +880,31 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 390.0]">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here to open up a version without&#10;the animations:&#10;PrintingPress.xml ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 545.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{630, 990}">
+            </property>
+        </property>
+    </property>
     <entity name="PaperRoll" class="ptolemy.actor.TypedCompositeActor">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -993,7 +1018,7 @@
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="initRadius">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="initRadius">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-0.01">
             </property>
@@ -1001,7 +1026,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 55.0]">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initRadius">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 55.0]">
@@ -1106,7 +1131,7 @@
             </property>
         </entity>
         <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -1459,7 +1484,7 @@
             </property>
         </entity>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -1832,7 +1857,7 @@
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -2172,7 +2197,7 @@
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -2480,7 +2505,7 @@
             </property>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
@@ -2835,7 +2860,7 @@
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="initRadius">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="initRadius">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-0.01">
             </property>
@@ -2843,7 +2868,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 55.0]">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="initRadius">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 55.0]">
@@ -2948,7 +2973,7 @@
             </property>
         </entity>
         <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
