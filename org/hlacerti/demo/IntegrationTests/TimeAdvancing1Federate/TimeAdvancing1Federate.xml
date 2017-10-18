@@ -31,13 +31,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={700, 158, 784, 489}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 71, 784, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[550, 379]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[550, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3735205465905764">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{263.5751445584181, 185.52130746841434}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{263.5751445584181, 237.5773179718473}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federation with a unique federate f1.&#10;It must register the synchro point.&#10;&#10;For observe how the time advances,&#10;do a right-click on HlaManager icone and&#10;choose Listen To Attribute.&#10;&#10;Notice the difference when setting the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.">
@@ -62,6 +62,33 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 115.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this model, you must install CERTI.&#10;See the manual by clicking here.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 360.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/manual-ptii-hla.pdf">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{275, 380}">
+            </property>
         </property>
     </property>
 </entity>
