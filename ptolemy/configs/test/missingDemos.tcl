@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2013-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -44,6 +44,14 @@ if {[string compare test [info procs jdkCapture]] == 1} then {
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
+
+test missingDemos-0.5 {Update ptolemy/configs/doc/models.txt} {
+    puts "Updating $PTII/ptolemy/configs/doc/models.txt.  This could take a minute."
+    exec -stderrok make -C ../doc update
+    puts "Done updating $PTII/ptolemy/configs/doc/models.txt"
+    file exists ../doc/models.txt
+} {1}
+
 
 test missingDemos-1.0 {Look for demos listed in configs/doc/demos.html that are not in models.txt} {
     # Run it once to build any missing files.  It is ok if we have output on stderr.
