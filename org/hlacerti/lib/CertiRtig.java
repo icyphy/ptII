@@ -353,11 +353,11 @@ public class CertiRtig extends NamedObj {
             try {
                 while ((length = _inputStreamReader.read(chars, 0, 80)) != -1) {
                     _stringBuffer.append(chars, 0, length);
-                    System.out.println("CertRtig: reading: " + _stringBuffer.toString());
+                    System.out.println("CertRtig: reading: " + new String(chars));
                 }
             } catch (IOException e) {
                 throw new InternalErrorException(_actor, e, getName()
-                        + " IOExeception throwed.");
+                        + " IOExeception throwed: " + _stringBuffer);
             }
 
             if (_debugging) {
