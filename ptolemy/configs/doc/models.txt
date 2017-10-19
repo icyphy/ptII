@@ -625,6 +625,7 @@ $CLASSPATH/ptolemy/domains/ptides/demo/MultipleCores/MultipleCores.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress_AnimationsOnly.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/SRinPtides/SRinPtides.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/TREX/TREX.xml
