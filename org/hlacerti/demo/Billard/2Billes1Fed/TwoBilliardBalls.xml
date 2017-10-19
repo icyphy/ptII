@@ -4,7 +4,7 @@
 <entity name="TwoBilliardBalls" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 843, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 843, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 524]">
     </property>
@@ -77,6 +77,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federate simulates 2 instances of class&#10;&quot;Bille&quot; (see Test.fed file) and can interoperate&#10;with C++ federates of CERTI demo &quot;Billard&quot;.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 125.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If there are problems, &#10;right click on &#10;the HlaManager icon&#10;and select&#10;Listen to Attribute,&#10;then rerun the model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 55.0]">
         </property>
     </property>
     <entity name="Bille1" class="ptolemy.actor.TypedCompositeActor">

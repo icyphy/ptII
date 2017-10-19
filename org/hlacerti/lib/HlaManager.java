@@ -122,6 +122,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -583,7 +584,9 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     @Override
     public void initialize() throws IllegalActionException {
-        System.out.println("HlaManager: initialize(): 0: start");
+        if (_debugging) {
+            _debug("HlaManager: initialize(): 0: start");
+        }
         super.initialize();
 
         NamedObj container = getContainer();
@@ -596,21 +599,28 @@ public class HlaManager extends AbstractInitializableAttribute
         _director = (DEDirector) ((CompositeActor) this.getContainer())
                 .getDirector();
 
-        System.out.println("HlaManager: initialize(): 10: About to populateHlaAttributeTable");
+        if (_debugging) {
+            _debug("HlaManager: initialize(): 10: About to populateHlaAttributeTable");
+        }
+
         // Initialize HLA attribute tables for publication/subscription.
         _populateHlaAttributeTables();
 
         // Get a link to the RTI.
         RtiFactory factory = null;
         try {
-            System.out.println("HlaManager: initialize(): 20: About to getRtiFactory()");
+            if (_debugging) {
+                _debug("HlaManager: initialize(): 20: About to getRtiFactory()");
+            }
             factory = RtiFactoryFactory.getRtiFactory();
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e, "RTIinternalError ");
         }
 
         try {
-            System.out.println("HlaManager: initialize(): 30: About to createRtiAmbassador()");
+            if (_debugging) {
+                _debug("HlaManager: initialize(): 30: About to createRtiAmbassador()");
+            }
             _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e,
@@ -626,7 +636,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Create the Federation or raise a warning it the Federation already exits.
         try {
-            System.out.println("HlaManager: initialize(): 40: About to createFederationExecution()");
+            if (_debugging) {
+                _debug("HlaManager: initialize(): 40: About to createFederationExecution()");
+            }
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
         } catch (FederationExecutionAlreadyExists e) {
@@ -637,12 +649,18 @@ public class HlaManager extends AbstractInitializableAttribute
             throw new IllegalActionException(this, e, e.getMessage());
         }
 
-        System.out.println("HlaManager: initialize(): 50: About to create PtolemyFederateAmbassadorInner");
+        if (_debugging) {
+            _debug("HlaManager: initialize(): 50: About to create PtolemyFederateAmbassadorInner");
+        }
+
         _federateAmbassador = new PtolemyFederateAmbassadorInner();
 
         // Join the Federation.
         try {
-            System.out.println("HlaManager: initialize(): 60: About to joinFederationExecution()");
+            if (_debugging) {
+                _debug("HlaManager: initialize(): 60: About to joinFederationExecution()");
+            }
+
             _rtia.joinFederationExecution(_federateName, _federationName,
                     _federateAmbassador);
         } catch (RTIexception e) {
@@ -651,17 +669,23 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Initialize the Federate Ambassador.
         try {
-            System.out.println("HlaManager: initialize(): 70: About to initialize Federate Ambassador");
+            _debug("HlaManager: initialize(): 70: About to initialize Federate Ambassador");
             _federateAmbassador.initialize(_rtia);
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
 
-        System.out.println("HlaManager: initialize(): 80: About to initializeTimeAspects()");
+        if (_debugging) {
+            _debug("HlaManager: initialize(): 80: About to initializeTimeAspects()");
+        }
         _initializeTimeAspects();
-        System.out.println("HlaManager: initialize(): 90: About to doInitialSynchronization()");
+        if (_debugging) {
+            _debug("HlaManager: initialize(): 90: About to doInitialSynchronization()");
+        }
         _doInitialSynchronization();
-        System.out.println("HlaManager: initialize(): 100: Done!");
+        if (_debugging) {
+            _debug("HlaManager: initialize(): 100: Done!");
+        }
     }
 
     /** Return true if at least an object has been discovered during the time
@@ -688,6 +712,12 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Try to launch the HLA/CERTI RTIG subprocess.
         _certiRtig = new CertiRtig(this, _debugging);
+        if (_debugListeners != null
+            && _debugListeners.size() > 0) {
+            for(Object listener: _debugListeners) {
+                _certiRtig.addDebugListener((DebugListener)listener);
+            }
+        }
         _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
 
         _certiRtig.exec();
@@ -1005,6 +1035,12 @@ public class HlaManager extends AbstractInitializableAttribute
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        if (_debugListeners != null
+            && _debugListeners.size() > 0) {
+            for(Object listener: _debugListeners) {
+                _certiRtig.removeDebugListener((DebugListener)listener);
+            }
+        }
         _strucuralInformation.clear();
         _registeredObject.clear();
         _debug("Data" + "\n number of TARs: " + _numberOfTARs

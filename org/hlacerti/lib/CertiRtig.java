@@ -353,15 +353,16 @@ public class CertiRtig extends NamedObj {
             try {
                 while ((length = _inputStreamReader.read(chars, 0, 80)) != -1) {
                     _stringBuffer.append(chars, 0, length);
-                    System.out.println("CertRtig: reading: " + new String(chars));
+                    // Under Mac OS X, if there are shared library
+                    // problems, we might hang here, so if debugging is
+                    // enabled, we print.
+                    if (_debugging) {
+                        _debug("CertRtig: reading: " + new String(chars));
+                    }
                 }
             } catch (IOException e) {
                 throw new InternalErrorException(_actor, e, getName()
                         + " IOExeception throwed: " + _stringBuffer);
-            }
-
-            if (_debugging) {
-                _debug("_read(): " + _stringBuffer.toString());
             }
 
             if (_stringBuffer.toString().matches(
