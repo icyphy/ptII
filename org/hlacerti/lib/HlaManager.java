@@ -583,6 +583,7 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     @Override
     public void initialize() throws IllegalActionException {
+        System.out.println("HlaManager: initialize(): 0: start");
         super.initialize();
 
         NamedObj container = getContainer();
@@ -595,18 +596,21 @@ public class HlaManager extends AbstractInitializableAttribute
         _director = (DEDirector) ((CompositeActor) this.getContainer())
                 .getDirector();
 
+        System.out.println("HlaManager: initialize(): 10: About to populateHlaAttributeTable");
         // Initialize HLA attribute tables for publication/subscription.
         _populateHlaAttributeTables();
 
         // Get a link to the RTI.
         RtiFactory factory = null;
         try {
+            System.out.println("HlaManager: initialize(): 20: About to getRtiFactory()");
             factory = RtiFactoryFactory.getRtiFactory();
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e, "RTIinternalError ");
         }
 
         try {
+            System.out.println("HlaManager: initialize(): 30: About to createRtiAmbassador()");
             _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e,
@@ -622,6 +626,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Create the Federation or raise a warning it the Federation already exits.
         try {
+            System.out.println("HlaManager: initialize(): 40: About to createFederationExecution()");
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
         } catch (FederationExecutionAlreadyExists e) {
@@ -632,10 +637,12 @@ public class HlaManager extends AbstractInitializableAttribute
             throw new IllegalActionException(this, e, e.getMessage());
         }
 
+        System.out.println("HlaManager: initialize(): 50: About to create PtolemyFederateAmbassadorInner");
         _federateAmbassador = new PtolemyFederateAmbassadorInner();
 
         // Join the Federation.
         try {
+            System.out.println("HlaManager: initialize(): 60: About to joinFederationExecution()");
             _rtia.joinFederationExecution(_federateName, _federationName,
                     _federateAmbassador);
         } catch (RTIexception e) {
@@ -644,13 +651,17 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Initialize the Federate Ambassador.
         try {
+            System.out.println("HlaManager: initialize(): 70: About to initialize Federate Ambassador");
             _federateAmbassador.initialize(_rtia);
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
 
+        System.out.println("HlaManager: initialize(): 80: About to initializeTimeAspects()");
         _initializeTimeAspects();
+        System.out.println("HlaManager: initialize(): 90: About to doInitialSynchronization()");
         _doInitialSynchronization();
+        System.out.println("HlaManager: initialize(): 100: Done!");
     }
 
     /** Return true if at least an object has been discovered during the time
