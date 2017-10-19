@@ -18,6 +18,35 @@ Here a receipe for installing certi:
    make
    make install
 
+If you get an error like:
+--start--
+[  6%] Building CXX object libHLA/CMakeFiles/HLA.dir/GettimeofdayClock.cc.o
+[  7%] Building CXX object libHLA/CMakeFiles/HLA.dir/SHMPosix.cc.o
+In file included from /Users/cxh/pthla/certi/libHLA/SHMPosix.cc:13:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iostream:38:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/ios:216:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/__locale:18:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/mutex:189:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/__mutex_base:17:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/__threading_support:156:1: error: unknown type
+      name 'mach_port_t'
+mach_port_t __libcpp_thread_get_port();
+^
+--end--
+
+then as root edit /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/__mutex_base and add the following to the top:
+
+--start--
+#ifndef _MACH_PORT_T
+#define _MACH_PORT_T
+#include <sys/_types.h> /* __darwin_mach_port_t */
+typedef __darwin_mach_port_t mach_port_t;
+#include <pthread.h>
+mach_port_t pthread_mach_thread_np(pthread_t);
+#endif /* _MACH_PORT_T */
+--end--
+
+
 CERTI has been compiled and installed in the ’$HOME/pthla/certi-tools’ folder. CERTI provides a script to set the environment (global variables, binaries, etc) to allow the correct launch of RTIG process, RTIA process and federates. To set the CERTI environment properly in a terminal run the command:
 
 Put the following line in your ~/.bash_profile file:
@@ -26,7 +55,9 @@ Put the following line in your ~/.bash_profile file:
 
 To test the installation:
 
-1. open 3 terminals (make sure you open new terminals or source ~/.bash_profile in already open terminals)
+1. open 3 terminals and do
+   cd $HOME/pthla/certi/test/Billard/
+    (make sure you open new terminals or source ~/.bash_profile in already open terminals)
 2. go to the first terminal and execute the command "rtig"
 3. go to second terminal and call a billard federate "1" (-n name)
       billard -n1 -fTest -FTest.fed -t10
