@@ -5,6 +5,11 @@ Install certi (an open source RTI following the hla standard) latest version.  A
 Download the gzipped tar file from:
 http://download.savannah.gnu.org/releases/certi/
 
+Install the cmake command line executable (https://cmake.org/download/).
+
+Under Mac OS, try using MacPorts (https://www.macports.org/install.php) and then
+   sudo port install cmake
+
 Here a receipe for installing certi:
    mkdir $HOME/pthla
    cd $HOME/pthla
@@ -46,10 +51,18 @@ mach_port_t pthread_mach_thread_np(pthread_t);
 #endif /* _MACH_PORT_T */
 --end--
 
-
+Under Mac OS versions after El Capitan, create links to your $CERTI_HOME library directory.
+For details, see https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HLA#ElCapitan
+  sudo -i
+  cd /usr/local/lib
+  ln -s /Users/yourname/pthla/certi-tools/lib/* .
+  exit
+  
 CERTI has been compiled and installed in the ’$HOME/pthla/certi-tools’ folder. CERTI provides a script to set the environment (global variables, binaries, etc) to allow the correct launch of RTIG process, RTIA process and federates. To set the CERTI environment properly in a terminal run the command:
 
-Put the following line in your ~/.bash_profile file:
+  source $HOME/pthla/certi-tools/share/scripts/myCERTI_env.sh
+
+To do have these variables always set, put the following line in your ~/.bash_profile file:
 
    source $HOME/pthla/certi-tools/share/scripts/myCERTI_env.sh
 
