@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Distributed_sender" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Distributed_sender2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -93,20 +93,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 33, 930, 619}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 22, 930, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 509]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.771607318849895">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{150.6094959365325, 120.30912587074303}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{150.60949593653245, 123.97811048761612}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Cl&#233;ment Michel - SUPAERO ISAE - clement.michel@isae.fr&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Clément Michel - SUPAERO ISAE - clement.michel@isae.fr&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 135.0]">
         </property>
