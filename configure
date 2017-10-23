@@ -9997,7 +9997,7 @@ fi
 
     if test "${PTNODE:-none}" = "none"; then
        if test -f "$PTII/bin/node" ; then
-           NODE_VERSION=`$PTII/bin/node --version`
+           NODE_VERSION=`"$PTII/bin/node" --version`
            status=$?
            if test "$status" -eq 2; then
                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable in your path, $PTII/bin/node also failed." >&5
@@ -10008,22 +10008,51 @@ $as_echo "$as_me: WARNING: Failed to find the node executable in your path, $PTI
 $as_echo "$as_me: WARNING: Failed to find the node executable in your path, but $PTII/bin/node worked.  Please add $PTII/bin to your PATH." >&2;}
            fi
        fi
-       if test "${PTNODE:-none}" = "none"; then
+    fi
+
+    if test -f "$PTNODE" ; then
+        NODE_VERSION=`"$PTNODE" --version`
+        status=$?
+        if test "$status" -eq 2; then
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $PTNODE was found, but \"$PTNODE --version\" returned 2." >&5
+$as_echo "$as_me: WARNING: $PTNODE was found, but \"$PTNODE --version\" returned 2." >&2;};
+            PTNODE="";
+        fi
+    fi
+
+    if test "${PTNODE:-none}" = "none"; then
            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable, which means that the Node.js Accessor Host
     To install Node.js, see https://nodejs.org/en/download/
-    It is still possible to run the CapeCode Accessor Host,
+
+    If node is installed in $PTII/vendors/node, for example
+    $PTII/vendors/node.bak/node-v7.10.1-darwin-x64/bin/node
+    then $PTII/bin/node will use it.
+
+    Note that npm 5.x has a critical flaw that prevents
+    its use, so install Node 7.x, not Node 8.x
+
+    Without Node, it is still possible to run the CapeCode Accessor Host,
     but generating Swarmlets and running them using Node
     will only work if the node executable is the path." >&5
 $as_echo "$as_me: WARNING: Failed to find the node executable, which means that the Node.js Accessor Host
     To install Node.js, see https://nodejs.org/en/download/
-    It is still possible to run the CapeCode Accessor Host,
+
+    If node is installed in $PTII/vendors/node, for example
+    $PTII/vendors/node.bak/node-v7.10.1-darwin-x64/bin/node
+    then $PTII/bin/node will use it.
+
+    Note that npm 5.x has a critical flaw that prevents
+    its use, so install Node 7.x, not Node 8.x
+
+    Without Node, it is still possible to run the CapeCode Accessor Host,
     but generating Swarmlets and running them using Node
     will only work if the node executable is the path." >&2;}
-       fi
+
     else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for npm" >&5
+       if test -f "$PTNODE" ; then
+           { $as_echo "$as_me:${as_lineno-$LINENO}: checking for npm" >&5
 $as_echo_n "checking for npm... " >&6; }
-        # Extract the first word of "npm", so it can be a program name with args.
+           # Extract the first word of "npm", so it can be a program name with args.
 set dummy npm; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -10063,23 +10092,52 @@ $as_echo "no" >&6; }
 fi
 
 
-        if test "${PTNPM:-none}" = "none"; then
-            if test -f "$PTII/bin/npm" ; then
-                NODE_VERSION=`$PTII/bin/node --version`
-                status=$?
-                if test "$status" -eq 2; then
-                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the npm executable in your path, $PTII/bin/npm also failed." >&5
+           if test "${PTNPM:-none}" = "none"; then
+               if test -f "$PTII/bin/npm" ; then
+                   NODE_VERSION=`"$PTII/bin/npm" --version`
+                   status=$?
+                   if test "$status" -eq 2; then
+                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the npm executable in your path, $PTII/bin/npm also failed." >&5
 $as_echo "$as_me: WARNING: Failed to find the npm executable in your path, $PTII/bin/npm also failed." >&2;}
-                else
-                    PTNODE="$PTII/bin/node"
-                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH." >&5
+                   else
+                       PTNODE="$PTII/bin/node"
+                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH." >&5
 $as_echo "$as_me: WARNING: Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH." >&2;}
-                fi
+                   fi
+               else
+                   if test -f "$PTNPM" ; then
+                       NODE_VERSION=`"$PTNPM" --version`
+                       status=$?
+                       if test "$status" -eq 2; then
+                           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $PTNPM was found in the path, but \"$PTNPM --version\" returned 2." >&5
+$as_echo "$as_me: WARNING: $PTNPM was found in the path, but \"$PTNPM --version\" returned 2." >&2;}
+                           PTNPM=""
+                       fi
+                   fi
+               fi
            fi
        fi
        if test "${PTNPM:-none}" = "none"; then
-           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find npm, which means that the Node.js Accessor Host probably won't work." >&5
-$as_echo "$as_me: WARNING: Failed to find npm, which means that the Node.js Accessor Host probably won't work." >&2;}
+           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find npm, which means that the Node.js Accessor Host
+    probably won't work.
+    To npm is part of Node.js, see https://nodejs.org/en/download/
+
+    If node is installed in $PTII/vendors/node, for example
+    $PTII/vendors/node.bak/node-v7.10.1-darwin-x64/bin/node
+    then $PTII/bin/node will use it.
+
+    Note that npm 5.x has a critical flaw that prevents
+    its use, so install Node 7.x, not Node 8.x." >&5
+$as_echo "$as_me: WARNING: Failed to find npm, which means that the Node.js Accessor Host
+    probably won't work.
+    To npm is part of Node.js, see https://nodejs.org/en/download/
+
+    If node is installed in $PTII/vendors/node, for example
+    $PTII/vendors/node.bak/node-v7.10.1-darwin-x64/bin/node
+    then $PTII/bin/node will use it.
+
+    Note that npm 5.x has a critical flaw that prevents
+    its use, so install Node 7.x, not Node 8.x." >&2;}
        else
            { $as_echo "$as_me:${as_lineno-$LINENO}: checking for npm before 5.x" >&5
 $as_echo_n "checking for npm before 5.x... " >&6; }
