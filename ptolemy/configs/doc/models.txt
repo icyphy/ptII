@@ -12,6 +12,9 @@ $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvanci
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepReset.xml
+$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepResetNER/MicrostepResetNER.xml
+$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepResetNERbis/MicrostepResetNERbis.xml
+$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepResetTAR/MicrostepResetTAR.xml
 $CLASSPATH/org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerMultipleConsumerTAR/SimpleProducerMultipleConsumerTAR.xml
