@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/demo/MicrostepReset/MicrostepResetNER
+ME =		org/hlacerti/demo/MicrostepReset/MicrostepResetNERbis
 
 # Root of the Java directory
-ROOT =		../../../../
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	MicrostepReset
+PTPACKAGE = 	MicrostepResetNERbis
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -49,8 +49,11 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	DistributedReceiver.xml \
 	DistributedSender.xml \
+	DistributedSender2.xml \
 	MicrostepError.fed \
-	MicrostepReset.xml
+	MicrostepResetNERbis.png \
+	MicrostepResetNERbis.xml \
+	readme.txt
 
 EXTRA_SRCS = \
 	$(JSRCS) \
