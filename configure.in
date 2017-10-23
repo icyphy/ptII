@@ -3799,7 +3799,7 @@ else
     AC_PATH_PROG(PTNODE, node)
     if test "${PTNODE:-none}" = "none"; then
        if test -f "$PTII/bin/node" ; then
-           NODE_VERSION=`$PTII/bin/node --version`
+           NODE_VERSION=`"$PTII/bin/node" --version`
            status=$?
            if test "$status" -eq 2; then
                AC_MSG_WARN([Failed to find the node executable in your path, $PTII/bin/node also failed.])
@@ -3808,30 +3808,69 @@ else
                AC_MSG_WARN([Failed to find the node executable in your path, but $PTII/bin/node worked.  Please add $PTII/bin to your PATH.])
            fi
        fi
-       if test "${PTNODE:-none}" = "none"; then
+    fi
+
+    if test -f "$PTNODE" ; then
+        NODE_VERSION=`"$PTNODE" --version`
+        status=$?
+        if test "$status" -eq 2; then
+            AC_MSG_WARN([$PTNODE was found, but "$PTNODE --version" returned 2.]);
+            PTNODE="";
+        fi
+    fi
+
+    if test "${PTNODE:-none}" = "none"; then
            AC_MSG_WARN([Failed to find the node executable, which means that the Node.js Accessor Host
     To install Node.js, see https://nodejs.org/en/download/
-    It is still possible to run the CapeCode Accessor Host,
+
+    If node is installed in $PTII/vendors/node, for example
+    $PTII/vendors/node.bak/node-v7.10.1-darwin-x64/bin/node 
+    then $PTII/bin/node will use it.
+
+    Note that npm 5.x has a critical flaw that prevents
+    its use, so install Node 7.x, not Node 8.x
+    
+    Without Node, it is still possible to run the CapeCode Accessor Host,
     but generating Swarmlets and running them using Node
     will only work if the node executable is the path.])
-       fi
+
     else
-        AC_MSG_CHECKING([for npm])
-        AC_PATH_PROG(PTNPM, npm)
-        if test "${PTNPM:-none}" = "none"; then
-            if test -f "$PTII/bin/npm" ; then
-                NODE_VERSION=`$PTII/bin/node --version`
-                status=$?
-                if test "$status" -eq 2; then
-                    AC_MSG_WARN([Failed to find the npm executable in your path, $PTII/bin/npm also failed.])
-                else
-                    PTNODE="$PTII/bin/node"
-                    AC_MSG_WARN([Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH.])
-                fi
+       if test -f "$PTNODE" ; then
+           AC_MSG_CHECKING([for npm])
+           AC_PATH_PROG(PTNPM, npm)
+           if test "${PTNPM:-none}" = "none"; then
+               if test -f "$PTII/bin/npm" ; then
+                   NODE_VERSION=`"$PTII/bin/npm" --version`
+                   status=$?
+                   if test "$status" -eq 2; then
+                       AC_MSG_WARN([Failed to find the npm executable in your path, $PTII/bin/npm also failed.])
+                   else
+                       PTNODE="$PTII/bin/node"
+                       AC_MSG_WARN([Failed to find the node executable in your path, but $PTII/bin/npm worked.  Please add $PTII/bin to your PATH.])
+                   fi
+               else
+                   if test -f "$PTNPM" ; then
+                       NODE_VERSION=`"$PTNPM" --version`
+                       status=$?
+                       if test "$status" -eq 2; then
+                           AC_MSG_WARN([$PTNPM was found in the path, but "$PTNPM --version" returned 2.])
+                           PTNPM=""
+                       fi
+                   fi
+               fi
            fi
        fi
        if test "${PTNPM:-none}" = "none"; then
-           AC_MSG_WARN([Failed to find npm, which means that the Node.js Accessor Host probably won't work.])
+           AC_MSG_WARN([Failed to find npm, which means that the Node.js Accessor Host
+    probably won't work.
+    To npm is part of Node.js, see https://nodejs.org/en/download/
+
+    If node is installed in $PTII/vendors/node, for example
+    $PTII/vendors/node.bak/node-v7.10.1-darwin-x64/bin/node 
+    then $PTII/bin/node will use it.
+
+    Note that npm 5.x has a critical flaw that prevents
+    its use, so install Node 7.x, not Node 8.x.])
        else
            AC_MSG_CHECKING([for npm before 5.x])
            NPM_VERSION=`$PTNPM --version`
