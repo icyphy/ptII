@@ -56,7 +56,7 @@ PTCLASSALLJARS = \
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS)
+	MicrostepReset.xml
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED)
