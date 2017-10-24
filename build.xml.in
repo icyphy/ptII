@@ -266,23 +266,39 @@
     <property environment="env" />
     <condition property="node.in.path">
       <or>
-      <available file="node"
-	       filepath="${env.PATH}"
-               property="node.executable"
-	       value="node"/>
-      <available file="node.exe"
-	       filepath="${env.PATH}"
-               property="node.executable"
-	       value="node.exe"/>
+	<and>
+          <not>
+	    <os family="windows"/>
+	  </not>
+          <available file="node"
+		     filepath="${env.PATH}"
+		     property="node.executable"
+		     value="node"/>
+	</and>
+	<and>
+	  <os family="windows"/>
+	  <available file="node.exe"
+		     filepath="${env.PATH}"
+		     property="node.executable"
+		     value="node.exe"/>
+	</and>
       </or>
     </condition>
     <condition property="node.executable" value="node">
-      <available file="node"
-	       filepath="${env.PATH}"/>
+      <and>
+	<not>
+	  <os family="windows"/>
+	</not>
+	<available file="node"
+		   filepath="${env.PATH}"/>
+      </and>
     </condition>
     <condition property="node.executable" value="node.exe">
-      <available file="node.exe"
-	       filepath="${env.PATH}"/>
+      <and>
+	  <os family="windows"/>
+	  <available file="node.exe"
+		     filepath="${env.PATH}"/>
+      </and>
     </condition>
   </target>
 
