@@ -1,6 +1,6 @@
 /* Export a model as an image or set of html files.
 
- Copyright (c) 2011-2014 The Regents of the University of California.
+ Copyright (c) 2011-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,6 +44,7 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
@@ -967,12 +968,12 @@ public class ExportModel {
     ////                         private methods                   ////
 
     /** Return true if the model is runnable from this context.
-     *  Models that invoke SwingUtilities.invokeAndWait()
-     *  are not runnable here.  To export such a model, use
-     *  vergil.
-     *  If the model has a WebExportParameters parameter
-     *  then the value of the runBeforeExport Parameter is
-     *  returned.
+     *  Models that invoke SwingUtilities.invokeAndWait() are not
+     *  runnable here.  To export such a model, use vergil.  Models
+     *  that doe not have a director are not runnable.  Typically,
+     *  such models contain LiveLinks to other models.  If the model
+     *  has a WebExportParameters parameter then the value of the
+     *  runBeforeExport Parameter is returned.
      *  @param model The model to be checked.
      *  @return true if the model is runnable.
      *  @exception IllegalActionException If the WebExportParameter
@@ -997,6 +998,19 @@ public class ExportModel {
             if (entity instanceof UsesInvokeAndWait) {
                 System.out.println(entity.getFullName()
                         + " invoked SwingUtilities.invokeAndWait()");
+                return false;
+            }
+        }
+
+        // Check to see that the CompositeEntity has a Director.  If
+        // it does not have a Director, print a message and return
+        // false. If we don't do this, then we need to update
+        // ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+        // each time we add a model that has no director, but has
+        // LiveLinks.
+        if (model instanceof CompositeActor) {
+            Director director = ((CompositeActor)model).getDirector();
+            if (director == null) {
                 return false;
             }
         }
