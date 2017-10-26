@@ -437,8 +437,9 @@ public final class Workspace implements Nameable {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                throw new InternalErrorException(current.getName()
-                        + " - thread interrupted while waiting to get "
+                throw new InternalErrorException(this, ex,
+                        current.getName()
+                        + ": Thread interrupted while waiting to get "
                         + "read access: " + ex.getMessage());
             }
         }
@@ -560,8 +561,9 @@ public final class Workspace implements Nameable {
                 _waitingWriteRequests++;
                 wait();
             } catch (InterruptedException ex) {
-                throw new InternalErrorException(current.getName()
-                        + " - thread interrupted while waiting to get "
+                throw new InternalErrorException(this, ex,
+                        current.getName()
+                        + ": Thread interrupted while waiting to get "
                         + "write access: " + ex.getMessage());
             } finally {
                 _waitingWriteRequests--;
@@ -1015,10 +1017,11 @@ public final class Workspace implements Nameable {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                throw new InternalErrorException(
-                        "Thread interrupted while waiting for read access!"
-                                + ex.getMessage());
-            }
+                throw new InternalErrorException(this, ex,
+                        current.getName()
+                        + ": Thread interrupted while waiting to get "
+                        + " read access: " + ex.getMessage());
+           }
         }
     }
 
