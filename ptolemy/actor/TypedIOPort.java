@@ -849,16 +849,22 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Check that the specified token as well as the token in
      *  the default value, if specified, is compatible with the
-     *  resolved type of this port. If the resolved type is unknown,
+     *  resolved type of this port. If the resolved type is UNKNOWN
      *  then we have to assume unknown is acceptable (e.g. the port
      *  is not connected to anything), so we accept any token type.
+     *  If the type is GENERAL, then we don't check the type because
+     *  all types are lower and none are incomparable to GENERAL.
      *  @param token The token to check.
      *  @exception IllegalActionException If the specified token is
      *   either incomparable to the resolved type or higher in the
      *   type lattice.
      */
     protected void _checkType(Token token) throws IllegalActionException {
-        if (_resolvedType.equals(BaseType.UNKNOWN)) {
+        // CapeCode: Check for GENERAL here and avoid a possible hang when 
+        // calling localFunctions.js convertToToken() and we fall through
+        // to a possibly very large RecordToken.
+        if (_resolvedType.equals(BaseType.UNKNOWN)
+            ||_resolvedType.equals(BaseType.GENERAL)) {
             return;
         }
         int compare = TypeLattice.compare(token.getType(), _resolvedType);
