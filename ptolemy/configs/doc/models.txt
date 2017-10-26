@@ -431,6 +431,11 @@ $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemErrorHandling.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemOntology.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemQuantityManager.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved.xml
+$CLASSPATH/ptolemy/demo/PLC/PLC.xml
+$CLASSPATH/ptolemy/demo/PLC/PLCwithBounce.xml
+$CLASSPATH/ptolemy/demo/PLC/PLCwithConstantTorque.xml
+$CLASSPATH/ptolemy/demo/PLC/PLCwithFeedbackTorque.xml
+$CLASSPATH/ptolemy/demo/PLC/PLCwithTimeFeedback.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/ChannelFaultModel.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/GaussianMixtureModel.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/GMMConvergenceAnalysis.xml
