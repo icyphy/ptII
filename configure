@@ -14232,8 +14232,8 @@ fi
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSLF4J_API_JAR" >&5
 $as_echo "$PTSLF4J_API_JAR" >&6; }; fi
         updateClasspath "$PTSLF4J_API_JAR"
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for slf4-nop" >&5
-$as_echo_n "checking for slf4-nop... " >&6; }
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for slf4-simple" >&5
+$as_echo_n "checking for slf4-simple... " >&6; }
 
 # Check whether --with-slf4j-simple was given.
 if test "${with_slf4j_simple+set}" = set; then :
