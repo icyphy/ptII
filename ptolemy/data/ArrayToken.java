@@ -378,6 +378,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *
      * @param dataArrayToken to be converted to a unsigned byte array.
      * @return dataBytes the resulting unsigned byte array.
+     * @see #unsignedByteArrayToArrayToken(byte[])
      */
     public static byte[] arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
@@ -1077,6 +1078,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      * @param dataBytes data to be converted to an ArrayToken.
      * @return dataArrayToken the resulting ArrayToken.
      * @exception IllegalActionException If ArrayToken can not be created.
+     * @see #arrayTokenToUnsignedByteArray(ArrayToken)
      */
     public static ArrayToken unsignedByteArrayToArrayToken(byte[] dataBytes)
             throws IllegalActionException {
