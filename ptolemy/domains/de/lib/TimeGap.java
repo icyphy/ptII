@@ -79,15 +79,18 @@ public class TimeGap extends DETransformer {
         super.fire();
         // Consume an input.
         if (input.hasToken(0)) {
+            _hadInput = true;
             input.get(0);
-        }
+            // Produce an output only when an input has arrived.
+            Time currentTime = getDirector().getModelTime();
 
-        Time currentTime = getDirector().getModelTime();
-
-        if (_previousTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
-            DoubleToken outToken = new DoubleToken(currentTime.subtract(
-                    _previousTime).getDoubleValue());
-            output.send(0, outToken);
+            if (_previousTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
+                DoubleToken outToken = new DoubleToken(currentTime.subtract(
+                        _previousTime).getDoubleValue());
+                output.send(0, outToken);
+            }
+        } else {
+            _hadInput = false;
         }
     }
 
@@ -96,6 +99,7 @@ public class TimeGap extends DETransformer {
     @Override
     public void initialize() throws IllegalActionException {
         _previousTime = Time.NEGATIVE_INFINITY;
+        _hadInput = false;
         super.initialize();
     }
 
@@ -106,7 +110,10 @@ public class TimeGap extends DETransformer {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        _previousTime = getDirector().getModelTime();
+        if (_hadInput) {
+            _previousTime = getDirector().getModelTime();
+            _hadInput = false;
+        }
         return super.postfire();
     }
 
@@ -114,4 +121,6 @@ public class TimeGap extends DETransformer {
     ////                         private variables                 ////
     // The time when the previous input arrives.
     private Time _previousTime;
+    // Indicator that a non-absent input was seen in fire().
+    private boolean _hadInput;
 }
