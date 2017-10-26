@@ -407,7 +407,6 @@ var TokenArray = Java.type('ptolemy.data.Token[]');
 // Converter class for JSON.  Converts to a RecordToken or ArrayToken.
 var JSONToToken = Java.type('ptolemy.actor.lib.conversions.json.JSONToToken');
 
-
 //---------------------------- Utility functions -----------------------------
 /** Convert the specified argument from a Ptolemy II Token
  *  to a JavaScript type if there is a lossless conversion.
@@ -571,6 +570,11 @@ function convertToToken(value, isJSON) {
         if (value instanceof Image) {
             return new AWTImageToken(value);
         }
+        // FIXME: Handle all kinds of array types. Convert them to arrays of numbers (int or double).
+        if (value instanceof Java.type('byte[]')) {
+            return ArrayToken.unsignedByteArrayToArrayToken(value);
+        }
+        // Fallback position.
         // Create a RecordToken with the fields of the object.
         // Using Nashorn-specific extension here to create Java array.
         var StringArray = Java.type('java.lang.String[]');
