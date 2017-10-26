@@ -570,10 +570,45 @@ function convertToToken(value, isJSON) {
         if (value instanceof Image) {
             return new AWTImageToken(value);
         }
+
         // FIXME: Handle all kinds of array types. Convert them to arrays of numbers (int or double).
-        if (value instanceof Java.type('byte[]')) {
-            return ArrayToken.unsignedByteArrayToArrayToken(value);
+
+        // We check for unsupported types so that we can avoid trying to create a RecordToken of a
+        // possibly very large array.
+
+        // Java Primitive Types are listed at
+        // https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
+
+        // We use throw new Error here so that we get an error with a stack trace.
+
+        if (value instanceof Java.type('boolean[]')) {
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle boolean[]');
         }
+        if (value instanceof Java.type('byte[]')) {
+            // FIXME: This is not correct because JavaScript has no unsigned byte type.
+            // We should probably be converting to ints
+            // return ArrayToken.unsignedByteArrayToArrayToken(value);
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle byte[]');
+        }
+        if (value instanceof Java.type('char[]')) {
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle char[]');
+        }
+        if (value instanceof Java.type('double[]')) {
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle double[]');
+        }
+        if (value instanceof Java.type('int[]')) {
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle int[]');
+        }
+        if (value instanceof Java.type('float[]')) {
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle float[]');
+        }
+        if (value instanceof Java.type('long[]')) {
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle long[]');
+        }
+        if (value instanceof Java.type('short[]')) {
+            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle short[]');
+        }
+
         // Fallback position.
         // Create a RecordToken with the fields of the object.
         // Using Nashorn-specific extension here to create Java array.
