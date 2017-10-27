@@ -184,10 +184,23 @@ public class AudioHelper extends VertxHelperBase {
             if (length > Integer.MAX_VALUE) {
                 throw new UnsupportedAudioFileException("Audio segment is too long.");
             }
-            int bufferSize = ((int) length) * targetStream.getFormat().getFrameSize();
+            int frameSize = targetStream.getFormat().getFrameSize();
+            int bufferSize = ((int) length) * frameSize;
+            if (bufferSize < 0) {
+                throw new IllegalStateException("Attempted to transcode playback format \"" + _playbackFormat
+                                                + "\", but the targetStream " + targetStream
+                                                + "\nyielded a frame size of " + frameSize
+                                                + "\n which when multiplied by the length of " + length
+                                                + "\nyielded a buffer size of " + bufferSize
+                                                + "\n which is less than zero."
+                                                + "\nThe length of the input audioData was + " + audioData.length
+                                                + "\nThe targetStream frame length was: " + targetStream.getFrameLength()
+                                                + "\n");
+            }
             if (_playbackData == null || _playbackData.length != bufferSize) {
                 // Hopefully, the allocation is done only once.
                 _playbackData = new byte[bufferSize];
+
             }
             targetStream.read(_playbackData, 0, bufferSize);
         } else {
@@ -216,13 +229,17 @@ public class AudioHelper extends VertxHelperBase {
      *  The captureOptions argument contains the following
      *  entries:
      *  <ol>
-     *  <li> bitsPerSample: The number of bits per sample.
-     *  <li> channels: The number of channels.
-     *  <li> sampleRate: Sample rate in Hz.
+     *    <li> bigEndian: 1 if big endian, 0 if little endian.  The
+     *    default is big endian.</li>
+     *    <li> bitsPerSample: The number of bits per sample.</li>
+     *    <li> channels: The number of channels.</li>
+     *    <li> sampleRate: Sample rate in Hz.</li>
      *  </ol>
      *  Allowable values for sampleRate are (most likely) 8000, 11025,
      *  22050, 44100, and 48000 Hz. If this method is not invoked,
      *  then the default value of 8000 Hz is used.
+     *
+     *  WAVE (aka .wav) is 16 bits, 1 channel, little endian, 44100 Hz.
      *
      *  @param captureOptions The parameters for capture.
      *  @param captureTime The amount of time (in ms) per capture.
@@ -240,8 +257,14 @@ public class AudioHelper extends VertxHelperBase {
             ) throws IOException, LineUnavailableException {
         
         int bitsPerSample = captureOptions.get("bitsPerSample");
+        boolean bigEndian = true;
         int channels = captureOptions.get("channels");
+
         int sampleRate = captureOptions.get("sampleRate");
+
+        if (captureOptions.containsKey("bigEndian")) {
+            bigEndian = captureOptions.get("bigEndian") == 1 ? true : false;
+        }
 
         // Set persistent variables that depend on the parameters.
         _captureChannels = channels;
@@ -258,9 +281,6 @@ public class AudioHelper extends VertxHelperBase {
             _formatError(outputFormat);
         }
         
-        // NOTE: Only supporting PCM_SIGNED, big-endian data.
-        // Should more alternatives be provided?
-        boolean bigEndian = true;
         // For PCM data, the size of a frame (in bytes) is always
         // equal to the size of a sample (in bytes) times the number of channels .
         int frameSize = channels * _captureBytesPerSample;
@@ -295,13 +315,17 @@ public class AudioHelper extends VertxHelperBase {
      *  
      *  The playbackOptions argument contains the following entries:
      *  <ol>
-     *  <li> bitsPerSample: The number of bits per sample.
-     *  <li> channels: The number of channels.
-     *  <li> sampleRate: Sample rate in Hz.
+     *    <li> bigEndian: 1 if big endian, 0 if little endian.  The
+     *    default is big endian.</li>
+     *    <li> bitsPerSample: The number of bits per sample.</li>
+     *    <li> channels: The number of channels.</li>
+     *    <li> sampleRate: Sample rate in Hz.</li>
      *  </ol>
      *  Allowable values for sampleRate are (most likely) 8000, 11025,
      *  22050, 44100, and 48000 Hz. If this method is not invoked,
      *  then the default value of 8000 Hz is used.
+     *
+     *  WAVE (aka .wav) is 16 bits, 1 channel, little endian, 44100 Hz.
      *
      *  @param playbackOptions The parameters for playback.
      *  @param playbackFormat The expected format of the input data.
@@ -317,16 +341,19 @@ public class AudioHelper extends VertxHelperBase {
             ) throws IOException, LineUnavailableException {
         
         int bitsPerSample = playbackOptions.get("bitsPerSample");
+        boolean bigEndian = true;
         int channels = playbackOptions.get("channels");
         int sampleRate = playbackOptions.get("sampleRate");
+
+        if (playbackOptions.containsKey("bigEndian")) {
+            bigEndian = playbackOptions.get("bigEndian") == 1 ? true : false;
+        }
 
         // Set persistent variables that depend on the parameters.
         _playbackChannels = channels;
         _playbackBytesPerSample = bitsPerSample / 8;
                         
-        // NOTE: Only supporting PCM_SIGNED, big-endian data.
         // Should more alternatives be provided?
-        boolean bigEndian = true;
         // For PCM data, the size of a frame (in bytes) is always
         // equal to the size of a sample (in bytes) times the number of channels .
         int frameSize = channels * _playbackBytesPerSample;
