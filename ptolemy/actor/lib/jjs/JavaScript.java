@@ -1151,6 +1151,8 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
      *    have the following optional fields:
      *    <ul>
      *      <li> encoding {string} The encoding of the file, see above for values.</li>
+     *      <li> returnURI {string} If true, then return the URI of the resource
+     *           instead of the contents.  The default is false.
      *      <li> timeout {number} The timeout in milliseconds.</li>
      *    </ul>
      *  </li>
@@ -1264,6 +1266,20 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             }
             if (ptKeystore.isDirectory()) {
                 uri = uri.replace("$KEYSTORE", ptKeystoreName);
+            }
+        }
+
+        // If options has returnURI set to true, then return the URI
+        // that would be opened.  ClipPlayer uses this to pass a
+        // file:, http: or https: URI to JavaFX MediaPlayer, which
+        // can play mp3s.
+        if (optionsMap.containsKey("returnURI")) {
+            String returnURI = (String)optionsMap.get("returnURI");
+            if (returnURI.toLowerCase().equals("true")) {
+                if (!uri.startsWith("http")) {
+                    return new File(uri).toURI().toString();
+                }
+                return uri;
             }
         }
 
