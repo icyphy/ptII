@@ -1277,6 +1277,13 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             String returnURI = (String)optionsMap.get("returnURI");
             if (returnURI.toLowerCase().equals("true")) {
                 if (!uri.startsWith("http")) {
+                    if (uri.startsWith("$CLASSPATH")) {
+                        try {
+                            return FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader()).toURI();
+                        } catch (Throwable throwable) {
+                            throw new IllegalActionException(this, throwable, "Failed to resolve " + uri);
+                        }
+                    }
                     return new File(uri).toURI().toString();
                 }
                 return uri;
