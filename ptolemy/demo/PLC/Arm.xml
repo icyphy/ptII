@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="/ptII/ptolemy/demo/PLC/Figures/Drumstick.pdf">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/PLC/Figures/Drumstick.pdf">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="200.0">
         </property>
