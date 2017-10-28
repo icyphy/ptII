@@ -1273,7 +1273,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         // that would be opened.  ClipPlayer uses this to pass a
         // file:, http: or https: URI to JavaFX MediaPlayer, which
         // can play mp3s.
-        if (optionsMap.containsKey("returnURI")) {
+        if (optionsMap != null && optionsMap.containsKey("returnURI")) {
             String returnURI = (String)optionsMap.get("returnURI");
             if (returnURI.toLowerCase().equals("true")) {
                 if (!uri.startsWith("http")) {
