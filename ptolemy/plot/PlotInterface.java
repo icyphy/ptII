@@ -74,10 +74,30 @@ public interface PlotInterface extends PlotBoxInterface {
         addPoint(dataset, x, y, null, connected);
     }
 
-    /** Same as the addPoint method, with derivatives optionally provided
-     *  for polynomial extrapolation.
+    /** In the specified data set, add the specified x, y point to the
+     *  plot, with derivatives optionally provided for polynomial
+     *  extrapolation.  Data set indices begin with zero.  If the data set
+     *  does not exist, create it.  The fourth argument indicates
+     *  whether the point should be connected by a line to the previous
+     *  point.  Regardless of the value of this argument, a line will not
+     *  drawn if either there has been no previous point for this dataset
+     *  or setConnected() has been called with a false argument.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the point will
+     *  not be added immediately (unless you call this method from within
+     *  the event dispatch thread). All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
+     *
+     *  @param dataset The data set index.
+     *  @param x The X position of the new point.
+     *  @param y The Y position of the new point.
      *  @param derivatives The derivatives at the new point (optional).
-     *         (The array will be copied as needed.)
+     *   (The array will be copied as needed.)
+     *  @param connected If true, a line is drawn to connect to the previous
+     *   point.
      */
     public void addPoint(final int dataset, final double x, final double y,
             final double[] derivatives, final boolean connected);

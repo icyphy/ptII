@@ -2292,7 +2292,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
         pt.x = x;
         pt.y = y;
-        pt.yDerivs = derivatives != null ? (double[])derivatives.clone() : null;
+        pt.derivatives = derivatives != null ? (double[])derivatives.clone() : null;
         pt.connected = connected && _isConnected(dataset);
 
         if (errorBar) {
@@ -2452,7 +2452,7 @@ public class Plot extends PlotBox implements PlotInterface {
         if (nbrOfBins == 0 || lastBin.xpos != xpos) {
             // Does not fall within last bin => add one bin
             // nbrOfBins += 1;
-            lastBin = new Bin(xpos, dataset, point.yDerivs);
+            lastBin = new Bin(xpos, dataset, point.derivatives);
             bins.add(lastBin);
         }
         lastBin.addPoint(point, pointIndex, ypos);
