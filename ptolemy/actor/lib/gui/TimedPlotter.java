@@ -34,13 +34,14 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.SmoothToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.plot.Plot;
+import ptolemy.plot.PlotInterface;
 
 ///////////////////////////////////////////////////////////////////
 //// TimedPlotter
@@ -160,7 +161,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
         for (int i = 0; i < width; i++) {
             _connected.add(true);
         }
-        ((Plot) plot).markDisconnections(true);
+        ((PlotInterface) plot).markDisconnections(true);
     }
 
     /** Read at most one input from each channel and plot it as a
@@ -179,6 +180,8 @@ public class TimedPlotter extends Plotter implements TimedActor {
                 .getToken()).booleanValue();
         int offset = ((IntToken) startingDataset.getToken()).intValue();
 
+        // NOTE: We assume the superclass ensures this cast is safe.
+        PlotInterface plot = (PlotInterface)this.plot;
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 boolean localTime = ((BooleanToken) useLocalTime.getToken())
@@ -191,11 +194,12 @@ public class TimedPlotter extends Plotter implements TimedActor {
                 }
 
                 DoubleToken currentToken = (DoubleToken) input.get(i);
-                double currentValue = currentToken.doubleValue();
-
-                // NOTE: We assume the superclass ensures this cast is safe.
-                ((Plot) plot).addPoint(i + offset, currentTimeValue,
-                        currentValue, _connected.get(i));
+                SmoothToken smoothToken = currentToken instanceof SmoothToken
+                        ? (SmoothToken)currentToken : null;
+                plot.addPoint(i + offset, currentTimeValue,
+                        currentToken.doubleValue(),
+                        smoothToken != null ? smoothToken.derivativeValues() : null,
+                        _connected.get(i));
                 if (disconnectOnAbsent) {
                     _connected.set(i, true);
                 }

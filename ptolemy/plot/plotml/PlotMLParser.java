@@ -323,7 +323,7 @@ public class PlotMLParser extends PlotBoxMLParser {
             }
 
             ((PlotInterface) _plot).addPointWithErrorBars(_currentDataset, x,
-                    y, low, high, connected);
+                    y, null, low, high, connected);
         }
     }
 }

@@ -280,11 +280,12 @@ public class Plot extends PlotBox implements PlotInterface {
      */
     @Override
     public synchronized void addPoint(final int dataset, final double x,
-            final double y, final boolean connected) {
+            final double y, final double[] derivatives,
+            final boolean connected) {
         Runnable doAddPoint = new RunnableExceptionCatcher(new Runnable() {
             @Override
             public void run() {
-                _addPoint(dataset, x, y, 0, 0, connected, false);
+                _addPoint(dataset, x, y, derivatives, 0, 0, connected, false);
             }
         });
 
@@ -321,12 +322,13 @@ public class Plot extends PlotBox implements PlotInterface {
      */
     @Override
     public synchronized void addPointWithErrorBars(final int dataset,
-            final double x, final double y, final double yLowEB,
+            final double x, final double y, final double[] derivatives,
+            final double yLowEB,
             final double yHighEB, final boolean connected) {
         Runnable doAddPoint = new RunnableExceptionCatcher(new Runnable() {
             @Override
             public void run() {
-                _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
+                _addPoint(dataset, x, y, derivatives, yLowEB, yHighEB, connected, true);
             }
         });
 
@@ -1831,7 +1833,7 @@ public class Plot extends PlotBox implements PlotInterface {
                             double yLowEB = Double.parseDouble(yl);
                             double yHighEB = Double.parseDouble(yh);
                             connected = _addLegendIfNecessary(connected);
-                            addPointWithErrorBars(_currentdataset, xpt, ypt,
+                            addPointWithErrorBars(_currentdataset, xpt, ypt, null,
                                     yLowEB, yHighEB, connected);
                             return true;
                         } else {
@@ -2145,7 +2147,9 @@ public class Plot extends PlotBox implements PlotInterface {
      * should only be called in the event dispatch thread. It should only
      * be called via deferIfNecessary().
      */
-    private void _addPoint(int dataset, double x, double y, double yLowEB,
+    private void _addPoint(int dataset, double x, double y,
+            double[] derivatives,
+            double yLowEB,
             double yHighEB, boolean connected, boolean errorBar) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -2288,6 +2292,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
         pt.x = x;
         pt.y = y;
+        pt.yDerivs = derivatives != null ? (double[])derivatives.clone() : null;
         pt.connected = connected && _isConnected(dataset);
 
         if (errorBar) {
@@ -2418,7 +2423,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
         if (_wrap && Math.abs(x - _wrapHigh) < 0.00001) {
             // Plot a second point at the low end of the range.
-            _addPoint(dataset, _wrapLow, y, yLowEB, yHighEB, false, errorBar);
+            _addPoint(dataset, _wrapLow, y, derivatives, yLowEB, yHighEB, false, errorBar);
         }
     }
 
@@ -2447,7 +2452,7 @@ public class Plot extends PlotBox implements PlotInterface {
         if (nbrOfBins == 0 || lastBin.xpos != xpos) {
             // Does not fall within last bin => add one bin
             // nbrOfBins += 1;
-            lastBin = new Bin(xpos, dataset);
+            lastBin = new Bin(xpos, dataset, point.yDerivs);
             bins.add(lastBin);
         }
         lastBin.addPoint(point, pointIndex, ypos);
@@ -2644,11 +2649,32 @@ public class Plot extends PlotBox implements PlotInterface {
             }
         }
 
-        if (connectedFlag && bin.needConnectionWithPreviousBin()) {
+        if (binIndex > 0) {
             Bin previousBin = bins.get(binIndex - 1);
-            _drawLine(graphics, dataset, xpos, bin.firstYPos(),
-                    previousBin.xpos, previousBin.lastYPos(), true,
-                    _DEFAULT_WIDTH);
+            final double[] derivs = previousBin.getDerivs();
+            long prev_xpos = previousBin.xpos;
+            long prev_ypos = previousBin.lastYPos();
+            if (derivs != null) {
+                final double x0 = (double)(prev_xpos - _ulx) / +_xscale + _xMin;
+                final double y0 = (double)(prev_ypos - _lry) / -_yscale + _yMin;
+                for (long xpos_k = prev_xpos + 1; xpos_k <= xpos; ++xpos_k) {
+                    final double x = (double)(xpos_k - _ulx) / +_xscale + _xMin;
+                    double y = 0;
+                    for (int i = derivs.length; i >= 0; --i) {
+                        y = y / (i + 1) * (x - x0) + (i > 0 ? derivs[i - 1] : y0);
+                    }
+                    final long ypos_k = _lry - (long) ((y - _yMin) * _yscale);
+                    _drawLine(graphics, dataset, xpos_k, ypos_k,
+                            prev_xpos, prev_ypos, true,
+                            _DEFAULT_WIDTH);
+                    prev_xpos = xpos_k;
+                    prev_ypos = ypos_k;
+                }
+            }
+            if (connectedFlag && bin.needConnectionWithPreviousBin()) {
+                _drawLine(graphics, dataset, xpos, bin.firstYPos(),
+                        prev_xpos, prev_ypos, true, _DEFAULT_WIDTH);
+            }
         }
 
         if (connectedFlag && bin.isConnected() && bin.rangeChanged()
@@ -3515,9 +3541,10 @@ public class Plot extends PlotBox implements PlotInterface {
      * y position.
      */
     private class Bin {
-        public Bin(long xPos, int dataset) {
+        public Bin(long xPos, int dataset, double[] derivs) {
             _dataset = dataset;
             xpos = xPos;
+            _derivs = derivs;
         }
 
         /**
@@ -3620,6 +3647,14 @@ public class Plot extends PlotBox implements PlotInterface {
         }
 
         /**
+         * Return the derivatives at this point (in the original coordinate space).
+         * The array must not be modified.
+         */
+        public double[] getDerivs() {
+            return _derivs;
+        }
+
+        /**
          * Return whether a line should be drawn with the previous bin.
          * After you have reset the display state, the boolean return false
          */
@@ -3685,6 +3720,8 @@ public class Plot extends PlotBox implements PlotInterface {
         }
 
         public final long xpos;
+
+        public final double[] _derivs;
 
         private int _afterLastPointIndex = 0;
 

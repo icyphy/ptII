@@ -60,6 +60,9 @@ public class PlotPoint implements Serializable {
     /** Y value. */
     public double y;
 
+    /** d^n y/dx^n for n > 0 */
+    public double[] yDerivs;
+
     /** Error bar Y low value. */
     public double yLowEB;
 
