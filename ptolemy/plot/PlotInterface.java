@@ -68,8 +68,19 @@ public interface PlotInterface extends PlotBoxInterface {
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
+    public default void addPoint(final int dataset, final double x,
+            final double y,
+            final boolean connected) {
+        addPoint(dataset, x, y, null, connected);
+    }
+
+    /** Same as the addPoint method, with derivatives optionally provided
+     *  for polynomial extrapolation.
+     *  @param derivatives The derivatives at the new point (optional).
+     *         (The array will be copied as needed.)
+     */
     public void addPoint(final int dataset, final double x, final double y,
-            final boolean connected);
+            final double[] derivatives, final boolean connected);
 
     /** In the specified data set, add the specified x, y point to the
      *  plot with error bars.  Data set indices begin with zero.  If
@@ -94,13 +105,16 @@ public interface PlotInterface extends PlotBoxInterface {
      *  @param dataset The data set index.
      *  @param x The X position of the new point.
      *  @param y The Y position of the new point.
+     *  @param derivatives The derivatives at the new point.
+     *         (The array will be copied as needed.)
      *  @param yLowEB The low point of the error bar.
      *  @param yHighEB The high point of the error bar.
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
     public void addPointWithErrorBars(final int dataset, final double x,
-            final double y, final double yLowEB, final double yHighEB,
+            final double y, final double[] derivatives,
+            final double yLowEB, final double yHighEB,
             final boolean connected);
 
     /** Clear the plot of all data points.  If the argument is true, then
