@@ -66,7 +66,13 @@ $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedbac
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityKeyValueStore.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityVideo.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateHueAccessors.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateLifxAccessors.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateMQTTAccessors.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreServerSOHO.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/SoundServerSOHO.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/AugmentedRealityVideoTerra.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/SoundServerTerra.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/HappySadStock.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/Hue.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/HueToggle.xml
@@ -194,6 +200,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerJS.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerTerra.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Annotate.xml
