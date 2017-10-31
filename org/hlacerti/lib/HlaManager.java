@@ -1064,6 +1064,11 @@ public class HlaManager extends AbstractInitializableAttribute
                 _rtia.unsubscribeObjectClass(_getClassHandleFromTab(obj));
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
+            } catch (ArrayIndexOutOfBoundsException e2) {
+                throw new IllegalActionException(this, e2, "While unsubscribing to the HLA attributes, "
+                                                 + "Failed to get class handle from object \""
+                                                 + obj + "\", which has a length of " + obj.length
+                                                 + ".  Attempted to access array index ");
             }
             if (_debugging) {
                 _debug("wrapup() - unsubscribe "
@@ -1079,6 +1084,11 @@ public class HlaManager extends AbstractInitializableAttribute
                 _rtia.unpublishObjectClass(_getClassHandleFromTab(obj));
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
+            } catch (ArrayIndexOutOfBoundsException e2) {
+                throw new IllegalActionException(this, e2, "While unpublishing the HLA attributes, "
+                                                 + "Failed to get class handle from object \""
+                                                 + obj + "\", which has a length of " + obj.length
+                                                 + ".  Attempted to access array index ");
             }
             if (_debugging) {
                 _debug("wrapup() - unpublish "
@@ -1294,144 +1304,137 @@ public class HlaManager extends AbstractInitializableAttribute
      * time step and the runtime, in a file.
      * The name and location of this file are specified in the initialization of the
      * variable file.
+     * @exception IllegalActionException If there is a problem finding the Fed file
+     * or if there is a problem finding a parameter.
      */
-    public void writeNumberOfHLACalls() {
-        try {
-            String fullName = federateName.toString();
-            //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
-            String nameOfTheFile = fullName.substring(fullName.indexOf('{') + 1,
-                    fullName.lastIndexOf('.'));
-            String RKSolver = "<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
-            nameOfTheFile = nameOfTheFile.substring(1,
-                    nameOfTheFile.lastIndexOf('.')) + ".xml";
-            String path = fedFile.asFile().getPath();
-            path = path.substring(0, path.lastIndexOf("/") + 1);
-            File file = new File(path + nameOfTheFile);
+    public void writeNumberOfHLACalls() throws IllegalActionException {
+        String fullName = federateName.toString();
+        //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
+        String nameOfTheFile = fullName.substring(fullName.indexOf('{') + 1,
+                                                  fullName.lastIndexOf('.'));
+        String RKSolver = "<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
+        nameOfTheFile = nameOfTheFile.substring(1,
+                                                nameOfTheFile.lastIndexOf('.')) + ".xml";
+        String path = fedFile.asFile().getPath();
+        path = path.substring(0, path.lastIndexOf("/") + 1);
+        File file = new File(path + nameOfTheFile);
 
-            StringBuffer info = new StringBuffer("Federate " + getDisplayName()
-                    + " in the model " + nameOfTheFile);
-            RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver);
-            info.append("\nRKSolver: " + RKSolver);
+        StringBuffer info = new StringBuffer("Federate " + getDisplayName()
+                                             + " in the model " + nameOfTheFile);
+        RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver);
+        info.append("\nRKSolver: " + RKSolver);
 
-            info.append("\n" + "stopTime: " + _stopTime + "    hlaTimeUnit: "
+        info.append("\n" + "stopTime: " + _stopTime + "    hlaTimeUnit: "
                     + _hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead);
-            if (_isCreator) {
-                info = new StringBuffer("SP register -> " + info);
-            }
-            if (_timeStepped) {
-                info.append("    Time Step: " + _hlaTimeStep + "\n"
+        if (_isCreator) {
+            info = new StringBuffer("SP register -> " + info);
+        }
+        if (_timeStepped) {
+            info.append("    Time Step: " + _hlaTimeStep + "\n"
                         + "Number of TARs: " + _numberOfTARs);
-            } else if (_eventBased) {
+        } else if (_eventBased) {
 
-                info.append("\nNumber of NERs: " + _numberOfNERs);
-            }
-            info.append("    Number of UAVs:" + _numberOfUAVs
+            info.append("\nNumber of NERs: " + _numberOfNERs);
+        }
+        info.append("    Number of UAVs:" + _numberOfUAVs
                     + "\nNumber of TAGs: " + _numberOfTAGs
                     + "    Number of RAVs:" + _numberOfRAVs + "\n" + "Runtime: "
                     + _runtime + "\n");
-            writeInTextFile(_file, info.toString());
-        } catch (Exception e) {
-            System.out.println("Couldn't write in the txt file.");
-        }
-
+        writeInTextFile(_file, info.toString());
     }
 
     /** Write a report containing(in a .csv file {@link #_csvFile}), among other informations,
      * the number of ticks, the delay between a NER or a TAR and its respective TAG, the number of UAVs and RAVs.
      */
     public void writeDelays() {
-        try {
-            String fullName = federateName.toString();
-            String nameOfTheFile = fullName.substring(fullName.indexOf('{') + 1,
-                    fullName.lastIndexOf('.'));
-            nameOfTheFile = nameOfTheFile.substring(1,
-                    nameOfTheFile.lastIndexOf('.')) + ".xml";
-            String nameOfTheFederate = fullName
-                    .substring(fullName.indexOf('"'));
-            String info = "\nFederate: " + nameOfTheFederate + ";in the model:;"
-                    + nameOfTheFile + "\nhlaTimeUnit: ;" + _hlaTimeUnitValue
-                    + ";lookAhead: ;" + _hlaLookAHead + ";runtime: ;" + _runtime
-                    + "\nApproach:;";
-            if (_timeStepped) {
-                info = info + "TAR;Time step:;" + _hlaTimeStep
-                        + ";Number of TARs:;" + _numberOfTARs + "\n";
-            } else if (_eventBased) {
-                info = info + "NER;Number of NERs:;" + _numberOfNERs + "\n";
-            }
-            info = info + "Number of UAVs:;" + _numberOfUAVs
-                    + ";Number of RAVs:;" + _numberOfRAVs + ";Number of TAGs:;"
-                    + _numberOfTAGs;
-            String numberOfTicks = "\nNumber of ticks:;";
-            String delay = "\nDelay :;";
-            double averageNumberOfTicks = 0;
-            double averageDelay = 0;
-            StringBuffer header = new StringBuffer("\nInformation :;");
-            String delayPerTick = "\nDelay per tick;";
-            for (int i = 0; i < _numberOfTAGs; i++) {
-                if (i < 10) {
-                    header.append((i + 1) + ";");
-                    numberOfTicks = numberOfTicks + _numberOfTicks.get(i) + ";";
-                    delay = delay + _TAGDelay.get(i) + ";";
-                    if (_numberOfTicks.get(i) > 0) {
-                        delayPerTick = delayPerTick
-                                + (_TAGDelay.get(i) / _numberOfTicks.get(i))
-                                + ";";
-                    } else {
-                        delayPerTick = delayPerTick + "0;";
-                    }
+
+        String fullName = federateName.toString();
+        String nameOfTheFile = fullName.substring(fullName.indexOf('{') + 1,
+                                                  fullName.lastIndexOf('.'));
+        nameOfTheFile = nameOfTheFile.substring(1,
+                                                nameOfTheFile.lastIndexOf('.')) + ".xml";
+        String nameOfTheFederate = fullName
+            .substring(fullName.indexOf('"'));
+        String info = "\nFederate: " + nameOfTheFederate + ";in the model:;"
+            + nameOfTheFile + "\nhlaTimeUnit: ;" + _hlaTimeUnitValue
+            + ";lookAhead: ;" + _hlaLookAHead + ";runtime: ;" + _runtime
+            + "\nApproach:;";
+        if (_timeStepped) {
+            info = info + "TAR;Time step:;" + _hlaTimeStep
+                + ";Number of TARs:;" + _numberOfTARs + "\n";
+        } else if (_eventBased) {
+            info = info + "NER;Number of NERs:;" + _numberOfNERs + "\n";
+        }
+        info = info + "Number of UAVs:;" + _numberOfUAVs
+            + ";Number of RAVs:;" + _numberOfRAVs + ";Number of TAGs:;"
+            + _numberOfTAGs;
+        String numberOfTicks = "\nNumber of ticks:;";
+        String delay = "\nDelay :;";
+        double averageNumberOfTicks = 0;
+        double averageDelay = 0;
+        StringBuffer header = new StringBuffer("\nInformation :;");
+        String delayPerTick = "\nDelay per tick;";
+        for (int i = 0; i < _numberOfTAGs; i++) {
+            if (i < 10) {
+                header.append((i + 1) + ";");
+                numberOfTicks = numberOfTicks + _numberOfTicks.get(i) + ";";
+                delay = delay + _TAGDelay.get(i) + ";";
+                if (_numberOfTicks.get(i) > 0) {
+                    delayPerTick = delayPerTick
+                        + (_TAGDelay.get(i) / _numberOfTicks.get(i))
+                        + ";";
+                } else {
+                    delayPerTick = delayPerTick + "0;";
                 }
-                averageNumberOfTicks = averageNumberOfTicks
-                        + _numberOfTicks.get(i);
-                averageDelay = averageDelay + _TAGDelay.get(i);
             }
-            header.append("Sum;");
-            int totalNumberOfHLACalls = _numberOfOtherTicks
-                    + (int) averageNumberOfTicks + _numberOfTARs + _numberOfNERs
-                    + _numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
-            numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
-            delay = delay + averageDelay + ";";
-            delayPerTick = delayPerTick + ";";
-            header.append("Average;");
-            if (_timeStepped) {
-                _reportFile = _createTextFile(
-                        nameOfTheFederate.substring(1,
-                                nameOfTheFederate.length() - 1) + "TAR"
-                                + ".csv",
-                        "date;timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
-                writeInTextFile(_reportFile,
-                        _date + ";" + _hlaTimeStep + ";" + _hlaLookAHead + ";"
-                                + _runtime + ";" + totalNumberOfHLACalls + ";"
-                                + _numberOfTARs + ";" + _numberOfTAGs + ";"
-                                + _numberOfRAVs + ";" + _numberOfUAVs + ";"
-                                + _numberOfTicks2 + ";" + averageDelay);
-            } else {
-                _reportFile = _createTextFile(
-                        nameOfTheFederate.substring(1,
-                                nameOfTheFederate.length() - 1) + "NER"
-                                + ".csv",
-                        "date;lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
-                writeInTextFile(_reportFile,
-                        _date + ";" + _hlaLookAHead + ";" + _runtime + ";"
-                                + totalNumberOfHLACalls + ";" + _numberOfNERs
-                                + ";" + _numberOfTAGs + ";" + _numberOfRAVs
-                                + ";" + _numberOfUAVs + ";" + _numberOfTicks2
-                                + ";" + averageDelay);
-            }
-
-            averageNumberOfTicks = averageNumberOfTicks / _numberOfTAGs;
-            averageDelay = averageDelay / _numberOfTAGs;
-            delayPerTick = delayPerTick + (averageDelay / averageNumberOfTicks)
-                    + ";";
-            numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
-            delay = delay + averageDelay + ";";
-
-            writeInTextFile(_csvFile, info + header + delay + numberOfTicks
-                    + delayPerTick + "\nOther ticks:;" + _numberOfOtherTicks
-                    + "\nTotal number of HLA Calls:;" + totalNumberOfHLACalls);
-        } catch (Exception e) {
-            System.out.println("Couldn't write in the csv file.");
+            averageNumberOfTicks = averageNumberOfTicks
+                + _numberOfTicks.get(i);
+            averageDelay = averageDelay + _TAGDelay.get(i);
+        }
+        header.append("Sum;");
+        int totalNumberOfHLACalls = _numberOfOtherTicks
+            + (int) averageNumberOfTicks + _numberOfTARs + _numberOfNERs
+            + _numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
+        numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
+        delay = delay + averageDelay + ";";
+        delayPerTick = delayPerTick + ";";
+        header.append("Average;");
+        if (_timeStepped) {
+            _reportFile = _createTextFile(
+                                          nameOfTheFederate.substring(1,
+                                                                      nameOfTheFederate.length() - 1) + "TAR"
+                                          + ".csv",
+                                          "date;timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+            writeInTextFile(_reportFile,
+                            _date + ";" + _hlaTimeStep + ";" + _hlaLookAHead + ";"
+                            + _runtime + ";" + totalNumberOfHLACalls + ";"
+                            + _numberOfTARs + ";" + _numberOfTAGs + ";"
+                            + _numberOfRAVs + ";" + _numberOfUAVs + ";"
+                            + _numberOfTicks2 + ";" + averageDelay);
+        } else {
+            _reportFile = _createTextFile(
+                                          nameOfTheFederate.substring(1,
+                                                                      nameOfTheFederate.length() - 1) + "NER"
+                                          + ".csv",
+                                          "date;lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+            writeInTextFile(_reportFile,
+                            _date + ";" + _hlaLookAHead + ";" + _runtime + ";"
+                            + totalNumberOfHLACalls + ";" + _numberOfNERs
+                            + ";" + _numberOfTAGs + ";" + _numberOfRAVs
+                            + ";" + _numberOfUAVs + ";" + _numberOfTicks2
+                            + ";" + averageDelay);
         }
 
+        averageNumberOfTicks = averageNumberOfTicks / _numberOfTAGs;
+        averageDelay = averageDelay / _numberOfTAGs;
+        delayPerTick = delayPerTick + (averageDelay / averageNumberOfTicks)
+            + ";";
+        numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
+        delay = delay + averageDelay + ";";
+
+        writeInTextFile(_csvFile, info + header + delay + numberOfTicks
+                        + delayPerTick + "\nOther ticks:;" + _numberOfOtherTicks
+                        + "\nTotal number of HLA Calls:;" + totalNumberOfHLACalls);
     }
 
     /** Write information in a txt file.
