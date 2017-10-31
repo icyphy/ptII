@@ -303,7 +303,8 @@ public class ExportModelJUnitTest {
                 "AntennaPattern.xml", // Has links to other models
                 "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
                 "AudioCapture.xml", // Wrong Audio Hardware on the test machine.
-                "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
+                "AudioClipPlayer.xml", // Wrong Audio Hardware on the test machine. (ClipPlayer2: Error in ClipPlayer: [] ERROR_MEDIA_AUDIO_FORMAT_UNSUPPORTED: ERROR_MEDIA_AUDIO_FORMAT_UNSUPPORTED)
+                "AudioFFT.xml", // Wrong Audio Hardware on the test machine. 
                 "AudioRecorder.xml", // Wrong Audio Hardware on the test machine.
                 "AudioSynthesis.xml", // Wrong Audio Hardware on the test machine.
                 "AugmentedReality.xml", // Has links to other models.
