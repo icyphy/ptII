@@ -57,6 +57,28 @@
         <returnvalue type="boolean">false</returnvalue>
       </condition>
 
+      <condition type="java" id="installOnUnix">
+        <java>
+            <class>com.izforge.izpack.util.OsVersion</class>
+            <field>IS_UNIX</field>
+        </java>
+        <returnvalue type="boolean">true</returnvalue>
+      </condition>
+      <condition type="java" id="installOnMac">
+        <java>
+            <class>com.izforge.izpack.util.OsVersion</class>
+            <field>IS_OSX</field>
+        </java>
+        <returnvalue type="boolean">true</returnvalue>
+      </condition>
+      <condition type="java" id="installOnWindows">
+        <java>
+            <class>com.izforge.izpack.util.OsVersion</class>
+            <field>IS_WINDOWS</field>
+        </java>
+        <returnvalue type="boolean">true</returnvalue>
+      </condition>
+
     </conditions>
 
     <!-- 
@@ -85,6 +107,7 @@
 	<res id="CustomLangPack.xml" src="CustomLangPack.xml"/> 
         <res id="HTMLInfoPanel.info" src="indexCapeCode.htm"/> 
         <res id="HTMLLicencePanel.licence" src="licenseCapeCode.htm"/>
+        <res id="HTMLInfoPanel.capeCodeStartupMacOSX" src="startupCapeCodeMacOSX.htm"/> 
         <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.txt"/>
         <res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows"/>
 	<res id="Installer.image" src="../dists/ptII11.0.devel/ptolemy/configs/capecode/CapeCodeSmall.png" />
@@ -129,6 +152,7 @@
  	<panel classname="UserInputPanel" condition="capeCodePackSelected" id="startApplicationPanelCapeCode"/>
         <panel classname="ProcessPanel" condition="startConfigure|startCapeCode|startPtiny|startVergil"/>
         <!-- panel classname="SimpleFinishPanel"/ -->
+	<panel classname="HTMLInfoPanel" condition="installOnMac" id="capeCodeStartupMacOSX" />
         <panel classname="FinishPanel"/>
     </panels>
     
@@ -448,6 +472,10 @@
 		  os="windows"/>
 <!--LinuxInclude -->
 <!--MacOSInclude-->
+
+            <file src="startupCapeCodeMacOSX.htm"
+		  targetdir="$INSTALLPATH"
+		  os="mac"/>
 
             <!-- We can't get these files from jar files -->
 	    <file src="src_jar/capecode1.0.devel/ptolemy/actor/lib/jjs" targetdir="$INSTALL_PATH/ptolemy/actor/lib"/>

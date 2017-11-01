@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title>Starting CapeCode</title>
+    <link href="StyleSheet" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h2>Starting CapeCode</h2>
+    <p>
+      <i>(The contents of this file are displayed during installation and also appear as $PTII/startupCapeCodeMacOSX.htm)</i>
+    </p>
+
+    <h3>CapeCode.app</h3>
+    <p>
+      Under Mac OS X, CapeCode
+      includes <code>$PTII/bin/CapeCode.app</code>,
+      where <code>$PTII</code> is the location where CapeCode was
+      installed.  Users that want to run CapeCode under Mac OS X
+      typically double click on <code>CapeCode.app</code>.
+    </p>
+
+    <h3>$PTII/bin/capecode</h3>
+    <p>
+      If you would like to extend or modify CapeCode, then set
+      the <code>$PTII</code> environment variable to point to the
+      location of your CapeCode tree.
+    </p>
+    <p>
+      This is typically done by editing <code>~/.bashrc</code> and
+      adding:
+    </p>
+
+    <pre>
+      export PTII=/Applications/capecode1.0.devel
+    </pre>
+
+    <p>
+      where <code>/Application/capecode1.0.devel</code> is the
+      location where CapeCode was installed.
+    </p>
+    <p>After setting <code>$PTII</code>, to rebuild use:
+    </p>
+    <pre>
+      cd $PTII
+      ./configure
+      $PTII/bin/ant
+      $PTII/bin/capecode
+    </pre>
+
+    <p>
+      See also <a href="https://www.icyphy.org/accessors/wiki/Main/PtolemyII">Ptolemy II/CapeCode</a>.
+    </p>
+
+    <h3>Details</h3>
+    <p>
+      Ptolemy II and CapeCode consist of multiple applications it it is
+      expected that the user will browse the distribution, so we don't ship
+      a single .app directory.  In addition, for support reasons, we want
+      the distributions to be fairly uniform between the different
+      platforms.
+    </p>
+
+    <p>
+      In addition, we hope that most users will extend Ptolemy
+      II/CapeCode and rebuild it.  Rebuilding Ptolemy II and CapeCode
+      creates the Mac .app files in $PTII/bin.  If we had a top level .app
+      file for CapeCode, this would clutter the top level directory.  In
+      addition, for CapeCode, we would end up with $PTII/Vergil.app,
+      $PTII/Ptiny.app, $PTII/CapeCode.app and possibly other .app files.
+    </p>
+
+    <p>
+      Other multi-platform applications include a bin directory on the
+      Mac that includes the .app directories.
+    </p>
+    <!-- See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=550 -->
+  </body>
+</html>
