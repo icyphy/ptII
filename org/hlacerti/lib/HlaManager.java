@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1067,7 +1068,7 @@ public class HlaManager extends AbstractInitializableAttribute
             } catch (ArrayIndexOutOfBoundsException e2) {
                 throw new IllegalActionException(this, e2, "While unsubscribing to the HLA attributes, "
                                                  + "Failed to get class handle from object \""
-                                                 + obj + "\", which has a length of " + obj.length
+                                                 + Arrays.toString(obj) + "\", which has a length of " + obj.length
                                                  + ".  Attempted to access array index ");
             }
             if (_debugging) {
@@ -1087,7 +1088,7 @@ public class HlaManager extends AbstractInitializableAttribute
             } catch (ArrayIndexOutOfBoundsException e2) {
                 throw new IllegalActionException(this, e2, "While unpublishing the HLA attributes, "
                                                  + "Failed to get class handle from object \""
-                                                 + obj + "\", which has a length of " + obj.length
+                                                 + Arrays.toString(obj) + "\", which has a length of " + obj.length
                                                  + ".  Attempted to access array index ");
             }
             if (_debugging) {
