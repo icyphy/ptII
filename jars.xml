@@ -1782,6 +1782,7 @@
 	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.jpg"/>
 	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.pem"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.wav"/>
 	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.xml"/>
       </fileset>
     </jar>
