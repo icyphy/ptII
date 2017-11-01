@@ -1047,12 +1047,14 @@ public class HlaManager extends AbstractInitializableAttribute
                 + "\n number of NERs: " + _numberOfNERs + "\n number of TAGs: "
                 + _numberOfTAGs);
 
+        /*
         calculateRuntime();
         writeNumberOfHLACalls();
         writeDelays();
         writeUAVsInformations();
         writeRAVsInformations();
         writeTimes();
+        */
 
         if (_debugging) {
             _debug("wrapup() - ... so termination");
@@ -1824,7 +1826,7 @@ public class HlaManager extends AbstractInitializableAttribute
 		//	       + hlaNextPointInTime.getDoubleValue());
 		//}
 
-                while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
+                while (proposedTime.compareTo(hlaNextPointInTime) >= 0) {
                     if (_debugging) {
                         _debug("        proposeTime(" + proposedTimeInString
                                 + ") - _timeSteppedBasedTimeAdvance("
