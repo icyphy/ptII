@@ -1047,14 +1047,12 @@ public class HlaManager extends AbstractInitializableAttribute
                 + "\n number of NERs: " + _numberOfNERs + "\n number of TAGs: "
                 + _numberOfTAGs);
 
-        /*
         calculateRuntime();
         writeNumberOfHLACalls();
         writeDelays();
         writeUAVsInformations();
         writeRAVsInformations();
         writeTimes();
-        */
 
         if (_debugging) {
             _debug("wrapup() - ... so termination");
