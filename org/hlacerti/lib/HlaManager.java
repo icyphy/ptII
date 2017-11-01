@@ -1824,7 +1824,7 @@ public class HlaManager extends AbstractInitializableAttribute
 		//	       + hlaNextPointInTime.getDoubleValue());
 		//}
 
-                while (proposedTime.compareTo(hlaNextPointInTime) >= 0) {
+                while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
                     if (_debugging) {
                         _debug("        proposeTime(" + proposedTimeInString
                                 + ") - _timeSteppedBasedTimeAdvance("
