@@ -1324,6 +1324,9 @@ public class HlaManager extends AbstractInitializableAttribute
                                              + " in the model " + nameOfTheFile);
         
         try {
+            // FIXME: Reading a file and doing a string match is not a robust
+            // way to get the value of a parameter.  Instead, use
+            // the getAttribute(String, Class) method from NamedObj.
             RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to find the parameter value \"" + RKSolver
