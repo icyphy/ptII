@@ -32,7 +32,7 @@
 
 ME =		org/hlacerti
 
-DIRS =      lib demo
+DIRS =      lib demo test
 
 # Root of Ptolemy II directory
 ROOT =      ../..
@@ -73,7 +73,8 @@ MISC_FILES = lib
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    demo
+	demo \
+	test
 
 all: jclass
 install: jclass jars
