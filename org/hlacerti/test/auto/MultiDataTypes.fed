@@ -1,0 +1,29 @@
+;; MultiDataTypes 
+
+(Fed
+  (Federation MultiDataTypes)
+  (FedVersion v1.3)
+  (Federate "consumer" "Public")
+  (Federate "producer" "Public")
+  (Spaces
+  )
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+	(Class myObjectClass
+		(Attribute val RELIABLE TIMESTAMP)
+		(Attribute val1 RELIABLE TIMESTAMP)
+		(Attribute val2 RELIABLE TIMESTAMP)
+		(Attribute val3 RELIABLE TIMESTAMP)
+		(Attribute val4 RELIABLE TIMESTAMP)
+		(Attribute val5 RELIABLE TIMESTAMP)
+	)
+    )
+  )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+    )
+  )
+)
