@@ -144,6 +144,9 @@ public class AutomaticSimulation extends VergilApplication
      */
     public static String findParameterValue(File file, String propertyLine)
             throws IllegalActionException {
+        // FIXME: Reading a file and doing a string match is not a robust
+        // way to get the value of a parameter.  Instead, use
+        // the getAttribute(String, Class) method from NamedObj.
         try {
             ArrayList<String> fileContent = convertFileToString(file);
             String value = "UNDEFINED";
