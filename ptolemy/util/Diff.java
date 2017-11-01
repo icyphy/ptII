@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import ptolemy.util.FileUtilities;
 
@@ -132,7 +133,7 @@ public class Diff {
         URL urlB = new File(args[1]).toURI().toURL();
 
         System.out.print(diff(
-                              new String(FileUtilities.binaryReadURLToByteArray(urlA)),
-                              new String(FileUtilities.binaryReadURLToByteArray(urlB))));
+                              new String(FileUtilities.binaryReadURLToByteArray(urlA), Charset.defaultCharset()),
+                              new String(FileUtilities.binaryReadURLToByteArray(urlB), Charset.defaultCharset())));
     }
 }
