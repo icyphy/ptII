@@ -1321,7 +1321,13 @@ public class HlaManager extends AbstractInitializableAttribute
 
         StringBuffer info = new StringBuffer("Federate " + getDisplayName()
                                              + " in the model " + nameOfTheFile);
-        RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver);
+        
+        try {
+            RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Failed to find the parameter value \"" + RKSolver
+                                             + "\" in \"" + file + "\".");
+        }
         info.append("\nRKSolver: " + RKSolver);
 
         info.append("\n" + "stopTime: " + _stopTime + "    hlaTimeUnit: "
