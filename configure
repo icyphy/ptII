@@ -882,7 +882,7 @@ JAVAX_CRYPTO_JAR
 JAVACV_JAR
 JAVACC_DIR
 JAVACC_OPTIONS
-JAVAC_COMPILERARG
+JAVAC_MODULES
 JAVACC
 JAVA3D_JARS
 JAVA_SYSTEM_JAR
@@ -917,6 +917,7 @@ ANT_EXCLUDE
 ANT_CLASSPATH
 ANT_ALWAYS_EXCLUDE
 ANT_PATH
+ANT_JAVAC_COMPILERARG
 SCALA
 SCALAC
 PTOMC
@@ -4779,7 +4780,8 @@ fi
 # Handle Java 9 fails.
 case "$JVERSION" in
         9*)   // Need to add a module so that javax.xml.bind.DatatypeConverter can be found.
-               JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
+               ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
+               JAVAC_MODULES="--add-modules java.xml.bind"
                updateExcludes "ptolemy/copernicus/applet/"
                updateExcludes "ptolemy/media/"
                ;;
@@ -14641,6 +14643,9 @@ fi
 
 
 # Keep these substitutions alphabetical, with a description
+
+# Ant directive for JavaC 9 to add --add-modules.
+
 
 # Path to the ant binary, stored in lib/ptII.properteries, used while importing accessors in org/terraswarm/accessor/JSAccessor.java
 
