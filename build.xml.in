@@ -450,7 +450,7 @@ For example:
 	   memorymaximumsize="${java.maxmemory}"
 	   source="${source}"
 	   target="${target}">
-      @JAVAC_COMPILERARG@
+      @ANT_JAVAC_COMPILERARG@
       <src path="${basedir}" />
       <!-- @ANT_WEBSENSOR_SRC@ -->
       <patternset refid="ptII.excludes" />

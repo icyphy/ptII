@@ -227,7 +227,9 @@ JAVAC = 	@JAVAC@
 # Flags to pass to javac.  Usually something like '-g -depend'
 JDEBUG =	-g
 JOPTIMIZE =	-O
-JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
+# JAVAC_MODULES is used by Java 9
+JAVAC_MODULES =	@JAVAC_MODULES@
+JFLAGS = 	$(JDEBUG) $(JOPTIMIZE) $(JAVAC_MODULES)
 
 # The javadoc binary, used to create html documentation of java classes.
 JAVADOC = 	@JAVADOC@
