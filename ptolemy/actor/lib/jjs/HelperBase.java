@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
-// import javax.xml.bind.DatatypeConverter;
+import javax.xml.bind.DatatypeConverter;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 //import jdk.nashorn.internal.objects.NativeArray;
