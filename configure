@@ -882,6 +882,7 @@ JAVAX_CRYPTO_JAR
 JAVACV_JAR
 JAVACC_DIR
 JAVACC_OPTIONS
+JAVAC_COMPILERARG
 JAVACC
 JAVA3D_JARS
 JAVA_SYSTEM_JAR
@@ -4473,6 +4474,8 @@ updateExcludes () {
 updateExcludeTests () {
    ANT_EXCLUDE_TESTS="$ANT_EXCLUDE_TESTS <exclude name=\"$1\" />"
 }
+
+
 ########################################################################
 
 if test ! -d "ptolemy/backtrack/eclipse"; then
@@ -4773,7 +4776,16 @@ $as_echo "ok" >&6; }; fi
         fi
 fi
 
-set +x
+# Handle Java 9 fails.
+case "$JVERSION" in
+        9*)   // Need to add a module so that javax.xml.bind.DatatypeConverter can be found.
+               JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
+               updateExcludes "ptolemy/copernicus/applet/"
+               updateExcludes "ptolemy/media/"
+               ;;
+esac
+
+
 
 #####################################################################
 #####################################################################
@@ -14753,6 +14765,9 @@ fi
 
 
 # javacc binary
+
+
+# Java 9 --add-modules directive for javax.xml.bind.DatatypeConverter.
 
 
 # javacc command line arguments, -STATIC=false if javacc is 5.0 or later.
