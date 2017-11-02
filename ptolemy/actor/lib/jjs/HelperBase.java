@@ -457,8 +457,7 @@ o     *  This is useful, for example, when a response
     protected static byte[] _toJavaBytes(Object object) throws IllegalActionException {
         // FIXME: jdk.nashorn.internal.objects.NativeArray is not exported in Java 9
         // At compilation time, the error is:
-        // (package jdk.nashorn.internal.objects is declared in module jdk.scripting.nashorn, which does not export it to the unnamed m\
-odule)
+        // (package jdk.nashorn.internal.objects is declared in module jdk.scripting.nashorn, which does not export it to the unnamed module)
         if (object instanceof ScriptObjectMirror /* || object instanceof NativeArray*/) {
             Collection<Object> values = null;
           // if (object instanceof ScriptObjectMirror) {
