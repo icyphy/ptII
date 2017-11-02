@@ -36,6 +36,11 @@ COPYRIGHTENDKEY
 */
 public class confTest {
     public static void main(String[] args) {
-        System.out.print(System.getProperty("java.version"));
+        String version = System.getProperty("java.version");
+        // java -target 9.0.1 will fail, so just return 9.
+        if (version.startsWith("9")) {
+            version = "9";
+        }
+        System.out.print(version);
     }
 }
