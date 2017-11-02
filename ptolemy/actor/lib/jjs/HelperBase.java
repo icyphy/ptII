@@ -38,10 +38,10 @@ import java.util.Collection;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
+// import javax.xml.bind.DatatypeConverter;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import jdk.nashorn.internal.objects.NativeArray;
+//import jdk.nashorn.internal.objects.NativeArray;
 import ptolemy.data.ImageToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -455,14 +455,14 @@ o     *  This is useful, for example, when a response
      *  @exception IllegalActionException If the conversion fails.
      */
     protected static byte[] _toJavaBytes(Object object) throws IllegalActionException {
-        if (object instanceof ScriptObjectMirror || object instanceof NativeArray) {
+        if (object instanceof ScriptObjectMirror /* || object instanceof NativeArray*/) {
             Collection<Object> values = null;
             if (object instanceof ScriptObjectMirror) {
                 ScriptObjectMirror objectMirror = ((ScriptObjectMirror) object);
                 values = objectMirror.values();
-            } else if (object instanceof NativeArray) {
-                NativeArray nativeArray = (NativeArray)object;
-                values = nativeArray.values();
+          // } else if (object instanceof NativeArray) {
+          // NativeArray nativeArray = (NativeArray)object;
+          // values = nativeArray.values();
             } else {
                 // FindBugs: Avoid a possibly NPE when dereferencing values.
                 throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());

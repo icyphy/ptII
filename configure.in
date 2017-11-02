@@ -1099,6 +1099,8 @@ updateExcludes () {
 updateExcludeTests () {
    ANT_EXCLUDE_TESTS="$ANT_EXCLUDE_TESTS <exclude name=\"$1\" />"
 }
+
+
 ########################################################################
 
 if test ! -d "ptolemy/backtrack/eclipse"; then
@@ -1270,7 +1272,16 @@ else
         fi
 fi
 
-set +x
+# Handle Java 9 fails.
+case "$JVERSION" in
+        9*)   // Need to add a module so that javax.xml.bind.DatatypeConverter can be found.
+               JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
+               updateExcludes "ptolemy/copernicus/applet/"
+               updateExcludes "ptolemy/media/"
+               ;;
+esac
+
+
 
 #####################################################################
 #####################################################################
@@ -6996,6 +7007,9 @@ AC_SUBST(JAVAC)
 
 # javacc binary
 AC_SUBST(JAVACC)
+
+# Java 9 --add-modules directive for javax.xml.bind.DatatypeConverter.
+AC_SUBST(JAVAC_COMPILERARG)
 
 # javacc command line arguments, -STATIC=false if javacc is 5.0 or later.
 AC_SUBST(JAVACC_OPTIONS)

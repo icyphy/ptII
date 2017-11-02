@@ -61,10 +61,8 @@ import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import jdk.nashorn.internal.objects.NativeArray;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
