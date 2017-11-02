@@ -455,18 +455,22 @@ o     *  This is useful, for example, when a response
      *  @exception IllegalActionException If the conversion fails.
      */
     protected static byte[] _toJavaBytes(Object object) throws IllegalActionException {
+        // FIXME: jdk.nashorn.internal.objects.NativeArray is not exported in Java 9
+        // At compilation time, the error is:
+        // (package jdk.nashorn.internal.objects is declared in module jdk.scripting.nashorn, which does not export it to the unnamed m\
+odule)
         if (object instanceof ScriptObjectMirror /* || object instanceof NativeArray*/) {
             Collection<Object> values = null;
-            if (object instanceof ScriptObjectMirror) {
+          // if (object instanceof ScriptObjectMirror) {
                 ScriptObjectMirror objectMirror = ((ScriptObjectMirror) object);
                 values = objectMirror.values();
           // } else if (object instanceof NativeArray) {
           // NativeArray nativeArray = (NativeArray)object;
           // values = nativeArray.values();
-            } else {
-                // FindBugs: Avoid a possibly NPE when dereferencing values.
-                throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
-            }
+          // } else {
+          //    // FindBugs: Avoid a possibly NPE when dereferencing values.
+          //   throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
+          // }
 
             byte[] result = new byte[values.size()];
             int i = 0;
