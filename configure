@@ -5685,7 +5685,7 @@ $as_echo "CORBA found in the default classpath" >&6; }; fi
         # PTCORBA_DIR is used in ptolemy/actor/lib/jjs/modules
         PTCORBA_DIR=corba
         # PTCORBA_PACKAGES is used in ptII/doc/makefile
-        PTCORBA_PACKAGES=ptolemy.actor.corba ptolemy.actor.corba.util
+        PTCORBA_PACKAGES="ptolemy.actor.corba ptolemy.actor.corba.util"
     else
        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" CORBATest.java' failed.
     perhaps you are running an JDK 1.9?
@@ -14612,10 +14612,12 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
 	    PTFMIPP_PACKAGES="ptolemy.actor.lib.fmi.fmipp ptolemy.actor.lib.fmi.fmipp.swig"
         else
             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
-    will not be compiled. FMI++ is an extension of the Functional Mockup Interface, see
+    will not be compiled. FMI++ is an extension of the
+    Functional Mockup Interface, see
     http://sourceforge.net/p/fmipp/wiki/Home/" >&5
 $as_echo "$as_me: WARNING: Failed to find boost/numeric/odeint.hpp, so FMI ++
-    will not be compiled. FMI++ is an extension of the Functional Mockup Interface, see
+    will not be compiled. FMI++ is an extension of the
+    Functional Mockup Interface, see
     http://sourceforge.net/p/fmipp/wiki/Home/" >&2;}
             updateExcludes "ptolemy/actor/lib/fmi/fmipp/"
         fi
