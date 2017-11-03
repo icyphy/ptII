@@ -44,7 +44,7 @@ import javafx.scene.media.Media;
 */
 public class JavaFXTest {
     public static void main(String[] args) {
-        System.out.print(System.getProperty("java.version"));
+        System.out.println(fxPanel);
     }
     public static JFXPanel fxPanel;
 }

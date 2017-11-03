@@ -28,18 +28,20 @@ COPYRIGHTENDKEY
 import org.omg.CORBA.Object;
 
 
-/** Simple Java Test Program for org.omg.CORBA.Object, which is not present in JDK 1.9.
-
-
-    @author Christopher Brooks.
-    @version $Id$
-    @since Ptolemy II 2.1
-    @Pt.ProposedRating Green (cxh)
-    @Pt.AcceptedRating Red
-*/
+/**
+ * Simple Java Test Program for org.omg.CORBA.Object, which is not
+ * present in JDK 1.9.
+ * Success is compiling this file.
+ *
+ *   @author Christopher Brooks.
+ *   @version $Id$
+ *   @since Ptolemy II 2.1
+ *   @Pt.ProposedRating Green (cxh)
+ *    @Pt.AcceptedRating Red
+ */
 public class CORBATest {
     public static void main(String[] args) {
-        System.out.print(System.getProperty("java.version"));
+        System.out.println(corbaObject);
     }
     public static org.omg.CORBA.Object corbaObject;
 }

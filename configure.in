@@ -1891,7 +1891,7 @@ else
         # PTCORBA_DIR is used in ptolemy/actor/lib/jjs/modules
         PTCORBA_DIR=corba
         # PTCORBA_PACKAGES is used in ptII/doc/makefile
-        PTCORBA_PACKAGES=ptolemy.actor.corba ptolemy.actor.corba.util
+        PTCORBA_PACKAGES="ptolemy.actor.corba ptolemy.actor.corba.util"
     else
        AC_MSG_WARN(['"$JAVAC" CORBATest.java' failed.
     perhaps you are running an JDK 1.9?
@@ -6858,7 +6858,8 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
 	    PTFMIPP_PACKAGES="ptolemy.actor.lib.fmi.fmipp ptolemy.actor.lib.fmi.fmipp.swig"
         else
             AC_MSG_WARN([Failed to find boost/numeric/odeint.hpp, so FMI ++
-    will not be compiled. FMI++ is an extension of the Functional Mockup Interface, see
+    will not be compiled. FMI++ is an extension of the
+    Functional Mockup Interface, see
     http://sourceforge.net/p/fmipp/wiki/Home/])
             updateExcludes "ptolemy/actor/lib/fmi/fmipp/"
         fi
