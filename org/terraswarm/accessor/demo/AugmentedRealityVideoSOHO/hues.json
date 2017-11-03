@@ -20,7 +20,7 @@
               "xy": [0.4595, 0.4105]
           },
           "swversion": "5.5.1.9663", "type": "Extended color light", "uniqueid": "00:17:88:01:00:b9:cf:26-0b",
-          "atag": "30"
+          "atag": "21"
         },
         { "id": "7", "manufacturername": "Philips", "modelid": "LLC012", "name": "Hue bloom 1",
           "state": {
@@ -35,7 +35,7 @@
               "alert": "none", "bri": 69, "colormode": "hs", "ct": 223, "effect": "none", "hue": 30952, "on": false, "reachable": true, "sat": 141,
               "xy": [0.3628, 0.3891]
           }, "swversion": "5.5.1.9663", "type": "Extended color light", "uniqueid": "00:17:88:01:00:e1:29:8f-0b",
-          "atag": "21"
+          "atag": "30"
         }
     ]
 }

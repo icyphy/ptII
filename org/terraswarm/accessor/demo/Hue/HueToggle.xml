@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -10.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={325, 24, 918, 654}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 113, 918, 654}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 544]">
     </property>
@@ -231,7 +231,7 @@
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Read the hue and on values and create JSON commands. */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function() {&#10;    this.input('hue', {&#10;        type: &quot;number&quot;&#10;    });&#10;    this.input('on', {&#10;        type: &quot;boolean&quot;&#10;    });&#10;    this.output('commands', {&#10;        type: &quot;JSON&quot;&#10;    });&#10;};&#10;&#10;/** Respond to motion by actuating Hue lights. */&#10;exports.fire = function() {&#10;	var hue = this.get('hue');&#10;	var on = this.get('on');&#10;	var cmds = [];	&#10; &#10;    // pack commands into object&#10;    cmds[0] = {&quot;id&quot; : 1, &quot;on&quot; : on, &quot;hue&quot; : hue};&#10;    // send the commands&#10;    this.send('commands', cmds);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Read the hue and on values and create JSON commands. */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function() {&#10;    this.input('hue', {&#10;        type: &quot;number&quot;&#10;    });&#10;    this.input('on', {&#10;        type: &quot;boolean&quot;&#10;    });&#10;    this.output('commands', {&#10;        type: &quot;JSON&quot;&#10;    });&#10;};&#10;&#10;/** Respond to motion by actuating Hue lights. */&#10;exports.fire = function() {&#10;	var hue = this.get('hue');&#10;	var on = this.get('on');&#10;	var cmds = [];	&#10; &#10;    // pack commands into object&#10;    cmds[0] = {&quot;id&quot; : 6, &quot;on&quot; : on, &quot;hue&quot; : hue};&#10;    // send the commands&#10;    this.send('commands', cmds);&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -257,6 +257,14 @@
             </property>
         </port>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 290}">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -269,13 +277,17 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DiscreteClock.output" relation="relation4"/>
     <link port="Sequence.enable" relation="relation4"/>
     <link port="Sequence.output" relation="relation5"/>
     <link port="Uniform.output" relation="relation"/>
     <link port="Uniform.trigger" relation="relation4"/>
     <link port="Hue.commands" relation="relation2"/>
+    <link port="Hue.lights" relation="relation3"/>
     <link port="JavaScript.hue" relation="relation"/>
     <link port="JavaScript.on" relation="relation5"/>
     <link port="JavaScript.commands" relation="relation2"/>
+    <link port="Display.input" relation="relation3"/>
 </entity>
