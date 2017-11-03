@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 59, 1796, 1021}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 873}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1564, 928]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.263250596959574">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1388078636866459">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{598.6690340909093, 356.32279829545456}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{532.1105292372177, 344.60888671875}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -42,7 +42,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks&#10;Based on AugmentedRealityVideo by Edward A. Lee">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Christopher Brooks, Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 640.0]">
         </property>
@@ -95,7 +95,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To get a service to access, you can also run the companion&#10;SoundServerSOHO.xml model, which provides an a sound&#10;actuator that reacts to commands:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 545.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 540.0]">
         </property>
     </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -149,11 +149,11 @@
         </property>
     </property>
     <property name="Sender3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="tag36_11_00586.png">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="tag36h11-19-29.pdf">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="tag36_11_00586.png">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/tag36h11-19-29.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -180,13 +180,15 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Put the following tag&#10;in your camera's field&#10;of view (take a picture&#10;with your phone):">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open the file below &#10;and take a picture&#10;with your phone&#10;camera.&#10;Tag 21 is the light&#10;Tag 22 is the BLEE">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 230.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -778,7 +780,7 @@
             </port>
         </entity>
         <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 263}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -811,7 +813,7 @@
             </port>
         </entity>
         <entity name="TagToAccessorAccessor2" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 263}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
