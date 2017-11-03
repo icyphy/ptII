@@ -32,9 +32,11 @@ package org.hlacerti.lib;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -90,7 +92,7 @@ public class AutomaticSimulation extends VergilApplication
         ArrayList<String> lines = new ArrayList<String>();
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new FileReader(file));
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
             content = bufferedReader.readLine();
             while (content != null) {
                 lines.add(content);
@@ -223,12 +225,13 @@ public class AutomaticSimulation extends VergilApplication
             //Executing the file
             runAllModels(vergil);
             if (waitingTime < 0) {
+                Scanner input = new Scanner(System.in, "utf-8");
                 while (true) {
-                    Scanner input = new Scanner(System.in);
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
                     if (answer.equalsIgnoreCase("yes"))
+                        input.close();
                         break;
                 }
                 _sleep(2000);
@@ -312,12 +315,13 @@ public class AutomaticSimulation extends VergilApplication
             //Executing the file
             runAllModels(vergil);
             if (waitingTime < 0) {
-                while (true) {
-                    Scanner input = new Scanner(System.in);
+                Scanner input = new Scanner(System.in, "utf-8");
+                while (true) {     
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
                     if (answer.equalsIgnoreCase("yes"))
+                        input.close();
                         break;
                 }
                 _sleep(2000);
@@ -400,12 +404,13 @@ public class AutomaticSimulation extends VergilApplication
             //Executing the file
             runAllModels(vergil);
             if (waitingTime < 0) {
-                while (true) {
-                    Scanner input = new Scanner(System.in);
+                Scanner input = new Scanner(System.in, "utf-8");
+                while (true) {          
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
                     if (answer.equalsIgnoreCase("yes"))
+                        input.close();
                         break;
                 }
                 _sleep(2000);
@@ -447,7 +452,7 @@ public class AutomaticSimulation extends VergilApplication
             //            _writeInFile(file2, content.toString());
 
             AutomaticSimulation vergil = new AutomaticSimulation(args);
-            Scanner input = new Scanner(System.in);
+            Scanner input = new Scanner(System.in, "utf-8");
             System.out.println(
                     "How many ptolemy models will be a part of this simulation?");
             int numberOfModels = input.nextInt();
@@ -534,6 +539,7 @@ public class AutomaticSimulation extends VergilApplication
                         values[i][j] = input.nextDouble();
                     }
                 }
+                input.close();
                 System.out.println("The simulation is about to start...");
                 changeParameters(waitingTime, vergil, modelPath, parameters,
                         values, solver);
@@ -869,10 +875,10 @@ public class AutomaticSimulation extends VergilApplication
 
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(file));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
             writer.write(data);
             writer.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Couldn't write in the file.");
         } finally {
             if (writer != null) {

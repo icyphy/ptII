@@ -32,9 +32,9 @@ package org.hlacerti.lib;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStreamWriter;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -1459,11 +1459,11 @@ public class HlaManager extends AbstractInitializableAttribute
         BufferedWriter writer = null;
 
         try {
-            writer = new BufferedWriter(new FileWriter(file, true));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
             writer.write(data);
             writer.newLine();
             writer.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             noExceptionOccured = false;
         } finally {
             if (writer != null) {
