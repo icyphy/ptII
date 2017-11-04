@@ -43,5 +43,5 @@ public class CORBATest {
     public static void main(String[] args) {
         System.out.println(corbaObject);
     }
-    public static org.omg.CORBA.Object corbaObject;
+    public static org.omg.CORBA.Object corbaObject = null;
 }
