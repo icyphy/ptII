@@ -46,5 +46,5 @@ public class JavaFXTest {
     public static void main(String[] args) {
         System.out.println(fxPanel);
     }
-    public static JFXPanel fxPanel;
+    public static JFXPanel fxPanel = null;
 }
