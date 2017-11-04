@@ -1,3 +1,6 @@
+$Id$
+org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/README.txt
+
 This directory contains the Augumented Reality demo that was shown at
 the TerraSwarm 2017 Annual Meeting.
 
