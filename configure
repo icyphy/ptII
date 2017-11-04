@@ -4779,7 +4779,7 @@ fi
 
 # Handle Java 9 fails.
 case "$JVERSION" in
-        9*)   // Need to add a module so that javax.xml.bind.DatatypeConverter can be found.
+        9*)    # Need to add a module so that javax.xml.bind.DatatypeConverter can be found.
                ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
                JAVAC_MODULES="--add-modules java.xml.bind"
                updateExcludes "ptolemy/copernicus/applet/"
