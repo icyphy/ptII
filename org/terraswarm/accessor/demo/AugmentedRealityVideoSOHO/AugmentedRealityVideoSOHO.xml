@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1388078636866459">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{532.1105292372177, 344.60888671875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{532.1105292372176, 344.60888671875}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -820,6 +820,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 120.0]">
             </property>
         </entity>
+        <entity name="TimedDisplay2" class="ptolemy.actor.lib.gui.TimedDisplay">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 282}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{312.0, 364.0}">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
@@ -877,6 +885,7 @@
         <link port="CheckForError.err" relation="relation7"/>
         <link port="CheckForError.accessor" relation="relation5"/>
         <link port="TagToAccessorAccessor2.input" relation="relation5"/>
+        <link port="TimedDisplay2.input" relation="relation"/>
     </entity>
     <entity name="SchemaToHTML" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script accepts a JSON schema (see http://json-schema.org/)&#10;// and produces HTML for entering data that conforms with the specified&#10;// schema. At this point, it is very limited, supporting only a small&#10;// subset of the schema. But it is also extended to allow for hints&#10;// to provide more natural interfaces such as pushbuttons instead of&#10;// entry boxes. The most basic functionality takes a schema like this:&#10;//    { &quot;type&quot;: &quot;object&quot;,&#10;//      &quot;properties&quot;: {&#10;//         &quot;a&quot;: {&#10;//            &quot;type&quot;: &quot;string&quot;,&#10;//            &quot;title&quot;: &quot;A&quot;,&#10;//            &quot;description&quot;: &quot;A description here&quot;,&#10;//			  &quot;choices&quot;: [&quot;first&quot;, &quot;second&quot;]&#10;//          }&#10;//         &quot;b&quot;: {&#10;//             ...&#10;//          }&#10;//       }&#10;// and generates an HTML table with entry boxes labeled with the specified&#10;// title and a &quot;submit&quot; button.&#10;//&#10;// If a property has a &quot;choices&quot; property whose value is an array of&#10;// strings, then a radio button will be used instead of an entry box&#10;// with the specified choices offered as options.&#10;//&#10;// If a property has no &quot;choices&quot; property but instead has an &quot;options&quot;&#10;// property whose value is an array of strings, then a drop-down list&#10;// will br provided instead of an entry box.&#10;exports.setup = function() {&#10;	this.input('schema', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('schema', function() {&#10;		var schema = self.get('schema');&#10;		var content = '&lt;h2&gt;Inputs:&lt;/h2&gt;&lt;form action=&quot;/&quot; method=&quot;post&quot; target=&quot;blankIframe&quot; id=&quot;form&quot;/&gt;&lt;table&gt;';&#10;&#10;        // FIXME: Handle types other than object, e.g. string, number.      	&#10;        if (schema.type === 'object') {&#10;			for (prop in schema.properties) {&#10;				var name = prop;&#10;				var entry = schema.properties[prop];&#10;				if (entry['title']) {&#10;					name = entry['title'];&#10;				}&#10;				// Default type of entry will be a string.&#10;				// Note that this is not the same as the type in the schema,&#10;				// which specifies a JSON type, not an HTML5 type.&#10;				var choices = entry['choices'];&#10;				var options = entry['options'];&#10;				var input = '';&#10;				if (choices &amp;&amp; choices.length) {&#10;					for (var i = 0; i &lt; choices.length; i++) {&#10;						input += '&lt;input type=&quot;radio&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot; value=&quot;'&#10;							+ choices[i]&#10;							+ '&quot; form=&quot;form&quot;/&gt;'&#10;							+ choices[i];&#10;					}&#10;				} else if (options &amp;&amp; options.length) {&#10;					input += '&lt;select form=&quot;form&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot;&gt;';&#10;					for (var i = 0; i &lt; options.length; i++) {&#10;						input += '&lt;option value=&quot;'&#10;							+ options[i]&#10;							+ '&quot;&gt;'&#10;							+ options[i]&#10;							+ '&lt;/option&gt;';&#10;					}&#10;					input += '&lt;/select&gt;';&#10;				} else {&#10;					input = '&lt;input type=&quot;text&quot; name=&quot;'&#10;							+ prop&#10;							+ '&quot; form=&quot;form&quot;/&gt;';&#10;				}&#10;				&#10;				content += '&lt;tr&gt;&lt;td&gt;'&#10;						+ name&#10;						+ '&lt;/td&gt;&lt;td&gt;'&#10;						+ input&#10;						+ '&lt;/td&gt;&lt;/tr&gt;';&#10;			}&#10;		}&#10;		content += '&lt;/table&gt;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; form=&quot;form&quot;&gt;';&#10;		&#10;		self.send('html', content);&#10;	});&#10;}&#10;">

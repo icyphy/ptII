@@ -56,13 +56,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a key-value store running on &#10;192.168.1.217&#10;You need not start up key-value store, but if you&#10;want to look at it, then click on the link below:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 415.0]">
         </property>
     </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServerSOHOModel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 490.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreServerSOHO.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -114,15 +114,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 335.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the IP address or fully qualified hostname of the&#10;Philips Gateway.&#10;&#10;In this demo, the IP address of that device is provided by&#10;the SOHO router.&#10;&#10;Click here to connect to the Philips Gateway.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 190.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://192.168.1.221">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://$bridgeIP#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -197,7 +197,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 375.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -207,13 +207,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To query the Hue base,&#10;run this demo:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 380.0]">
         </property>
     </property>
     <property name="Sender3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HueToggle.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 420.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/Hue/HueToggle.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -232,6 +232,31 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here to edit&#10;&#10;hues.json">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 110.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="hues.json">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 455}">
             </property>
         </property>
     </property>

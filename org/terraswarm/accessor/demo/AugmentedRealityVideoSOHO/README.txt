@@ -11,11 +11,17 @@ run for most people.
 The hardware is:
 
 * A SOHO gateway configured to statically set the IP addresses of the
-  other devices.
+  other devices. http://192.168.1.1
 
-* A SwarmGateway: 192.168.1.200 that is running a MQTT Mosquitto server.
+  Username: "admin",  you know what: printed on the side
+
+
+* A SwarmGateway: http://192.168.1.200 that is running a MQTT Mosquitto server.
   For more information, see
   https://www.terraswarm.org/urbanheartbeat/wiki/Main/UrbanHeartbeatKitMQTT
+
+  Username: "eal"  password: printed on the side
+
 
 * A SwarmBox: 192.168.1.217 that acts as a key/value store.
   The SwarmBox is registered on the campus network as
@@ -24,7 +30,10 @@ The hardware is:
   For more information, see
   https://www.terraswarm.org/testbeds/wiki/Main/Hardware
 
-* A Hue basestation: 192.168.1.221 that controls the light bulbs.
+  Username: "eal"  password: printed on the side
+
+
+* A Hue basestation: http://192.168.1.221 that controls the light bulbs.
 
 
 
@@ -32,22 +41,56 @@ The hardware is:
 
 To run the demo
 
-1. Run
+1. Turn on the plug strip, press the power button on the SwarmBox
+
+2. Run
 
   $PTII/bin/capecode AugmentedRealityVideoSOHO.xml
 
-2. It is necessary to upload the accessors to the key/value store each
+3. It is necessary to upload the accessors to the key/value store each
    time, so click on the links for the accessors, typically the BLEE and
    Hue and run those models.
 
-3. Open up tag36h11-19-29.pdf, which contains the Apriltags 19
+4. Open up tag36h11-19-29.pdf, which contains the Apriltags 19
    through 29. Either print them off, or take pictures of tag 21 and 22.
 
-4. Run the model and hold one of the tags in front of the screen.
+5. Run the model and hold one of the tags in front of the screen.
 
-5. The accessor should be downloaded, run and a user interface
+6. The accessor should be downloaded, run and a user interface
    should appear in a web browser
 
+== Debugging ==
+
+* Try the websites:
+** Netgear router: http://192.168.1.1
+   Username: "admin",  you know what: printed on the side
+
+** SwarmGateway: http://192.168.1.200
+   Should show the Blee(s) and Powerblades.  If not, see ==SwarmGateway Details== below.
+
+   To log in, use
+   ssh eal@192.168.1.200
+   The you know what is on top.
+
+** Hue: http://192.16.1.221
+   Should show a web page.
+
+   Consider trying the Hue app from your phone.  Connect to the
+   Netgear02 wireless network, the you know what is on the side of the Netgear box
+
+** SwarmBox: http://192.168.1.217:8099/keyvalue/help
+   Should see the help page.
+
+   To log in use
+   ssh eal@192.168.1.217
+   The you know what is on top.
+
+   If there are problems, then try becoming root and restarting the KeyStore model"
+
+   sudo -i
+   su - sbuser
+   pm2 restart 0
+    
 
 == Changing Light Bulbs ==
 To try different lightbulbs:
@@ -166,3 +209,46 @@ and use ssh to connect to it as the debian user.
      ssh debian@128.32.151.100
      password: (See the side of the BBB)
 
+
+
+=== AprilTags ===
+
+https://april.eecs.umich.edu/software/apriltag.html contains a set of
+pregenerated tags as png and PostScript files.  However, these are of
+low resolution.  To scale them, use linear interpolation to avoid
+blurring.
+
+Under Mac OS X, ImageMagik can be installed using MacPort
+
+For example, with ImageMagik, use:
+
+  mogrify -scale 1000x1000 *.png
+
+Or, search the web for "tag 36H11".
+
+To create a pdf with all the images:
+
+   convert *.png tag36h11.pdf
+
+To annotate an image with a string: 
+
+   convert tag36_11_00026.png label:'26' -gravity Center -append tag36_11_00026eled.png
+
+
+Below is a script that will generate a pdf file with labels
+--start--
+#!/bin/sh
+convert tag36_11_00019.png label:'AprilTag 19: Sound Server' -gravity Center -append tag36_11_00019_labeled.png
+convert tag36_11_00020.png label:'AprilTag 20: Robot Service' -gravity Center -append tag36_11_00020_labeled.png
+convert tag36_11_00021.png label:'AprilTag 21: Light Bulb' -gravity Center -append tag36_11_00021_labeled.png
+convert tag36_11_00022.png label:'AprilTag 22: Blee c0:98:E5:30:00:B4' -gravity Center -append tag36_11_00022_labeled.png
+convert tag36_11_00023.png label:'April Tag 23: Blee c0:98:E5:30:00:5B Office' -gravity Center -append tag36_11_00023_labeled.png
+convert tag36_11_00024.png label:'April Tag 24: PowerBlade c0:98:e5:70:02:1e: Netgear N300' -gravity Center -append tag36_11_00024_labeled.png
+convert tag36_11_00025.png label:'April Tag 25: PowerBlade c0:98:e5:70:02:0b: Swarmnuc1017' -gravity Center -append tag36_11_00025_labeled.png
+convert tag36_11_00026.png label:'April Tag 26: PowerBlade c0:98:e5:70:02:3e: Light Bulb' -gravity Center -append tag36_11_00026_labeled.png
+convert tag36_11_00027.png label:'April Tag 27: PowerBlade c0:98:e5:80:02:3a: Office' -gravity Center -append tag36_11_00027_labeled.png
+convert tag36_11_00028.png label:'April Tag 28' -gravity Center -append tag36_11_00028_labeled.png
+convert tag36_11_00029.png label:'April Tag 29' -gravity Center -append tag36_11_00029_labeled.png
+
+convert *labeled.png tag36h11-19-29.pdf 
+--end--
