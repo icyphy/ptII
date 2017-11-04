@@ -4,13 +4,13 @@
 <entity name="RESTWithTimeout" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 85, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 85, 1083, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[849, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{414.5, 252.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Access a web page with a very short timeout,&#10;sure to trigger, to test the timeout mechanism.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Access a web page with a very short timeout&#10;to test the timeout mechanism.&#10;Uses httpbin.org delay link to ensure at least 2 second delay.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 5.0]">
         </property>
@@ -33,7 +33,7 @@
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/REST.js">
         </property>
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="publications/">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -45,7 +45,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 140.0}">
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot;:&quot;http://ptolemy.eecs.berkeley.edu&quot;}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot;:&quot;http://httpbin.org/delay/2&quot;}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -157,15 +157,15 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{265.0, 220.0}">
         </vertex>
     </relation>
-    <link port="REST.error" relation="relation6"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="REST.error" relation="relation4"/>
     <link port="REST.trigger" relation="relation"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="Stop.input" relation="relation3"/>
@@ -173,5 +173,5 @@
     <link port="MicrostepDelay.output" relation="relation3"/>
     <link port="Test3.input" relation="relation2"/>
     <link port="Const2.output" relation="relation2"/>
-    <link port="Const2.trigger" relation="relation6"/>
+    <link port="Const2.trigger" relation="relation4"/>
 </entity>
