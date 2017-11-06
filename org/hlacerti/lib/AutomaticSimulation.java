@@ -878,7 +878,7 @@ public class AutomaticSimulation extends VergilApplication
 
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
             writer.write(data);
             writer.flush();
         } catch (IOException e) {

@@ -1383,18 +1383,19 @@ public class HlaManager extends AbstractInitializableAttribute
         double averageNumberOfTicks = 0;
         double averageDelay = 0;
         StringBuffer header = new StringBuffer("\nInformation :;");
-        String delayPerTick = "\nDelay per tick;";
+        StringBuffer bufferDelayPerTick = new StringBuffer();
+        bufferDelayPerTick.append("\nDelay per tick;");
         for (int i = 0; i < _numberOfTAGs; i++) {
             if (i < 10) {
                 header.append((i + 1) + ";");
                 numberOfTicks = numberOfTicks + _numberOfTicks.get(i) + ";";
                 delay = delay + _TAGDelay.get(i) + ";";
                 if (_numberOfTicks.get(i) > 0) {
-                    delayPerTick = delayPerTick
-                        + (_TAGDelay.get(i) / _numberOfTicks.get(i))
-                        + ";";
+                    bufferDelayPerTick.append(
+                        (_TAGDelay.get(i) / _numberOfTicks.get(i))
+                        + ";");
                 } else {
-                    delayPerTick = delayPerTick + "0;";
+                    bufferDelayPerTick.append("0;");
                 }
             }
             averageNumberOfTicks = averageNumberOfTicks
@@ -1407,7 +1408,7 @@ public class HlaManager extends AbstractInitializableAttribute
             + _numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
         numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
         delay = delay + averageDelay + ";";
-        delayPerTick = delayPerTick + ";";
+        bufferDelayPerTick.append(";");
         header.append("Average;");
         if (_timeStepped) {
             _reportFile = _createTextFile(
@@ -1437,8 +1438,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
         averageNumberOfTicks = averageNumberOfTicks / _numberOfTAGs;
         averageDelay = averageDelay / _numberOfTAGs;
-        delayPerTick = delayPerTick + (averageDelay / averageNumberOfTicks)
-            + ";";
+        bufferDelayPerTick.append((averageDelay / averageNumberOfTicks)
+            + ";");
+        String delayPerTick = bufferDelayPerTick.toString();
         numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
         delay = delay + averageDelay + ";";
 
@@ -1459,7 +1461,7 @@ public class HlaManager extends AbstractInitializableAttribute
         BufferedWriter writer = null;
 
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
             writer.write(data);
             writer.newLine();
             writer.flush();
