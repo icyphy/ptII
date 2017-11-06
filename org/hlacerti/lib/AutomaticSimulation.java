@@ -230,9 +230,10 @@ public class AutomaticSimulation extends VergilApplication
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
-                    if (answer.equalsIgnoreCase("yes"))
+                    if (answer.equalsIgnoreCase("yes")) {
                         input.close();
                         break;
+                    }
                 }
                 _sleep(2000);
             } else if (waitingTime > 0) {
@@ -320,9 +321,10 @@ public class AutomaticSimulation extends VergilApplication
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
-                    if (answer.equalsIgnoreCase("yes"))
+                    if (answer.equalsIgnoreCase("yes")) {
                         input.close();
                         break;
+                    }
                 }
                 _sleep(2000);
             } else if (waitingTime > 0) {
@@ -409,9 +411,10 @@ public class AutomaticSimulation extends VergilApplication
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
-                    if (answer.equalsIgnoreCase("yes"))
+                    if (answer.equalsIgnoreCase("yes")) {
                         input.close();
                         break;
+                    }
                 }
                 _sleep(2000);
             } else if (waitingTime > 0) {
