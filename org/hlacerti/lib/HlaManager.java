@@ -2774,8 +2774,9 @@ public class HlaManager extends AbstractInitializableAttribute
                                             + hs.getDisplayName());
                                 }
                                 done = true;
-                                String attributeName = hs.getParameterName();
 
+                                // FIXME: When using TAR, if there are several RAV at timestamp t, they will still be writen in the
+                                // same cell
                                 String pRAVTimeStamp = _printTimes(te.timeStamp)
                                         + ";";
                                 if (_numberOfRAVs > 0 && (_pRAVsTimes.length()
@@ -2784,13 +2785,10 @@ public class HlaManager extends AbstractInitializableAttribute
                                                         .length()) {
                                     int indexOfAttribute = 0;
                                     for (int j = 0; j < _numberOfAttributesSubscribedTo; j++) {
-                                        if (_nameOfTheAttributesSubscribedTo[j]
-                                                .substring(
-                                                        _nameOfTheAttributesSubscribedTo[j]
-                                                                .lastIndexOf(
-                                                                        "-" + attributeName)
-                                                                + 1)
-                                                .equals(attributeName)) {
+                                        String instanceName = hs.getDisplayName();
+                                        int pos = instanceName.lastIndexOf(" ");
+                                        if (_nameOfTheAttributesSubscribedTo[j].equals(
+                                                instanceName.substring(0, pos) + "-" + instanceName.substring(pos + 1, instanceName.length()))) {
                                             indexOfAttribute = j;
                                             break;
                                         }
@@ -2824,13 +2822,10 @@ public class HlaManager extends AbstractInitializableAttribute
 
                                     int indexOfAttribute = 0;
                                     for (int j = 0; j < _numberOfAttributesSubscribedTo; j++) {
-                                        if (_nameOfTheAttributesSubscribedTo[j]
-                                                .substring(
-                                                        _nameOfTheAttributesSubscribedTo[j]
-                                                                .lastIndexOf(
-                                                                        "-" + attributeName)
-                                                                + 1)
-                                                .equals(attributeName)) {
+                                        String instanceName = hs.getDisplayName();
+                                        int pos = instanceName.lastIndexOf(" ");
+                                        if (_nameOfTheAttributesSubscribedTo[j].equals(
+                                                instanceName.substring(0, pos) + "-" + instanceName.substring(pos + 1, instanceName.length()))) {
                                             indexOfAttribute = j;
                                             break;
                                         }
