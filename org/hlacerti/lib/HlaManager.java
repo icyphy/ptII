@@ -991,11 +991,12 @@ public class HlaManager extends AbstractInitializableAttribute
             }
             String pUAVTimeStamp = ct.getTime() + ";";
             ;
-            String preUAVTimeStamp = "(" + _printTimes(currentTime) + ","
-                    + microstep + ");";
+            String preUAVTimeStamp = "\"(" + _printTimes(currentTime) + ","
+                    + microstep + ")\";";
             _storeTimes(
                     "UAV " + _getPortFromTab(tObj).getContainer().getName());
-
+            // FIXME When using TAR, if there are several UAVs at timestamp t, they will still be written in the
+            // same cell
             if (_numberOfUAVs > 0
                     && (_preUAVsTimes.length() - _preUAVsTimes
                             .lastIndexOf(preUAVTimeStamp)) == preUAVTimeStamp
@@ -2775,7 +2776,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                 }
                                 done = true;
 
-                                // FIXME: When using TAR, if there are several RAV at timestamp t, they will still be writen in the
+                                // FIXME: When using TAR, if there are several RAV at timestamp t, they will still be written in the
                                 // same cell
                                 String pRAVTimeStamp = _printTimes(te.timeStamp)
                                         + ";";
