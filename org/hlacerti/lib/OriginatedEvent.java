@@ -34,7 +34,8 @@ import ptolemy.actor.util.TimedEvent;
 /**
  * Extension to add to an TimedEvent in oder to give to the HLASubscriber the
  * object's id which is reponsible for the update.
- * @author David C&#244;me
+ * @author David Come
+ * @version
  */
 public class OriginatedEvent extends TimedEvent{
 
@@ -55,18 +56,24 @@ public class OriginatedEvent extends TimedEvent{
         public int objectID;
 
         @Override
-        public boolean equals(Object originatedEvent) {
-                if (!super.equals(originatedEvent)) {
-                        return false;
-                } else {
-                        //at this point this and originatedEvent are the same class
-                        // and originatedEvent is not null (checks done in super.equals)
-                        OriginatedEvent event = (OriginatedEvent) originatedEvent;
-                        if (objectID == event.objectID) {
-                                return true;
-                        } else {
-                                return false;
-                        }
-                }
+        public int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            result = prime * result + objectID;
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!super.equals(obj))
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            OriginatedEvent other = (OriginatedEvent) obj;
+            if (objectID != other.objectID)
+                return false;
+            return true;
         }
 }
