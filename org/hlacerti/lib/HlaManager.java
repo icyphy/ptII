@@ -1022,6 +1022,8 @@ public class HlaManager extends AbstractInitializableAttribute
             }
             _rtia.updateAttributeValues(id, suppAttributes, tag, ct);
             _numberOfUAVs++;
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
