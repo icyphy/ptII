@@ -1,0 +1,937 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 23, 1374, 697}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1140, 587]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9224306263762699">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{618.512186655791, 316.94228814747026}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model realizes a traffic light. It starts a web socket server and and sends&#10;on it the time remaining until the next change in the light. If it receives a JSON&#10;input with a field &quot;green&quot; with value true, then it requests an immediate change&#10;from red to green if the light is red.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace the IP address in the accessor with the IP&#10;address of the host running this model:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 305.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, run the companion&#10;KeyValueStoreServer.xml model, which provides an&#10;implementation of the key-value store on the&#10;local host, by clicking on the link below:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 530.0]">
+        </property>
+    </property>
+    <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServer Model">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 600.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An augmented reality&#10;demo using this service&#10;is here:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 540.0]">
+        </property>
+    </property>
+    <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityKeyValueStore">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 595.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityKeyValueStore.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+    </property>
+    <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 135.0]">
+        </property>
+    </property>
+    <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 175.0]">
+        </property>
+    </property>
+    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 155.0]">
+        </property>
+    </property>
+    <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 145.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 125.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.8,0.0,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 175.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cyel == 1) ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 205.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="tag36_11_00021.png">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 120.0]">
+        </property>
+    </property>
+    <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** This accessor starts a server that listens for web socket&#10; *  connection requests on the specified hostInterface and port.  The&#10; *  hostInterface is needed only if the host machine has more than one&#10; *  network interface (e.g. Ethernet and WiFi) and 'localhost' does&#10; *  not resolve to the desired interface.&#10; *&#10; *  The output `connection` reports the when a&#10; *  connection is opened or closed.&#10; *&#10; *  When a message arrives on a connection, a `received`&#10; *  output is produced with that message. Note that the message may arrive in&#10; *  multiple frames, but it will be produced as a single message.&#10; *&#10; *  When an input arrives on `toSend`, then a message is&#10; *  sent to one or all of the open socket connections.&#10; *&#10; *  When `wrapup()` is invoked, this accessor closes the&#10; *  server and all connections.&#10; *&#10; *  The default type for both sending and receiving&#10; *  is 'application/json', which allows sending and receiving anything that has&#10; *  a string representation in JSON. The types supported by this implementation&#10; *  include at least:&#10; *  * __application/json__: The this.send() function uses JSON.stringify() and sends the&#10; *    result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,&#10; *    and if the parsing fails, will be provided as a string interpretation of the byte&#10; *    stream.&#10; *  * __text/\*__: Any text type is sent as a string encoded in UTF-8.&#10; *  * __image/x__: Where __x__ is one of __json__, __png__, __gif__,&#10; *    and more.&#10; *    In this case, the data passed to this.send() is assumed to be an image, as encoded&#10; *    on the host, and the image will be encoded as a byte stream in the specified&#10; *    format before sending.  A received byte stream will be decoded as an image,&#10; *    if possible.&#10; *&#10; *  This accessor requires the module webSocket.&#10; *&#10; *  @accessor net/WebSocketServer&#10; *  @parameter {string} hostInterface The IP address or domain name of the&#10; *    network interface to listen to.&#10; *  @parameter {int} port The port to listen to for connections.&#10; *  @parameter {string} pfxKeyCertPassword If sslTls is set to true, then this option needs&#10; *   to specify the password for the pfx key-cert file specified by pfxKeyCertPath.&#10; *  @parameter {string} pfxKeyCertPath If sslTls is set to true, then this option needs to&#10; *   specify the fully qualified filename for the file that stores the private key and certificate&#10; *   that this server will use to identify itself. This path can be any of those understood by the&#10; *   Ptolemy host, e.g. paths beginning with $CLASSPATH/.&#10; *  @parameter {string} receiveType The MIME type for incoming messages,&#10; *    which defaults to 'application/json'.&#10; *  @parameter {string} sendType The MIME type for outgoing messages,&#10; *    which defaults to 'application/json'.&#10; *  @parameter {boolean} sslTls Whether SSL/TLS is enabled. This defaults to false.&#10; *  @input toSend The data to be sent to open sockets.&#10; *    If this is an object with 'socketID' field and a 'message' field,&#10; *    then send the value of the message field to the socket identified&#10; *    by the socketID field. If the input has any other form, then the&#10; *    message is broadcast to all open socket connections.&#10; *  @output {int} listening When the server is listening for connections, this output&#10; *    will produce the port number that the server is listening on&#10; *  @output connection An output produced when a connection opens or closes.&#10; *    The output is an object with two fields, a 'socketID',&#10; *    which is a unique ID for this client connection, and a 'status' field,&#10; *    which is the string 'open' or 'closed'.&#10; *  @output received A message received a client in the form of an object with two fields, a 'socketID', which is a unique ID for this client connection, and a 'message' field, which is the message received from the client.&#10; *  @author Hokeun Kim, Edward Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;/*jslint plusplus: true */&#10;&#10;var WebSocket = require('@accessors-modules/web-socket-server');&#10;var server = null;&#10;var running = false;&#10;var debug = false;&#10;&#10;/** Sets up the accessor by defining inputs and outputs. */&#10;exports.setup = function () {&#10;    this.parameter('hostInterface', {&#10;        value: &quot;localhost&quot;,&#10;        type: &quot;string&quot;&#10;    });&#10;    this.parameter('port', {&#10;        value: 8080,&#10;        type: &quot;int&quot;&#10;    });&#10;    this.parameter('pfxKeyCertPassword', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('pfxKeyCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('receiveType', {&#10;        type: 'string',&#10;        value: 'application/json'&#10;    });&#10;    this.parameter('sendType', {&#10;        type: 'string',&#10;        value: 'application/json'&#10;    });&#10;    this.parameter('sslTls', {&#10;        type: 'boolean',&#10;        value: false&#10;    });&#10;    this.input('toSend');&#10;    this.output('received', {&#10;        'spontaneous': true        &#10;    });&#10;    this.output('listening', {&#10;        'type': 'int',&#10;        'spontaneous': true&#10;    });&#10;    this.output('connection', {&#10;        'spontaneous': true&#10;    });&#10;&#10;    // Attempt to add a list of options for types, but do not error out&#10;    // if the socket module is not supported by the host.&#10;    try {&#10;        this.parameter('receiveType', {&#10;            options: WebSocket.supportedReceiveTypes()&#10;        });&#10;        this.parameter('sendType', {&#10;            options: WebSocket.supportedSendTypes()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;//var sockets = [];&#10;&#10;/** Starts the web socket and attaches functions to inputs and outputs.&#10; * Adds an input handler on toSend that sends the input received to the right socket. */&#10;exports.initialize = function () {&#10;    var self = this;&#10;    self.sockets = [];&#10;&#10;    if (!server) {&#10;        server = new WebSocket.Server({&#10;            'port': this.getParameter('port'),&#10;            'hostInterface': this.getParameter('hostInterface'),&#10;            'pfxKeyCertPassword': this.getParameter('pfxKeyCertPassword'),&#10;            'pfxKeyCertPath': this.getParameter('pfxKeyCertPath'),&#10;            'receiveType': this.getParameter('receiveType'),&#10;            'sendType': this.getParameter('sendType'),&#10;            'sslTls': this.getParameter('sslTls')&#10;        });&#10;        // Using 'this.exports' rather than just 'exports' in the following allows&#10;        // these functions to be overridden in derived accessors.&#10;        server.on('listening', this.exports.onListening.bind(this));&#10;        server.on('connection', this.exports.onConnection.bind(this));&#10;        server.on('error', function (message) {&#10;            self.error(message);&#10;        });&#10;        server.start();&#10;    }&#10;    running = true;&#10;&#10;    this.addInputHandler('toSend', function () {&#10;        var data = self.get('toSend'),&#10;            id;&#10;        // Careful: Don't do if (data) because if data === 0, then data is false.&#10;        if (data !== null) {&#10;&#10;            // JSHint WARNING: Do not change dataSocketID != null to&#10;            // data.socketID !== null because it will cause&#10;            // org/terraswarm/accessor/test/auto/WebSocketClient.xml&#10;            // to fail upon reloading.  See&#10;            // org/terraswarm/accessor/test/WebSocketClientTest.tcl&#10;            if ((data.socketID != null) &amp;&amp; (data.message !== null)) {&#10;                // data has the right form for a point-to-point send.&#10;                if (self.sockets[data.socketID] &amp;&amp; self.sockets[data.socketID].isOpen()) {&#10;                    // id matches this socket.&#10;                    /*&#10;                      console.log(self.accessorName + ': WebSocketServer: Sending to socket id ' +&#10;                      data.socketID +&#10;                      &quot; message: &quot; +&#10;                      data.message);&#10;                    */&#10;                    self.sockets[data.socketID].send(data.message);&#10;                } else {&#10;                    console.log(self.accessorName + ': WebSocketServer.js: Socket with ID ' + data.socketID +&#10;                        ' is not open. Discarding message.');&#10;                }&#10;            } else {&#10;                // No socketID or message, so this is a broadcast message.&#10;                // var success = false;&#10;                for (id = 0; id &lt; self.sockets.length; id += 1) {&#10;                    if (self.sockets[id].isOpen()) {&#10;                        // console.log(self.accessorName + 'WebSocketServer.js: Broadcasting to socket id ' + id&#10;                        //         + ' message: ' + data);&#10;                        self.sockets[id].send(data);&#10;                        // success = true;&#10;                    }&#10;                }&#10;                // if (!success) {&#10;                //     console.log(self.accessorName + 'WebSocketServer.js: No open sockets. Discarding message: ' + data.message);&#10;                // }&#10;            }&#10;        }&#10;    });&#10;};&#10;&#10;exports.onListening = function () {&#10;    if (debug) {&#10;        console.log(this.accessorName + 'WebSocketServer.js: Listening for socket connection requests.');&#10;    }&#10;    this.send('listening', this.getParameter('port'));&#10;};&#10;&#10;/** Executes when a connection has been established.&lt;br&gt;&#10; *  Triggers an output on &lt;code&gt;'connection'&lt;/code&gt;.&#10; *  Adds an event listener to the socket. */&#10;exports.onConnection = function (socket) {&#10;    // socketID is the index of the socket in the sockets array.&#10;    var self = this,&#10;        socketID = self.sockets.length;&#10;    if (debug) {&#10;        console.log(this.accessorName + 'WebSocketServer.js: new socket established with ID: ' + socketID);&#10;    }&#10;    this.send('connection', {&#10;        'socketID': socketID,&#10;        'status': 'open'&#10;    });&#10;&#10;    self.sockets.push(socket);&#10;&#10;    self.sockets[socketID].on('message', function (message) {&#10;        console.log('WebSocketServer message(): ' + message + ', typeof message: ' + typeof message);&#10;        // For some reason, under the Node Host, the message is an&#10;        // object.  Under CapeCode, it is a string?&#10;        var isObjectWithQuotes = (typeof message === 'object' &amp;&amp; message.toString().startsWith('&quot;') &amp;&amp; message.toString().endsWith('&quot;'));&#10;        // If message is a string, strip leading and trailing &quot;&#10;        if (typeof message === 'string' || isObjectWithQuotes) {&#10;            if (isObjectWithQuotes) {&#10;                message = message.toString();&#10;            }&#10;            message = message.replace(/^&quot;(.*)&quot;$/, '$1');&#10;        }&#10;        self.send('received', {&#10;            'message': message,&#10;            'socketID': socketID&#10;        });&#10;    });&#10;    self.sockets[socketID].on('close', function () {&#10;        self.send('connection', {&#10;            'socketID': socketID,&#10;            'status': 'closed'&#10;        });&#10;    });&#10;    self.sockets[socketID].on('error', function (message) {&#10;        console.log(self.accessorName + ': WebSocketServer.js: error ' + message);&#10;        self.error(message);&#10;    });&#10;&#10;&#10;};&#10;&#10;/** Removes all inputHandlers from sockets.&lt;br&gt;&#10; * Unregisters event listeners from sockets.&lt;br&gt;&#10; * Closes server.&#10; */&#10;exports.wrapup = function () {&#10;    this.sockets = [];&#10;&#10;    if (server !== null) {&#10;        server.stop();&#10;        server = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/WebSocketServer.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor starts a server that listens for web socket&#10; connection requests on the specified hostInterface and port.  The&#10; hostInterface is needed only if the host machine has more than one&#10; network interface (e.g. Ethernet and WiFi) and 'localhost' does&#10; not resolve to the desired interface.&lt;/p&gt;&#10;&lt;p&gt; The output &lt;code&gt;connection&lt;/code&gt; reports the when a&#10; connection is opened or closed.&lt;/p&gt;&#10;&lt;p&gt; When a message arrives on a connection, a &lt;code&gt;received&lt;/code&gt;&#10; output is produced with that message. Note that the message may arrive in&#10; multiple frames, but it will be produced as a single message.&lt;/p&gt;&#10;&lt;p&gt; When an input arrives on &lt;code&gt;toSend&lt;/code&gt;, then a message is&#10; sent to one or all of the open socket connections.&lt;/p&gt;&#10;&lt;p&gt; When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the&#10; server and all connections.&lt;/p&gt;&#10;&lt;p&gt; The default type for both sending and receiving&#10; is 'application/json', which allows sending and receiving anything that has&#10; a string representation in JSON. The types supported by this implementation&#10; include at least:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;strong&gt;application/json&lt;/strong&gt;: The this.send() function uses JSON.stringify() and sends the&#10;result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,&#10;and if the parsing fails, will be provided as a string interpretation of the byte&#10;stream.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;text/*&lt;/strong&gt;: Any text type is sent as a string encoded in UTF-8.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;strong&gt;image/x&lt;/strong&gt;: Where &lt;strong&gt;x&lt;/strong&gt; is one of &lt;strong&gt;json&lt;/strong&gt;, &lt;strong&gt;png&lt;/strong&gt;, &lt;strong&gt;gif&lt;/strong&gt;,&#10;and more.&#10;In this case, the data passed to this.send() is assumed to be an image, as encoded&#10;on the host, and the image will be encoded as a byte stream in the specified&#10;format before sending.  A received byte stream will be decoded as an image,&#10;if possible.&lt;/p&gt;&#10;&lt;p&gt;This accessor requires the module webSocket.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim, Edward Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be sent to open sockets.&#10;   If this is an object with 'socketID' field and a 'message' field,&#10;   then send the value of the message field to the socket identified&#10;   by the socketID field. If the input has any other form, then the&#10;   message is broadcast to all open socket connections.">
+            </property>
+            <property name="listening (port)" class="ptolemy.kernel.util.StringAttribute" value="When the server is listening for connections, this output&#10;   will produce the port number that the server is listening on">
+            </property>
+            <property name="connection (port)" class="ptolemy.kernel.util.StringAttribute" value="An output produced when a connection opens or closes.&#10;   The output is an object with two fields, a 'socketID',&#10;   which is a unique ID for this client connection, and a 'status' field,&#10;   which is the string 'open' or 'closed'.">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="A message received a client in the form of an object with two fields, a 'socketID', which is a unique ID for this client connection, and a 'message' field, which is the message received from the client.">
+            </property>
+            <property name="hostInterface (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the&#10;   network interface to listen to.">
+            </property>
+            <property name="port (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port to listen to for connections.">
+            </property>
+            <property name="pfxKeyCertPassword (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If sslTls is set to true, then this option needs&#10;  to specify the password for the pfx key-cert file specified by pfxKeyCertPath.">
+            </property>
+            <property name="pfxKeyCertPath (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If sslTls is set to true, then this option needs to&#10;  specify the fully qualified filename for the file that stores the private key and certificate&#10;  that this server will use to identify itself. This path can be any of those understood by the&#10;  Ptolemy host, e.g. paths beginning with $CLASSPATH/.">
+            </property>
+            <property name="receiveType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The MIME type for incoming messages,&#10;   which defaults to 'application/json'.">
+            </property>
+            <property name="sendType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The MIME type for outgoing messages,&#10;   which defaults to 'application/json'.">
+            </property>
+            <property name="sslTls (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Whether SSL/TLS is enabled. This defaults to false.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="0.0.0.0">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="pfxKeyCertPassword" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="text/plain">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="application/json">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 180.0}">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="listening" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="connection" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="IPAddress" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** This accessor outputs the IP address of the local machine.&#10; *&#10; *  @accessor net/IPAddress&#10; *  @author Elizabeth Latronico (beth@berkeley.edu), based on IPAddress actor&#10; *  by Christopher Brooks&#10; *  @input {boolean} trigger Send a token here to produce an output.&#10; *  @output {string} IPAddress The IP address of the local machine.&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals error, exports, require */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;var discovery = require('@accessors-modules/discovery');&#10;// Initialize ds here, instead of in setup(), so that the ds object is defined&#10;// when the ds.on() function is encountered&#10;// But surround in a try-catch so that the browser host or any other host&#10;// that does not support the discovery module can proceed and at least read&#10;// the interface.&#10;var ds;&#10;try {&#10;    ds = new discovery.DiscoveryService();&#10;} catch (err) {&#10;    error('Failed to instantiate discovery service: ' + err);&#10;}&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;&#10;    this.input('trigger', {&#10;        type: 'boolean'&#10;    });&#10;&#10;    this.output('IPAddress', {&#10;        type: 'string'&#10;    });&#10;};&#10;&#10;/** Upon receiving a trigger input, output the host machine's IP address.&#10; */&#10;exports.initialize = function () {&#10;    var self = this;&#10;    this.addInputHandler('trigger', function () {&#10;        self.send('IPAddress', ds.getHostAddress());&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/IPAddress.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor outputs the IP address of the local machine.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Elizabeth Latronico (beth@berkeley.edu), based on IPAddress actor&#10; by Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="Send a token here to produce an output.">
+            </property>
+            <property name="IPAddress (port)" class="ptolemy.kernel.util.StringAttribute" value="The IP address of the local machine.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 380.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="IPAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="128.32.47.81">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="GetResource" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that gets a resource&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Get a resource, which may be a relative file name or a URL, and return the&#10; *  value of the resource as a string.&#10; *&#10; *  Implementations of this function may restrict the locations from which&#10; *  resources can be retrieved. This implementation restricts relative file&#10; *  names to be in the same directory where the swarmlet model is located or&#10; *  in a subdirectory, or if the resource begins with &quot;$CLASSPATH/&quot;, to the&#10; *  classpath of the current Java process.&#10; *&#10; *  If the accessor is not restricted, the $KEYSTORE is resolved to&#10; *  $HOME/.ptKeystore.&#10; *&#10; *  The options parameter may have the following values:&#10; *  * If the type of the options parameter is a Number, then it is assumed&#10; *    to be the timeout in milliseconds.&#10; *  * If the type of the options parameter is a String, then it is assumed&#10; *    to be the encoding, for example &quot;UTF-8&quot;.  If the value is &quot;Raw&quot; or &quot;raw&quot;&#10; *    then the data is returned as an unsigned array of bytes.&#10; *    The default encoding is the default encoding of the system.&#10; *    In CapeCode, the default encoding is returned by Charset.defaultCharset().&#10; *  * If the type of the options parameter is an Object, then it may&#10; *    have the following fields:&#10; *  ** encoding {string} The encoding of the file, see above for values.&#10; *  ** timeout {number} The timeout in milliseconds.&#10; *&#10; *  If the callback parameter is not present, then getResource() will&#10; *  be synchronous read like Node.js's&#10; *  {@link https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options|fs.readFileSync()}.&#10; *  If the callback argument is present, then getResource() will be asynchronous like&#10; *  {@link https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback|fs.readFile()}.&#10;&#10; *  @accessor util/GetResource&#10; *  @input options Options passed to the getResources() function, see above&#10; *  for details.&#10; *  @input resource {string} The file or URL to be read.  Defaults to&#10; *  the Accessors home page (http://accessors.org).&#10; *  @input trigger {boolean} Send a token to this input to read the&#10; *  file or URL.&#10; *  @output output The contents of the file or URL.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearInterval, exports, require, setInterval */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('options', {&#10;        'type': 'JSON',&#10;        'value': ''&#10;    });&#10;    this.input('resource', {&#10;        'type': 'string',&#10;        'value': 'http://accessors.org'&#10;    });&#10;    this.input('trigger');&#10;&#10;    this.output('output');&#10;};&#10;exports.initialize = function () {&#10;    var self = this;&#10;    this.addInputHandler('trigger', function () {&#10;        var resourceValue = this.get('resource');&#10;        var resourceContents = getResource(this.get('resource'), this.get('options'), null);&#10;        self.send('output', resourceContents);&#10;    });&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/GetResource.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Get a resource, which may be a relative file name or a URL, and return the&#10; value of the resource as a string.&lt;/p&gt;&#10;&lt;p&gt; Implementations of this function may restrict the locations from which&#10; resources can be retrieved. This implementation restricts relative file&#10; names to be in the same directory where the swarmlet model is located or&#10; in a subdirectory, or if the resource begins with &amp;quot;$CLASSPATH/&amp;quot;, to the&#10; classpath of the current Java process.&lt;/p&gt;&#10;&lt;p&gt; If the accessor is not restricted, the $KEYSTORE is resolved to&#10; $HOME/.ptKeystore.&lt;/p&gt;&#10;&lt;p&gt; The options parameter may have the following values:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;If the type of the options parameter is a Number, then it is assumed&#10;to be the timeout in milliseconds.&lt;/li&gt;&#10;&lt;li&gt;If the type of the options parameter is a String, then it is assumed&#10;to be the encoding, for example &amp;quot;UTF-8&amp;quot;.  If the value is &amp;quot;Raw&amp;quot; or &amp;quot;raw&amp;quot;&#10;then the data is returned as an unsigned array of bytes.&#10;The default encoding is the default encoding of the system.&#10;In CapeCode, the default encoding is returned by Charset.defaultCharset().&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;If the type of the options parameter is an Object, then it may&#10;have the following fields:&#10;&lt;strong&gt; encoding {string} The encoding of the file, see above for values.&#10;&lt;/strong&gt; timeout {number} The timeout in milliseconds.&lt;/p&gt;&#10;&lt;p&gt;If the callback parameter is not present, then getResource() will&#10;be synchronous read like Node.js's&#10;{@link https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options|fs.readFileSync()}.&#10;If the callback argument is present, then getResource() will be asynchronous like&#10;{@link https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback|fs.readFile()}.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="Options passed to the getResources() function, see above&#10; for details.">
+            </property>
+            <property name="resource (port)" class="ptolemy.kernel.util.StringAttribute" value="The file or URL to be read.  Defaults to&#10; the Accessors home page (http://accessors.org).">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="Send a token to this input to read the&#10; file or URL.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The contents of the file or URL.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="resource" class="ptolemy.actor.parameters.PortParameter" value="TrafficLight.js">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 435.0]">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="resource" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor reads or writes data to a key-value store web service whenever&#10; *  it receives a trigger input.&#10; *  A URL for the service is specified by the &lt;i&gt;storeLocation&lt;/i&gt; parameter.&#10; *  A Ptolemy II model that provides such a key-value store service can be found&#10; *  at https://www.icyphy.org/accessors/demo/KeyValueStore/KeyValueStoreServer.xml.&#10; *  A demo client that uses this accessor is provided at&#10; *  https://www.icyphy.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml.&#10; *&#10; *  The key and the value are both text items provided as inputs.&#10; *  If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10; *  will remove the specified key from the store, producing on its output the previous&#10; *  value (if any). If &lt;i&gt;remove&lt;/i&gt; is false, then this actor will either set or&#10; *  retrieve a value in the key-value store, depending on whether the&#10; *  and the &lt;i&gt;value&lt;/i&gt; input is non-empty. If the &lt;i&gt;value&lt;/i&gt; is non-empty, then this&#10; *  actor sets the value. If it is empty, then this actor retrieves the value.&#10; *&#10; *  If an error occurs accessing the key-value store (e.g., no store is found at the specified&#10; *  URL, or no value is found with the specified key),&#10; *  then an exception is thrown.&#10; *&#10; *  This accessor assumes that the protocol implemented at that location matches&#10; *  the specification below for the default location:&#10; *&#10; *  * To store a value with key MY_ID and value MY_VALUE, use&#10; *&#10; *      http://localhost:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10; *&#10; *  * To retrieve the value, use&#10; *&#10; *      http://localhost:8077/keyvalue/get?id=MY_ID&#10; *&#10; *  * To remove a value, use&#10; *&#10; *      http://localhost:8077/keyvalue/delete?id=MY_ID&#10; *&#10; *  The key and value are both&#10; *  encoded using the JavaScript encodeURIComponent() function,&#10; *  and on retrieval, decoded using decodeURIComponent(),&#10; *  and hence can include any text characters.&#10; *&#10; *  Note that this accessor uses blocking reads to access the store,&#10; *  so if the store is remote, this could lead to sluggish responses.&#10; *&#10; *  @accessor net/KeyValueStore&#10; *  @input {string} storeLocation The URL of the key-value store service.&#10; *  @input {string} key The key to be updated or retrieved.&#10; *  @input {boolean} remove If true, then remove the key from the store;&#10; *   otherwise, retrieve the value for the key.&#10; *  @input {string} value The value to store in the key-value store,&#10; *   or empty to not store anything.&#10; *  @input trigger The trigger input.&#10; *  @output {string} result The value retrieved from or written to&#10; *   the key-value store.&#10; *&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*global console, error, exports, readURL */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var httpClient = require('@accessors-modules/http-client');&#10;&#10;exports.setup = function () {&#10;    this.input('storeLocation', {&#10;        'type': 'string',&#10;        'value': 'http://localhost:8077/keyvalue'&#10;    });&#10;    this.input('key', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('remove', {&#10;        'type': 'boolean',&#10;        'value': false&#10;    });&#10;    this.input('value', {&#10;        'type': 'string'&#10;    });&#10;    this.input('trigger');&#10;    this.output('result', {&#10;        'type': 'string',&#10;        'spontaneous': true&#10;    });&#10;};&#10;&#10;var inputHandler = null;&#10;exports.initialize = function() {&#10;    inputHandler = this.addInputHandler('trigger', handleInputs.bind(this));&#10;}&#10;&#10;function handleInputs() {&#10;    var store = this.get('storeLocation');&#10;    var theKey = this.get('key');&#10;    var toRemove = this.get('remove');&#10;    var theValue = this.get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var thiz = this;&#10;    if (toRemove) {&#10;        if (theKey !== &quot;&quot;) {&#10;            httpClient.get(url, function(response) {&#10;                var produce = response.body;&#10;                url = store + '/delete?id=' + theKey;&#10;                // FIXME: This should use HTTP delete not get.&#10;                httpClient.get(url, function(response) {&#10;                    if (checkResponse(response, thiz) &amp;&amp; produce !== &quot;&quot;) {&#10;                        thiz.send('result', produce);&#10;                    }&#10;                });&#10;            });&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue !== &quot;&quot; &amp;&amp; theValue !== null) {&#10;            // FIXME: encodeURIComponent is not defined as a top-level accessor function.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey);&#10;            var options = {&#10;                'url':url,&#10;                'body':theValue&#10;            };&#10;            httpClient.post(options, function(response) {&#10;                if (checkResponse(response, thiz)) {&#10;                    thiz.send('result', theValue);&#10;                }&#10;            });&#10;        } else {&#10;            httpClient.get(url, function(response) {&#10;                if (checkResponse(response, thiz)) {&#10;                    var valueFromStore = decodeURIComponent(response.body);&#10;                    thiz.send('result', valueFromStore);&#10;                }&#10;            });&#10;        }&#10;    }&#10;};&#10;&#10;function checkResponse(response, thiz) {&#10;    if (response.statusCode &gt;= 400) {&#10;        thiz.error('Server responds with '&#10;                + response.statusCode&#10;                + ': '&#10;                + response.statusMessage);&#10;        return false;&#10;    } else if (response.statusCode &gt;= 300) {&#10;        thiz.error('Server responds with a redirect, no supported yet, code '&#10;                + response.statusCode&#10;                + ': '&#10;                + response.statusMessage);&#10;        return false;&#10;    }&#10;    return true;&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (inputHandler !== null) {&#10;        this.removeInputHandler(inputHandler);&#10;        inputHandler = null;&#10;    }&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/KeyValueStore.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor reads or writes data to a key-value store web service whenever&#10; it receives a trigger input.&#10; A URL for the service is specified by the &lt;i&gt;storeLocation&lt;/i&gt; parameter.&#10; A Ptolemy II model that provides such a key-value store service can be found&#10; at https://www.icyphy.org/accessors/demo/KeyValueStore/KeyValueStoreServer.xml.&#10; A demo client that uses this accessor is provided at&#10; https://www.icyphy.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml.&lt;/p&gt;&#10;&lt;p&gt; The key and the value are both text items provided as inputs.&#10; If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10; will remove the specified key from the store, producing on its output the previous&#10; value (if any). If &lt;i&gt;remove&lt;/i&gt; is false, then this actor will either set or&#10; retrieve a value in the key-value store, depending on whether the&#10; and the &lt;i&gt;value&lt;/i&gt; input is non-empty. If the &lt;i&gt;value&lt;/i&gt; is non-empty, then this&#10; actor sets the value. If it is empty, then this actor retrieves the value.&lt;/p&gt;&#10;&lt;p&gt; If an error occurs accessing the key-value store (e.g., no store is found at the specified&#10; URL, or no value is found with the specified key),&#10; then an exception is thrown.&lt;/p&gt;&#10;&lt;p&gt; This accessor assumes that the protocol implemented at that location matches&#10; the specification below for the default location:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;p&gt;To store a value with key MY_ID and value MY_VALUE, use&lt;/p&gt;&#10;&lt;p&gt;  http://localhost:8077/keyvalue/set?id=MY_ID&amp;amp;value=MY_VALUE&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;To retrieve the value, use&lt;/p&gt;&#10;&lt;p&gt;  http://localhost:8077/keyvalue/get?id=MY_ID&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;To remove a value, use&lt;/p&gt;&#10;&lt;p&gt;  http://localhost:8077/keyvalue/delete?id=MY_ID&lt;/p&gt;&#10;&lt;p&gt;The key and value are both&#10;encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent(),&#10;and hence can include any text characters.&lt;/p&gt;&#10;&lt;p&gt;Note that this accessor uses blocking reads to access the store,&#10;so if the store is remote, this could lead to sluggish responses.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="storeLocation (port)" class="ptolemy.kernel.util.StringAttribute" value="The URL of the key-value store service.">
+            </property>
+            <property name="key (port)" class="ptolemy.kernel.util.StringAttribute" value="The key to be updated or retrieved.">
+            </property>
+            <property name="remove (port)" class="ptolemy.kernel.util.StringAttribute" value="If true, then remove the key from the store;&#10;  otherwise, retrieve the value for the key.">
+            </property>
+            <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="The value to store in the key-value store,&#10;  or empty to not store anything.">
+            </property>
+            <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="The value retrieved from or written to&#10;  the key-value store.">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="The trigger input.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8077/keyvalue">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="21">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 360.0]">
+        </property>
+        <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="key" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="result" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Errors" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={856, 383, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 425.0]">
+        </property>
+    </entity>
+    <entity name="ConstructResponse" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('count', {'type':'int'});&#10;	this.output('response', {'type':'JSON'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('count', function() {&#10;		var count = thiz.get('count');&#10;		thiz.send('response', {'count':count});&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 225.0]">
+        </property>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="HandleRequest" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.output('requestGreen', {'type':'boolean'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		if (received.message) {&#10;			var spec = JSON.parse(received.message);&#10;			if (spec.green) {&#10;				thiz.send('requestGreen', true);&#10;			}&#10;		}&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 170.0]">
+        </property>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="requestGreen" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="TrafficLight" class="ptolemy.domains.modal.kernel.FSMActor">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            <configure>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+  </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 205.0]">
+        </property>
+        <property name="counter" class="ptolemy.data.expr.Parameter" value="59">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 70.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 118, 1049, 664}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[815, 553]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.249963334963575">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{248.14772033691398, 233.20637110360659}">
+        </property>
+        <property name="redTime" class="ptolemy.data.expr.Parameter" value="60">
+        </property>
+        <property name="yellowTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="greenTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <port name="Sec" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 375.0]">
+            </property>
+        </port>
+        <port name="Cred" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 160.0]">
+            </property>
+        </port>
+        <port name="Cyel" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 255.0]">
+            </property>
+        </port>
+        <port name="Cgrn" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 210.0]">
+            </property>
+        </port>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 295.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="requestGreen" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 415.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="Cinit" class="ptolemy.domains.modal.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 30.0]">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </entity>
+        <entity name="Cred" class="ptolemy.domains.modal.kernel.State">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 120.0]">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </entity>
+        <entity name="Cgrn" class="ptolemy.domains.modal.kernel.State">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 280.0]">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </entity>
+        <entity name="Cyel" class="ptolemy.domains.modal.kernel.State">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 255.0]">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="  Cred=1;   Cyel=0;   Cgrn=0; count = redTime">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="counter = redTime">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3298252672191417">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5124615234238838">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; counter &gt; 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="count = counter">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="counter = counter - 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3111944967159865">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.047887725085026">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(Sec_isPresent &amp;&amp; counter == 0)&#10;  || requestGreen_isPresent">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cred = 0; Cgrn = 1;&#10;   count = greenTime">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="counter = greenTime">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5782744757284863">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4258602902611501">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; counter == 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cyel = 1; Cgrn=0;&#10;  count = yellowTime">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="counter = yellowTime">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.9088182798077279">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.061315106725354">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; counter == 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="Cred = 1; Cyel = 0;&#10;  count = redTime">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="counter = redTime">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.47975924817280347">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.916128017620717">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; counter &gt; 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="count = counter">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="counter = counter - 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.37794977260487">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0436525030777688">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="default"/>
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; counter &gt; 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="count = counter">
+            </property>
+            <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="counter = counter - 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.305038837682632">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7723745071405745">
+            </property>
+        </relation>
+        <link port="Cinit.outgoingPort" relation="relation"/>
+        <link port="Cred.incomingPort" relation="relation"/>
+        <link port="Cred.incomingPort" relation="relation2"/>
+        <link port="Cred.incomingPort" relation="relation6"/>
+        <link port="Cred.outgoingPort" relation="relation2"/>
+        <link port="Cred.outgoingPort" relation="relation3"/>
+        <link port="Cgrn.incomingPort" relation="relation7"/>
+        <link port="Cgrn.incomingPort" relation="relation3"/>
+        <link port="Cgrn.outgoingPort" relation="relation5"/>
+        <link port="Cgrn.outgoingPort" relation="relation7"/>
+        <link port="Cyel.incomingPort" relation="relation5"/>
+        <link port="Cyel.incomingPort" relation="relation4"/>
+        <link port="Cyel.outgoingPort" relation="relation6"/>
+        <link port="Cyel.outgoingPort" relation="relation4"/>
+    </entity>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Cred">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Cyel">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Cgrn">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 255.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[300.0, 380.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[525.0, 380.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[15.0, 85.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="WebSocketServer.toSend" relation="relation9"/>
+    <link port="WebSocketServer.received" relation="relation8"/>
+    <link port="SingleEvent.output" relation="relation3"/>
+    <link port="IPAddress.trigger" relation="relation3"/>
+    <link port="IPAddress.IPAddress" relation="relation5"/>
+    <link port="StringReplace.replacement" relation="relation5"/>
+    <link port="StringReplace.stringToEdit" relation="relation"/>
+    <link port="StringReplace.output" relation="relation7"/>
+    <link port="GetResource.trigger" relation="relation5"/>
+    <link port="GetResource.output" relation="relation"/>
+    <link port="KeyValueStore.error" relation="relation6"/>
+    <link port="KeyValueStore.value" relation="relation7"/>
+    <link port="KeyValueStore.trigger" relation="relation7"/>
+    <link port="Errors.input" relation="relation6"/>
+    <link port="ConstructResponse.response" relation="relation9"/>
+    <link port="ConstructResponse.count" relation="relation13"/>
+    <link port="HandleRequest.received" relation="relation8"/>
+    <link port="HandleRequest.requestGreen" relation="relation4"/>
+    <link port="TrafficLight.Sec" relation="relation2"/>
+    <link port="TrafficLight.Cred" relation="relation10"/>
+    <link port="TrafficLight.Cyel" relation="relation11"/>
+    <link port="TrafficLight.Cgrn" relation="relation12"/>
+    <link port="TrafficLight.count" relation="relation13"/>
+    <link port="TrafficLight.requestGreen" relation="relation4"/>
+    <link port="SetVariable.input" relation="relation10"/>
+    <link port="SetVariable2.input" relation="relation11"/>
+    <link port="SetVariable3.input" relation="relation12"/>
+    <link port="DiscreteClock.output" relation="relation2"/>
+</entity>
