@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 120.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 179, 1139, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 266, 1139, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[905, 524]">
     </property>
@@ -677,11 +677,11 @@
             </port>
         </entity>
         <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 111, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={642, 611, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 325.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 370.0]">
             </property>
         </entity>
         <entity name="CheckForError" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -752,6 +752,7 @@
         <link port="KeyValueStore.result" relation="relation5"/>
         <link port="KeyValueStore.trigger" relation="relation"/>
         <link port="TimedDisplay.input" relation="relation7"/>
+        <link port="TimedDisplay.input" relation="relation"/>
         <link port="CheckForError.result" relation="relation5"/>
         <link port="CheckForError.err" relation="relation7"/>
         <link port="CheckForError.accessor" relation="relation6"/>
