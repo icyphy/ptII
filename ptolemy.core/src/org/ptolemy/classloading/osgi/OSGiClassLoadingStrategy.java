@@ -76,7 +76,7 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
 
   public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
     CompositeEntity result = null;
-    
+    ClassNotFoundException cnfe = new ClassNotFoundException(className);
     for(ActorOrientedClassProvider classProvider : _actorOrientedClassProviders) {
       try {
         result=classProvider.getActorOrientedClass(className, versionSpec);
@@ -85,12 +85,13 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
         }
       } catch (ClassNotFoundException e) {
         // just means the provider doesn't know about this one
+        cnfe.addSuppressed(e);
       }
     }
     if(result!=null) {
       return result;
     } else {
-      throw new ClassNotFoundException(className);
+      throw cnfe;
     }
   }
 
