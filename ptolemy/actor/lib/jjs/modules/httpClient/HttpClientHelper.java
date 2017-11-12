@@ -33,16 +33,22 @@ package ptolemy.actor.lib.jjs.modules.httpClient;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
@@ -57,7 +63,9 @@ import io.vertx.core.net.ProxyType;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// HttpClientHelper
@@ -214,6 +222,24 @@ public class HttpClientHelper extends VertxHelperBase {
      */
     protected HttpClientHelper(Object actor, ScriptObjectMirror helping, VertxHelperBase base) {
         super(actor, helping, base);
+    }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Convert an AWT Image object to a BufferedImage.  Copied from 
+     *  @param in An AWT Image object.
+     *  @return a BufferedImage.
+     *  @see ptolemy.actor.lib.conversions.ImageToString.java
+     */
+    private BufferedImage getRenderedImage(Image in) {
+        BufferedImage out = new BufferedImage(in.getWidth(null),
+                in.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = out.createGraphics();
+        g2.drawImage(in, 0, 0, null);
+        g2.dispose();
+        return out;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -562,7 +588,7 @@ public class HttpClientHelper extends VertxHelperBase {
             _requestObj = requestObj;
             _requestNumber = sequenceNumber;
             _pendingRequests++;
-
+            
             // If there are too many pending requests, stall the
             // calling thread. Do that here to not block vertx.
             // Note unsynchronized access to _pendingRequests, so time
@@ -676,6 +702,15 @@ public class HttpClientHelper extends VertxHelperBase {
                             ( (String)value).startsWith("image")) {
                         isImage = true;
                         imageType = ((String) value).substring(6);
+                        
+                        if ( !imageType.equalsIgnoreCase("gif") && 
+                        	 !imageType.equalsIgnoreCase("jpg") && 
+                        	 !imageType.equalsIgnoreCase("jpeg") && 
+                        	 !imageType.equalsIgnoreCase("png")) {
+                        	_error(_requestObj, "Unsupported image type " + imageType + ". Attempting to send as jpg."
+                        			+ " Supported types are gif, jpg and png.");
+                        	imageType = "jpg";
+                        }
                     }
                     if (value instanceof String) {
                         request.putHeader((String) key, (String) value);
@@ -688,16 +723,16 @@ public class HttpClientHelper extends VertxHelperBase {
                 }
             }
 
-            // Handle the body, if present.
+            // Handle the body, if present.  Images are sent chunked to avoid a TooLargeFrameException on the server.
             // Format any images
             if (isImage) {
                 AWTImageToken token = (AWTImageToken) _options.get("body");
+                
                 Image image = token.getValue();
                 BufferedImage bufferedImage;
 
-                // Convert Image to BufferedImage.  See:
+                // If image is not a BufferedImage, create a BufferedImage.  See:
                 // http://stackoverflow.com/questions/13605248/java-converting-image-to-bufferedimage
-
                 if (image instanceof BufferedImage)
                 {
                     bufferedImage = (BufferedImage) image;
@@ -711,31 +746,28 @@ public class HttpClientHelper extends VertxHelperBase {
                     bGr.drawImage(image, 0, 0, null);
                     bGr.dispose();
                 }
-
-                // Create byte array from BufferedImage
-                // http://stackoverflow.com/questions/10142409/write-an-inputstream-to-an-httpservletresponse
-                // Check on setting the content length?
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                
+                final ByteArrayOutputStream os = new ByteArrayOutputStream();
+                
                 try {
-                    ImageIO.write(bufferedImage, imageType, os);
-                    request.putHeader("Content-Length",
-                            Integer.toString(os.toByteArray().length));
-                    request.write(Buffer.buffer(os.toByteArray()));
-                } catch (IOException e) {
-                    String message = "Can't write image body to HTTP request: " + e.toString();
-                    _error(_requestObj, message);
-                }
-            } else {
-                // Otherwise, send body as string
-                Object bodyObject = _options.get("body");
-                if (bodyObject != null) {
-                    String body =  bodyObject.toString();
-                    if (body != null) {
-                        request.putHeader("Content-Length", Integer.toString(body.length()));
-                        request.write(body);
+                	ImageIO.write(bufferedImage, imageType , os);
+                	os.close();  // Important, flushes the output buffer.
+                    
+                    // Chunked requests don't use a Content-Length header.
+                    byte[] bytes = os.toByteArray();
+                    request.sendHead();
+                    request.setChunked(true);
+                    
+                    for (int i = 0; i < bytes.length; i = i + 4000){
+                    	request.write(Buffer.buffer(Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, i, i + 4000))));
                     }
+                    
+                } catch (final IOException ioe) {
+                	String message = "Can't write image to HTTP request.  Unable to convert image to base-64 string.";
+                	 _error(_requestObj, message);
                 }
-            }
+            } 	
+            
             // Allow overlapped requests. Sequence numbers take care of ensuring outputs
             // come out in order.
             // _setBusy(true);
