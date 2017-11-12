@@ -158,7 +158,6 @@ exports.HttpServer.prototype._request =
 	function (requestID, method, path, body, headers, params) {
 	var headersObject = {};
 	var paramsObject = {};
-	
 	// headers is an array of name=value.
 	if (headers !== null && typeof headers !== 'undefined') {
 		for (var i = 0; i < headers.length; i++) {
@@ -190,8 +189,18 @@ exports.HttpServer.prototype._request =
         'path': path,
         'params' : paramsObject
     };
+    
     if (body !== null) {
-        request.body = body;
+    	request.body = body;
+    	
+    	// Handle images.
+    	if (request.headers['Content-Type'] !== null && 
+    			typeof request.headers['Content-Type'] !== undefined) {
+    		if (request.headers['Content-Type'].indexOf('image') > -1) {
+    			var newBody = this.helper.convertImageBody(body);
+    			request.body = newBody;
+    		}
+    	}
     }
     this.emit('request', request);
 };

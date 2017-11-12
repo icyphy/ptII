@@ -322,7 +322,8 @@ exports.ClientRequest = ClientRequest;
 
 /** Issue the request. */
 ClientRequest.prototype.end = function () {
-    // console.log("Making an HTTP request: " + util.inspect(this.options));
+	console.log("Making an HTTP request.");
+	// console.log("Making an HTTP request to " + util.inspect(this.options.url));
     this.helper.request(this, this.options);
 };
 
