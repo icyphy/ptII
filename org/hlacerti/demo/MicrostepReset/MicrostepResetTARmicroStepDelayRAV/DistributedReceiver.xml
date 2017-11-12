@@ -2,37 +2,21 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedReceiver" class="ptolemy.actor.TypedCompositeActor">
-    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 185.0]">
-        </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.8,1.0}">
-        </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="180.0">
-        </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="190.0">
-        </property>
-        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.8,1.0}">
-        </property>
-        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 684, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 240, 1048, 660}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[814, 550]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.60064026216326">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.710347882337663">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{234.17689994131428, 331.9694835680751}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{554.9198964274659, 394.43920282441746}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver&quot;">
@@ -44,19 +28,19 @@
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MicrostepError.fed">
             <display name="Federate Object Model (.fed) file path"/>
         </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
             <display name="Time Management Service"/>
         </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
             <display name="*** If TAR is used, time step (s)"/>
         </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
             <display name="lookahead (s)"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 50.0]">
         </property>
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+    <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -72,36 +56,65 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 45.0]">
+        </property>
+    </property>
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 70.0]">
+        </property>
+    </property>
+    <property name="lah" class="ptolemy.data.expr.Parameter" value="0.5">
+        <display name="Lookahead"/>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 60.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When all federates use NER, the microstep is correctly incremented when the &#10;timestamp of RAV(s) is the same as the timestamp of an internal event.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Let be TS=TARTimeStep the time step. In a TAR federate, in a time advancing&#10;loop TAR(k*TS), all received RAV(t'), t' &lt; h+TS, are re-timestamp to h+TS.&#10;&#10;When periodR=periodS, the expected value after the AddSubtractor&#10;is (1+2+3.5+4)=10.5, the addition of internal events and RAVs. &#10;But even if the microstep and time are the same, e.g., (m=1, t=1),&#10;RAV and internal events values are not added together.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 490.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Clément Michel - Janette Cardoso, ISAE-SUPAERO, France&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 450.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 80.0]">
         </property>
     </property>
-    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="v1" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -117,85 +130,59 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 135.0]">
+        </property>
+    </property>
+    <property name="v2" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 230.0]">
+        </property>
+    </property>
+    <property name="periodR" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 170.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.6,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&quot;Internal&quot; events at this federate.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Clément Michel - Janette Cardoso, ISAE-SUPAERO, France.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 265.0]">
-        </property>
-    </property>
-    <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="54.99999999999999, 400.0">
-        </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.8,1.0}">
-        </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="119.99999999999999">
-        </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="150.0">
-        </property>
-        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.8,1.0}">
-        </property>
-        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-    </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.6,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Received RAVs.&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 455.0]">
-        </property>
-    </property>
-    <property name="v1" class="ptolemy.data.expr.Parameter" value="1.0">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 155.0]">
-        </property>
-    </property>
-    <property name="v2" class="ptolemy.data.expr.Parameter" value="2.0">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 435.0]">
         </property>
     </property>
     <class name="RecordAssembler" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 395.0]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -260,7 +247,7 @@
         <link port="RecordAssembler.microstep" relation="relation2"/>
     </class>
     <class name="ValueTransfer" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 55.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -268,13 +255,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 190.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 934, 632}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 504, 232}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[270, 122]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.5, 359.29296875}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{165.5, 159.29296875}">
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -283,7 +270,7 @@
         </port>
         <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
             <display name="objectName val"/>
-            <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
                 <display name="type of the parameter"/>
             </property>
             <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val&quot;">
@@ -294,89 +281,101 @@
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="{245.0, 205.0}">
+            </vertex>
+        </relation>
         <link port="out" relation="relation"/>
         <link port="HlaSubscriber.output" relation="relation"/>
     </class>
     <entity name="InstanceOfHlaSubscriber" class="ValueTransfer">
-        <display name="Sender2 TimeDelay"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 370.0]">
+        <display name="Sender2 DiscreteClock"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 355.0]">
         </property>
     </entity>
     <entity name="InstanceOfRecordAssembler4" class="RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 355.0]">
         </property>
     </entity>
     <entity name="InstanceOfRecordAssembler5" class="RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 155.0]">
         </property>
     </entity>
     <entity name="AfterAdd" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1106, 239, 334, 633}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={672, 607, 342, 203}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[334, 589]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 170.0]">
         </property>
     </entity>
     <entity name="InstanceOfRecordAssembler" class="RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 245.0]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="period">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="periodR">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{period}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{periodR}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 210.0]">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="period">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="periodR">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{period}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{periodR}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 115.0]">
         </property>
     </entity>
     <entity name="InstanceOfRecordAssembler2" class="RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 315.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 300.0]">
         </property>
     </entity>
     <entity name="BeforeAdd" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={884, 387, 297, 415}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 500, 300, 339}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[297, 371]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 320.0]">
-        </property>
-    </entity>
-    <entity name="Sender DiscreteClock" class=".DistributedReceiver.ValueTransfer">
-        <display name="Sender TimeDelay"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 430.0]">
-        </property>
-    </entity>
-    <entity name="InstanceOfRecordAssembler3" class="RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 305.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 155}">
+        </property>
+    </entity>
+    <entity name="InstanceOfValueTransfer" class="ValueTransfer">
+        <display name="Sender DiscreteClock"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="InstanceOfRecordAssembler3" class="RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 415.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 385.0]">
         </property>
     </entity>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{170.0, 370.0}">
+        <vertex name="vertex1" value="[140.0, 355.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[130.0, 120.0]">
+        <vertex name="vertex1" value="[130.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -384,7 +383,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[145.0, 180.0]">
+        <vertex name="vertex1" value="[155.0, 170.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -393,17 +392,21 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[175.0, 430.0]">
-        </vertex>
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="InstanceOfHlaSubscriber.out" relation="relation11"/>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[165.0, 415.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="InstanceOfHlaSubscriber.out" relation="relation13"/>
     <link port="InstanceOfRecordAssembler4.in" relation="relation11"/>
     <link port="InstanceOfRecordAssembler4.out" relation="relation5"/>
     <link port="InstanceOfRecordAssembler5.in" relation="relation2"/>
@@ -418,13 +421,17 @@
     <link port="BeforeAdd.input" relation="relation3"/>
     <link port="BeforeAdd.input" relation="relation4"/>
     <link port="BeforeAdd.input" relation="relation5"/>
-    <link port="BeforeAdd.input" relation="relation12"/>
-    <link port="Sender DiscreteClock.out" relation="relation13"/>
-    <link port="InstanceOfRecordAssembler3.in" relation="relation13"/>
-    <link port="InstanceOfRecordAssembler3.out" relation="relation12"/>
+    <link port="BeforeAdd.input" relation="relation7"/>
     <link port="AddSubtract.plus" relation="relation8"/>
     <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.plus" relation="relation11"/>
-    <link port="AddSubtract.plus" relation="relation13"/>
+    <link port="AddSubtract.plus" relation="relation10"/>
     <link port="AddSubtract.output" relation="relation2"/>
+    <link port="InstanceOfValueTransfer.out" relation="relation14"/>
+    <link port="InstanceOfRecordAssembler3.in" relation="relation10"/>
+    <link port="InstanceOfRecordAssembler3.out" relation="relation7"/>
+    <link port="MicrostepDelay3.input" relation="relation13"/>
+    <link port="MicrostepDelay3.output" relation="relation11"/>
+    <link port="MicrostepDelay4.input" relation="relation14"/>
+    <link port="MicrostepDelay4.output" relation="relation10"/>
 </entity>
