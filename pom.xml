@@ -13,7 +13,7 @@ $Id$
   -->
   
   <properties>
-    <target-version>0.1.0-SNAPSHOT</target-version>
+    <target-version>11.1.0-SNAPSHOT</target-version>
     <tycho-version>1.0.0</tycho-version>
     <tycho-extras-version>1.0.0</tycho-extras-version>
   </properties>
@@ -21,7 +21,7 @@ $Id$
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.ptolemy.tycho</groupId>
   <artifactId>org.ptolemy.tycho.root</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>11.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -48,6 +48,7 @@ $Id$
     <module>ptolemy.domains.sdf</module>
     <module>ptolemy.gui</module>
     <module>ptolemy.moml</module>
+    <module>org.ptolemy.triquetrum.aoc.provider</module>
     <module>org.ptolemy.triquetrum.editor.palette</module>
     <module>features</module>
     <module>releng</module>

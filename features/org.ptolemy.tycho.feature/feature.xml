@@ -165,4 +165,11 @@ Ptolemy II includes other third party material, see the about.html files in each
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.ptolemy.triquetrum.aoc.provider"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
