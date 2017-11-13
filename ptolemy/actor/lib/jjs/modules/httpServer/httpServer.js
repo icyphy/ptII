@@ -195,7 +195,7 @@ exports.HttpServer.prototype._request =
     	
     	// Handle images.
     	if (request.headers['Content-Type'] !== null && 
-    			typeof request.headers['Content-Type'] !== undefined) {
+    			typeof request.headers['Content-Type'] !== 'undefined') {
     		if (request.headers['Content-Type'].indexOf('image') > -1) {
     			var newBody = this.helper.convertImageBody(body);
     			request.body = newBody;
