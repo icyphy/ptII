@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/demo/MicrostepResetTAR
+ME =		org/hlacerti/demo/MicrostepResetTARmicroStepDelay
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	MicrostepResetTAR
+PTPACKAGE = 	MicrostepResetTARmicroStepDelay
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -51,9 +51,8 @@ OTHER_FILES_TO_BE_JARED = \
 	DistributedSender.xml \
 	DistributedSender2.xml \
 	MicrostepError.fed \
-	MicrostepResetTAR-TSr1-TSs1.png \
-	MicrostepResetTAR-TSr2-TSs1.png \
-	MicrostepResetTAR.xml
+	MicrostepResetTAR.xml \
+	TARwithInternalEventsAndMicrostepDelay.png
 
 EXTRA_SRCS = \
 	$(JSRCS) \
