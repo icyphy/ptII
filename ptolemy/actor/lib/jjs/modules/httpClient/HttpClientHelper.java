@@ -33,13 +33,10 @@ package ptolemy.actor.lib.jjs.modules.httpClient;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.LinkedList;
@@ -48,7 +45,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
@@ -63,9 +59,7 @@ import io.vertx.core.net.ProxyType;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// HttpClientHelper
@@ -224,24 +218,6 @@ public class HttpClientHelper extends VertxHelperBase {
         super(actor, helping, base);
     }
     
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Convert an AWT Image object to a BufferedImage.  Copied from 
-     *  @param in An AWT Image object.
-     *  @return a BufferedImage.
-     *  @see ptolemy.actor.lib.conversions.ImageToString.java
-     */
-    private BufferedImage getRenderedImage(Image in) {
-        BufferedImage out = new BufferedImage(in.getWidth(null),
-                in.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = out.createGraphics();
-        g2.drawImage(in, 0, 0, null);
-        g2.dispose();
-        return out;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
