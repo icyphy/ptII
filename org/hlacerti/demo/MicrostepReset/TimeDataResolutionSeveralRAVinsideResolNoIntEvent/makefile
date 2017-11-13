@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/demo/MicrostepResetTARmicroStepDelayRAV
+ME =		org/hlacerti/demo/TimeDataResolutionSeveralRAVinsideResolNoIntEvent
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,17 +41,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	MicrostepResetTARmicroStepDelayRAV
+PTPACKAGE = 	TimeDataResolutionSeveralRAVinsideResolNoIntEvent
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	DistributedReceiver.xml \
-	DistributedSender.xml \
-	DistributedSender2.xml \
-	MicrostepError.fed \
-	MicrostepResetTAR.xml
+	NERperiodprod2=0.8resol=1.png \
+	README.txt \
+	Signal.fed \
+	TimeDataResolutionSeveralRAVinsideResolNoIntEvent3fedNER.xml \
+	cons1Signal.xml \
+	prod1Signal.xml \
+	prod2Signal.xml 
 
 EXTRA_SRCS = \
 	$(JSRCS) \

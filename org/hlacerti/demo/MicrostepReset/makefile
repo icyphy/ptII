@@ -31,7 +31,17 @@
 
 ME =	org/hlacerti/demo/MicrostepReset
 
-DIRS =	MicrostepResetNER MicrostepResetNERbis MicrostepResetTAR
+DIRS =	MicrostepResetNER \
+	MicrostepResetNERbis \
+	MicrostepResetTAR \
+	MicrostepResetTARmicroStepDelay \
+	MicrostepResetTARmicroStepDelayBoth \
+	MicrostepResetTARmicroStepDelayRAV \
+	MicrostepResetTARnoCornerCase \
+	MicrostepResetTARnoCornerCase1 \
+	MicrostepResetTARnoInternalEvent \
+	MicrostepResetTARtimeDelayRAV \
+	TimeDataResolutionSeveralRAVinsideResolNoIntEvent
 
 # Root of the Java directory
 ROOT =      ../../../..
@@ -51,7 +61,15 @@ PTCLASSALLJAR= $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	MicrostepResetNER/MicrostepResetNER.jar \
 	MicrostepResetNERbis/MicrostepResetNERbis.jar \
-	MicrostepResetTAR/MicrostepResetTAR.jar
+	MicrostepResetTAR/MicrostepResetTAR.jar \
+	MicrostepResetTARmicroStepDelay/MicrostepResetTARmicroStepDelay.jar \
+	MicrostepResetTARmicroStepDelayBoth/MicrostepResetTARmicroStepDelayBoth.jar \
+	MicrostepResetTARmicroStepDelayRAV/MicrostepResetTARmicroStepDelayRAV.jar \
+	MicrostepResetTARnoCornerCase/MicrostepResetTARnoCornerCase.jar \
+	MicrostepResetTARnoCornerCase1/MicrostepResetTARnoCornerCase1.jar \
+	MicrostepResetTARnoInternalEvent/MicrostepResetTARnoInternalEvent.jar \
+	MicrostepResetTARtimeDelayRAV/MicrostepResetTARtimeDelayRAV.jar \
+	TimeDataResolutionSeveralRAVinsideResolNoIntEvent/TimeDataResolutionSeveralRAVinsideResolNoIntEvent.jar
 
 JSRCS = 
 

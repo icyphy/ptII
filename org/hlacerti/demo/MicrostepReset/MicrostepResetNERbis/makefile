@@ -53,7 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MicrostepError.fed \
 	MicrostepResetNERbis.png \
 	MicrostepResetNERbis.xml \
-	readme.txt
+	README.txt
 
 EXTRA_SRCS = \
 	$(JSRCS) \

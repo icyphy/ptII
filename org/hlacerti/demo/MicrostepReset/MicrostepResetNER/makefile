@@ -52,7 +52,8 @@ OTHER_FILES_TO_BE_JARED = \
 	DistributedSender2.xml \
 	MicrostepError.fed \
 	MicrostepResetNER.xml \
-	readme.txt
+	MicrostepResetNER.png \
+	README.txt
 
 EXTRA_SRCS = \
 	$(JSRCS) \

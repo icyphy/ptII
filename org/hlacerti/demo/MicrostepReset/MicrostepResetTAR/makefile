@@ -53,7 +53,8 @@ OTHER_FILES_TO_BE_JARED = \
 	MicrostepError.fed \
 	MicrostepResetTAR-TSr1-TSs1.png \
 	MicrostepResetTAR-TSr2-TSs1.png \
-	MicrostepResetTAR.xml
+	MicrostepResetTAR.xml \
+	MicrostepResetTAR.pdf
 
 EXTRA_SRCS = \
 	$(JSRCS) \
