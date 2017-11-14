@@ -263,6 +263,7 @@
        Set node.executable to node.exe or node.
   -->
   <target name="-check-node">
+    <chmod perm="a+x" file="${basedir}/bin/node"/>
     <property environment="env" />
     <condition property="node.in.path">
       <or>
@@ -325,6 +326,7 @@
        at the top of the file then this will not work.
   -->
   <target name="-check-npm">
+    <chmod perm="a+x" file="${basedir}/bin/npm"/>
     <property environment="env" />
     <condition property="npm.executable"
 	       value="npm.cmd"
@@ -1336,6 +1338,7 @@ For example:
       The formatter is controlled by junit.single.formatter, which defaults to plain
       Other values are brief, failure and xml.
     </echo>
+    <exec executable="date"/>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
 
