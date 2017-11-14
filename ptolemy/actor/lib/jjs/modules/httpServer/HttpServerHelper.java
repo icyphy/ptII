@@ -178,23 +178,28 @@ public class HttpServerHelper extends VertxHelperBase {
                         request.bodyHandler(new Handler<Buffer>() {
                             @Override
                             public void handle(Buffer buffer) {
-                                String method = request.method().toString();
-                                String path = request.path();
-                                
-                                MultiMap headers = request.headers();
-                                MultiMap params = request.params();
-                                
-                                // Make this callback in the director thread instead of
-                                // the verticle thread so that all outputs associated with
-                                // a request are emitted simultaneously.
-                                _issueResponse(() -> {
-                                    // Set up a timeout handler.
-                                    // FIXME: timeout 10000 needs to be an option given in JS constructor.
-                                    TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
-                                    // FIXME: Only handling string bodies for now.
-                                    _currentObj.callMember(
-                                            "_request", timeoutResponse.getTimeoutID(), method, path, buffer.toString(), headers.entries(), params.entries());
-                                });
+                            	
+                            	// Sometimes the body handler is invoked even when there is no body (i.e. buffer length 0).
+                            	// Do not call _request in this situation.  It will be called elsewhere.
+                            	if (buffer.toString().length() > 0) {
+                                    String method = request.method().toString();
+                                    String path = request.path();
+                                    
+                                    MultiMap headers = request.headers();
+                                    MultiMap params = request.params();
+                                    
+                                    // Make this callback in the director thread instead of
+                                    // the verticle thread so that all outputs associated with
+                                    // a request are emitted simultaneously.
+                                    _issueResponse(() -> {
+                                        // Set up a timeout handler.
+                                        // FIXME: timeout 10000 needs to be an option given in JS constructor.
+                                        TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
+                                        // FIXME: Only handling string bodies for now.
+                                        _currentObj.callMember(
+                                                "_request", timeoutResponse.getTimeoutID(), method, path, buffer.toString(), headers.entries(), params.entries());
+                                    });
+                            	}
                             }
                         });
                         
@@ -203,11 +208,11 @@ public class HttpServerHelper extends VertxHelperBase {
                         
                         MultiMap headers = request.headers();
                         MultiMap params = request.params();
-                        
+                                                
                         // Check for a body by checking for a Content-Length header or for chunked encoding. 
                         // Content-Length header is omitted for chunked encoding.
                         // Handle all not-yet-handled requests (i.e. no body).
-                        if ( (headers.contains("Content-Length") && headers.get("Content-Length") != "0") ||  
+                        if ( (headers.contains("Content-Length") && !headers.get("Content-Length").equalsIgnoreCase("0")) ||  
                              (headers.contains("transfer-encoding") && 
                             		 headers.get("transfer-encoding").equalsIgnoreCase("chunked"))) {
                         	// Do nothing.  Request will have been handled by request.bodyHandler.
