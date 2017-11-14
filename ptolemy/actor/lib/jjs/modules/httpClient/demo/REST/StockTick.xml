@@ -4,20 +4,20 @@
 <entity name="StockTick" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 51, 1040, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 51, 1016, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[806, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[782, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{403.0, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.0, 262.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a StockTick accessor to read the stock values&#10;of the publicly-held sponsors of the TerraSwarm project.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
         </property>
     </property>
     <property name="stocks" class="ptolemy.data.expr.Parameter" value="{&quot;AMAT&quot;,&quot;IBM&quot;, &quot;INTC&quot;, &quot;MU&quot;, &quot;RTN&quot;, &quot;TXN&quot;, &quot;UTX&quot;}">
@@ -36,15 +36,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 40.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 60.0]">
         </property>
     </property>
     <property name="SynchronizeToRealTime" class="ptolemy.actor.lib.SynchronizeToRealTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 65.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
@@ -60,7 +60,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 330.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -72,7 +72,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 180.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -86,7 +86,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 180.0]">
         </property>
         <port name="symbol" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -104,7 +104,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 265.0]">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -113,7 +113,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 170.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -126,13 +126,13 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 170.0]">
         </property>
     </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 170.0]">
         </property>
     </entity>
     <entity name="StockTick" class="org.terraswarm.accessor.JSAccessor">
@@ -172,7 +172,7 @@
         </property>
         <property name="outputCompleteResponsesOnly" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 225.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -236,7 +236,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[345.0, 175.0]">
+        <vertex name="vertex1" value="[330.0, 170.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

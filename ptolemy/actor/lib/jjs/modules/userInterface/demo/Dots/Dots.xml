@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={280, 170, 1085, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={280, 170, 995, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[851, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[761, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.4761264534884, 214.1447401889535}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.5, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Dots on a Map.&#10;&#10;Read temperature data from the GDP using an accessor and plot data on a map &#10;using x, y coords.  If GDP data cannot be read, sample data will be used.&#10;If sample data is used, the labels will be prefixed with &quot;sample&quot;.  &#10;&#10;The code in HTMLGenerator and UserInterface is copied from:&#10;(with image link changed to /accessors/web/hosts/browser/src/dots/livingroom.jpg):&#10;/org/terraswarm/accessor/accessors/web/hosts/browser/src/dots/dots.html&#10;&#10;The demo is &quot;cheating&quot; a bit, since it just opens a browser window, &#10;then loads accessors through the browser.  A &quot;native&quot; CapeCode demo&#10;using CapeCode GDP accessors should also be possible.">

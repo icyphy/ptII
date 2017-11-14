@@ -7,21 +7,21 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 113, 918, 654}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 544]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0787207555605132">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{242.65062499999996, 195.26457682291667}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 272.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test example that toggles a hue light on and off&#10;every 3 seconds with a random color each time.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 25.0]">
         </property>
     </property>
     <property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
@@ -35,7 +35,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 430.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -43,7 +43,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This attribute can restart the model if&#10;an exception occurs, but make sure you want this!&#10;It can be hard to stop execution of the model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 445.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -51,7 +51,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set the IP address of Hue bridge here.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 85.0]">
         </property>
     </property>
     <property name="bridgeIPAddress" class="ptolemy.data.expr.Parameter" value="&quot;192.168.1.221&quot;">
@@ -70,7 +70,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 125.0]">
         </property>
     </property>
     <property name="userName" class="ptolemy.data.expr.Parameter" value="&quot;SVmAJELYPPsCJjRqbKMjg0dLgesa6ZmiKt4Bdwaq&quot;">
@@ -89,7 +89,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 205.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -97,7 +97,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We used to be able to set the username, but now we need to query the device&#10;Click here to see http://www.developers.meethue.com/documentation/getting-started &#10;(Membership required)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 135.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://www.developers.meethue.com/documentation/getting-started#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -124,7 +124,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 510.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -133,7 +133,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 350.0]">
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
@@ -141,7 +141,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 350.0]">
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
@@ -150,7 +150,7 @@
         <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="65280">
         </property>
         <doc>Create a sequence of uniformly distributed random numbers</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 245.0]">
         </property>
     </entity>
     <entity name="Hue" class="org.terraswarm.accessor.JSAccessor">
@@ -210,7 +210,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 280.0]">
         </property>
         <property name="onWrapup" class="ptolemy.data.expr.Parameter" value="turn off">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -243,7 +243,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 255.0]">
+        </property>
+        <property name="id" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <port name="hue" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -262,13 +264,13 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 290}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 350.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[90.0, 290.0]">
+        <vertex name="vertex1" value="[155.0, 350.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

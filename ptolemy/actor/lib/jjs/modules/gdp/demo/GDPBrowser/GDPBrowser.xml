@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{370.8770356514085, 276.39708956866195}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{420.0, 309.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -21,7 +21,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
     <property name="logdname" class="ptolemy.data.expr.StringParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
@@ -40,13 +40,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 30.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here to view the sensors and actuators at &#10;https://gdp.cs.berkeley.edu/redmine/projects/gdp-sensor-and-actuator-deployments/wiki">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 110.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://gdp.cs.berkeley.edu/redmine/projects/gdp-sensor-and-actuator-deployments/wiki#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -94,7 +94,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 50.0]">
         </property>
     </property>
     <property name="startingRecord" class="ptolemy.data.expr.Parameter" value="1">
@@ -113,7 +113,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 70.0]">
         </property>
     </property>
     <property name="numberOfRecords" class="ptolemy.data.expr.Parameter" value="9">
@@ -132,7 +132,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 90.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -165,13 +165,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Unfortunately, running this model requires that a number of libraries be installed.&#10;To install these packages, invoke &#10;$PTII/org/terraswarm/accessor/accessors/web/gdp/adm/gdp-setup.sh&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 445.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Plot data points from&#10;a GDP Log">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 75.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -179,7 +179,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 515.0]">
         </property>
     </property>
     <entity name="GDPLogRead" class="org.terraswarm.accessor.JSAccessor">
@@ -197,7 +197,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 190.0]">
         </property>
         <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="*=10">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -251,18 +251,18 @@
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="startingRecord">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 250.0]">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
         </property>
     </entity>
     <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[526.6658630371094, 179.9976043701172]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[571.6658630371094, 224.9976043701172]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -270,11 +270,11 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 107]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 290.0]">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[43.334136962890625, 320.0023956298828]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[88.33413696289062, 365.0023956298828]">
         </property>
         <port name="pressure_pascals" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -297,7 +297,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 395.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that provides a user interface based on HTML5 on the local host.&#10; The initial content on the page may be specified using the &lt;em&gt;content&lt;/em&gt;&#10; parameter and HTML header content may be specified using &lt;em&gt;header&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; Whatever text is received on the &lt;em&gt;html&lt;/em&gt; input port will replace the content&#10; of the web page. Normally, this will be HTML text without any DOCTYPE or&#10; header and without a body tag. Each time new text is received, the content&#10; of the page will be replaced.&lt;/p&gt;&#10;&lt;p&gt; The page will be opened upon initialize if &lt;em&gt;content&lt;/em&gt; is not empty.&#10; Otherwise, it will be opened when the first &lt;em&gt;html&lt;/em&gt; input is received.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;resources&lt;/em&gt; input can be used to provide resources, such as images,&#10; that will be used by the HTML content provided on the &lt;em&gt;html&lt;/em&gt; input.&#10; Note that you probably will also have to provide an &lt;em&gt;update&lt;/em&gt; input (see below)&#10; to force the user interface to update the page using the specified resource.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;update&lt;/em&gt; input can be used to instruct the user interface to replace content&#10; within the page, vs. the &lt;em&gt;html&lt;/em&gt; input which replaces the entire page.&#10; The value of an &lt;em&gt;update&lt;/em&gt; input is expected to be an object with three properties,&#10; &lt;em&gt;id&lt;/em&gt;, &lt;em&gt;property&lt;/em&gt;, and &lt;em&gt;content&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;id&lt;/em&gt; property refers to a the ID of&#10; a DOM element in the content of the page, where the content has been provided&#10; either via the &lt;em&gt;content&lt;/em&gt; parameter or the &lt;em&gt;html&lt;/em&gt; input. For example, your&#10; page may include:&#10; &lt;pre&gt;&#10;    &amp;lt;div id=&amp;quot;foo&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&#10; &lt;/pre&gt;&#10; or&#10; &lt;pre&gt;&#10;    &amp;lt;img id=&amp;quot;bar&amp;quot; src=&amp;quot;image.jpg&amp;quot;/&amp;gt;&#10; &lt;/pre&gt;&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;p&gt;@param id The ID.&#10;The &lt;em&gt;property&lt;/em&gt; field specifies what property of the DOM element with the&#10;specified ID is to be updated. If &lt;em&gt;property&lt;/em&gt; is &amp;quot;html&amp;quot;, then the&#10;DOM object is updated by invoking the jQuery html() function&#10;with the specified &lt;em&gt;content&lt;/em&gt; as an argument. For example, if &lt;em&gt;id&lt;/em&gt; is &amp;quot;foo&amp;quot;,&#10;&lt;em&gt;property&lt;/em&gt; is &amp;quot;html&amp;quot;, and &lt;em&gt;content&lt;/em&gt; is &amp;quot;Hello World!&amp;quot;, then the above div&#10;will be populated with the text &amp;quot;Hello World!&amp;quot; on the web page.&#10;The &lt;em&gt;content&lt;/em&gt; can include any HTML markup or even scripts, which will be executed.&lt;/p&gt;&#10;&lt;p&gt;If &lt;em&gt;property&lt;/em&gt; is anything other than 'html', then the DOM element's &lt;em&gt;property&lt;/em&gt;&#10;attribute will be assigned the value of &lt;em&gt;content&lt;/em&gt;.&#10;A &lt;em&gt;property&lt;/em&gt; value of 'src', however, is treated specially.&#10;A &lt;em&gt;property&lt;/em&gt; value of 'src' can be used, for example, to replace the image in the above img tag.&#10;Just send the updated image to the &lt;em&gt;resources&lt;/em&gt; input and send this to the&#10;&lt;em&gt;update&lt;/em&gt; input:&lt;/p&gt;&#10;&lt;pre&gt;&#10;{'id':'bar', 'property':'src', 'content':'image.jpg'}&#10;&lt;/pre&gt;&#10;&#10;&lt;p&gt;Note that to get the user interface to actually replace the image, we may have to play some tricks.&#10;If the user interface is implemented by a browser, then the browser&#10;normally caches an image that it has previously retrieved&#10;and it will use the cached version of the image rather than obtaining the new image&#10;from the server.  To force the user interface to refresh the image, this accessor&#10;treats a &lt;em&gt;property&lt;/em&gt; value of 'src' specially.&#10;Specifically, it appends to the &lt;em&gt;content&lt;/em&gt; a suffix of the form '?count=&lt;em&gt;n&lt;/em&gt;',&#10;where &lt;em&gt;n&lt;/em&gt; is a unique number. This forces the user interface to retrieve the image&#10;from the server rather than use its cached version because the URI is&#10;different from that of the cached version. The server, on the other hand, ignores&#10;the parameter 'count' that has been appended to this URI and simply returns the&#10;updated image.&lt;/p&gt;&#10;&lt;p&gt;The way this accessor works on most hosts is that it starts a web server on localhost&#10;at the specified port that serves the specified web page and then instructs&#10;the system default browser to load the default page from that server.&#10;The page served by the server includes a script that listens for websocket&#10;connections that are used to provide HTML content and udpates to display on the page.&#10;Some hosts, however, such as the cordova and browser hosts, natively use&#10;a browser as part of the host, so in these cases, no web server nor socket&#10;connection is needed and the &lt;em&gt;port&lt;/em&gt; parameter will be ignored.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
@@ -359,7 +359,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[403.3341369628906, 350.0023956298828]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[448.3341369628906, 395.0023956298828]">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -375,7 +375,7 @@
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="numberOfRecords">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[258.3341369628906, 350.0023956298828]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[303.3341369628906, 395.0023956298828]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -383,7 +383,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 232]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[248.33413696289062, 285.0023956298828]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[293.3341369628906, 330.0023956298828]">
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
@@ -391,7 +391,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 107]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 320.0]">
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -399,7 +399,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[145.0, 155.0]">
+        <vertex name="vertex1" value="[190.0, 200.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -407,13 +407,13 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[28.334136962890625, 260.0023956298828]">
+        <vertex name="vertex1" value="[73.33413696289062, 305.0023956298828]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[198.33413696289062, 340.0023956298828]">
+        <vertex name="vertex1" value="[243.33413696289062, 385.0023956298828]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequenceToArray.input&quot;,x=315.0,y=385.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=375.0}, points={} },{ head={id=&quot;RecordDisassembler.pressure_pascals&quot;,x=100.0,y=355.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=375.0}, points={} },{ head={id=&quot;Display.input&quot;,x=305.0,y=330.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=375.0}, points={255.0,330.0} } }">
         </property>
@@ -423,7 +423,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[630.0, 350.0]">
+        <vertex name="vertex1" value="[675.0, 395.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Display2.input&quot;,x=675.0,y=385.0}, tail={id=&quot;relation8.vertex1&quot;,x=630.0,y=385.0}, points={} },{ head={id=&quot;Browser.html&quot;,x=690.0,y=300.0}, tail={id=&quot;relation8.vertex1&quot;,x=630.0,y=385.0}, points={630.0,300.0} },{ head={id=&quot;JavaScriptGDPToGraph2D.output&quot;,x=460.0,y=385.0}, tail={id=&quot;relation8.vertex1&quot;,x=630.0,y=385.0}, points={} } }">
         </property>

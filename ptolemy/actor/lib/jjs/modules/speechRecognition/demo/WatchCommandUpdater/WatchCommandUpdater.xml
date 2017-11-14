@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{448.0, 329.681640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{443.0, 335.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Fake watch &#10;outputs a gesture&#10;(up, down, or rotate)&#10;every 'interval' ms.">

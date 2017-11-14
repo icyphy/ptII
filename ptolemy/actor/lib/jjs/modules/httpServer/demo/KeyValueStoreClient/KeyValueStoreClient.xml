@@ -7,21 +7,21 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={320, 23, 1005, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0304453612609754">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.85351562499994, 236.58836286547304}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{385.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model writes a sequence of numeric values into a key-value store web service&#10;and reads them back.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 20.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -31,7 +31,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every 2 seconds,&#10;trigger a write to&#10;the key-value store.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-35.0, -90.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-35.0, -85.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Clock">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -45,7 +45,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After each write to&#10;the key-value store,&#10;trigger a read.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[95.0, 30.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[95.0, 35.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStore2">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -71,7 +71,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, run the companion&#10;KeyValueStoreServer.xml model, which provides an&#10;implementation of the key-value store on the&#10;local host by clicking on the link below:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 65.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="KeyValueStoreServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -96,7 +96,7 @@
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServer Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 140.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -129,7 +129,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk, Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 465.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -137,7 +137,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 200.0]">
         </property>
     </entity>
     <entity name="Errors" class="ptolemy.actor.lib.gui.Display">
@@ -145,7 +145,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 340.0]">
         </property>
     </entity>
     <entity name="KeyValueStore2" class="org.terraswarm.accessor.JSAccessor">
@@ -167,7 +167,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 200.0]">
         </property>
         <property name="key" class="ptolemy.actor.parameters.PortParameter" value="test">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -237,7 +237,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 220.0]">
         </property>
         <property name="key" class="ptolemy.actor.parameters.PortParameter" value="test">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -291,7 +291,7 @@
     <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
         <property name="discardEvents" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 340.0]">
         </property>
     </entity>
     <entity name="Clock" class="org.terraswarm.accessor.JSAccessor">
@@ -321,7 +321,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 240.0]">
         </property>
         <property name="interval" class="ptolemy.data.expr.Parameter" value="2000.0">
         </property>
@@ -338,7 +338,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[110.0, 215.0]">
+        <vertex name="vertex1" value="[115.0, 240.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

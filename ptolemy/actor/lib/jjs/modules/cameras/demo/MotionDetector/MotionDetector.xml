@@ -9,29 +9,29 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={653, 23, 787, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={262, 23, 787, 639}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[553, 529]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0198454912951291">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.37304687500017, 291.6319492403315}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.5, 264.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo performs simple motion&#10;detection on an image sequence.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[55.0, 90.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[35.0, 75.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Default values of the options&#10;are used (and shown) here&#10;(double click to see them).">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-100.0, 55.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-100.0, 60.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="MotionDetector">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -43,7 +43,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 355.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -52,7 +52,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 220.0]">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -62,7 +62,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 80.0]">
         </property>
     </entity>
     <entity name="CenterOfGravity" class="ptolemy.actor.lib.gui.Display">
@@ -72,7 +72,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 145.0]">
         </property>
     </entity>
     <entity name="AreaPercentage" class="ptolemy.actor.lib.gui.Display">
@@ -82,7 +82,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 220.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -130,7 +130,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 220.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -178,7 +178,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 210.0]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>

@@ -9,21 +9,21 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 29, 1103, 686}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 29, 1109, 679}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[875, 569]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9925095711035898">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{502.76405970483, 313.87500000000006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{437.5, 284.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test Computer Vision module.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 15.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -31,7 +31,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 525.0]">
         </property>
     </property>
     <entity name="ComputerVision" class="org.terraswarm.accessor.JSAccessor">
@@ -51,7 +51,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 95.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="{&quot;blurSize&quot; : 15}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -93,17 +93,17 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 95.0]">
         </property>
     </entity>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="terraswarm.jpg">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 95.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 95.0]">
         </property>
     </entity>
     <entity name="ComputerVision2" class="org.terraswarm.accessor.JSAccessor">
@@ -121,7 +121,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 180.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -163,7 +163,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 180.0]">
         </property>
     </entity>
     <entity name="ComputerVision3" class="org.terraswarm.accessor.JSAccessor">
@@ -181,7 +181,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 260.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="{&quot;erosionSize&quot; : 2}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -223,7 +223,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 260.0]">
         </property>
     </entity>
     <entity name="ComputerVision4" class="org.terraswarm.accessor.JSAccessor">
@@ -241,7 +241,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 335.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -283,7 +283,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 335.0]">
         </property>
     </entity>
     <entity name="ComputerVision6" class="org.terraswarm.accessor.JSAccessor">
@@ -301,7 +301,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 490.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -343,7 +343,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 490.0]">
         </property>
     </entity>
     <entity name="ComputerVision5" class="org.terraswarm.accessor.JSAccessor">
@@ -361,7 +361,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 410.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -403,7 +403,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 410.0]">
         </property>
     </entity>
     <entity name="ComputerVision8" class="org.terraswarm.accessor.JSAccessor">
@@ -421,7 +421,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 205.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -463,7 +463,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 205.0]">
         </property>
     </entity>
     <entity name="ComputerVision9" class="org.terraswarm.accessor.JSAccessor">
@@ -481,7 +481,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 280.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -523,7 +523,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 280.0]">
         </property>
     </entity>
     <entity name="ComputerVision10" class="org.terraswarm.accessor.JSAccessor">
@@ -541,7 +541,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 360.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -583,7 +583,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 360.0]">
         </property>
     </entity>
     <entity name="ComputerVision11" class="org.terraswarm.accessor.JSAccessor">
@@ -601,7 +601,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 450.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -643,7 +643,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 450.0]">
         </property>
     </entity>
     <entity name="ComputerVision7" class="org.terraswarm.accessor.JSAccessor">
@@ -661,7 +661,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 125.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -703,7 +703,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{685.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 125.0]">
         </property>
     </entity>
     <entity name="ComputerVision12" class="org.terraswarm.accessor.JSAccessor">
@@ -721,7 +721,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 525.0]">
         </property>
         <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -763,7 +763,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 525.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -771,7 +771,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[255.0, 125.0]">
+        <vertex name="vertex1" value="[210.0, 95.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

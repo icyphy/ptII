@@ -11,27 +11,27 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, -190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={370, 91, 981, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 91, 1414, 798}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[747, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1180, 688]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5031713318203594">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.777244393494304">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.22069972302745, 267.67342883123905}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{765.6590154867256, 442.337890625}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transcribe speech.  Stop after 30 seconds.&#10;&#10;This demo illustrates the use of a custom dictionary and language model.&#10;&#10;New dictionaries and language models can be generate from a file of sentences &#10;using the Sphinx lmtool:  http://www.speech.cs.cmu.edu/tools/lmtool-new.html&#10;Download the generated .dic and .lm files.&#10;&#10;This model is trained for weather sentences, try:&#10;&#10;&quot;Berkeley will be foggy tomorrow.&quot;&#10;&#10;The output will appear on stdout.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-280.0, -125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 105.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the Sphinx4 speech recognition library,&#10;which must be installed separately because of its size.&#10;&#10;1. Create the directory where configure looks for the Sphinx4 jar files:&#10;      mkdir $PTII/vendors/misc/sphinx4&#10;2. Download these .jar files and place in ptolemy/vendors/misc/sphinx:&#10;&#10;      wget -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-core&amp;v=5prealpha&amp;e=jar'&#10;&#10;      wget -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar'&#10;&#10;3. Run configure to update the classpath to include the jar files&#10;      (cd $PTII; ./configure)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 600.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, 625.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 855.0]">
         </property>
     </property>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
@@ -71,7 +71,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 415.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -108,7 +108,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 515.0]">
         </property>
         <property name="delay" class="ptolemy.data.expr.Parameter" value="30000">
         </property>
@@ -147,7 +147,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 465.0]">
         </property>
         <property name="continuous" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -192,7 +192,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 465.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

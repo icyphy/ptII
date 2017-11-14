@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 23, 1079, 678}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 23, 985, 678}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[845, 568]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[751, 568]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{427.5, 278.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.5, 284.0}">
     </property>
     <property name="clientAccessToken" class="ptolemy.data.expr.StringParameter" value="729b2622464c43c2a4f2b0fc82c8cc46">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -119,7 +119,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output goes to stdout.&#10;&#10;To view the output, select View-&gt;Console">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 225.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
@@ -129,7 +129,7 @@
         </property>
         <property name="modules" class="ptolemy.data.expr.StringParameter" value="apiai">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 375.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -139,7 +139,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this in the Node.js&#10;host, run the code&#10;generator below.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 290.0]">
         </property>
     </property>
     <entity name="PrettyPrint" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -155,7 +155,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 305.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -273,7 +273,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 305.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -289,10 +289,8 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{360.0, 205.0}">
+        <vertex name="vertex1" value="[290.0, 205.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=360.0,y=205.0}, tail={id=&quot;NaturalLanguage.textQuery&quot;,x=455.0,y=205.0}, points={} },{ head={id=&quot;.Sequence.output&quot;,x=225.0,y=205.0}, tail={id=&quot;relation.vertex1&quot;,x=310.0,y=205.0}, points={} },{ head={id=&quot;PrettyPrint.query&quot;,x=450.0,y=305.0}, tail={id=&quot;relation.vertex1&quot;,x=360.0,y=205.0}, points={360.0,295.0} },{ head={id=&quot;relation.vertex1&quot;,x=360.0,y=205.0}, tail={id=&quot;GenerateQueries.query&quot;,x=230.0,y=205.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">

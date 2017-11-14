@@ -11,16 +11,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={430, 103, 1304, 801}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 78, 1055, 818}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1072, 708]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 708]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.076433734939759">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.2955766475644, 263.21874999999983}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.5, 354.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -31,13 +31,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple demo that discovers available Lifx light bulbs on the local area network,&#10;configures the first discovered one, and then toggles the light on and off 3 times&#10;and with different colors.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 10.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In order to perform a manual lightbulb setup, you can use ManualSetup JS Actor. &#10;For this, the 'configuration' output  needs to be connected to the Lifx 'manualBulbSetup'&#10;input. After setting the parameters (ipAddress, port, macAddress and userName), &#10;and receiving a trigger signal, the light can be controled. Don't forget to keep the &#10;inputs 'triggerDiscovery' and 'selectLight' disconnected.&#10; ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 535.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,13 +45,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chadlia Jerad">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, 570.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 645.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If the bulbs are already set up (through the Lifx mobile app for example), then you &#10;need to be connected to the same LAN.&#10;&#10;Otherwise, with an unconfigured bulb, you can connect your computer to the Lifx&#10;network (an open Wifi network with a name like &quot;LIFX_Axx_xxxxxx&quot;, and then run the demo.&#10;&#10;If you have a bulb that has been configured to operate on some other network, you can&#10;reset it to factory defaults by turning it on and off five times in succession.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 65.0]">
         </property>
     </property>
     <entity name="AlternateOnOff" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -67,7 +67,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 270.0]">
         </property>
         <port name="generateCmd" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -109,7 +109,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 450.0]">
         </property>
         <property name="delay" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -122,7 +122,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1847, 1028]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 380.0]">
         </property>
     </entity>
     <entity name="ManualSetup" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -138,7 +138,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 590.0]">
         </property>
         <property name="ipAddress" class="ptolemy.data.expr.Parameter" value="192.168.0.0">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -174,7 +174,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 310.0]">
         </property>
         <port name="index" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -248,7 +248,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 370.0]">
         </property>
         <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -343,13 +343,13 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[15.0, 235.0]">
+        <vertex name="vertex1" value="[210.0, 310.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[350.0, 145.0]">
+        <vertex name="vertex1" value="[545.0, 220.0]">
         </vertex>
     </relation>
     <link port="AlternateOnOff.generateCmd" relation="relation2"/>

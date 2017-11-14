@@ -14,16 +14,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 35.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={294, 231, 1076, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 197, 903, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[842, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[669, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{421.0, 261.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.5, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Synthesis speech using the Mary Text To Speech web service.&#10;Type text into the &quot;Text&quot; accessor and run the model to hear speech.&#10;&#10;This demo uses the public web service.  If we use this a lot, we should install MaryTTS locally.&#10;Documentation:  http://mary.dfki.de:59125/documentation.html&#10;To download:  http://mary.dfki.de/&#10;License: LGPL3.&#10;&#10;The model stops after 10 seconds.  For longer text, please increase the DEDirector stop time.&#10;&#10;This model uses the default voice.  Other voices are available.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Synthesis speech using the Mary Text To Speech web service.&#10;Type text into the &quot;Text&quot; accessor and run the model to hear speech.&#10;&#10;This demo uses the public web service.  If we use this a lot, &#10;we should install MaryTTS locally.&#10;Documentation:  http://mary.dfki.de:59125/documentation.html&#10;To download:  http://mary.dfki.de/&#10;License: LGPL3.&#10;&#10;The model stops after 10 seconds.  For longer text, &#10;please increase the DEDirector stop time.&#10;&#10;This model uses the default voice.  Other voices are available.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 15.0]">
         </property>
@@ -31,7 +31,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the AudioCapture model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[51.90673828125, 431.03271484375]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioCapture.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -64,7 +64,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{24.0, 426.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.90673828125, 462.03271484375]">
         </property>
     </property>
     <entity name="ClipPlayer" class="org.terraswarm.accessor.JSAccessor">
@@ -100,7 +100,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[251.90673828125, 381.03271484375]">
         </property>
         <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -146,7 +146,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[71.90673828125, 381.03271484375]">
         </property>
         <property name="delay" class="ptolemy.data.expr.Parameter" value="2000.0">
         </property>
@@ -183,7 +183,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[78.09326171875, 258.96728515625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 295.0]">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;this is a test of speech synthesis&quot;">
         </property>
@@ -206,7 +206,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[181.90673828125, 296.03271484375]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -240,7 +240,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[376.90673828125, 381.03271484375]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
