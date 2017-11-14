@@ -14,7 +14,13 @@
       and Java 1.8 will work.</p>
 
     <p><b>The development version available via svn</b> is best built
-    with Java 1.8.  See below for details.</p>
+      with Oracle Java 1.8 (also know as Java 8)
+      because the Accessors use Nashorn.  It is possible to build Ptolemy II
+      with older versions of Java or with OpenJDK, but these configurations
+      are not supported.
+      It is possible to build the development version using Java 9, but
+      Java 9 has not been tested with Eclipse and Ptolemy II.
+    </p>
 
     <blockquote>
       <p>In January, 2015, the core of development version can be
@@ -34,7 +40,7 @@
 	of Ptolemy II is built using Java 1.7 on a nightly basis as part
 	of the Kepler build.</p>
 
-      <p>The development version of Ptolemy II requires Java 1.8 to use
+      <p>The development version of Ptolemy II requires Oracle Java 1.8 to use
 	Nashorn in ptolemy/actor/lib/jjs and IntStream in
 	org/ptolemy/machineLearning.  Over time, more and more code will
 	require Java 1.8.  The <code>$PTII/build.default.xml</code> works
