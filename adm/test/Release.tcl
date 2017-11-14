@@ -76,10 +76,8 @@ doc.tutorial.domains
 doc.tutorial.graph
 doc.tutorial.graph.junit
 doc.tutorial.gui
-ptolemy.actor.corba
 ptolemy.actor.corba.CoordinatorUtil
 ptolemy.actor.corba.CorbaIOUtil
-ptolemy.actor.corba.util
 ptolemy.actor.lib.javasound.test.pitchshift
 ptolemy.actor.lib.reactable
 ptolemy.actor.lib.tutorial
