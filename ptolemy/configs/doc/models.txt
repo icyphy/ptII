@@ -199,7 +199,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/StockTick.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerJS.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreServerTerra.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml
