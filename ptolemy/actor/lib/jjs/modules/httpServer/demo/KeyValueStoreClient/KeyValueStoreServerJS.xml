@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8077/keyvalue that stores key-value pairs.&#10;Run this model and click on this message to get documentation, or&#10;point your browser to http://localhost:8077/keyvalue/help.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 40.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8077/keyvalue/help#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -98,6 +98,14 @@
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 350.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: This is the JS version of KeyValueStoreServer.  This model has problems with POST.&#10;Use KeyValueStoreServer.xml instead.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 5.0]">
         </property>
     </property>
     <entity name="HelpResponse" class="ptolemy.actor.lib.jjs.JavaScript">
