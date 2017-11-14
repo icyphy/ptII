@@ -2700,7 +2700,7 @@ fi
 
 # Fix permissions on files.
 # If the distribution was in a jar file, then some files might not be executable.
-execFiles="ptolemy/util/test/junit/javachdir configure bin/ant"
+execFiles="ptolemy/util/test/junit/javachdir configure bin/ant bin/node bin/npm"
 for file in $execFiles
 do
     if test -f $file -a ! -x $file; then
