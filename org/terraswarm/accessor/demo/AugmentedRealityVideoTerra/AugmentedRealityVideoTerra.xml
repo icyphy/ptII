@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 120.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 179, 1140, 677}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 179, 1176, 677}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 567]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[942, 567]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{453.0, 283.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{471.0, 283.5}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -44,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 495.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 545.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -95,13 +95,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, also run the companion&#10;SoundServerTerra.xml model, which provides an implementation&#10;of a sound actuator that reacts to commands:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 360.0]">
         </property>
     </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SoundServerTerra Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 415.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/SoundServerTerra.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -270,7 +270,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 120.0]">
         </property>
         <port name="reset" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -338,7 +338,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{835.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 120.0]">
         </property>
         <property name="header" class="ptolemy.data.expr.Parameter" value="&lt;title&gt;AugmentedReality Demo&lt;/title&gt;&#10;&lt;style&gt;&#10;body {&#10;  background:black;&#10;}&#10;#next {&#10;  width:640px;&#10;}&#10;#container {&#10;  position: relative;&#10;  background: black;&#10;  width: 1000px;&#10;  height: 700px;&#10;}&#10;#image {&#10;  display: block;&#10;}&#10;#overlay {&#10;  position: absolute;&#10;  background-color: rgba(255,255,255,0.85);&#10;  color: black;&#10;  font-size: 12px;&#10;  font-family: sans-serif;&#10;  padding: 6px 6px;&#10;}&#10;table, th, td {&#10;  border: 1px solid black;&#10;  border-collapse: collapse;&#10;  padding: 2px;&#10;}&#10;&lt;/style&gt;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -837,7 +837,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[640.0, 305.0]">
+        <vertex name="vertex1" value="[620.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">

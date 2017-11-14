@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 126, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 126, 893, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[659, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.18164062499994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.5, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send a webcam images over a websocket, from client to server.&#10;Stop after 20 seconds.">

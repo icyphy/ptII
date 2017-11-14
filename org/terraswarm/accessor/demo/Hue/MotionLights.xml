@@ -12,18 +12,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 23, 1440, 873}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1194, 705}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[960, 595]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{603.0, 381.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{480.0, 297.5}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The clock driving the video subsystem runs faster than the lighting subsystem &#10;to provide accurate motion detection and display a smooth moving image &#10;without overwhelming the lighting system with too many requests.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 460.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -47,7 +47,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Marten Lohstroh, Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 530.0]">
         </property>
     </property>
     <entity name="30Hz Clock" class="ptolemy.actor.lib.DiscreteClock">
@@ -99,7 +99,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 260.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -147,7 +147,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[299.31988525390625, 250.05835723876953]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -176,7 +176,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -192,7 +192,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{810.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 105.0]">
         </property>
         <port name="cog" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,7 +207,7 @@
         </port>
     </entity>
     <entity name="SampledCog" class="ptolemy.domains.de.lib.Register">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{660.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 95.0}">
         </property>
     </entity>
     <entity name="5Hz Clock" class="ptolemy.actor.lib.DiscreteClock">
@@ -217,15 +217,15 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 160.0]">
         </property>
     </entity>
     <entity name="SampledArea" class="ptolemy.domains.de.lib.Register">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{535.0, 315.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 315.0]">
         </property>
     </entity>
     <entity name="Default" class="ptolemy.actor.lib.Default">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 95.0]">
         </property>
     </entity>
     <entity name="Hue" class="org.terraswarm.accessor.JSAccessor">
@@ -285,7 +285,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1005.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 105.0]">
         </property>
         <property name="onWrapup" class="ptolemy.data.expr.Parameter" value="turn off">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -306,46 +306,32 @@
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Camera.image&quot;,x=230.0,y=260.0}, tail={id=&quot;MotionDetector.input&quot;,x=390.0,y=250.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;30Hz Clock.output&quot;,x=90.0,y=260.0}, tail={id=&quot;Camera.trigger&quot;,x=230.0,y=260.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.output&quot;,x=390.0,y=250.0}, tail={id=&quot;ImageDisplay.input&quot;,x=550.0,y=240.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.cog&quot;,x=810.0,y=105.0}, tail={id=&quot;SampledCog.output&quot;,x=660.0,y=95.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=390.0,y=250.0}, tail={id=&quot;SampledArea.input&quot;,x=535.0,y=315.0}, points={475.0,260.0,475.0,315.0} } }">
-        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.area&quot;,x=810.0,y=105.0}, tail={id=&quot;SampledArea.output&quot;,x=535.0,y=315.0}, points={745.0,115.0,745.0,315.0} } }">
-        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{490.0, 160.0}">
+        <vertex name="vertex1" value="[375.32855224609375, 160.04620742797852]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SampledCog.trigger&quot;,x=660.0,y=95.0}, tail={id=&quot;relation11.vertex1&quot;,x=490.0,y=160.0}, points={660.0,160.0} },{ head={id=&quot;relation11.vertex1&quot;,x=490.0,y=160.0}, tail={id=&quot;Default.preferred&quot;,x=555.0,y=95.0}, points={490.0,95.0} },{ head={id=&quot;SampledArea.trigger&quot;,x=535.0,y=315.0}, tail={id=&quot;relation11.vertex1&quot;,x=490.0,y=160.0}, points={535.0,365.0,490.0,365.0} },{ head={id=&quot;5Hz Clock.output&quot;,x=240.0,y=160.0}, tail={id=&quot;relation11.vertex1&quot;,x=490.0,y=160.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SampledCog.input&quot;,x=660.0,y=95.0}, tail={id=&quot;Default.output&quot;,x=555.0,y=95.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Default.alternate&quot;,x=555.0,y=95.0}, tail={id=&quot;MotionDetector.cog&quot;,x=390.0,y=250.0}, points={555.0,145.0,475.0,145.0,475.0,250.0} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[370.0, 310.0]">
+        </vertex>
     </relation>
     <link port="30Hz Clock.output" relation="relation"/>
     <link port="Camera.trigger" relation="relation"/>
@@ -353,7 +339,7 @@
     <link port="MotionDetector.input" relation="relation4"/>
     <link port="MotionDetector.output" relation="relation2"/>
     <link port="MotionDetector.cog" relation="relation7"/>
-    <link port="MotionDetector.area" relation="relation9"/>
+    <link port="MotionDetector.area" relation="relation8"/>
     <link port="ImageDisplay.input" relation="relation2"/>
     <link port="JavaScript.cog" relation="relation6"/>
     <link port="JavaScript.area" relation="relation10"/>
@@ -362,7 +348,8 @@
     <link port="SampledCog.output" relation="relation6"/>
     <link port="SampledCog.trigger" relation="relation11"/>
     <link port="5Hz Clock.output" relation="relation11"/>
-    <link port="SampledArea.input" relation="relation9"/>
+    <link port="SampledArea.input" relation="relation8"/>
+    <link port="SampledArea.input" relation="relation8"/>
     <link port="SampledArea.output" relation="relation10"/>
     <link port="SampledArea.trigger" relation="relation11"/>
     <link port="Default.preferred" relation="relation11"/>

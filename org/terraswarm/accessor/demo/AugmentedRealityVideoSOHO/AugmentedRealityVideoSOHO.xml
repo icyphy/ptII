@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 873}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1210, 800}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[976, 690]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1388078636866459">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{532.1105292372176, 344.60888671875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{488.0, 345.0}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -44,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Christopher Brooks, Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 640.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 655.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">

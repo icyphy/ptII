@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 23, 1136, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 23, 930, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[908, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9687162891046386">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{495.50000000000006, 263.06570170238984}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.0, 262.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -33,7 +33,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use OpenCV face detection to count faces in a room.&#10;(See OccupancyLights to additionally control a Hue light bulb.)&#10;&#10;This model requires:&#10;* A camera&#10;* OpenCV installation&#10;* PATH should include OpenCV installation&#10;&#10;For OpenCV installation instructions, please see:&#10;https://opencv-java-tutorials.readthedocs.io/en/latest/01-installing-opencv-for-java.html&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[160.0, 10.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[35.0, 120.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -44,7 +44,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{{0,0}}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 410.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -92,7 +92,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 410.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -108,7 +108,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[120, 0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 365.0]">
         </property>
     </entity>
     <entity name="FaceDetector" class="org.terraswarm.accessor.JSAccessor">
@@ -126,7 +126,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 400.0]">
         </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;MinFaceSize&quot;: 80, &quot;MaxFaceSize&quot;: 400}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -188,7 +188,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 440.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

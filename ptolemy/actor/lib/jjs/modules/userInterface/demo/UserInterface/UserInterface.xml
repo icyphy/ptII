@@ -4,18 +4,18 @@
 <entity name="UserInterface" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 46, 1065, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 45, 1044, 630}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[831, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[810, 520]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1498641644896233">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.9986896514893, 255.6863013812308}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.0, 260.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceFixedPage: Display a fixed, static web page upon initialization.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 75.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceFixedPage.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -44,7 +44,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 60.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -54,13 +54,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demos for the UserInterface Accessor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 25.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceRamp: Replace the web page each time new data arrives.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 100.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceRamp.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -85,7 +85,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceVideo: Update a web page with a new image ten times per second.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceVideo.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -110,7 +110,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceUpdate: Update a web page with new data each time new data arrives using a web socket.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 150.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceUpdate.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -135,7 +135,7 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceInteractive: Put a form on a web page and feed back the data from the form.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 175.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceInteractive.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -160,7 +160,7 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceUserInterface: Launch a page plus browser host, load a WebSocket accessor, and update data.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceBrowser.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

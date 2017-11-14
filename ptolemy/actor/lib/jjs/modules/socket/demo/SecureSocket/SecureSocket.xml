@@ -15,16 +15,16 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to set up and use a secure socket connection between a client and server.&#10;This uses a PFX format file (https://en.wikipedia.org/wiki/PKCS_12) which contains a self-signed certificate&#10;and the associated private key. The file name is Server.pfx, and it is stored in the same directory as this demo.&#10;&#10;This PFX format file was created using following openssl commands:&#10;&#10;$ openssl genrsa -out ServerKey.pem 2048&#10;$ openssl req -new -key ServerKey.pem -sha256 -out ServerReq.pem&#10;&#10;Country Name (2 letter code) [AU]:US&#10;State or Province Name (full name) [Some-State]:CA&#10;Locality Name (eg, city) []:Berkeley&#10;Organization Name (eg, company) [Internet Widgits Pty Ltd]:UC Berkeley&#10;Organizational Unit Name (eg, section) []:Ptolemy Project&#10;Common Name (e.g. server FQDN or YOUR name) []:ptolemy.org&#10;Email Address []:&#10;&#10;A challenge password []:&#10;An optional company name []:&#10;&#10;$ openssl x509 -req -in ServerReq.pem -sha256 -extensions v3_ca -signkey ServerKey.pem -out ServerCert.pem&#10;$ openssl pkcs12 -export -out Server.pfx -inkey ServerKey.pem -in ServerCert.pem -password pass:ptolemy&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[50.0, 215.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[25.0, 205.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1175, 787}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1061, 787}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[941, 677]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[827, 677]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.5, 338.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.5, 338.5}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send a sequence of strings.&#10;This is set to use SSL/TLS&#10;and to trust all servers.">
@@ -51,7 +51,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 600.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 595.0]">
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">

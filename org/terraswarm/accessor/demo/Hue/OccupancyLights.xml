@@ -9,16 +9,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.0, 81.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 23, 1136, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 23, 1077, 641}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[908, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[843, 531]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9687162891046386">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{495.50000000000006, 263.06570170238984}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{421.5, 265.5}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edit code and type in light IDs.&#10;Check the lights output to find&#10;a reachable light ID.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[435.0, 230.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[308.18955993652344, 250.97864532470703]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -35,13 +35,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Marten Lohstroh, Christopher Brooks">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[41.0, 481.5]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use OpenCV face detection to count faces and&#10;control a Philips Hue lightbulb.&#10;&#10;This model requires:&#10;* a camera&#10;* that OpenCV be installed on the local machine&#10;* a Philips Hue lightbulb be available on the local network.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[166.0, 11.5]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -52,7 +52,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{{0,0}}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 220.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -100,7 +100,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 220.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -116,7 +116,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[413.18955993652344, 190.97864532470703]">
         </property>
     </entity>
     <entity name="FaceDetector2" class="org.terraswarm.accessor.JSAccessor">
@@ -134,7 +134,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 210.0]">
         </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;MinFaceSize&quot;: 80, &quot;MaxFaceSize&quot;: 400}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -223,7 +223,7 @@
             <property name="commands (port)" class="ptolemy.kernel.util.StringAttribute" value="JSON commands for the Hue, for example,&#10;               {&quot;id&quot; : 1, &quot;on&quot; : true, &quot;hue&quot; : 120}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[653.1895599365234, 385.97864532470703]">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -273,7 +273,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[573.1895599365234, 160.97864532470703]">
         </property>
     </entity>
     <entity name="OccupancyBasedLightingController" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -290,7 +290,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[548.1895599365234, 230.97864532470703]">
         </property>
         <property name="count" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -319,7 +319,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[463.18955993652344, 380.97864532470703]">
         </property>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
@@ -332,7 +332,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[708.1895599365234, 240.97864532470703]">
         </property>
     </entity>
     <entity name="MonitorValue4" class="ptolemy.actor.lib.gui.MonitorValue">
@@ -345,25 +345,19 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[758.1895599365234, 305.97864532470703]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=100.0,y=210.0}, tail={id=&quot;Camera.trigger&quot;,x=250.0,y=210.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Camera.image&quot;,x=250.0,y=210.0}, tail={id=&quot;FaceDetector2.input&quot;,x=395.0,y=200.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=540.0,y=170.0}, tail={id=&quot;FaceDetector2.output&quot;,x=395.0,y=200.0}, points={485.0,170.0,485.0,190.0} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[600.0, 210.0]">
+        <vertex name="vertex1" value="[473.18955993652344, 230.97864532470703]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PeopleCount.input&quot;,x=700.0,y=140.0}, tail={id=&quot;relation5.vertex1&quot;,x=600.0,y=210.0}, points={600.0,140.0} },{ head={id=&quot;OccupancyBasedLightingController.count&quot;,x=675.0,y=210.0}, tail={id=&quot;relation5.vertex1&quot;,x=600.0,y=210.0}, points={} },{ head={id=&quot;FaceDetector2.faceCount&quot;,x=395.0,y=200.0}, tail={id=&quot;relation5.vertex1&quot;,x=600.0,y=210.0}, points={} } }">
         </property>
@@ -375,7 +369,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{730.0, 290.0}">
+        <vertex name="vertex1" value="[603.1895599365234, 310.97864532470703]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

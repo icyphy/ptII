@@ -4,13 +4,13 @@
 <entity name="WebSocketGraph" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 23, 1068, 653}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 23, 1041, 653}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 543]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[807, 543]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.0, 271.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{403.5, 271.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -19,19 +19,19 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 30.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Instantiate a WebSocketServer, open a browser tab and &#10;send a series of numbers to a browser WebSocketClient. &#10;&#10;The client may also be run independently.&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[25.0, 80.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[20.0, 75.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Currently, the file is hardcoded as a constant in HTMLGraph.&#10;Alternatives are:&#10;Use a Ptolemy FileReader (not compatible with code gen)&#10;Use a REST accessor to fetch the content from terraswarm.org (unfortunately, introduces extra page formatting)&#10;Use a REST accessor to fetch from local host (the browser accessor would need to start the server in initialize()).&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[35.0, 380.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 375.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Osyk">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 485.0]">
         </property>
     </property>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -57,7 +57,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 210.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
@@ -90,7 +90,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
         </property>
         <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -180,7 +180,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 220.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console using util.inspect().&lt;/p&gt;">
@@ -212,7 +212,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 310.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
@@ -247,7 +247,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 310.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -299,7 +299,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 290.0]">
         </property>
         <port name="html" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

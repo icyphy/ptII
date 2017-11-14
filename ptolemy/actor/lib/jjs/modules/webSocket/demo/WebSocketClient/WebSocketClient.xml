@@ -11,13 +11,13 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for WebSocketClient accessor. The WebSocketClient can be imported from &#10;https://accessors.org/.&#10;&#10;NOTE: This client assumes that there is a web socket server running on the local host.&#10;There are two alternative implementations of the server.  A Ptolemy II server is provided&#10;as a model called WebSocketServer in this same directory by clicking on the link below:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 170.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -25,21 +25,21 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 540.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={326, 23, 958, 698}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 588]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0235813924837462">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.77539062499994, 319.52362351190476}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.0, 294.0}">
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebSocketServer Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -70,14 +70,14 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Alternatively, there is also a Node.js server, which you can start with:&#10;     &gt; node NodeServer.js&#10;before running this demo. NodeServer.js is in the same demo directory.  You may need&#10;to install the 'ws' module using something like:&#10;     &gt; npm install ws&#10;&#10;You may also need to install node-gyp:&#10;     &gt; npm install node-gyp&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 350.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 115.0]">
         </property>
     </entity>
     <entity name="MessageFromServer" class="ptolemy.actor.lib.gui.Display">
@@ -85,16 +85,16 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 342]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 125.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 125.0]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 105.0]">
         </property>
         <port name="messageID" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -135,7 +135,7 @@
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8183">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 140.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 115.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor sends and/or receives messages from a web socket at&#10; the specified host and port.&#10; &lt;a href=&quot;https://en.wikipedia.org/wiki/WebSocket&quot;&gt;WebSockets&lt;/a&gt;&#10; provide full-duplex communication channels over a single TCP/IP connection.&#10; In &lt;code&gt;initialize()&lt;/code&gt;, it  begins connecting to the web socket server.&#10; Once the connection is established, a &lt;code&gt;true&lt;/code&gt; boolean is sent to&#10; the &lt;code&gt;connected&lt;/code&gt; output.&#10; If connection is not established immediately, the accessor will attempt to&#10; reconnect &lt;em&gt;numberOfRetries&lt;/em&gt; times at an interval of &lt;em&gt;reconnectInterval&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; Whenever an input is received on the &lt;code&gt;toSend&lt;/code&gt;&#10; input, the message is sent to the socket. If the socket is not yet open,&#10; this accessor will, by default, queue the message to send when the socket opens,&#10; unless the &lt;code&gt;discardMessagesBeforeOpen&lt;/code&gt; parameter is true, in which case,&#10; input messages that are received before the socket is opened will be&#10; discarded. If messages are queued and &lt;code&gt;throttleFactor&lt;/code&gt; is non-zero, then&#10; whenever a message is queued to be later sent, the accessor's input handler will stall&#10; by a number of milliseconds given by the queue size times the throttleFactor.&#10; The longer the queue, the longer the stall. Note that this will likely block&#10; the host from executing, so this feature should be used with caution.&lt;/p&gt;&#10;&lt;p&gt; Whenever a message is received from the socket, that message is&#10; produced on the &lt;code&gt;'received'&lt;/code&gt; output. Note that the message may actually be sent&#10; over multiple 'frames', but the frames will be aggregated and produced as one&#10; message.&lt;/p&gt;&#10;&lt;p&gt; When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the&#10; connection.&lt;/p&gt;&#10;&lt;p&gt; If the connection is dropped midway, the swarmlet may monitor the 'connected'&#10; output for a value 'false' and attempt a reconnection by providing either a&#10; port or server input.&lt;/p&gt;&#10;&lt;p&gt; The default type for both sending and receiving&#10; is 'application/json', which allows sending and receiving anything that has&#10; a string representation in JSON. The types supported by this implementation&#10; include at least:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;strong&gt;application/json&lt;/strong&gt;: The this.send() function uses JSON.stringify() and sends the&#10;result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,&#10;and if the parsing fails, will be provided as a string interpretation of the byte&#10;stream.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;text/*&lt;/strong&gt;: Any text type is sent as a string encoded in UTF-8.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;strong&gt;image/x&lt;/strong&gt;: Where &lt;strong&gt;x&lt;/strong&gt; is one of &lt;strong&gt;json&lt;/strong&gt;, &lt;strong&gt;png&lt;/strong&gt;, &lt;strong&gt;gif&lt;/strong&gt;,&#10;and more.&#10;In this case, the data passed to this.send() is assumed to be an image, as encoded&#10;on the host, and the image will be encoded as a byte stream in the specified&#10;format before sending.  A received byte stream will be decoded as an image,&#10;if possible.&lt;/p&gt;&#10;&lt;p&gt;When a model with an instance of this accessor stops executing, there&#10;are two mechanisms by which data in transit can be lost. In both cases, warning&#10;messages or error messages will be issued to the host to be displayed or otherwise&#10;handled as the host sees fit.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;First, there might be queued messages that were received on &lt;code&gt;toSend&lt;/code&gt; but have not yet&#10;been sent, either because the socket has not yet been opened or because&#10;it was closed from the other side.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;Second, a message might be received from the server after shutdown has commenced.&#10;In particular, received messages are handled asynchronously by a handler function&#10;that can be invoked at any time, and that handler might be invoked after it is no&#10;longer possible for this accessor to produce outputs (it has entered its wrapup&#10;phase of execution).&lt;/p&gt;&#10;&lt;p&gt;The server might similarly lose messages by the same two mechanisms occurring&#10;on the server side. In that case, messages will presumably be displayed on the&#10;server side.&lt;/p&gt;&#10;&lt;p&gt;Accessors that extend this one can override the &lt;code&gt;toSendInputHandler&lt;/code&gt; function&#10;to customize what is sent. See &lt;code&gt;RosPublisher.js&lt;/code&gt; for an example.&lt;/p&gt;&#10;&lt;p&gt;This accessor requires the 'webSocket' module.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
