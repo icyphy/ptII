@@ -277,6 +277,9 @@ release_mac_test_capecode_setup:
 release_mac_capecode_linux:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_linux_jar
 
+release_mac_capecode_setup_64_jar:
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_64_jar
+
 
 release_mac2_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar src.jar setup
@@ -1242,10 +1245,10 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	# Clean up the source directory
 	#
 	# Remove jar files not included in CapeCode
-	egrep -v "lib/chic.jar|lib/java_cup.jar|lib/mapss.jar|lib/ptCal.jar|lib/sootclasses.jar|ptolemy/actor/ptalon/antlr/antlr.jar|ptolemy/distributed|ptolemy/domains/ptinyos" src_jar/$(CAPECODE_CAPECODE_VERSION)/.classpath.default \
+	egrep -v "lib/chic.jar|lib/java_cup.jar|lib/mapss.jar|lib/ptCal.jar|lib/sootclasses.jar|ptolemy/actor/ptalon/antlr/antlr.jar|ptolemy/distributed/jini/jar|ptolemy/domains/ptinyos/lib/" src_jar/$(CAPECODE_CAPECODE_VERSION)/.classpath.default \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/.classpath.default.tmp 
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/.classpath.default.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/.classpath
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/.classpath.default
 	# Check out the jsdoc repo.
 	(cd src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant jsdoc-install)
 	#
