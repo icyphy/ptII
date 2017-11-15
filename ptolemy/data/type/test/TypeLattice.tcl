@@ -516,3 +516,12 @@ test TypeLattice-4.4 {compare boolean and int} {
     set lattice [java::new ptolemy.data.type.TypeLattice]
     list [[java::call ptolemy.data.type.TypeLattice leastUpperBound $int $boolean] toString] [[java::call ptolemy.data.type.TypeLattice leastUpperBound $boolean $int] toString]
 } {scalar scalar}
+
+test TypeLattice-5.0 {compare general and int} {
+    set general [java::field ptolemy.data.type.BaseType GENERAL]
+    set int [java::field ptolemy.data.type.BaseType INT]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [java::call ptolemy.data.type.TypeLattice compare $int $general] \
+        [java::call ptolemy.data.type.TypeLattice compare $general $general] \
+        [java::call ptolemy.data.type.TypeLattice compare $general $int] \
+} {-1 0 1}
