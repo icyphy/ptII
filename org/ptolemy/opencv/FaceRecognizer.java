@@ -77,8 +77,8 @@ package org.ptolemy.opencv;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -91,14 +91,14 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.*;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
+
+import com.jhlabs.image.AbstractBufferedImageOp;
 
 import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
-
-import com.jhlabs.image.AbstractBufferedImageOp;
 
 ///////////////////////////////////////////////////////////////////
 //// FaceRecognizer

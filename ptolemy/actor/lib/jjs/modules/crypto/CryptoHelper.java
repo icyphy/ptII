@@ -29,12 +29,11 @@
 package ptolemy.actor.lib.jjs.modules.crypto;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -52,7 +51,6 @@ import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
-import java.util.Collection;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -64,7 +62,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
-import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 

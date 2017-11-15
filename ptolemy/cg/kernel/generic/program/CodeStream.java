@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;

@@ -28,27 +28,16 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.accessor;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
-import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// AccessorSSHCodeGenerator

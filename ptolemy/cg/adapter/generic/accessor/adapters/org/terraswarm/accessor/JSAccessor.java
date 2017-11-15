@@ -27,11 +27,6 @@
 */
 package ptolemy.cg.adapter.generic.accessor.adapters.org.terraswarm.accessor;
 
-import java.util.List;
-
-import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 

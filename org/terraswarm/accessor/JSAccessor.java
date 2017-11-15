@@ -82,7 +82,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.Diff;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StreamExec;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 

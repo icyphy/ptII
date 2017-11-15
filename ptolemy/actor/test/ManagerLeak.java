@@ -31,8 +31,8 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Ramp;
 import ptolemy.actor.lib.Recorder;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 
 /** Simple test for leaks in Manager.

@@ -37,7 +37,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 import org.ptolemy.fmi.FMI20ContinuousStateDerivative;
 import org.ptolemy.fmi.FMI20EventInfo;

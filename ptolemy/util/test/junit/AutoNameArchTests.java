@@ -28,7 +28,6 @@
 
 package ptolemy.util.test.junit;
 
-import java.lang.reflect.Method;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -36,7 +35,6 @@ import org.junit.runner.RunWith;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// AutoNameArchTests

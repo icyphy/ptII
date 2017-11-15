@@ -28,28 +28,6 @@
 
 package ptolemy.vergil.basic.layout.kieler.test.junit;
 
-import static org.junit.Assert.assertArrayEquals;
-
-import java.io.File;
-import java.util.Iterator;
-
-import javax.swing.SwingUtilities;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.ConfigurationApplication;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.StringUtilities;
-import ptolemy.util.Diff;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.PtolemyLayoutAction;
-import ptolemy.vergil.basic.layout.kieler.KielerLayoutAction;
-
 ///////////////////////////////////////////////////////////////////
 //// KielerJUnitTestExtendedModels
 /**

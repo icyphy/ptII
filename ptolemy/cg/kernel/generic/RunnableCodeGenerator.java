@@ -28,51 +28,21 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MatrixType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.JVMBitWidth;
-import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
