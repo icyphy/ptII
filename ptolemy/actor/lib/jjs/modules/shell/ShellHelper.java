@@ -30,13 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jjs.modules.shell;
 
-import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.ProcessBuilder.Redirect;
+import java.nio.charset.StandardCharsets;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 

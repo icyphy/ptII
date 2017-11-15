@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib.jjs;
 
-import io.vertx.core.buffer.Buffer;
-
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -40,6 +38,7 @@ import java.util.TreeSet;
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 
+import io.vertx.core.buffer.Buffer;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 //import jdk.nashorn.internal.objects.NativeArray;
 import ptolemy.data.ImageToken;

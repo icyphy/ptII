@@ -34,14 +34,13 @@ import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import org.terraswarm.gdp.EP_TIME_SPEC;
 import org.terraswarm.gdp.GDP;
 import org.terraswarm.gdp.GDPException;
 import org.terraswarm.gdp.GDP_GCL;
 import org.terraswarm.gdp.GDP_NAME;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.util.StringUtilities;
 

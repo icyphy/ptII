@@ -27,15 +27,14 @@
  */
 package ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator;
 import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.data.Token;
 import ptolemy.kernel.Port;

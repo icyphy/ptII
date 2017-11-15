@@ -29,9 +29,9 @@ package ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs;
 
 import java.util.List;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;

@@ -77,8 +77,8 @@ package org.ptolemy.opencv;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -91,11 +91,11 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.*;
-
-import ptolemy.kernel.util.IllegalActionException;
+import org.opencv.imgproc.Imgproc;
 
 import com.jhlabs.image.AbstractBufferedImageOp;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// ComputerVision

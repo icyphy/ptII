@@ -32,7 +32,6 @@ import java.util.Iterator;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoveGraphicalClasses

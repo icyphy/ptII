@@ -42,7 +42,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Find the shortest path from a source to a destination.

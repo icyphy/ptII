@@ -38,7 +38,6 @@ import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.fmi.FMUImport;
 import ptolemy.actor.lib.fmi.FMUImportHybrid;

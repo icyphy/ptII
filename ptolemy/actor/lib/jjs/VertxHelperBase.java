@@ -27,10 +27,6 @@
  */
 package ptolemy.actor.lib.jjs;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -42,6 +38,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.imageio.ImageIO;
 
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.EventBus;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.util.StringUtilities;
 
