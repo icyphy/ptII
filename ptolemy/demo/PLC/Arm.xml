@@ -212,7 +212,7 @@
         </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(torque/m*r*r) - (g * cos(theta) / r)">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(torque/(m*r*r)) - (g * cos(theta) / r)">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
