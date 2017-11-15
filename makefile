@@ -147,7 +147,9 @@ OPTIONAL_FILES = \
 	config.status \
 	config.cache \
 	confTest.class \
+	jdk \
 	logs \
+	node_modules \
 	public_html \
 	tcl \
 	vendors
