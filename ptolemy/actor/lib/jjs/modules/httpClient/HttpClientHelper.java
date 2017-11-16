@@ -249,11 +249,29 @@ public class HttpClientHelper extends VertxHelperBase {
         @Override
         public void handle(final Throwable throwable) {
             _pendingRequests--;
-            // System.err.println("****** Received an error for request " + _requestNumber);
+            String message = "";
+            // FIXME: When we report an error, we should include the exception.
+            // For this to work, we need to have host-specific error processing.
+
+            // If we get a SSLHandshakeException, suggest upgrading the JVM.
+            // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml 
+            // was failing with JDK 1.8.0_91 because https://httpbin.org 
+            // uses a lets encrypt certificate.
+            if (throwable instanceof javax.net.ssl.SSLHandshakeException) {
+                message = "HttpClientHelper.java: "
+                + "The exceptions is a SSLHandshakeException, which is "
+                + "probably caused because the certs for the website in question "
+                + "are not in the JVM keystore.  "
+                + "Try updating your JVM or see "
+                + "See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: ";
+            }
+            final String finalMessage = message;
+            // System.err.println("****** Received an error for request " + _requestNumber + ": " + throwable);
+            // throwable.printStackTrace();
             // True argument indicates that this request is done.
             _issueOrDeferResponse(_requestNumber, true, new Runnable() {
                 public void run() {
-                    _requestObj.callMember("_errorResponse", null, throwable.getMessage());
+                    _requestObj.callMember("_errorResponse", null, finalMessage + throwable.getMessage());
                 }
             });
             if (_client != null) {
