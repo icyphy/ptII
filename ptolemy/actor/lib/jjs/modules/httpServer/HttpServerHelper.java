@@ -37,7 +37,6 @@ import java.math.BigInteger;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
