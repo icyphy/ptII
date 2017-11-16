@@ -29,6 +29,7 @@ package ptolemy.actor.lib.jjs;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.math.BigInteger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -36,7 +37,6 @@ import java.util.Collection;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 
 import io.vertx.core.buffer.Buffer;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
@@ -503,7 +503,18 @@ o     *  This is useful, for example, when a response
             String stringObject = (String) object;
             if (stringObject.startsWith("0x")) {
                 // hex encoded string
-                return DatatypeConverter.parseHexBinary(stringObject.substring(2));
+
+                // Don't use
+                // javax.xml.bind.DatatypeConverter.parseHexBinary()
+                // here because javax.xml.bind.DatatypeConverter is
+                // not directly available in Java 9.  To use it
+                // requires compiling with --add-modules
+                // java.xml.bind, which seems to not be easily
+                // supported in Eclipse.
+                // An alternative would be to use Apache commons codec,
+                // but this would introduce a compile and runtime dependency.
+
+                return new BigInteger(stringObject.substring(2), 16).toByteArray();
             } else {
                 // String.getBytes() causes Dm: Dubious method used (FB.DM_DEFAULT_ENCODING)
                 return ((String) object).getBytes(Charset.forName("UTF-8"));
