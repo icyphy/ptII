@@ -291,8 +291,8 @@ function ClientRequest(options, responseCallback) {
     // Fill in default values.
     options = util._extend(defaultOptions, options);
     // Do not generate a query for null or undefined queries.
-    if (url.query === null || typeof url.query === 'undefined') {
-    	url.query = '';
+    if (options.url.query === null || typeof options.url.query === 'undefined') {
+    	options.url.query = '';
     }
 
     // Attach the callback to be invoked when this object issues
