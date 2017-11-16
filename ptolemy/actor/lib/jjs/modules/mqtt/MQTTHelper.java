@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.mqtt;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
@@ -103,8 +104,19 @@ public class MQTTHelper extends HelperBase {
     public static String getDefaultId() {
         byte[] idBytes = new byte[8];
         _random.nextBytes(idBytes);
+
+        // Don't use
+        // javax.xml.bind.DatatypeConverter.printHexBinary()
+        // here because javax.xml.bind.DatatypeConverter is
+        // not directly available in Java 9.  To use it
+        // requires compiling with --add-modules
+        // java.xml.bind, which seems to not be easily
+        // supported in Eclipse.
+        // An alternative would be to use Apache commons codec,
+        // but this would introduce a compile and runtime dependency.
+
         String newId = "mqttpt_"
-                + javax.xml.bind.DatatypeConverter.printHexBinary(idBytes);
+            + new BigInteger(idBytes);
         return newId;
     }
     ///////////////////////////////////////////////////////////////////
