@@ -1,6 +1,6 @@
 /* A helper class for the httpServer JavaScript module.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -33,6 +33,7 @@ package ptolemy.actor.lib.jjs.modules.httpServer;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -92,7 +93,16 @@ public class HttpServerHelper extends VertxHelperBase {
         }
         
         try {
-        	byte[] bytes = DatatypeConverter.parseBase64Binary(body);
+            // Don't use
+            // javax.xml.bind.DatatypeConverter.parse64Binary()
+            // here because javax.xml.bind.DatatypeConverter is
+            // not directly available in Java 9.  To use it
+            // requires compiling with --add-modules
+            // java.xml.bind, which seems to not be easily
+            // supported in Eclipse.
+            // An alternative would be to use Apache commons codec,
+            // but this would introduce a compile and runtime dependency.
+            byte[] bytes = new BigInteger(body, 64).toByteArray();
         	
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
             AWTImageToken token = new AWTImageToken(image);
