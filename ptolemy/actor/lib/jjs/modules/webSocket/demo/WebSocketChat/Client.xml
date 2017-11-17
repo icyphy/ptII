@@ -41,9 +41,9 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the Server model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that the Chat Server model&#10;be running.&#10;Click here to open the Server model,&#10;then run the Server model before running this model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -76,13 +76,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 375.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the SecureClient model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 350.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
