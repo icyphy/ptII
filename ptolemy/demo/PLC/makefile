@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II AugmentedReality demo
+# Makefile for Ptolemy II PLC demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/AugmentedReality
+ME =		ptolemy/demo/PLC
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -41,47 +41,25 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	AugmentedReality
+PTPACKAGE = 	PLC
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AugmentedRealityFeedbackBlee.xml \
-	AugmentedRealityFeedbackGDP.xml \
-	AugmentedRealityFeedback.xml \
-	AugmentedRealityKeyValueStore.xml \
-	AugmentedRealityMessageBoard.xml \
-	AugmentedRealityVideo.xml \
-	AugmentedReality.xml \
-	bell.wav \
-	CKC \
-	ControllableSensor.js \
-	finite_pub_sub.py \
-	GDPSensor.js \
-	MechanicalRoom.jpg \
-	MessageBoard \
-	mqtts.json \
-	Office.jpg \
-	PressureSensor.js \
-	RosCommand.js \
-	RosTeleoperation.js \
-	SoundActuator.js \
-	Sounds \
-	SoundServer.xml \
-	tag36_11_00021.png \
-	tag36_11_00105.png \
-	tag36_11_00586.png \
-	TagMapAccessorAR.xml \
-	TagURIMapAR.xml \
-	TemperatureSensor.js \
-	TestSoundActuator.xml \
-	TrafficLight.js \
-	TrafficLight.xml \
-	VariantAccessors \
-	VibrationSensor.js
+	AnimateArm.xml \
+	Arm.xml \
+	Figures \
+	PLCContinuousTimeFeedbackTorque.xml \
+	PLCwithBounce.xml \
+	PLCwithConstantTorque.xml \
+	PLCwithFeedbackTorque.xml \
+	PLCwithTimeFeedback.xml \
+	PLC.xml
 
-EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -89,7 +67,8 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -103,16 +82,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer AugmentedReality.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer PLC.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" AugmentedReality.xml
+	"$(PTII)/bin/ptolemy" PLC.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" AugmentedReality.xml
+	"$(PTII)/bin/vergil" PLC.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -50,9 +50,14 @@ OTHER_FILES_TO_BE_JARED = \
 	AugmentedRealityFeedbackBleeSOHO.xml \
 	AugmentedRealityVideoSOHO.xml \
 	ControllableSensor.js \
+	GenerateHueAccessors.xml \
+	GenerateLifxAccessors.xml \
 	GenerateMQTTAccessors.xml \
 	HueAccessorTemplate.js \
+	hues.json \
 	KeyValueStoreServerSOHO.xml \
+	LifxAccessorTemplate.js \
+	lifxs.json \
 	MQTTAccessorTemplate.js \
 	MQTTBlee.xml \
 	README.txt \

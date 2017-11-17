@@ -44,12 +44,13 @@ include $(CONFIG)
 PTPACKAGE = 	EnterpriseOntology
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-
 EXAMPLE_MODELS = \
 	CarRentalProcess.xml \
 	IoTDeviceRegistrationProcess.xml
 
 OTHER_FILES_TO_BE_JARED = \
+	EnterpriseOntology.xml \
+	StandardTransactionPattern.xml \
 	$(EXAMPLE_MODELS) 
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)

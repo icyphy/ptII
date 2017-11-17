@@ -86,5 +86,7 @@ install: subinstall jars
 # want make checkjunk to report an error on them.
 MISC_FILES = $(DIRS)
 
+OPTIONAL_FILES = scala
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
