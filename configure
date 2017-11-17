@@ -625,6 +625,7 @@ LIBOBJS
 PTWEBSOCKET_DIR
 WABA_DIR
 WABA_CLASSES
+PTVIEWER_PACKAGES
 PTVIEWER_DIR
 PTVERTX_PACKAGES
 PTVERTX_DIR
@@ -4778,8 +4779,12 @@ $as_echo "ok" >&6; }; fi
         fi
 fi
 
+# ptolemy/media/viewer/AudioPlayer.java uses internal sun.* classes not present in Java 9.
 # PTVIEWER_DIR is set to viewer and used in ptolemy/media/makefile for JVM < 9
 PTVIEWER_DIR=viewer
+# PTVIEWER_PACKAGES is used in doc/makefile
+PTVIEWER_PACKAGES=ptolemy.media.viewer
+
 # Handle Java 9 fails.
 case "$JVERSION" in
         9*)    # We use to need to add a module so that
@@ -4789,6 +4794,7 @@ case "$JVERSION" in
                # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
                # JAVAC_MODULES="--add-modules java.xml.bind"
                PTVIEWER_DIR=
+               PTVIEWER_PACKAGES=
                updateExcludes "ptolemy/copernicus/applet/"
                updateExcludes "ptolemy/media/viewer"
 
@@ -15690,6 +15696,9 @@ fi
 
 
 # PTVIEWER_DIR is set to viewer and used in ptolemy/media/makefile for JVM < 9
+
+
+# PTVIEWER_PACKAGES is used in doc/makefile
 
 
 # waba/tools/classes.jar file used by the PalmOS WABA
