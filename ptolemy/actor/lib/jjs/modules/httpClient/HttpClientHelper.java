@@ -744,17 +744,30 @@ public class HttpClientHelper extends VertxHelperBase {
                 final ByteArrayOutputStream os = new ByteArrayOutputStream();
                 
                 try {
-                	ImageIO.write(bufferedImage, imageType , os);
-                	os.close();  // Important, flushes the output buffer.
+                    // This is tested by
+                    // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml 
+                    ImageIO.write(bufferedImage, imageType , os);
+                    os.close();  // Important, flushes the output buffer.
                     
                     // Chunked requests don't use a Content-Length header.
                     byte[] bytes = os.toByteArray();
                     request.sendHead();
                     request.setChunked(true);
                     
-                    for (int i = 0; i < bytes.length; i = i + 4000){
-                    	request.write(Buffer.buffer(Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, i, i + 4000))));
+                    // Encode the entire image first and then call request on 4000
+                    // character junks.  If we encode each 4000 character chunk,
+                    // then we get padding character(s) (=) in the output.
+                    String encoded = Base64.getEncoder().encodeToString(bytes);
+                    for (int i = 0; i < encoded.length(); i = i + 4000){
+                        int end = i + 4000 < encoded.length()
+                            ? i + 4000
+                            : encoded.length();
+                     	request.write(Buffer.buffer(encoded.substring(i, end)));
                     }
+
+                    // for (int i = 0; i < bytes.length; i = i + 4000){
+                    // 	request.write(Buffer.buffer(Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, i, i + 4000))));
+                    // }
                     
                 } catch (final IOException ioe) {
                 	String message = "Can't write image to HTTP request.  Unable to convert image to base-64 string.";

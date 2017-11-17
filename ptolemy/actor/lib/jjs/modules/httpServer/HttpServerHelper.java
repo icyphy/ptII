@@ -34,6 +34,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -92,6 +94,9 @@ public class HttpServerHelper extends VertxHelperBase {
         }
         
         try {
+            // This is tested by
+            // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml 
+
             // Don't use
             // javax.xml.bind.DatatypeConverter.parse64Binary()
             // here because javax.xml.bind.DatatypeConverter is
@@ -101,13 +106,17 @@ public class HttpServerHelper extends VertxHelperBase {
             // supported in Eclipse.
             // An alternative would be to use Apache commons codec,
             // but this would introduce a compile and runtime dependency.
-            byte[] bytes = new BigInteger(body, 64).toByteArray();
-        	
+
+            byte[] bytes = Base64.getDecoder().decode(body);
+            
+            // byte [] bytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(body);
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
             AWTImageToken token = new AWTImageToken(image);
             return token;
-        } catch (IOException e) {
-            _error("Received unparseable image. " + e.toString());
+        } catch (Throwable throwable) {
+            System.out.println("Failed to parse image: " + throwable);
+            throwable.printStackTrace();
+            _error(_actor + "Received unparseable image: " + throwable.toString());
         	AWTImageToken imageToken = new AWTImageToken(null);
         	return imageToken;
         }
