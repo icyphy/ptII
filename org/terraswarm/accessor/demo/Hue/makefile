@@ -48,7 +48,6 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Hue.xml \
-	HappySadStock.xml \
 	HueToggle.xml \
 	MotionLights.xml \
 	OccupancyLights.xml

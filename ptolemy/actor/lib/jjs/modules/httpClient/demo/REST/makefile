@@ -47,7 +47,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	REST.xml
+	REST.xml \
+	Weather.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
