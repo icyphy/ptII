@@ -1276,7 +1276,10 @@ fi
 PTVIEWER_DIR=viewer
 # Handle Java 9 fails.
 case "$JVERSION" in
-        9*)    # Need to add a module so that javax.xml.bind.DatatypeConverter can be found.
+        9*)    # We use to need to add a module so that
+               # javax.xml.bind.DatatypeConverter can be found.
+               # However, we no longer need that class.
+
                # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
                # JAVAC_MODULES="--add-modules java.xml.bind"
                PTVIEWER_DIR=
