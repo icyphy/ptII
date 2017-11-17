@@ -216,6 +216,7 @@ COREPACKAGES = \
 	ptolemy.gui \
 	ptolemy.math \
 	ptolemy.media \
+	$(PTVIEWER_PACKAGES) \
 	ptolemy.moml \
 	ptolemy.moml.filter \
 	ptolemy.moml.unit \
