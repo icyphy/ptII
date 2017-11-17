@@ -62,7 +62,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The code generator will generate a swarmlet that&#10;may be run by the Node accessor host.&#10;&#10;Note that the swarmlet requires the opencv&#10;npm module, which is installed when the&#10;swarmlet is run.&#10;&#10;Unfortunately, the opencv npm module does&#10;not always install correctly.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The code generator will generate a swarmlet that&#10;may be run by the Node accessor host.&#10;&#10;Note that the swarmlet requires the opencv&#10;npm module, which is installed when the&#10;swarmlet is run.&#10;&#10;The first time the code generator is run, it&#10;may take a minute for opencv to install.&#10;&#10;Unfortunately, the opencv npm module does&#10;not always install correctly.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 295.0]">
         </property>
