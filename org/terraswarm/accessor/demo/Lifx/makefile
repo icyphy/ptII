@@ -47,7 +47,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Lifx.xml
+	Lifx.xml \
+	LifxResilient.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \

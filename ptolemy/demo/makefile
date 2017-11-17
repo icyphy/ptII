@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		AirManagementSystem ElectricPowerSystem ExecDemos FuelSystem ProbabilisticModels RobotMPC doc test
+DIRS = 		AirManagementSystem ElectricPowerSystem EnterpriseOntology ExecDemos FuelSystem ProbabilisticModels RobotMPC PLC doc test
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -49,8 +49,10 @@ PTCLASSJAR =
 PTAUXALLJARS = \
 	AirManagementSystem/AirManagementSystem.jar \
 	ElectricPowerSystem/ElectricPowerSystem.jar \
+	EnterpriseOntology/EnterpriseOntology.jar \
 	ExecDemos/ExecDemos.jar \
 	FuelSystem/FuelSystem.jar \
+	PLC/PLC.jar \
 	ProbabilisticModels/ProbabilisticModels.jar \
 	doc/doc.jar
 

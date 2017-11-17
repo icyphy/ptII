@@ -172,6 +172,7 @@ OPTIONAL_FILES = \
 	codeDoc \
 	codeDoc.jar \
 	codeDocPtiny \
+	jsdoc \
 	uml
 
 # Packages under the com package

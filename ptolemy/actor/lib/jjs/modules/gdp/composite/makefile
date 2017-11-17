@@ -53,6 +53,8 @@ OTHER_FILES_TO_BE_JARED = \
 	GDPAppendViaGW.xml \
 	GDPCreateViaGW.xml \
 	GDPReadViaGW.xml \
+	GDPSimpleGWAppend.xml \
+	GDPSimpleGWRead.xml \
 	GDPSubscribeViaGW.xml \
 	SimpleCodeGen.xml
 

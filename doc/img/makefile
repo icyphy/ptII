@@ -105,6 +105,7 @@ OTHER_FILES_TO_BE_JARED = \
 	codegena.gif \
 	eclipseAccessorsCheckOutAs.png \
 	eclipseAccessorsNewProject.png \
+	eclipseBuildPathPreference.png \
 	eclipseCheckOutAs.png \
 	eclipseNewJavaProject.png \
 	eclipseNewJavaProject2.png \
