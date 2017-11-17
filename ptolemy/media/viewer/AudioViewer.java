@@ -1,6 +1,6 @@
 /* A viewer for audio files.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.media;
+package ptolemy.media.viewer;
 
 import java.awt.Event;
 import java.awt.event.ActionEvent;
@@ -44,6 +44,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import ptolemy.media.Audio;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import ptolemy.util.StringUtilities;
@@ -106,6 +107,11 @@ public class AudioViewer extends PlotApplication {
     }
 
     /** Create a new plot window and map it to the screen.
+     *  Sample usage:
+     *  <pre>
+     *    java -classpath $PTII ptolemy.media.viewer.SoundViewer $PTII/ptolemy/media/test/bark.au
+     *  </pre>
+     *
      *  @param args The command line arguments that are eventually
      *  passed to PlotApplication.
      */

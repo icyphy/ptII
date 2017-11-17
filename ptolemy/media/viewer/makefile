@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2017 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/media
+ME =		ptolemy/media/viewer
 
-# PTVIEWER_DIR is set to viewer for JVM < 9.
-DIRS =		test javasound $(PTVIEWER_DIR)
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -48,20 +47,16 @@ JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
 PTPACKAGE = 	media
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	javasound/javasound.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# PTCLASSALLJARS =
+# PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Audio.java \
-	Picture.java
+	AudioViewer.java
 
-OTHER_FILES_TO_BE_JARED = \
-	Audio-license.htm
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -72,15 +67,15 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'AudioViewer$$1.class' \
+	'AudioViewer$$AudioViewerFilenameFilter.class' \
+	'AudioViewer$$PlayListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
-
-sound:
-	$(JAVA) -classpath $(CLASSPATH) ptolemy.media.viewer.SoundViewer $PTII/ptolemy/media/test/bark.au
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1272,13 +1272,17 @@ else
         fi
 fi
 
+# PTVIEWER_DIR is set to viewer and used in ptolemy/media/makefile for JVM < 9
+PTVIEWER_DIR=viewer
 # Handle Java 9 fails.
 case "$JVERSION" in
         9*)    # Need to add a module so that javax.xml.bind.DatatypeConverter can be found.
-               ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
-               JAVAC_MODULES="--add-modules java.xml.bind"
+               # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
+               # JAVAC_MODULES="--add-modules java.xml.bind"
+               PTVIEWER_DIR=
                updateExcludes "ptolemy/copernicus/applet/"
-               updateExcludes "ptolemy/media/"
+               updateExcludes "ptolemy/media/viewer"
+
                ;;
 esac
 
@@ -7919,6 +7923,9 @@ AC_SUBST(PTVERTX_DIR)
 
 # Set to packages that use Vert.x and used in $PTII/doc/makefile if the Vert.x jars are found
 AC_SUBST(PTVERTX_PACKAGES)
+
+# PTVIEWER_DIR is set to viewer and used in ptolemy/media/makefile for JVM < 9
+AC_SUBST(PTVIEWER_DIR)
 
 # waba/tools/classes.jar file used by the PalmOS WABA
 AC_SUBST(WABA_CLASSES)

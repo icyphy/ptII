@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II media classes
+# Makefile for the Java classes used to test the JavaScript actors
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/media/test
+ME =		ptolemy/media/viewer/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,34 +42,32 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+TCL_SRCS = 	testDefs.tcl
 
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS = \
-	Audio.tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = 	dummy.tcl
 
-# Graphical Java tests that use Tcl.
+# Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
-	Picture.tcl
+	AudioViewer.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	 junit \
-	alljtests.tcl \
-	bark.au
+MISC_FILES =	alljtests.tcl  junit 	auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(JGRAPHICAL_TESTS)
+OPTIONAL_FILES =
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
@@ -84,11 +82,10 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
 
-# 'make clean' removes $(KRUFT)
-KRUFT = tmp*.au
+test_jgraphical: test_auto
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
