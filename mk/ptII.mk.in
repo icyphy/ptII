@@ -147,6 +147,9 @@ PTVERTX_PACKAGES = @PTVERTX_PACKAGES@
 # PTVIEWER_DIR is set to viewer and used in ptolemy/media/makefile for JVM < 9
 PTVIEWER_DIR = 	@PTVIEWER_DIR@
 
+# PTVIEWER_PACKAGES is used in doc/makefile
+PTVIEWER_PACKAGES = @PTVIEWER_PACKAGES@
+
 # Waba is another JDK for PalmOS, see
 # http://www.wabasoft.clom
 WABA_CLASSES = @WABA_CLASSES@
