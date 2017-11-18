@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={236, 90, 1229, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={211, 90, 1229, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[995, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0161750566648262">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{497.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{490.6605875334386, 257.09082031249994}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -39,9 +39,9 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Display an AR tag.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Tag identifying&#10;this service.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 465.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -85,22 +85,65 @@
             </property>
         </property>
     </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An augmented reality&#10;demo using this service&#10;is here:">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 225.0]">
-        </property>
-    </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityKeyValueStore">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 280.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityKeyValueStore.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="tag36_11_00021.png">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Publish an accessor for this service to a key-value store:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Augmented reality demos&#10;using this service are here:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 220.0]">
+        </property>
+    </property>
+    <property name="Sender3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityVideo">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 260.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityVideo.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -219,24 +262,8 @@
             </property>
         </port>
     </entity>
-    <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="tag36_11_00586.png">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 275.0]">
-        </property>
-    </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 275.0]">
-        </property>
-    </entity>
-    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 601, 644}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 600]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 380.0]">
         </property>
     </entity>
     <entity name="IPAddress" class="org.terraswarm.accessor.JSAccessor">
@@ -389,7 +416,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="586">
+        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="21">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -482,14 +509,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 210.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[180.0, 275.0]">
-        </vertex>
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -520,16 +539,15 @@
         <vertex name="vertex1" value="[295.0, 170.0]">
         </vertex>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ClipPlayer.trigger" relation="relation11"/>
     <link port="ClipPlayer.fileOrURL" relation="relation11"/>
     <link port="ClipPlayer.output" relation="relation2"/>
     <link port="WebSocketServer.toSend" relation="relation9"/>
     <link port="WebSocketServer.received" relation="relation8"/>
-    <link port="ImageReader.output" relation="relation3"/>
-    <link port="ImageReader.trigger" relation="relation4"/>
-    <link port="SingleEvent.output" relation="relation4"/>
-    <link port="ImageDisplay.input" relation="relation3"/>
-    <link port="IPAddress.trigger" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation3"/>
+    <link port="IPAddress.trigger" relation="relation3"/>
     <link port="IPAddress.IPAddress" relation="relation5"/>
     <link port="StringReplace.replacement" relation="relation5"/>
     <link port="StringReplace.stringToEdit" relation="relation"/>
