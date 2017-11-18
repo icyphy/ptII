@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 120.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 266, 1139, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 262, 1139, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[905, 524]">
     </property>
@@ -93,7 +93,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, also run the companion&#10;SoundServer.xml model, which provides an implementation&#10;of a sound actuator that reacts to commands:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this model, also run at least one of&#10;the companion servicel models. E.g., SoundServer provides an&#10;implementation of a sound actuator that reacts to commands:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 360.0]">
         </property>
@@ -159,11 +159,11 @@
         </property>
     </property>
     <property name="Sender3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="tag36_11_00586.png">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="tag36_11_00020.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 225.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="tag36_11_00586.png">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="tag36_11_00020.png#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -211,6 +211,37 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: If you update storeLocation,&#10;edit SoundServer Model by hand&#10;and possibly update your firewall.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 475.0]">
+        </property>
+    </property>
+    <property name="Sender4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TrafficLight Model">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 415.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TrafficLight.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">

@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 23, 1374, 697}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={322, 23, 1116, 693}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1140, 587]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[882, 583]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9224306263762699">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{618.512186655791, 316.94228814747026}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{478.66427147243337, 314.77410341594526}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -31,9 +31,13 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace the IP address in the accessor with the IP&#10;address of the host running this model:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace the IP address&#10;in the accessor with&#10;the IP address of the&#10;host running this model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 305.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[430.0, 410.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -82,15 +86,15 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An augmented reality&#10;demo using this service&#10;is here:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Augmented reality demos&#10;using this service are here:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 540.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 495.0]">
         </property>
     </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityKeyValueStore">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 535.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityKeyValueStore.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -214,9 +218,44 @@
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="tag36_11_00021.png">
         </property>
-        <property name="scale" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 120.0]">
+        </property>
+    </property>
+    <property name="Sender3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AugmentedRealityVideo">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 560.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AugmentedRealityVideo.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Publish an accessor for this service to a key-value store:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 305.0]">
         </property>
     </property>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -579,7 +618,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{248.14772033691398, 233.20637110360659}">
         </property>
-        <property name="redTime" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="redTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="yellowTime" class="ptolemy.data.expr.Parameter" value="3">
         </property>
