@@ -34,10 +34,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Replace the IP address&#10;in the accessor with&#10;the IP address of the&#10;host running this model.">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[430.0, 410.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
