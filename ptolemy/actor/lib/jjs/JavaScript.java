@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import java.awt.Container;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -59,8 +60,8 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypeAttribute;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.AbstractPlaceableActor;
 import ptolemy.actor.lib.conversions.json.TokenToJSON;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -435,7 +436,11 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator {
+public class JavaScript extends AbstractPlaceableActor implements AccessorOrchestrator {
+    
+    // This actor implements AbstractPlaceableActor so that if the script creates any
+    // GUI (presumably in a helper class), the actor can remember placement and resizing
+    // of that GUI element.
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
@@ -1914,6 +1919,16 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         }
         return result;
     }
+    /** Place the interface for this actor in the specified container.
+     *  This method does nothing because we expect any JavaScript actor
+     *  that has a GUI to create that GUI in its own frame. This actor
+     *  does not support placement of that GUI in a run control panel,
+     *  for example.
+     *  @param container The container.
+     */
+    @Override
+    public void place(Container container) {
+    }
 
     /** Create a new JavaScript engine, load the default functions,
      *  and evaluate the script parameter.
@@ -3096,5 +3111,5 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
         private PortOrParameterProxy _proxy;
         /** The JavaScript value to pass back. */
         private Object _value;
-        }
+    }
 }

@@ -100,9 +100,12 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
         List<Parameter> parameters = namedObj.attributeList(Parameter.class);
         for (Parameter parameter : parameters) {
             // Skip the default parameters in JSAccessor and emit code for the other parameters.
-            if (!parameter.getName().equals("accessorSource")
-                    && !parameter.getName().equals("checkoutOrUpdateAccessorsRepository")
-                    && !parameter.getName().equals("script")) {
+            String name = parameter.getName();
+            if (!name.equals("accessorSource")
+                    && !name.equals("checkoutOrUpdateAccessorsRepository")
+                    && !name.equals("script")
+                    && !name.equals("_windowProperties")
+                    && !name.equals("_paneSize")) {
                 code.append(_INDENT1);
                 String setter = "setParameter";
 
