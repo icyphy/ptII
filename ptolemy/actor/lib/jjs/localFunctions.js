@@ -588,7 +588,14 @@ function convertToToken(value, isJSON) {
             // FIXME: This is not correct because JavaScript has no unsigned byte type.
             // We should probably be converting to ints
             // return ArrayToken.unsignedByteArrayToArrayToken(value);
-            throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle byte[]');
+        	
+        	// For now, convert to an array and guess at the proper type.
+        	// This is used in the Speech Synthesis regression test.
+            var result = new TokenArray(value.length);
+            for (var i = 0; i < value.length; i++) {
+                result[i] = convertToToken(value[i]);
+            }
+            return new ArrayToken(result);
         }
         if (value instanceof Java.type('char[]')) {
             throw new Error('localFunctions.js: convertToToken(' + value + '): Don\'t know how to handle char[]');
