@@ -278,12 +278,18 @@ function ClientRequest(options, responseCallback) {
             }
         }
 
+        // url.getQuery() may add a trailing /.  Remove, as it causes an error.
+        var query = url.getQuery();
+        if (query[query.length -1] === '/') {
+        	query = query.substring(0, query.length - 1);
+        }
+        
         options.url = {
             'host': url.getHost(),
             'path': url.getPath(),
             'port': port,
             'protocol': url.getProtocol(),
-            'query': url.getQuery()
+            'query': query
         };
     } else {
         options.url = util._extend(defaultURL, options.url);
@@ -327,7 +333,7 @@ exports.ClientRequest = ClientRequest;
 /** Issue the request. */
 ClientRequest.prototype.end = function () {
 	console.log("Making an HTTP request.");
-	// console.log("Making an HTTP request to " + util.inspect(this.options.url));
+	//console.log("Making an HTTP request to " + util.inspect(this.options.url));
     this.helper.request(this, this.options);
 };
 
