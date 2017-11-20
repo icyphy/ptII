@@ -165,7 +165,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/Camera.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/CameraWebSocket/CameraWebSocket.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Foscam/Foscam.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/computerVision/demo/ComputerVision/ComputerVision.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/contextAware/demo/ContextAware/ContextAware.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/AsymmetricEncrypt.xml
@@ -377,6 +376,11 @@ $CLASSPATH/ptolemy/demo/AirManagementSystem/AirManagementSystemCausalityLoop.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/AMS_AMSSim.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/HeatExchangerTester.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/PhysicalPlantCausalityLoop.xml
+$CLASSPATH/ptolemy/demo/CapeCode/CapeCode.xml
+$CLASSPATH/ptolemy/demo/CapeCode/CapeCode1.xml
+$CLASSPATH/ptolemy/demo/CapeCode/CapeCode2.xml
+$CLASSPATH/ptolemy/demo/CapeCode/CapeCode3.xml
+$CLASSPATH/ptolemy/demo/CapeCode/CapeCode4.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml
