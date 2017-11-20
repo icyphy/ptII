@@ -2116,6 +2116,7 @@
 	 destfile="${basedir}/ptolemy/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="ptolemy/demo/CapeCode/Sounds/*.wav"/>
 	<include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
 	<include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
 	<include name="ptolemy/demo/*/*.csv"/>
