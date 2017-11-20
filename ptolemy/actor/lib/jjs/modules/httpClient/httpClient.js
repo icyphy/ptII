@@ -280,7 +280,7 @@ function ClientRequest(options, responseCallback) {
 
         // url.getQuery() may add a trailing /.  Remove, as it causes an error.
         var query = url.getQuery();
-        if (query[query.length -1] === '/') {
+        if (query !== null && query[query.length -1] === '/') {
         	query = query.substring(0, query.length - 1);
         }
         
