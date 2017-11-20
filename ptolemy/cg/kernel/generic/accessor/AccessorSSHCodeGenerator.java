@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  *  To use Cape Code, invoke:
  *  <pre>
- *  $PTII/bin/vergil -capecode ~/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTestDisplay.xml 
+ *  $PTII/bin/vergil -capecode $PTII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml 
  *  </pre>
  *
  *  <p>This actor runs $PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH, which does the following on the remote machine:</p>
