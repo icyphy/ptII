@@ -65,6 +65,10 @@
         </property>
     </entity>
     <entity name="Accessor2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var value = this.get('typelessInput');&#10;	  this.send('typelessOutput', value);&#10;	  value = this.get('quasiTypelessInput');&#10;	  this.send('quasiTypelessOutput', value);&#10;	}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor2.xml">
