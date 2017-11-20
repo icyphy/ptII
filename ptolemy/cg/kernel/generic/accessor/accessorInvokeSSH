@@ -6,7 +6,7 @@
 # A script that deploys a composite accessor to a remote machine.
 #
 # This script is used by:
-#   $PTII/bin/vergil -capecode ~/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTestDisplay.xml 
+#   $PTII/bin/vergil -capecode $PTII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml 
 #
 # The steps are:
 # 1. Create a directory on the remote machine
