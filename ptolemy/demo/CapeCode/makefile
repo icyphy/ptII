@@ -1,9 +1,10 @@
-# Makefile for Ptolemy model that executes a suite of other Ptolemy II models.
+# Makefile for Ptolemy II CapeCode demo
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2015 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,57 +28,74 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/demo
+ME =		ptolemy/demo/CapeCode
 
-DIRS = 		AirManagementSystem CapeCode \
-		ElectricPowerSystem EnterpriseOntology ExecDemos
-		FuelSystem ProbabilisticModels RobotMPC PLC doc test
+# Root of the Java directory
+ROOT =		../../../
 
-# Root of Ptolemy II directory
-ROOT =		../..
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	CapeCode
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-# plotmlapplet pulls in the com/microstar/xml and util/ classes
-PTAUXALLJARS = \
-	AirManagementSystem/AirManagementSystem.jar \
-	CapeCode/CapeCode.jar \
-	ElectricPowerSystem/ElectricPowerSystem.jar \
-	EnterpriseOntology/EnterpriseOntology.jar \
-	ExecDemos/ExecDemos.jar \
-	FuelSystem/FuelSystem.jar \
-	PLC/PLC.jar \
-	ProbabilisticModels/ProbabilisticModels.jar \
-	doc/doc.jar
+JSRCS =
 
-PTAUXALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	AccessorTutorial.docx \
+	AccessorTutorial.pdf \
+	CapeCode.xml \
+	CapeCode1.xml \
+	CapeCode2.xml \
+	CapeCode3.xml \
+	CapeCode4.xml \
+	CapeCodeTutorial.docx \
+	CapeCodeTutorial.pdf \
+	Sounds \
+	WebSoundServer.xml
 
-OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS = \
+	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc
 
-# Files to remove with 'make clean'
-KRUFT = \
-	*.jar
+JCLASS = $(JSRCS:%.java=%.class)
 
-all: suball $(EXTRA_SRCS)
-install: subinstall jars
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
-# Include rules for directories that contain only subdirectories.
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer CapeCode.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" CapeCode.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" CapeCode.xml
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
