@@ -11,21 +11,21 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 90.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 262, 1130, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[896, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3237737760219654">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.6493245479198, 268.14193320274353}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{448.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test example that toggles a hue light on, off, on, off.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 20.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -43,7 +43,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: &#10;Allow lights to be specified by name rather than by ID.&#10;That is how they show up in the Hue App on a phone.&#10;&#10;Sample username: S8y15EK-24ug2W3R56FxmrdchCs6-A86ubAIDDpn&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 325.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -77,7 +77,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
@@ -116,7 +116,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 220.0]">
         </property>
         <property name="lightID" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -148,7 +148,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 220.0]">
         </property>
         <property name="delay" class="ptolemy.data.expr.Parameter" value="10000">
         </property>
@@ -180,7 +180,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 220.0]">
         </property>
         <property name="commands" class="ptolemy.actor.parameters.PortParameter" value="{}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -230,18 +230,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
+    <entity name="TextDisplay" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data on the console using util.inspect().&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var util = require('util');&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        console.log(util.inspect(inputValue));&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display text.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @param input The output&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        display.appendText(util.inspect(inputValue));&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -249,14 +249,18 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 210.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console using util.inspect().&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display text.&lt;/p&gt;">
             </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
             <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -266,18 +270,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="TestDisplay2" class="org.terraswarm.accessor.JSAccessor">
+    <entity name="TextDisplay2" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data on the console using util.inspect().&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var util = require('util');&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        console.log(util.inspect(inputValue));&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display text.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @param input The output&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        display.appendText(util.inspect(inputValue));&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -285,14 +289,18 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[548.4296875, 349.4921875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[588.4296875, 299.4921875]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console using util.inspect().&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display text.&lt;/p&gt;">
             </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
             <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay2">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -320,6 +328,6 @@
     <link port="Hue.commands" relation="relation2"/>
     <link port="Hue.assignedUserName" relation="relation3"/>
     <link port="Hue.lights" relation="relation5"/>
-    <link port="TestDisplay.input" relation="relation3"/>
-    <link port="TestDisplay2.input" relation="relation5"/>
+    <link port="TextDisplay.input" relation="relation3"/>
+    <link port="TextDisplay2.input" relation="relation5"/>
 </entity>
