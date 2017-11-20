@@ -37,6 +37,10 @@
         </property>
     </entity>
     <entity name="SendNullToOwnInput" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    setTimeout(null, 0);&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 2) {&#10;       var value = this.get('input');&#10;       this.send('output', value);&#10;       this.send('input', null);&#10;   }&#10;}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/SendNullToOwnInput.xml">

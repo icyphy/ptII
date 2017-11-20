@@ -35,6 +35,10 @@
         </property>
     </entity>
     <entity name="DerivedH" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class that sets the value of in1, which has type JSON.&#10;exports.setup = function () {&#10;    this.extend('BaseD');&#10;    this.input('in1', {&#10;        'type': 'JSON',&#10;        'value': '{&quot;foo&quot;:42}'&#10;    });&#10;    this.input('trigger');&#10;}&#10;&#10;exports.fire = function () {&#10;    var value = this.get('trigger');&#10;    if (value !== null) {&#10;        this.setDefault('in1', value);&#10;    }&#10;    exports.ssuper.fire.call(this);&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">

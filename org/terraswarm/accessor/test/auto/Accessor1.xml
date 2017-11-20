@@ -93,6 +93,10 @@
         </property>
     </entity>
     <entity name="Accessor3" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var stringValue = this.get('stringInput');&#10;	  this.send('stringOutput', stringValue);&#10;	  var numericValue = this.get('numericInput');&#10;	  this.send('numericOutput', numericValue);&#10;	  stringValue = this.get('stringInputWithoutValue');&#10;	  this.send('stringOutputWithoutValue', stringValue);&#10;	  this.send('inputIsAbsent', stringValue == null);&#10;	}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
@@ -166,6 +170,10 @@
         </port>
     </entity>
     <entity name="Accessor2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var stringValue = this.get('stringInput');&#10;	  this.send('stringOutput', stringValue);&#10;	  var numericValue = this.get('numericInput');&#10;	  this.send('numericOutput', numericValue);&#10;	  stringValue = this.get('stringInputWithoutValue');&#10;	  this.send('stringOutputWithoutValue', stringValue);&#10;	  this.send('inputIsAbsent', stringValue == null);&#10;	}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">

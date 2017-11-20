@@ -375,6 +375,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 220.0]">
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display text.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>

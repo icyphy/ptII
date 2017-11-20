@@ -69,6 +69,10 @@
         </property>
     </entity>
     <entity name="DerivedAgainB" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function () {&#10;    this.extend('DerivedC');&#10;    this.output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function () {&#10;    // Invoke the base class inputHandler, defined two levels up.&#10;    // Note that in ECMA 6, we can just say super.inputHandler().&#10;    exports.ssuper.inputHandler.call(this);&#10;    this.send('out2', exports.derivedField);&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
