@@ -633,6 +633,7 @@ PTVERTX_JARS
 PTVERTX_SOCKET_DIR
 PTUSERINTERFACE_DIR
 PTUDPSOCKET_DIR
+PTTEXTDISPLAY_DIR
 GIOTTO_DIR
 GIOTTO_CLASSES
 TOSDIR_NO_CYGDRIVE
@@ -4568,7 +4569,7 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
 else
 
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.audio ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.crypto ptolemy.actor.lib.jjs.modules.dataConverter ptolemy.actor.lib.jjs.modules.imageDisplay ptolemy.actor.lib.jjs.modules.iotAuth ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell ptolemy.actor.lib.jjs.modules.textDisplay"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.audio ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.crypto ptolemy.actor.lib.jjs.modules.dataConverter ptolemy.actor.lib.jjs.modules.imageDisplay ptolemy.actor.lib.jjs.modules.iotAuth ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTJJS_DIR=jjs
         # org.terraswarm.accessor depends on jjs/JavaScript.java so we
@@ -14005,6 +14006,9 @@ PTHTTPCLIENT_DIR=
 # Set to userInterface if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTUSERINTERFACE_DIR=
 
+# Set to textDisplay if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTTEXTDISPLAY_DIR=
+
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTX_SOCKET_DIR=
 
@@ -14051,6 +14055,7 @@ fi
 	    PTEVENTBUS_DIR=eventbus
             PTHTTPCLIENT_DIR=httpClient
             PTHTTPSERVER_DIR=httpServer
+            PTTEXTDISPLAY_DIR=textDisplay
             PTUDPSOCKET_DIR=udpSocket
             PTUSERINTERFACE_DIR=userInterface
             PTVERTX_SOCKET_DIR=socket
@@ -14081,6 +14086,7 @@ $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >
 	            PTEVENTBUS_DIR=
                     PTHTTPCLIENT_DIR=
                     PTHTTPSERVER_DIR=
+                    PTTEXTDISPLAY_DIR=
                     PTUDPSOCKET_DIR=
                     PTUSERINTERFACE_DIR=
                     PTVERTX_SOCKET_DIR=
@@ -14097,7 +14103,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTV
 $as_echo "$PTVERTX_JARS" >&6; }; fi
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.httpServer ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.userInterface ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.httpServer ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.textDisplay ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.userInterface ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -15675,6 +15681,9 @@ fi
 
 
 # Directory that contains the GiottoSDK installation
+
+
+# Set to textDisplay if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 
 
 # Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
