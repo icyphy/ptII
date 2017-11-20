@@ -41,12 +41,13 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
 # PTSERIAL_DIR is set to serial if the Java Communication API is found by configure.
 # PTSPHINX4_DIR is set to speechRecognition if the Sphinx4 jar files are found
+# PTTEXTDISPLAY_DIR is set to textDisplay if the Vertx jars are found by configure.
 # PTUDPSOCKET_DIR is set to udpSocket if the Vertx jars are found by configure.
 # PTUSERINTERFACE_DIR is Set to userInterface if the Vertx jars are found by configure.
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		$(JAVAFX_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto computerVision dataConverter discovery dsp $(PTEVENTBUS_DIR) faceDetector $(PTGDP_DIR) geoLocator $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay imageFilters $(PTIMUSENSOR_DIR) iotAuth mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTUSERINTERFACE_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
+DIRS = 		$(JAVAFX_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto computerVision dataConverter discovery dsp $(PTEVENTBUS_DIR) faceDetector $(PTGDP_DIR) geoLocator $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay imageFilters $(PTIMUSENSOR_DIR) iotAuth mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTTEXTDISPLAY_DIR) $(PTUDPSOCKET_DIR) $(PTUSERINTERFACE_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..

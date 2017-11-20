@@ -126,6 +126,9 @@ TINI_DIR = @TINI_DIR@
 # Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
 TOOLS_JAR =	@TOOLS_JAR@
 
+# Set to textDisplay if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTTEXTDISPLAY_DIR = @PTTEXTDISPLAY_DIR@
+
 # Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTUDPSOCKET_DIR = @PTUDPSOCKET_DIR@
 
