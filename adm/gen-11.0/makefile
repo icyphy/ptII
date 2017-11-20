@@ -209,34 +209,34 @@ all: $(PTII_FULL) $(PTII_SRC) $(PTII_FULL_ZIP) $(CAPECODE_SRC_TAR) #$(PTII_DEVEL
 
 ####
 release_terra:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar
 
 release_terra_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc setup
 
 release_terra_capecode_setup_mac_jar:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc capecode_setup_mac_jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc capecode_setup_mac_jar
 
 release_terra_test_capecode_setup:
-	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc test_capecode_setup
+	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc test_capecode_setup
 
 release_terra_linux:
-	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc capecode_setup_linux_jar
+	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc capecode_setup_linux_jar
 
 
 
 release_terra_jenkins_setup:
-	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar setup
+	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup
 
 release_terra_jenkins_test_capecode_setup:
-	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar setup test_capecode_setup
+	$(MAKE) USER=hudson PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup test_capecode_setup
 
 
 release_terra_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc remote4_Test
 
 release_terra_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc update_ftp
 
 ####
 release_wessel:
@@ -4344,7 +4344,7 @@ $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
 	@echo "# Now building in the $(PTBUILDRELEASE) directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
 
 $(PTBUILDRELEASE)/signed:
 	@echo "#"
