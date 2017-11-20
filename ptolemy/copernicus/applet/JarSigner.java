@@ -729,8 +729,15 @@ public class JarSigner {
                     // com.sun.jarsigner.ContentSigner,
                     // java.lang.String[], java.util.zip.ZipFile)
 
-                    // java.security.cert.CertificateException;
-
+                    // By using jode to disassemble $Block and
+                    // JarSignerParameters, it looks like this
+                    // argument is tSADigestAlg.  In Java 1.8.0_101,
+                    // http://www.oracle.com/technetwork/java/javase/8u101-relnotes-3021761.html
+                    // says that -tsadigestalg was SHA-1, but is now
+                    // SHA-256 by default.  So, we try SHA-1.
+                    
+                    // See also https://bugs.openjdk.java.net/browse/JDK-8038837
+                    
                     constructor = _findConstructor(blockClass,
                             sfg.getJDKSignatureFileClass(), PrivateKey.class,
                             String.class,
@@ -744,7 +751,10 @@ public class JarSigner {
                     block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
                             privateKey,
                             /*signatureAlgorithm*/null, certChain, externalSF,
-                            null, null, null, null, null, null, zipFile);
+                            null, null, null, 
+                            // Here is the diff between ~ 1.8.0_91 and 1.8.0_152
+                            "SHA-1",
+                            null, null, zipFile);
 
                 } catch (NoSuchMethodException ex0) {
                     try {
