@@ -7,5 +7,5 @@
     {"name" : "Edward A. Lee"
     , "email" : "eal@eecs.berkeley.edu"}
   ],
-  "description": "A module for accessing camera hardware on the host."
+  "description": "A module for displaying images."
 }
