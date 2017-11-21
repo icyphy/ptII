@@ -31,8 +31,6 @@ package ptolemy.cg.kernel.generic.accessor;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.terraswarm.accessor.JSAccessor;
@@ -406,23 +404,6 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         
         FileUtilities.extractJarFileIfNecessary(nodeHostPath, PTII);
 
-        // Create the Path in a platform-indendent manner.
-        Path newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts");
-        Path temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts.AccessorCodeGenerator");
-        Path target = Paths.get("..", "hosts");
-        FileUtilities.createLink(newLink, temporary, target);
-
-        // Needed for the TextDisplay accessor, which uses the hosts/common/modules/text-display.js module
-        newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules");
-        temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules.AccessorsCodeGenerator");
-        target = Paths.get("..", "hosts", "common", "modules");
-        FileUtilities.createLink(newLink, temporary, target);        
-
-        newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common");
-        temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.AccessorCodeGenerator");
-        target = Paths.get("..", "common");
-        FileUtilities.createLink(newLink, temporary, target);
-
-
+        JSAccessor.createSymbolicLinks();
     }
 }
