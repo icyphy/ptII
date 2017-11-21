@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-235.0, -440.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={581, 234, 1214, 553}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={226, 234, 1214, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[980, 443]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[980, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0915781186523785">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1518610792546016">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{251.56122159090916, -241.52844460227266}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{123.05772018432617, -245.5693359375}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Service that renders messages onto the screen via a browser window.&#10;Messages are received via HTTP.&#10;&#10;Authors: Marten Lohstroh, Matt Weber">

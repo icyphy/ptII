@@ -53,7 +53,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[778, 336]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 230.0]">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -198,18 +198,14 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[405.0, 180.0]">
+        <vertex name="vertex1" value="[400.0, 180.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.Foscam.status&quot;,x=150.0,y=120.0}, tail={id=&quot;relation3.vertex1&quot;,x=375.0,y=200.0}, points={240.0,120.0,240.0,200.0} },{ head={id=&quot;Const.trigger&quot;,x=465.0,y=200.0}, tail={id=&quot;relation3.vertex1&quot;,x=395.0,y=150.0}, points={395.0,200.0} },{ head={id=&quot;Status.input&quot;,x=445.0,y=150.0}, tail={id=&quot;relation3.vertex1&quot;,x=395.0,y=150.0}, points={} },{ head={id=&quot;Foscam2.status&quot;,x=180.0,y=115.0}, tail={id=&quot;relation3.vertex1&quot;,x=395.0,y=150.0}, points={275.0,115.0,275.0,150.0} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=125.0}, tail={id=&quot;Foscam2.trigger&quot;,x=180.0,y=115.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Headers.input&quot;,x=330.0,y=195.0}, tail={id=&quot;Foscam2.headers&quot;,x=180.0,y=115.0}, points={260.0,195.0,260.0,125.0} } }">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Foscam2.response&quot;,x=180.0,y=115.0}, tail={id=&quot;ImageDisplay.input&quot;,x=335.0,y=105.0}, points={} } }">
