@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1203, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1093, 584}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[969, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[859, 474]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{484.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{429.5, 237.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -33,7 +33,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each image uses the&#10;most recent motion&#10;to determine the offset.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-85.0, -90.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-80.0, -90.12071228027344]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="MostRecent">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -48,15 +48,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 425.0]">
         </property>
     </property>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
-        </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 315.0}">
-        </property>
-    </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 340, 640, 524}, maximized=false}">
         </property>
@@ -64,7 +55,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{900.0, 140.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[796.0, 132.55535125732422]">
         </property>
     </entity>
     <entity name="MotionDetector" class="org.terraswarm.accessor.JSAccessor">
@@ -110,7 +101,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[226.0, 297.5553512573242]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -133,7 +124,7 @@
         </port>
     </entity>
     <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.0, 297.5553512573242]">
         </property>
     </entity>
     <entity name="ImageAnnotate" class="org.terraswarm.accessor.JSAccessor">
@@ -179,7 +170,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{785.0, 140.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[681.0, 132.55535125732422]">
         </property>
         <property name="graphic" class="ptolemy.actor.parameters.PortParameter" value="&lt;svg&gt;&#10;  &lt;desc&gt;Star shape&lt;/desc&gt;&#10; &lt;polygon style=&quot;fill:red; stroke:blue; stroke-width:4;&quot;&#10;                 points=&quot;0.5,-32 8.5,-8 33.5,-8 13.5,8 20.5,32 0.5,18 -20.5,32 -13.5,8 -33.5,-8 -7.5,-8&quot;/&gt;&#10;&lt;/svg&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -237,7 +228,7 @@
         </port>
     </entity>
     <entity name="MovingAverage" class="ptolemy.actor.lib.MovingAverage">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[521.0, 297.5553512573242]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -245,7 +236,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images.&#10; *&#10; *  @accessor cameras/Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *   The value is ignored and can be anything.&#10; *  @output {Object} image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode.&#10; *   Otherwise, use open-loop mode. This is a boolean that defaults to true.&#10; *  @parameter {string} camera The name of the camera to use.&#10; *   A list of available cameras is presented as options.&#10; *   This is a string that defaults to &quot;default camera&quot;,&#10; *   which uses the system default, if there is one.&#10; *  @parameter {{width: number, height: number}} viewSize The view size&#10; *   to use for capture, in pixels. A list of available view sizes for&#10; *   the selected camara is presented as options. This is a JSON specification&#10; *   with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global addInputHandler, error, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var cameras = require(&quot;@accessors-modules/cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('image');&#10;    this.parameter('triggered', {&#10;        'type': 'boolean',&#10;        'value': true&#10;    });&#10;    // NOTE: The following assumes that setup() is reinvoked whenever a parameter&#10;    // value changes, since the camera will change and so will the available options.&#10;    this.parameter('camera', {&#10;        'type': 'string',&#10;        'value': 'default camera'&#10;    });&#10;    this.parameter('viewSize', {&#10;        'type': 'JSON'&#10;    });&#10;    // This is in a try-catch so that this accessor can be instantiated even if the&#10;    // host does not provide a cameras module.&#10;    try {&#10;        this.parameter('camera', {&#10;            'options': cameras.cameras()&#10;        });&#10;        camera = new cameras.Camera(this.getParameter('camera'));&#10;        this.parameter('viewSize', {&#10;            'value': camera.getViewSize(),&#10;            'options': camera.viewSizes()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function () {&#10;    camera.setViewSize(this.getParameter('viewSize'));&#10;    camera.open();&#10;    var self = this;&#10;    if (this.getParameter('triggered')) {&#10;        // Request a snapshot.  Note the video stream might not be playing.&#10;        // An event will be generated when a snapshot is available.&#10;        camera.on('snapshot', function (image) {&#10;            self.send('image', image);&#10;        });&#10;&#10;        handle = this.addInputHandler('trigger', function () {&#10;            camera.snapshot();&#10;        });&#10;    } else {&#10;        camera.on('image', function (image) {&#10;            self.send('image', image);&#10;        });&#10;    }&#10;};&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function () {&#10;    camera.removeAllListeners('image');&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;    camera.close();&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images. It limits the number of&#10; *  outputs to maxFrameRate images per second, even if the camera produces more&#10; *  images than that. You can use the maxFrameRate parameter to avoid overwhelming&#10; *  your application.&#10; *&#10; *  @accessor cameras/Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *   The value is ignored and can be anything.&#10; *  @output {Object} image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode.&#10; *   Otherwise, use open-loop mode. This is a boolean that defaults to false.&#10; *  @parameter {number} maxFrameRate If not triggered, this limits the output&#10; *   to the specified number of frames per second. This is a number that defaults to 25.&#10; *  @parameter {string} camera The name of the camera to use.&#10; *   A list of available cameras is presented as options.&#10; *   This is a string that defaults to &quot;default camera&quot;,&#10; *   which uses the system default, if there is one.&#10; *  @parameter {{width: number, height: number}} viewSize The view size&#10; *   to use for capture, in pixels. A list of available view sizes for&#10; *   the selected camara is presented as options. This is a JSON specification&#10; *   with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global addInputHandler, error, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var cameras = require(&quot;@accessors-modules/cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('image');&#10;    this.parameter('triggered', {&#10;        'type': 'boolean',&#10;        'value': false&#10;    });&#10;    this.parameter('maxFrameRate', {&#10;        'type': 'number',&#10;        'value': 25&#10;    });&#10;    // NOTE: The following assumes that setup() is reinvoked whenever a parameter&#10;    // value changes, since the camera will change and so will the available options.&#10;    this.parameter('camera', {&#10;        'type': 'string',&#10;        'value': 'default camera'&#10;    });&#10;    this.parameter('viewSize', {&#10;        'type': 'JSON'&#10;    });&#10;    // This is in a try-catch so that this accessor can be instantiated even if the&#10;    // host does not provide a cameras module.&#10;    try {&#10;        this.parameter('camera', {&#10;            'options': cameras.cameras()&#10;        });&#10;        camera = new cameras.Camera(this.getParameter('camera'));&#10;        this.parameter('viewSize', {&#10;            'value': camera.getViewSize(),&#10;            'options': camera.viewSizes()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function () {&#10;    camera.setViewSize(this.getParameter('viewSize'));&#10;    camera.open();&#10;    var self = this;&#10;    if (this.getParameter('triggered')) {&#10;        // Request a snapshot.  Note the video stream might not be playing.&#10;        // An event will be generated when a snapshot is available.&#10;        camera.on('snapshot', function (image) {&#10;            self.send('image', image);&#10;        });&#10;&#10;        handle = this.addInputHandler('trigger', function () {&#10;            camera.snapshot();&#10;        });&#10;    } else {&#10;        var maxFrameRate = self.getParameter('maxFrameRate');&#10;        var frameInterval = 1000.0/maxFrameRate; // In ms.&#10;        var lastFrameTime = 0;&#10;        camera.on('image', function (image) {&#10;            var currentTime = Date.now();&#10;            if (currentTime - lastFrameTime &gt;= frameInterval) {&#10;                self.send('image', image);&#10;                lastFrameTime = currentTime;&#10;            }&#10;        });&#10;    }&#10;};&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function () {&#10;    camera.removeAllListeners('image');&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;    camera.close();&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -277,7 +268,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="triggered" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="triggered" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="camera" class="ptolemy.data.expr.Parameter" value="default camera">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -289,7 +280,9 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 315.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[71.0, 307.5553512573242]">
+        </property>
+        <property name="maxFrameRate" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -299,7 +292,7 @@
         </port>
     </entity>
     <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[521.0, 142.55535125732422]">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -309,13 +302,13 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[391.0, 142.55535125732422]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{245.0, 315.0}">
+        <vertex name="vertex1" value="[141.0, 307.5553512573242]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.input&quot;,x=330.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;Camera.image&quot;,x=175.0,y=315.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;MostRecent.trigger&quot;,x=495.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={495.0,365.0,245.0,365.0} },{ head={id=&quot;ImageAnnotate.image&quot;,x=785.0,y=140.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={695.0,160.0,695.0,205.0,245.0,205.0} } }">
         </property>
@@ -326,10 +319,6 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=900.0,y=140.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=785.0,y=140.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=315.0}, tail={id=&quot;Camera.trigger&quot;,x=175.0,y=315.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -352,7 +341,6 @@
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Scale.output&quot;,x=495.0,y=150.0}, tail={id=&quot;Accumulator.input&quot;,x=625.0,y=150.0}, points={} } }">
         </property>
     </relation>
-    <link port="DiscreteClock.output" relation="relation"/>
     <link port="ImageDisplay.input" relation="relation3"/>
     <link port="MotionDetector.input" relation="relation2"/>
     <link port="MotionDetector.cog" relation="relation4"/>
@@ -366,7 +354,6 @@
     <link port="ImageAnnotate.output" relation="relation3"/>
     <link port="MovingAverage.input" relation="relation7"/>
     <link port="MovingAverage.output" relation="relation6"/>
-    <link port="Camera.trigger" relation="relation"/>
     <link port="Camera.image" relation="relation2"/>
     <link port="Accumulator.input" relation="relation8"/>
     <link port="Accumulator.output" relation="relation5"/>
