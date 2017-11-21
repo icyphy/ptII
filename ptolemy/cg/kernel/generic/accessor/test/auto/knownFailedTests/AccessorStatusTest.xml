@@ -23,11 +23,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/test/auto">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/test/auto/knownFailedTests">
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="@node@ ../../node_modules/@accessors-hosts/node/nodeHostInvoke.js -timeout 5000 test/auto/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="@node@ ../../../node_modules/@accessors-hosts/node/nodeHostInvoke.js -timeout 5000 test/auto/knownFailedTests/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 35.0}">
         </property>
