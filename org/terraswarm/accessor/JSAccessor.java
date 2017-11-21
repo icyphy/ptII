@@ -37,6 +37,8 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -186,6 +188,12 @@ public class JSAccessor extends JavaScript {
         // set the custom icon loader only if there isn't one already.
         if (MoMLParser.getIconLoader() == null) {
             MoMLParser.setIconLoader(new AccessorIconLoader());
+        }
+        try {
+            JSAccessor.createSymbolicLinks();
+        } catch (IOException exception) {
+            System.out.println("JSAccessor: Could not create symbolic links.");
+            exception.printStackTrace();
         }
     }
 
@@ -339,6 +347,34 @@ public class JSAccessor extends JavaScript {
         newObject._previousScript = null;
         return newObject;
     }
+
+
+    /** Create symbolic links for the modules.
+     *  @return messages about creating the links.
+     */
+    public static String createSymbolicLinks() throws IOException {
+        // Create the Path in a platform-indendent manner.
+        String PTII = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+
+        Path newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts");
+        Path temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts.AccessorCodeGenerator");
+        Path target = Paths.get("..", "hosts");
+        StringBuffer results = new StringBuffer(FileUtilities.createLink(newLink, temporary, target));
+
+        // Needed for the TextDisplay accessor, which uses the hosts/common/modules/text-display.js module
+        newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules");
+        temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules.AccessorsCodeGenerator");
+        target = Paths.get("..", "hosts", "common", "modules");
+        results.append("\n" + FileUtilities.createLink(newLink, temporary, target));        
+
+        newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common");
+        temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.AccessorCodeGenerator");
+        target = Paths.get("..", "common");
+        results.append("\n" + FileUtilities.createLink(newLink, temporary, target));
+
+        return results.toString();
+    }
+
 
     /** Check out or update the accessor repository, unless
      *  the <i>checkoutOrUpdateAccessorsRepository</i> parameter is
