@@ -113,7 +113,7 @@ import ptolemy.util.StringUtilities;
    and thus requires Nashorn, which is present in Java-1.8 and
    later.</p>
 
-   <p>This actor will run <code>svn</code> and <code>node<code>, which
+   <p>This actor will run <code>svn</code> and <code>node</code>, which
    require network access.  To skip running things that require network
    access, set the <code>PT_NO_NET</code> environment variable to a
    non-empty string.  For example, under bash:</p>

@@ -1157,7 +1157,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *    <ul>
      *      <li> encoding {string} The encoding of the file, see above for values.</li>
      *      <li> returnURI {string} If true, then return the URI of the resource
-     *           instead of the contents.  The default is false.
+     *           instead of the contents.  The default is false.</li>
      *      <li> timeout {number} The timeout in milliseconds.</li>
      *    </ul>
      *  </li>
