@@ -49,6 +49,17 @@ public class IzpackSetup {
         Path target = Paths.get("..", "hosts");
         results.append(IzpackSetup.createLink(newLink, temporary, target));
 
+
+        // Needed for the TextDisplay accessor, which uses the hosts/common/modules/text-display.js module
+        newLink = Paths.get(installDirectory, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules");
+        temporary = Paths.get(installDirectory, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules.AccessorsCodeGenerator");
+        target = Paths.get("..", "hosts", "common", "modules");
+
+        String accessorsModuleMessage = IzpackSetup.createLink(newLink, temporary, target);
+        if (accessorsModuleMessage.length() > 0) {
+            results.append("\n" + accessorsModuleMessage);
+        }
+
         newLink = Paths.get(installDirectory + "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common");
         temporary = Paths.get(installDirectory + "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.IzpackSetupTemp");
         target = Paths.get("..", "common");
