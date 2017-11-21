@@ -176,8 +176,9 @@ public class FileUtilities {
      *  @param temporary the path to the temporary location where the directory to be replaced by the link should be placed.
      *  @param target the target of the link to be created.
      *  @exception IOException If there are problems creating the link
+     *  @return A status message
      */ 
-    public static void createLink(Path newLink, Path temporary, Path target) throws IOException {
+    public static String createLink(Path newLink, Path temporary, Path target) throws IOException {
         // 
         //     Path currentRelativePath = Paths.get(".");
         //     throw new IOException(newLink + " does not exist?  That directory should be "
@@ -188,15 +189,15 @@ public class FileUtilities {
 
         if (Files.isSymbolicLink(newLink)) {
             if (Files.isSameFile(target, Files.readSymbolicLink(newLink))) {
-                System.out.println("FileUtilities.java: createLink(): " + target
-                                   + " and " + Files.readSymbolicLink(newLink)
-                                   + " are the same.");
-                return;
+                return "FileUtilities.java: createLink(): " + target
+                    + " and " + Files.readSymbolicLink(newLink)
+                    + " are the same.";
             }
-            System.out.println("FileUtilities.java: createLink(): " + target
-                               + " and " + Files.readSymbolicLink(newLink)
-                               + " are not the same.");
         }
+
+        String results = "FileUtilities.java: createLink(): " + target
+            + " and " + Files.readSymbolicLink(newLink)
+            + " were not the same.";
 
         boolean moveBack = false;
         if (Files.isReadable(newLink)) {
@@ -264,6 +265,7 @@ public class FileUtilities {
                 throw exception;
             }
         }
+        return results + "  Link successfully created.";
     }
 
     /** Delete a directory.
