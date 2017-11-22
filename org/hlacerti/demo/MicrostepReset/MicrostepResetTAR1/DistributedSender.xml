@@ -29,7 +29,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 15.0]">
         </property>
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.5">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="8.5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -93,13 +93,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 448, 592, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={412, 458, 566, 284}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[332, 174]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9740656878078386">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{127.63271664110434, 242.12454467024543}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{114.28659413343567, 63.49182802914109}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
