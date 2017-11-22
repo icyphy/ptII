@@ -52,9 +52,9 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Add 1 to received data and sends the result back.&#10;&#10;The output port is declared as being spontaneous &#10;so that we don't need a MicrostepDelay in Cape Code.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Add 1 to received data and sends the result back.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-220.0, 45.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-130.0, 95.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScriptPlusOne">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -596,7 +596,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Increment the input by one&#10; *&#10; *  @input input The trigger&#10; *  @output output The output&#10; *  @author Christopher Brooks. Contributor: Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.input('input');&#10;    // Declare the output to be spontaneous so that we don't&#10;    // need a MicrostepDelay actor in Cape Code.  See&#10;    // https://www.icyphy.org/accessors/wiki/Main/CapeCodeHost#Loops&#10;    this.output('output', {spontaneous: true, 'type': 'number'});&#10;};&#10;&#10;exports.initialize = function() {&#10;  // Capture the value of 'this':&#10;  var self = this;&#10;  this.addInputHandler('input', function () {&#10;    var inputValue = self.get('input');&#10;    setTimeout(function() {&#10;    	self.send('output', inputValue + 1);&#10;    }, 0);&#10;  });&#10;};&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Increment the input by one&#10; *&#10; *  @input input The trigger&#10; *  @output output The output&#10; *  @author Christopher Brooks. Contributor: Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.input('input');&#10;    // Declare the output to be spontaneous so that we don't&#10;    // need a MicrostepDelay actor in Cape Code.  See&#10;    // https://www.icyphy.org/accessors/wiki/Main/CapeCodeHost#Loops&#10;    this.output('output', {'type': 'number'});&#10;};&#10;&#10;exports.initialize = function() {&#10;  // Capture the value of 'this':&#10;  var self = this;&#10;  this.addInputHandler('input', function () {&#10;    var inputValue = self.get('input');&#10;    setTimeout(function() {&#10;    	self.send('output', inputValue + 1);&#10;    }, 0);&#10;  });&#10;};&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -608,7 +608,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 560.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 445.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -649,8 +649,6 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -669,10 +667,9 @@
     <link port="TrainableTest.input" relation="relation8"/>
     <link port="TrainableTest2.input" relation="relation3"/>
     <link port="TextDisplayServerReceived.input" relation="relation8"/>
-    <link port="TextDisplayServerReceived.output" relation="relation2"/>
     <link port="TextDisplayClientReceived.input" relation="relation3"/>
     <link port="JavaScriptConst.trigger" relation="relation4"/>
     <link port="JavaScriptConst.output" relation="relation5"/>
     <link port="JavaScriptPlusOne.output" relation="relation6"/>
-    <link port="JavaScriptPlusOne.input" relation="relation2"/>
+    <link port="JavaScriptPlusOne.input" relation="relation8"/>
 </entity>
