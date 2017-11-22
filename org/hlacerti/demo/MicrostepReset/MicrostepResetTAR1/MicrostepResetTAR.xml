@@ -4,13 +4,13 @@
 <entity name="MicrostepResetTAR" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1029, 53, 856, 452}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 53, 856, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 342]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7148664171937253">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{437.05200054190755, 286.2112159802504}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{437.05200054190755, 412.10886319845844}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -95,7 +95,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this federation, the Receiver has internal events e(t) and receives RAV(t') that are timestamped&#10;to t'' = k*TS, but t is never equal to t''. The output values of Add actor are as expected.&#10;You can try different scenarios (all federates have TS=1):&#10;&#10;periodS (Sender) | periodS (Sender2) | PeriodR (Receiver) | AfterAdd                                   | Result&#10;-------------------------------------------------------------------------------&#10;        1                  |             1                 |  0.8        | e1(t=0.8, m=1, v=3) e2(t=1, m=1, v=7.5)   | OK&#10;        0.8               |             0.9              |     0.8       |e1(t=0.8, m=1, v=3) e2(t=1, m=1, v=7.5)  | OK&#10;        0.5               |             0.5              |      0.8   |e1(t=0.8, m=1, v=3) e2(t=1, m=1, v=7.5)      | OK *&#10;                            |                                |              |                         e3(t=1 m=2,  v=7.5)&#10;&#10;* RAV(0.5) and RAV(1) are  timestamped, respectively, to e(t=1, mstep=1) and e(t=1, mstep=2)&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this federation, the Receiver has internal events e(t) and receives RAV(t') that are timestamped&#10;to t'' = k*TS. When t''=t, then the microstep of RAV is reset. This occurs if stopTime &gt; 4 (t=4, 8, 12 ...).&#10;You can try different scenarios (all federates have TS=1):&#10;&#10;periodS (Sender) | periodS (Sender2) | PeriodR (Receiver) | AfterAdd                                   | Result&#10;-------------------------------------------------------------------------------&#10;        1                  |             1                 |  0.8        | e1(t=0.8, m=1, v=3) e2(t=1, m=1, v=7.5)   | OK&#10;        0.8               |             0.9              |     0.8       |e1(t=0.8, m=1, v=3) e2(t=1, m=1, v=7.5)  | OK&#10;        0.5               |             0.5              |      0.8   |e1(t=0.8, m=1, v=3) e2(t=1, m=1, v=7.5)      | OK *&#10;                            |                                |              |                         e3(t=1 m=2,  v=7.5)&#10;&#10;* RAV(0.5) and RAV(1) are  timestamped, respectively, to e(t=1, mstep=1) and e(t=1, mstep=2)&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 185.0]">
         </property>

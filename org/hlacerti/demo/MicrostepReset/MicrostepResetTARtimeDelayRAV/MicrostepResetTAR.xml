@@ -4,13 +4,13 @@
 <entity name="MicrostepResetTAR" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 56, 1017, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 53, 856, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8429638676735258">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.5, 261.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.00488281249994, 357.6903594771242}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -56,7 +56,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open the DistributedSender model: last federate to be launched (Sender) .">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 155.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="DistributedSender.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -89,15 +89,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Created with bin/mkptlivelinkdemo and modified by Janette Cardoso.)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 610.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using TAR in all federates, the microstep of a RAV event (in federate Receiver) is reseted if its &#10;timestamp is the same as an internal event. This was observed at r76499 until the current 77055.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this federation, the Receiver has internal events e(t) and receives RAV(t') that are timestamped&#10;to t'' = k*TS. &#10;A timeDelay actor is used to avoid the &quot;microstep reset&quot;, that occurs when a RAV(t) is received&#10;when doing a TAR(t1), t1 &gt; t, and an event e(t) was just processed. See comments in &#10;DistributedREceiver.xml model.&#10;&#10;* RAV(0.5) and RAV(1) are  timestamped, respectively, to e(t=1, mstep=1) and e(t=1, mstep=2)&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 185.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -129,6 +129,14 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
             </property>
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also federation $PTII/org/hlacerti/demo/MicrostepReset/MicrostepResetTAR/MicrostepResetTAR.xml &#10;It is a VERY particular case where Receiver has: RAV(1), internal event e(1) and TS=1 (time step).&#10;In this case, RAV(1) and e(1) are not added at time t=1, because they do not have the same microstep,&#10;even if it appear that RAV(1) has a microstep=1 (this is the reason why the name of the test is&#10;MicrostepReset).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 330.0]">
         </property>
     </property>
 </entity>
