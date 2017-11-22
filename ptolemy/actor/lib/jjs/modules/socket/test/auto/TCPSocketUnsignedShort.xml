@@ -500,7 +500,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay">
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplayServerReceived">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -548,7 +548,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay">
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplayClientReceived">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
