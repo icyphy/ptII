@@ -78,6 +78,7 @@ MISC_FILES = adapter gui kernel lib
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	cgAccessor.jar \
 	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -69,6 +69,8 @@ OTHER_FILES_TO_BE_JARED = \
 	SoundActuator.js \
 	Sounds \
 	SoundServer.xml \
+	tag36_11_00019.png \
+	tag36_11_00020.png \
 	tag36_11_00021.png \
 	tag36_11_00105.png \
 	tag36_11_00586.png \

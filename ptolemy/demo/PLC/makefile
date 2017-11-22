@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	AnimateArm.xml \
+	Arm.png \
 	Arm.xml \
 	Figures \
 	PLCContinuousTimeFeedbackTorque.xml \

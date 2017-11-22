@@ -51,7 +51,8 @@ OTHER_FILES_TO_BE_JARED = \
 	DistributedSender.xml \
 	DistributedSender2.xml \
 	MicrostepError.fed \
-	MicrostepResetTAR.xml
+	MicrostepResetTAR.xml \
+	MicrostepResetTAR1.png
 
 EXTRA_SRCS = \
 	$(JSRCS) \

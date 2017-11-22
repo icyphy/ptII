@@ -68,7 +68,9 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	'TextDisplayHelper$$1.class' \
-	'TextDisplayHelper$$2.class'
+	'TextDisplayHelper$$2.class' \
+	'TextDisplayHelper$$3.class' \
+	'TextDisplayHelper$$DisplayWindowTableau.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
