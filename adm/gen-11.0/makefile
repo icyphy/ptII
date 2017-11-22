@@ -932,8 +932,17 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
 		ptolemy/data/ontologies \
-		ptolemy/demo \
 		ptolemy/distributed \
+		ptolemy/demo/AirManagementSystem \
+		ptolemy/demo/doc \
+		ptolemy/demo/ElectricPowerSystem \
+		ptolemy/demo/EnterpriseOntology \
+		ptolemy/demo/ExecDemos \
+		ptolemy/demo/FuelSystem \
+		ptolemy/demo/PLC \
+		ptolemy/demo/ProbabilisticModels \
+		ptolemy/demo/RobotMPC \
+		ptolemy/demo/test \
 		ptolemy/domains/algebraic \
 		ptolemy/domains/atc \
 		ptolemy/domains/ca \
@@ -1123,6 +1132,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/ptalon \
 		ptolemy/cg \
 		ptolemy/configs/ptiny \
+		ptolemy/demo \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
@@ -1147,6 +1157,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/ptalon \
 		ptolemy/cg \
 		ptolemy/configs/hyvisual \
+		ptolemy/demo \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/tester
 
@@ -1435,6 +1446,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile
+	#
+	# Fix up ptolemy/demo/makefile
+	egrep -v "AirManagement|ElectriPowerSystem|EnterpriseOntology|ExecDemos|FuelSystem|ProbabilisticMOdels|RobotMPC|PLC" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile
 	#
 	# Fix up ptolemy/data/test/makefile
 	egrep -v "/Variable2.tcl" \
