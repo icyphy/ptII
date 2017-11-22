@@ -171,6 +171,8 @@ exports.HttpServer.prototype._request =
 	}
 	
 	// params is an array of name : value.
+	var paramsArray = [];
+	
 	if (params !== null && typeof params !== 'undefined') {
 		for (var i = 0; i < params.length; i++) {
 			var param = params[i].toString();
@@ -178,6 +180,7 @@ exports.HttpServer.prototype._request =
 			if (sign > 0) {
 				paramsObject[param.substring(0, sign)] = 
 					param.substring(sign+2, params[i].length);
+				paramsArray.push(paramsObject);
 			}
 		}
 	}
@@ -187,7 +190,7 @@ exports.HttpServer.prototype._request =
         'requestID': requestID,
         'method': method,
         'path': path,
-        'params' : paramsObject
+        'params' : paramsArray
     };
     
     if (body !== null) {
