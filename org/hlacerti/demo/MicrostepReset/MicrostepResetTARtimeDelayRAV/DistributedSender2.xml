@@ -29,7 +29,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 15.0]">
         </property>
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12.5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -45,7 +45,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 35.0]">
         </property>
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
@@ -93,13 +93,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={122, 475, 570, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 268, 592, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[336, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9755430414999723">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.044277165624407">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{121.08642578125003, 241.7265385352761}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{123.6224310247748, 224.45423939564563}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
@@ -118,7 +118,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Second federate to be launched (optional).&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 120.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -128,7 +128,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Let be t the current Ptolemy time, and h the current HLA time.&#10;In a TAR federate, at current time t the timestamp of a UAV is:&#10;- t, if t &gt;= h+lookahead&#10;- (t+ lookahead) otherwise.    &#10;When proposeTime(t') is called, TAR(h+TS) is executed only if &#10;t' &gt; h+ TARTimeStep. Otherwise t' is granted and becomes&#10;current time. So t is advanced but h stay the same.&#10;&#10;Whatever the relation between periodS and TARTimeStepS (in the&#10;Sender), there is a problem with the microstep at federate Receiver.&#10;Internal events and RAV are not added in the AddSubtract actor,&#10;even if they have the same microstep and the same timestamp.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, 155.0}">
         </property>
     </property>
     <property name="v" class="ptolemy.data.expr.Parameter" value="4">
@@ -150,7 +150,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 110.0]">
         </property>
     </property>
-    <property name="periodS" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="periodS" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -166,7 +166,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 125.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -177,14 +177,14 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{4}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 90.0}">
         </property>
     </entity>
     <entity name="val" class="org.hlacerti.lib.HlaPublisher">
         <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;ValueTransfer&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 80.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 90.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
