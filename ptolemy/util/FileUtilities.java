@@ -187,17 +187,20 @@ public class FileUtilities {
         //                           + currentRelativePath.toAbsolutePath());
         // }
 
+        String results = "";
         if (Files.isSymbolicLink(newLink)) {
             if (Files.isSameFile(target, Files.readSymbolicLink(newLink))) {
                 return "FileUtilities.java: createLink(): " + target
                     + " and " + Files.readSymbolicLink(newLink)
                     + " are the same.";
             }
+            results = "FileUtilities.java: createLink(): " + target
+                + " and " + Files.readSymbolicLink(newLink)
+                + " were not the same.";
+        } else {
+            results = "FileUtilities.java: createLink(): " + newLink
+                + " is not a link.";
         }
-
-        String results = "FileUtilities.java: createLink(): " + target
-            + " and " + Files.readSymbolicLink(newLink)
-            + " were not the same.";
 
         boolean moveBack = false;
         if (Files.isReadable(newLink)) {
