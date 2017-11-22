@@ -34,6 +34,7 @@ ME =	org/hlacerti/demo/MicrostepReset
 DIRS =	MicrostepResetNER \
 	MicrostepResetNERbis \
 	MicrostepResetTAR \
+	MicrostepResetTAR1 \
 	MicrostepResetTARmicroStepDelay \
 	MicrostepResetTARmicroStepDelayBoth \
 	MicrostepResetTARmicroStepDelayRAV \

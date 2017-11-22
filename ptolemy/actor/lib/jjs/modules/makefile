@@ -82,7 +82,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	aprilTags audio buffer cameras computerVision contextAware contextAwareTest crypto dataConverter deterministicTemporalSemantics.js discovery dsp eventbus faceDetector gdp geolocation httpClient httpServer imageDisplay imageFilters IMUSensor iotAuth localStorage mapManager modules.jar motionDetector mqtt objectAssign os process README.txt serial shell socket speechRecognition testing udpSocket userInterface webSocket webSocketClient webSocketServer wifiScanner xbee
+MISC_FILES =	aprilTags audio buffer cameras computerVision contextAware contextAwareTest crypto dataConverter deterministicTemporalSemantics.js discovery dsp eventbus faceDetector gdp geolocation httpClient httpServer imageDisplay imageFilters IMUSensor iotAuth localStorage mapManager modules.jar motionDetector mqtt objectAssign os process README.txt serial shell socket speechRecognition testing textDisplay udpSocket userInterface webSocket webSocketClient webSocketServer wifiScanner xbee
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
