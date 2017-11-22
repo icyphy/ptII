@@ -263,6 +263,8 @@
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../dists/ptII11.0.devel/jar_dist/doc/docConfig.jar"
                   targetdir="$INSTALL_PATH/doc"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/demo"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/domains.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/matlab/matlab.jar"
