@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6154000520272032">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.45312499999994, 241.6656636484101}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.45312499999994, 241.66566364841012}">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -903,7 +903,7 @@
 <plot>
 <title>TimedPlotter</title>
 <xRange min="0.0" max="7.0"/>
-<yRange min="-19.60302875852074" max="2.1673102482405664"/>
+<yRange min="-9.966201410687562" max="2.1673102482405664"/>
 </plot>?>
         </configure>
     </entity>
@@ -913,6 +913,21 @@
     </entity>
     <entity name="LogError2" class="LogError">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 390.0]">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[119.73290597760645, 497.2304905688105]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -931,12 +946,6 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[685.0, 225.0]">
-        </vertex>
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[175.0, 255.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -959,6 +968,10 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ReferenceSystem.torque" relation="relation"/>
     <link port="ReferenceSystem.theta" relation="relation5"/>
     <link port="ReferenceSystem.omega" relation="relation2"/>
@@ -967,7 +980,7 @@
     <link port="TargetSystem.torque" relation="relation6"/>
     <link port="TargetSystem.theta" relation="relation13"/>
     <link port="TargetSystem.omega" relation="relation4"/>
-    <link port="TargetSystem.bounceFactor" relation="relation7"/>
+    <link port="TargetSystem.bounceFactor" relation="relation12"/>
     <link port="ReferenceAnimation.Theta" relation="relation5"/>
     <link port="TargetAnimation.Theta" relation="relation13"/>
     <link port="AddSubtract.plus" relation="relation2"/>
@@ -988,4 +1001,5 @@
     <link port="LogError1.out" relation="relation11"/>
     <link port="LogError2.in" relation="relation9"/>
     <link port="LogError2.out" relation="relation3"/>
+    <link port="Const3.output" relation="relation12"/>
 </entity>
