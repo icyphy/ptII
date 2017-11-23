@@ -1,5 +1,5 @@
 \documentclass[pdftex]{book}
-\usepackage[papersize={4in, 4in},top=0.1in,bottom=0.1in,left=0.1in,right=0.1in]{geometry}
+\usepackage[papersize={4in, 4.5in},top=0.1in,bottom=0.1in,left=0.1in,right=0.1in]{geometry}
 \usepackage{pgfplots}
 \usepgfplotslibrary{fillbetween}
 \renewcommand{\familydefault}{\sfdefault}
@@ -14,30 +14,30 @@
 \draw [->] (0.25,0) arc (0:90:0.25);
 \draw [<->] (-0.05,0.05) -- (0.87,0.97);
 \node [right] at (0.45,0.25) {$\theta$};
-\node [right] at (0.2,0.1) {$T$};
+\node [right] at (0.2,0.1) {$\tau$};
 \node [right] at (1.1,1.0) {$m$};
 \node[above] at (0.5,0.6) {$r$};
 \end{tikzpicture}
 \end{center}
-Assume a point mass $m$ at radius $r$ from a pivot point attached by a massless arm with length $r$.
+Assume a solid ball of mass $m$ and radius $r_b$
+at radius $r$ from a pivot point attached by a massless arm with length $r$.
 The angle of the arm is $\theta$, a function of time.
-The torque applied to the arm is $T$, positive in the counterclockwise direction.
-The moment of inertia is given by
+The torque applied to the arm is $\tau$, positive in the counterclockwise direction.
+By the parallel axis theorem, the moment of inertia is given by
 \[
-I = m r^2 .
+I = m \left(r^2 + \frac{2}{5} r_b^2\right).
 \]
 The angular version of Newton's second law is
 \[
-T = I \ddot{\theta} .
+\tau = I \ddot{\theta} .
 \]
-The torque due to gravity is given by
+The torque due to gravity, assuming it is applied only at the center of the ball, is given by
 \[
-T_g = - mrg \cos(\theta),
+\tau_g = - mrg \cos \theta,
 \]
 where $g = 9.81$ m/s$^2$ is the acceleration of gravity at sea level.
-The net torque is $T-T_g$.
-Hence,
+Hence, we have:
 \[
-\ddot{\theta} = \frac{T}{mr^2} - \frac{g \cos(\theta)}{r} .
+\ddot{\theta} = \frac{\tau + \tau_g}{I} = \frac{\tau - m r g \cos \theta}{m \left(r^2 + \frac{2}{5} r_b^2\right)}
 \]
 \end{document}

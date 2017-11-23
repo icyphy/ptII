@@ -1,10 +1,12 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="AnimateArm" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 315.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 23, 1193, 872}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 23, 1179, 880}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[959, 762]">
     </property>
@@ -52,6 +54,25 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 85.0]">
+        </property>
+    </property>
+    <property name="rball" class="ptolemy.data.expr.Parameter" value="r / 10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 105.0]">
         </property>
     </property>
     <port name="Theta" class="ptolemy.actor.TypedIOPort">
@@ -134,7 +155,7 @@
         </property>
     </entity>
     <entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
-        <property name="radius" class="ptolemy.data.expr.Parameter" value="m*0.05">
+        <property name="radius" class="ptolemy.data.expr.Parameter" value="rball">
         </property>
         <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
