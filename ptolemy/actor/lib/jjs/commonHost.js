@@ -927,7 +927,7 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function (accessor, cyclePr
                 }
                 // Priority has to be adjusted.
                 source.priority = myPriority - countUpstreamAccessors;
-                // console.log('Assigned upstream priority to ' + accessors[i].accessorName + ' of ' + source.priority);
+                // console.log('Assigned upstream priority to ' + source.accessorName + ' of ' + source.priority);
                 countUpstreamAccessors += this.assignImpliedPrioritiesUpstream(source, cyclePriority);
             }
         }
