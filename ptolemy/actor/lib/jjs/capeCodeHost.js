@@ -181,22 +181,6 @@ function readURL(url, timeout) {
     if (debug) {
         console.log("readURL('" + url + "')");
     }
-    var theURL = new(Java.type('java.net.URL'))(url),
-        request,
-        response;
-    if (actor.isRestricted &&
-        !theURL.getProtocol().toLowerCase().equals("http") &&
-        !theURL.getProtocol().toLowerCase().equals("https")) {
-        throw "Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL().";
-    }
-    request = new(Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
-    request.setUrl(theURL);
-    request.setTimeout(timeout); // In milliseconds.
-    response = request.execute();
-    if (!response.isSuccessful()) {
-        throw "Failed to read URL: " + url + "\nResponse code: " +
-            response.getResponseCode() + "\nResponse message: " +
-            response.getResponseMessage();
-    }
-    return response.getBody();
+    
+    return httpRequest(url, "GET", null, "", timeout);
 }
