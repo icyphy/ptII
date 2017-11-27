@@ -434,7 +434,6 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-
 <!--/LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
@@ -442,20 +441,12 @@
 
             <file src="../dists/ptII11.0.devel/jar_dist/lib/gdp-0.8-0.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
-		  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/jetty-all-8.1.5-v20120716.jar"
-		  targetdir="$INSTALL_PATH/lib"/>
 	    <file src="../dists/ptII11.0.devel/jar_dist/lib/jna-4.0.0-variadic.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
 	    <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/opencv-320.jar"
-		  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/smack.jar"
-		  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/smackx.jar"
-		  targetdir="$INSTALL_PATH/lib"/>
+	          targetdir="$INSTALL_PATH/lib"/>
 <!--/LinuxInclude -->
             <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/opencv/opencv.jar"
 		  targetdir="$INSTALL_PATH/org/ptolemy/opencv"/>
