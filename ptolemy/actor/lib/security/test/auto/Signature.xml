@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Signature" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {66, 64, 815, 517}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 64, 834, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 408]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 522]">
     </property>
     <property name="arraySize" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -85,10 +85,10 @@ to something else</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0506730874466">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.53125, 201.28625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.53125, 255.53718750000237}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="1ub">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1ub">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1ub">
         </property>
@@ -168,42 +168,64 @@ to something else</text></svg></configure>
         </property>
     </entity>
     <entity name="SignatureSigner" class="ptolemy.actor.lib.security.SignatureSigner">
-        <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
+        <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA256WITHDSA">
         </property>
         <doc>Reads a public key from a port and creates a signature for&#10;	  the given piece of data to be sent to the signature verifier.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 200.0">
         </property>
     </entity>
     <entity name="SignatureVerifier" class="ptolemy.actor.lib.security.SignatureVerifier">
-        <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
+        <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA256WITHDSA">
         </property>
         <doc>Receives a key from an AsymmetricDecryption actor and&#10;          uses it to encrypt a data input based on a given asymmetric&#10;          algorithm.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 210.0">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="305.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="335.0, 190.0">
         </vertex>
     </relation>
