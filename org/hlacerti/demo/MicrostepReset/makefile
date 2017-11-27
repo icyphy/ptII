@@ -38,7 +38,6 @@ DIRS =	MicrostepResetNER \
 	MicrostepResetTARmicroStepDelay \
 	MicrostepResetTARmicroStepDelayBoth \
 	MicrostepResetTARmicroStepDelayRAV \
-	MicrostepResetTARnoCornerCase \
 	MicrostepResetTARnoCornerCase1 \
 	MicrostepResetTARnoInternalEvent \
 	MicrostepResetTARtimeDelayRAV \
@@ -66,7 +65,6 @@ PTCLASSALLJARS = \
 	MicrostepResetTARmicroStepDelay/MicrostepResetTARmicroStepDelay.jar \
 	MicrostepResetTARmicroStepDelayBoth/MicrostepResetTARmicroStepDelayBoth.jar \
 	MicrostepResetTARmicroStepDelayRAV/MicrostepResetTARmicroStepDelayRAV.jar \
-	MicrostepResetTARnoCornerCase/MicrostepResetTARnoCornerCase.jar \
 	MicrostepResetTARnoCornerCase1/MicrostepResetTARnoCornerCase1.jar \
 	MicrostepResetTARnoInternalEvent/MicrostepResetTARnoInternalEvent.jar \
 	MicrostepResetTARtimeDelayRAV/MicrostepResetTARtimeDelayRAV.jar \
