@@ -1005,10 +1005,18 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		doc/design/hyvisual.jar \
 		doc/design/visualsense.jar \
 		doc/tutorial/domains \
+		lib/javax.servlet-api-3.0.1.jar  \
+		lib/javax.servlet-api-license.htm \
+		lib/jetty-all-8.1.5-v20120716.jar \
+		lib/jetty-all-license.htm \
+		lib/smack.jar \
+		lib/smack-license.htm \
+		lib/smackx.jar \
 		org/ptolemy/machineLearning/particleFilter/test/auto/JointParticleFilter.xml \
 		org/ptolemy/machineLearning/particleFilter/test/auto/OnlineTrajectoryOptimization.xml \
 		org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopSingleRobotTargetLocalization.xml \
 		org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopTwoRobotTargetLocalization.xml \
+		org/ptolemy/ptango \
 		ptolemy/actor/gui/test/HTMLAbout.tcl \
 		ptolemy/actor/gui/test/PtolemyApplication.tcl \
 		ptolemy/cg/adapter/generic/html \
@@ -1312,7 +1320,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/makefile
 	#
 	# Fix up org/ptolemy/makefile
-	egrep -v "fmi|qss" \
+	egrep -v "fmi|qss|PTANGO_DIR" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile.tmp \
