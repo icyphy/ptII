@@ -76,11 +76,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Actor is restricted. Only HTTP and HTTPS requests will be ho&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Actor is restricted. Only HTTP(S) requests will be honored b&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 220.0}">
         </property>
     </entity>
     <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
