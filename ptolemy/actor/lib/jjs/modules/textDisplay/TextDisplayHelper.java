@@ -127,6 +127,11 @@ public class TextDisplayHelper extends HelperBase {
     ////                         private methods                   ////
 
     private void _append(String text) {
+        // _frame can be null if we have no graphical display.
+        if (_frame == null) {
+            System.out.println("TextDisplayHelper: " + text);
+            return;
+        } 
         String currentText = _frame.text.getText();
         if (currentText != null && currentText.length() > 0) {
             _frame.text.append("\n");
@@ -200,6 +205,11 @@ public class TextDisplayHelper extends HelperBase {
     }
 
     private void _display(String text) {
+        // _frame can be null if we have no graphical display.
+        if (_frame == null) {
+            System.out.println("TextDisplayHelper: " + text);
+            return;
+        } 
         _frame.text.setText(text);
     }
     
