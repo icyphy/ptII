@@ -31,7 +31,9 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		AirManagementSystem CapeCode ElectricPowerSystem EnterpriseOntology ExecDemos FuelSystem ProbabilisticModels RobotMPC PLC doc test
+DIRS = 		test \
+		AirManagementSystem ElectricPowerSystem EnterpriseOntology ExecDemos FuelSystem ProbabilisticModels RobotMPC PLC doc test \
+		CapeCode
 
 # Root of Ptolemy II directory
 ROOT =		../..
