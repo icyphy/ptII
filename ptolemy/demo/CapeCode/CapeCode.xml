@@ -9,7 +9,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 195.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="CapeCode1.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/CapeCode/CapeCode1.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -54,7 +54,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 225.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="CapeCode2.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/CapeCode/CapeCode2.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -79,7 +79,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 255.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="CapeCode3.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/CapeCode/CapeCode3.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -104,7 +104,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 285.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="CapeCode4.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/CapeCode/CapeCode4.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -149,7 +149,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 80.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="CapeCodeTutorial.pdf#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/CapeCode/CapeCodeTutorial.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -180,11 +180,11 @@
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="CapeCode Tutorial PDF">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Accessor Tutorial PDF">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 135.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="CapeCodeTutorial.pdf#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/CapeCode/AccessorTutorial.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -203,5 +203,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{250, 70}">
             </property>
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
 </entity>
