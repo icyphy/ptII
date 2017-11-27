@@ -2991,12 +2991,13 @@ PTSMACKX_JAR=
 
 # We only need to look for Jetty if $PTANGO_USER_DIR is present
 # We only need to look for Jetty if $PTSERVER_USER_DIR is present
-PTANGO_USER_DIR="$PTII/org/ptolemy/ptango"
-PTSERVER_USER_DIR="$PTII/ptserver"
-
-if test ! -d "$PTANGO_USER_DIR" -a ! -d "$PTSERVER_USER_DIR"; then
-    PT_MSG_STATUS([$PTANGO_USER_DIR and $PTSERVER_USER_DIR are not present,
-    so we need not find the Jetty.])
+PTANGO_USER_DIR="$PTII/org/ptolemy/ptango/"
+PTSERVER_USER_DIR="$PTII/ptserver/"
+PTHOMER_USER_DIR="$PTII/ptolemy/homer/"
+if test ! -d "$PTANGO_USER_DIR" -a ! -d "$PTSERVER_USER_DIR" -a ! -d "$PTHOMER_DIR"; then
+    PT_MSG_STATUS([$PTANGO_USER_DIR, $PTSERVER_USER_DIR
+    and $PTHOMER_DIR are not present,
+    so we need not find Jetty, javax.servlet, smack or smackx])
 else
     AC_MSG_CHECKING([for Jetty, used by ptango and ptserver ])
     AC_ARG_WITH(jetty, [  --with-jetty=JAR       use jetty.jar from JAR,
@@ -3037,27 +3038,39 @@ else
         PTSMACKX_JAR=$withval,
 	PTSMACKX_JAR=$PTII/lib/smackx.jar)
 
-    if test  -f "$PTSMACKX_JAR"; then
-	PT_MSG_RESULT([$PTSMACKXJAR])
-       updateClasspath "$PTSMACKX_JAR"
-    else
+    if ! test  -f "$PTSMACKX_JAR"; then
+        updateExcludes "$PTANGO_USER_DIR"
         AC_MSG_WARN([Failed to find the Smackx jar files necessary to compile ptango.
     Ptango is the Ptolemy Internet of Things project.
     For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
+
+    else
+	PT_MSG_RESULT([$PTSMACKXJAR])
+        updateClasspath "$PTSMACKX_JAR"
     fi
 
     if ! test -f "$PTJETTY_JAR"; then
-        AC_MSG_WARN([Failed to find the Jetty jar files necessary to compile ptango.
+        updateExcludes "$PTANGO_USER_DIR"
+        updateExcludes "$PTSERVER_USER_DIR"
+        updateExcludes "$PTHOMER_USER_DIR"
+        AC_MSG_WARN([Failed to find the Jetty jar files necessary to compile ptango,
+    ptserver and homer.
     Ptango is the Ptolemy Internet of Things project.
     For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
+
     else 
-       updateClasspath "$PTJETTY_JAR"
+        updateClasspath "$PTJETTY_JAR"
     fi
 
     if ! test -f "$PTSERVLET_JAR"; then
-        AC_MSG_WARN([Failed to find the Servlet jar files necessary to compile ptango.
+        updateExcludes "$PTANGO_USER_DIR"
+        updateExcludes "$PTSERVER_USER_DIR"
+        updateExcludes "$PTHOMER_USER_DIR"
+        AC_MSG_WARN([Failed to find the Servlet jar files necessary to compile ptango,
+    ptserver and homer.
     Ptango is the Ptolemy Internet of Things project.
     For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
+
     else 
        updateClasspath "$PTSERVLET_JAR"
     fi
