@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the react function: Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL(). in &lt;eval&gt; at line number 182 at column number 8&#10;  in .AccessViolation.StockTick&#10;Because:&#10;Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL(). in &lt;eval&gt; at line number 182 at column number 8">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the react function: Actor is restricted. Only HTTP(S) requests will be honored by httpRequest(). in &lt;eval&gt; at line number 135 at column number 8&#10;  in .AccessViolation.StockTick&#10;Because:&#10;Actor is restricted. Only HTTP(S) requests will be honored by httpRequest(). in &lt;eval&gt; at line number 135 at column number 8">
         </property>
         <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="80">
         </property>
