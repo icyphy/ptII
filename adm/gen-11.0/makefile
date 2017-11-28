@@ -46,8 +46,8 @@ VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	11_0_devel
 
-CAPECODE_VERSION =	1.0.devel
-CAPECODE_WINDOWS_VERSION =	1_0_devel
+CAPECODE_VERSION =	0.1.devel
+CAPECODE_WINDOWS_VERSION =	0_1_devel
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -349,6 +349,7 @@ opencv_dll: $(OPENCV_DLL)
 $(OPENCV_DLL):
 	wget https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
+# If you update the NODE_VERSION, then be sure to edit IzpackSetup.java.
 NODE_VERSION=7.10.1
 node:
 	if [ ! -d node ]; then \
