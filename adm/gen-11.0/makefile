@@ -385,6 +385,10 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN)
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	mkdir -p $@
+	@echo "svn update in $(PTIIHOME)"
+	(cd $(PTIIHOME); svn update)
+	@echo "svn update in $(PTIIHOME)/org/terraswarm/accessor/accessors/web"
+	(cd $(PTIIHOME)/org/terraswarm/accessor/accessors/web; svn update)
 	#@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
 	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
@@ -654,6 +658,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	@echo "chmod"
 	(cd $(PTIIDIST); chmod -R a+rX .)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
