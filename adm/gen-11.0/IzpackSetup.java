@@ -81,14 +81,15 @@ public class IzpackSetup {
         }
 
         if (arch != null) {
-            newLink = Paths.get(installDirectory, "vendors", "node", "node-v8.4.0-" + arch + "-x64", "bin", "npm");
-            temporary = Paths.get(installDirectory + "vendors", "node", "node-v8.4.0-" + arch + "-x64", "bin","npm.tmp");
+            // FIXME: we should not have the hardwired path to a specific Node version here.
+            newLink = Paths.get(installDirectory, "vendors", "node", "node-v7.10.1-" + arch + "-x64", "bin", "npm");
+            temporary = Paths.get(installDirectory + "vendors", "node", "node-v7.10.1-" + arch + "-x64", "bin","npm.tmp");
             target = Paths.get("..", "lib", "node_modules", "npm", "bin", "npm-cli.js");
             String npmMessage = IzpackSetup.createLink(newLink, temporary, target);
             if (npmMessage.length() > 0) {
                 results.append("\n" + npmMessage);
             }
-            Path npmCli = Paths.get(installDirectory + "vendors", "node", "node-v8.4.0-" + arch + "-x64", "lib", "node_modules", "npm", "bin", "npm-cli.js");
+            Path npmCli = Paths.get(installDirectory + "vendors", "node", "node-v7.10.1-" + arch + "-x64", "lib", "node_modules", "npm", "bin", "npm-cli.js");
             npmCli.toFile().setExecutable(true);
         }
 

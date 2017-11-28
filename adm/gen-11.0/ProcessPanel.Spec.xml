@@ -14,6 +14,10 @@
   </job>
 
   <job name="Build" condition="startConfigure">
+    <executeclass name="IzpackSetup">
+      <arg>$INSTALL_PATH</arg>
+    </executeclass>
+
       <executefile name="/bin/sh"
 		   workingDir="$INSTALL_PATH">
 	<env>PTII=$INSTALL_PATH</env>.
