@@ -10184,9 +10184,22 @@ $as_echo "$as_me: WARNING: Failed to find npm, which means that the Node.js Acce
     Note that npm 5.x has a critical flaw that prevents
     its use, so install Node 7.x, not Node 8.x." >&2;}
        else
+           upgradeNpm=0
            { $as_echo "$as_me:${as_lineno-$LINENO}: checking for npm before 5.x" >&5
 $as_echo_n "checking for npm before 5.x... " >&6; }
            NPM_VERSION=`$PTNPM --version`
+           status=$?
+           if test "$status" -ne 0; then
+              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $PTNPM --version returned $status, which is non-zero.
+    Please install Node 7.x, not Node 8.x or later." >&5
+$as_echo "$as_me: WARNING: $PTNPM --version returned $status, which is non-zero.
+    Please install Node 7.x, not Node 8.x or later." >&2;}
+              FINAL_WARNING="$FINAL_WARNING
+
+$PTNPM --version returned $status, which indicates a problem.  Please install Node 7.x from https://nodejs.org/download/release/v7.10.1/.  Node 8.x and later has a problem with npm that will prevent the CapeCode Node host from working.  If npm does not work, then building the JavaScript documentation will fail.  If you can't install Node 7.x, then to build, try   ant build-project build-bin."
+             upgradeNpm=1
+           fi
+
            echo "$NPM_VERSION" | egrep '^5-9\.'
            status=$?
            if test "$status" -eq 1; then
@@ -10206,8 +10219,34 @@ $as_echo "$as_me: WARNING: npm is version $NPM_VERSION, which is 5.x or greater.
     It is still possible to run the CapeCode Accessor Host,
     but generating Swarmlets and running them using Node Accessor Host
     will likely fail in mysterious ways" >&2;}
-             FINAL_WARNING="$FINAL_WARNING The npm 5.x or greater binary is found in the path, which will cause problems with the Node Accessor host because npm 5.x removes files in node_modules/.  However, the CapeCode accessor host will likely not be affected by npm5.x.  See above for details."
+             FINAL_WARNING="$FINAL_WARNING
+
+The npm 5.x or greater binary is found in the path, which will cause problems with the Node Accessor host because npm 5.x removes files in node_modules/.  However, the CapeCode accessor host will likely not be affected by npm5.x.  See above for details."
+             upgradeNpm=1
            fi
+
+           if test $upgradeNpm -eq 1; then
+               case "`uname -s`" in
+                   Darwin) npmArch=darwin;;
+                   CYGWIN*) npmArch=win;;
+                   Linux) npmArch=linux;;
+                   *) npmArch=FIXME-Insert-Your-Architecture-Here;;
+               esac
+
+               FINAL_WARNING="$FINAL_WARNING
+
+
+To install Node 7.x:
+    cd \$PTII/vendors
+    mkdir node
+    wget https://nodejs.org/download/release/v7.10.1/node-v7.10.1-$npmArch-x64.tar.gz
+    tar -zxf node-v7.10.1-$npmArch-x64.tar.gz
+    cd \$PTII
+    export PATH=$PTII/bin:\${PATH}"
+
+
+          fi
+
         fi
     fi
 fi
