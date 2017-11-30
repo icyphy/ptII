@@ -526,7 +526,7 @@
     </condition>
   </target>
 
-  <target name="-check-ptII-mk-file" unless="ptII.mk..exists">
+  <target name="-check-ptII-mk-file" unless="ptII.mk.exists">
     <available property="ptII.mk.exists" file="mk/ptII.mk"/>
   </target>
 
