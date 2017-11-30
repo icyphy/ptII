@@ -3918,7 +3918,7 @@ else
     Please install Node 7.x, not Node 8.x or later.])
               FINAL_WARNING="$FINAL_WARNING
 
-$PTNPM --version returned $status, which indicates a problem.  Please install Node 7.x from https://nodejs.org/download/release/v7.10.1/.  Node 8.x and later has a problem with npm that will prevent the CapeCode Node host from working.  If npm does not work, then building the JavaScript documentation will fail.  If you can't install Node 7.x, then to build, try   ant build-project build-bin."
+$PTNPM --version returned $status, which indicates a problem.  Please install Node 7.x from https://nodejs.org/download/release/v7.10.1/.  If npm does not work, then building the JavaScript Documentation will fail."
              upgradeNpm=1
            fi
 
@@ -3949,6 +3949,19 @@ The npm 5.x or greater binary is found in the path, which will cause problems wi
 
                FINAL_WARNING="$FINAL_WARNING
 
+The Node Accessor Host requires Node 7.x.  Node 8.x and later will not
+work because npm 5.x removes files from the node_modules directory.
+See https://www.icyphy.org/accessors/wiki/Notes/Npm5
+
+The CapeCode Accesso Host does not use Node at runtime.
+
+With Node 8.x and greater, it is still possible to run the Node
+Accessor Host, but generating Swarmlets and running them using Node
+Accessor Host will likely fail in mysterious ways])
+
+However, node and npm are used to build the JavaScript docs, so you
+may want to install Node 7.x if you want to view the CapeCode
+JavaScript documentation.  Building the documentation is optional.
 
 To install Node 7.x:
     cd \$PTII/vendors

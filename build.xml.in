@@ -884,9 +884,9 @@ For example:
   <!-- Run ptdoc so that when a user drags in an accessor, the accessor will get a DocAttribute from
        the *PtDoc.xml file. -->
   <target name="ptdoc"
-          depends="jsdoc-update, -ptdoc-no-node"
+          depends="jsdoc-update, -ptdoc-no-node, -ptdoc-no-npm"
           description="Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy"
-          if="${node.works}">
+          if="${npm.works}">
     <echo>
       If the ptdoc target fails, then try running:
           ant build-project build-bin
@@ -899,11 +899,19 @@ For example:
   <target name="-ptdoc-no-node"
           unless="${node.works}">
       <echo>
-        Node was not found in the path, so 'ant ptdoc' will not be run.
+        Node was not found in the path or failed, so 'ant ptdoc' will not be run.
         This means that documentation for Accessors will not be available.
       </echo>
   </target>
 
+  <target name="-ptdoc-no-npm"
+          unless="${npm.works}">
+      <echo>
+        Npm was not found in the path or failed, so 'ant ptdoc' will not be run.
+        This means that documentation for Accessors will not be available.
+      </echo>
+  </target>
+  
   <target name="reports"
 	  description="Generate non-test reports about the Ptolemy II code base."
 	  depends="checkstyle, doccheck, findbugs, ojdcheck" />
