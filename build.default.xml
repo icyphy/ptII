@@ -518,11 +518,14 @@
           if="${node.works}">
     <exec executable="${npm.executable}"
           failonerror="false"
-          timeout="${timeout.npm}">
+          timeout="${timeout.npm}"
+          resultproperty="npm.return.code">
       <arg value="--version"/>
     </exec>
     <condition property="npm.works">
-      <isfailure code="0"/>
+       <not>
+         <isfailure code="${npm.return.code}"/>
+       </not>
     </condition>
   </target>
 
