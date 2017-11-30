@@ -349,7 +349,7 @@
     </condition>
   </target>
 
-  <target name="-check-ptII-mk-file" unless="ptII.mk..exists">
+  <target name="-check-ptII-mk-file" unless="ptII.mk.exists">
     <available property="ptII.mk.exists" file="mk/ptII.mk"/>
   </target>
 
@@ -887,6 +887,10 @@ For example:
           depends="jsdoc-update, -ptdoc-no-node"
           description="Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy"
           if="${node.works}">
+    <echo>
+      If the ptdoc target fails, then try running:
+          ant build-project build-bin
+    </echo>
     <subant target="ptdoc" genericantfile="${basedir}/org/terraswarm/accessor/accessors/web/build.xml">
       <dirset dir="." includes="org/terraswarm/accessor/accessors/web"/>
     </subant>
