@@ -3403,13 +3403,30 @@ IZPACKDIR=$(PTIIHOME)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
 IZPACK_COMMAND=IZPACK_OPTS=-Djava.util.logging.config.file=$(GENDIR)/izpackLogging.txt sh "$(IZPACK_COMPILE)" -o
 
+IZPACK_PLIST=$(IZPACKDIR)/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist
+
+# Fix up izpack Installation by updating Info.plist for the Mac.
+# We currently require Java 1.8 and only Java 1.8 for the installer.
+# See https://izpack.atlassian.net/browse/IZPACK-1562
+izpackFix:
+	@echo ""
+	@echo "izpackFix:"
+	@echo "Changing the Info.plist for the Mac installer app to require Java 1.8."
+	@echo ""
+	if [ ! -f "$(IZPACK_PLIST).orig" ]; then \
+		cp "$(IZPACK_PLIST)" "$(IZPACK_PLIST).orig"; \
+        fi
+	sed 's@<string>1.4+</string>@<string>1.8*</string>@' "$(IZPACK_PLIST)" > "$(IZPACK_PLIST).tmp"
+	-diff "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
+	mv "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
+
 # IzpackSetup creates a link for accessors/web/node_modules/@accessors-hosts
 # To build it use: make PTIIHOME=$PTII IzpackSetup.class
 # See https://izpack.atlassian.net/wiki/display/IZPACK/Executing+a+Java+Class+with+ProcessPanel
 IzpackSetup.class: IzpackSetup.java
 	javac -classpath `ls -1 $(IZPACKDIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACKDIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
 
-izpacksetup.jar: IzpackSetup.class
+izpacksetup.jar: izpackFix IzpackSetup.class
 	$(JAR) cf $@ $<
 
 # If you get "makefile:2660: *** target pattern contains no `%'.
