@@ -3911,10 +3911,10 @@ else
        else
            upgradeNpm=0
            AC_MSG_CHECKING([for npm before 5.x])
-           NPM_VERSION=`$PTNPM --version`
+           NPM_VERSION=`"$PTNPM" --version`
            status=$?
            if test "$status" -ne 0; then        
-              AC_MSG_WARN([$PTNPM --version returned $status, which is non-zero.
+              AC_MSG_WARN(["$PTNPM" --version returned $status, which is non-zero.
     Please install Node 7.x, not Node 8.x or later.])
               FINAL_WARNING="$FINAL_WARNING
 
@@ -3953,7 +3953,7 @@ The Node Accessor Host requires Node 7.x.  Node 8.x and later will not
 work because npm 5.x removes files from the node_modules directory.
 See https://www.icyphy.org/accessors/wiki/Notes/Npm5
 
-The CapeCode Accesso Host does not use Node at runtime.
+The CapeCode Accessor Host does not use Node at runtime.
 
 With Node 8.x and greater, it is still possible to run the Node
 Accessor Host, but generating Swarmlets and running them using Node
