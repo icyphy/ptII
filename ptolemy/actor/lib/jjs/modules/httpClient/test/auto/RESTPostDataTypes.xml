@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000003">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{695.6696220930233, 359.3545058139534}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{695.6696220930233, 359.35450581395344}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test POSTing and receiving bodies of different data types.&#10;Port 8003.&#10;">
@@ -218,7 +218,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.output('response');&#10;};&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = self.get('request');&#10;		var paramsText = '';&#10;		&#10;		if (request.params.length &gt; 0) {&#10;			paramsText = JSON.stringify(request.params);&#10;		}&#10;				&#10;		var body = '';&#10;		if (request.body !== null &amp;&amp; typeof request.body !== 'undefined') {&#10;			body = request.body;&#10;		}&#10;		&#10;		// request.params always exists.  It's an empty object if no params.&#10;		var text = &quot;Received parameters &quot; + paramsText + &quot;, body &quot; + body;&#10;		&#10;		var response = {&#10;			requestID : request.requestID,&#10;			response : text&#10;		}&#10;		&#10;		self.send('response', response);&#10;	});&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.output('response');&#10;};&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = self.get('request');&#10;		var paramsText = '';&#10;		&#10;		if (Object.keys(request.params).length &gt; 0) {&#10;			paramsText = JSON.stringify(request.params);&#10;		}&#10;				&#10;		var body = '';&#10;		if (request.body !== null &amp;&amp; typeof request.body !== 'undefined') {&#10;			body = request.body;&#10;		}&#10;		&#10;		// request.params always exists.  It's an empty object if no params.&#10;		var text = &quot;Received parameters &quot; + paramsText + &quot;, body &quot; + body;&#10;		&#10;		var response = {&#10;			requestID : request.requestID,&#10;			response : text&#10;		}&#10;		&#10;		self.send('response', response);&#10;	});&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -880,7 +880,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 335.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Received parameters [{\&quot;test\&quot;:\&quot;hello\&quot;}], body &quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Received parameters {\&quot;test\&quot;:\&quot;hello\&quot;}, body &quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -924,7 +924,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 480.0}">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Received parameters [{\&quot;testparam\&quot;:\&quot;theparam\&quot;}], body testbody=thebody&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Received parameters {\&quot;testparam\&quot;:\&quot;theparam\&quot;}, body testbody=thebody&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -966,7 +966,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 605.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 605.0}">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Received parameters , body {\&quot;one\&quot;:\&quot;1\&quot;,\&quot;two\&quot;:\&quot;2\&quot;,\&quot;three\&quot;:\&quot;3\&quot;}&quot;}">
         </property>
@@ -1012,7 +1012,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 800.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{requestID = 1, response = &quot;Received parameters , body test=hello&quot;}, {requestID = 2, response = &quot;Received parameters [{\&quot;test\&quot;:\&quot;hello\&quot;}], body &quot;}, {requestID = 3, response = &quot;Received parameters [{\&quot;testparam\&quot;:\&quot;theparam\&quot;}], body testbody=thebody&quot;}, {requestID = 4, response = &quot;Received parameters , body {\&quot;one\&quot;:\&quot;1\&quot;,\&quot;two\&quot;:\&quot;2\&quot;,\&quot;three\&quot;:\&quot;3\&quot;}&quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{requestID = 1, response = &quot;Received parameters , body test=hello&quot;}, {requestID = 2, response = &quot;Received parameters {\&quot;test\&quot;:\&quot;hello\&quot;}, body &quot;}, {requestID = 3, response = &quot;Received parameters {\&quot;testparam\&quot;:\&quot;theparam\&quot;}, body testbody=thebody&quot;}, {requestID = 4, response = &quot;Received parameters , body {\&quot;one\&quot;:\&quot;1\&quot;,\&quot;two\&quot;:\&quot;2\&quot;,\&quot;three\&quot;:\&quot;3\&quot;}&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
