@@ -81,6 +81,8 @@
         </property>
         <property name="triggered" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="maxFrameRate" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
