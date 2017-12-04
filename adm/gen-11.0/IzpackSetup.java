@@ -108,11 +108,15 @@ public class IzpackSetup {
             return newLink + " does not exist?  That directory should be in the jar file so that we can move it aside.  The current relative path is " + currentRelativePath.toAbsolutePath();
         }
 
-        if (Files.isSymbolicLink(newLink)) {
-            if (Files.isSameFile(target, Files.readSymbolicLink(newLink))) {
-                return target + " and " + Files.readSymbolicLink(newLink)
-                    + "are the same.";
+        try {
+            if (Files.isSymbolicLink(newLink)) {
+                if (Files.isSameFile(target, Files.readSymbolicLink(newLink))) {
+                    return target + " and " + Files.readSymbolicLink(newLink)
+                        + "are the same.";
+                }
             }
+        } catch (IOException ex) {
+            return "Failed to check if " + newLink + " is a link: " + ex;
         }
 
         try {
