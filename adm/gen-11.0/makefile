@@ -3426,8 +3426,8 @@ izpackFix:
 IzpackSetup.class: IzpackSetup.java
 	javac -classpath `ls -1 $(IZPACKDIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACKDIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
 
-izpacksetup.jar: izpackFix IzpackSetup.class
-	$(JAR) cf $@ $<
+izpacksetup.jar: izpackFix 
+	$(JAR) cf $@ IzpackSetup.class
 
 # If you get "makefile:2660: *** target pattern contains no `%'.
 # Stop.", then the problem is that $PTII has a semicolon in it and you
