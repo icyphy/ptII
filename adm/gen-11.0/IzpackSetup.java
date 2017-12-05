@@ -73,7 +73,7 @@ public class IzpackSetup {
         String arch = null;
         String osName = System.getProperty("os.name");
         if (osName != null) {
-            if (osName.startsWith("Darwin")) {
+            if (osName.startsWith("Mac")) {
                 arch = "darwin";
             } else if (osName.startsWith("Linux")) {
                 arch = "linux";
