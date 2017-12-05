@@ -181,7 +181,6 @@
 
            <file src="src/ptII11.0.devel/ant" targetdir="$INSTALL_PATH"/>
            <executable stage="never">
-             <fileset targetdir="$INSTALL_PATH" includes="configure"/>
              <fileset targetdir="$INSTALL_PATH/ant/bin" includes="ant,antRun,antRun.pl,complete-ant-cmd.pl,runant.pl,runant.py"/>
              <fileset targetdir="$INSTALL_PATH/bin" includes="ant,capecode,capecode.bat,comm.policy,comm.policy.in,convertToLazy.bat,cyphysim,homer,homer.bat,hyvisual,IncrementalFMU_wrap.dll,libfmipp.dll,macContents,makeapp,makefile,mkjnlp,mkl4j,mkosgi,mkptdemo,mkptlivelinkdemo,mkpttest,node,npm,persist,policy.all,ptcodegen,ptcodegen.bat,ptcygpath,ptinvoke,ptinvoke.in,ptjunit,ptweb,ptweb.bat,reloadAllAccessors,sandbox.policy,startjini,updateFmu,vergil,viptos"/>
            </executable>
@@ -544,6 +543,10 @@
 	    <!-- file src="src_jar/capecode0.1.devel/vergil_l4j.mf" targetdir="$INSTALL_PATH"/-->
             <!-- file src="ptII11.0.devel.src.jar" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
+
+           <executable stage="never">
+             <fileset targetdir="$INSTALL_PATH" includes="configure"/>
+           </executable>
 
         </pack>
     </packs>
