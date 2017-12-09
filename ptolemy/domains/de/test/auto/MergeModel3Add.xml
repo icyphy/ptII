@@ -98,11 +98,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 125.0]">
             </property>
         </entity>
-        <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
-            <doc>Output the current microstep.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 195.0]">
-            </property>
-        </entity>
         <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 70.0]">
             </property>
@@ -116,14 +111,7 @@
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <port name="microstep" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-            </port>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -138,12 +126,9 @@
         <link port="out" relation="relation"/>
         <link port="CurrentTime.output" relation="relation3"/>
         <link port="CurrentTime.trigger" relation="relation4"/>
-        <link port="CurrentMicrostep.output" relation="relation2"/>
-        <link port="CurrentMicrostep.trigger" relation="relation4"/>
         <link port="RecordAssembler.output" relation="relation"/>
         <link port="RecordAssembler.value" relation="relation4"/>
         <link port="RecordAssembler.time" relation="relation3"/>
-        <link port="RecordAssembler.microstep" relation="relation2"/>
     </class>
     <entity name="InstanceOfRecordAssembler5" class="RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 145.0]">
@@ -152,7 +137,7 @@
     <entity name="AfterMerge" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={804, 23, 636, 877}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[636, 1023]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[636, 833]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 165.0]">
         </property>
@@ -168,7 +153,7 @@
     <entity name="BeforeMerge" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 23, 956, 877}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[956, 834]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[956, 833]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
         </property>
@@ -346,7 +331,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, time = 0.0, value = 1}, {microstep = 1, time = 0.0, value = 2}, {microstep = 1, time = 0.0, value = 3}, {microstep = 2, time = 0.0, value = 4}, {microstep = 3, time = 0.0, value = 5}, {microstep = 1, time = 1.0, value = 1}, {microstep = 1, time = 1.0, value = 2}, {microstep = 1, time = 1.0, value = 3}, {microstep = 2, time = 1.0, value = 4}, {microstep = 3, time = 1.0, value = 5}, {microstep = 1, time = 2.0, value = 1}, {microstep = 1, time = 2.0, value = 2}, {microstep = 1, time = 2.0, value = 3}, {microstep = 2, time = 2.0, value = 4}, {microstep = 3, time = 2.0, value = 5}, {microstep = 1, time = 3.0, value = 1}, {microstep = 1, time = 3.0, value = 2}, {microstep = 1, time = 3.0, value = 3}, {microstep = 2, time = 3.0, value = 4}, {microstep = 3, time = 3.0, value = 5}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{time = 0.0, value = 1}, {time = 0.0, value = 2}, {time = 0.0, value = 3}, {time = 0.0, value = 4}, {time = 0.0, value = 5}, {time = 1.0, value = 1}, {time = 1.0, value = 2}, {time = 1.0, value = 3}, {time = 1.0, value = 4}, {time = 1.0, value = 5}, {time = 2.0, value = 1}, {time = 2.0, value = 2}, {time = 2.0, value = 3}, {time = 2.0, value = 4}, {time = 2.0, value = 5}, {time = 3.0, value = 1}, {time = 3.0, value = 2}, {time = 3.0, value = 3}, {time = 3.0, value = 4}, {time = 3.0, value = 5}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -354,7 +339,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{microstep = 1, time = 0.0, value = 3}, {microstep = 2, time = 0.0, value = 1}, {microstep = 3, time = 0.0, value = 2}, {microstep = 4, time = 0.0, value = 4}, {microstep = 5, time = 0.0, value = 5}, {microstep = 1, time = 1.0, value = 3}, {microstep = 2, time = 1.0, value = 1}, {microstep = 3, time = 1.0, value = 2}, {microstep = 4, time = 1.0, value = 4}, {microstep = 5, time = 1.0, value = 5}, {microstep = 1, time = 2.0, value = 3}, {microstep = 2, time = 2.0, value = 1}, {microstep = 3, time = 2.0, value = 2}, {microstep = 4, time = 2.0, value = 4}, {microstep = 5, time = 2.0, value = 5}, {microstep = 1, time = 3.0, value = 3}, {microstep = 2, time = 3.0, value = 1}, {microstep = 3, time = 3.0, value = 2}, {microstep = 4, time = 3.0, value = 4}, {microstep = 5, time = 3.0, value = 5}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{time = 0.0, value = 3}, {time = 0.0, value = 1}, {time = 0.0, value = 2}, {time = 0.0, value = 4}, {time = 0.0, value = 5}, {time = 1.0, value = 3}, {time = 1.0, value = 1}, {time = 1.0, value = 2}, {time = 1.0, value = 4}, {time = 1.0, value = 5}, {time = 2.0, value = 3}, {time = 2.0, value = 1}, {time = 2.0, value = 2}, {time = 2.0, value = 4}, {time = 2.0, value = 5}, {time = 3.0, value = 3}, {time = 3.0, value = 1}, {time = 3.0, value = 2}, {time = 3.0, value = 4}, {time = 3.0, value = 5}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
