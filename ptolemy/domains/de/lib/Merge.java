@@ -27,10 +27,9 @@
  */
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.SuperdenseTimeDirector;
-import ptolemy.actor.util.Time;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -38,6 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// Merge
@@ -56,13 +56,21 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>
  There is a boolean parameter <i>discardEvents</i> associated
  with this actor, which decides how to handle simultaneously
- available inputs.  Each time this actor fires, it reads the first
- available tokens from an input channel and sends them to the output
- port. If the <i>discardEvents</i> parameter is configured to true,
- then this actor discards all the remaining inputs in the rest of
- channels. Otherwise, this actor requests refirings at the current
- time until no more events are left in the channels. By default,
- the discardEvents parameter is false.
+ available inputs.
+ <p>
+ If the <i>discardEvents</i> parameter is configured to true,
+ then each time this actor fires, it reads the first
+ available token from an input channel and send it to the output
+ port.  Then this actor discards all the remaining inputs in the rest of
+ channels.
+ <p>
+ If the <i>discardEvents</i> parameter is configured to false (the default),
+ then the handling of simultaneous events is a bit more subtle.
+ On each firing, it reads all available inputs in the order of the channels
+ and puts them on a queue to be produced as an output. It then takes
+ the first token (the oldest one) from the queue and produces it
+ on the output. If after this firing the queue is not empty, then
+ it requests a refiring at the current time.
 
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
@@ -105,6 +113,20 @@ public class Merge extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone this actor into the specified workspace.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Merge newObject = (Merge)super.clone(workspace);
+        newObject._queue = null;
+        return newObject;
+    }
+
     /** Read the first available tokens from an input channel and
      *  send them to the output port. If the discardEvents parameter
      *  is true, consume all the available tokens of the other channels
@@ -116,13 +138,8 @@ public class Merge extends DETransformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        _previousModelTime = ((CompositeActor) this.getContainer())
-                .getDirector().getModelTime();
-        _previousMicrostep = _getMicrostep();
-        _moreTokensOnOtherChannels = false;
-        boolean discard = ((BooleanToken) discardEvents.getToken())
-                .booleanValue();
-        Token firstAvailableToken = null;
+        boolean discard = ((BooleanToken) discardEvents.getToken()).booleanValue();
+        boolean foundInput = false;
 
         // If tokens can be discarded, this actor sends
         // out the first available tokens only. It discards all
@@ -132,87 +149,34 @@ public class Merge extends DETransformer {
         // the remaining channels that have tokens.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasNewToken(i)) {
-                if (firstAvailableToken == null) {
-                    // we see the first available tokens
-                    firstAvailableToken = input.get(i);
-                    output.send(0, firstAvailableToken);
-
-                    while (input.hasNewToken(i)) {
-                        Token token = input.get(i);
-                        output.send(0, token);
-                    }
-                } else {
-                    if (discard) {
-                        // this token is not the first available token
-                        // in this firing, consume and discard all tokens
-                        // from the input channel
-                        while (input.hasNewToken(i)) {
-                            input.get(i);
-                        }
-                    } else {
-                        // Refiring the actor to handle the other tokens
-                        // that are still in channels
-                        getDirector().fireAt(this, getDirector().getModelTime());
-                        _moreTokensOnOtherChannels = true;
-                        break;
-                    }
+                // This output will be produced regardless of discard status.
+                if (!discard || !foundInput) {
+                    _queue.offer(input.get(i));
                 }
+                foundInput = true;
             }
         }
+        if (!_queue.isEmpty()) {
+            output.send(0, _queue.poll());
+            if (!_queue.isEmpty()) {
+                // Refiring the actor to handle the other tokens.
+                getDirector().fireAt(this, getDirector().getModelTime());
+            }
+        }        
     }
-
-    /** Return false if there was a firing at the current time and
-     *  microstep that produced an output token and there are more
-     *  tokens on other channels that are waiting to be produced at
-     *  the same time but future microsteps.
-     *  @return True if this actor is ready for firing, false otherwise.
-     *  @exception IllegalActionException Not thrown in this class.
+    
+    /** Initialize this actor by creating a new queue for pending outputs.
+     *  @exception IllegalActionException If a superclass throws it.
      */
     @Override
-    public boolean prefire() throws IllegalActionException {
-        int microstep = _getMicrostep();
-        if (_moreTokensOnOtherChannels
-                && ((CompositeActor) this.getContainer()).getDirector()
-                .getModelTime().compareTo(_previousModelTime) == 0
-                && microstep == _previousMicrostep) {
-            return false;
-        }
-        return super.prefire();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //                        private methods                        //
-
-    /** Return the microstep of the director.
-     *  @return The microstep.
-     *  @exception IllegalActionException Thrown if the enclosing director
-     *    is not a SuperdenseTimeDirector.
-     */
-    private int _getMicrostep() throws IllegalActionException {
-        Director director = ((CompositeActor) this.getContainer())
-                .getDirector();
-        if (director instanceof SuperdenseTimeDirector) {
-            return ((SuperdenseTimeDirector) director).getIndex();
-        }
-        //        throw new IllegalActionException(this,
-        //                "This actor can only be used with a SuperdenseTimeDirector");
-        // FIXME: Is the following assumption correct?
-        // The TMDirector uses Merge, so we should probably not
-        // throw an exception here but return a default
-        // value for the microstep.
-        return 0;
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _queue = new LinkedList<Token>();
     }
 
     ///////////////////////////////////////////////////////////////////
     //                        private variables                      //
-
-    // True if there are more tokens on other channels.
-    private boolean _moreTokensOnOtherChannels = false;
-
-    // Last time this actor was fired.
-    private Time _previousModelTime;
-
-    // Mircostep of director during last firing of this actor.
-    private int _previousMicrostep;
-
+    
+    // Queue of outputs to be produced.
+    private Queue<Token> _queue = null;
 }
