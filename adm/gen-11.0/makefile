@@ -261,6 +261,9 @@ release_windows:
 release_mac:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
+release_mac_capecode_mac_tar:
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac_app_tar
+
 # To install gnutar, use: sudo -i port install gnutar
 release_mac2:
 	@if [ -z `which 7z` ]; then \
@@ -270,6 +273,9 @@ release_mac2:
 
 release_mac_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
+
+release_mac_capecode_mac:
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac
 
 release_mac_test_capecode_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar test_capecode_setup
