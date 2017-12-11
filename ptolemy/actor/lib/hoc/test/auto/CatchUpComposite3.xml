@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Illegal output during catch up iteration. Composite actor is attempting to produce an output at time 1.5, but environment time is past that at 2.0&#10;  in .CatchUpComposite3.CatchUpComposite.out">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Illegal output during catch up iteration. Composite actor is attempting to produce an output at time 0.0, but environment time is past that at 1.0&#10;  in .CatchUpComposite3.CatchUpComposite.out">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
