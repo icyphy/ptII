@@ -100,8 +100,8 @@ EXTRA_SRCS = \
 	doctoc.htm \
 	domainCompatibility.htm \
 	domains.htm \
-	findbugs-exclude.xml \
-	findbugs-include.xml \
+	spotbugs-exclude.xml \
+	spotbugs-include.xml \
 	footer.htm \
 	help.htm \
 	hyVisualHtml.awk \
@@ -766,8 +766,8 @@ KRUFT = \
 	codeDocVisualSense.jar \
 	codeDocViptos.jar \
 	docConfig.jar \
-	findbugs.htm \
-	findbugs.xml \
+	spotbugs.htm \
+	spotbugs.xml \
 	ptII.fb
 
 
@@ -1360,14 +1360,14 @@ ojdcheck.htm:
 			-file doc/ojdcheck.htm `echo $(ALLPACKAGES)| awk '{for(i=1;i<NF;i++) print $$i}' | sort` )
 
 #############
-# FindBugs : http://findbugs.sourceforge.net
+# Instead of findbugs, we use spotbugs. https://github.com/spotbugs/spotbugs
 #
 
-# Location of the FindBugs sources
-#FINDBUGS=../vendors/findbugs-1.3.8
-FINDBUGS=../vendors/findbugs-3.0.1
+# Location of the Spotbugs sources
+SPOTBUGS=../vendors/spotbugs-3.1.1
 
-findbugs: findbugs.htm findbugsOut.xml
+findbugs: spotbugs
+spotbugs: spotbugs.htm spotbugsOut.xml
 
 ptII.fb:
 	echo "[Jar files]" > ptII.fb
@@ -1401,36 +1401,36 @@ ptII.fbp:
 	echo "</Project>" >> ptII.fbp
 
 
-# Use this with FindBugs-1.8.3
-#FINDBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fb
+# Use this with Spotbugs-1.8.3
+#SPOTBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -include spotbugs-include.xml -exclude spotbugs-exclude.xml -project ptII.fb
 
-# Use this with FindBugs-2.0.3
+# Use this with Spotbugs-2.0.3
 # -effort:max was causing us to run out of memory, but -nested:false fixes the problem
-# -nested:false avoids taking far too much time, see http://sourceforge.net/p/findbugs/bugs/1236/
-FINDBUGS_ARGS = -maxHeap 2000  -nested:false -effort:max -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fbp
+# -nested:false avoids taking far too much time, see http://sourceforge.net/p/spotbugs/bugs/1236/
+SPOTBUGS_ARGS = -maxHeap 2000  -nested:false -effort:max -textui -include spotbugs-include.xml -exclude spotbugs-exclude.xml -project ptII.fbp
 
-findbugs.htm:  ptII.fb ptII.fbp findbugs-exclude.xml makefile
-	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
-	    echo "Invoking findbugs program to create $@, please wait."; \
-	    "$(FINDBUGS)/bin/findbugs" \
-		$(FINDBUGS_ARGS) \
+spotbugs.htm:  ptII.fb ptII.fbp spotbugs-exclude.xml makefile
+	@if [ -f "$(SPOTBUGS)/bin/spotbugs" ]; then \
+	    echo "Invoking spotbugs program to create $@, please wait."; \
+	    "$(SPOTBUGS)/bin/spotbugs" \
+		$(SPOTBUGS_ARGS) \
 		-html:fancy.xsl "$(PTII)" > $@; \
 	else \
-	    echo "BTW - FindBugs program not found, skipping."; \
-	    echo "BTW - FindBugs program not found, skipping." > $@; \
+	    echo "BTW - Spotbugs program not found, skipping."; \
+	    echo "BTW - Spotbugs program not found, skipping." > $@; \
 	fi
 
 
-findbugsOut.xml:  ptII.fb findbugs-exclude.xml makefile
+spotbugsOut.xml:  ptII.fb spotbugs-exclude.xml makefile
 	rm -f $@;
-	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
-	    echo "Invoking findbugs program to create $@, please wait."; \
-	    echo "$(FINDBUGS)/bin/findbugs $(FINDBUGS_ARGS) -xml -output $@ $(PTII)"; \
-	    "$(FINDBUGS)/bin/findbugs" \
-		$(FINDBUGS_ARGS) \
+	@if [ -f "$(SPOTBUGS)/bin/spotbugs" ]; then \
+	    echo "Invoking spotbugs program to create $@, please wait."; \
+	    echo "$(SPOTBUGS)/bin/spotbugs $(SPOTBUGS_ARGS) -xml -output $@ $(PTII)"; \
+	    "$(SPOTBUGS)/bin/spotbugs" \
+		$(SPOTBUGS_ARGS) \
 		-xml -output $@ "$(PTII)" ; \
 	else \
-	    echo "BTW - FindBugs program not found, skipping."; \
+	    echo "BTW - Spotbugs program not found, skipping."; \
 	fi
 
 #############################################################################
