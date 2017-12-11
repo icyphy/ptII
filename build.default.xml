@@ -513,6 +513,16 @@
     </condition>
   </target>
 
+  <target name="-check-if-npmjs-org-is-up"
+          depends="-check-node-works, -check-npm-works"
+          if="${npm.works}"
+          >
+    <echo>Check to see if https://www.npmjs.org is up.</echo>
+    <condition property="npmjs-org-is-up">
+      <http url="https://www.npmjs.org"/>
+    </condition>
+  </target>
+
   <target name="-check-npm-works"
           depends="-check-node-works, -check-npm"
           if="${node.works}">
@@ -967,7 +977,7 @@ For example:
   </target>
 
   <target name="jsdoc-install"
-	  depends="-check-jsdoc, -check-node-works, -check-npm-works"
+	  depends="-check-jsdoc, -check-node-works, -check-npm-works, -check-if-npmjs-org-is-up, -jsdoc-no-network-message"
           if="${node.works}"
 	  unless="jsdoc.command.exists">
     <mkdir dir="${basedir}/node_modules"/>
@@ -978,9 +988,14 @@ For example:
     </exec>
   </target>
 
+  <target name="-jsdoc-no-network-message"
+          unless="${npmjs-org-is-up}">
+    <echo>The node binary was not found or does not work or npmjs.org was not reachable, so the network is probably down, so there is no point in trying npm.</echo>
+  </target>
+
   <target name="jsdoc-update"
-	  depends="jsdoc-install, -check-npm-works"
-          if="${node.works}">
+	  depends="-check-if-npmjs-org-is-up, -jsdoc-no-network-message, jsdoc-install, -check-npm-works"
+          if="${npmjs-org-is-up}">
     <exec executable="${npm.executable}"
           timeout="${timeout}">
       <arg value="update"/>
