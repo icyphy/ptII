@@ -171,22 +171,24 @@ public class TextDisplayHelper extends HelperBase {
                 _tableau = new DisplayWindowTableau(_actor, textEffigy, title);
                 _frame = _tableau.frame.get();
 
-                // Require a vertical scrollbar always so that we don't get a horizontal
-                // scrollbar when it appears.
-                JScrollPane pane = ((TextEditor) _frame)
+                if (_frame != null) {
+                    // Require a vertical scrollbar always so that we don't get a horizontal
+                    // scrollbar when it appears.
+                    JScrollPane pane = ((TextEditor) _frame)
                         .getScrollPane();
-                if (pane != null) {
-                    pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    if (pane != null) {
+                        pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    }
+
+                    textArea = ((TextEditor) _frame).text;
+
+                    // FIXME: Any way to get these in as parameters?
+                    textArea.setRows(10);
+                    textArea.setColumns(40);
+                    
+                    _actor.setFrame(_frame);
+                    _frame.pack();
                 }
-
-                textArea = ((TextEditor) _frame).text;
-
-                // FIXME: Any way to get these in as parameters?
-                textArea.setRows(10);
-                textArea.setColumns(40);
-                
-                _actor.setFrame(_frame);
-                _frame.pack();
             } catch (Exception ex) {
                 MessageHandler.error(
                         "Error opening window for text display.", ex);
