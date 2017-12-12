@@ -148,16 +148,10 @@ public class TextDisplayHelper extends HelperBase {
 
             try {
                 if (containerEffigy == null) {
-                    throw new IllegalActionException(
-                            "Cannot find effigy for top level \""
-                                    + _actor.toplevel().getFullName()
-                                    + "\".  This can happen when a is invoked"
-                                    + " with a non-graphical execution engine"
-                                    + " such as ptolemy.moml.MoMLSimpleApplication"
-                                    + " but the "
-                                    + " ptolemy.moml.filter.RemoveGraphicalClasses"
-                                    + " MoML filter is not replacing the"
-                                    + " class that extends Display.");
+                    // If we have no container Effigy, then we are probably running
+                    // without a graphical display, or with MoMLSimpleApplication, which
+                    // does pop up a window.
+                    return;
                 }
                 TextEffigy textEffigy = TextEffigy.newTextEffigy(
                         containerEffigy, "");
