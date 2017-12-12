@@ -213,16 +213,17 @@ public class SocketHelper extends VertxHelperBase {
                         socketClient.callMember("_opened", socket, client);
                     }
                 } else {
-                    String message = "";
+                    StringBuffer message = new StringBuffer();
                     Throwable cause = response.cause();
+                    Throwable initialCause = cause;
                     // print all nested causes
                     while (cause != null) {
-                        message = message + "\n" + cause.getMessage();
+                        message.append("\n" + cause.getMessage());
                         cause = cause.getCause();
                     }
 
                     String errorMessage = "Failed to connect: " + message;
-                    _error(socketClient, errorMessage, cause);
+                    _error(socketClient, errorMessage, initialCause);
                 }
             });
         });
