@@ -1225,6 +1225,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             // This is tested by
             // $PTII/bin/capecode /Users/cxh/src/ptII11.0.devel/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
             // Which calls getResource() with an integer timeout.
+            // FIXME: timeout is not yet used.
             timeout = ((Integer)options).intValue();
         } else if (options instanceof String) {
             encoding = ((String)options).trim();
@@ -2015,7 +2016,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         _setTimeout(function, milliseconds, id);
-        return Integer.valueOf(id);
+        return id;
     }
     
     /** Stop execution of the enclosing model.
