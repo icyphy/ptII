@@ -238,7 +238,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
                 WeakReference<JavaScript> actor = _openCameras.get(cameraName);
                 if (actor != null && actor.get() != null) {
                     _actor.error(
-                            "Camera " + cameraName + " has already been opened by "
+                            "Camera " + (cameraName == null ? "null" : cameraName)
+                            + " has already been opened by "
                             + actor.get().getFullName()
                             + " Cannot be used again by "
                             + _actor.getFullName());
