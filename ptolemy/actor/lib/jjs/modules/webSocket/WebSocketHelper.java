@@ -176,6 +176,8 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return True if the socket is open.
      */
     public boolean isOpen() {
+        // FIXME: Spotbugs says that there is inconsistent synchronization here because
+        // access to _webSocket is not locked.
         if (_webSocket == null) {
             return false;
         }
@@ -327,6 +329,9 @@ public class WebSocketHelper extends VertxHelperBase {
         // Note that this should be called in the director thread, not
         // in the Vert.x thread, so blocking is OK. We need to stall
         // execution of the model to not get ahead of the capability.
+
+        // FIXME: Spotbugs says that there is inconsistent synchronization here because
+        // access to _webSocket is not locked.
         if (_webSocket.writeQueueFull()) {
             // Blocking _must not_ be done in the verticle.
             // If this is called outside the director thread, then defer to the
@@ -412,7 +417,11 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         // NOTE: If the message exceeds the frame buffer size, the following will break
         // it down into chunks.
+
+        // FIXME: Spotbugs says that there is inconsistent synchronization here because
+        // access to _webSocket is not locked.
         _webSocket.writeBinaryMessage((Buffer)message);
+
         /* NOTE: Previously, we had a bug where we created two verticles, and the following
          * workaround _seemed_ to solve the problem. It was an illusion.
         String eventBusID = _webSocket.binaryHandlerID();
