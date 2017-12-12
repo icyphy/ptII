@@ -2159,7 +2159,7 @@ bldmastrcoverage:
 		remote1doc \
 		remote1ojdcheck \
 		remote1doccheck \
-		remote1findbugs \
+		remote1spotbugs \
 		remote1jnlp \
 		test_setup \
 		updateDOPCenterImage
@@ -2735,14 +2735,14 @@ remote1doccheck:
 	(cd $(REMOTE1PTIIDIST)/doc; rm -rf doccheck; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k doccheck)
 
-remote1findbugs:
+remote1spotbugs:
 	@echo "#"
-	@echo "# Now generating findbugs files in $(REMOTE1PTIIDIST)/doc"
+	@echo "# Now generating spotbugs files in $(REMOTE1PTIIDIST)/doc"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE1PTIIDIST)/doc; rm -rf findbugs.*; \
-		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k PTII=$(REMOTE1PTIIDIST) findbugs)
+	(cd $(REMOTE1PTIIDIST)/doc; rm -rf spotbugs.*; \
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k PTII=$(REMOTE1PTIIDIST) spotbugs)
 
 # Build jnlp installers
 remote1jnlp:
