@@ -381,8 +381,13 @@ $CLASSPATH/ptolemy/demo/CapeCode/CapeCode1.xml
 $CLASSPATH/ptolemy/demo/CapeCode/CapeCode2.xml
 $CLASSPATH/ptolemy/demo/CapeCode/CapeCode3.xml
 $CLASSPATH/ptolemy/demo/CapeCode/CapeCode4.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Contactor.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Controller.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Generator.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorContactorLoad.xml
+$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorContactorLoadSimXFMU.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulator.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorFMUProtector.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector.xml
