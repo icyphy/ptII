@@ -53,7 +53,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9702075257129573">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{385.36297817887964, 135.06130649556536}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{385.36297817887976, 135.06130649556536}">
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, 375.0]">
@@ -165,7 +165,7 @@
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sate Machines">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="State Machines">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 330.0]">
         </property>
@@ -770,7 +770,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 300.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ibm.com">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.ibm.com/software/products/en/ratirhapfami#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
