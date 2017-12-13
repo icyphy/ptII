@@ -110,10 +110,14 @@ module.exports = (function () {
                     if (accessorExtends[accessor].length > 0) {
                         accessorExtends[accessor].forEach(function(superclass) {
                             var modules = accessorsToModules[superclass + ".js"];
-                            if (modules.length > 0) {
-                                modules.forEach(function(module) {
-                                    accessorsToModules[accessor].push(module);
-                                });
+                            if (typeof modules === 'undefined') {
+                                console.log("checkIfDone(); accessorsToModules[" + superclass + "\".js\"] returned undefined? Perhaps that file is missing?");
+                            } else {
+                                if (modules.length > 0) {
+                                    modules.forEach(function(module) {
+                                        accessorsToModules[accessor].push(module);
+                                    });
+                                }
                             }
                         });
                     }
@@ -168,9 +172,60 @@ module.exports = (function () {
                     }
                 }
 
+                // Invert testsToAccessors so that we can list the accessors.
+                var testModel, accessorsToTests = {};
+                for (testModel in testsToAccessors) {
+                    if (testsToAccessors.hasOwnProperty(testModel)) {
+                        // console.log('accessorMapCapeCode.js: ' + testsToAccessors[testModel] + ":: " + testModel);
+                        var accessorIndex;
+                        for (accessorIndex in testsToAccessors[testModel]) {
+                            var accessorUsed = testsToAccessors[testModel][accessorIndex];
+                            // console.log('accessorMapCapeCode.js: ' + accessorUsed + "-- " + testModel);
+                        }
+                        if (typeof accessorsToTests[accessorUsed] === 'undefined') {
+                            accessorsToTests[accessorUsed] = [];
+                        }
+                        accessorsToTests[accessorUsed].push(testModel);
+                    }
+                }
+
+                // Generate Accessor Idx.htm files
+                var accessorUsed;
+                for (accessorUsed in accessorsToTests) {
+                    if (accessorsToTests.hasOwnProperty(accessorUsed)) {
+                        var text = "<html>\n\
+<head>\n\
+<title>Index for " + accessorUsed + "</title>\n\
+<link href=\"../../../../../../doc/default.css\" rel=\"stylesheet\" type=\"text/css\">\n\
+</head>\n\
+<body>\n\
+  <h2>" + accessorUsed + "</h2>\n\
+<p>Below are demonstration models that use " + accessorUsed + "</p>\n    <ul>\n";
+                        var testModel;
+                        for (testModel in accessorsToTests[accessorUsed]) {
+                            var modelPath = accessorsToTests[accessorUsed][testModel]
+                            text += '      <li> <a href="../../../../../../' + modelPath + '">' + modelPath + '</a></li>\n';
+                        }
+                        text += "    </ul>\n\
+</body>\n\
+</html>\n\
+";
+                        // FIXME: This assumes all accessors are in this location.
+                        // We could try to parse the script parameter...
+                        var accessorIndexFile = './org/terraswarm/accessor/accessors/web/' + accessorUsed + 'Idx.html';
+                        console.log('Writing index file ' + accessorIndexFile);
+                        fs.writeFile(accessorIndexFile, text, function(err) {
+                            if (err) {
+                                console.log('Error writing Accessor index file: ' + accessorIndexFile + ': ' + err);
+                            }
+                        });
+                    }
+                }
+
                 var results = {};
                 results.testsToAccessors = testsToAccessors;
                 results.accessorsToHosts = accessorsToHosts;
+                results.accessorsToTests = accessorsToTests;
 
                 fs.writeFile(resultsFile, JSON.stringify(results), 'utf8', function (err) {
                     if (err) {
