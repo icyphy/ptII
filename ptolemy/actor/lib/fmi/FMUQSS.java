@@ -2181,17 +2181,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Reason-- when input variable models get variable order, will want to
         // read the model order from the model. Can't do that until have tokens.
         // But don't have tokens yet at this point in the initialization.
-        final int ivMdlOrder = _qssSolver.getStateModelOrder();
+        final int ivModelOrder = _qssSolver.getStateModelOrder();
         for (int ii = 0; ii < ivCt; ++ii) {
             // Create the model.
             // Note the port may not have a token on it yet. Therefore,
             // while can create the model, can't initialize its time or value.
-            final ModelPolynomial ivMdl = new ModelPolynomial(ivMdlOrder);
-            _inputVariableModels[ii] = ivMdl;
-            // ivMdl.tMdl = currentTime; // TODO: Confirm where time set.
-            ivMdl.claimWriteAccess();
+            final ModelPolynomial ivModel = new ModelPolynomial(ivModelOrder);
+            _inputVariableModels[ii] = ivModel;
+            // ivModel.tModel = currentTime; // TODO: Confirm where time set.
+            ivModel.claimWriteAccess();
             // Give model to the integrator.
-            _qssSolver.setInputVariableModel(ii, ivMdl);
+            _qssSolver.setInputVariableModel(ii, ivModel);
         }
 
         // Load input variable models with data.
@@ -2202,7 +2202,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Get the model.
             // We only initialize the first coefficient
             // since we don't have other coefficients yet.
-            final ModelPolynomial ivMdl = _inputVariableModels[ii];
+            final ModelPolynomial ivModel = _inputVariableModels[ii];
             double initialValue;
             // Look for a token.
             if (input.port.hasToken(0)) {
@@ -2213,20 +2213,20 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     double[] derivatives = ((SmoothToken) token)
                             .derivativeValues();
                     int factorial = 1;
-                    for (int i = 1; i <= ivMdlOrder; i++) {
+                    for (int i = 1; i <= ivModelOrder; i++) {
                         if (derivatives == null || derivatives.length < i) {
                             // Derivative not provided. Set it to zero.
-                                ivMdl.coeffs[i] = 0.0;
+                                ivModel.coeffs[i] = 0.0;
                         } else {
-                                ivMdl.coeffs[i] = derivatives[i-1]/factorial;
+                                ivModel.coeffs[i] = derivatives[i-1]/factorial;
                             factorial = factorial * i;
                         }
                     }
                 } else if (token instanceof DoubleToken) {
                     initialValue = ((DoubleToken) token).doubleValue();
-                    for (int i = 1; i <= ivMdlOrder; i++) {
+                    for (int i = 1; i <= ivModelOrder; i++) {
                             // Derivative not provided. Set it to zero.
-                            ivMdl.coeffs[i] = 0.0;
+                            ivModel.coeffs[i] = 0.0;
                     }
                 } else {
                     throw new IllegalActionException(this, String.format(
@@ -2241,9 +2241,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // to handle that as a real possibility.
                 // Fill in a default value, taken from the FMU.
                 initialValue = input.start;
-                for (int i = 1; i <= ivMdlOrder; i++) {
+                for (int i = 1; i <= ivModelOrder; i++) {
                     // Derivative not provided. Set it to zero.
-                        ivMdl.coeffs[i] = 0.0;
+                        ivModel.coeffs[i] = 0.0;
                         }
                 if (_debugging) {
                     _debugToStdOut(String
@@ -2254,8 +2254,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
             // Save the last double token seen at this port.
             _inputs.get(ii).lastInputPortValue = initialValue;
-            ivMdl.coeffs[0] = initialValue;
-            ivMdl.tMdl = currentTime;
+            ivModel.coeffs[0] = initialValue;
+            ivModel.tModel = currentTime;
         }
 
         // Validate the integrator.
@@ -2486,13 +2486,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 continue;
             }
             if (evaluate) {
-                ModelPolynomial ivMdl = _qssSolver
+                ModelPolynomial ivModel = _qssSolver
                         .getInputVariableModel(curIdx);
                 // Check if the input is a smooth token. This can be done by
                 // checking whether whether higher order coefficients are zero.
                 int sum = 0;
-                for (int i = 1; i < ivMdl.coeffs.length; i++) {
-                    sum += ivMdl.coeffs[i];
+                for (int i = 1; i < ivModel.coeffs.length; i++) {
+                    sum += ivModel.coeffs[i];
                 }
 
                 // Reevaluate inputs which are smooth token.
@@ -2518,12 +2518,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     *  that might be given in the token, and set any remaining derivatives
     *  required by the model to zero. Otherwise, set any derivatives
     *  required by the model to zero.
-    *  @param ivMdl The input model to parameterize.
+    *  @param ivModel The input model to parameterize.
     *  @param token The token values for parameterization.
     *  @exception IllegalActionException If the specified token cannot be converted
     *   to a double.
     */
-    private void _setModelFromToken(ModelPolynomial ivMdl, Token token)
+    private void _setModelFromToken(ModelPolynomial ivModel, Token token)
             throws IllegalActionException {
 
         // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
@@ -2534,18 +2534,18 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // In all cases, the first coefficient is simply the current value of
         // the token.
-        ivMdl.coeffs[0] = doubleToken.doubleValue();
+        ivModel.coeffs[0] = doubleToken.doubleValue();
 
         double[] derivatives = null;
         if (doubleToken instanceof SmoothToken) {
             derivatives = ((SmoothToken) token).derivativeValues();
-            final int ncoeffs = ivMdl.coeffs.length;
+            final int ncoeffs = ivModel.coeffs.length;
             int factorial = 1;
             for (int i = 1; i < ncoeffs; i++) {
                 if (derivatives == null || derivatives.length < i) {
-                    ivMdl.coeffs[i] = 0.0;
+                    ivModel.coeffs[i] = 0.0;
                 } else {
-                    ivMdl.coeffs[i] = derivatives[i - 1] / factorial;
+                    ivModel.coeffs[i] = derivatives[i - 1] / factorial;
                     factorial = factorial * i;
                 }
             }
@@ -2782,7 +2782,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Update the input variable models if necessary.
         int curIdx = -1;
-        boolean updatedInputVarMdl = false;
+        boolean updatedInputVarModel = false;
         for (Input input : _inputs) {
             curIdx++;
             // Guarantee that _inputs() has the same count of inputs
@@ -2796,19 +2796,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // Specify input which has changed.
                 // final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates.get(input.scalarVariable.name);
                 // _updateModelVariableAttribute (modVarIdx, true);
-                updatedInputVarMdl = true;
+                updatedInputVarModel = true;
             }
         }
         // Make sure that the index matches the number of input variables.
         assert (_qssSolver.getInputVariableCount() == curIdx);
 
         // Trigger rate-event if necessary.
-        if (force || updatedInputVarMdl || _qssSolver.needRateEvent()) {
+        if (force || updatedInputVarModel || _qssSolver.needRateEvent()) {
             if (_debugging) {
                 _debugToStdOut(String
-                        .format("-- Id{%d} trigger rate-event because force=%b, updatedInputVarMdl=%b, _qssIgr.needRateEvt()=%b",
+                        .format("-- Id{%d} trigger rate-event because force=%b, updatedInputVarModel=%b, _qssIgr.needRateEvt()=%b",
                                 System.identityHashCode(this), force,
-                                updatedInputVarMdl, _qssSolver.needRateEvent()));
+                                updatedInputVarModel, _qssSolver.needRateEvent()));
             }
             try {
                 _qssSolver.triggerRateEvent();
@@ -2831,15 +2831,15 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private void _updateInputModel(Input input, Time currentTime, Token token,
             int curIdx) throws IllegalActionException {
         // Update the model.
-        final ModelPolynomial ivMdl = _inputVariableModels[curIdx];
+        final ModelPolynomial ivModel = _inputVariableModels[curIdx];
         // Set model from token.
-        _setModelFromToken(ivMdl, token);
+        _setModelFromToken(ivModel, token);
         // Update time.
-        ivMdl.tMdl = currentTime;
+        ivModel.tModel = currentTime;
         if (_debugging) {
             _debugToStdOut(String.format(
                     "-- Id{%d} set input variable model %d to %s",
-                    System.identityHashCode(this), curIdx, ivMdl.toString()));
+                    System.identityHashCode(this), curIdx, ivModel.toString()));
         }
     }
 
