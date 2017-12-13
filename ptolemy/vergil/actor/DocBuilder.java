@@ -313,7 +313,7 @@ public class DocBuilder extends Attribute {
                             + "/ptolemy/configs/doc/models.txt\" doc/codeDoc");
                 }
             } else {
-		commands.add("make codeDoc/js/index.html");
+                commands.add("make codeDoc/js/index.html");
                 commands.add("make codeDoc" + applicationName
                         + "/doc/codeDoc/tree.html");
                 commands.add("make APPLICATION=" + applicationName

@@ -724,7 +724,7 @@ public class JarSigner {
                     // java.security.cert.X509Certificate[], boolean,
                     // java.lang.String,
                     // java.security.cert.X509Certificate,
-                    // java.lang.String, 
+                    // java.lang.String,
                     // ---> New arg? java.lang.String,
                     // com.sun.jarsigner.ContentSigner,
                     // java.lang.String[], java.util.zip.ZipFile)
@@ -735,9 +735,9 @@ public class JarSigner {
                     // http://www.oracle.com/technetwork/java/javase/8u101-relnotes-3021761.html
                     // says that -tsadigestalg was SHA-1, but is now
                     // SHA-256 by default.  So, we try SHA-1.
-                    
+
                     // See also https://bugs.openjdk.java.net/browse/JDK-8038837
-                    
+
                     constructor = _findConstructor(blockClass,
                             sfg.getJDKSignatureFileClass(), PrivateKey.class,
                             String.class,
@@ -751,7 +751,7 @@ public class JarSigner {
                     block = constructor.newInstance(sfg.getJDKSignatureFile(), /* explicit argument on the constructor */
                             privateKey,
                             /*signatureAlgorithm*/null, certChain, externalSF,
-                            null, null, null, 
+                            null, null, null,
                             // Here is the diff between ~ 1.8.0_91 and 1.8.0_152
                             "SHA-1",
                             null, null, zipFile);
@@ -759,7 +759,7 @@ public class JarSigner {
                 } catch (NoSuchMethodException ex0) {
                     try {
 
-                        // Java 1.8.0_91 
+                        // Java 1.8.0_91
                         // javap -classpath /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/../lib/tools.jar sun.security.tools.jarsigner.SignatureFile\$Block
 
                         //sun.security.tools.jarsigner.SignatureFile$Block(sun.security.tools.jarsigner.SignatureFile,

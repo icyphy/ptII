@@ -111,14 +111,14 @@ public class Dictionary extends TypedAtomicActor {
         triggerKeys = new TypedIOPort(this, "triggerKeys", true, false);
         new SingletonParameter(triggerKeys, "_showName").setExpression("true");
         new StringAttribute(triggerKeys, "_cardinal").setExpression("SOUTH");
-        
+
         triggerValues = new TypedIOPort(this, "triggerValues", true, false);
         new SingletonParameter(triggerValues, "_showName").setExpression("true");
         new StringAttribute(triggerValues, "_cardinal").setExpression("SOUTH");
-        
+
         values = new TypedIOPort(this, "values", false, true);
-        new SingletonParameter(values, "_showName").setExpression("true");      
-        
+        new SingletonParameter(values, "_showName").setExpression("true");
+
         value = new TypedIOPort(this, "value", true, false);
         new SingletonParameter(value, "_showName").setExpression("true");
 
@@ -143,7 +143,7 @@ public class Dictionary extends TypedAtomicActor {
         updateFile = new Parameter(this, "updateFile");
         updateFile.setTypeEquals(BaseType.BOOLEAN);
         updateFile.setExpression("false");
-        
+
         loggingDirectory = new FileParameter(this, "loggingDirectory");
     }
 
@@ -253,13 +253,13 @@ public class Dictionary extends TypedAtomicActor {
      *  in the dictionary. The order is arbitrary.
      */
     public TypedIOPort triggerKeys;
-    
+
     /** Upon receiving any token at this port, this actor will produce
      *  on the values output an array containing all the values of entries
      *  in the dictionary. The order is arbitrary.
      */
     public TypedIOPort triggerValues;
-    
+
     /** Upon receiving any token at the triggerValues port, this actor
      *  will produce on this output an array containing all the values
      *  of entries in the dictionary. The order is arbitrary.
@@ -441,12 +441,12 @@ public class Dictionary extends TypedAtomicActor {
         }
         if (triggerValues.getWidth() > 0 && triggerValues.hasToken(0)) {
             // Must consume the trigger, or DE will fire me again.
-        	triggerValues.get(0);
-        	
-        	Token[] theResult = new Token[_store.values().size()];
+                triggerValues.get(0);
+
+                Token[] theResult = new Token[_store.values().size()];
             int i = 0;
             for (Token value : _store.values()) {
-            	theResult[i] = value;
+                    theResult[i] = value;
                 i++;
             }
             ArrayToken resultToken = new ArrayToken(value.getType(), theResult);
@@ -647,7 +647,7 @@ public class Dictionary extends TypedAtomicActor {
                 throws IllegalActionException {
             return null;
         }
-        
+
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */

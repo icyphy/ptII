@@ -1,5 +1,5 @@
 // Simple test model for testing for leaks in Manager.
-/* 
+/*
    Copyright (c) 2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
@@ -69,10 +69,10 @@ public class ManagerLeak {
 
         top.setManager(null);
         top.setContainer(null);
-        
+
         manager = null;
     }
-    
+
     public static void main(String[] args) {
         try {
             ManagerLeak managerLeak = new ManagerLeak();

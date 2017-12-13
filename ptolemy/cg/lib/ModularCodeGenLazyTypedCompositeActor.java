@@ -523,9 +523,9 @@ LazyTypedCompositeActor {
      */
     protected static void _transferOutputs(TypedCompositeActor compositeActor,
             IOPort port, Object outputTokens) throws IllegalActionException {
-	// The accessors code generator does not need
-	// ModularCodeGenLazyTypedCompositeActor.
-	CompiledCompositeActor._transferOutputs(compositeActor, port, outputTokens);
+        // The accessors code generator does not need
+        // ModularCodeGenLazyTypedCompositeActor.
+        CompiledCompositeActor._transferOutputs(compositeActor, port, outputTokens);
     }
 
     ///////////////////////////////////////////////////////////////////

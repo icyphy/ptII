@@ -860,7 +860,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   type lattice.
      */
     protected void _checkType(Token token) throws IllegalActionException {
-        // CapeCode: Check for GENERAL here and avoid a possible hang when 
+        // CapeCode: Check for GENERAL here and avoid a possible hang when
         // calling localFunctions.js convertToToken() and we fall through
         // to a possibly very large RecordToken.
         if (_resolvedType.equals(BaseType.UNKNOWN)

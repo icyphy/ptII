@@ -128,16 +128,16 @@ public class RestrictedJavaScriptInterface {
      *  @param arguments A variable number of arguments, where the
      *  first optional argument is an Object that can be a String (the
      *  encoding), an integer (the timeout) or a JSON object with
-     *  encoding and timeout fields, see 
+     *  encoding and timeout fields, see
      *  {@link ptolemy.actor.lib.jjs.JavaScript#getResource(String, Object...)}.
-     *  The second optional argument is a callback, the first argument to 
+     *  The second optional argument is a callback, the first argument to
      *  the callback is the error, if any, the second element is the data, if any.
      *  @return The resource
      *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public Object getResource(String uri, Object... arguments) throws IllegalActionException {        
+    public Object getResource(String uri, Object... arguments) throws IllegalActionException {
         return _actor.getResource(uri, arguments);
     }
 

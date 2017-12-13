@@ -124,7 +124,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class NashornAccessorHostApplication {
-    
+
     /** Create an orchestrator for a top-level accessor.
      *  @param name The name for the orchestrator.
      *  @return an aorchestrator for the top-level accessor.
@@ -161,7 +161,7 @@ public class NashornAccessorHostApplication {
             _engine.eval(FileUtilities.openForReading(
                     "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
                     null));
-            
+
             // Create a top-level orchestrator that provides setTimeout(), etc.
             _orchestrator = new ActorSubstitute("main");
             // The following will make setTimeout(), etc., available.
@@ -180,7 +180,7 @@ public class NashornAccessorHostApplication {
                     ((Invocable)_engine)
                             .invokeFunction("processCommandLineArguments", (Object)args);
                 } catch (NoSuchMethodException | ScriptException e) {
-                    System.err.println("NashornAccessorHostApplication.evaluate(" 
+                    System.err.println("NashornAccessorHostApplication.evaluate("
                             + Arrays.toString(args) + ") failed with: " + e);
                     e.printStackTrace();
                 }
@@ -207,21 +207,21 @@ public class NashornAccessorHostApplication {
             StringUtilities.exit(1);
         }
     }
-    
-    //////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
     ////                       Private Variables                  ////
-    
+
     /** JavaScript engine to execute scripts. We use only one and share
      *  it across all scripts and accessor instances created by this process.
      */
     private static ScriptEngine _engine;
-    
+
     /** The orchestrator that provides the top-level event loop thread. */
     private static ActorSubstitute _orchestrator;
 
-    //////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                       Inner Classes                      ////
-    
+
     /** Class that substitute for the JavaScript actor so that setTimeout,
      *  setInterval, and CapeCode modules work in a pure Nashorn host.
      *  This class provides an event loop that invokes callback functions.
@@ -233,18 +233,18 @@ public class NashornAccessorHostApplication {
      *  calls {@link #eventLoop()}.
      */
     public static class ActorSubstitute implements AccessorOrchestrator {
-        
+
         /** Construct an actor substitute instance.
          *  @param name The name of the actor substitute instance.
          */
         public ActorSubstitute(String name) {
             _name = name;
         }
-        
+
         /** Clear the interval with the specified handle, if it
          *  has not already executed.
          *  @param timer The timeout handle.
-         *  @throws IllegalActionException If the handle is invalid.
+         *  @exception IllegalActionException If the handle is invalid.
          *  @see #setTimeout(Runnable, int)
          *  @see #setInterval(Runnable, int)
          */
@@ -256,7 +256,7 @@ public class NashornAccessorHostApplication {
         /** Clear the timeout with the specified handle, if it
          *  has not already executed.
          *  @param timer The timeout handle.
-         *  @throws IllegalActionException If the handle is invalid.
+         *  @exception IllegalActionException If the handle is invalid.
          *  @see #setTimeout(Runnable, int)
          *  @see #setInterval(Runnable, int)
          */
@@ -275,7 +275,7 @@ public class NashornAccessorHostApplication {
         public String description() throws IllegalActionException {
             return "Orchestrator for executing accessors.";
         }
-        
+
         /** Report an error. */
         public void error(String message) {
             System.err.println(message);
@@ -289,10 +289,10 @@ public class NashornAccessorHostApplication {
             Thread thread = new Thread() {
                 public void run() {
                     synchronized(ActorSubstitute.this) {
-                        while(!_wrapupRequested) {
+                        while (!_wrapupRequested) {
                             // System.out.println(_name + ": event loop thread: " + Thread.currentThread());
                             // If there are no pending callbacks, then wait for notification.
-                            while(_pendingCallbacks.isEmpty()) {
+                            while (_pendingCallbacks.isEmpty()) {
                                 // System.out.println(_name + ": waiting for callbacks: " + Thread.currentThread());
                                 try {
                                     ActorSubstitute.this.wait();
@@ -356,7 +356,7 @@ public class NashornAccessorHostApplication {
         }
 
         /** Return the name specified in the constructor.
-         *  @see #setName(String)   
+         *  @see #setName(String)
          */
         @Override
         public String getName() {
@@ -376,12 +376,12 @@ public class NashornAccessorHostApplication {
             _pendingCallbacks.offer(function);
             notifyAll();
         }
-        
+
         /** Print a message. */
         public void log(String message) {
             System.out.println(message);
         }
-                
+
         /** Set the name.
          *  @param name The name to use in reporting errors.
          *  @see #getName()
@@ -390,7 +390,7 @@ public class NashornAccessorHostApplication {
         public void setName(String name) {
             _name = name;
         }
-        
+
         /** Specify a function to invoke as a callback periodically with
          *  the specified period (in milliseconds).
          *  @param function The function to invoke.
@@ -412,7 +412,7 @@ public class NashornAccessorHostApplication {
             _pendingTimers.add(timer);
             return timer;
         }
-        
+
         /** Specify a function to invoke as a callback after the specified
          *  time (in milliseconds) has elapsed.
          *  @param function The function to invoke.
@@ -435,7 +435,7 @@ public class NashornAccessorHostApplication {
             _pendingTimers.add(timer);
             return timer;
         }
-        
+
         /** Specify a top-level accessor to associate with this orchestrator
          *  and start an event loop to invoke callbacks. This implementation
          *  ignores the accessor argument.
@@ -449,28 +449,28 @@ public class NashornAccessorHostApplication {
         @Override
         public synchronized void wrapup() throws IllegalActionException {
             _pendingCallbacks.clear();
-            for(Timer timer : _pendingTimers) {
+            for (Timer timer : _pendingTimers) {
                 timer.cancel();
             }
             _pendingTimers.clear();
             _wrapupRequested = true;
             notifyAll();
         }
-        
+
         ///////////////////////////////////////////////////////////
         ////              Private Variables                    ////
-        
+
         /** Name of this orchestrator. */
         private String _name;
 
         /** Queue containing callback functions to be invoked. */
         private ConcurrentLinkedQueue<Runnable> _pendingCallbacks
                 = new ConcurrentLinkedQueue<Runnable>();
-        
+
         /** Set containing pending timers. */
         private HashSet<Timer> _pendingTimers
                 = new HashSet<Timer>();
-        
+
         /** Flag indicating that wrapup has been called. */
         private boolean _wrapupRequested;
     }

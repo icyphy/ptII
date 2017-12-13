@@ -1,5 +1,5 @@
-/* Utility methods for KIELER connector implementations. 
- 
+/* Utility methods for KIELER connector implementations.
+
  Copyright (c) 2015-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -44,10 +44,10 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * Static helper class for the KIELER classes 
- * implementing connector behavior, i.e. special edge 
+ * Static helper class for the KIELER classes
+ * implementing connector behavior, i.e. special edge
  * routing mechanisms.
- * 
+ *
  * @author Ulf Rueegg
  *
  */
@@ -55,7 +55,7 @@ public final class KielerLayoutUtil {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Get the center point of a Perimeter Site. Copied the idea from
      * {@link PerimeterSite#getPoint(double)}.
@@ -130,7 +130,7 @@ public final class KielerLayoutUtil {
         double theta = Math.atan2(normalY, normalX);
         return theta;
     }
-    
+
     /**
      * Find a location for the given object.
      *

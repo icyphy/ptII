@@ -35,9 +35,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
 /**
- * Specialized layout configuration dialog for 
+ * Specialized layout configuration dialog for
  * {@link ptolemy.vergil.actor.ActorGraphModel ActorGraphModel}s.
- * 
+ *
  * @version $Id$
  * @author Ulf Rueegg
  * @since Ptolemy II 11.0
@@ -49,14 +49,14 @@ public class ActorLayoutConfiguration extends AbstractLayoutConfiguration {
 
     /** Whether bends are minimized.  The default value is true. */
     public Parameter minimizeBends;
-    
+
     /** Default value for minimizeBends. */
     public static final boolean DEF_MINIMIZE_BENDS = true;
-    
+
     /**
-     * Creates an initializes a layout configuration specifically tailored 
+     * Creates an initializes a layout configuration specifically tailored
      * for {@link ptolemy.vergil.actor.ActorGraphModel ActorGraphModel}s.
-     * 
+     *
      * @param container The container.
      * @param name The name of this attribute.
      * @exception IllegalActionException If the attribute is not of an
@@ -67,7 +67,7 @@ public class ActorLayoutConfiguration extends AbstractLayoutConfiguration {
     public ActorLayoutConfiguration(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         minimizeBends = new Parameter(this, "minimizeBends");
         minimizeBends.setDisplayName("Minimize edge bends");
         minimizeBends.setTypeEquals(BaseType.BOOLEAN);

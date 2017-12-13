@@ -538,7 +538,7 @@ public class FactorOracle extends ModalController {
             return "function(t:string, s:string) boolean";
         }
 
-	/** A chord function token. */
+        /** A chord function token. */
         protected class ChordFunctionToken extends FunctionToken {
             public ChordFunctionToken() {
                 super(new ChordFunction(), new FunctionType(

@@ -708,7 +708,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
 
         // Key = property name, Value = new class name
 
-        // Needed by: org/ptolemy/ptango/demo/Exception/Exception.xml 
+        // Needed by: org/ptolemy/ptango/demo/Exception/Exception.xml
 
         jsJavaScriptClassChanges.put("script",
                 "ptolemy.actor.parameters.PortParameter");

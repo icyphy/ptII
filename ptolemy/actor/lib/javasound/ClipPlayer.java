@@ -286,7 +286,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         if (!hasTrigger) {
             return;
         }
-        
+
         fileOrURL.update();
         Token newValue = fileOrURL.getToken();
         boolean fileOrURLChanged = false;
@@ -468,7 +468,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     /** True if the actor should block until the end of the clip is reached. */
     private boolean _playToCompletion;
-    
+
     /** Previous fileOrURL so we can tell when it has changed. */
     private Token _previousFileOrURL = null;
 }

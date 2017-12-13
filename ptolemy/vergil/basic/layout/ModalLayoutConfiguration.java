@@ -38,32 +38,32 @@ import ptolemy.kernel.util.NamedObj;
 /**
  * Specialized layout configuration dialog for
  * {@link ptolemy.vergil.modal.FSMGraphModel FSMGraphModel}s.
- * 
+ *
  * @version $Id$
  * @author Ulf Rueegg
- * @since Ptolemy II 11.0 
+ * @since Ptolemy II 11.0
  */
 public class ModalLayoutConfiguration extends AbstractLayoutConfiguration {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public parameters                   ////
-    
+
     /** Whether the edges of FSMs should be routed and drawn as splines. */
     public Parameter drawSplines;
-    
+
     /** Default value for useSplines. */
     public static final boolean DEF_USE_SPLINES = true;
-    
+
     /** Specifies the direction into which the "flow" of the layout points. */
     public ChoiceParameter direction;
-    
+
     /** Default direction. */
     public static final Direction DEF_DIRECTION = Direction.DOWN;
 
     /**
-     * Creates an initializes a layout configuration specifically tailored 
+     * Creates an initializes a layout configuration specifically tailored
      * for {@link ptolemy.vergil.modal.FSMGraphModel FSMGraphModel}s.
-     *  
+     *
      * @param container The container.
      * @param name The name of this attribute.
      * @exception IllegalActionException If the attribute is not of an
@@ -83,6 +83,6 @@ public class ModalLayoutConfiguration extends AbstractLayoutConfiguration {
         direction = new ChoiceParameter(this, "direction", Direction.class);
         direction.setDisplayName("Layout direction");
         direction.setExpression(DEF_DIRECTION.toString());
-        
+
     }
 }

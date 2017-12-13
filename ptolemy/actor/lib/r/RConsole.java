@@ -3,9 +3,9 @@
  * All rights reserved.
  *
  * '$Author$'
- * '$Date$' 
+ * '$Date$'
  * '$Revision$'
- * 
+ *
  * Permission is hereby granted, without written agreement and without
  * license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -35,7 +35,7 @@ import org.rosuda.JRI.Rengine;
 /**
  * A simple buffering console that is used to cache the output from an R session
  * and then can be used to return the console output as a string.
- * 
+ *
  * @author Matt Jones
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -46,23 +46,23 @@ public class RConsole implements RMainLoopCallbacks {
      * text.
      */
     public RConsole() {
-	super();
-	_consoleText = new StringBuffer();
+        super();
+        _consoleText = new StringBuffer();
     }
 
     /** Clear the console. */
     public void clear() {
-	_consoleText = new StringBuffer();
+        _consoleText = new StringBuffer();
     }
 
     /**
      * After an R session has ended, get a String representation of the output
      * of the R session.
-     * 
+     *
      * @return String containing the text of the R session output
      */
     public String getConsoleOutput() {
-	return _consoleText.toString();
+        return _consoleText.toString();
     }
 
     /**
@@ -73,7 +73,7 @@ public class RConsole implements RMainLoopCallbacks {
      * @param oType Ignored in this method.
      */
     public void rWriteConsole(Rengine re, String text, int oType) {
-	_consoleText.append(text);
+        _consoleText.append(text);
     }
 
     //
@@ -85,48 +85,48 @@ public class RConsole implements RMainLoopCallbacks {
      *  @param which Unknown.
      */
     public void rBusy(Rengine re, int which) {
-	System.out.println("rBusy(" + which + ")");
+        System.out.println("rBusy(" + which + ")");
     }
 
     /** Read from the console.
      *  In this class, null is returned.
-     *  @param re The R engine 
+     *  @param re The R engine
      *  @param prompt The prompt
      *  @param addToHistory unknown
      *  @return the string read from the console
      */
     public String rReadConsole(Rengine re, String prompt, int addToHistory) {
-	return null;
+        return null;
     }
 
     /** Show a message.
-     * @param re The R engine 
+     * @param re The R engine
      * @param message The message
      */
     public void rShowMessage(Rengine re, String message) {
-	System.out.println("rShowMessage \"" + message + "\"");
+        System.out.println("rShowMessage \"" + message + "\"");
     }
 
     /** Choose a file.
      * In this class return the empty string.
-     * @param re The R engine 
+     * @param re The R engine
      * @param newFile unused
      * @return The file name.
      */
     public String rChooseFile(Rengine re, int newFile) {
-	return "";
+        return "";
     }
 
     /** Flush the console.
      * In this class, do nothing.
-     * @param re The R engine 
+     * @param re The R engine
      */
     public void rFlushConsole(Rengine re) {
     }
 
     /** Load the history.
      * In this class, do nothing.
-     * @param re The R engine 
+     * @param re The R engine
      * @param filename The file that contains the history.
      */
     public void rLoadHistory(Rengine re, String filename) {
@@ -134,7 +134,7 @@ public class RConsole implements RMainLoopCallbacks {
 
     /** Save history.
      * In this class, do nothing.
-     * @param re The R engine 
+     * @param re The R engine
      * @param filename the file in which to save the history.
      */
     public void rSaveHistory(Rengine re, String filename) {

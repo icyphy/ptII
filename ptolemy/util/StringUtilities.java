@@ -723,7 +723,7 @@ public class StringUtilities {
         String preferencesDirectoryName =
             baseDirectory +
             File.separator +
-            StringUtilities.PREFERENCES_DIRECTORY + File.separator; 
+            StringUtilities.PREFERENCES_DIRECTORY + File.separator;
 
         File preferencesDirectory = new File(preferencesDirectoryName);
 

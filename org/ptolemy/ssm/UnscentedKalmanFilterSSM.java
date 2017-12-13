@@ -64,7 +64,7 @@ implements InferenceActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */   
+     */
     public UnscentedKalmanFilterSSM(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

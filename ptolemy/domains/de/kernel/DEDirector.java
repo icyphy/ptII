@@ -2269,7 +2269,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                             while (!_stopRequested && !_stopFireRequested) {
                                 lastFoundEvent = _eventQueue.get();
                                 currentTime = lastFoundEvent.timeStamp();
-                                
+
                                 if (currentTime.compareTo(getModelStopTime()) > 0) {
                                     // Next event is past the stop time of the model.
                                     // Do not stall.

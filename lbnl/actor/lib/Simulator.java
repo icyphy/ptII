@@ -242,15 +242,18 @@ public class Simulator extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (((BooleanToken) synchronizeWithClient.getToken()).booleanValue()) {
-            this.fireAndSynchronize();
+            fireAndSynchronize();
         } else {
-            this.fireAndSanityCheck();
+            fireAndSanityCheck();
         }
     }
 
     /** The legacy firing behavior.
      * Checks that the client and the simulator are synchronized.
      * Maintained only for backwards-compatibility.
+     * @exception IllegalActionException If thrown while checking the
+     * input for a token, reading or writing to the server, getting
+     * the input or if there are problems with the time.
      */
     public void fireAndSanityCheck() throws IllegalActionException {
         // Check the input port for a token.
@@ -276,7 +279,7 @@ public class Simulator extends SDFTransformer {
                         if (Math.abs(simTimRea - simTimReaPre
                                 - (simTim - simTimPre)) > 0.0001) {
                             final String em = "Simulation time of "
-                                    + this.getFullName()
+                                    + getFullName()
                                     + " is not synchronized." + LS
                                     + "Time step in Ptolemy = "
                                     + (simTim - simTimPre) + LS
@@ -324,11 +327,14 @@ public class Simulator extends SDFTransformer {
 
     /** The new firing behavior.
      * Attempts to synchronize the simulator's timing with that of the client.
+     * @exception IllegalActionException If thrown while checking the
+     * input for a token, reading or writing to the server, getting
+     * the input or if there are problems with the time.
      */
     public void fireAndSynchronize() throws IllegalActionException {
         final Director director = getDirector();
         final Time simTim = director.getModelTime();
-        double[] outTokRea = null;  // If null, we do not need to update the output token 
+        double[] outTokRea = null;  // If null, we do not need to update the output token
         if (server.getSimulationTimeReadFromClient() - simTim.getDoubleValue() <= simTimAbsTol) {
             // We need to update the output token
             outTokRea = server.getDoubleArray();
@@ -352,12 +358,12 @@ public class Simulator extends SDFTransformer {
                         outTokRea = server.getDoubleArray();
                     } else {
                         // Our simulation time is ahead (and it's not just a rounding error)
-                        // Generally this is a bug, implying either our firing was canceled or the client's time has reversed 
+                        // Generally this is a bug, implying either our firing was canceled or the client's time has reversed
                         if (firstFire) {
                             firstFire = false;
                         } else {
                             final String em = "Simulation time of "
-                                    + this.getFullName()
+                                    + getFullName()
                                     + " is not synchronized." + LS
                                     + "Time in Ptolemy = " + simTim.getDoubleValue() + LS
                                     + "Time in client = " + simTimRea;
@@ -404,7 +410,7 @@ public class Simulator extends SDFTransformer {
         double[] dblRea = server.getDoubleArray();
         if (server.getClientFlag() == 1) {
             final String em = "Actor "
-                    + this.getFullName()
+                    + getFullName()
                     + ": "
                     + LS
                     + "When trying to read from server, at time "
@@ -419,7 +425,7 @@ public class Simulator extends SDFTransformer {
                     + "This should not happen during the initialization of this actor.";
             throw new IllegalActionException(em);
         } else if (server.getClientFlag() != 0) {
-            final String em = "Actor " + this.getFullName() + ": " + LS
+            final String em = "Actor " + getFullName() + ": " + LS
                     + "When trying to read from server, at time "
                     + getDirector().getModelTime().getDoubleValue() + ","
                     + "client sent flag " + server.getClientFlag() + "," + LS
@@ -428,7 +434,7 @@ public class Simulator extends SDFTransformer {
         }
         if (dblRea == null) {
             final String em = "Actor "
-                    + this.getFullName()
+                    + getFullName()
                     + ": "
                     + LS
                     + "When trying to read from server, obtained 'null' at time "
@@ -479,7 +485,7 @@ public class Simulator extends SDFTransformer {
 
             final int serFla = server.getClientFlag();
             if (serFla < 0) {
-                String em = "Error: Client " + this.getFullName()
+                String em = "Error: Client " + getFullName()
                         + " terminated communication by sending flag = "
                         + serFla + " at time "
                         + getDirector().getModelTime().getDoubleValue() + ","
@@ -506,7 +512,7 @@ public class Simulator extends SDFTransformer {
                 // step from Ptolemy, then we issue a warning.
                 clientTerminated = true;
                 terminationMessage = "Warning: "
-                        + this.getFullName()
+                        + getFullName()
                         + " terminated communication by sending flag = "
                         + serFla
                         + " at time "
@@ -517,7 +523,7 @@ public class Simulator extends SDFTransformer {
             }
         } catch (java.net.SocketTimeoutException e) {
             String em = "SocketTimeoutException while reading from client in "
-                    + this.getFullName()
+                    + getFullName()
                     + ": "
                     + LS
                     + e.getMessage()
@@ -617,7 +623,7 @@ public class Simulator extends SDFTransformer {
         if (!new File(worDir).isDirectory()) {
             String em = "Error: Working directory does not exist." + LS
                     + "Working directory is set to: '" + worDir + "'" + LS
-                    + "Check configuration of '" + this.getFullName() + "'.";
+                    + "Check configuration of '" + getFullName() + "'.";
             throw new IllegalActionException(this, em);
         }
         // Verify that working directory is not used by any other Simulator actor.
@@ -627,8 +633,8 @@ public class Simulator extends SDFTransformer {
         // wrong connection), then the wrapup method is not called, in which case
         // the map still contains the name of this actor and its output directory.
         final String otherEntry = _simulatorWorkingDirs.putIfAbsent(worDir,
-                this.getFullName());
-        if (!(otherEntry == null || otherEntry.equals(this.getFullName()))) {
+                getFullName());
+        if (!(otherEntry == null || otherEntry.equals(getFullName()))) {
             String em = "Error: Working directory '"
                     + worDir
                     + "'"
@@ -637,7 +643,7 @@ public class Simulator extends SDFTransformer {
                     + LS
                     + otherEntry
                     + LS
-                    + this.getFullName()
+                    + getFullName()
                     + LS
                     + "Each Simulator actor needs to have its own working directory."
                     + LS
@@ -813,7 +819,7 @@ public class Simulator extends SDFTransformer {
             cliPro.disposeWindow();
         }
 
-        cliPro = new ClientProcess(this.getFullName());
+        cliPro = new ClientProcess(getFullName());
         cliPro.redirectErrorStream(true);
         cliPro.setProcessArguments(com, worDir);
         // Check if we run in headless mode
@@ -848,7 +854,7 @@ public class Simulator extends SDFTransformer {
         } catch (Exception e) {
             String em = "Error: Cannot write to simulation log file." + LS
                     + "Simulation log file is '" + slf.getAbsolutePath() + "'"
-                    + LS + "Check configuration of '" + this.getFullName()
+                    + LS + "Check configuration of '" + getFullName()
                     + "'.";
             throw new IllegalActionException(this, e, em);
         }
@@ -857,7 +863,7 @@ public class Simulator extends SDFTransformer {
         if (!cliPro.processStarted()) {
             String em = "Error: Simulation process did not start." + LS
                     + cliPro.getErrorMessage() + LS
-                    + "Check configuration of '" + this.getFullName() + "'.";
+                    + "Check configuration of '" + getFullName() + "'.";
             throw new IllegalActionException(this, em);
         }
     }
@@ -948,7 +954,7 @@ public class Simulator extends SDFTransformer {
                     i, 0);
             ret[i] = scaTok.doubleValue();
             if (Double.isNaN(ret[i])) {
-                final String em = "Actor " + this.getFullName() + ": " + LS
+                final String em = "Actor " + getFullName() + ": " + LS
                         + "Token number " + i + " is NaN at time "
                         + getDirector().getModelTime().getDoubleValue();
                 throw new IllegalActionException(this, em);

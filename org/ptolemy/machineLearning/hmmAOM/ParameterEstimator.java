@@ -977,7 +977,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                           protected variables            ////
+    ////                         protected variables               ////
 
     /** User-defined initial guess array for the state transition matrix. */
     protected double[][] _A0;
@@ -1020,7 +1020,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     double likelihood;
 
     ///////////////////////////////////////////////////////////////////
-    ////                           private variables               ////
+    ////                         private variables                 ////
 
     /** Next receiver to which the next token to be sent is destined. */
     private Receiver _nextReceiver;

@@ -127,8 +127,8 @@ public class FaceRecognizer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Construct an instance of FaceRecognizer and load the face 
+
+    /** Construct an instance of FaceRecognizer and load the face
      *  recognition classifier.
      *  @exception IOException If the shared library cannot be found.
      */
@@ -136,12 +136,12 @@ public class FaceRecognizer {
         super();
         _eyes = new Eyes();
         _faces = new Faces();
-        
+
         /** Load Native C Library for OpenCV */
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         // Use a better loader that looks for the shared library for the Mac.
         OpenCVLoader.loadOpenCV(Core.NATIVE_LIBRARY_NAME);
-        
+
         _faceCascade = new CascadeClassifier();
         String trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_frontalface_default.xml";
         URL url = FileUtilities.nameToURL(trainingFile, null, null);
@@ -169,8 +169,8 @@ public class FaceRecognizer {
                 throw new IOException("Could not load the face file: " + url.getPath());
             }
         }
-        
-        
+
+
         _eyeCascade = new CascadeClassifier();
         trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_eye.xml";
         url = FileUtilities.nameToURL(trainingFile, null, null);
@@ -199,14 +199,14 @@ public class FaceRecognizer {
         }
     }
 
-    /** Apply the specified filter to the source image. 
+    /** Apply the specified filter to the source image.
      *  @param source The source image to transform.
      *  @param filterName "eyes" or "faces".
      *  @return The transformed image.
      *  @exception IllegalActionException If the filter is anything other
      *  than "eyes" or "faces".
      */
-   public BufferedImage filter(BufferedImage source, String filterName) 
+   public BufferedImage filter(BufferedImage source, String filterName)
            throws IllegalActionException {
 
        switch (filterName) {
@@ -284,7 +284,7 @@ public class FaceRecognizer {
     public Rect[] detectFaces(Mat img) throws IOException {
         Mat gray = new Mat();
         Imgproc.cvtColor(img, gray, Imgproc.COLOR_RGB2GRAY);
-        
+
         MatOfRect faces = new MatOfRect();
         _faceCascade.detectMultiScale(gray, faces, 1.1, 5, 0, new Size(_minFaceSize,_minFaceSize),
                 new Size(_maxFaceSize,_maxFaceSize));
@@ -342,11 +342,11 @@ public class FaceRecognizer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
-    /** A filter that detects eyes and faces. 
+
+    /** A filter that detects eyes and faces.
      */
     public class Eyes extends AbstractBufferedImageOp {
-        /** Detect eyes and faces in the source image. 
+        /** Detect eyes and faces in the source image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The image with squares around any eyes and faces.
@@ -356,14 +356,14 @@ public class FaceRecognizer {
             // Get OpenCV image.
             Mat inputImage = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            
+
             // Webcam images are type 0: Type_INT_RGB.
             // Images loaded from files are type 5: Type_3BYTE_BGR
             // We might need to handle other types in the future.
             if (source.getType() != 0) {
-            	Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+                    Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
             } else {
-            	converted = inputImage;
+                    converted = inputImage;
             }
             // Detect faces in image.
             Rect[] faceRectangles;
@@ -384,7 +384,7 @@ public class FaceRecognizer {
 
             _facesRectDetected = faceRectangles;
             _facesDetected = faceRectangles.length;
-            
+
             for (int i = 0; i < _facesDetected; i++) {
                 Rect faceRect = faceRectangles[i];
                 int x = faceRect.x;
@@ -393,24 +393,24 @@ public class FaceRecognizer {
                 int h = faceRect.height;
                 Point p1 = new Point(x, y);
                 Point p2 = new Point(x+w,y+h);
-                
+
                 Scalar color = new Scalar(255,0,0);
                 Scalar gcolor = new Scalar(0,255,0);
-                
+
                 Imgproc.rectangle(converted, p1 , p2 , color ,2, 8, 0);
-                
+
                 Rect roiRect = new Rect(x,y,w,h) ;
                 Mat roi_gray = inputImage.submat(roiRect).clone();
 
                 Size s1 = new Size(0,0);
                 Size s2 = new Size(0,0);
-                
+
                 MatOfRect eyes = new MatOfRect();
-                
+
                 _eyeCascade.detectMultiScale(roi_gray, eyes, 1.2, 3, 0, s1, s2);
                 Rect[] eyeRectangles = eyes.toArray();
-                
-                for (int j = 0;j < eyeRectangles.length; j++){
+
+                for (int j = 0;j < eyeRectangles.length; j++) {
                     Rect eyeRect = eyeRectangles[j];
                     p1 = new Point(x+eyeRect.x,y+eyeRect.y);
                     p2 = new Point(x+eyeRect.x+eyeRect.width,y+eyeRect.y+eyeRect.height);
@@ -418,15 +418,15 @@ public class FaceRecognizer {
                     Imgproc.rectangle(converted, p1 , p2 , gcolor ,2, 8, 0);
                 }
             }
-            
+
             return mat2BufferedImage(converted);
         }
     }
-    
-    /** A filter that detects faces. 
+
+    /** A filter that detects faces.
      */
     public class Faces extends AbstractBufferedImageOp {
-        /** Detect eyes and faces in the source image. 
+        /** Detect eyes and faces in the source image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The image with squares around any eyes and faces.
@@ -436,14 +436,14 @@ public class FaceRecognizer {
             // Get OpenCV image.
             Mat inputImage = bufferedImage2Mat(source);
             Mat converted = new Mat();
-            
+
             // Webcam images are type 0: Type_INT_RGB.
             // Images loaded from files are type 5: Type_3BYTE_BGR
             // We might need to handle other types in the future.
             if (source.getType() != 0) {
-            	Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+                    Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
             } else {
-            	converted = inputImage;
+                    converted = inputImage;
             }
 
             // Detect faces in image.
@@ -464,26 +464,26 @@ public class FaceRecognizer {
             }
 
             _facesDetected = faceRectangles.length;
-            
+
             return mat2BufferedImage(converted);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The eye recognition classifier.  */
     private CascadeClassifier _eyeCascade;
-    
+
     /** Transform to detect eyes. */
     private Eyes _eyes;
-    
+
     /** The face recognition classifier.  */
     private CascadeClassifier _faceCascade;
-    
+
     /** Transform to detect faces.  */
     private Faces _faces;
-    
+
     /** The number of faces detected. */
     private int _facesDetected = 0;
 

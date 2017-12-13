@@ -275,6 +275,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param dataset The data set index.
      *  @param x The X position of the new point.
      *  @param y The Y position of the new point.
+     *  @param derivatives The derivatives, if any.
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
@@ -315,6 +316,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param dataset The data set index.
      *  @param x The X position of the new point.
      *  @param y The Y position of the new point.
+     *  @param derivatives The derivatives, if any.
      *  @param yLowEB The low point of the error bar.
      *  @param yHighEB The high point of the error bar.
      *  @param connected If true, a line is drawn to connect to the previous

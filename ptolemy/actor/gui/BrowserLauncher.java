@@ -204,20 +204,20 @@ public class BrowserLauncher {
                                                         + "\" to a uri.");
                 exception.initCause(throwable);
                 throw exception;
-            } 
-	    boolean invokeByHand = false;
+            }
+            boolean invokeByHand = false;
             try {
                 desktop.browse(uri);
                 return;
             } catch (IOException ex) {
-		invokeByHand = true;
+                invokeByHand = true;
             } catch (UnsupportedOperationException ex2) {
-		System.out.println("BrowserLauncher: UnsupportedOperation: " + uri + ": " + ex2);
+                System.out.println("BrowserLauncher: UnsupportedOperation: " + uri + ": " + ex2);
 
-		invokeByHand = true;
-            } 
+                invokeByHand = true;
+            }
 
-	    if (invokeByHand) {
+            if (invokeByHand) {
                 String errorMessage = "";
                 try {
                     // Under Linux, desktop.browse() may fail with:
@@ -228,73 +228,73 @@ public class BrowserLauncher {
 
                     // So, we start up Firefox.
 
-		    String browser = "firefox";
-		    String args[] = null;
-		    String osName = System.getProperty("os.name");
-		    if (osName.startsWith("Windows")) {
-			browser = "cmd.exe";
-			args = new String[] {
-			    browser,
-			    "/c",
-			    "start",
-			    "\"\"",
-			    '"' + url + '"'
-			};
-			Process process = Runtime.getRuntime().exec(args);			
-			errorMessage = "Command was: " + args[0] + " " + args[1] + " "
-			    + args[2] + " " + args[3] + " " + args[4] + ". "
-			    + "Under Windows check that the file named by " + url
-			    + " is executable.";
-			int exitCode = 0;
-			try {
-			    exitCode = process.waitFor();
-			    process.exitValue();
-			} catch (InterruptedException ie) {
-			    throw new IOException("InterruptedException while "
-						  + "launching " + browser + ": " + ie);
-			}
+                    String browser = "firefox";
+                    String args[] = null;
+                    String osName = System.getProperty("os.name");
+                    if (osName.startsWith("Windows")) {
+                        browser = "cmd.exe";
+                        args = new String[] {
+                            browser,
+                            "/c",
+                            "start",
+                            "\"\"",
+                            '"' + url + '"'
+                        };
+                        Process process = Runtime.getRuntime().exec(args);
+                        errorMessage = "Command was: " + args[0] + " " + args[1] + " "
+                            + args[2] + " " + args[3] + " " + args[4] + ". "
+                            + "Under Windows check that the file named by " + url
+                            + " is executable.";
+                        int exitCode = 0;
+                        try {
+                            exitCode = process.waitFor();
+                            process.exitValue();
+                        } catch (InterruptedException ie) {
+                            throw new IOException("InterruptedException while "
+                                                  + "launching " + browser + ": " + ie);
+                        }
 
-			if (exitCode != 0) {
-			    throw new IOException("Process exec'd by BrowserLauncher returned "
-						  + exitCode + ". \nUrl was: " + url
-						  + "\nBrowser was: " + errorMessage);
-			}
-			  
-		    } else {
-			browser = "firefox";
-			args = new String[] {
-			    browser,
-			    "-remote",
-			    "'openURL(" + url + ")'"
-			};
-			Process process = Runtime.getRuntime().exec(args);
+                        if (exitCode != 0) {
+                            throw new IOException("Process exec'd by BrowserLauncher returned "
+                                                  + exitCode + ". \nUrl was: " + url
+                                                  + "\nBrowser was: " + errorMessage);
+                        }
 
-			errorMessage = "Command was: " + args[0] + " " + args[1] + " "
-			    + args[2];
-                
-			try {
-			    // If Firefox is not open then try invoking the browser.
-			    if (process.waitFor() != 0) {
-				if (osName.startsWith("Mac OS X")) {
-				    browser = "safari";
-				}
+                    } else {
+                        browser = "firefox";
+                        args = new String[] {
+                            browser,
+                            "-remote",
+                            "'openURL(" + url + ")'"
+                        };
+                        Process process = Runtime.getRuntime().exec(args);
 
-				Runtime.getRuntime().exec(new String[] { browser, url });
-			    }
-			} catch (InterruptedException ie) {
-			    throw new IOException("InterruptedException while "
-						  + "launching " + browser + ": " + ie);
-			}
-			return;
-		    }
-		} catch (Throwable throwable) {
+                        errorMessage = "Command was: " + args[0] + " " + args[1] + " "
+                            + args[2];
+
+                        try {
+                            // If Firefox is not open then try invoking the browser.
+                            if (process.waitFor() != 0) {
+                                if (osName.startsWith("Mac OS X")) {
+                                    browser = "safari";
+                                }
+
+                                Runtime.getRuntime().exec(new String[] { browser, url });
+                            }
+                        } catch (InterruptedException ie) {
+                            throw new IOException("InterruptedException while "
+                                                  + "launching " + browser + ": " + ie);
+                        }
+                        return;
+                    }
+                } catch (Throwable throwable) {
                     IOException exception = new IOException("Failed to open \"" + uri
                                                         + "\".  " + errorMessage);
                     exception.initCause(throwable);
                     throw exception;
                 }
 
-	    }
+            }
         } else {
             throw new IOException("java.awt.Desktop is not supported on this platform, so we can't open \""
                                   + url + "\"");

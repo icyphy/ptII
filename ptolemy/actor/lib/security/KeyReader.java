@@ -192,9 +192,9 @@ public class KeyReader extends KeyStoreActor {
             }
         }
 
-	if (_key == null) {
-	    throw new NullPointerException("The key is null?  Perhaps the keyStoreType is not supported?");
-	}
+        if (_key == null) {
+            throw new NullPointerException("The key is null?  Perhaps the keyStoreType is not supported?");
+        }
         output.broadcast(new KeyToken(_key));
     }
 

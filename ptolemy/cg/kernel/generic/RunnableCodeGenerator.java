@@ -224,7 +224,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Return the command to run the generated code.
-     *  Derived classes typically extend {@link #_updateSubstituteMap}.   
+     *  Derived classes typically extend {@link #_updateSubstituteMap}.
      *  @return The command to run the generated code.
      *  @exception IllegalActionException If the there is a problem
      *  substituting the @...@ tags.

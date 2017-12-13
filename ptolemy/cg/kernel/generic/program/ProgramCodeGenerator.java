@@ -121,13 +121,13 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         measureTime.setTypeEquals(BaseType.BOOLEAN);
         measureTime.setExpression("false");
 
-	// sourceLineBinding is used in CodeStream,
-	// so it defind in ProgramCodeGenerator.
+        // sourceLineBinding is used in CodeStream,
+        // so it defind in ProgramCodeGenerator.
         sourceLineBinding = new Parameter(this, "sourceLineBinding");
         sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
         sourceLineBinding.setExpression("false");
-	// This parameter is typically only visible in CCodeGenerator.
-	sourceLineBinding.setVisibility(Settable.NONE);
+        // This parameter is typically only visible in CCodeGenerator.
+        sourceLineBinding.setVisibility(Settable.NONE);
 
         useMake = new Parameter(this, "useMake");
         useMake.setTypeEquals(BaseType.BOOLEAN);
@@ -954,7 +954,7 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  should invoke StaticSchedulingDirectory._invokeGenerateUpdatePortOffset().
      */
     public boolean invokeGenerateUpdatePortOffsets() {
-	return true;
+        return true;
     }
 
     /**

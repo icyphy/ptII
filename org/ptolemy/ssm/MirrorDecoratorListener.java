@@ -31,7 +31,7 @@ import ptolemy.data.expr.Parameter;
 
 /** Listener interface for decorator events.
  *
- *  @author Ilge Akkya   
+ *  @author Ilge Akkya
  *  @version $Id$
  */
 public interface MirrorDecoratorListener {

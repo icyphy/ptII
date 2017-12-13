@@ -162,9 +162,9 @@ public class Merge extends DETransformer {
                 // Refiring the actor to handle the other tokens.
                 getDirector().fireAt(this, getDirector().getModelTime());
             }
-        }        
+        }
     }
-    
+
     /** Initialize this actor by creating a new queue for pending outputs.
      *  @exception IllegalActionException If a superclass throws it.
      */
@@ -176,7 +176,7 @@ public class Merge extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     //                        private variables                      //
-    
+
     // Queue of outputs to be produced.
     private Queue<Token> _queue = null;
 }

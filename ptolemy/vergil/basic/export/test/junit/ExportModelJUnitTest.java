@@ -304,11 +304,11 @@ public class ExportModelJUnitTest {
                 "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
                 "AudioCapture.xml", // Wrong Audio Hardware on the test machine.
                 "AudioClipPlayer.xml", // Wrong Audio Hardware on the test machine. (ClipPlayer2: Error in ClipPlayer: [] ERROR_MEDIA_AUDIO_FORMAT_UNSUPPORTED: ERROR_MEDIA_AUDIO_FORMAT_UNSUPPORTED)
-                "AudioFFT.xml", // Wrong Audio Hardware on the test machine. 
+                "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
                 "AudioRecorder.xml", // Wrong Audio Hardware on the test machine.
                 "AudioSynthesis.xml", // Wrong Audio Hardware on the test machine.
                 "AugmentedReality.xml", // Has links to other models.
-                "AugmentedRealityGDP.xml", // Has links to other models.                          
+                "AugmentedRealityGDP.xml", // Has links to other models.
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
                 "ConstScaleZeroDemoProductLattice.xml", // Lattice, used by other models.
                 // CRoom, MatlabRoom, SystemCommand
@@ -411,7 +411,7 @@ public class ExportModelJUnitTest {
                 "SmartChaseWithSmartIntruder.xml", // Needs the KeyValue model running.
                 "SmartIntruder.xml", // Needs the KeyValue model running.
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
-                "ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml", // Audio Device Unavailable                          
+                "ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml", // Audio Device Unavailable
                 "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
 
                 "SwarmAcousticService.xml", // Times out while connecting to a port

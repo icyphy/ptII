@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  *  To use Cape Code, invoke:
  *  <pre>
- *  $PTII/bin/vergil -capecode $PTII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml 
+ *  $PTII/bin/vergil -capecode $PTII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTextDisplay.xml
  *  </pre>
  *
  *  <p>This actor runs $PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH, which does the following on the remote machine:</p>
@@ -80,7 +80,7 @@ import ptolemy.kernel.util.NamedObj;
  *      latest accessors, the npm <code>@terraswarm/accessors</code>
  *      module must be updated.  See
  *      <a href="https://accessors.org/wiki/Main/NPMUpload">NPM Upload</a>
- *      in the accessors Wiki.        
+ *      in the accessors Wiki.
  *      In addition, any modules listed in the comma-separated
  *      <i>modules</i> parameter are also installed.  </li>
  *
@@ -89,7 +89,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  *    <li>Copies the composite accessor to the directory.</li>
  *
- *    <li>Creates a script called <code>runit</code> that uses 
+ *    <li>Creates a script called <code>runit</code> that uses
  *    <a href="http://pm2.keymetrics.io/">pm2</a>
  *    to stop any processes with the same name as the accessor
  *    started with forever name and then invokes node on the remote
@@ -120,7 +120,7 @@ import ptolemy.kernel.util.NamedObj;
  *  to <code>swarmboxadmin/ansible/keys/sbuser_authorized_keys</code>.
  *  See <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.</p>
  *
- *  <p>For more information, see the 
+ *  <p>For more information, see the
  *  <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration">Code Generation wiki</a>.</p>
  *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
@@ -198,7 +198,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
     ////                         protected methods                 ////
 
     /** Return a list of setup commands to be invoked before the run
-     *  command. 
+     *  command.
      *
      *  In this class, any commands that start with "npm install" are
      *  removed.
@@ -245,7 +245,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         }
         _substituteMap.put("@modulesFlagAndValue@", modulesFlagAndValue);
 
-        // If the value of the npmInstall parameter is true, then 
+        // If the value of the npmInstall parameter is true, then
         // install the modules listed in the modules parameter
         if (((BooleanToken) npmInstall.getToken()).booleanValue()) {
             _substituteMap.put("@npmInstall@", "npmInstall");

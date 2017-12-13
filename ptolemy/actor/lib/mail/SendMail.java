@@ -96,11 +96,11 @@ import ptolemy.util.MessageHandler;
  *  <p>In Eclipse, you will then need to refresh the project.</p>
  *
  *  <p>If you are using Google as your smtp provider, then you may
- *  need to modify your Google account to 
+ *  need to modify your Google account to
  *  <a href="https://support.google.com/accounts/answer/6010255?hl=en#in_browser">Allow less secure apps to access your account</a>.
  *  </p>
  *
- *  <p>This is because this actor does not support OAuth 2.0. 
+ *  <p>This is because this actor does not support OAuth 2.0.
  *  <a href="https://support.google.com/a/answer/6260879?hl=en#in_browser">Allow less secure apps to access accounts Frequently Asked Questions (FAQ)</a> says:</p>
  *  <blockquote>
  *    <p><b>What criteria is used to identify an application as being "less secure"?</b>

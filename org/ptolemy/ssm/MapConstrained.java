@@ -1,5 +1,5 @@
 /* An interface for the actors that are constrained by maps.
- 
+
  Copyright (c) 2014-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@ import ptolemy.actor.Actor;
 
 /** An interface for the actors that are constrained by maps.
  *
- *  @author Ilge Akkya   
+ *  @author Ilge Akkya
  *  @version $Id$
  */
 public interface MapConstrained extends Actor {

@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  * Attribute generator class for the MirrorDecorator.
  *
  * @see org.ptolemy.ssm.MirrorDecorator
- * 
+ *
  * @author Ilge Akkaya
  * @version $Id$
  * @since Ptolemy II 10.1

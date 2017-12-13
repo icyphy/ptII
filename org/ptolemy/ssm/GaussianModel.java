@@ -29,13 +29,13 @@ package org.ptolemy.ssm;
 
 /** An interface to define a Gaussian model.
  *
- *  @author Ilge Akkya   
+ *  @author Ilge Akkya
  *  @version $Id$
  */
 public interface GaussianModel {
 
     /** Get model mean.
-     *  @return the model mean.   
+     *  @return the model mean.
      */
     public double[] getMean ();
 
