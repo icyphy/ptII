@@ -339,6 +339,31 @@ test FileUtilities-8.7 {nameToURL: with http:/www} {
 ######################################################################
 ####
 #
+# Test for fragments (paths that contain #) and that start with $CLASSPATH
+# and have a non-null base directory.
+
+# In $PTII/ptolemy/demo/ElectricPowerSystem/Overview.xml
+#
+# Several of the green boxes have links like below were not working:
+#
+# $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtector.xml#Supervisor._Controller
+
+test FileUtilities-8.9 {nameToURL: with a fragment} {
+    set file1 [java::call ptolemy.util.FileUtilities nameToURL \
+                   {$CLASSPATH/ptolemy/util/test/test.xml#Foo} \
+                   [[[java::new java.io.File $PTII] getCanonicalFile] toURI] \
+                   [java::null]] 
+    set file1name [$file1 toString]
+    set filename {ptolemy/util/test/test.xml}
+    
+    list [file exists [$file1 getPath]] \
+        [string range $file1name [expr {[string length $file1name] - [string length $filename]}] [string length $file1name]]
+    
+} {1 ptolemy/util/test/test.xml}
+
+######################################################################
+####
+#
 test FileUtilities-9.1 {extractJarFile in current directory} {
     file delete -force a
     set r0 [list [file exists a/1] [file exists a/b/2] [file isdirectory a/c]]
