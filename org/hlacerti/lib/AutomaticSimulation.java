@@ -110,14 +110,14 @@ public class AutomaticSimulation extends VergilApplication
 
     // private static ArrayList<String> _readFile(File file) throws IOException {
     //     ArrayList<String> lines= new ArrayList<String>();
-    // 	BufferedReader br = new BufferedReader(new FileReader(file));
-    // 	String content=br.readLine();
-    // 	while (content != null) {
-    // 	    lines.add(content);
-    // 	    content=br.readLine();
-    // 	}
-    // 	br.close();
-    // 	return lines;
+    //         BufferedReader br = new BufferedReader(new FileReader(file));
+    //         String content=br.readLine();
+    //         while (content != null) {
+    //             lines.add(content);
+    //             content=br.readLine();
+    //         }
+    //         br.close();
+    //         return lines;
     // }
 
     private static ArrayList<String> _changeRKSolver(ArrayList<String> file,
@@ -171,7 +171,7 @@ public class AutomaticSimulation extends VergilApplication
         }
     }
 
-    /** 
+    /**
      * Change a parameter in the .xml, making it assume previously
      * chosen values. Run a ptolemy simulation for each value that the
      * parameter has to assume.
@@ -319,7 +319,7 @@ public class AutomaticSimulation extends VergilApplication
             runAllModels(vergil);
             if (waitingTime < 0) {
                 Scanner input = new Scanner(System.in, "utf-8");
-                while (true) {     
+                while (true) {
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
@@ -409,7 +409,7 @@ public class AutomaticSimulation extends VergilApplication
             runAllModels(vergil);
             if (waitingTime < 0) {
                 Scanner input = new Scanner(System.in, "utf-8");
-                while (true) {          
+                while (true) {
                     System.out.println(
                             "Have you had enough time to see the graphics?");
                     String answer = input.next();
@@ -578,7 +578,7 @@ public class AutomaticSimulation extends VergilApplication
         System.out.println(manager.getFullName() + " " + manager.getState());
     }
 
-    /* Run all the models.
+    /** Run all the models.
      * @param vergil The script
      * @return true if the models complete without throwing an exception.
      */
