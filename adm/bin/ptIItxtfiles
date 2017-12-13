@@ -29,6 +29,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.ilk$' \
         | egrep -v '\.isj$' \
 	| egrep -v '\.jar$' \
+	| egrep -v '/jdk/' \
 	| egrep -v '\.jks$' \
 	| egrep -v '\.jnilib$' \
         | egrep -v '\.jpg$' \
