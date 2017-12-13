@@ -40,19 +40,19 @@ import ptolemy.actor.util.Time;
 /** Model of a variable that changes with time, using a polynomial.
  *
  * <p>Represent a polynomial model:</p>
- * <p><i>xMdl{t} = c0 + c1*dt + c2*dt^2 + ...</i></p>
+ * <p><i>xModel{t} = c0 + c1*dt + c2*dt^2 + ...</i></p>
  *
  * <p>where</p>
  * <ul>
- * <li><i>xMdl{t}</i>, model of some scalar variable <i>x</i>, as a function of time.</li>
+ * <li><i>xModel{t}</i>, model of some scalar variable <i>x</i>, as a function of time.</li>
  * <li><i>t</i>, time of interest.</li>
- * <li><i>dt = t - tMdl</i>, time difference.</li>
- * <li><i>tMdl</i>, time of model formation.</li>
+ * <li><i>dt = t - tModel</i>, time difference.</li>
+ * <li><i>tModel</i>, time of model formation.</li>
  * <li><i>c0, c1, c2, ...</i>, model coefficients.
- * The first coefficient is the value of <i>x</i> at <i>tMdl</i>.
+ * The first coefficient is the value of <i>x</i> at <i>tModel</i>.
  * The remaining coefficients are related to derivatives of
- * <i>x</i> at <i>tMdl</i> by
- * <i>ci</i> = (1/i!)(d^i x/dt^i)(tMdl).
+ * <i>x</i> at <i>tModel</i> by
+ * <i>ci</i> = (1/i!)(d^i x/dt^i)(tModel).
  * That is, they are the coefficients of the Taylor series expansion.
  * <li>The notation <i>g{y}</i> means that <i>g</i> is a function
  * of <i>y</i>.</li>
@@ -63,7 +63,7 @@ import ptolemy.actor.util.Time;
  *
  * <p>Each <code>ModelPolynomial</code> object needs to have an associated simulation
  * time, in order to define the model.
- * Add this simulation time by setting field <code>this.tMdl</code> to the
+ * Add this simulation time by setting field <code>this.tModel</code> to the
  * desired <code>Time</code> object.
  * Failing to do so will cause a <code>NullPointerException</code> for most of
  * the useful methods on this class.</p>
@@ -148,14 +148,14 @@ public final class ModelPolynomial {
      */
     public final double evaluate(final Time simTime) {
         return(
-            this.evaluate(simTime.subtractToDouble(tMdl))
+            this.evaluate(simTime.subtractToDouble(tModel))
             );
     }
 
     /**
      * Evaluate the model at a delta-time.
      *
-     * @param dt Difference (simTime - tMdl) at which to evaluate the model.
+     * @param dt Difference (simTime - tModel) at which to evaluate the model.
      * @return The model evaluated at a delta-time.
      */
     public final double evaluate(final double dt) {
@@ -164,8 +164,8 @@ public final class ModelPolynomial {
         double val;
 
         // Model:
-        // xMdl{t} = c0 + c1*dt + c2*dt^2 + ...
-        // xMdl{t} = c0 + dt*(c1 + dt*(c2 + ...))
+        // xModel{t} = c0 + c1*dt + c2*dt^2 + ...
+        // xModel{t} = c0 + dt*(c1 + dt*(c2 + ...))
 
         // TODO: Consider adding a short-circuit test for dt==0.
 
@@ -212,7 +212,7 @@ public final class ModelPolynomial {
      */
     public final double evaluateDerivative(final Time simTime) {
         return(
-            this.evaluateDerivative(simTime.subtractToDouble(tMdl))
+            this.evaluateDerivative(simTime.subtractToDouble(tModel))
             );
     }
 
@@ -220,7 +220,7 @@ public final class ModelPolynomial {
     /**
      * Evaluate d{model}/d{t} at a delta-time.
      *
-     * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
+     * @param dt Difference (simTime - tModel) at which to evaluate the derivative.
      * @return The model derivative evaluated at a delta-time.
      */
     public final double evaluateDerivative(final double dt) {
@@ -229,9 +229,9 @@ public final class ModelPolynomial {
         double deriv;
 
         // Model:
-        // xMdl{t} = c0 + c1*dt + c2*dt^2 + c3*dt^3 + ...
-        // d{xMdl}/d{t} = c1 + 2*c2*dt + 3*c3*dt^2 + ...
-        // d{xMdl}/d{t} = c1 + dt*(2*c2 + dt*(3*c3 + ...))
+        // xModel{t} = c0 + c1*dt + c2*dt^2 + c3*dt^3 + ...
+        // d{xModel}/d{t} = c1 + 2*c2*dt + 3*c3*dt^2 + ...
+        // d{xModel}/d{t} = c1 + dt*(2*c2 + dt*(3*c3 + ...))
 
         // Evaluate.
         switch( _maxCoeffIdx ) {
@@ -276,7 +276,7 @@ public final class ModelPolynomial {
      */
     public final double evaluateDerivative2(final Time simTime) {
         return(
-            this.evaluateDerivative2(simTime.subtractToDouble(tMdl))
+            this.evaluateDerivative2(simTime.subtractToDouble(tModel))
             );
     }
 
@@ -284,7 +284,7 @@ public final class ModelPolynomial {
     /**
      * Evaluate d^2{model}/d{t}^2 at a delta-time.
      *
-     * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
+     * @param dt Difference (simTime - tModel) at which to evaluate the derivative.
      * @return The model second derivative evaluated at a delta-time.
      */
     public final double evaluateDerivative2(final double dt) {
@@ -293,10 +293,10 @@ public final class ModelPolynomial {
         double deriv2;
 
         // Model:
-        // xMdl{t} = c0 + c1*dt + c2*dt^2 + c3*dt^3 + c4*dt^4 + ...
-        // d{xMdl}/d{t} = c1 + 2*c2*dt + 3*c3*dt^2 + 4*c4*dt^3 + ...
-        // d^2{xMdl}/d{t}^2 = 2*c2 + 6*c3*dt + 12*c4*dt^2 + ...
-        // d^2{xMdl}/d{t}^2 = 2*c2 + dt*(6*c3 + dt*(12*c4 + ...))
+        // xModel{t} = c0 + c1*dt + c2*dt^2 + c3*dt^3 + c4*dt^4 + ...
+        // d{xModel}/d{t} = c1 + 2*c2*dt + 3*c3*dt^2 + 4*c4*dt^3 + ...
+        // d^2{xModel}/d{t}^2 = 2*c2 + 6*c3*dt + 12*c4*dt^2 + ...
+        // d^2{xModel}/d{t}^2 = 2*c2 + dt*(6*c3 + dt*(12*c4 + ...))
 
         // Evaluate.
         switch( _maxCoeffIdx ) {
@@ -366,7 +366,7 @@ public final class ModelPolynomial {
     public final String toString() {
 
         // Model:
-        // xMdl{t} = c0 + c1*dt + c2*dt^2 + ...
+        // xModel{t} = c0 + c1*dt + c2*dt^2 + ...
         // Start with c0.
         String res = String.format("%.4g", coeffs[0]);
         StringBuilder res_sb = new StringBuilder();
@@ -375,13 +375,13 @@ public final class ModelPolynomial {
 
         if (_maxCoeffIdx > 0 ) {
 
-            // Form string "(t-tMdl)".
+            // Form string "(t-tModel)".
             String dtStr;
-            final double tMdlDbl = tMdl.getDoubleValue();
-            if (tMdlDbl > 0 ) {
-                dtStr = String.format("(t-%.4g)", tMdlDbl);
-            } else if (tMdlDbl < 0 ) {
-                dtStr = String.format("(t+%.4g)", Math.abs(tMdlDbl));
+            final double tModelDbl = tModel.getDoubleValue();
+            if (tModelDbl > 0 ) {
+                dtStr = String.format("(t-%.4g)", tModelDbl);
+            } else if (tModelDbl < 0 ) {
+                dtStr = String.format("(t+%.4g)", Math.abs(tModelDbl));
             } else {
                 dtStr = "t";
             }
@@ -413,8 +413,8 @@ public final class ModelPolynomial {
     ////                         public variables
 
 
-    /** Simulation time at which model was formed, such that xMdl{tMdl} = c0. */
-    public Time tMdl;
+    /** Simulation time at which model was formed, such that xModel{tModel} = c0. */
+    public Time tModel;
 
     /** Polynomial coefficients, in order: [c0, c1, c2, ...]. */
     public final double[] coeffs;
