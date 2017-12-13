@@ -480,8 +480,23 @@ public class DocManager extends HandlerBase {
             }
 
             if (toRead == null && lookForActorIndex) {
-                // Look for the source.
-                docNameList.add(docNames[5]);
+                // Look for the list of demos
+                if (!className.equals("org.terraswarm.accessor.JSAccessor")) {
+                    docNameList.add(docNames[5]);
+                // } else {
+                //     // Get the script parameter and look for an adjacent *Idx.htm file.
+                //     try {
+                //         Parameter accessorSourceParameter = (Parameter) _target.getProperty("accessorSource");
+                //         if (accessorSourceParameter != null) {
+                //             String acccessorSource = accessorSourceParameter.getExpression();
+                //             docNameList.add(accessorSource.substring(0, accessorSource.length() - 3 + "Idx.html"));
+                //         }
+                //     } catch (Throwable throwable) {
+                //         docNameList.add(docNames[5]);
+                //     }
+                }
+
+
                 toRead = referenceClassLoader.getResource(docNames[5]);
             }
 
@@ -948,6 +963,7 @@ public class DocManager extends HandlerBase {
         try {
             URL toRead = docClassNameToURL(_configuration, className, false,
                     false, false, true);
+            System.out.println("DocManager: Trying to find demos for " + className + ", _target: " + _target + " _targetClass: " + _targetClass + ": toRead: " + toRead );
             if (toRead != null) {
                 result.append("<li><a href=\"" + toRead.toExternalForm()
                         + "\">Demo Usage</a></li>");
@@ -1284,8 +1300,9 @@ public class DocManager extends HandlerBase {
 
      _isInstanceDoc = false;
      }
+    */
 
-     /** Return true if the specified class is either equal to
+    /** Return true if the specified class is either equal to
      *  NamedObj or is a subclass of NamedObj.
      */
     private boolean _isNamedObj(Class candidate) {
