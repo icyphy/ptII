@@ -61,7 +61,7 @@ import ptolemy.util.MessageHandler;
 //// SocketHelper
 
 /**
-   A helper class for the socket module in JavaScript. 
+   A helper class for the socket module in JavaScript.
 
    You should use {@link #getOrCreateHelper(Object, ScriptObjectMirror)}
    to create exactly one instance of this helper
@@ -166,7 +166,7 @@ public class SocketHelper extends VertxHelperBase {
 
                 clientOptions.setPemTrustOptions(pemTrustOptions);
             } catch (IOException e) {
-                _error(socketClient, "Failed to find the trusted CA certificate at " + caCertFile);
+                _error(socketClient, "Failed to find the trusted CA certificate at " + caCertFile, e);
                 return;
             }
         }
@@ -181,7 +181,7 @@ public class SocketHelper extends VertxHelperBase {
             try {
                 pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
             } catch (IOException e) {
-                _error(socketClient, "Failed to find the server key-certificate at " + pfxKeyCertFile);
+                _error(socketClient, "Failed to find the server key-certificate at " + pfxKeyCertFile, e);
                 return;
             }
             String pfxKeyCertPassword = (String)options.get("pfxKeyCertPassword");
@@ -329,7 +329,7 @@ public class SocketHelper extends VertxHelperBase {
             try {
                 pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
             } catch (IOException e) {
-                _error(socketServer, "Failed to find the server key-certificate at " + pfxKeyCertFile);
+                _error(socketServer, "Failed to find the server key-certificate at " + pfxKeyCertFile, e);
                 return;
             }
 
@@ -354,7 +354,7 @@ public class SocketHelper extends VertxHelperBase {
 
                     serverOptions.setPemTrustOptions(pemTrustOptions);
                 } catch (IOException e) {
-                    _error(socketServer, "Failed to find the trusted CA certificate at " + caCertFile);
+                    _error(socketServer, "Failed to find the trusted CA certificate at " + caCertFile, e);
                     return;
                 }
             }
@@ -388,7 +388,7 @@ public class SocketHelper extends VertxHelperBase {
                     }
                 });
             } catch (Throwable ex) {
-                _error(socketServer, "Failed to start server listening: " + ex);
+                _error(socketServer, "Failed to start server listening", ex);
             }
         });
     }
@@ -586,7 +586,7 @@ public class SocketHelper extends VertxHelperBase {
                 }
             });
             _socket.exceptionHandler(throwable -> {
-                _error(_eventEmitter, throwable.toString());
+                    _error(_eventEmitter, throwable.toString(), throwable);
             });
             // Handler for received data.
             _socket.handler(buffer -> {
@@ -641,7 +641,7 @@ public class SocketHelper extends VertxHelperBase {
                                     SocketWrapper.this.wait();
                                 } catch (InterruptedException e) {
                                     _error(_eventEmitter,
-                                            "Buffer is full, and wait for draining was interrupted");
+                                           "Buffer is full, and wait for draining was interrupted", e);
                                 }
                             }
                             send(data);
@@ -670,7 +670,7 @@ public class SocketHelper extends VertxHelperBase {
                             _appendToBuffer(element, _sendType, _sendImageType, buffer);
                             byte [] bytes = buffer.getBytes();
                             StringBuilder builder = new StringBuilder(bytes.length * 2);
-                            for(byte b: bytes) {
+                            for (byte b: bytes) {
                                 builder.append(String.format("%02x", b));
                             }
                             // System.out.println("SocketHelper.SocketWrapper.send(" + data +"): added element " + element + " to buffer: 0x" + builder) ;
@@ -703,7 +703,7 @@ public class SocketHelper extends VertxHelperBase {
                 }
                 // byte [] bytes = buffer.getBytes();
                 // StringBuilder builder = new StringBuilder(bytes.length * 2);
-                // for(byte b: bytes) {
+                // for (byte b: bytes) {
                 //     builder.append(String.format("%02x", b));
                 // }
                 // System.out.println("SocketHelper.SocketWrapper.send(" + data +"): about to invoke write() on socket " + _socket + ", local: " + _socket.localAddress().host() + ":" + _socket.localAddress().port() + ", remote: " + _socket.remoteAddress().host() + ":" + _socket.remoteAddress().port() + ".  Writing buffer: " + builder + " of length " + buffer.length());
@@ -896,7 +896,7 @@ public class SocketHelper extends VertxHelperBase {
                             }
                         }
                     } catch (IOException e) {
-                        _error(_eventEmitter, "Failed to read incoming image: " + e.toString());
+                        _error(_eventEmitter, "Failed to read incoming image: " + e.toString(), e);
                     }
                 } else {
                     // Assume a numeric type.
@@ -933,7 +933,7 @@ public class SocketHelper extends VertxHelperBase {
                                 _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
                             } catch (Exception e) {
                                 _error(_eventEmitter, "Failed to convert to a JavaScript array: "
-                                        + e);
+                                       + e, e);
                                 // System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric failed emit");
                                 _eventEmitter.callMember("emit", "data", result);
                             }

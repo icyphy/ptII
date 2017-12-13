@@ -193,7 +193,7 @@ public class DiscoveryHelper {
         JSONArray jArray = new JSONArray();
 
         // Return a string representation of a JSON array of JSON objects
-        
+
         if (_ipMap.size() > 0) {
             for (Entry<String, JSONObject> entry : _ipMap.entrySet()) {
                 jArray.put(entry.getValue());
@@ -204,7 +204,7 @@ public class DiscoveryHelper {
                     + "no devices found? Returning [].");
             return jArray.toString();
         }
-        
+
     }
 
     /** Return the IP address of the host machine.
@@ -220,7 +220,7 @@ public class DiscoveryHelper {
         return hostAddress;
     }
 
-    
+
     /** Get the MAC (Media Access Control) address
      *  of the first non-loopback, non-multicast address.
      *  @return the MAC address

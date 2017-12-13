@@ -222,7 +222,7 @@ public class WebSocketHelper extends VertxHelperBase {
                 try {
                     ImageIO.write((BufferedImage)image, imageType, stream);
                 } catch (IOException e) {
-                    _error("Failed to convert image to byte array for sending: " + e.toString());
+                    _error("Failed to convert image to byte array for sending: " + e.toString(), e);
                 }
                 message = Buffer.buffer(stream.toByteArray());
             }
@@ -344,7 +344,7 @@ public class WebSocketHelper extends VertxHelperBase {
                             wait();
                         }
                     } catch (InterruptedException e) {
-                        _error("Buffer is full, and wait for draining was interrupted");
+                        _error("Buffer is full, and wait for draining was interrupted.", e);
                     }
                 }
                 submit(sendTask);
@@ -366,12 +366,12 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public static String[] supportedReceiveTypes() {
         String[] imageTypes = ImageIO.getReaderFormatNames();
-        
-        // Image names from ImageIO are not case-sensitive, so duplicates may occur. 
-        // Remove duplicates.  Prepend "image/" for proper MIME type. 
+
+        // Image names from ImageIO are not case-sensitive, so duplicates may occur.
+        // Remove duplicates.  Prepend "image/" for proper MIME type.
         TreeSet<String> typeSet = new TreeSet<String>();
         for (int i = 0; i < imageTypes.length; i++) {
-        	typeSet.add("image/" + imageTypes[i].toLowerCase());
+                typeSet.add("image/" + imageTypes[i].toLowerCase());
         }
         typeSet.add("application/json");
         typeSet.add("text/plain");
@@ -386,12 +386,12 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public static String[] supportedSendTypes() {
         String[] imageTypes = ImageIO.getWriterFormatNames();
-        
-        // Image names from ImageIO are not case-sensitive, so duplicates may occur. 
-        // Remove duplicates.  Prepend "image/" for proper MIME type. 
+
+        // Image names from ImageIO are not case-sensitive, so duplicates may occur.
+        // Remove duplicates.  Prepend "image/" for proper MIME type.
         TreeSet<String> typeSet = new TreeSet<String>();
         for (int i = 0; i < imageTypes.length; i++) {
-        	typeSet.add("image/" + imageTypes[i].toLowerCase());
+                typeSet.add("image/" + imageTypes[i].toLowerCase());
         }
         typeSet.add("application/json");
         typeSet.add("text/plain");
@@ -500,7 +500,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
                         clientOptions.setPemTrustOptions(pemTrustOptions);
                     } catch (IOException e) {
-                        _error(currentObj, "Failed to find the trusted CA certificate at " + caCertFile);
+                        _error(currentObj, "Failed to find the trusted CA certificate at " + caCertFile, e);
                         return;
                     }
                 }
@@ -716,7 +716,7 @@ public class WebSocketHelper extends VertxHelperBase {
                             ImageToken token = new AWTImageToken(image);
                             _currentObj.callMember("_notifyIncoming", token);
                         } catch (IOException e) {
-                            _error("Failed to read incoming image: " + e.toString());
+                            _error("Failed to read incoming image: " + e.toString(), e);
                         }
                     } else {
                         _error("Unsupported receiveType: " + _receiveType);
@@ -746,7 +746,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class WebSocketExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable throwable) {
-            _error(throwable.getMessage());
+            _error(throwable.getMessage(), throwable);
             _wsIsOpen = false;
         }
     }

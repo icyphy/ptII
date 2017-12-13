@@ -140,7 +140,7 @@ public class MQTTHelper extends HelperBase {
          * @param port The port number of the broker server.
          * @param host The host name of the broker server.
          * @param clientId The id of the client, whiich is passed to MqttAsyncClient();
-	 * @param rawBytes True if the payload is raw bytes.
+         * @param rawBytes True if the payload is raw bytes.
          * @exception MqttException
          */
         public MQTTClientWrapper(ScriptObjectMirror currentObj,
@@ -174,7 +174,7 @@ public class MQTTHelper extends HelperBase {
 
                 @Override
                 public void onFailure(IMqttToken arg0, Throwable arg1) {
-                    _error(_currentObj, "Connection refused.");
+                    _error(_currentObj, "Connection refused.", arg1);
                 }
             });
 

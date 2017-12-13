@@ -113,14 +113,14 @@ public class VertxBrowserHelper extends HelperBase {
 
                 _router.post().handler(routingContext -> {
                     // System.out.println("FIXME: Receiving data...");
-                    
+
                     // Respond OK.
                     HttpServerResponse response = routingContext.response();
                     // Status code 204 means No Content.
                     // The server successfully processed the request and is not returning any content.
                     response.setStatusCode(204);
                     response.end();
-                    
+
                     HttpServerRequest request = routingContext.request();
                     String path = request.path();
                     // FIXME: handle cases where POST is not form data?
@@ -136,7 +136,7 @@ public class VertxBrowserHelper extends HelperBase {
                     });
 
                 });
-                
+
                 // Handle dynamic content (requests to / ).
                 _router.get().handler(routingContext -> {
                     HttpServerResponse response = routingContext.response();
@@ -157,7 +157,7 @@ public class VertxBrowserHelper extends HelperBase {
                         response.end();
                     }
                 });
-                
+
                 _server.requestHandler(_router::accept);
 
                 firstStart = true;
@@ -183,7 +183,7 @@ public class VertxBrowserHelper extends HelperBase {
                         });
             }
         }
-        
+
         /** Add a resource to be served by the server.
          *  @param path The path to the resource.
          *  @param resource The resource to serve upon a request for this path.
@@ -199,7 +199,7 @@ public class VertxBrowserHelper extends HelperBase {
             _resourceData.put(path, buffer);
             _resourceContentType.put(path, contentType);
         }
-        
+
         /** Set the response.
          *  @param response The response.
          */
@@ -238,7 +238,7 @@ public class VertxBrowserHelper extends HelperBase {
 
         /** The server's response. */
         private String _response = "No data yet";
-        
+
         /** Resource data indexed by path. */
         private HashMap<String, Buffer> _resourceData = new HashMap<String, Buffer>();
 

@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-  
+
 package ptolemy.actor.lib.jjs.modules.udpSocket;
 
 import java.awt.image.BufferedImage;
@@ -133,6 +133,7 @@ public class UDPSocketHelper extends VertxHelperBase {
 
         /** Construct a socket.
          *  @param currentObj The corresponding JavaScript Socket object.
+         *  @param enableBroadcast enabling or not message broadcasting
          */
         public UDPSocket(ScriptObjectMirror currentObj, boolean enableBroadcast) {
             _currentObj = currentObj;
@@ -167,8 +168,8 @@ public class UDPSocketHelper extends VertxHelperBase {
                                 public void handle(final DatagramPacket packet) {
                                     // Emit the message in the director thread.
                                     _issueResponse(() -> {
-                                    	// Construct a string with the sender information following 
-                                    	// the JSON format
+                                            // Construct a string with the sender information following
+                                            // the JSON format
                                         String sender = "{\"ipAddress\": \"" + packet.sender().host() + "\",";
                                         sender += "\"port\": " + packet.sender().port() + "}";
                                         _emitMessage(packet.data(), sender);
@@ -257,10 +258,10 @@ public class UDPSocketHelper extends VertxHelperBase {
                                 _appendToBuffer(element, _sendType, _sendImageType, buffer);
                             }
                         }
-                    } else {   
+                    } else {
                         for (Object element : ((ScriptObjectMirror) data).values()) {
                             if (element != null) {
-                                byte lowByte = (byte)(((Integer)element) & 0xFF);    
+                                byte lowByte = (byte)(((Integer)element) & 0xFF);
                                 buffer.appendByte(lowByte);
                             }
                         }
@@ -268,7 +269,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                 } else {
                     _appendToBuffer(data, _sendType, _sendImageType, buffer);
                 }
-                
+
                 // Send a Buffer
                 _socket.send(buffer, port, hostname,
                         new Handler<AsyncResult<DatagramSocket>>() {
@@ -281,7 +282,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                             if (callback != null) {
                                 callback.call(_currentObj, asyncResult.cause());
                             }
-                            _error(_currentObj, "Send failed: " + asyncResult.cause());
+                            _error(_currentObj, "Send failed: " + asyncResult.cause(), asyncResult.cause());
                         }
                     }
                 });
@@ -302,7 +303,7 @@ public class UDPSocketHelper extends VertxHelperBase {
             try {
                 _receiveType = Enum.valueOf(DATA_TYPE.class, type.trim().toUpperCase());
             } catch (Exception ex) {
-                _error(_currentObj, "Invalid receive data type: " + type);
+                _error(_currentObj, "Invalid receive data type: " + type, ex);
             }
         }
 
@@ -333,7 +334,7 @@ public class UDPSocketHelper extends VertxHelperBase {
             if (_receiveType == DATA_TYPE.STRING) {
                 if (!_rawBytes) {
                     _currentObj.callMember("emit", "message", buffer.getString(0, buffer.length()), sender);
-                } else { 
+                } else {
                     byte[] bytes = buffer.getBytes();
                     _currentObj.callMember("emit", "message", bytes, sender);
                 }
@@ -349,7 +350,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                         _error(_currentObj, "Received corrupted image.");
                     }
                 } catch (IOException e) {
-                    _error(_currentObj, "Failed to read incoming image: " + e.toString());
+                    _error(_currentObj, "Failed to read incoming image: " + e.toString(), e);
                 }
             } else {
                 // Assume a numeric type.
@@ -380,7 +381,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                             _currentObj.callMember("emit", "message", _actor.toJSArray(result), sender);
                         } catch (Exception e) {
                             _error(_currentObj, "Failed to convert to a JavaScript array: "
-                                    + e);
+                                   + e, e);
                             _currentObj.callMember("emit", "message", result, sender);
                         }
                     } else {
@@ -392,7 +393,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                 }
             }
         }
-        
+
         /** True if the socket is open, false otherwise.  Vert.x does not seem
          * to offer a way to check the socket status.  Needed to prevent calling
          * close() on a closed socket - doing so causes multiple close events
@@ -402,7 +403,7 @@ public class UDPSocketHelper extends VertxHelperBase {
 
         /** If set to true, then the string data to send will be interpreted as bytes. */
         private boolean _rawBytes = false;
-        
+
         /** The receive type. */
         private DATA_TYPE _receiveType = DATA_TYPE.STRING;
 

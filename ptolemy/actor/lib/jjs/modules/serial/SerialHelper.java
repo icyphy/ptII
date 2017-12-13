@@ -85,7 +85,7 @@ public class SerialHelper extends HelperBase {
         _portName = portName;
         _ownerName = ownerName;
         _timeout = timeout;
-        
+
         if (options != null) {
             _baudRate = (Integer)options.get("baudRate");
 
@@ -304,7 +304,7 @@ public class SerialHelper extends HelperBase {
             (new Thread(new SerialWriter())).start();
         }
     }
-    
+
     /** Send data over the serial port.
      *  @param data The data to send.
      */
@@ -344,7 +344,7 @@ public class SerialHelper extends HelperBase {
     public static String[] supportedReceiveTypes() {
         // FIXME: This is duplicated from XBeeHelper and should be moved to a base class!!
         // also supportedSendTypes.
-        
+
         // Formerly, we checked to see if _types was null outside of the syncronized block
 
         // However, Coverity Scan warns:
@@ -395,7 +395,7 @@ public class SerialHelper extends HelperBase {
     public static String[] supportedSendTypes() {
         return supportedReceiveTypes();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -422,10 +422,10 @@ public class SerialHelper extends HelperBase {
 
     /** The baud rate for the port. */
     private int _baudRate;
-    
+
     /** A queue of buffers to send over the serial port. */
     private LinkedBlockingQueue<Buffer> _buffersToSend = new LinkedBlockingQueue<Buffer>();
-        
+
     /** Input stream. */
     private InputStream _inputStream;
 
@@ -452,7 +452,7 @@ public class SerialHelper extends HelperBase {
 
     /** The name of the owner. */
     private String _ownerName;
-    
+
     /** The receive type for this instance of SerialHelper. */
     private DATA_TYPE _receiveType;
 

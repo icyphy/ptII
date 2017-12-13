@@ -165,7 +165,7 @@ public class HttpClientHelper extends VertxHelperBase {
             }
         });
     }
-    
+
     /** Reset the helper associated with the specified actor.
      *  This method discards any pending submitted jobs,
      *  marks the helper not busy, and resets the sequence number to zero.
@@ -217,7 +217,7 @@ public class HttpClientHelper extends VertxHelperBase {
     protected HttpClientHelper(Object actor, ScriptObjectMirror helping, VertxHelperBase base) {
         super(actor, helping, base);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
@@ -254,8 +254,8 @@ public class HttpClientHelper extends VertxHelperBase {
             // For this to work, we need to have host-specific error processing.
 
             // If we get a SSLHandshakeException, suggest upgrading the JVM.
-            // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml 
-            // was failing with JDK 1.8.0_91 because https://httpbin.org 
+            // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTGetCompleteResponseOnly.xml
+            // was failing with JDK 1.8.0_91 because https://httpbin.org
             // uses a lets encrypt certificate.
             if (throwable instanceof javax.net.ssl.SSLHandshakeException) {
                 message = "HttpClientHelper.java: "
@@ -271,7 +271,7 @@ public class HttpClientHelper extends VertxHelperBase {
             // True argument indicates that this request is done.
             _issueOrDeferResponse(_requestNumber, true, new Runnable() {
                 public void run() {
-                    _requestObj.callMember("_errorResponse", null, finalMessage + throwable.getMessage());
+                    _requestObj.callMember("_errorResponse", null, finalMessage + throwable.getMessage(), throwable);
                 }
             });
             if (_client != null) {
@@ -322,7 +322,7 @@ public class HttpClientHelper extends VertxHelperBase {
                       System.out.println("The total body: " + body.toString());
                     }
                   });
-                
+
                 // True argument indicates that this request is done.
                 // System.err.println("****** Received an error code for request " + _requestNumber + ", " + status);
                 _issueOrDeferResponse(_requestNumber, true, new Runnable() {
@@ -346,14 +346,14 @@ public class HttpClientHelper extends VertxHelperBase {
             // does it.  Vert.x HttpClient does not handle redirects,
             // instead WebClient does.  See
             // https://groups.google.com/forum/#!msg/vertx-dev/LzFm1YXUYMY/7qB6OSIXCAAJ
-            
+
             // For how Vert.x handles redirects, see
             // https://github.com/eclipse/vert.x/blob/master/src/main/java/io/vertx/core/http/impl/HttpClientRequestImpl.java
 
             // For how we handle redirects in Ptolemy, see
             // FileUtilities.followRedirects() and
             // FileUtilities.openStreamFollowingRedirectsReturningBoth()
-            
+
             if (status >= 300 && status <= 308 && status != 306) {
                 _pendingRequests--;
                 String newLocation = headers.get("Location");
@@ -582,7 +582,7 @@ public class HttpClientHelper extends VertxHelperBase {
             _requestObj = requestObj;
             _requestNumber = sequenceNumber;
             _pendingRequests++;
-            
+
             // If there are too many pending requests, stall the
             // calling thread. Do that here to not block vertx.
             // Note unsynchronized access to _pendingRequests, so time
@@ -627,7 +627,7 @@ public class HttpClientHelper extends VertxHelperBase {
                                      .setType(ProxyType.HTTP)
                                      .setHost(proxyHostSpec)
                                      .setPort(proxyPortSpec)));
-            } else { 
+            } else {
                 client = _vertx.createHttpClient(
                     new HttpClientOptions()
                     .setDefaultHost((String) urlSpec.get("host"))
@@ -696,14 +696,14 @@ public class HttpClientHelper extends VertxHelperBase {
                             ( (String)value).startsWith("image")) {
                         isImage = true;
                         imageType = ((String) value).substring(6);
-                        
-                        if ( !imageType.equalsIgnoreCase("gif") && 
-                        	 !imageType.equalsIgnoreCase("jpg") && 
-                        	 !imageType.equalsIgnoreCase("jpeg") && 
-                        	 !imageType.equalsIgnoreCase("png")) {
-                        	_error(_requestObj, "Unsupported image type " + imageType + ". Attempting to send as jpg."
-                        			+ " Supported types are gif, jpg and png.");
-                        	imageType = "jpg";
+
+                        if ( !imageType.equalsIgnoreCase("gif") &&
+                                 !imageType.equalsIgnoreCase("jpg") &&
+                                 !imageType.equalsIgnoreCase("jpeg") &&
+                                 !imageType.equalsIgnoreCase("png")) {
+                                _error(_requestObj, "Unsupported image type " + imageType + ". Attempting to send as jpg."
+                                                + " Supported types are gif, jpg and png.");
+                                imageType = "jpg";
                         }
                     }
                     if (value instanceof String) {
@@ -721,7 +721,7 @@ public class HttpClientHelper extends VertxHelperBase {
             // Format any images
             if (isImage) {
                 AWTImageToken token = (AWTImageToken) _options.get("body");
-                
+
                 Image image = token.getValue();
                 BufferedImage bufferedImage;
 
@@ -740,38 +740,37 @@ public class HttpClientHelper extends VertxHelperBase {
                     bGr.drawImage(image, 0, 0, null);
                     bGr.dispose();
                 }
-                
+
                 final ByteArrayOutputStream os = new ByteArrayOutputStream();
-                
+
                 try {
                     // This is tested by
-                    // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml 
+                    // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml
                     ImageIO.write(bufferedImage, imageType , os);
                     os.close();  // Important, flushes the output buffer.
-                    
+
                     // Chunked requests don't use a Content-Length header.
                     byte[] bytes = os.toByteArray();
                     request.sendHead();
                     request.setChunked(true);
-                    
+
                     // Encode the entire image first and then call request on 4000
                     // character junks.  If we encode each 4000 character chunk,
                     // then we get padding character(s) (=) in the output.
                     String encoded = Base64.getEncoder().encodeToString(bytes);
-                    for (int i = 0; i < encoded.length(); i = i + 4000){
+                    for (int i = 0; i < encoded.length(); i = i + 4000) {
                         int end = i + 4000 < encoded.length()
                             ? i + 4000
                             : encoded.length();
-                     	request.write(Buffer.buffer(encoded.substring(i, end)));
+                             request.write(Buffer.buffer(encoded.substring(i, end)));
                     }
 
-                    // for (int i = 0; i < bytes.length; i = i + 4000){
-                    // 	request.write(Buffer.buffer(Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, i, i + 4000))));
+                    // for (int i = 0; i < bytes.length; i = i + 4000) {
+                    //         request.write(Buffer.buffer(Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, i, i + 4000))));
                     // }
-                    
+
                 } catch (final IOException ioe) {
-                	String message = "Can't write image to HTTP request.  Unable to convert image to base-64 string.";
-                	 _error(_requestObj, message);
+                    _error(_requestObj, "Can't write image to HTTP request.  Unable to convert image to base-64 string.", ioe);
                 }
             }  else {
                 // Otherwise, send body as string
@@ -784,7 +783,7 @@ public class HttpClientHelper extends VertxHelperBase {
                     }
                 }
             }
-            
+
             // Allow overlapped requests. Sequence numbers take care of ensuring outputs
             // come out in order.
             // _setBusy(true);

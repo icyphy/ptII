@@ -82,18 +82,23 @@ public class HttpServerHelper extends VertxHelperBase {
                 }
             });
     }
-    
+
+    /** Convert a string to an image token.
+     *  If there is a problem then _error() is called.   
+     *  @param body The html to be converted.
+     *  @return The ImageToken that is created.
+     */
     public AWTImageToken convertImageBody(String body) {
         // If the body includes image information, e.g. data:image/png;base64, remove this.
         int comma = body.indexOf(",");
-        
+
         if (comma > -1) {
-        	body = body.substring(comma + 1, body.length());
+                body = body.substring(comma + 1, body.length());
         }
-        
+
         try {
             // This is tested by
-            // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml 
+            // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml
 
             // Don't use
             // javax.xml.bind.DatatypeConverter.parse64Binary()
@@ -106,7 +111,7 @@ public class HttpServerHelper extends VertxHelperBase {
             // but this would introduce a compile and runtime dependency.
 
             byte[] bytes = Base64.getDecoder().decode(body);
-            
+
             // byte [] bytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(body);
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
             AWTImageToken token = new AWTImageToken(image);
@@ -114,12 +119,12 @@ public class HttpServerHelper extends VertxHelperBase {
         } catch (Throwable throwable) {
             System.out.println("Failed to parse image: " + throwable);
             throwable.printStackTrace();
-            _error(_actor + "Received unparseable image: " + throwable.toString());
-        	AWTImageToken imageToken = new AWTImageToken(null);
-        	return imageToken;
+            _error(_actor + "Received unparseable image: " + throwable.toString(), throwable);
+                AWTImageToken imageToken = new AWTImageToken(null);
+                return imageToken;
         }
     }
-    
+
     /** Create a HttpServerHelper instance to help a JavaScript HttpServer instance.
      *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript HttpServer instance for which this is a helper.
@@ -152,6 +157,7 @@ public class HttpServerHelper extends VertxHelperBase {
     /** Respond to the request with the specified ID by sending the specified text.
      *  @param requestID The request ID.
      *  @param responseText The text with which to respond.
+     *  @param responseCode The response code
      */
     public void respond(int requestID, String responseText, int responseCode) {
         // If request has already timed out, then ignore this response.
@@ -161,7 +167,7 @@ public class HttpServerHelper extends VertxHelperBase {
             _actor.clearTimeout(requestID);
 
             HttpServerResponse response = request.response();
-            
+
             response.setStatusCode(responseCode);
             response.headers()
                 .add("Content-Length", String.valueOf(responseText.length()))
@@ -183,25 +189,25 @@ public class HttpServerHelper extends VertxHelperBase {
                     @Override
                     public void handle(final HttpServerRequest request) {
 
-                    	request.exceptionHandler((throwable) -> {
+                            request.exceptionHandler((throwable) -> {
                             _error("Request failed.", throwable);
                         });
-                        
+
                         // Register a body handler.  If a body is present, this handler calls httpServer's _request().
                         // Otherwise, call httpServer's _request() directly.
                         request.bodyHandler(new Handler<Buffer>() {
                             @Override
                             public void handle(Buffer buffer) {
-                            	
-                            	// Sometimes the body handler is invoked even when there is no body (i.e. buffer length 0).
-                            	// Do not call _request in this situation.  It will be called elsewhere.
-                            	if (buffer.toString().length() > 0) {
+
+                                    // Sometimes the body handler is invoked even when there is no body (i.e. buffer length 0).
+                                    // Do not call _request in this situation.  It will be called elsewhere.
+                                    if (buffer.toString().length() > 0) {
                                     String method = request.method().toString();
                                     String path = request.path();
-                                    
+
                                     MultiMap headers = request.headers();
                                     MultiMap params = request.params();
-                                    
+
                                     // Make this callback in the director thread instead of
                                     // the verticle thread so that all outputs associated with
                                     // a request are emitted simultaneously.
@@ -213,34 +219,34 @@ public class HttpServerHelper extends VertxHelperBase {
                                         _currentObj.callMember(
                                                 "_request", timeoutResponse.getTimeoutID(), method, path, buffer.toString(), headers.entries(), params.entries());
                                     });
-                            	}
+                                    }
                             }
                         });
-                        
+
                         String method = request.method().toString();
                         String path = request.path();
-                        
+
                         MultiMap headers = request.headers();
                         MultiMap params = request.params();
-                                                
-                        // Check for a body by checking for a Content-Length header or for chunked encoding. 
+
+                        // Check for a body by checking for a Content-Length header or for chunked encoding.
                         // Content-Length header is omitted for chunked encoding.
                         // Handle all not-yet-handled requests (i.e. no body).
-                        if ( (headers.contains("Content-Length") && !headers.get("Content-Length").equalsIgnoreCase("0")) ||  
-                             (headers.contains("transfer-encoding") && 
-                            		 headers.get("transfer-encoding").equalsIgnoreCase("chunked"))) {
-                        	// Do nothing.  Request will have been handled by request.bodyHandler.
+                        if ( (headers.contains("Content-Length") && !headers.get("Content-Length").equalsIgnoreCase("0")) ||
+                             (headers.contains("transfer-encoding") &&
+                                             headers.get("transfer-encoding").equalsIgnoreCase("chunked"))) {
+                                // Do nothing.  Request will have been handled by request.bodyHandler.
                         } else {
-	                        // Make this callback in the director thread instead of
-	                        // the verticle thread so that all outputs associated with
-	                        // a request are emitted simultaneously.
-	                        _issueResponse(() -> {
-	                            // Set up a timeout handler.
-	                            // FIXME: timeout 10000 needs to be an option given in JS constructor.
-	                            TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
-	                            _currentObj.callMember(
-	                                    "_request", timeoutResponse.getTimeoutID(), method, path, null, headers.entries(), params.entries());
-	                            });
+                                // Make this callback in the director thread instead of
+                                // the verticle thread so that all outputs associated with
+                                // a request are emitted simultaneously.
+                                _issueResponse(() -> {
+                                    // Set up a timeout handler.
+                                    // FIXME: timeout 10000 needs to be an option given in JS constructor.
+                                    TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
+                                    _currentObj.callMember(
+                                            "_request", timeoutResponse.getTimeoutID(), method, path, null, headers.entries(), params.entries());
+                                    });
                         }
                     }
                 });
