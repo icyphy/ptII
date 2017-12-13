@@ -339,6 +339,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * latent variable.
      * @param y The y values
      * @param hiddenState The hidden state
+     * @return the emission probability
      * @exception IllegalActionException If there is a problem calculating
      * the emission probability.
      */

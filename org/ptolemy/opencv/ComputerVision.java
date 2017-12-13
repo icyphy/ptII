@@ -118,18 +118,18 @@ public class ComputerVision {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Construct an instance of ComputerVision and load OpenCV.
      *  @exception IOException If the shared library cannot be loaded.
      */
     public ComputerVision() throws IOException {
         super();
-        
+
         /** Load Native C Library for OpenCV */
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         // Use a better loader that looks for the shared library for the Mac.
         OpenCVLoader.loadOpenCV(Core.NATIVE_LIBRARY_NAME);
-        
+
         _blur = new Blur();
         _dilate = new Dilate();
         _erode = new Erode();
@@ -144,12 +144,14 @@ public class ComputerVision {
         _medianBlur = new MedianBlur();
     }
 
-    /** Apply the specified filter to the source image. 
+    /** Apply the specified filter to the source image.
      *  @param source The source image to transform.
      *  @param filterName The name of the filter.
      *  @return The transformed image.
+     *  @exception IllegalActionException If no filter is found or
+     *  there is a problem filtering.
      */
-    public BufferedImage filter(BufferedImage source, String filterName) 
+    public BufferedImage filter(BufferedImage source, String filterName)
             throws IllegalActionException {
 
         switch (filterName) {
@@ -228,7 +230,7 @@ public class ComputerVision {
         }
         return destination;
     }
-    
+
     /** Set the blur size.  1 to 25.
      * @param blurSize The new blur size.
      */
@@ -241,7 +243,7 @@ public class ComputerVision {
             _blurSize = blurSize;
         }
     }
-    
+
     /** Set the canny edge detection threshold.  10 to 150.
      * @param threshold The new threshold
      */
@@ -254,7 +256,7 @@ public class ComputerVision {
             _cannyThreshold = threshold;
         }
     }
-    
+
     /** Set the erosion size.  0 to 21.
      * @param erosionSize The new erosion size.
      */
@@ -267,7 +269,7 @@ public class ComputerVision {
             _erosionSize = erosionSize;
         }
     }
-    
+
     /** Return a string description of the filter.
      *  @return The string "ComputerVisionFilter".
      */
@@ -279,11 +281,11 @@ public class ComputerVision {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
-    /** A filter that blurs the image. 
+
+    /** A filter that blurs the image.
      */
     public class Blur extends AbstractBufferedImageOp {
-        /** Blur the source image. 
+        /** Blur the source image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The blurred image.
@@ -297,15 +299,15 @@ public class ComputerVision {
             Mat result = new Mat();
             Size blurSize = new Size(_blurSize, _blurSize);
             Imgproc.blur(converted, result, blurSize);
-            
+
             return mat2BufferedImage(result);
         }
     }
-    
+
     /** A filter that dilates the image.
      */
     public class Dilate extends AbstractBufferedImageOp {
-        /** Dilate the source image. 
+        /** Dilate the source image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The dilated image.
@@ -322,15 +324,15 @@ public class ComputerVision {
             Mat result = new Mat();
             // Note: Browser version additionally specifies border arguments.
             Imgproc.dilate(converted, result, element, new Point(-1, -1), 1);
-            
+
             return mat2BufferedImage(result);
         }
     }
-    
+
     /** A filter that erodes the image.
      */
     public class Erode extends AbstractBufferedImageOp {
-        /** Erode the source image. 
+        /** Erode the source image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The eroded image.
@@ -347,15 +349,15 @@ public class ComputerVision {
             Mat result = new Mat();
             // Note: Browser version additionally specifies border arguments.
             Imgproc.erode(converted, result, element, new Point(-1,-1), 1);
-            
+
             return mat2BufferedImage(result);
         }
     }
-    
+
     /** A filter that finds contours in the image.
      */
     public class FindContours extends AbstractBufferedImageOp {
-        /** Find contours in the source image. 
+        /** Find contours in the source image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return An image of the contours.
@@ -369,24 +371,24 @@ public class ComputerVision {
             Mat blurred = new Mat();
             Mat cannied = new Mat();
             Mat hierarchy = new Mat();
-            
+
             // Note: Browser implementation also includes border arguments.
             Imgproc.blur(converted, blurred, new Size(5,5));
             Imgproc.Canny(blurred, cannied, _cannyThreshold, _cannyThreshold*2, 3, false);
-            
+
             ArrayList<MatOfPoint> contours = new ArrayList();
             Imgproc.findContours(cannied, contours, hierarchy, 3, 2, new Point(0,0));
-            
-            // Note:  This implementation does not draw the convex hull as in 
+
+            // Note:  This implementation does not draw the convex hull as in
             // the browser version.  The Java version of Impgproc.convexHull
             // does not allow the option to return the points directly (only
             // indices to the points), and I'm not sure how to fetch the points.
-            
-            // Draw contours 
+
+            // Draw contours
             Size size = cannied.size();
             Mat drawing = Mat.zeros(size, CvType.CV_8UC4);
-            
-            for(int i = 0; i< contours.size(); i++ )
+
+            for (int i = 0; i< contours.size(); i++ )
             {
                 Scalar color = new Scalar(Math.random()*255, Math.random()*255, Math.random()*255);
                 Imgproc.drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, new Point(0,0));
@@ -395,10 +397,10 @@ public class ComputerVision {
         }
     }
 
-    /** A filter that finds edges in an image. 
+    /** A filter that finds edges in an image.
      */
     public class FindEdges extends AbstractBufferedImageOp {
-        /** Find edges in an image. 
+        /** Find edges in an image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return An image of the edges.
@@ -411,7 +413,7 @@ public class ComputerVision {
 
             Mat blurred = new Mat();
             Mat result = new Mat();
-            
+
             // Note: Browser implementation also includes border arguments.
             Imgproc.blur(converted, blurred, new Size(5,5));
             Imgproc.Canny(blurred, result, _cannyThreshold, _cannyThreshold*2, 3, false);
@@ -419,11 +421,11 @@ public class ComputerVision {
             return mat2BufferedImage(result);
         }
     }
-    
+
     /** A filter that applies a gaussian blur to an image.
      */
     public class GaussianBlur extends AbstractBufferedImageOp {
-        /** Apply a gaussian blur to an image. 
+        /** Apply a gaussian blur to an image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The blurred image.
@@ -433,20 +435,20 @@ public class ComputerVision {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
-            
+
             Mat result = new Mat();
             Size blurSize = new Size(2*_blurSize+1, 2*_blurSize+1);
             // Note : Browser version also includes border argument.
             Imgproc.GaussianBlur(converted, result, blurSize, 0, 0);
-            
+
             return mat2BufferedImage(result);
         }
     }
-    
-    /** A class for creating a histogram from the image.  
+
+    /** A class for creating a histogram from the image.
      */
     public class Histogram extends AbstractBufferedImageOp {
-        /** Create a histogram from an image. 
+        /** Create a histogram from an image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return A histogram.
@@ -454,9 +456,9 @@ public class ComputerVision {
         @Override
         public BufferedImage filter(BufferedImage source, BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
-            
+
             int numBins = 255;
-            
+
             ArrayList<Mat> rgbPlanes = new ArrayList();
             Core.split(sourceMatrix, rgbPlanes);
 
@@ -464,22 +466,22 @@ public class ComputerVision {
             MatOfFloat ranges = new MatOfFloat();
             ranges.push_back(new MatOfFloat(0));
             ranges.push_back(new MatOfFloat(255));
-            
+
             MatOfInt histSize = new MatOfInt();
             histSize.push_back(new MatOfInt(numBins));
-            
+
             Mat histr = new Mat();
             Mat histg = new Mat();
             Mat histb = new Mat();
-            
+
             planes.push_back(new MatOfInt(0));
-            
+
             Imgproc.calcHist(rgbPlanes, planes, new Mat(), histr, histSize, ranges, false);
             planes.setTo(new MatOfInt(1));
             Imgproc.calcHist(rgbPlanes, planes, new Mat(), histg, histSize, ranges, false);
             planes.setTo(new MatOfInt(2));
             Imgproc.calcHist(rgbPlanes, planes, new Mat(), histb, histSize, ranges, false);
-            
+
             // Normalize.
             Mat noArray = new Mat();
             Core.normalize(histr, histr, 1, 0, Core.NORM_L2, -1, noArray);
@@ -490,12 +492,12 @@ public class ComputerVision {
             int hist_w = 300;
             int hist_h = 300;
             int bin_w = hist_w/numBins|0 ;
-            
+
             Mat histImage = Mat.ones(new Size(hist_h, hist_w), CvType.CV_8UC4);
             Point p1, p2;
             int row, col;
             int cols = histr.cols();
-            
+
             for (int i = 1; i < numBins; i++) {
                 row = i / cols;
                 col = i % cols;
@@ -503,11 +505,11 @@ public class ComputerVision {
                 p1 =  new Point(bin_w*(i-1), hist_h - histr.get(row, col - 1)[0]*hist_h);
                 p2 = new Point(bin_w*(i), hist_h - histr.get(row,  col)[0]*hist_h);
                 Imgproc.line(histImage, p1, p2, new Scalar(255, 0, 0), 1, Imgproc.LINE_8, 0);
-                
+
                 p1 =  new Point(bin_w*(i-1), hist_h - histg.get(row, col - 1)[0]*hist_h);
                 p2 = new Point(bin_w*(i), hist_h - histg.get(row,  col)[0]*hist_h);
                 Imgproc.line(histImage, p1, p2, new Scalar(0, 255, 0), 1, Imgproc.LINE_8, 0);
-                
+
                 p1 =  new Point(bin_w*(i-1), hist_h - histb.get(row, col - 1)[0]*hist_h);
                 p2 = new Point(bin_w*(i), hist_h - histb.get(row,  col)[0]*hist_h);
                 Imgproc.line(histImage, p1, p2, new Scalar(0, 0, 255), 1, Imgproc.LINE_8, 0);
@@ -515,12 +517,12 @@ public class ComputerVision {
             return mat2BufferedImage(histImage);
         }
     }
-    
+
     /** A filter that converts the image to BGRA format (Blue Green Red Alpha).
      */
     public class MakeBGRA extends AbstractBufferedImageOp {
 
-        /** Convert the source image to BGRA format. 
+        /** Convert the source image to BGRA format.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The image in BGRA format.
@@ -528,16 +530,16 @@ public class ComputerVision {
         @Override
         public BufferedImage filter(BufferedImage source, BufferedImage destination) {
             // bufferedImage2Mat returns BGRA, so just return that.
-            Mat sourceMatrix = bufferedImage2Mat(source);       
+            Mat sourceMatrix = bufferedImage2Mat(source);
             return mat2BufferedImage(sourceMatrix);
         }
     }
-    
+
     /** A filter that converts the image to grayscale.
      */
     public class MakeGray extends AbstractBufferedImageOp {
 
-        /** Convert the source image to grayscale. 
+        /** Convert the source image to grayscale.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The grayscale image.
@@ -551,12 +553,12 @@ public class ComputerVision {
             return mat2BufferedImage(result);
         }
     }
-    
+
     /** A filter that converts the image to HSV (Hue, Saturation, and Value).
      */
     public class MakeHSV extends AbstractBufferedImageOp {
 
-        /** Convert the source image to HSV. 
+        /** Convert the source image to HSV.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The HSV image.
@@ -572,12 +574,12 @@ public class ComputerVision {
             return mat2BufferedImage(result);
         }
     }
-    
+
     /** A filter that converts the image to YUV.
      */
     public class MakeYUV extends AbstractBufferedImageOp {
 
-        /** Convert the source image to HSV. 
+        /** Convert the source image to HSV.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The HSV image.
@@ -591,12 +593,12 @@ public class ComputerVision {
             return mat2BufferedImage(result);
         }
     }
-    
-    
+
+
     /** A filter that blurs the image.
      */
     public class MedianBlur extends AbstractBufferedImageOp {
-        /** Blur the source image. 
+        /** Blur the source image.
          *  @param source The source image.
          *  @param destination Not used here.  Required by superclass.
          *  @return The blurred image.
@@ -609,61 +611,61 @@ public class ComputerVision {
 
             Mat result = new Mat();
             Imgproc.medianBlur(converted, result, 2*_blurSize+1);
-            
+
             return mat2BufferedImage(result);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    // Since filter() is not defined as static in AbstractBufferedImageOp, 
+
+    // Since filter() is not defined as static in AbstractBufferedImageOp,
     // create instances for each type of filter.
-    
+
     /** Blur filter */
     private Blur _blur;
-    
+
     /** Blur threshold.  Used by Blur, GaussianBlur, and MedianBlur. 1 to 25. */
     private int _blurSize = 10;
-    
-    /** Canny edge detection threshold.  Used by FindContours and FindEdges. 
+
+    /** Canny edge detection threshold.  Used by FindContours and FindEdges.
      * 10 to 150.
      */
     private int _cannyThreshold = 20;
-    
+
     /** Dilate filter. */
     private Dilate _dilate;
-    
+
     /** Erode filter. */
     private Erode _erode;
-    
+
     /** Erosion size.  Used by Dilate and Erode.  0 t0 21. */
     private int _erosionSize = 10;
-    
+
     /** Find contours filter. */
     private FindContours _findContours;
-    
+
     /** Find edges filter. */
     private FindEdges _findEdges;
-    
+
     /** Gaussian blur filter. */
     private GaussianBlur _gaussianBlur;
-    
+
     /** Histogram creator.  */
     private Histogram _histogram;
-    
+
     /** BGRA converter. */
     private MakeBGRA _makeBGRA;
-    
+
     /** Grayscale converter. */
     private MakeGray _makeGray;
-    
+
     /** HSV converter. */
     private MakeHSV _makeHSV;
-    
+
     /** YUV converter. */
     private MakeYUV _makeYUV;
-    
+
     /** Median blur filter. */
     private MedianBlur _medianBlur;
 }
