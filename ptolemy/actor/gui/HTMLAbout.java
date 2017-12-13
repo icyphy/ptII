@@ -637,6 +637,9 @@ public class HTMLAbout {
             NamedObj namedObj = parser.parseFile(demo);
             if (namedObj instanceof CompositeEntity) {
                 CompositeEntity model = (CompositeEntity) namedObj;
+
+                // Look for LiveLinks inside regular models, where
+                // the LiveLink is inside an Attribute.
                 Enumeration attributes = model.getAttributes();
                 while (attributes.hasMoreElements()) {
                     Object object = attributes.nextElement();
@@ -648,35 +651,70 @@ public class HTMLAbout {
                     // so we should not add the dependency.
                     if (object instanceof Attribute) {
                         Enumeration innerAttributes = ((Attribute)object).getAttributes();
-                        while (innerAttributes.hasMoreElements()) {
-                            Object innerObject = innerAttributes.nextElement();
-                            if (innerObject instanceof LiveLink) {
-                                LiveLink liveLink = (LiveLink)innerObject;
-                                File liveLinkFile = liveLink.asFile();
-                                String liveLinkValue = liveLink.stringValue();
-                                if (liveLinkValue.contains("CLASSPATH")
-                                        && liveLinkValue.endsWith(".xml")) {
-                                    // Look for the value of $PTII and substitute in $CLASSPATH
-                                    // so that we can use FileUtilities.nameToURL() from within
-                                    // ptolemy.moml.filter.ActorIndex
-                                    fileWriter.write(StringUtilities.substitute(liveLinkFile.getCanonicalPath(), ptII,
-                                                "$CLASSPATH") + "\n");
-                                } else if (!liveLinkValue.contains("/")
-                                           && !liveLinkValue.contains("\\")
-                                           && liveLinkValue.endsWith(".xml")) {                                           
-                                    // The link target is in the same directory as the model.
-                                    // FIXME: It could be that models with relative LiveLinks will not be found when
-                                    // the system is using jar files.
-                                    String demoPath = StringUtilities.substitute(liveLinkFile.getCanonicalPath(), ptII,
-                                                                                 "$CLASSPATH");
-                                    // System.out.println( demo + ": contains a LiveLink: " + demoPath);
-                                    fileWriter.write(demoPath + "\n");
-                                }
-                            }
-                        }
+
+                        _writeLiveLinksAttributes(fileWriter, demo, ptII, innerAttributes);
+                    }
+                }
+
+                // Look for LiveLinks inside Ontologies, like
+                // $PTII/ptolemy/demo/ElectricPowerSystem/Overview.xml
+                // where the LiveLink is inside a FiniteConcept, which is
+                // a CompositeEntity.
+                Enumeration entities = model.getEntities();
+                while (entities.hasMoreElements()) {
+                    Object entity = entities.nextElement();
+                    if (entity instanceof NamedObj) {
+                        attributes = ((NamedObj)entity).getAttributes();
+                        _writeLiveLinksAttributes(fileWriter, demo, ptII, attributes);
                     }
                 }
                 model.setContainer(null);
+            }
+        }
+    }
+
+    /** Look for LiveLinks in the Enumeration of attributes.
+     *  @param fileWriter The FileWriter to write the file names to..
+     *  @param demo The string path to the demo to be searched for live links.
+     *  @param ptII The Ptolemy II home directory.
+     *  @param innerAttributes An enumeration of attributes
+     *  @exception Throwable If there is a problem opening the demo.
+     */
+    private static void _writeLiveLinksAttributes(FileWriter fileWriter, String demo,
+                                                  String ptII, Enumeration innerAttributes) throws Throwable {
+        while (innerAttributes.hasMoreElements()) {
+            Object innerObject = innerAttributes.nextElement();
+            // System.out.println("Attribute: " + ((Attribute)innerObject).getFullName());
+            if (innerObject instanceof LiveLink) {
+                LiveLink liveLink = (LiveLink)innerObject;
+                File liveLinkFile = liveLink.asFile();
+                String liveLinkValue = liveLink.stringValue();
+
+                if (liveLinkValue.contains("CLASSPATH")
+                    && liveLinkValue.contains(".xml")) {
+                    // Look for the value of $PTII and substitute in $CLASSPATH
+                    // so that we can use FileUtilities.nameToURL() from within
+                    // ptolemy.moml.filter.ActorIndex
+                    String demoPath = StringUtilities.substitute(liveLinkFile.getCanonicalPath(),
+                                                                 ptII, "$CLASSPATH");
+                    // Remove anything after the .xml so as to support
+                    // references to internal entities.
+                    demoPath = demoPath.substring(0, demoPath.lastIndexOf(".xml") + 4);
+                    // System.out.println( demo + ": contains a LiveLink: " + demoPath);
+                    fileWriter.write(demoPath + "\n");
+                } else if (!liveLinkValue.contains("/")
+                           && !liveLinkValue.contains("\\")
+                           && liveLinkValue.contains(".xml")) {
+                    // The link target is in the same directory as the model.
+                    // FIXME: It could be that models with relative LiveLinks will not be found when
+                    // the system is using jar files.
+                    String demoPath = StringUtilities.substitute(liveLinkFile.getCanonicalPath(), ptII,
+                                                                 "$CLASSPATH");
+                    // Remove anything after the .xml.
+                    demoPath = demoPath.substring(0, demoPath.lastIndexOf(".xml") + 4);
+                    // System.out.println( demo + ": contains a LiveLink: " + demoPath);
+                    fileWriter.write(demoPath + "\n");
+                }
             }
         }
     }
