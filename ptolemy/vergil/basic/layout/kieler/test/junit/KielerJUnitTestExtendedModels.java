@@ -35,7 +35,7 @@ package ptolemy.vergil.basic.layout.kieler.test.junit;
  * and then doing undo and redo.
  *
  * <p>This class uses models such as ptolemy/domains/modal/demo/SystemLevelType,
- * which is not shipped with Cape Code, so these tests are in a 
+ * which is not shipped with Cape Code, so these tests are in a
  * separate file.</p>
  *
  * @author Christopher Brooks

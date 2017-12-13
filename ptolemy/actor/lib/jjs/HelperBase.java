@@ -87,7 +87,7 @@ public class HelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the JavaScript object that this helper is helping.
      *  @return The helping object given in the constructor.
      */
@@ -534,9 +534,9 @@ o     *  This is useful, for example, when a response
 
     /** The JavaScript object that this is a helper for. */
     protected ScriptObjectMirror _currentObj;
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                      ////
+    ////                         private methods                   ////
 
     /** Indicate that the expected type cannot be extracted from the buffer.
      *  @param ex The exception that occurred.

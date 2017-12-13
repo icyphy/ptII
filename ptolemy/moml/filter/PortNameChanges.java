@@ -370,6 +370,6 @@ public class PortNameChanges extends MoMLFilterSimple {
         javaScriptPorts.put("scriptIn", "script");
         _actorsWithPortNameChanges.put("ptolemy.actor.lib.jjs.JavaScript",
                 javaScriptPorts);
-        
+
     }
 }

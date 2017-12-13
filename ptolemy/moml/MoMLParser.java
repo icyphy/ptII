@@ -1633,7 +1633,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public NamedObj parse(URL base, String systemID, Reader reader)
             throws Exception {
-	base = FileUtilities.followRedirects(base);
+        base = FileUtilities.followRedirects(base);
         _base = base;
 
         // Invoking a Vertx demo and then a Nashorn demo can result in
@@ -1672,7 +1672,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 try {
-		    _xmlParser.parse(FileUtilities.followRedirects(base).toExternalForm(), null, buffered);
+                    _xmlParser.parse(FileUtilities.followRedirects(base).toExternalForm(), null, buffered);
                 } finally {
                     if (xmlFileWasNull) {
                         _setXmlFile(null);
@@ -6412,8 +6412,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return false;
         }
 
-	InputStream input = FileUtilities.openStreamFollowingRedirects(xmlFile);
-	
+        InputStream input = FileUtilities.openStreamFollowingRedirects(xmlFile);
+
         // Read the external file in the current context, but with
         // a new parser.  I'm not sure why the new parser is needed,
         // but the "input" element handler does the same thing.
@@ -6556,7 +6556,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         InputStream input = null;
 
         try {
-	    input = FileUtilities.openStreamFollowingRedirects(_xmlFile);
+            input = FileUtilities.openStreamFollowingRedirects(_xmlFile);
             try {
                 NamedObj toplevel = parser.parse(_xmlFile, input);
                 input.close();

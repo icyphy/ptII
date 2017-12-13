@@ -157,8 +157,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     public String generateConstructorCode() throws IllegalActionException {
         // FIXME : This should be in a proper adapter but since the PtidesPlatformDirector class
         // is private, we did it here which works but is not nice ...
-	// FIXME: We get the class name here because for Cape Code, we don't want to include Ptides.
-	if (getComponent().getContainer().getClass().getName().equals("ptolemy.domains.ptides.kernel.PtidesPlatform")) {
+        // FIXME: We get the class name here because for Cape Code, we don't want to include Ptides.
+        if (getComponent().getContainer().getClass().getName().equals("ptolemy.domains.ptides.kernel.PtidesPlatform")) {
             StringBuffer result = new StringBuffer();
             CompositeActor container = (CompositeActor) _director
                     .getContainer();

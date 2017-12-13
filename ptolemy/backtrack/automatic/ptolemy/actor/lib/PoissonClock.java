@@ -303,7 +303,7 @@ public class PoissonClock extends RandomSource implements TimedActor, Rollbackab
     /**
      * Get the stop time.
      * @return The stop time.
-     * @deprecated As of Ptolemy II 4.1, replaced by 
+     * @deprecated As of Ptolemy II 4.1, replaced by
      * {@link #getModelStopTime()}
 
      */

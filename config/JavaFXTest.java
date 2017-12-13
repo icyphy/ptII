@@ -31,9 +31,9 @@ import javafx.scene.media.Media;
 
 /** Simple Java Test Program for JavaFX, used by the ClipPlayer CapeCode accessor.
     is present.
-    
+
     If this file will not compile because the import statement fails,
-    then the problem is likely that you are using OpenJDK instead of 
+    then the problem is likely that you are using OpenJDK instead of
     an Oracle JDK.
 
     @author Christopher Brooks.

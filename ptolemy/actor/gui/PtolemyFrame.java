@@ -262,27 +262,27 @@ public abstract class PtolemyFrame extends TableauFrame {
             System.out.println("PtolemyFrame._close() : " + this.getName());
         }
 
-	// If we generated documentation and are closing a DocEffigy,
-	// then getEffigy() will return an Effigy, not a PtolemyEffigy.
+        // If we generated documentation and are closing a DocEffigy,
+        // then getEffigy() will return an Effigy, not a PtolemyEffigy.
         Effigy effigy = getEffigy();
 
-	// The effigy should not be null, but if the window has
-	// already been closed somehow, then it will be.
-	if (effigy != null) {
-	    List tableaux = effigy.entityList(Tableau.class);
-	    Iterator tableauxIterator = tableaux.iterator();
+        // The effigy should not be null, but if the window has
+        // already been closed somehow, then it will be.
+        if (effigy != null) {
+            List tableaux = effigy.entityList(Tableau.class);
+            Iterator tableauxIterator = tableaux.iterator();
 
-	    while (tableauxIterator.hasNext()) {
-		Tableau tableau = (Tableau) tableauxIterator.next();
+            while (tableauxIterator.hasNext()) {
+                Tableau tableau = (Tableau) tableauxIterator.next();
 
-		if (tableau instanceof DialogTableau) {
-		    DialogTableau dialogTableau = (DialogTableau) tableau;
+                if (tableau instanceof DialogTableau) {
+                    DialogTableau dialogTableau = (DialogTableau) tableau;
 
-		    if (!dialogTableau.close()) {
-			return false;
-		    }
-		}
-	    }
+                    if (!dialogTableau.close()) {
+                        return false;
+                    }
+                }
+            }
         }
 
         return super._close();

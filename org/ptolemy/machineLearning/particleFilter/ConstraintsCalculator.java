@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * The class for calculation of constraints of Swarm-Robots.
- * 
+ *
  * <p> Calculates various constraints required by Robots (Ex: Maximum
  * Speed, Distance between each other).</p>
  *

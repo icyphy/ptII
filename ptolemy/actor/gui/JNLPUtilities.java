@@ -181,17 +181,17 @@ public class JNLPUtilities {
         URL url = ClassUtilities.getResource(spec);
         if (url == null) {
             // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 0.5");
-	    // Windows, getResource() on spec with backslashes causes problems.
-	    String spec2 = spec.replace("\\", "/");
-	    url = ClassUtilities.getResource(spec2);
-	    if (url == null) {
-		// If we are trying to read something with a path like ./decode.js, then check the _lastSpec
-		if (spec.startsWith("." + File.separator) && _lastSpec != null) {
-		    String parentLastSpec = _lastSpec.substring(0, _lastSpec.lastIndexOf(File.separator) + 1);
-		    return getResourceSaveJarURLAsTempFile(parentLastSpec + spec.substring(2));
-		}
-		return null;
-	    }
+            // Windows, getResource() on spec with backslashes causes problems.
+            String spec2 = spec.replace("\\", "/");
+            url = ClassUtilities.getResource(spec2);
+            if (url == null) {
+                // If we are trying to read something with a path like ./decode.js, then check the _lastSpec
+                if (spec.startsWith("." + File.separator) && _lastSpec != null) {
+                    String parentLastSpec = _lastSpec.substring(0, _lastSpec.lastIndexOf(File.separator) + 1);
+                    return getResourceSaveJarURLAsTempFile(parentLastSpec + spec.substring(2));
+                }
+                return null;
+            }
         }
 
         results = null;

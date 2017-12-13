@@ -419,13 +419,13 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception URISyntaxException If the URI of the basePath is incorrect.
      */
     public static File[] configurationDirectories(String basePath) throws IOException, URISyntaxException {
-	URI configurationURI = new URI(specToURL(basePath)
-				       .toExternalForm().replaceAll(" ", "%20"));
-	File configurationDirectory = new File(configurationURI);
-	ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
-	File[] configurationDirectories = configurationDirectory
-	    .listFiles(filter);
-	return configurationDirectories;
+        URI configurationURI = new URI(specToURL(basePath)
+                                       .toExternalForm().replaceAll(" ", "%20"));
+        File configurationDirectory = new File(configurationURI);
+        ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
+        File[] configurationDirectories = configurationDirectory
+            .listFiles(filter);
+        return configurationDirectories;
     }
 
     /** Return the full configuration directory or, if the full configuration
@@ -435,18 +435,18 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception URISyntaxException If the URI of the basePath is incorrect.
      */
     public static File configurationDirectoryFullOrFirst() throws IOException, URISyntaxException {
-	File[] configurationDirectories = configurationDirectories("ptolemy/configs");
-	if (configurationDirectories.length < 1) {
-	    throw new IOException("Could not find any configurations in ptolemy/configs");
-	}
-	File configurationDirectory = configurationDirectories[0];
-	int i;
-	for(i = 0; i < configurationDirectories.length; i++) {
-	    if (configurationDirectories[i].toString().endsWith("configs/full")) {
-		configurationDirectory = configurationDirectories[i];
-	    }
-	}
-	return configurationDirectory;
+        File[] configurationDirectories = configurationDirectories("ptolemy/configs");
+        if (configurationDirectories.length < 1) {
+            throw new IOException("Could not find any configurations in ptolemy/configs");
+        }
+        File configurationDirectory = configurationDirectories[0];
+        int i;
+        for (i = 0; i < configurationDirectories.length; i++) {
+            if (configurationDirectories[i].toString().endsWith("configs/full")) {
+                configurationDirectory = configurationDirectories[i];
+            }
+        }
+        return configurationDirectory;
     }
 
     /** Reduce the count of executing models by one.  If the number of
@@ -657,20 +657,20 @@ public class ConfigurationApplication implements ExecutionListener {
             String canonicalModelFileName = canonicalModelFile
                     .getCanonicalPath();
 
-	    // Search for the full configuration or the first configuration.
+            // Search for the full configuration or the first configuration.
 
-	    // This is needed for the exportHTML tests under CapeCode
-	    // because full/configuration.xml does not exist, but
-	    // capecode/configuration.xml does.
+            // This is needed for the exportHTML tests under CapeCode
+            // because full/configuration.xml does not exist, but
+            // capecode/configuration.xml does.
 
-	    File configurationDirectory = configurationDirectoryFullOrFirst();
+            File configurationDirectory = configurationDirectoryFullOrFirst();
 
             // FIXME: are we in the right thread?
             ConfigurationApplication application = new ConfigurationApplication(
                     new String[] {
                             // Need to display a frame or Kieler fails.
                             //"ptolemy/actor/gui/test/testConfiguration.xml",
-			    configurationDirectory.getCanonicalPath() + "/configuration.xml",
+                            configurationDirectory.getCanonicalPath() + "/configuration.xml",
                             canonicalModelFileName });
 
             // Find the first CompositeEntity whos name matches
@@ -1067,7 +1067,7 @@ public class ConfigurationApplication implements ExecutionListener {
             // Look for configuration directories in _basePath
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
-	    File[] configurationDirectories = configurationDirectories(_basePath);
+            File[] configurationDirectories = configurationDirectories(_basePath);
 
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "

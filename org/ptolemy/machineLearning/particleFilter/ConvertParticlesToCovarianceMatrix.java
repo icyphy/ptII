@@ -108,7 +108,7 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     @Override
     public void fire() throws IllegalActionException {
 

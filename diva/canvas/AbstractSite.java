@@ -117,7 +117,7 @@ public abstract class AbstractSite implements Site {
             Point2D point = getPoint(normal);
             return transform.transform(point, point);
         }
-        return new Point2D.Double(0,0);        
+        return new Point2D.Double(0,0);
     }
 
     /** Get the enclosing transform context of this site.

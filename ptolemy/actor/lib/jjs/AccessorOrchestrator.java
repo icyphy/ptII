@@ -38,11 +38,11 @@ import ptolemy.kernel.util.Nameable;
  *  to invoke callback functions (via the {@link #invokeCallback(Runnable)}
  *  method). It promises that all such callback functions are mutually
  *  atomic.
- *  
+ *
  *  This interface extends Nameable so that error reporting is more complete.
- *  
+ *
  *  FIXME: More
- *  
+ *
  *  @author Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 10.0
@@ -50,11 +50,11 @@ import ptolemy.kernel.util.Nameable;
  *  @Pt.AcceptedRating Red (bilung)
  */
 public interface AccessorOrchestrator extends Nameable {
-    
+
     /** Clear the interval with the specified handle, if it
      *  has not already executed.
      *  @param timer The timeout handle.
-     *  @throws IllegalActionException If the handle is invalid.
+     *  @exception IllegalActionException If the handle is invalid.
      *  @see #setTimeout(Runnable, int)
      *  @see #setInterval(Runnable, int)
      */
@@ -63,7 +63,7 @@ public interface AccessorOrchestrator extends Nameable {
     /** Clear the timeout with the specified handle, if it
      *  has not already executed.
      *  @param timer The timeout handle.
-     *  @throws IllegalActionException If the handle is invalid.
+     *  @exception IllegalActionException If the handle is invalid.
      *  @see #setTimeout(Runnable, int)
      *  @see #setInterval(Runnable, int)
      */
@@ -85,7 +85,7 @@ public interface AccessorOrchestrator extends Nameable {
      *  @param message The message to be printed.
      */
     public void log(String message);
-    
+
     /** Invoke the specified function after the specified amount of time and again
      *  at multiples of that time.
      *  @param function The function to invoke.
@@ -95,7 +95,7 @@ public interface AccessorOrchestrator extends Nameable {
      *  @see #clearTimeout(Object)
      */
     public Object setInterval(Runnable function, int milliseconds) throws IllegalActionException;
-    
+
     /** Invoke the specified function after the specified amount of time.
      *  @param function The function to invoke.
      *  @param milliseconds The number of milliseconds in the future to invoke it.

@@ -351,6 +351,7 @@ public class JSAccessor extends JavaScript {
 
     /** Create symbolic links for the modules.
      *  @return messages about creating the links.
+     *  @exception IOException If there is a problem creating a link.
      */
     public static String createSymbolicLinks() throws IOException {
         // Create the Path in a platform-indendent manner.
@@ -365,7 +366,7 @@ public class JSAccessor extends JavaScript {
         newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules");
         temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-modules.AccessorsCodeGenerator");
         target = Paths.get("..", "hosts", "common", "modules");
-        results.append("\n" + FileUtilities.createLink(newLink, temporary, target));        
+        results.append("\n" + FileUtilities.createLink(newLink, temporary, target));
 
         newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common");
         temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.AccessorCodeGenerator");
@@ -659,20 +660,20 @@ public class JSAccessor extends JavaScript {
 
     /** Return the node binary that is in the path or, if node is not
      *  found in the path, return the node binary in
-     *  $PTII/vendors/node. 
+     *  $PTII/vendors/node.
      *  @return The node binary or "node".
      *  @exception IOException If there is a problem finding the node binary.
-     */   
+     */
     public static String nodeBinary() throws IOException {
         return _nodeOrNpmBinary("node");
     }
 
     /** Return the npm binary that is in the path or, if npm is not
      *  found in the path, return the npm binary in
-     *  $PTII/vendors/node. 
+     *  $PTII/vendors/node.
      *  @return The npm binary or "npm".
      *  @exception IOException If there is a problem finding the npm binary.
-     */   
+     */
     public static String npmBinary() throws IOException {
         return _nodeOrNpmBinary("npm");
     }
@@ -993,7 +994,7 @@ public class JSAccessor extends JavaScript {
      *  located at $PTII/org/terraswarm/accessor/accessors.  Note that
      *  this repo is not necessarily world readable. </p>
      *
-     *  <p>If the <i>urlSpec</i> is not found, then the 
+     *  <p>If the <i>urlSpec</i> is not found, then the
      *  accessor repo will be checked out or updated.</p>
      *
      *  <p>After the repo is loaded or updated, if url starts with
@@ -1194,7 +1195,7 @@ public class JSAccessor extends JavaScript {
     }
 
     /** Return true if the PT_NO_NET environment variable is set.
-     */   
+     */
     private static boolean _doNotUpdateOrRunJSDoc() {
         String PT_NO_NET = "";
         try {
@@ -1237,7 +1238,7 @@ public class JSAccessor extends JavaScript {
         // up to 10 redirects.  Otherwise, we just
         // call URL.getInputStream().
         BufferedReader in = null;
-	//InputStream in = null;
+        //InputStream in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
                                                           FileUtilities.openStreamFollowingRedirects(url)));
@@ -1246,7 +1247,7 @@ public class JSAccessor extends JavaScript {
             // does not always work.  See
             // http://stackoverflow.com/questions/15030026/httpurlconnection-getinputstream-returns-empty-stream-in-android
             if (line == null || line.length() == 0) {
-		//if ( in.available() == 0) {
+                //if ( in.available() == 0) {
                 throw new IOException("Could not find PtDoc for urlSpec: \"" + urlSpec + "\"."
                                       + "The url \"" + url + "\" was opened, but had 0 bytes available?  "
                                       + "Perhaps the file has a zero length because there are no "
@@ -1297,14 +1298,14 @@ public class JSAccessor extends JavaScript {
      *  $PTII/vendors/node.
      *  @param binaryName Either "node" or "npm".
      *  @return The node binary
-     */   
+     */
     private static String _nodeOrNpmBinary(String binaryName) throws IOException {
-        if (!binaryName.equals("node") 
+        if (!binaryName.equals("node")
             && !binaryName.equals("npm")) {
             throw new IOException("_nodeOrNpmBinary must be called with "
                                   + "either \"node\" or \"npm\", not \""
                                   + binaryName + "\"");
-        }            
+        }
 
         String commandExtension = null;
         String executableExtension = "";
@@ -1348,7 +1349,7 @@ public class JSAccessor extends JavaScript {
                 } else {
                     nodeBinary = nodeVersion + "-win-x64/node.exe";
                     npmBinary = nodeVersion + "-win-x64/npm.cmd";
-                    
+
                 }
                 nodeBinary = nodeBinary.replace('/', File.separatorChar);
                 npmBinary = npmBinary.replace('/', File.separatorChar);
@@ -1370,7 +1371,7 @@ public class JSAccessor extends JavaScript {
             return binaryFile.getAbsolutePath();
         }
 
-        // Windows seems to fail to report that files 
+        // Windows seems to fail to report that files
         if (osName != null && osName.startsWith("Windows")) {
             // Fail, might as well return name of the binary and hope for the best.
             String returnValue = "cmd /c " + binaryFile.getAbsolutePath().replace("%5c", "\\");
@@ -1439,7 +1440,7 @@ public class JSAccessor extends JavaScript {
     }
 
     /** Build the ptdoc files.
-     *  @return 0 if ant and node were found and ant returned 0.   
+     *  @return 0 if ant and node were found and ant returned 0.
      */
     private static int _ptDoc() throws IOException {
         if (_doNotUpdateOrRunJSDoc()) {
@@ -1480,14 +1481,14 @@ public class JSAccessor extends JavaScript {
                     }
                 }
                 String osName = StringUtilities.getProperty("os.name");
-		String commandExtension = "";
-		String executableExtension = "";
-		if (osName != null && osName.startsWith("Windows")) {
-		    commandExtension = ".cmd";
-		    executableExtension = ".exe";
-		}
+                String commandExtension = "";
+                String executableExtension = "";
+                if (osName != null && osName.startsWith("Windows")) {
+                    commandExtension = ".cmd";
+                    executableExtension = ".exe";
+                }
                 if (!FileUtilities.inPath("ant" + executableExtension)) {
-		    System.out.println("JSAccessor: ant" + executableExtension + " was not found in the path");
+                    System.out.println("JSAccessor: ant" + executableExtension + " was not found in the path");
                     // If ptolemy.ant.path will only be set if
                     // ./configure has been run.  If ptolemy.ant.path
                     // is not set, then look for the ant shell script
@@ -1497,7 +1498,7 @@ public class JSAccessor extends JavaScript {
 
                     String defaultAntPath = "$CLASSPATH/ant/bin/ant";
                     if (osName != null && osName.startsWith("Windows")) {
-			// ant.exe does not exist?  But ant.bat does??
+                        // ant.exe does not exist?  But ant.bat does??
                         defaultAntPath = "$CLASSPATH/ant/bin/ant.bat";
                     }
 
@@ -1518,11 +1519,11 @@ public class JSAccessor extends JavaScript {
                         MessageHandler.status(defaultAnt);
                         return -1;
                     } else {
-			System.out.println("JSAccessor: Found ant at " + antPath);
-		    }
+                        System.out.println("JSAccessor: Found ant at " + antPath);
+                    }
                 } else {
-		    System.out.println("JSAccessor: ant was found in the path: " + System.getenv("PATH"));
-		}
+                    System.out.println("JSAccessor: ant was found in the path: " + System.getenv("PATH"));
+                }
 
                 System.out.println("JSAccessor.java: node inPath: "
                                    + !FileUtilities.inPath("node" + executableExtension)
@@ -1533,7 +1534,7 @@ public class JSAccessor extends JavaScript {
                                    );
 
                 if (!FileUtilities.inPath("node" + executableExtension)
-		    || !FileUtilities.inPath("npm" + commandExtension)) {
+                    || !FileUtilities.inPath("npm" + commandExtension)) {
 
                     String nodeBinary = JSAccessor.nodeBinary();
                     File nodeBinaryFile = FileUtilities.nameToFile(nodeBinary, null);
@@ -1619,7 +1620,7 @@ public class JSAccessor extends JavaScript {
 
     /** Set to true of the _ptDoc() method returned non-zero,
      *  Indicating that "ant ptdoc" failed.
-     */        
+     */
     private static boolean _ptDocFailed = false;
 
     /** Set to true if the message about .svn/ missing has been printed. */

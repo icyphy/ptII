@@ -86,7 +86,7 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
         super._addMenus();
 
         _editMenu.addSeparator();
-        
+
         GUIUtilities.addMenuItem(_editMenu, new RSyntaxTextAreaEditorKit.IncreaseFontSizeAction(
                 "Increase Font", null, "Increase the font size.", 8, KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Toolkit
                         .getDefaultToolkit().getMenuShortcutKeyMask())));

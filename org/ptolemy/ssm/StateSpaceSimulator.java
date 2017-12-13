@@ -63,7 +63,7 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */   
+     */
     public StateSpaceSimulator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

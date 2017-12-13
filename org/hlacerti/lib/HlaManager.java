@@ -714,7 +714,7 @@ public class HlaManager extends AbstractInitializableAttribute
         _certiRtig = new CertiRtig(this, _debugging);
         if (_debugListeners != null
             && _debugListeners.size() > 0) {
-            for(Object listener: _debugListeners) {
+            for (Object listener: _debugListeners) {
                 _certiRtig.addDebugListener((DebugListener)listener);
             }
         }
@@ -1040,7 +1040,7 @@ public class HlaManager extends AbstractInitializableAttribute
         super.wrapup();
         if (_debugListeners != null
             && _debugListeners.size() > 0) {
-            for(Object listener: _debugListeners) {
+            for (Object listener: _debugListeners) {
                 _certiRtig.removeDebugListener((DebugListener)listener);
             }
         }
@@ -1324,7 +1324,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         StringBuffer info = new StringBuffer("Federate " + getDisplayName()
                                              + " in the model " + nameOfTheFile);
-        
+
         try {
             // FIXME: Reading a file and doing a string match is not a robust
             // way to get the value of a parameter.  Instead, use
@@ -1831,12 +1831,12 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // case 1:
 
-		// Before the loop, is proposeTime < hlaNextPointInTime ?
+                // Before the loop, is proposeTime < hlaNextPointInTime ?
                 //if (_debugging) {
-		//	_debug("Comparing proposeTime " + proposedTimeInString
-		//	       + "and hlaNextPointInTime "
-		//	       + hlaNextPointInTime.getDoubleValue());
-		//}
+                //        _debug("Comparing proposeTime " + proposedTimeInString
+                //               + "and hlaNextPointInTime "
+                //               + hlaNextPointInTime.getDoubleValue());
+                //}
 
                 while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
                     if (_debugging) {
@@ -2139,7 +2139,7 @@ public class HlaManager extends AbstractInitializableAttribute
         return Double.parseDouble(_printFormatedNumbers(value));
     }
     */
-    
+
     private String _printFormatedNumbers(double value) {
         DecimalFormat df = new DecimalFormat(_decimalFormat);
         df.setRoundingMode(RoundingMode.HALF_DOWN);

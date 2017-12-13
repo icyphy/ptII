@@ -396,7 +396,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         String command1 = keytoolPath
                 + " -genkey"
-	    //+ " -keyalg RSA"
+            //+ " -keyalg RSA"
                 + " -dname \"CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US\""
                 + commonCommand;
 

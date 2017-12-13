@@ -1400,7 +1400,7 @@ public class IOPort extends ComponentPort {
         }
         return listeners;
     }
-    
+
     /**
      * Retrieve the index of the relation at the port.
      * In case the relation is not connected with this port -1

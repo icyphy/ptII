@@ -298,7 +298,7 @@ public class VertxHelperBase extends HelperBase {
      */
     protected VertxHelperBase(Object actor, ScriptObjectMirror helping, VertxHelperBase helper) {
         super(actor, helping);
-        
+
         // See whether there is already a verticle associate with this actor
         // and use it if there is.
         if (helper == null) {
@@ -520,11 +520,11 @@ public class VertxHelperBase extends HelperBase {
     private static WeakHashMap<JavaScript, WeakReference<VertxHelperBase>> _vertxHelpers = new WeakHashMap<JavaScript, WeakReference<VertxHelperBase>>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Initialize _vertx.
      *  MoMLSimpleApplication tends to hang unless Vertx.close() is called.
-     *  However, when we rerun applications, we need to be sure that 
+     *  However, when we rerun applications, we need to be sure that
      *  _vertx is non-null.
      */
     private static void _initializeVertx() {

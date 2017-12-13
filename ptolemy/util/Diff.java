@@ -39,7 +39,7 @@ import java.nio.charset.Charset;
  *  <p>This file is based on <a href="http://introcs.cs.princeton.edu/96optimization/Diff.java#in_browser">http://introcs.cs.princeton.edu/96optimization/Diff.java</a>, from 2011, see
  *  <a href="http://introcs.cs.princeton.edu/96optimization/#in_browser">http://introcs.cs.princeton.edu/96optimization</a>.
  *  A current copy may be found at <a href="http://introcs.cs.princeton.edu/java/23recursion/Diff.java.html#in_browser">http://introcs.cs.princeton.edu/java/23recursion/Diff.java.html</a>
- *  
+ *
  *
  * @author Christopher Brooks
  * @version $Id$

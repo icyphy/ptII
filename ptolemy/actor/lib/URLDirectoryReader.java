@@ -327,7 +327,7 @@ public class URLDirectoryReader extends URLReader {
             throws MalformedURLException, IOException {
         // Follow redirects such as http -> https.
         URL url = FileUtilities.followRedirects(new URL(source));
-        
+
         URLConnection urlConnection = url.openConnection();
         String contentType = urlConnection.getContentType();
 

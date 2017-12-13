@@ -437,7 +437,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (bilung)
  */
 public class JavaScript extends AbstractPlaceableActor implements AccessorOrchestrator {
-    
+
     // This actor implements AbstractPlaceableActor so that if the script creates any
     // GUI (presumably in a helper class), the actor can remember placement and resizing
     // of that GUI element.
@@ -659,7 +659,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         } else {
             engine.put("_debug", false);
         }
-        
+
         // Define the actor and accessor variables.
         // capeCodeHost.js refers to actor at eval-time, so set it now.
         if (!restricted) {
@@ -864,7 +864,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             throw new IllegalActionException(this, throwable, "Failed to escape: \""
                                              + unescapedString + "\".");
         }
-    }                              
+    }
 
     /** Produce any pending outputs specified by send() since the last firing,
      *  invoke any timer tasks that match the current time, and invoke the
@@ -1161,6 +1161,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *      <li> timeout {number} The timeout in milliseconds.</li>
      *    </ul>
      *  </li>
+     *  </ul>
      *
      *  If the callback parameter is not present, then getResource() will
      *  be synchronous read like Node.js's
@@ -1173,7 +1174,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  first optional argument is an Object that can be a String (the
      *  encoding), an integer (the timeout) or a JSON object with
      *  encoding and timeout fields, See above.
-     *  The second optional argument is a callback, the first argument to 
+     *  The second optional argument is a callback, the first argument to
      *  the callback is the error, if any, the second element is the data, if any.
      *  @return The contents of the resource.
      *  @exception IllegalActionException If the uri specifies any protocol other
@@ -1235,7 +1236,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             throw new IllegalActionException("options was a " + options.getClass() +
                                              ", which is neither an Integer, String nor a Map<String,Object>");
         }
-            
+
         if (callback != null) {
             System.err.println("JavaScript.java: getResource() invoked with a callback of " + callback
                        + ", which is not yet supported.");
@@ -1256,7 +1257,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // If the uri starts with $KEYSTORE, then try to create
         // the directory and subsitute the name.
         // To test this code, try:
-        // $PTII/bin/capecode $PTII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml 
+        // $PTII/bin/capecode $PTII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
         if ( uri.startsWith("$KEYSTORE")) {
             String home = System.getenv("HOME");
             if (home == null || home.length() == 0) {
@@ -1963,10 +1964,10 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      */
     public static String readFromInputStream(InputStream stream)
             throws IOException {
-	// This method was moved to FileUtilities
-	// when the pure Nashorn host and the Cape Code host were
-	// split.
-	return FileUtilities.readFromInputStream(stream);
+        // This method was moved to FileUtilities
+        // when the pure Nashorn host and the Cape Code host were
+        // split.
+        return FileUtilities.readFromInputStream(stream);
     }
 
     /** Invoke the specified function after the specified amount of time and again
@@ -2018,7 +2019,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         _setTimeout(function, milliseconds, id);
         return id;
     }
-    
+
     /** Stop execution of the enclosing model.
      */
     public void stopEnclosingModel() {

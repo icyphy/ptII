@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * builds a sequence of chord objects. It both (i) ensures all chords that
  * exist in the specification have been received and if so, (ii) outputs
  * a sequence of {@link Chord} objects, in sequence order.
- * 
+ *
  * @author Ilge Akkaya
  * @version $Id$
  * @since Ptolemy II 10.0

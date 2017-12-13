@@ -29,7 +29,7 @@ package org.ptolemy.ssm;
 
 /** An interface to define a trainable Gaussian model.
  *
- *  @author Ilge Akkya   
+ *  @author Ilge Akkya
  *  @version $Id$
  */
 public interface TrainableGaussianModel extends GaussianModel {

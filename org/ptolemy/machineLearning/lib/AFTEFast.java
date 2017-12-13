@@ -137,7 +137,7 @@ public class AFTEFast extends Transformer {
      */
     public Parameter fftCoefficientsToOutput;
 
-    /** 
+    /**
      * The length of the fft.  The initial value is a integer
      * of value 64.
      */

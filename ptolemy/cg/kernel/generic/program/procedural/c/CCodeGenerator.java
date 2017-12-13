@@ -119,9 +119,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         generateCpp.setTypeEquals(BaseType.BOOLEAN);
         generateCpp.setExpression("false");
 
-	// sourceLineBinding is used in CodeStream,
-	// so it defind in ProgramCodeGenerator.
-	sourceLineBinding.setVisibility(Settable.FULL);
+        // sourceLineBinding is used in CodeStream,
+        // so it defind in ProgramCodeGenerator.
+        sourceLineBinding.setVisibility(Settable.FULL);
 
         generatorPackageList.setExpression("generic.program.procedural.c");
 
@@ -1050,7 +1050,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  should not invoke StaticSchedulingDirectory.invokeGenerateUpdatePortOffset().
      */
     public boolean invokeGenerateUpdatePortOffsets() {
-	return false;
+        return false;
     }
 
     /** Add called functions to the set of overloaded functions for
@@ -3045,7 +3045,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             String currentDirectory) throws IllegalActionException {
 
         _updateSubstituteMap();
-        
+
         if (generatorPackageList.stringValue().contains("arduino")) {
             // FIXME: Temporary hack to set up platform dependent -I
             // directive for the Arduino, see

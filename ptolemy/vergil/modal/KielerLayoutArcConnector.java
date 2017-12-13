@@ -50,8 +50,8 @@ import ptolemy.vergil.kernel.Link;
 
 /**
  * Extends the regular ArcConnector, allowing to draw spline
- * paths, i.e. series of bezier curves. 
- * 
+ * paths, i.e. series of bezier curves.
+ *
  * @version $Id$
  * @author Ulf Rueegg
  * @see ptolemy.vergil.actor.KielerLayoutConnector
@@ -64,7 +64,7 @@ public class KielerLayoutArcConnector extends ArcConnector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      * Construct a new connector with the given tail and head for the
      * specified link. The connector is either drawn as a spline (in
      * case KIELER layout information is available) or in the classic
@@ -85,7 +85,7 @@ public class KielerLayoutArcConnector extends ArcConnector {
      */
     @Override
     public void route() {
-        
+
         // Parse the bend points if existing.
         List<Point2D> bendPointList = null;
         Object object = this.getUserObject();
@@ -121,12 +121,12 @@ public class KielerLayoutArcConnector extends ArcConnector {
             }
         }
 
-        // Remember the original arc shape if we are going to replace it 
+        // Remember the original arc shape if we are going to replace it
         // with a spline path
         if (getShape() instanceof Arc2D) {
             _originalShape = getShape();
         }
-        
+
         if (!considerBendPoints) {
             // In this case we have no bend point annotations available so
             // we use the normal draw functionality.
@@ -134,20 +134,20 @@ public class KielerLayoutArcConnector extends ArcConnector {
             _labelLocation = null;
             super.route();
         }
-        
+
         if (considerBendPoints) {
-            
+
             repaint();
-            
+
             // The following code proceeds as follows:
-            // We drop the first and the last point of the curve that 
+            // We drop the first and the last point of the curve that
             //  klay calculated. This is due to the #_applyEdgeLayoutBendPointAnnotation
             //  method ignoring the two anchor points of an edge.
-            // Here we determine two anchors that are placed on the 
-            //  actual boundary of the figure (as opposed to the rectangular 
-            //  bounding box) and add them to the curve. This alters the 
+            // Here we determine two anchors that are placed on the
+            //  actual boundary of the figure (as opposed to the rectangular
+            //  bounding box) and add them to the curve. This alters the
             //  intended shape of the curve but should be fine.
-            
+
             Site headSite = getHeadSite();
             Site tailSite = getTailSite();
 
@@ -164,10 +164,10 @@ public class KielerLayoutArcConnector extends ArcConnector {
                 tailNormal = KielerLayoutUtil.getNormal(headTail[1],
                         bendPointList.get(bendPointList.size() - 1));
             }
-            
+
             tailSite.setNormal(tailNormal);
             headSite.setNormal(headNormal);
-            
+
             // Adjust for decorations on the ends
             if (getHeadEnd() != null) {
                 getHeadEnd().setNormal(headNormal);
@@ -180,12 +180,12 @@ public class KielerLayoutArcConnector extends ArcConnector {
                 getTailEnd().setOrigin(tailCenter.getX(), tailCenter.getY());
                 getTailEnd().getConnection(tailCenter);
             }
-            
-            // In case there are connector decorators 
+
+            // In case there are connector decorators
             //  at the endpoints of the edge,
             //  use the center point of the decorator as end/start point
-            //  of the spline 
-            // Note that it is _not_ used as the origin of the actual 
+            //  of the spline
+            // Note that it is _not_ used as the origin of the actual
             //  ConnectorEnds
             if (getHeadEnd() != null) {
                 double x = getHeadEnd().getBounds().getWidth() / 2f;
@@ -204,15 +204,15 @@ public class KielerLayoutArcConnector extends ArcConnector {
             } else {
                 bendPointList.add(tailCenter);
             }
-             
-            // We can now create a path object for the spline points            
+
+            // We can now create a path object for the spline points
             Point2D[] pts = bendPointList.toArray(new Point2D[bendPointList.size()]);
-            
+
             GeneralPath path = _createSplinePath(null, pts);
-            
+
             // Now set the shape.
             setShape(path);
-            
+
             // Move the label
             if (layoutHintItem.getLabelLocation() != null) {
                 // either we got a position for the label from KIELER
@@ -232,9 +232,9 @@ public class KielerLayoutArcConnector extends ArcConnector {
             repositionLabel();
 
             repaint();
-        } 
+        }
     }
-    
+
     /** Tell the connector to reposition its label if it has one.
      * The label is currently only positioned at the center of the arc.
      */
@@ -243,24 +243,24 @@ public class KielerLayoutArcConnector extends ArcConnector {
         LabelFigure label = getLabelFigure();
 
         if (label != null) {
-            
+
             if (_labelLocation != null) {
-                
+
                 Point2D pos = (Point2D) _labelLocation.clone();
                 CanvasUtilities.translate(pos, label.getPadding(), SwingConstants.NORTH_WEST);
                 label.translateTo(pos);
 
                 // the positions calculated by KIELER are always for the top-left corner of an element
                 label.setAnchor(SwingConstants.NORTH_WEST);
-                
+
             } else {
                 Point2D pt = getArcMidpoint();
                 label.translateTo(pt);
-                
+
                 // FIXME: Need a way to override the positioning.
                 label.autoAnchor(getShape());
             }
-            
+
         }
     }
 
@@ -293,26 +293,26 @@ public class KielerLayoutArcConnector extends ArcConnector {
     /**
      * Resets the given <code>thePath</code> and adds the required segments for drawing a spline.
      * If <code>thePath</code> is <code>null</code> a new path object is created.
-     * 
+     *
      * Method is copied from KIELER's KLighD project, from class PolylineUtil.
-     * 
+     *
      * @param thePath
      *            the path object to put the segments into, may be <code>null</code>
      * @param points
-     *            an array of AWT Geometry {@link Point2D Point2Ds} 
+     *            an array of AWT Geometry {@link Point2D Point2Ds}
      * @return the path object containing the required segments
      */
     private GeneralPath _createSplinePath(final GeneralPath thePath, final Point2D[] points) {
 
         final GeneralPath path = thePath != null ? thePath : new GeneralPath();
-        
+
         path.reset();
         final int size = points.length;
-        
+
         if (size < 1) {
             return path; // nothing to do
         }
-        
+
         path.moveTo(points[0].getX(), points[0].getY());
 
         // draw cubic sections
@@ -339,13 +339,13 @@ public class KielerLayoutArcConnector extends ArcConnector {
             // this should not happen
             break;
         }
-        
+
         return path;
     }
 
     /**
      * Rotates the passed point (x,y) by the given angle.
-     * 
+     *
      * @param x coordinate
      * @param y coordinate
      * @param angle by which to rotate the point, in radians.
@@ -354,10 +354,10 @@ public class KielerLayoutArcConnector extends ArcConnector {
     private Point2D _rotatePoint(double x, double y, double angle) {
         double xnew = x * Math.cos(angle) - y * Math.sin(angle);
         double ynew = x * Math.sin(angle) + y * Math.cos(angle);
-        
+
         return new Point2D.Double(xnew, ynew);
     }
-    
+
     /**
      * @param p1 first point
      * @param p2 second point to be subtracted from p1
@@ -375,13 +375,13 @@ public class KielerLayoutArcConnector extends ArcConnector {
      * are removed.
      */
     private static boolean _layoutInProgress = false;
-    
+
     /**
-     * The original arc shape, cached, s.t. we can reuse it if no 
+     * The original arc shape, cached, s.t. we can reuse it if no
      * layout information is available.
      */
     private Shape _originalShape = null;
-    
+
     /**
      * The location to be applied to the label if layout information is available.
      */

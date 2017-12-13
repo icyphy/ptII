@@ -168,16 +168,16 @@ public class StaticSchedulingDirector extends PortDirector {
             boolean inline = ((BooleanToken) getCodeGenerator().inline
                     .getToken()).booleanValue();
 
-	    
+
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
                     // Generate fire code for the actor.
-		    if (!codeGenerator.invokeGenerateUpdatePortOffsets()) {
+                    if (!codeGenerator.invokeGenerateUpdatePortOffsets()) {
                         getCodeGenerator().setModifiedVariables(
                                 adapter.getModifiedVariables());
                     }
                     code.append(adapter.generateFireCode());
-		    if (codeGenerator.invokeGenerateUpdatePortOffsets()) {
+                    if (codeGenerator.invokeGenerateUpdatePortOffsets()) {
                         _generateUpdatePortOffsetCode(code, actor);
                     }
                 }
@@ -195,7 +195,7 @@ public class StaticSchedulingDirector extends PortDirector {
                         .generateFireFunctionMethodInvocation((NamedObj) actor)
                         + "();" + _eol);
 
-		if (codeGenerator.invokeGenerateUpdatePortOffsets()) {
+                if (codeGenerator.invokeGenerateUpdatePortOffsets()) {
                     _generateUpdatePortOffsetCode(code, actor);
                 }
 

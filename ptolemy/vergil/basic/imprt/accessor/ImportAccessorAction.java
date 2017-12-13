@@ -206,7 +206,7 @@ public class ImportAccessorAction extends AbstractAction {
 
             try {
                 in = new BufferedReader(new InputStreamReader(
-                      FileUtilities.openStreamFollowingRedirects(url), StandardCharsets.UTF_8));             
+                      FileUtilities.openStreamFollowingRedirects(url), StandardCharsets.UTF_8));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     buffer.append(inputLine);

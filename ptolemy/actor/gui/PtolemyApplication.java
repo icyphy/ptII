@@ -146,9 +146,9 @@ public class PtolemyApplication extends MoMLApplication {
 
 
         //URL idURL = specToURL("ptolemy/configs/full/intro.htm");
-	File configurationDirectory =  ConfigurationApplication.configurationDirectoryFullOrFirst();
-	File configurationIntro = new File(configurationDirectory, "intro.htm");
-	URL idURL = configurationIntro.toURL();
+        File configurationDirectory =  ConfigurationApplication.configurationDirectoryFullOrFirst();
+        File configurationIntro = new File(configurationDirectory, "intro.htm");
+        URL idURL = configurationIntro.toURL();
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
         doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;

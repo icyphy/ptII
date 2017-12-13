@@ -171,11 +171,11 @@ public class GenerateCopyrights {
 
         _addIfClassPresent(copyrightsMap, "oscP5.OscP5", "lib/oscP5-license.htm");
 
-	// Used by RExpression and RExpression2 actors.
+        // Used by RExpression and RExpression2 actors.
         _addIfClassPresent(copyrightsMap, "org.apache.commons.lang.StringEscapeUtils",
-			   "lib/commons-license.htm");
+                           "lib/commons-license.htm");
         _addIfClassPresent(copyrightsMap, "org.apache.commons.logging.Log",
-			   "lib/commons-license.htm");
+                           "lib/commons-license.htm");
 
         _addIfClassPresent(copyrightsMap, "org.apache.oltu.oauth2.common.OAuth",
                 "lib/org.apache.oltu.oauth2-license.htm");
@@ -204,9 +204,9 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow",
                 "org/ptolemy/fmi/driver/fmusdk-license.htm");
 
-	// Used by RExpression2 actor.
+        // Used by RExpression2 actor.
         _addIfClassPresent(copyrightsMap, "org.rosuda.JRI.REXP",
-			   "lib/JRI-license.htm");
+                           "lib/JRI-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "org.satlive.jsat.objects.ExternalLiteral",

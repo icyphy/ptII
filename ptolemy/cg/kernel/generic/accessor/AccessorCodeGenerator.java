@@ -129,7 +129,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     public String comment(String comment) {
         return "// " + comment + _eol;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
@@ -171,7 +171,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      *  written will be <code>$HOME/cg/Foo.js</code>
      *
      *  <p>This method is the main entry point to generate js.</p>
-     *  
+     *
      *  <p>This method invokes the top level generateAccessor(), which
      *  is typically defined in
      *  ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
@@ -401,7 +401,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     private static void _setupAccessorsDirectory(String PTII) throws IOException {
         // If necessary, unjar the accessors jar file.
         String nodeHostPath = "org/terraswarm/accessor/accessors/web/hosts/node/nodeHost.js";
-        
+
         FileUtilities.extractJarFileIfNecessary(nodeHostPath, PTII);
 
         JSAccessor.createSymbolicLinks();

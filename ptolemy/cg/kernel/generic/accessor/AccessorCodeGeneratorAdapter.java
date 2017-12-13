@@ -184,7 +184,7 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
     public String targetType(Type ptType) {
         // targetType() is called by
         // ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java
-        
+
         String returnValue = null;
         if (ptType == BaseType.INT) {
             returnValue = "int";

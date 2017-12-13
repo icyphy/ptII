@@ -172,7 +172,7 @@ public class ValidatingXMLParser extends DefaultHandler {
                 } catch (Exception ex) {
                     throw new SAXException("Failed to read Accessor_1.dtd from local file system", ex);
                 }
-            }                
+            }
             return null;
         }
     }

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
 
 /** A predictor
  *
- *  @author Ilge Akkya   
+ *  @author Ilge Akkya
  *  @version $Id$
  */
 public class Predictor extends AbstractPredictor
@@ -58,7 +58,7 @@ implements StateSpaceActor {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
-     */   
+     */
     public Predictor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -66,7 +66,7 @@ implements StateSpaceActor {
     }
 
     /** Instantiate a new predictor.
-     *  @param workspace The workspace in which to instantiate the predictor.   
+     *  @param workspace The workspace in which to instantiate the predictor.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an

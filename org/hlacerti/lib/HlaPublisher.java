@@ -188,23 +188,23 @@ public class HlaPublisher extends TypedAtomicActor {
      */
     @Override
     public void fire() throws IllegalActionException {
-       
-    	super.fire();
-    	
-    	for (int i = 0 ; i < input.getWidth() ; ++i) {
-    		if (input.hasToken(i)) {
-    			Token in = input.get(i);
-    			_hlaManager.updateHlaAttribute(this, in,input.sourcePortList().get(i).getContainer().getName());
 
-    			if (_debugging) {
-    				_debug(this.getDisplayName()
+            super.fire();
+
+            for (int i = 0 ; i < input.getWidth() ; ++i) {
+                    if (input.hasToken(i)) {
+                            Token in = input.get(i);
+                            _hlaManager.updateHlaAttribute(this, in,input.sourcePortList().get(i).getContainer().getName());
+
+                            if (_debugging) {
+                                    _debug(this.getDisplayName()
                         + " Called fire() - the update value \""
                         + in.toString() + "\" of the HLA Attribute \""
                         + this.getName() + "\" has been sent to \""
                         + _hlaManager.getDisplayName() + "\"");
-    			}
-    		}
-    	}
+                            }
+                    }
+            }
     }
 
     /** Indicate if the HLA publisher actor uses the CERTI message

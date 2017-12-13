@@ -884,7 +884,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 }
             }
         }
-        inputModel.tMdl = currentTime;
+        inputModel.tModel = currentTime;
 
         // Since there is a new input distinct from the previous, we
         // have a new rate. Trigger a rate event.
@@ -923,7 +923,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 }
             }
         }
-        inputModel.tMdl = currentTime;
+        inputModel.tModel = currentTime;
 
         // Since there is a new input distinct from the previous, we
         // have a new rate. Trigger a rate event.

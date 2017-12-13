@@ -1268,7 +1268,7 @@ public class Manager extends NamedObj implements Runnable {
             // calls it in its finally block.
             // } finally {
             //  _disposeOfThreads();
-            
+
         }
     }
 

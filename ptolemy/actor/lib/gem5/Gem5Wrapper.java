@@ -107,11 +107,11 @@ public class Gem5Wrapper extends SequenceSource {
 
         pipePathPrefix = new StringParameter(this, "pipePathPrefix");
         pipePathPrefix.setExpression("");
-        
+
         step = new PortParameter(this, "step");
         step.setExpression("1");
         new Parameter(step.getPort(), "_showName", BooleanToken.TRUE);
-        
+
         // set the type constraints.
         //ArrayType arrayOfCommandsType = new ArrayType(BaseType.GENERAL, 318);
         RecordType recordType = new RecordType(_labels, _types);
@@ -154,7 +154,7 @@ public class Gem5Wrapper extends SequenceSource {
      *  The default value of this parameter is the integer 1.
      */
     public PortParameter step;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -232,7 +232,7 @@ public class Gem5Wrapper extends SequenceSource {
                         String curToken = strTokenizer.nextToken();
                         if (isFirstToken) {
                             isFirstToken = false;
-                                                
+
                             long cpuInitTime = Long.parseLong(curToken.substring(0, curToken.length() - 1));
                             initTime = (int)((cpuInitTime + _systemClockPeriod) / _systemClockPeriod); // in ns
                             serviceTime = initTime % _sampleTime;
@@ -261,7 +261,7 @@ public class Gem5Wrapper extends SequenceSource {
                             tokens[2] = new IntToken(rankNumber);
                             tokens[3] = new IntToken(bankNumber);
                             tokens[4] = new IntToken(serviceTime + commandTime);
-                                                
+
                             tokenArray.add(new RecordToken(_labels, tokens));
                             //tokenArray.add(new ArrayToken(BaseType.STRING,tuple));
                         }
@@ -273,12 +273,12 @@ public class Gem5Wrapper extends SequenceSource {
             }
             //everything = result.toString();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                     "Failed to get the simulation results from Gem5.");
         }
-                
+
         Collections.sort(tokenArray, new SortByCommandTime());
-                
+
         //StringToken stringToken = new StringToken("*************Iteration Count: " + _iterationCount + "\n" + result.toString());
         Token[] dummy = new Token[0];
         if (tokenArray.isEmpty()) {
@@ -288,14 +288,14 @@ public class Gem5Wrapper extends SequenceSource {
             return new ArrayToken(tokenArray.toArray(dummy));
         }
     }
-    
+
     /** Send the current value of the state of this actor to the output.
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         ArrayToken simulationResults = getGem5SimResult();
         if (simulationResults != null) {
             output.send(0, simulationResults);
@@ -319,7 +319,7 @@ public class Gem5Wrapper extends SequenceSource {
                 _readPipe = null;
                 _writePipe = null;
             }
-                
+
             String outputFileName = pipePathPrefix.getValueAsString() + "/read_pipe";
             _readPipe = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFileName))));
 
@@ -330,23 +330,23 @@ public class Gem5Wrapper extends SequenceSource {
             _writePipe = new InputStreamReader(new FileInputStream(new File(inputFileName)));
             //_process = pb.start();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                     "Failed create the read or write pipe to gem5.");
-        } 
-        
+        }
+
         try {
             if (_tempPipe != null) {
                 try {
                     _tempPipe.close();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(this, ex, 
+                    throw new IllegalActionException(this, ex,
                             "Failed to close the temporary pipe.");
                 }
             }
             _tempPipe = new BufferedReader(new FileReader(pipePathPrefix.getValueAsString() + "/temp_pipe"));
         } catch (FileNotFoundException ex) {
             throw new InternalErrorException(this, ex,
-                    "Failed to create " 
+                    "Failed to create "
                     + pipePathPrefix.getValueAsString() + "/temp_pipe");
         }
     }
@@ -368,12 +368,12 @@ public class Gem5Wrapper extends SequenceSource {
         // method should update _stateToken like in Ramp.
 
         //_stateToken = _stateToken.add(step.getToken());
-        
+
         try {
             _readPipe.newLine();
             _readPipe.flush();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                     "Failed to close or flush the "
                     +  pipePathPrefix.getValueAsString() + "/read_pipe");
         }
@@ -395,7 +395,7 @@ public class Gem5Wrapper extends SequenceSource {
 
     private int _systemClockPeriod = 1000;
     private int _sampleTime = 500 * 1000;        // 0.5 ms
-        
+
     private static Type[] _types = {BaseType.STRING, BaseType.INT, BaseType.INT, BaseType.INT, BaseType.INT};
 
     /** The pipePathPrefix/write_pipe. */
