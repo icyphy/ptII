@@ -50,7 +50,7 @@ import ptolemy.util.MessageHandler;
 /** Helper for the textDisplay JavaScript module.
  *  This causes a window to open that is used to display the text.
  *  The window can be resized and repositioned and the size and position will be remembered.
- *  
+ *
  *  @author Edward A. Lee, based on DisplayJavaSE.
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -59,7 +59,7 @@ import ptolemy.util.MessageHandler;
  *
  */
 public class TextDisplayHelper extends HelperBase {
-    
+
     /** Create a text display with no title.
      *  @param actor The JavaScript actor associated with this helper.
      *  @param currentObj The JavaScript object that this is helping (a TextDisplay).
@@ -131,7 +131,7 @@ public class TextDisplayHelper extends HelperBase {
         if (_frame == null) {
             System.out.println("TextDisplayHelper: " + text);
             return;
-        } 
+        }
         String currentText = _frame.text.getText();
         if (currentText != null && currentText.length() > 0) {
             _frame.text.append("\n");
@@ -139,7 +139,7 @@ public class TextDisplayHelper extends HelperBase {
         _frame.text.append(text);
     }
 
-    private void _createOrShowWindow(String title) {        
+    private void _createOrShowWindow(String title) {
         if (textArea == null) {
             // Place the text area in its own frame.
             // Need an effigy and a tableau so that menu ops work properly.
@@ -179,7 +179,7 @@ public class TextDisplayHelper extends HelperBase {
                     // FIXME: Any way to get these in as parameters?
                     textArea.setRows(10);
                     textArea.setColumns(40);
-                    
+
                     _actor.setFrame(_frame);
                     _frame.pack();
                 }
@@ -205,13 +205,13 @@ public class TextDisplayHelper extends HelperBase {
         if (_frame == null) {
             System.out.println("TextDisplayHelper: " + text);
             return;
-        } 
+        }
         _frame.text.setText(text);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The text editor frame. */
     private TextEditor _frame;
 

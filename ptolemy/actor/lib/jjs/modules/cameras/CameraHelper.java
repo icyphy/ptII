@@ -130,7 +130,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             if (_webcams != null) {
                 _webcam = _webcams.get(name);
                 if (_webcam == null) {
-                    System.out.println("Invalid camera name: " + name); 
+                    System.out.println("Invalid camera name: " + name);
                     System.out.println("Using the default camera.");
                     _webcam = Webcam.getDefault();
                 }

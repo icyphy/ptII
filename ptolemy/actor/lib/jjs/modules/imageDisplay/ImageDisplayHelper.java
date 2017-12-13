@@ -100,11 +100,11 @@ public class ImageDisplayHelper {
     }
 
     private void _display(AWTImageToken imageToken) {
-            
+
         Image image = imageToken.asAWTImage();
         int xSize = image.getWidth(null);
         int ySize = image.getHeight(null);
-        
+
         // If the size has changed, have to recreate the Picture object.
         if (_oldXSize != xSize || _oldYSize != ySize) {
             _oldXSize = xSize;
@@ -121,7 +121,7 @@ public class ImageDisplayHelper {
             container.invalidate();
             container.repaint();
             container.doLayout();
-            
+
             Container c = container.getParent();
 
             while (c.getParent() != null) {
@@ -153,6 +153,6 @@ public class ImageDisplayHelper {
 
     /** The picture panel. */
     protected Picture _picture = null;
-    
+
     private JFrame _frame;
 }

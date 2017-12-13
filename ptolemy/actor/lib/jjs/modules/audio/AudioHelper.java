@@ -50,12 +50,12 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 /** Helper for the audio.js JavaScript module.
  *  See the module for documentation.
- *  
+ *
  *  This class is based on the LiveSoundJavaSE class in Ptolemy II, written by
  *  Brian K. Vogel, Neil E. Turner, Steve Neuendorffer, and Edward A. Lee,
  *  with contributions from Dennis Geurts, Ishwinder Singh.
  *
- *  @author Edward A. Lee 
+ *  @author Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Yellow (eal)
@@ -86,7 +86,7 @@ public class AudioHelper extends VertxHelperBase {
         }
         return result;
     }
-    
+
     /** Play an array of audio samples. This method returns immediately
      *  and invokes the specified callback function when the samples
      *  have been successfully queued into the audio system.
@@ -129,12 +129,12 @@ public class AudioHelper extends VertxHelperBase {
         // Convert array of double valued samples into
         // the proper byte array format.
         final byte[] playbackData = _doubleArrayToByteArray(samplesArray);
-        
+
         Thread worker = new Thread() {
             public void run() {
                 // The following function call will block if the buffer gets full.
                 _putSamples(playbackData);
-                
+
                 // Invoke the callback.
                 if (callback != null) {
                     _issueResponse(() -> {
@@ -162,7 +162,7 @@ public class AudioHelper extends VertxHelperBase {
      *  @exception IllegalStateException If audio playback is currently
      *   inactive. That is, If startPlayback() has not yet been called
      *   or if stopPlayback() has already been called.
-     *  @throws UnsupportedAudioFileException If the audioData provided is
+     *  @exception UnsupportedAudioFileException If the audioData provided is
      *   not in a supported format.
      */
     public void putBytes(byte[] audioData, final Runnable callback)
@@ -174,7 +174,7 @@ public class AudioHelper extends VertxHelperBase {
                                 + "playback is inactive.  Try to startPlayback().");
             }
         }
-        
+
         if (!_playbackFileFormat.equals("raw")) {
             // Input data is encoded. Attempt to transcode it to the specified output format.
             ByteArrayInputStream stream = new ByteArrayInputStream(audioData);
@@ -206,12 +206,12 @@ public class AudioHelper extends VertxHelperBase {
         } else {
             _playbackData = audioData;
         }
-        
+
         Thread worker = new Thread() {
             public void run() {
                 // The following function call will block if the buffer gets full.
                 _putSamples(_playbackData);
-                
+
                 // Invoke the callback.
                 if (callback != null) {
                     _issueResponse(() -> {
@@ -225,7 +225,7 @@ public class AudioHelper extends VertxHelperBase {
 
     /** Set the capture parameters for audio.
      *  This will stop any active capture and restart it.
-     *  
+     *
      *  The captureOptions argument contains the following
      *  entries:
      *  <ol>
@@ -247,7 +247,7 @@ public class AudioHelper extends VertxHelperBase {
      *
      *  @exception IOException If the specified sample rate is
      *   not supported by the audio hardware or by Java.
-     *  @throws LineUnavailableException If the audio line is not
+     *  @exception LineUnavailableException If the audio line is not
      *   available.
      */
     public void setCaptureParameters(
@@ -255,7 +255,7 @@ public class AudioHelper extends VertxHelperBase {
             int captureTime,
             String outputFormat
             ) throws IOException, LineUnavailableException {
-        
+
         int bitsPerSample = captureOptions.get("bitsPerSample");
         boolean bigEndian = true;
         int channels = captureOptions.get("channels");
@@ -273,14 +273,14 @@ public class AudioHelper extends VertxHelperBase {
 
         // Maximum value for the given number of bits.
         _maxSampleReciprocal = 1.0 / (1L << bitsPerSample);
-                
+
         // Make sure the outputFormat matches one of those supported.
         try {
             _outputFormat = _BYTE_FORMATS.valueOf(outputFormat);
         } catch (IllegalArgumentException ex) {
             _formatError(outputFormat);
         }
-        
+
         // For PCM data, the size of a frame (in bytes) is always
         // equal to the size of a sample (in bytes) times the number of channels .
         int frameSize = channels * _captureBytesPerSample;
@@ -292,7 +292,7 @@ public class AudioHelper extends VertxHelperBase {
         int bufferSize = _captureTransferSize * channels * _captureBytesPerSample;
         _targetInfo = new DataLine.Info(TargetDataLine.class,
                 _captureFormat, bufferSize);
-        
+
         if (!AudioSystem.isLineSupported(_targetInfo)) {
             throw new IOException(
                     "Unsupported audio line. Possible encodings for\n" + _captureFormat
@@ -309,10 +309,10 @@ public class AudioHelper extends VertxHelperBase {
             }
         }
     }
-    
+
     /** Set the playback parameters for audio.
      *  This will stop any active playback and restart it.
-     *  
+     *
      *  The playbackOptions argument contains the following entries:
      *  <ol>
      *    <li> bigEndian: 1 if big endian, 0 if little endian.  The
@@ -332,14 +332,14 @@ public class AudioHelper extends VertxHelperBase {
      *
      *  @exception IOException If the specified sample rate is
      *   not supported by the audio hardware or by Java.
-     *  @throws LineUnavailableException If the audio line is not
+     *  @exception LineUnavailableException If the audio line is not
      *   available.
      */
     public void setPlaybackParameters(
             Map<String,Integer> playbackOptions,
             String playbackFormat
             ) throws IOException, LineUnavailableException {
-        
+
         int bitsPerSample = playbackOptions.get("bitsPerSample");
         boolean bigEndian = true;
         int channels = playbackOptions.get("channels");
@@ -352,7 +352,7 @@ public class AudioHelper extends VertxHelperBase {
         // Set persistent variables that depend on the parameters.
         _playbackChannels = channels;
         _playbackBytesPerSample = bitsPerSample / 8;
-                        
+
         // Should more alternatives be provided?
         // For PCM data, the size of a frame (in bytes) is always
         // equal to the size of a sample (in bytes) times the number of channels .
@@ -361,7 +361,7 @@ public class AudioHelper extends VertxHelperBase {
         _playbackFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleRate, bitsPerSample,
                 channels, frameSize, frameRate, bigEndian);
         _playbackFileFormat = playbackFormat;
-        
+
         synchronized(this) {
             if (_playbackIsActive) {
                 // Restart capture with new parameters.
@@ -372,7 +372,7 @@ public class AudioHelper extends VertxHelperBase {
     }
 
     /** Start audio capture if it is not already active.
-     *  @throws IOException If the audio target line cannot be acquired.
+     *  @exception IOException If the audio target line cannot be acquired.
      */
     public synchronized void startCapture() throws IOException {
         if (_captureIsActive) {
@@ -381,9 +381,9 @@ public class AudioHelper extends VertxHelperBase {
         _startCapture();
         _captureIsActive = true;
     }
-    
+
     /** Start audio playback if it is not already active.
-     *  @throws IOException If the audio target line cannot be acquired.
+     *  @exception IOException If the audio target line cannot be acquired.
      */
     public synchronized void startPlayback() throws IOException {
         if (_playbackIsActive) {
@@ -476,7 +476,7 @@ public class AudioHelper extends VertxHelperBase {
      *  sample index within a channel.
      *
      *  @return Converted data.
-     *  @throws IOException If the output format is not supported.
+     *  @exception IOException If the output format is not supported.
      */
     private Object _convertBytesToFormat(byte[] rawData, _BYTE_FORMATS outputFormat) throws IOException {
         switch(outputFormat) {
@@ -518,7 +518,7 @@ public class AudioHelper extends VertxHelperBase {
             return codedStream.toByteArray();
         }
     }
-    
+
     /** Convert a double array of audio samples into a byte array of
      *  audio samples in linear signed PCM big endian format. The
      *  samples contained in <i>doubleArray</i> should be in the
@@ -544,7 +544,7 @@ public class AudioHelper extends VertxHelperBase {
             _playbackData = new byte[bufferSize];
         }
         int scaleFactor = (1 << (_playbackBytesPerSample * 8 - 1));
-        
+
         // Iterate over the samples.
         for (int currSamp = 0; currSamp < doubleArray[0].length; currSamp++) {
             // For each channel,
@@ -611,11 +611,11 @@ public class AudioHelper extends VertxHelperBase {
         }
         return encodingDescriptions.toString();
     }
-    
+
     /** Return an array of captured audio bytes. This method blocks
      *  until a buffer is full and should be repeatedly called to obtain
      *  uninterrupted audio data.
-     *  
+     *
      *  @param consumer The object that has an exclusive lock on
      *   the capture audio resources.
      *  @return An array of bytes representing raw captured audio data,
@@ -641,7 +641,7 @@ public class AudioHelper extends VertxHelperBase {
 
     /** Throw an exception indicating that the specified format is not supported.
      *  @param format The output format that is not supported.
-     *  @throws IOException Always thrown.
+     *  @exception IOException Always thrown.
      */
     private void _formatError(String format) throws IOException {
         throw new IOException(
@@ -680,8 +680,8 @@ public class AudioHelper extends VertxHelperBase {
     }
 
     /** Start audio capture.
-     * 
-     *  @throws IOException If the audio target line cannot be acquired.
+     *
+     *  @exception IOException If the audio target line cannot be acquired.
      */
     private void _startCapture() throws IOException {
         try {
@@ -710,12 +710,12 @@ public class AudioHelper extends VertxHelperBase {
 
         // Start the target data line
         _targetLine.start();
-        
+
         // Start a thread to read the audio data repeatedly until stopped.
         Thread worker = new Thread() {
             @Override
             public void run() {
-                while(_captureIsActive) {
+                while (_captureIsActive) {
                     // The following call blocks until the requested number of
                     // samples have been captured.
                     final byte[] rawData = _getBytes();
@@ -749,9 +749,9 @@ public class AudioHelper extends VertxHelperBase {
         };
         worker.start();
     }
-    
+
     /** Start playback.
-     *  @throws IOException If the format is not supported or if the line
+     *  @exception IOException If the format is not supported or if the line
      *   is not available.
      */
     private void _startPlayback() throws IOException {
@@ -819,13 +819,13 @@ public class AudioHelper extends VertxHelperBase {
 
     /** Array of audio samples in byte format. This is double buffered. */
     private byte[][] _captureData = new byte[2][];
-    
+
     /** Indicator of which buffer we are capturing into right now. */
     private int _captureDataBuffer = 0;
 
     /** Audio format for audio capture. */
     private AudioFormat _captureFormat;
-    
+
     /** true is audio capture is currently active. */
     private boolean _captureIsActive = false;
 
@@ -835,16 +835,16 @@ public class AudioHelper extends VertxHelperBase {
 
     /** Maximum value for the given number of bits. */
     private double _maxSampleReciprocal = 1.0 / (1L << 16);
-    
+
     /** Specification of the output format to use. */
     private _BYTE_FORMATS _outputFormat = _BYTE_FORMATS.raw;
-    
+
     /** Number of playback bytes per sample. */
     private int _playbackBytesPerSample = 2;
 
     /** Number of playback channels. */
     private int _playbackChannels = 1;
-    
+
     /** Byte buffer used for playback data. */
     private byte[] _playbackData;
 
@@ -853,13 +853,13 @@ public class AudioHelper extends VertxHelperBase {
 
     /** The format of the playback byte array. */
     private String _playbackFileFormat = "raw";
-    
+
     /** Indicator of whether playback is active. */
     private boolean _playbackIsActive = false;
-    
+
     /** Line into which to send audio data to be played over the speakers. */
     private SourceDataLine _sourceLine;
-    
+
     /** Information about the data line. */
     private Info _targetInfo;
 

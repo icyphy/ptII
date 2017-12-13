@@ -90,7 +90,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
         _resourceData.put(path, buffer);
         _resourceContentType.put(path, contentType);
     }
-    
+
     /** Close the web socket server. Note that this closing happens
      *  asynchronously. The server may not be closed when this returns.
      */
@@ -178,7 +178,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
                             "_socketCreated", serverWebSocket, WebSocketServerHelper.this);
                 }
             });
-            
+
             // Next, set up HTTP handling for GET and POST.
 
             // Serve static content, specifically the contents of the accessors repo.
@@ -242,7 +242,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
             });
 
             _server.requestHandler(router::accept);
-            
+
             // Start the server listening.
             _server.listen(_port, _hostInterface,
                     new Handler<AsyncResult<HttpServer>>() {
@@ -306,7 +306,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     /** The server's response. */
     private String _response = "No data yet";
-    
+
     /** Resource data indexed by path. */
     private HashMap<String, Buffer> _resourceData = new HashMap<String, Buffer>();
 
