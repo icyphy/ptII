@@ -606,6 +606,10 @@ public class FileUtilities {
         }
 
         if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
+            if (name.contains("#")) {
+                name = name.substring(0, name.indexOf("#"));
+            }
+                
             URL result = _searchClassPath(name, classLoader);
             if (result == null) {
                 throw new IOException("Cannot find file '" + _trimClassPath(name) + "' in classpath");
