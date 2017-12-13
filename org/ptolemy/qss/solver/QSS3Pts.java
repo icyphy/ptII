@@ -98,29 +98,29 @@ public final class QSS3Pts extends QSSBase {
         // storing the returned result.
 
         // Initialize.
-        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
-        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
+        final ModelPolynomial qStateModel = _qStateModels[stateIdx];
+        final ModelPolynomial cStateModel = _cStateModels[stateIdx];
         final double dq = _dqs[stateIdx];
 
         // Check internal consistency.
         assert (dq > 0);
         assert (quantEvtTimeMax.getDoubleValue() > 0);
-        assert (quantEvtTimeMax.compareTo(qStateMdl.tMdl) > 0);
-        assert (quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0);
+        assert (quantEvtTimeMax.compareTo(qStateModel.tModel) > 0);
+        assert (quantEvtTimeMax.compareTo(cStateModel.tModel) > 0);
 
         // Find predicted quantization-event time, as change from {tMostRecent}.
         Time tMostRecent;
         double dt;
-        if (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0) {
+        if (qStateModel.tModel.compareTo(cStateModel.tModel) > 0) {
             // Here, most recent event was a quantization-event.
-            tMostRecent = qStateMdl.tMdl;
-            dt = _predictQuantizationEventDeltaTimeQSS3QFromC(qStateMdl,
-                    cStateMdl, dq, _exactInputs);
+            tMostRecent = qStateModel.tModel;
+            dt = _predictQuantizationEventDeltaTimeQSS3QFromC(qStateModel,
+                    cStateModel, dq, _exactInputs);
         } else {
             // Here, most recent event was a rate-event.
-            tMostRecent = cStateMdl.tMdl;
-            dt = _predictQuantizationEventDeltaTimeQSS3General(qStateMdl,
-                    cStateMdl, dq);
+            tMostRecent = cStateModel.tModel;
+            dt = _predictQuantizationEventDeltaTimeQSS3General(qStateModel,
+                    cStateModel, dq);
         }
 
         // Require {dt} > 0.
@@ -179,15 +179,15 @@ public final class QSS3Pts extends QSSBase {
         // Note the superclass takes care of updating status variables and so on.
 
         // Initialize.
-        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
-        final ModelPolynomial cStateMdl = _cStateMdls[stateIdx];
-        final double dtStateMdl = _currSimTime.subtractToDouble(cStateMdl.tMdl);
+        final ModelPolynomial qStateModel = _qStateModels[stateIdx];
+        final ModelPolynomial cStateModel = _cStateModels[stateIdx];
+        final double dtStateModel = _currSimTime.subtractToDouble(cStateModel.tModel);
 
         // Update the external, quantized state model.
-        qStateMdl.tMdl = _currSimTime;
-        qStateMdl.coeffs[0] = cStateMdl.evaluate(dtStateMdl);
-        qStateMdl.coeffs[1] = cStateMdl.evaluateDerivative(dtStateMdl);
-        qStateMdl.coeffs[2] = cStateMdl.evaluateDerivative2(dtStateMdl) / 2;
+        qStateModel.tModel = _currSimTime;
+        qStateModel.coeffs[0] = cStateModel.evaluate(dtStateModel);
+        qStateModel.coeffs[1] = cStateModel.evaluateDerivative(dtStateModel);
+        qStateModel.coeffs[2] = cStateModel.evaluateDerivative2(dtStateModel) / 2;
 
     }
 
@@ -209,20 +209,20 @@ public final class QSS3Pts extends QSSBase {
         // (1) User can reset a single state at any simulation time.
         // (2) In future, might be possible to avoid updating a
         // continuous state model if know none of its arguments changed.
-        Time tStateMdl = null;
-        double dtStateMdl = 0;
+        Time tStateModel = null;
+        double dtStateModel = 0;
         for (int ii = 0; ii < _stateCt; ++ii) {
-            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            final ModelPolynomial cStateModel = _cStateModels[ii];
             // Check for different model time.  Note testing object identity OK.
-            if (cStateMdl.tMdl != tStateMdl) {
-                tStateMdl = cStateMdl.tMdl;
-                dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
+            if (cStateModel.tModel != tStateModel) {
+                tStateModel = cStateModel.tModel;
+                dtStateModel = _currSimTime.subtractToDouble(tStateModel);
             }
-            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
+            _stateVals_xx[ii] = cStateModel.evaluate(dtStateModel);
         }
         // In general, don't expect input variable models to have same times.
         for (int ii = 0; ii < _ivCt; ++ii) {
-            _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
+            _ivVals_xx[ii] = _ivModels[ii].evaluate(_currSimTime);
         }
 
         // Evaluate derivative function at {_currSimTime}.
@@ -240,12 +240,12 @@ public final class QSS3Pts extends QSSBase {
         //   This also updates the rate model, which is just the derivative of
         // the state model.
         for (int ii = 0; ii < _stateCt; ++ii) {
-            final ModelPolynomial cStateMdl = _cStateMdls[ii];
-            cStateMdl.tMdl = _currSimTime;
-            cStateMdl.coeffs[0] = _stateVals_xx[ii];
-            cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
-            cStateMdl.coeffs[2] = 0;
-            cStateMdl.coeffs[3] = 0;
+            final ModelPolynomial cStateModel = _cStateModels[ii];
+            cStateModel.tModel = _currSimTime;
+            cStateModel.coeffs[0] = _stateVals_xx[ii];
+            cStateModel.coeffs[1] = _stateDerivs_xx[ii];
+            cStateModel.coeffs[2] = 0;
+            cStateModel.coeffs[3] = 0;
         }
 
         // Choose a sample time, different from {_currSimTime}.
@@ -279,10 +279,10 @@ public final class QSS3Pts extends QSSBase {
         //   Note that here, know all continous state models have same time.
         // Therefore can use same delta-time for all evals.
         for (int ii = 0; ii < _stateCt; ++ii) {
-            _stateVals_xx[ii] = _cStateMdls[ii].evaluate(dtSample);
+            _stateVals_xx[ii] = _cStateModels[ii].evaluate(dtSample);
         }
         for (int ii = 0; ii < _ivCt; ++ii) {
-            _ivVals_xx[ii] = _ivMdls[ii].evaluate(tSample);
+            _ivVals_xx[ii] = _ivModels[ii].evaluate(tSample);
         }
 
         // Evaluate derivative function at {tSample}.
@@ -298,7 +298,7 @@ public final class QSS3Pts extends QSSBase {
             final double rtDeriv = oneOverDtSample
                     * (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii]);
             _rtDerivs_xx[ii] = rtDeriv;
-            _cStateMdls[ii].coeffs[2] = 0.5 * rtDeriv;
+            _cStateModels[ii].coeffs[2] = 0.5 * rtDeriv;
         }
 
         // Choose a sample time, different from {_currSimTime} and different from {tSample}.
@@ -330,10 +330,10 @@ public final class QSS3Pts extends QSSBase {
         //   Note that here, know all continous state models have same time.
         // Therefore can use same delta-time for all evals.
         for (int ii = 0; ii < _stateCt; ++ii) {
-            _stateVals_xx[ii] = _cStateMdls[ii].evaluate(dtSample2);
+            _stateVals_xx[ii] = _cStateModels[ii].evaluate(dtSample2);
         }
         for (int ii = 0; ii < _ivCt; ++ii) {
-            _ivVals_xx[ii] = _ivMdls[ii].evaluate(tSample2);
+            _ivVals_xx[ii] = _ivModels[ii].evaluate(tSample2);
         }
 
         // Evaluate derivative function at {tSample2}.
@@ -346,7 +346,7 @@ public final class QSS3Pts extends QSSBase {
         // Update the internal, continuous state models.
         final double oneOverThreeDtSampleSq = 1.0 / (3 * dtSample2 * dtSample2);
         for (int ii = 0; ii < _stateCt; ++ii) {
-            _cStateMdls[ii].coeffs[3] = oneOverThreeDtSampleSq
+            _cStateModels[ii].coeffs[3] = oneOverThreeDtSampleSq
                     * (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii]
                             - _rtDerivs_xx[ii] * dtSample2);
         }

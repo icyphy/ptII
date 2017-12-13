@@ -172,8 +172,8 @@ import ptolemy.actor.util.Time;
  * In order to avoid ambiguity, the code here refers to these as
  * "continuous states" and "quantized states", respectively.</p>
  *
- * <p>Variables for continuous states have names like <code>cStateMdl</code>.
- * Quantized states have names like <code>qStateMdl</code>.</p>
+ * <p>Variables for continuous states have names like <code>cStateModel</code>.
+ * Quantized states have names like <code>qStateModel</code>.</p>
  *
  * <p>TODO: Mention terms "rate-events", "state-events", and "quantization-events".</p>
  *
@@ -388,7 +388,7 @@ public abstract class QSSBase {
      */
     public final double evaluateStateModel(final int stateIdx,
             final Time simTime) {
-        return (_qStateMdls[stateIdx].evaluate(simTime));
+        return (_qStateModels[stateIdx].evaluate(simTime));
     }
 
     /** Get the internal value of a state variable.
@@ -401,7 +401,7 @@ public abstract class QSSBase {
      */
     public final double evaluateStateModelContinuous(final int stateIdx,
             final Time simTime) {
-        return (_cStateMdls[stateIdx].evaluate(simTime));
+        return (_cStateModels[stateIdx].evaluate(simTime));
     }
 
     // Note would really like this to be a static method, since it should
@@ -450,7 +450,7 @@ public abstract class QSSBase {
      */
     public final double findQuantum(final int stateIdx) {
 
-        final double stateVal = _qStateMdls[stateIdx].coeffs[0];
+        final double stateVal = _qStateModels[stateIdx].coeffs[0];
         double dq = _dqRelTols[stateIdx] * Math.abs(stateVal);
         final double dqAbs = _dqAbsTols[stateIdx];
         if (dq < dqAbs) {
@@ -512,7 +512,7 @@ public abstract class QSSBase {
      */
     public final ModelPolynomial getInputVariableModel(int input) {
         assert (input < _ivCt);
-        return _ivMdls[input];
+        return _ivModels[input];
     }
 
     /** Return the count of states predicted by the integrator.
@@ -591,7 +591,7 @@ public abstract class QSSBase {
      * @return the external, quantized state model for a state predicted by the integrator.
      */
     public final ModelPolynomial getStateModel(final int stateIdx) {
-        return (_qStateMdls[stateIdx]);
+        return (_qStateModels[stateIdx]);
     }
 
     /** Get the order of the external, quantized state models exposed by the integrator.
@@ -673,7 +673,7 @@ public abstract class QSSBase {
             // has write access and will update its values.
             input.claimWriteAccess();
             // Set the time of the input model.
-            input.tMdl = startTime;
+            input.tModel = startTime;
             // Associate the model polynomial with the input.
             setInputVariableModel(i, input);
         }
@@ -831,7 +831,7 @@ public abstract class QSSBase {
         int missingIdx = -1;
 
         for (int ii = 0; ii < _ivCt; ++ii) {
-            if (_ivMdls[ii] == null) {
+            if (_ivModels[ii] == null) {
                 missingIdx = ii;
                 break;
             }
@@ -917,7 +917,7 @@ public abstract class QSSBase {
             // Perform work defined by specific member of the QSS family.
             predQuantEvtTime = _predictQuantizationEventTimeWorker(
                     stateIdx, _quantEvtTimeMax);
-            assert (predQuantEvtTime.compareTo(_cStateMdls[stateIdx].tMdl) > 0
+            assert (predQuantEvtTime.compareTo(_cStateModels[stateIdx].tModel) > 0
                     || predQuantEvtTime.compareTo(_quantEvtTimeMax) == 0);
             _predQuantEvtTimes[stateIdx] = predQuantEvtTime;
             _need_predQuantEvtTimes[stateIdx] = false;
@@ -1069,24 +1069,24 @@ public abstract class QSSBase {
      * </ul>
      *
      * @param ivIdx The index of input variable, 0 &le; ivIdx &lt; this.getInputVarCt().
-     * @param ivMdl The model to use.
+     * @param ivModel The model to use.
      * @exception IllegalArgumentException If the argument is null.
      * @see #getInputVariableModel(int)
      */
     public final void setInputVariableModel(final int ivIdx,
-            final ModelPolynomial ivMdl) {
+            final ModelPolynomial ivModel) {
 
         // Check inputs.
-        if (ivMdl == null) {
+        if (ivModel == null) {
             // Remove any model already at index {ivIdx}.
             //   Purpose-- leave the integrator unable to run until the root
             // cause of this problem has been fixed.
-            _ivMdls[ivIdx] = null;
+            _ivModels[ivIdx] = null;
             throw new IllegalArgumentException("Require a valid model");
         }
 
         // Save reference to model.
-        _ivMdls[ivIdx] = ivMdl;
+        _ivModels[ivIdx] = ivModel;
     }
 
     /** Set the number of event indicators.
@@ -1212,12 +1212,12 @@ public abstract class QSSBase {
         // _need_predQuantizationEventTimes[stateIdx] = true;  // This will follow from changes above.
 
         // Make the quantized state model constant at {newValue}.
-        final ModelPolynomial qStateMdl = _qStateMdls[stateIdx];
-        _makeModelConstant(qStateMdl, newValue, _qStateMdlOrder);
+        final ModelPolynomial qStateModel = _qStateModels[stateIdx];
+        _makeModelConstant(qStateModel, newValue, _qStateModelOrder);
 
         // Make the continuous state model constant at {newValue}.
-        _makeModelConstant(_cStateMdls[stateIdx], newValue,
-                _qStateMdlOrder + 1);
+        _makeModelConstant(_cStateModels[stateIdx], newValue,
+                _qStateModelOrder + 1);
 
         // Update quantum.
         //   To keep consistent with the constant coefficient of the
@@ -1361,7 +1361,7 @@ public abstract class QSSBase {
      * @return a string representation of the model for a state.
      */
     public final String stringifyStateModel(final int stateIdx) {
-        return (_qStateMdls[stateIdx].toString());
+        return (_qStateModels[stateIdx].toString());
     }
 
     /** Get a string representation of the internal model for a state.
@@ -1373,7 +1373,7 @@ public abstract class QSSBase {
      * @return a string representation of the internal model for a state.
      */
     public final String stringifyStateModelContinuous(final int stateIdx) {
-        return (_cStateMdls[stateIdx].toString());
+        return (_cStateModels[stateIdx].toString());
     }
 
     /** Form a new external, quantized state model.
@@ -1626,10 +1626,10 @@ public abstract class QSSBase {
      * of the internal, continuous state model, let alone have access to it.</p>
      *
      * @param stateIdx The state index, 0 <= stateIdx < this.getStateCount().
-     * @param qStateMdl The model to use.
+     * @param qStateModel The model to use.
      */
-    // public final ModelPoly getStateMdl_cont(final int stateIdx) {
-    //     return( _cStateMdls[stateIdx] );
+    // public final ModelPoly getStateModel_cont(final int stateIdx) {
+    //     return( _cStateModels[stateIdx] );
     // }
 
     ///////////////////////////////////////////////////////////////////
@@ -1660,8 +1660,7 @@ public abstract class QSSBase {
      * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @param quantEvtTimeMax The maximum time for the return value.  May be
      *   Time.POSITIVE_INFINITY.
-     * @return Next time at which, in the absence of other events, the
-     *   external state model must be re-formed, time &lt;= quantEvtTimeMax.
+     * @return The predicted quantization-event time for a state (QSS-specific).
      */
     protected abstract Time _predictQuantizationEventTimeWorker(
             final int stateIdx, final Time quantEvtTimeMax);
@@ -1682,8 +1681,8 @@ public abstract class QSSBase {
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
      *
-     * @param qStateMdl The model of external, quantized state.
-     * @param cStateMdl The model of internal, continuous state.
+     * @param qStateModel The model of external, quantized state.
+     * @param cStateModel The model of internal, continuous state.
      * @param dq The quantum, i.e., the critical difference between the models, at
      *   which the external state model must be re-formed.
      * @param exactInputs If true, then the inputs are known to be exact.
@@ -1695,22 +1694,22 @@ public abstract class QSSBase {
      * @param exactInputs True if exact inputs are expected.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2QFromC(
-            final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
             final double dq, final boolean exactInputs) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert (qStateMdl.getMaximumOrder() >= 1);
-        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
-        assert (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0); // Require {qStateMdl} more recent.
+        assert (qStateModel.getMaximumOrder() >= 1);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
+        assert (qStateModel.tModel.compareTo(cStateModel.tModel) > 0); // Require {qStateModel} more recent.
         assert (dq > 0);
 
         double dt;
 
         // Initialize.
-        final double qea = cStateMdl.coeffs[2]; // Note this is 1/2 the slope of the rate model.
+        final double qea = cStateModel.coeffs[2]; // Note this is 1/2 the slope of the rate model.
 
         if (qea != 0) {
             // Here, the internal, continuous state model has curvature.
@@ -1722,7 +1721,7 @@ public abstract class QSSBase {
             if (exactInputs) {
                 dt = Double.POSITIVE_INFINITY;
             } else {
-                final double cStateDeriv = cStateMdl.coeffs[1];
+                final double cStateDeriv = cStateModel.coeffs[1];
                 if (cStateDeriv != 0) {
                     dt = dq / Math.abs(cStateDeriv);
                 } else {
@@ -1753,32 +1752,32 @@ public abstract class QSSBase {
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
      *
-     * @param qStateMdl The model of external, quantized state.
-     * @param cStateMdl The model of internal, continuous state.
+     * @param qStateModel The model of external, quantized state.
+     * @param cStateModel The model of internal, continuous state.
      * @param dq The quantum, i.e., the critical difference between the models, at
      *   which the external state model must be re-formed.
      * @param exactInputs True if exact inputs are expected.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2General(
-            final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
             final double dq, final boolean exactInputs) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert (qStateMdl.getMaximumOrder() >= 1);
-        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
+        assert (qStateModel.getMaximumOrder() >= 1);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
         assert (dq > 0);
 
         double dt;
 
         // Get coefficients of the quadratic equation that defines the step.
-        final double hStar = qStateMdl.tMdl.subtractToDouble(cStateMdl.tMdl);
-        final double qecConst = cStateMdl.coeffs[0] - qStateMdl.coeffs[0]
-                + hStar * qStateMdl.coeffs[1];
-        final double qeb = cStateMdl.coeffs[1] - qStateMdl.coeffs[1];
-        final double qea = cStateMdl.coeffs[2]; // Note this is 1/2 the slope of the rate model.
+        final double hStar = qStateModel.tModel.subtractToDouble(cStateModel.tModel);
+        final double qecConst = cStateModel.coeffs[0] - qStateModel.coeffs[0]
+                + hStar * qStateModel.coeffs[1];
+        final double qeb = cStateModel.coeffs[1] - qStateModel.coeffs[1];
+        final double qea = cStateModel.coeffs[2]; // Note this is 1/2 the slope of the rate model.
         if (Math.abs(qecConst) >= dq) {
             // Here, last step had a numerical problem that let it violate the quantum.
             //   Initiate a quantization-event as early as possible.
@@ -1842,8 +1841,8 @@ public abstract class QSSBase {
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
      *
-     * @param cStateMdl The model of internal, continuous state.
-     * @param qStateMdl The model of external, quantized state.
+     * @param cStateModel The model of internal, continuous state.
+     * @param qStateModel The model of external, quantized state.
      * @param dq The quantum, i.e., the critical difference between the models, at
      *   which the external state model must be re-formed.
      * @return dt The delta-time at which, in the absence of other events, the
@@ -1852,29 +1851,29 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3QFromC(
-            final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
             final double dq, final boolean exactInputs) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert (qStateMdl.getMaximumOrder() >= 2);
-        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
-        assert (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0); // Require {qStateMdl} more recent.
+        assert (qStateModel.getMaximumOrder() >= 2);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
+        assert (qStateModel.tModel.compareTo(cStateModel.tModel) > 0); // Require {qStateModel} more recent.
         assert (dq > 0);
 
         double dt;
 
         // Initialize.
-        final double cea = cStateMdl.coeffs[3]; // Note this is 1/6 the second derivative component of the rate model.
+        final double cea = cStateModel.coeffs[3]; // Note this is 1/6 the second derivative component of the rate model.
 
         if (cea != 0) {
             // Here, the internal, continuous state model has a third derivative.
             dt = Math.pow(dq / Math.abs(cea), 1.0 / 3.0);
         } else {
-            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl,
-                    cStateMdl, dq, exactInputs);
+            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateModel,
+                    cStateModel, dq, exactInputs);
         }
 
         return (dt);
@@ -1896,8 +1895,8 @@ public abstract class QSSBase {
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
      *
-     * @param cStateMdl The model of internal, continuous state.
-     * @param qStateMdl The model of external, quantized state.
+     * @param cStateModel The model of internal, continuous state.
+     * @param qStateModel The model of external, quantized state.
      * @param dq The quantum, i.e., the critical difference between the models, at
      *   which the external state model must be re-formed.
      * @return dt The delta-time at which, in the absence of other events, the
@@ -1906,27 +1905,27 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3General(
-            final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
             final double dq) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert (qStateMdl.getMaximumOrder() >= 2);
-        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
+        assert (qStateModel.getMaximumOrder() >= 2);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
         assert (dq > 0);
 
         double dt;
 
         // Get coefficients of the cubic equation that defines the step.
-        final double hStar = qStateMdl.tMdl.subtractToDouble(cStateMdl.tMdl);
-        final double cedConst = cStateMdl.coeffs[0] - qStateMdl.coeffs[0]
-                + hStar * (qStateMdl.coeffs[1] - hStar * qStateMdl.coeffs[2]);
-        final double cec = cStateMdl.coeffs[1] - qStateMdl.coeffs[1]
-                + 2 * hStar * qStateMdl.coeffs[2];
-        final double ceb = cStateMdl.coeffs[2] - qStateMdl.coeffs[2];
-        final double cea = cStateMdl.coeffs[3]; // Note this is 1/6 the second derivative component of the rate model.
+        final double hStar = qStateModel.tModel.subtractToDouble(cStateModel.tModel);
+        final double cedConst = cStateModel.coeffs[0] - qStateModel.coeffs[0]
+                + hStar * (qStateModel.coeffs[1] - hStar * qStateModel.coeffs[2]);
+        final double cec = cStateModel.coeffs[1] - qStateModel.coeffs[1]
+                + 2 * hStar * qStateModel.coeffs[2];
+        final double ceb = cStateModel.coeffs[2] - qStateModel.coeffs[2];
+        final double cea = cStateModel.coeffs[3]; // Note this is 1/6 the second derivative component of the rate model.
         if (Math.abs(cedConst) >= dq) {
             // Here, last step had a slight numerical problem such that it
             // violated the quantum.
@@ -2016,13 +2015,13 @@ public abstract class QSSBase {
     protected int _ivCt;
 
     /** Internal continuous state models. */
-    protected ModelPolynomial[] _cStateMdls;
+    protected ModelPolynomial[] _cStateModels;
 
     /** External, quantized state models. */
-    protected ModelPolynomial[] _qStateMdls;
+    protected ModelPolynomial[] _qStateModels;
 
     /** Input variables. */
-    protected ModelPolynomial[] _ivMdls;
+    protected ModelPolynomial[] _ivModels;
 
     /** Quanta. */
     protected double[] _dqs; // Quantum for each state.
@@ -2086,7 +2085,7 @@ public abstract class QSSBase {
     private final void _initializeStates() {
 
         // Check internal consistency.
-        assert (_cStateMdls == null);
+        assert (_cStateModels == null);
         assert (_stateCt > 0);
 
         // Internal, continuous state models.
@@ -2094,13 +2093,13 @@ public abstract class QSSBase {
         // the actual models here.  However, the model times do not get set
         // until the initial value is set.  Therefore no need to allocate
         // {Time} objects here.
-        _cStateMdls = new ModelPolynomial[_stateCt];
-        final int cStateOrder = _qStateMdlOrder + 1;
+        _cStateModels = new ModelPolynomial[_stateCt];
+        final int cStateOrder = _qStateModelOrder + 1;
         assert (cStateOrder >= 1);
         for (int ii = 0; ii < _stateCt; ++ii) {
-            final ModelPolynomial cStateMdl = new ModelPolynomial(cStateOrder);
-            cStateMdl.claimWriteAccess();
-            _cStateMdls[ii] = cStateMdl;
+            final ModelPolynomial cStateModel = new ModelPolynomial(cStateOrder);
+            cStateModel.claimWriteAccess();
+            _cStateModels[ii] = cStateModel;
         }
 
         // Force rate-event for integrator.
@@ -2112,13 +2111,13 @@ public abstract class QSSBase {
         // the actual models here.  However, the model times do not get set
         // until the initial value is set.  Therefore no need to allocate
         // {Time} objects here.
-        _qStateMdls = new ModelPolynomial[_stateCt];
-        assert (_qStateMdlOrder >= 0);
+        _qStateModels = new ModelPolynomial[_stateCt];
+        assert (_qStateModelOrder >= 0);
         for (int ii = 0; ii < _stateCt; ++ii) {
-            final ModelPolynomial qStateMdl = new ModelPolynomial(
-                    _qStateMdlOrder);
-            qStateMdl.claimWriteAccess();
-            _qStateMdls[ii] = qStateMdl;
+            final ModelPolynomial qStateModel = new ModelPolynomial(
+                    _qStateModelOrder);
+            qStateModel.claimWriteAccess();
+            _qStateModels[ii] = qStateModel;
         }
 
         // Force quantization-event in all state models.
@@ -2134,14 +2133,14 @@ public abstract class QSSBase {
     private final void _initializeInputVariables() {
 
         // Check internal consistency.
-        assert (_ivMdls == null);
+        assert (_ivModels == null);
         assert (_ivCt >= 0);
 
         // Input variable models.
         //   Note these are references to user-supplied models.  Therefore no
         // need to allocate the actual models.
         if (_ivCt > 0) {
-            _ivMdls = new ModelPolynomial[_ivCt];
+            _ivModels = new ModelPolynomial[_ivCt];
         }
 
     }
@@ -2210,18 +2209,18 @@ public abstract class QSSBase {
 
     /** Make a model represent a constant.
      *
-     * @param constMdl Model to make constant.
+     * @param constModel Model to make constant.
      * @param constValue The new value for model.
-     * @param maxOrd The maximum order of the model, maxOrd==constMdl.getMaxOrder().
+     * @param maxOrd The maximum order of the model, maxOrd==constModel.getMaxOrder().
      */
-    private final void _makeModelConstant(final ModelPolynomial constMdl,
+    private final void _makeModelConstant(final ModelPolynomial constModel,
             final double constValue, final int maxOrd) {
 
         // Check assumptions.
-        assert (maxOrd == constMdl.getMaximumOrder());
+        assert (maxOrd == constModel.getMaximumOrder());
 
         // Initialize.
-        final double[] coeffs = constMdl.coeffs;
+        final double[] coeffs = constModel.coeffs;
 
         // Set value.
         coeffs[0] = constValue;
@@ -2238,7 +2237,7 @@ public abstract class QSSBase {
         // acts as a check that the initial state has been set.
         // (2) It might help with debugging, or otherwise making output more
         // clear.
-        constMdl.tMdl = _currSimTime;
+        constModel.tModel = _currSimTime;
 
     }
 
@@ -2261,11 +2260,11 @@ public abstract class QSSBase {
         assert (_derivFcn != null);
         assert (_stateCt == _derivFcn.getStateCount());
         assert (_ivCt == _derivFcn.getInputVariableCount());
-        assert (_cStateMdls != null && _cStateMdls.length == _stateCt);
-        assert (_qStateMdls != null && _qStateMdls.length == _stateCt);
+        assert (_cStateModels != null && _cStateModels.length == _stateCt);
+        assert (_qStateModels != null && _qStateModels.length == _stateCt);
         assert (_need_quantEvts != null && _need_quantEvts.length == _stateCt);
-        assert ((_ivMdls == null && _ivCt == 0)
-                || (_ivMdls != null && _ivMdls.length == _ivCt));
+        assert ((_ivModels == null && _ivCt == 0)
+                || (_ivModels != null && _ivModels.length == _ivCt));
         assert (_dqs != null && _dqs.length == _stateCt);
         assert (_dqAbsTols != null && _dqAbsTols.length == _stateCt);
         assert (_dqRelTols != null && _dqRelTols.length == _stateCt);
@@ -2284,7 +2283,7 @@ public abstract class QSSBase {
         //   I.e., require called method setStateValue() on each state, because
         // the model time gets set to {_currSimTime} when set the state.
         for (int ii = 0; ii < _stateCt; ++ii) {
-            if (null == _cStateMdls[ii].tMdl || null == _qStateMdls[ii].tMdl) {
+            if (null == _cStateModels[ii].tModel || null == _qStateModels[ii].tModel) {
                 // Note test above should be redundant.  Both models should get
                 // the same initial time at the same point in the worflow, and
                 // after that the model time should never return to {null}.
@@ -2294,16 +2293,16 @@ public abstract class QSSBase {
 
         // Require have valid models for all input variables.
         for (int ii = 0; ii < _ivCt; ++ii) {
-            final ModelPolynomial currMdl = _ivMdls[ii];
-            if (null == currMdl) {
+            final ModelPolynomial currModel = _ivModels[ii];
+            if (null == currModel) {
                 return (String.format("Need model for input variable %d", ii));
             }
-            if (currMdl.getWriterCount() != 1) {
+            if (currModel.getWriterCount() != 1) {
                 return (String.format(
                         "Need 1 writer for input variable %d; got %d", ii,
-                        currMdl.getWriterCount()));
+                        currModel.getWriterCount()));
             }
-            if (null == currMdl.tMdl) {
+            if (null == currModel.tModel) {
                 return (String.format(
                         "Need initialization for input variable %d", ii));
             }
@@ -2322,7 +2321,7 @@ public abstract class QSSBase {
     ////                         private variables
 
     // Identify specific member of the QSS family.
-    private final int _qStateMdlOrder = getStateModelOrder();
+    private final int _qStateModelOrder = getStateModelOrder();
 
     private boolean _need_rateEvt; // True if, in order to step forward
     // from {_currSimTime}, need to trigger a rate-event (i.e., need to
