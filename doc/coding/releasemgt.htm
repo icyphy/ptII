@@ -20,11 +20,12 @@
     <h2>Splitting the tree</h2>
     <ol>
       <li>Look for auto directories that don't have corresponding junit/ directories.
-	<br/>Note that <code>org/terraswarm/accessor/accessors/web/*/test/auto</code> directories do not have corresponding junit/ directories.
+	<br/>Note that in <code>org/terraswarm/accessor/accessors/web/*/test/auto</code>, only those auto directories that have Ptolemy .xml files should have corresponding junit/ directories.  This is because we use junit to run the auto/*.xml files.
 	<pre>
 	  cd $PTII
-	  ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`
-								    </pre>
+	  ls -d `find . -name auto | grep -v adm | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`
+       </pre>
+        
       </li>
       <li>Check that each demo has a test:
 	<pre>
@@ -35,8 +36,8 @@
 
       <li>Add any new models to <code>$PTII/ptolemy/configs/doc/completeDemos.htm</code>
         <pre>
-          cd $PTII
-          adm/bin/missingDemos
+          cd $PTII/ptolemy/configs/test/
+          ./missingDemos 
         </pre>
       </li>
       <li>If necessary, add new demos to toc.htm files
@@ -139,7 +140,7 @@
       <li> Generate a list of files
 	<pre>
 	  adm/bin/ptIItxtfiles > /tmp/f
-	    egrep '.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
+          egrep '.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 	</pre>
       </li>
 
@@ -250,10 +251,9 @@
 	  # Run rmtabs with adding the new lines:
 	  cat /tmp/j | xargs $PTII/util/testsuite/rmtabs 
 	  # Run with -n and then without:
-	  cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/util/testsuite/rmtabs -n
+	  cat /tmp/f | egrep '\.[cjh]$' | xargs $PTII/util/testsuite/rmtabs -n
 	</pre>
       </li>
-
       <li> Remove trailing spaces with:
 	<code>$PTII/util/testsuite/rmtrailingspace</code>
 	<pre>
@@ -307,7 +307,7 @@
 	<pre>
 	  cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
 	  alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
-	  gif | grep -v .svn | grep -v jimblackler | grep -v openmodelica/lib/omc/corba \
+	  gif | grep -v .svn | grep -v jhlabs | grep -v jimblackler | grep -v openmodelica/lib/omc/corba \
 	  grep -v metroIIcomm.java | grep -v swig | grep -v shallow/test/*2java | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
 	  grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $1}' | grep -v /actor/corba >/tmp/jc
 	</pre>
