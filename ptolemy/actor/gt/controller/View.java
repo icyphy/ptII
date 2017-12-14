@@ -178,8 +178,8 @@ public class View extends GTEvent {
             return data;
         }
         _parser.reset();
-        CompositeEntity entity = (CompositeEntity) GTTools.cleanupModel(
-                getModelParameter().getModel(), _parser);
+        CompositeEntity entity = (CompositeEntity) GTTools
+                .cleanupModel(getModelParameter().getModel(), _parser);
 
         try {
             // Compute size of the new frame.
@@ -194,8 +194,8 @@ public class View extends GTEvent {
                 if (sizeAttribute == null) {
                     sizeAttribute = new SizeAttribute(entity, "_vergilSize");
                 }
-                sizeAttribute.setExpression("[" + newSize.width + ", "
-                        + newSize.height + "]");
+                sizeAttribute.setExpression(
+                        "[" + newSize.width + ", " + newSize.height + "]");
             }
 
             boolean reopen = ((BooleanToken) reopenWindow.getToken())
@@ -206,8 +206,8 @@ public class View extends GTEvent {
             if (tableau != null
                     && !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
 
-                EventUtils
-                .setTableau(this, referredTableau, this.tableau, null);
+                EventUtils.setTableau(this, referredTableau, this.tableau,
+                        null);
                 EventUtils.closeTableau(tableau);
                 tableau = null;
             }
@@ -259,10 +259,10 @@ public class View extends GTEvent {
                 // screen.
                 Toolkit toolkit = Toolkit.getDefaultToolkit();
                 Dimension screenSize = toolkit.getScreenSize();
-                newLocation.x = Math.min(newLocation.x, screenSize.width
-                        - newSize.width);
-                newLocation.y = Math.min(newLocation.y, screenSize.height
-                        - newSize.height);
+                newLocation.x = Math.min(newLocation.x,
+                        screenSize.width - newSize.width);
+                newLocation.y = Math.min(newLocation.y,
+                        screenSize.height - newSize.height);
                 frame.setLocation(newLocation);
             }
 

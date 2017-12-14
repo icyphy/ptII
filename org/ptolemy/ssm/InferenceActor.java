@@ -27,6 +27,7 @@ Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
 */
 package org.ptolemy.ssm;
+
 /**
  * An interface for actors that perform inference.
  * These actors will be decorated by measurement models.

@@ -121,8 +121,8 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis {
                         copy(unitToAfterFlow.get(predIt.next()), beforeFlow);
 
                         while (predIt.hasNext()) {
-                            Object otherBranchFlow = unitToAfterFlow.get(predIt
-                                    .next());
+                            Object otherBranchFlow = unitToAfterFlow
+                                    .get(predIt.next());
                             merge(beforeFlow, otherBranchFlow, beforeFlow);
                         }
                     }

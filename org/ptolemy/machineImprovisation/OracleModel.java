@@ -84,8 +84,8 @@ public class OracleModel extends ModalRefinement {
      */
     public OracleModel(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor, boolean pitch,
-            boolean validate) throws NameDuplicationException,
-            IllegalActionException {
+            boolean validate)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init(trainingSequence, repetitionFactor, pitch, validate);
         // TODO Auto-generated constructor stub
@@ -137,8 +137,8 @@ public class OracleModel extends ModalRefinement {
      * FactorOracle.
      */
     private void _init(Object[] trainingSequence, double repetitionFactor,
-            boolean pitch, boolean validate) throws IllegalActionException,
-    NameDuplicationException {
+            boolean pitch, boolean validate)
+            throws IllegalActionException, NameDuplicationException {
 
         // Set the director before changing directorClass, because changing the
         // latter causes a ChangeRequest to be issued (in superclass'

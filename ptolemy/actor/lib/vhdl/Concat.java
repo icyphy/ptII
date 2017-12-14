@@ -123,9 +123,9 @@ public class Concat extends FixTransformer {
         //FIXME: what do we do if input is negative?
         //bits = bits.replace('-', '1');
 
-        FixPoint result = new FixPoint(new BigDecimal(new BigInteger(
-                bits.toString(), 2)), new FixPointQuantization(precision,
-                        overflow, rounding));
+        FixPoint result = new FixPoint(
+                new BigDecimal(new BigInteger(bits.toString(), 2)),
+                new FixPointQuantization(precision, overflow, rounding));
 
         sendOutput(output, 0, new FixToken(result));
     }

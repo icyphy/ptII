@@ -69,21 +69,17 @@ public class CurrentMicrostep extends TimedSource {
 
         // Override the clock to make it look a bit
         // different from the DiscreteClock and PoissonClock.
-        _attachText(
-                "_iconDescription",
-                "<svg>\n"
-                        + "<rect x=\"-20\" y=\"-20\" "
-                        + "width=\"40\" height=\"40\" "
-                        + "style=\"fill:lightGrey\"/>\n"
-                        + "<circle cx=\"0\" cy=\"0\" r=\"17\""
-                        + "style=\"fill:black\"/>\n"
-                        + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\" style=\"stroke:white\"/>\n"
-                        + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\" style=\"stroke:white\"/>\n"
-                        + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\" style=\"stroke:white\"/>\n"
-                        + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\" style=\"stroke:white\"/>\n"
-                        + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\" style=\"stroke:white\"/>\n"
-                        + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\" style=\"stroke:white\"/>\n"
-                        + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
+                + "style=\"fill:black\"/>\n"
+                + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\" style=\"stroke:white\"/>\n"
+                + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\" style=\"stroke:white\"/>\n"
+                + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\" style=\"stroke:white\"/>\n"
+                + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\" style=\"stroke:white\"/>\n"
+                + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\" style=\"stroke:white\"/>\n"
+                + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\" style=\"stroke:white\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

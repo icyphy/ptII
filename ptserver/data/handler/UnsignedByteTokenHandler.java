@@ -43,8 +43,8 @@ import ptolemy.data.UnsignedByteToken;
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
  */
-public class UnsignedByteTokenHandler implements
-TokenHandler<UnsignedByteToken> {
+public class UnsignedByteTokenHandler
+        implements TokenHandler<UnsignedByteToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

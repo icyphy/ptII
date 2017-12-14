@@ -500,8 +500,8 @@ public abstract class BaseType implements Type {
             if (t instanceof FixToken) {
                 return t;
             } else {
-                throw new IllegalActionException("Cannot convert token " + t
-                        + " to type fixed point.");
+                throw new IllegalActionException(
+                        "Cannot convert token " + t + " to type fixed point.");
             }
         }
     }
@@ -593,14 +593,14 @@ public abstract class BaseType implements Type {
      private NumericalType() {
      super(Numerical.class, "numerical");
      }
-
+    
      public Token convert(Token t) throws IllegalActionException {
      throw new IllegalActionException(
      "Cannot convert token "
      + t
      + " to type numerical, because numerical is not a concrete type.");
      }
-
+    
      public int getTypeHash() {
      return 7;
      }
@@ -650,8 +650,8 @@ public abstract class BaseType implements Type {
             if (t instanceof ScalarToken) {
                 return t;
             }
-            throw new IllegalActionException(
-                    Token.notSupportedIncomparableConversionMessage(t, "scalar"));
+            throw new IllegalActionException(Token
+                    .notSupportedIncomparableConversionMessage(t, "scalar"));
         }
 
         @Override

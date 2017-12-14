@@ -100,8 +100,8 @@ public class ImportAccessorAction extends AbstractAction {
     public ImportAccessorAction(Top frame) {
         super("Import Accessor");
         if (!(frame instanceof BasicGraphFrame)) {
-            throw new InternalErrorException("Frame " + frame
-                    + " is not a BasicGraphFrame?");
+            throw new InternalErrorException(
+                    "Frame " + frame + " is not a BasicGraphFrame?");
         }
         _frame = (BasicGraphFrame) frame;
         _lastLocation = "https://accessors.org";
@@ -133,14 +133,15 @@ public class ImportAccessorAction extends AbstractAction {
                 }
             }
         });
-        ComponentDialog dialog = new ComponentDialog(_frame,
-                "Import Accessor", query);
+        ComponentDialog dialog = new ComponentDialog(_frame, "Import Accessor",
+                query);
 
         if (dialog.buttonPressed().equals("OK")) {
             String accessorFileName = query.getStringValue("accessor");
 
             // If a sublibrary is selected instead of an accessor, re-open the dialog.
-            if (!accessorFileName.endsWith(".js") && !accessorFileName.endsWith(".xml")) {
+            if (!accessorFileName.endsWith(".js")
+                    && !accessorFileName.endsWith(".xml")) {
                 // Assume a sublibrary has been selected.
                 _lastLocation = query.getStringValue("location");
                 if (!_lastLocation.endsWith("/")) {
@@ -174,13 +175,14 @@ public class ImportAccessorAction extends AbstractAction {
                 moml = JSAccessor.accessorToMoML(urlSpec);
                 System.out.println("ImportAccessorAction: moml: " + moml);
             } catch (Throwable throwable) {
-                MessageHandler.error("Failed to import accessor \""
-                        + urlSpec + "\".", throwable);
+                MessageHandler.error(
+                        "Failed to import accessor \"" + urlSpec + "\".",
+                        throwable);
                 return;
             }
 
-            JSAccessor.handleAccessorMoMLChangeRequest(this,
-                    urlSpec, context, moml, x, y);
+            JSAccessor.handleAccessorMoMLChangeRequest(this, urlSpec, context,
+                    moml, x, y);
         }
     }
 
@@ -199,14 +201,15 @@ public class ImportAccessorAction extends AbstractAction {
             String index = _lastLocation + "index.json";
             // Look for a local version of the index.json file
             URL url = JSAccessor.getLocalURL(index,
-                                             FileUtilities.nameToURL(index, null, null));
+                    FileUtilities.nameToURL(index, null, null));
 
             StringBuffer buffer = new StringBuffer();
             BufferedReader in = null;
 
             try {
                 in = new BufferedReader(new InputStreamReader(
-                      FileUtilities.openStreamFollowingRedirects(url), StandardCharsets.UTF_8));
+                        FileUtilities.openStreamFollowingRedirects(url),
+                        StandardCharsets.UTF_8));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     buffer.append(inputLine);
@@ -223,8 +226,10 @@ public class ImportAccessorAction extends AbstractAction {
             }
         } catch (Exception e) {
             // Don't provide a list of options, but issue a message.
-            MessageHandler.error("Cannot suggest accessors, because there is no index.json file at "
-                    + _lastLocation, e);
+            MessageHandler.error(
+                    "Cannot suggest accessors, because there is no index.json file at "
+                            + _lastLocation,
+                    e);
         }
     }
 

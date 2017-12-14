@@ -199,7 +199,8 @@ public class FSMReceiver extends AbstractReceiver {
      *   explicitly.
      */
     @Override
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
         if (!_isKnown) {
             throw new InternalErrorException(getContainer(), null,
                     "Receiver status is not known.");

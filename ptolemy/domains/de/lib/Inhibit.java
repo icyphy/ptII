@@ -92,9 +92,8 @@ public class Inhibit extends Transformer {
         StringAttribute cardinality = new StringAttribute(inhibit, "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"0,20 0,0\"/>\n"
                 + "<polyline points=\"-30,-0 -10,0\"/>\n"
                 + "<polyline points=\"-10,-10 10,10\" style=\"stroke:red\"/>\n"

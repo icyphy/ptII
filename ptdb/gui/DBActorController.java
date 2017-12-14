@@ -87,8 +87,8 @@ public class DBActorController extends ActorController {
         super(controller, access);
 
         if (access == FULL) {
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _openActorFromDB));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_openActorFromDB));
         }
     }
 
@@ -165,16 +165,16 @@ public class DBActorController extends ActorController {
 
             if (!StringUtilities.inApplet()) {
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_D, Toolkit.getDefaultToolkit()
-                        .getMenuShortcutKeyMask()));
+                        KeyEvent.VK_D,
+                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             }
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error("Cannot open an actor "
-                        + "without a configuration.");
+                MessageHandler.error(
+                        "Cannot open an actor " + "without a configuration.");
                 return;
             }
 
@@ -186,17 +186,18 @@ public class DBActorController extends ActorController {
             //FIXME: DB Reference Parameters use StringParameter class.
             //  Consider changing to a more generic Parameter.
             if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-                if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+                if (object.getAttribute(
+                        XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                         && ((StringParameter) object
                                 .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                                .getExpression().equalsIgnoreCase("TRUE")) {
+                                        .getExpression()
+                                        .equalsIgnoreCase("TRUE")) {
                     try {
-                        PtolemyEffigy effigy = LoadManager
-                                .loadModelUsingId(
-                                        ((StringParameter) object
-                                                .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
+                        PtolemyEffigy effigy = LoadManager.loadModelUsingId(
+                                ((StringParameter) object.getAttribute(
+                                        XMLDBModel.DB_MODEL_ID_ATTR))
                                                 .getExpression(),
-                                                _configuration);
+                                _configuration);
 
                         if (effigy != null) {
                             effigy.showTableaux();
@@ -206,8 +207,8 @@ public class DBActorController extends ActorController {
 
                         }
                     } catch (Exception e1) {
-                        MessageHandler.error(
-                                "Cannot load the specified model. ", e1);
+                        MessageHandler
+                                .error("Cannot load the specified model. ", e1);
                     }
                 }
             }

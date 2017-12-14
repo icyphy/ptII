@@ -257,9 +257,7 @@ public class CompositeActorSimpleApplication {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out
-            .println("Version "
-                    + VersionAttribute.CURRENT_VERSION
+            System.out.println("Version " + VersionAttribute.CURRENT_VERSION
                     + ", Build $Id$");
 
             // quit the program if the user asked for the version
@@ -319,8 +317,8 @@ public class CompositeActorSimpleApplication {
                     i++;
                 } else {
                     // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
+                    throw new IllegalActionException(
+                            "Unrecognized option: " + arg);
                 }
             }
         }
@@ -369,8 +367,8 @@ public class CompositeActorSimpleApplication {
 
             if (!match) {
                 // Unrecognized option.
-                throw new IllegalActionException("Unrecognized option: " + "-"
-                        + name);
+                throw new IllegalActionException(
+                        "Unrecognized option: " + "-" + name);
             }
         }
     }

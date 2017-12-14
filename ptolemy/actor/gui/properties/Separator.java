@@ -107,8 +107,8 @@ public class Separator extends GUIProperty {
      *   an attribute already in the container.
      */
     public Separator(NamedObj container, String name, JComponent component,
-            Object constraint) throws IllegalActionException,
-            NameDuplicationException {
+            Object constraint)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, component, constraint);
         _init();
     }
@@ -149,14 +149,15 @@ public class Separator extends GUIProperty {
             String value = orientation.stringValue();
             if (value.equalsIgnoreCase("Horizontal")) {
                 ((JSeparator) getComponent())
-                .setOrientation(SwingConstants.HORIZONTAL);
+                        .setOrientation(SwingConstants.HORIZONTAL);
             } else if (value.equalsIgnoreCase("Vertical")) {
                 ((JSeparator) getComponent())
-                .setOrientation(SwingConstants.VERTICAL);
+                        .setOrientation(SwingConstants.VERTICAL);
             } else {
-                throw new IllegalActionException(this, "Orientation of a "
-                        + "separator must be either \"Horozontal\" or "
-                        + "\"Vertical\".");
+                throw new IllegalActionException(this,
+                        "Orientation of a "
+                                + "separator must be either \"Horozontal\" or "
+                                + "\"Vertical\".");
             }
         } else {
             super.attributeChanged(attribute);
@@ -185,8 +186,8 @@ public class Separator extends GUIProperty {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         orientation = new StringParameter(this, "orientation");
         orientation.setExpression("Horizontal");
     }

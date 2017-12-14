@@ -121,8 +121,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (neuendor)
  */
 @SuppressWarnings("serial")
-public class PtolemyQuery extends Query implements QueryListener,
-ValueListener, ChangeListener, CloseListener {
+public class PtolemyQuery extends Query
+        implements QueryListener, ValueListener, ChangeListener, CloseListener {
     /** Construct a panel with no queries in it and with the specified
      *  change handler. When an entry changes, a change request is
      *  queued with the given change handler. The change handler should
@@ -193,8 +193,8 @@ ValueListener, ChangeListener, CloseListener {
             _addingStyledEntryFor = attribute;
 
             if (attribute instanceof NamedObj) {
-                Iterator<?> styles = ((NamedObj) attribute).attributeList(
-                        ParameterEditorStyle.class).iterator();
+                Iterator<?> styles = ((NamedObj) attribute)
+                        .attributeList(ParameterEditorStyle.class).iterator();
 
                 while (styles.hasNext() && !foundStyle) {
                     ParameterEditorStyle style = (ParameterEditorStyle) styles
@@ -268,8 +268,8 @@ ValueListener, ChangeListener, CloseListener {
                                 Double.toString(max));
 
                         // Get the quantized integer for the current value.
-                        int quantized = (int) Math.round((current - min)
-                                * precision / (max - min));
+                        int quantized = (int) Math.round(
+                                (current - min) * precision / (max - min));
                         component = addSlider(name, displayName, quantized, 0,
                                 precision, minLabel, maxLabel);
                         attachParameter(attribute, name);
@@ -285,7 +285,8 @@ ValueListener, ChangeListener, CloseListener {
                                 attribute);
                     } else if (attribute instanceof Actionable) {
                         component = addActionable(name, displayName,
-                                attribute.getExpression(), (Actionable)attribute);
+                                attribute.getExpression(),
+                                (Actionable) attribute);
                         attachParameter(attribute, name);
                         foundStyle = true;
                         _addSubmitAction(component, attribute.getName(),
@@ -315,7 +316,9 @@ ValueListener, ChangeListener, CloseListener {
                                     File modelFile = new File(modelURI);
                                     directory = modelFile.getParentFile();
                                 } catch (Throwable ex) {
-                                    throw new RuntimeException("Failed to create a File for modelURI: " + ex);
+                                    throw new RuntimeException(
+                                            "Failed to create a File for modelURI: "
+                                                    + ex);
                                 }
                             }
                         }
@@ -404,8 +407,9 @@ ValueListener, ChangeListener, CloseListener {
                                 attribute);
                     } else if (attribute instanceof NamedObj
                             && (((NamedObj) attribute)
-                                    .getAttribute("_textWidthHint") != null || ((NamedObj) attribute)
-                                    .getAttribute("_textHeightHint") != null)) {
+                                    .getAttribute("_textWidthHint") != null
+                                    || ((NamedObj) attribute).getAttribute(
+                                            "_textHeightHint") != null)) {
                         // Support hints for text height and/or width so that actors
                         // don't have to use a ParameterEditorStyle, which depends
                         // on packages that depend on graphics.
@@ -455,13 +459,14 @@ ValueListener, ChangeListener, CloseListener {
                             // and the default Line style should be used.
                             if (attribute.getExpression().equals("true")
                                     || attribute.getExpression()
-                                    .equals("false")) {
+                                            .equals("false")) {
                                 component = addCheckBox(name, displayName,
-                                        ((BooleanToken) current).booleanValue());
+                                        ((BooleanToken) current)
+                                                .booleanValue());
                                 attachParameter(attribute, name);
                                 foundStyle = true;
-                                _addSubmitAction(component,
-                                        attribute.getName(), attribute);
+                                _addSubmitAction(component, attribute.getName(),
+                                        attribute);
                             }
                         }
                     }
@@ -572,7 +577,7 @@ ValueListener, ChangeListener, CloseListener {
         // warnings if the attribute changes containers.
         // See https://projects.ecoinformatics.org/ecoinfo/issues/6681.
         if (attribute instanceof Variable) {
-            ((Variable)attribute).setValueListenerAsWeakDependency(this);
+            ((Variable) attribute).setValueListenerAsWeakDependency(this);
         }
 
         // Put the attribute in a Map from attribute -> (list of entry names
@@ -697,8 +702,8 @@ ValueListener, ChangeListener, CloseListener {
             _query._isOpenErrorWindow = true;
 
             String description = change.getDescription();
-            _query.setMessage(exception.getMessage()
-                    + "\n\nPlease enter a new value:");
+            _query.setMessage(
+                    exception.getMessage() + "\n\nPlease enter a new value:");
 
             /* NOTE: The error message used to be more verbose, as follows.
              * But this is intimidating to users.
@@ -740,9 +745,9 @@ ValueListener, ChangeListener, CloseListener {
                                         + entryName);
                     }
 
-                    _dialog = new ComponentDialog(JOptionPane
-                            .getFrameForComponent(PtolemyQuery.this), "Error",
-                            _query, null);
+                    _dialog = new ComponentDialog(
+                            JOptionPane.getFrameForComponent(PtolemyQuery.this),
+                            "Error", _query, null);
 
                     // The above returns only when the modal
                     // dialog is closing.  The following will
@@ -845,8 +850,8 @@ ValueListener, ChangeListener, CloseListener {
                                 .getToken()).doubleValue();
                         double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
                                 .getToken()).doubleValue();
-                        double newValueAsDouble = min + (max - min) * newValue
-                                / precision;
+                        double newValueAsDouble = min
+                                + (max - min) * newValue / precision;
                         stringValue = "" + newValueAsDouble;
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -899,13 +904,13 @@ ValueListener, ChangeListener, CloseListener {
                          // Here, we need to handle instances of Variable
                          // specially.  This is too bad...
                          if (attribute instanceof Variable) {
-
+                        
                          // Will this ever happen?  A
                          // Variable that is not a NamedObj???
                          // Retrieve the token to force
                          // evaluation, so as to check the
                          // validity of the new value.
-
+                        
                          ((Variable)attribute).getToken();
                          }
                          */
@@ -958,7 +963,7 @@ ValueListener, ChangeListener, CloseListener {
         if (object instanceof Variable) {
             if (((Variable) object).isStringMode()) {
                 background = _STRING_MODE_BACKGROUND_COLOR;
-                if (((Variable)object).getAttribute("_JSON") != null) {
+                if (((Variable) object).getAttribute("_JSON") != null) {
                     // String needs to be JSON. Use a different color.
                     background = _JSON_MODE_BACKGROUND_COLOR;
                 }
@@ -1132,8 +1137,8 @@ ValueListener, ChangeListener, CloseListener {
      */
     private void _addSubmitAction(final JComponent component,
             final String attributeName, final Settable attribute) {
-        component.getInputMap().put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
+        component.getInputMap()
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
         final PtolemyQuery query = this;
         component.getActionMap().put("submit", new AbstractAction() {
             @Override
@@ -1149,8 +1154,8 @@ ValueListener, ChangeListener, CloseListener {
                         query.changed(attributeName);
                         attribute.validate();
                         EditParametersDialog dialog = (EditParametersDialog) parent;
-                        ((Configurer) dialog.contents)._originalValues.put(
-                                attribute, attribute.getValueAsString());
+                        ((Configurer) dialog.contents)._originalValues
+                                .put(attribute, attribute.getValueAsString());
                         dialog._handleClosing();
                     }
                 } catch (IllegalActionException e1) {
@@ -1186,8 +1191,8 @@ ValueListener, ChangeListener, CloseListener {
                         .getToken()).intValue();
 
                 // Get the quantized integer for the current value.
-                int quantized = (int) Math.round((current - min) * precision
-                        / (max - min));
+                int quantized = (int) Math
+                        .round((current - min) * precision / (max - min));
 
                 newValue = "" + quantized;
             } catch (IllegalActionException e) {
@@ -1247,14 +1252,16 @@ ValueListener, ChangeListener, CloseListener {
     /** Panel containing an entry box and button that performs the action specified
      *  by an Actionable.
      */
-    public static class ActionableEntry extends Box implements ActionListener, SettableQueryChooser {
+    public static class ActionableEntry extends Box
+            implements ActionListener, SettableQueryChooser {
         /** Create a panel containing an entry box and a color chooser.
          *  @param owner The owner query
          *  @param name The name of the query
          *  @param defaultValue  The initial default color of the color chooser.
          *  @param actionable The specification for the action.
          */
-        public ActionableEntry(Query owner, String name, String defaultValue, Actionable actionable) {
+        public ActionableEntry(Query owner, String name, String defaultValue,
+                Actionable actionable) {
             super(BoxLayout.X_AXIS);
             _actionable = actionable;
             _owner = owner;
@@ -1338,8 +1345,8 @@ ValueListener, ChangeListener, CloseListener {
             // Add the listener last so that there is no notification
             // of the first value.
             if (widget instanceof JTextField) {
-                ((JTextField) widget)
-                .addActionListener(new QueryActionListener(_owner, name));
+                ((JTextField) widget).addActionListener(
+                        new QueryActionListener(_owner, name));
 
                 // Add a listener for loss of focus.  When the entry gains
                 // and then loses focus, listeners are notified of an update,
@@ -1352,8 +1359,8 @@ ValueListener, ChangeListener, CloseListener {
                 // the value is restored to the original, and then sometime
                 // later, the focus is lost and the entered value becomes
                 // the value of the parameter.  I don't know of any workaround.
-                ((JTextField) widget).addFocusListener(new QueryFocusListener(
-                        _owner, name));
+                ((JTextField) widget)
+                        .addFocusListener(new QueryFocusListener(_owner, name));
             }
         }
 

@@ -98,8 +98,8 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
         }
 
         String typeOrToken = functionString.substring(0, commaIndex).trim();
-        String functionName = functionString.substring(commaIndex + 2,
-                openFuncParenIndex).trim();
+        String functionName = functionString
+                .substring(commaIndex + 2, openFuncParenIndex).trim();
 
         String argumentList = functionString.substring(openFuncParenIndex + 1)
                 .trim();
@@ -148,8 +148,8 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
             //return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
             //+ functionName + "](" + typeOrToken + argumentList;
             //String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
-            _getCodeGenerator().markFunctionCalled(
-                    functionName + "_Token_Token", this);
+            _getCodeGenerator()
+                    .markFunctionCalled(functionName + "_Token_Token", this);
             return functionName + "_Token_Token(" + typeOrToken + argumentList;
         }
     }
@@ -224,8 +224,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
             TypedIOPort port = getPort(parameter);
 
             if (port == null) {
-                throw new IllegalActionException(
-                        parameter
+                throw new IllegalActionException(parameter
                         + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (codeGenerator.isPrimitive(port.getType())) {

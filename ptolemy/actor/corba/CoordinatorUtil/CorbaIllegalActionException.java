@@ -7,8 +7,8 @@ package ptolemy.actor.corba.CoordinatorUtil;
  *
  */
 @SuppressWarnings("serial")
-public final class CorbaIllegalActionException extends
-org.omg.CORBA.UserException {
+public final class CorbaIllegalActionException
+        extends org.omg.CORBA.UserException {
     public String message = null;
 
     public CorbaIllegalActionException() {

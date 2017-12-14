@@ -163,7 +163,8 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  the constructor.
      */
     @Override
-    public void put(Token token) throws NoRoomException, IllegalActionException {
+    public void put(Token token)
+            throws NoRoomException, IllegalActionException {
         communicationAspect.sendToken(this, _receiver, token);
         ((Actor) _receiver.getContainer().getContainer()).getDirector()
                 .notifyTokenSentToCommunicationAspect();

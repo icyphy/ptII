@@ -121,7 +121,7 @@ public class LogicFunction extends SynchronousFixTransformer {
             BigInteger intResult = null;
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                    .getExpression());
+                            .getExpression());
             if (A.hasToken(0) && B.hasToken(0)) {
                 FixPoint valueA = ((FixToken) A.get(0)).fixValue();
                 FixPoint valueB = ((FixToken) B.get(0)).fixValue();
@@ -155,15 +155,16 @@ public class LogicFunction extends SynchronousFixTransformer {
             if (intResult != null) {
                 Overflow overflow = Overflow
                         .getName(((Parameter) getAttribute("outputOverflow"))
-                                .getExpression().toLowerCase(
-                                        Locale.getDefault()));
+                                .getExpression()
+                                .toLowerCase(Locale.getDefault()));
 
                 Rounding rounding = Rounding
                         .getName(((Parameter) getAttribute("outputRounding"))
-                                .getExpression().toLowerCase(
-                                        Locale.getDefault()));
+                                .getExpression()
+                                .toLowerCase(Locale.getDefault()));
                 FixPoint result = new FixPoint(intResult.doubleValue(),
-                        new FixPointQuantization(precision, overflow, rounding));
+                        new FixPointQuantization(precision, overflow,
+                                rounding));
                 sendOutput(output, 0, new FixToken(result));
             }
         } else {

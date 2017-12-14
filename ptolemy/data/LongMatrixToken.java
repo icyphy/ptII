@@ -100,8 +100,8 @@ public class LongMatrixToken extends MatrixToken {
     public LongMatrixToken(long[] value, int rows, int columns, int copy)
             throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("LongMatrixToken: The specified "
-                    + "matrix is null.");
+            throw new IllegalActionException(
+                    "LongMatrixToken: The specified " + "matrix is null.");
         }
 
         _rowCount = rows;
@@ -150,8 +150,8 @@ public class LongMatrixToken extends MatrixToken {
     public LongMatrixToken(long[][] value, int copy)
             throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("LongMatrixToken: The "
-                    + "specified matrix is null.");
+            throw new IllegalActionException(
+                    "LongMatrixToken: The " + "specified matrix is null.");
         }
 
         _initialize(value, copy);
@@ -194,8 +194,8 @@ public class LongMatrixToken extends MatrixToken {
         int elements = rows * columns;
 
         if (tokens == null) {
-            throw new IllegalActionException("LongMatrixToken: The specified"
-                    + " array is null.");
+            throw new IllegalActionException(
+                    "LongMatrixToken: The specified" + " array is null.");
         }
 
         if (tokens.length != elements) {
@@ -213,8 +213,8 @@ public class LongMatrixToken extends MatrixToken {
             if (token instanceof ScalarToken) {
                 _value[i] = ((ScalarToken) token).longValue();
             } else {
-                throw new IllegalActionException("LongMatrixToken: Element "
-                        + i + " in the array with value " + token
+                throw new IllegalActionException("LongMatrixToken: Element " + i
+                        + " in the array with value " + token
                         + " is not a ScalarToken");
             }
         }
@@ -268,8 +268,8 @@ public class LongMatrixToken extends MatrixToken {
 
         // The argument is below LongMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "[long]"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[long]"));
     }
 
     /** Convert the specified scalar token into an instance of
@@ -304,8 +304,8 @@ public class LongMatrixToken extends MatrixToken {
             return new LongMatrixToken(result, size, size, DO_NOT_COPY);
         }
 
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "[long]"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[long]"));
     }
 
     /** Return a new matrix that is a sub-matrix of this matrix.
@@ -318,8 +318,8 @@ public class LongMatrixToken extends MatrixToken {
      *   parameters result in out of bounds accesses.
      */
     @Override
-    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
-            throws IllegalActionException {
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan,
+            int colSpan) throws IllegalActionException {
         long[][] value = this.longMatrix();
         try {
             long[][] result = LongMatrixMath.crop(value, rowStart, colStart,
@@ -328,8 +328,8 @@ public class LongMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                    + ", colStart = " + colStart + ", rowSpan = "
-                    + rowSpan + ", colSpan = " + colSpan + ").");
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -473,7 +473,8 @@ public class LongMatrixToken extends MatrixToken {
     @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
-        if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
+        if (matrices == null || matrices.length == 0
+                || matrices[0].length == 0) {
             throw new IllegalActionException("matrixJoin: No input matrices.");
         }
         // Calculate the size of the result.
@@ -521,8 +522,8 @@ public class LongMatrixToken extends MatrixToken {
      */
     @Override
     public long[][] longMatrix() {
-        return LongMatrixMath
-                .toMatrixFromArray(_value, _rowCount, _columnCount);
+        return LongMatrixMath.toMatrixFromArray(_value, _rowCount,
+                _columnCount);
     }
 
     /** Return a new Token representing the left multiplicative
@@ -539,8 +540,8 @@ public class LongMatrixToken extends MatrixToken {
                     DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
-            throw new InternalErrorException("LongMatrixToken.one: "
-                    + "Cannot create identity matrix.");
+            throw new InternalErrorException(
+                    "LongMatrixToken.one: " + "Cannot create identity matrix.");
         }
     }
 
@@ -615,8 +616,8 @@ public class LongMatrixToken extends MatrixToken {
                     _rowCount, _columnCount, DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
-            throw new InternalErrorException("LongMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
+            throw new InternalErrorException(
+                    "LongMatrixToken.zero: " + "Cannot create zero matrix.");
         }
     }
 
@@ -636,9 +637,10 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
-        long[] result = LongArrayMath.add(
-                convertedArgument._getInternalLongArray(), _value);
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        long[] result = LongArrayMath
+                .add(convertedArgument._getInternalLongArray(), _value);
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -656,7 +658,8 @@ public class LongMatrixToken extends MatrixToken {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
             if (((LongMatrixToken) rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((LongMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -665,7 +668,8 @@ public class LongMatrixToken extends MatrixToken {
             scalar = ((LongToken) rightArgument).longValue();
         }
         long[] result = LongArrayMath.add(_value, scalar);
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     /** Return a new token whose elements are the result of dividing
@@ -683,7 +687,8 @@ public class LongMatrixToken extends MatrixToken {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
             if (((LongMatrixToken) rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((LongMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -692,7 +697,8 @@ public class LongMatrixToken extends MatrixToken {
             scalar = ((LongToken) rightArgument).longValue();
         }
         long[] result = LongArrayMath.divide(_value, scalar);
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     /** Return a reference to the internal 2-D matrix of longs that
@@ -720,7 +726,8 @@ public class LongMatrixToken extends MatrixToken {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
             if (((LongMatrixToken) rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((LongMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -729,7 +736,8 @@ public class LongMatrixToken extends MatrixToken {
             scalar = ((LongToken) rightArgument).longValue();
         }
         long[] result = LongArrayMath.modulo(_value, scalar);
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of this token
@@ -785,7 +793,8 @@ public class LongMatrixToken extends MatrixToken {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
             if (((LongMatrixToken) rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((LongMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -794,7 +803,8 @@ public class LongMatrixToken extends MatrixToken {
             scalar = ((LongToken) rightArgument).longValue();
         }
         long[] result = LongArrayMath.multiply(_value, scalar);
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -812,7 +822,8 @@ public class LongMatrixToken extends MatrixToken {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
         long[] result = LongArrayMath.subtract(_value,
                 convertedArgument._getInternalLongArray());
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -830,7 +841,8 @@ public class LongMatrixToken extends MatrixToken {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
             if (((LongMatrixToken) rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((LongMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -839,7 +851,8 @@ public class LongMatrixToken extends MatrixToken {
             scalar = ((LongToken) rightArgument).longValue();
         }
         long[] result = LongArrayMath.add(_value, -scalar);
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -857,7 +870,8 @@ public class LongMatrixToken extends MatrixToken {
         long scalar;
         if (rightArgument instanceof LongMatrixToken) {
             if (((LongMatrixToken) rightArgument).getRowCount() != 1
-                    || ((LongMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((LongMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -865,9 +879,10 @@ public class LongMatrixToken extends MatrixToken {
         } else {
             scalar = ((LongToken) rightArgument).longValue();
         }
-        long[] result = LongArrayMath.negative(LongArrayMath.add(_value,
-                -scalar));
-        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
+        long[] result = LongArrayMath
+                .negative(LongArrayMath.add(_value, -scalar));
+        return new LongMatrixToken(result, _rowCount, _columnCount,
+                DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////

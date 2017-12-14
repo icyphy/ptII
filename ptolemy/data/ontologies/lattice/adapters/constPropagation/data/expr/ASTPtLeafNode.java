@@ -58,7 +58,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *   throws it.
      */
     public ASTPtLeafNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
+            ptolemy.data.expr.ASTPtLeafNode node)
+            throws IllegalActionException {
         super(solver, node, false);
         _constantRepresentative = _getConstantRepresentative();
     }
@@ -78,8 +79,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
         if (node.isConstant()) {
             if (nodeToken != null) {
-                setAtLeast(node,
-                        _constantRepresentative
+                setAtLeast(node, _constantRepresentative
                         .getFlatTokenInfiniteConceptByToken(nodeToken));
             } else {
                 throw new IllegalActionException("A constant expression "

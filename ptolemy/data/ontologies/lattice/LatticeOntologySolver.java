@@ -199,8 +199,8 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        LatticeOntologySolver newObject = (LatticeOntologySolver) super
-                .clone(workspace);
+        LatticeOntologySolver newObject = (LatticeOntologySolver) super.clone(
+                workspace);
         newObject._annotatedObjects = new HashSet<Object>();
         newObject._constraintManager = new ConstraintManager(newObject);
         newObject._trainedConceptRecordArray = (Parameter) newObject
@@ -221,7 +221,7 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(
             ptolemy.graph.InequalityTerm updateTerm)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         return _conceptTermManager.getAffectedTerms(updateTerm);
     }
 
@@ -250,7 +250,8 @@ public class LatticeOntologySolver extends OntologySolver {
             throws IllegalActionException {
         initialize();
 
-        String initialSolverConstraints = _getConstraintsAsString(_initialConstraintList);
+        String initialSolverConstraints = _getConstraintsAsString(
+                _initialConstraintList);
 
         Hashtable<String, String> initialSolverInfo = new Hashtable<String, String>();
         initialSolverInfo.put("initialSolverConstraints",
@@ -276,7 +277,8 @@ public class LatticeOntologySolver extends OntologySolver {
             invokeSolver(false);
         }
 
-        String resolvedSolverConstraints = _getConstraintsAsString(_resolvedConstraintList);
+        String resolvedSolverConstraints = _getConstraintsAsString(
+                _resolvedConstraintList);
 
         Hashtable<String, String> resolvedSolverInfo = new Hashtable<String, String>();
         resolvedSolverInfo.put("resolvedSolverConstraints",
@@ -393,7 +395,8 @@ public class LatticeOntologySolver extends OntologySolver {
         super.initialize();
 
         NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
+        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(
+                toplevel);
 
         // FIXME: The code from here to constraintList() doesn't really
         // belong here. The constraintList() method of the Adapter should
@@ -516,17 +519,17 @@ public class LatticeOntologySolver extends OntologySolver {
                             && !trainedConceptString.equals("")) {
                         throw new IllegalActionException(conceptable,
                                 "Testing failure at " + conceptable.toString()
-                                + '\n' + "Expected '"
-                                + trainedConceptString
-                                + "' but did not infer anything.");
+                                        + '\n' + "Expected '"
+                                        + trainedConceptString
+                                        + "' but did not infer anything.");
                     }
-                } else if (!inferredConcept.toString().equals(
-                        trainedConceptString)) {
+                } else if (!inferredConcept.toString()
+                        .equals(trainedConceptString)) {
                     throw new IllegalActionException(conceptable,
                             "Testing failure at " + conceptable.toString()
-                            + '\n' + "Expected '"
-                            + trainedConceptString + "' but got '"
-                            + inferredConcept.toString() + "' instead.");
+                                    + '\n' + "Expected '" + trainedConceptString
+                                    + "' but got '" + inferredConcept.toString()
+                                    + "' instead.");
                 }
             }
 
@@ -554,7 +557,8 @@ public class LatticeOntologySolver extends OntologySolver {
             invokeSolver();
             Set<NamedObj> allNamedObjs = getAllConceptableNamedObjs();
 
-            RecordToken[] trainedConcepts = new RecordToken[allNamedObjs.size()];
+            RecordToken[] trainedConcepts = new RecordToken[allNamedObjs
+                    .size()];
             int index = 0;
             for (NamedObj conceptable : allNamedObjs) {
                 Concept inferredConcept = getConcept(conceptable);
@@ -564,7 +568,8 @@ public class LatticeOntologySolver extends OntologySolver {
                 if (inferredConcept == null) {
                     recordArray[1] = new StringToken(null);
                 } else {
-                    recordArray[1] = new StringToken(inferredConcept.toString());
+                    recordArray[1] = new StringToken(
+                            inferredConcept.toString());
                 }
                 RecordToken conceptRecord = new RecordToken(
                         _trainedConceptRecordLabels, recordArray);
@@ -572,7 +577,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 trainedConcepts[index++] = conceptRecord;
             }
             _trainedConceptRecordArray
-            .setToken(new ArrayToken(trainedConcepts));
+                    .setToken(new ArrayToken(trainedConcepts));
         } finally {
             workspace().doneWriting();
         }
@@ -717,10 +722,10 @@ public class LatticeOntologySolver extends OntologySolver {
                     .attributeList(ActorConstraintsDefinitionAttribute.class);
             for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
                 if (((StringToken) adapterDefinitionAttribute.actorClassName
-                        .getToken()).stringValue().equals(
-                                component.getClass().getName())) {
-                    adapter = adapterDefinitionAttribute.createAdapter(
-                            (ComponentEntity) component, this);
+                        .getToken()).stringValue()
+                                .equals(component.getClass().getName())) {
+                    adapter = adapterDefinitionAttribute
+                            .createAdapter((ComponentEntity) component, this);
                     break;
                 }
             }
@@ -770,7 +775,8 @@ public class LatticeOntologySolver extends OntologySolver {
      * @exception OntologyResolutionException If constraints are unsatisfiable
      */
     protected void _resolveConcepts(NamedObj toplevel,
-            List<Inequality> constraintList) throws OntologyResolutionException {
+            List<Inequality> constraintList)
+            throws OntologyResolutionException {
 
         List<Inequality> conflicts = new ArrayList<Inequality>();
 
@@ -791,8 +797,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 if (getOntology().isLattice()) {
                     lattice = getOntology().getConceptGraph();
                 } else {
-                    throw new IllegalActionException(
-                            this,
+                    throw new IllegalActionException(this,
                             "This Ontology is not a lattice, "
                                     + "and therefore we cannot resolve the model using the least fixed point algorithm.");
                 }
@@ -887,14 +892,17 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If solver strategy or fixed point
      *      type cannot be understood.
      */
-    protected ConstraintType _getConstraintType() throws IllegalActionException {
+    protected ConstraintType _getConstraintType()
+            throws IllegalActionException {
         String strategy = solverStrategy.stringValue();
         String fixedPoint = solvingFixedPoint.stringValue();
         if (strategy.equals("forward") && fixedPoint.equals("least")
-                || strategy.equals("backward") && fixedPoint.equals("greatest")) {
+                || strategy.equals("backward")
+                        && fixedPoint.equals("greatest")) {
             return ConstraintType.SINK_GE_SOURCE;
         } else if (strategy.equals("backward") && fixedPoint.equals("least")
-                || strategy.equals("forward") && fixedPoint.equals("greatest")) {
+                || strategy.equals("forward")
+                        && fixedPoint.equals("greatest")) {
             return ConstraintType.SOURCE_GE_SINK;
         } else if (strategy.equals("bidirectional")) {
             return ConstraintType.EQUALS;
@@ -903,8 +911,8 @@ public class LatticeOntologySolver extends OntologySolver {
         } else {
             throw new IllegalActionException(
                     "Cannot understand solver strategy.\n" + "Strategy: \""
-                            + strategy + "\"\n" + "Fixed Point: \""
-                            + fixedPoint + '"');
+                            + strategy + "\"\n" + "Fixed Point: \"" + fixedPoint
+                            + '"');
         }
     }
 
@@ -1019,5 +1027,5 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** The array of labels for the trained concept records. */
     private static final String[] _trainedConceptRecordLabels = new String[] {
-        _namedObjLabel, _conceptLabel };
+            _namedObjLabel, _conceptLabel };
 }

@@ -83,9 +83,9 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
             // necessary with JDK1.3.
             Rectangle2D rect = shape.getBounds2D();
             int width = (int) ((BasicStroke) stroke).getLineWidth() + 2;
-            return new Rectangle2D.Double(rect.getX() - width, rect.getY()
-                    - width, rect.getWidth() + width + width, rect.getHeight()
-                    + width + width);
+            return new Rectangle2D.Double(rect.getX() - width,
+                    rect.getY() - width, rect.getWidth() + width + width,
+                    rect.getHeight() + width + width);
         } else {
             // For some reason (antialiasing?) the bounds returned by
             // BasicStroke is off by one.  This code works around it.

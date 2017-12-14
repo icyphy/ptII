@@ -117,7 +117,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         checkWidthConsistencyAtMultiports.setTypeEquals(BaseType.BOOLEAN);
         checkWidthConsistencyAtMultiports.setExpression("true");
         checkWidthConsistencyAtMultiports
-        .setDisplayName("Check width consistency at multiports");
+                .setDisplayName("Check width consistency at multiports");
 
         Parameter checkWidthConstraints = new Parameter(this,
                 "_checkWidthConstraints");
@@ -132,9 +132,9 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         defaultInferredWidthTo1.setDisplayName("Default inferred width to 1");
 
         // The icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" " + "width=\"120\" height=\"20\" "
-                + "style=\"fill:#00FFFF\"/>\n" + "<text x=\"-55\" y=\"5\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-60\" y=\"-10\" "
+                + "width=\"120\" height=\"20\" " + "style=\"fill:#00FFFF\"/>\n"
+                + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
                 + "LocalPreferences\n" + "</text>\n" + "</svg>\n");
         // Hide the name.
@@ -183,7 +183,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
      *  @param preferenceName The name of the preference.
      *  @return The value of the preference, or null if it is not set.
      */
-    public static Token preferenceValue(NamedObj context, String preferenceName) {
+    public static Token preferenceValue(NamedObj context,
+            String preferenceName) {
         return ModelScope.preferenceValue(context, preferenceName);
     }
 
@@ -209,8 +210,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                 if (attribute instanceof Variable) {
                     return ((Variable) attribute).getToken();
                 }
-                Iterator<?> preferences = container.attributeList(
-                        PtolemyPreferences.class).iterator();
+                Iterator<?> preferences = container
+                        .attributeList(PtolemyPreferences.class).iterator();
                 while (preferences.hasNext()) {
                     PtolemyPreferences preference = (PtolemyPreferences) preferences
                             .next();
@@ -244,8 +245,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                 try {
                     writer.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \"" + libraryName
-                            + "\": " + ex);
+                    System.out.println(
+                            "Failed to close \"" + libraryName + "\": " + ex);
 
                 }
             }
@@ -282,7 +283,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
     public static void setDefaultPreferences(Configuration configuration) {
         PtolemyPreferences preferences = null;
         try {
-            preferences = getPtolemyPreferencesWithinConfiguration(configuration);
+            preferences = getPtolemyPreferencesWithinConfiguration(
+                    configuration);
         } catch (IllegalActionException ex) {
             System.out.println("Warning: Problem with preferences attribute "
                     + "in the configuration: " + ex.getMessage());
@@ -338,8 +340,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
             try {
                 parser.parse(fileURL, fileURL);
             } catch (Exception ex) {
-                System.out.println("Failed to read user preferences file: "
-                        + ex);
+                System.out
+                        .println("Failed to read user preferences file: " + ex);
             }
         }
 

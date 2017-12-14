@@ -174,11 +174,11 @@ public class TextString3D extends GRShadedShape {
             // path. However, it's not clear what user interface to provide for this.
             double depth = ((DoubleToken) extrusionDepth.getToken())
                     .doubleValue();
-            FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0,
-                    0.0, depth, 0.0));
+            FontExtrusion extrusion = new FontExtrusion(
+                    new Line2D.Double(0.0, 0.0, depth, 0.0));
 
-            Font3D font3D = new Font3D(
-                    new Font(fontFamilyValue, Font.PLAIN, 1), extrusion);
+            Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1),
+                    extrusion);
             _textGeometry.setFont3D(font3D);
         } else if (attribute == alignment && _textGeometry != null
                 && _changesAllowedNow) {
@@ -238,8 +238,8 @@ public class TextString3D extends GRShadedShape {
         // NOTE: The extrusion can, in principle, follow a more complicated
         // path. However, it's not clear what user interface to provide for this.
         double depth = ((DoubleToken) extrusionDepth.getToken()).doubleValue();
-        FontExtrusion extrusion = new FontExtrusion(new Line2D.Double(0.0, 0.0,
-                depth, 0.0));
+        FontExtrusion extrusion = new FontExtrusion(
+                new Line2D.Double(0.0, 0.0, depth, 0.0));
 
         Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1),
                 extrusion);

@@ -62,7 +62,7 @@ public class VergilUtilities {
      *  If the ptolemy.ptII.MacOS property is set to true, this method
      *  prints the message "ptolemy.ptII.MacOS = true property detected".
      *
-
+    
      *  @return True if the look and feel starts with "Mac OS" or the
      *  ptolemy.ptII.MacOS property is set to true.
      *  @deprecated Use {@link ptolemy.gui.PtGUIUtilities#macOSLookAndFeel()}.

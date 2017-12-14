@@ -197,8 +197,8 @@ public class Interpolation {
         }
 
         if (_order == 1) {
-            return vStart + (index - iStart) * (vEnd - vStart)
-                    / (iEnd - iStart);
+            return vStart
+                    + (index - iStart) * (vEnd - vStart) / (iEnd - iStart);
         }
 
         // order is 3. Need the points before Start and the point after End
@@ -299,8 +299,8 @@ public class Interpolation {
      */
     public void setPeriod(int period) {
         if (period < 0) {
-            throw new IllegalArgumentException("Interpolation.setPeriod: "
-                    + "The period is negative.");
+            throw new IllegalArgumentException(
+                    "Interpolation.setPeriod: " + "The period is negative.");
         }
 
         _period = period;
@@ -361,8 +361,8 @@ public class Interpolation {
 
         // compute the interpolated value
         double indexSqr = index * index;
-        return coef[0] * indexSqr * index + coef[1] * indexSqr + coef[2]
-                * index + coef[3];
+        return coef[0] * indexSqr * index + coef[1] * indexSqr + coef[2] * index
+                + coef[3];
     }
 
     ///////////////////////////////////////////////////////////////////

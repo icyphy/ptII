@@ -78,8 +78,8 @@ public class KeyReader extends KeyStoreActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        getPublicKey = new Parameter(this, "getPublicKey", new BooleanToken(
-                true));
+        getPublicKey = new Parameter(this, "getPublicKey",
+                new BooleanToken(true));
         getPublicKey.setTypeEquals(BaseType.BOOLEAN);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -95,7 +95,7 @@ public class KeyReader extends KeyStoreActor {
 
         signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
         signatureAlgorithm
-        .setExpression("Unknown, will be set after first run");
+                .setExpression("Unknown, will be set after first run");
         signatureAlgorithm.setVisibility(Settable.NOT_EDITABLE);
         signatureAlgorithm.setPersistent(false);
 
@@ -193,7 +193,8 @@ public class KeyReader extends KeyStoreActor {
         }
 
         if (_key == null) {
-            throw new NullPointerException("The key is null?  Perhaps the keyStoreType is not supported?");
+            throw new NullPointerException(
+                    "The key is null?  Perhaps the keyStoreType is not supported?");
         }
         output.broadcast(new KeyToken(_key));
     }
@@ -216,8 +217,7 @@ public class KeyReader extends KeyStoreActor {
             try {
                 if (!_verifyCertificate) {
                     if (_getPublicKey) {
-                        throw new IllegalActionException(
-                                this,
+                        throw new IllegalActionException(this,
                                 "To get the public key, one must use "
                                         + "certificates, so the verifyCertificate "
                                         + "parameter must be set to true if the "
@@ -240,11 +240,11 @@ public class KeyReader extends KeyStoreActor {
 
                     if (certificate instanceof X509Certificate) {
                         signatureAlgorithm
-                        .setExpression(((X509Certificate) certificate)
-                                .getSigAlgName());
+                                .setExpression(((X509Certificate) certificate)
+                                        .getSigAlgName());
                     } else {
-                        signatureAlgorithm
-                        .setExpression("Unknown, certificate was not a X509 cert.");
+                        signatureAlgorithm.setExpression(
+                                "Unknown, certificate was not a X509 cert.");
                     }
 
                     _key = publicKey;
@@ -256,8 +256,8 @@ public class KeyReader extends KeyStoreActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to get key store alias '" + _alias
-                        + "' or certificate from "
-                        + fileOrURLDescription());
+                                + "' or certificate from "
+                                + fileOrURLDescription());
             }
         }
     }

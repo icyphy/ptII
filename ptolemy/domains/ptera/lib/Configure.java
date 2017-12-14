@@ -155,8 +155,8 @@ public class Configure extends Event {
                 if (query.hasEntries()) {
                     options = new JOptionPane(query,
                             JOptionPane.QUESTION_MESSAGE,
-                            JOptionPane.YES_NO_OPTION, null, new String[] {
-                            "Set", "Default" }, "Set");
+                            JOptionPane.YES_NO_OPTION, null,
+                            new String[] { "Set", "Default" }, "Set");
                 } else {
                     options = new JOptionPane(query,
                             JOptionPane.INFORMATION_MESSAGE,
@@ -170,8 +170,10 @@ public class Configure extends Event {
                 dialog.setContentPane(options);
                 dialog.pack();
                 Toolkit toolkit = Toolkit.getDefaultToolkit();
-                int x = (toolkit.getScreenSize().width - dialog.getSize().width) / 2;
-                int y = (toolkit.getScreenSize().height - dialog.getSize().height) / 2;
+                int x = (toolkit.getScreenSize().width - dialog.getSize().width)
+                        / 2;
+                int y = (toolkit.getScreenSize().height
+                        - dialog.getSize().height) / 2;
                 dialog.setLocation(x, y);
 
                 success = true;
@@ -274,15 +276,15 @@ public class Configure extends Event {
 
     /**
      Listener for key input and property change.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private static class Listener extends KeyAdapter implements
-    PropertyChangeListener {
+    private static class Listener extends KeyAdapter
+            implements PropertyChangeListener {
 
         /** React to a key being pressed in the dialog.
          *
@@ -304,8 +306,7 @@ public class Configure extends Event {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
             String property = event.getPropertyName();
-            if (_dialog.isVisible()
-                    && event.getSource() instanceof JOptionPane
+            if (_dialog.isVisible() && event.getSource() instanceof JOptionPane
                     && (property.equals(JOptionPane.VALUE_PROPERTY) || property
                             .equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
                 JOptionPane optionPane = (JOptionPane) event.getSource();
@@ -346,7 +347,7 @@ public class Configure extends Event {
 
     /**
      The query to receive user input.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

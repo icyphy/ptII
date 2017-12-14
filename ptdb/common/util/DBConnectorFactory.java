@@ -152,7 +152,7 @@ public class DBConnectorFactory {
      */
     public static DBConnection getSyncConnection(
             DBConnectionParameters dbConnectionParameters)
-                    throws DBConnectionException {
+            throws DBConnectionException {
         return _createConnection(dbConnectionParameters);
     }
 
@@ -233,8 +233,8 @@ public class DBConnectorFactory {
                             + "Please provide details in ptdb-params.properties");
         }
 
-        DBConnectionParameters dbConnParams = new DBConnectionParameters(
-                _dbUrl, containerName, isTransactionRequired);
+        DBConnectionParameters dbConnParams = new DBConnectionParameters(_dbUrl,
+                containerName, isTransactionRequired);
 
         return _createConnection(dbConnParams);
 
@@ -249,7 +249,7 @@ public class DBConnectorFactory {
      */
     private static DBConnection _createConnection(
             DBConnectionParameters dbConnectionParameters)
-                    throws DBConnectionException {
+            throws DBConnectionException {
 
         if (_dbClassName == null) {
             throw new DBConnectionException(
@@ -271,14 +271,13 @@ public class DBConnectorFactory {
 
         } catch (ClassNotFoundException e) {
 
-            throw new DBConnectionException(
-                    "PTDB database connector class not "
-                            + "specified in ptdb-params.properties", e);
+            throw new DBConnectionException("PTDB database connector class not "
+                    + "specified in ptdb-params.properties", e);
 
         } catch (SecurityException e) {
 
-            throw new DBConnectionException("PTDB security exception - "
-                    + e.getMessage(), e);
+            throw new DBConnectionException(
+                    "PTDB security exception - " + e.getMessage(), e);
 
         } catch (NoSuchMethodException e) {
 
@@ -289,9 +288,8 @@ public class DBConnectorFactory {
 
         } catch (IllegalArgumentException e) {
 
-            throw new DBConnectionException(
-                    "PTDB illegal argument exception - " + _dbClassName + " "
-                            + e.getMessage(), e);
+            throw new DBConnectionException("PTDB illegal argument exception - "
+                    + _dbClassName + " " + e.getMessage(), e);
 
         } catch (InstantiationException e) {
 
@@ -307,9 +305,10 @@ public class DBConnectorFactory {
 
             throw new DBConnectionException(
                     "PTDB invocation target exception - " + _dbClassName
-                    + " for url - " + dbConnectionParameters.getUrl()
-                    + " and container name - "
-                    + dbConnectionParameters.getContainerName(), e);
+                            + " for url - " + dbConnectionParameters.getUrl()
+                            + " and container name - "
+                            + dbConnectionParameters.getContainerName(),
+                    e);
 
         }
         return xmlDBConnection;
@@ -345,8 +344,8 @@ public class DBConnectorFactory {
             // Use FileUtilities.nameToURL() because it handles jar urls from Web Start.
             URL url = FileUtilities.nameToURL(ptdbParams, null, null);
             if (url == null) {
-                throw new ExceptionInInitializerError("Did not find the "
-                        + ptdbParams + " file.");
+                throw new ExceptionInInitializerError(
+                        "Did not find the " + ptdbParams + " file.");
             }
 
             props.load(url.openStream());
@@ -361,8 +360,8 @@ public class DBConnectorFactory {
                 _isDBSetupDone = true;
 
                 Class dbConnectionClass = Class.forName(_dbClassName);
-                Method initializeDatabaseMethod = dbConnectionClass.getMethod(
-                        "initializeDatabase", String.class);
+                Method initializeDatabaseMethod = dbConnectionClass
+                        .getMethod("initializeDatabase", String.class);
                 initializeDatabaseMethod.invoke(null, _dbUrl);
             }
         } catch (IOException ex) {
@@ -387,9 +386,9 @@ public class DBConnectorFactory {
         strBuf.append("_dbClassName = ").append(_dbClassName).append(";");
         strBuf.append("_dbUrl = ").append(_dbUrl).append(";");
         strBuf.append("_dbContainerName = ").append(_dbContainerName)
-        .append(";");
+                .append(";");
         strBuf.append("_cacheContainerName = ").append(_cacheContainerName)
-        .append(";");
+                .append(";");
 
         return strBuf.toString();
     }

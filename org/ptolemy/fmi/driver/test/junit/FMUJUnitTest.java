@@ -72,13 +72,13 @@ public class FMUJUnitTest {
                 .getCanonicalPath();
         String updateString = "To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar"
-                + System.getProperty("path.separator")
-                + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
-                + fmuFileName + " " + endTime + " " + stepSize + " false c "
-                  + knownGoodFileName;
+                + System.getProperty("path.separator") + topDirectory
+                + "\" org.ptolemy.fmi.driver.FMUCoSimulation " + fmuFileName
+                + " " + endTime + " " + stepSize + " false c "
+                + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
-        new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
-                LOGGING, ',', resultsFileName);
+        new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize, LOGGING,
+                ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
@@ -99,9 +99,11 @@ public class FMUJUnitTest {
      */
     public void cosimulate(String testName, double endTime, double stepSize)
             throws Exception {
-        cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName
-                + ".fmu", endTime, stepSize, topDirectory
-                + "/org/ptolemy/fmi/driver/test/junit/" + testName + ".csv");
+        cosimulate(
+                topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName + ".fmu",
+                endTime, stepSize,
+                topDirectory + "/org/ptolemy/fmi/driver/test/junit/" + testName
+                        + ".csv");
     }
 
     /** Run the bouncing ball co-simulation functional mock-up unit test.
@@ -215,12 +217,12 @@ public class FMUJUnitTest {
                 .getCanonicalPath();
         String updateString = "To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar"
-                + System.getProperty("path.separator")
-                + topDirectory + "\" org.ptolemy.fmi.driver.FMUModelExchange "
-                + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName;
+                + System.getProperty("path.separator") + topDirectory
+                + "\" org.ptolemy.fmi.driver.FMUModelExchange " + fmuFileName
+                + " 1.0 0.1 false c " + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
-        new FMUModelExchange().simulate(fmuFileName, 1.0, 0.1,
-                LOGGING, ',', resultsFileName);
+        new FMUModelExchange().simulate(fmuFileName, 1.0, 0.1, LOGGING, ',',
+                resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
         String knownGood = FMUJUnitTest.readFile(knownGoodFileName);
@@ -240,9 +242,10 @@ public class FMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void modelExchange(String testName) throws Exception {
-        modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName
-                + ".fmu", topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
-                        + testName + ".csv");
+        modelExchange(
+                topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName + ".fmu",
+                topDirectory + "/org/ptolemy/fmi/driver/test/junit/" + testName
+                        + ".csv");
     }
 
     /** Run the bouncing ball model exchange functional mock-up unit test.
@@ -269,9 +272,9 @@ public class FMUJUnitTest {
         modelExchange("dqME1");
     }
 
-        /** Run the dq model exchange functional mock-up unit test.
-     *  @exception Exception If there is a problem reading or running the test.
-     */
+    /** Run the dq model exchange functional mock-up unit test.
+    *  @exception Exception If there is a problem reading or running the test.
+    */
     @org.junit.Test
     public void modelExchangeDq20() throws Exception {
         modelExchange("dqME20");
@@ -333,7 +336,7 @@ public class FMUJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-        .main("org.ptolemy.fmi.driver.test.junit.FMUJUnitTest");
+                .main("org.ptolemy.fmi.driver.test.junit.FMUJUnitTest");
     }
 
     /** Read in the named file and returns the contents as a string.
@@ -349,8 +352,8 @@ public class FMUJUnitTest {
         try {
             fileInputStream = new FileInputStream(fileName);
             dataInputStream = new DataInputStream(fileInputStream);
-            bufferedReader = new BufferedReader(new InputStreamReader(
-                    dataInputStream));
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(dataInputStream));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 results.append(line + lineSeparator);

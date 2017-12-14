@@ -70,7 +70,8 @@ public class LocalStorageHelper {
     public LocalStorageHelper(String persistenceDirectory,
             String containerActorName) throws MqttPersistenceException {
         // FIXME if you can find a better directory.
-        _mqttLocalStorage = new MqttDefaultFilePersistence(persistenceDirectory);
+        _mqttLocalStorage = new MqttDefaultFilePersistence(
+                persistenceDirectory);
         try {
             _mqttLocalStorage.close();
         } catch (MqttPersistenceException e) {

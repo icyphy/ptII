@@ -88,8 +88,8 @@ public class ModelTopology {
             WirelessIOPort port2) throws IllegalActionException {
         double[] p1 = locationOf(port1);
         double[] p2 = locationOf(port2);
-        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1])
-                * (p1[1] - p2[1]));
+        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0])
+                + (p1[1] - p2[1]) * (p1[1] - p2[1]));
     }
 
     /** Return a list of input ports that can potentially receive data
@@ -195,14 +195,14 @@ public class ModelTopology {
         //    location = (Locatable)port.getAttribute(LOCATION_ATTRIBUTE_NAME,
         //            Locatable.class);
         //} else {
-        location = (Locatable) portContainer.getAttribute(
-                LOCATION_ATTRIBUTE_NAME, Locatable.class);
+        location = (Locatable) portContainer
+                .getAttribute(LOCATION_ATTRIBUTE_NAME, Locatable.class);
 
         //}
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                    + ".");
+                            + ".");
         }
 
         return location.getLocation();

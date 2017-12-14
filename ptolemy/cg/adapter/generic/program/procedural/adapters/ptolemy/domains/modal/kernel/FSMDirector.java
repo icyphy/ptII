@@ -107,8 +107,8 @@ public class FSMDirector extends Director {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     @Override
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
         // Needed for:
         // $PTII/bin/ptcg -verbosity 10 -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml
         super.generateTransferOutputsCode(outputPort, code, true);
@@ -132,7 +132,7 @@ public class FSMDirector extends Director {
     @Override
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: need documentation on the input string format.
         return target.getFullName() + "_" + name;
     }

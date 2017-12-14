@@ -41,9 +41,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  * @Pt.AcceptedRating Green (cxh)
  *
  */
-public class Subscriber
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Subscriber {
+public class Subscriber extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Subscriber {
     /**
      * Constructor method for the Subscriber adapter.
      * @param actor the associated actor

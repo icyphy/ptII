@@ -77,18 +77,19 @@ public class GaussianFilter extends ConvolveFilter {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] inPixels = new int[width * height];
         int[] outPixels = new int[width * height];
         src.getRGB(0, 0, width, height, inPixels, 0, width);
 
         if (radius > 0) {
-            convolveAndTranspose(kernel, inPixels, outPixels, width, height, alpha, alpha && premultiplyAlpha, false,
-                    CLAMP_EDGES);
-            convolveAndTranspose(kernel, outPixels, inPixels, height, width, alpha, false, alpha && premultiplyAlpha,
-                    CLAMP_EDGES);
+            convolveAndTranspose(kernel, inPixels, outPixels, width, height,
+                    alpha, alpha && premultiplyAlpha, false, CLAMP_EDGES);
+            convolveAndTranspose(kernel, outPixels, inPixels, height, width,
+                    alpha, false, alpha && premultiplyAlpha, CLAMP_EDGES);
         }
 
         dst.setRGB(0, 0, width, height, inPixels, 0, width);
@@ -107,8 +108,9 @@ public class GaussianFilter extends ConvolveFilter {
      * @param unpremultiply whether to unpremultiply
      * @param edgeAction what to do at the edges
      */
-    public static void convolveAndTranspose(Kernel kernel, int[] inPixels, int[] outPixels, int width, int height,
-            boolean alpha, boolean premultiply, boolean unpremultiply, int edgeAction) {
+    public static void convolveAndTranspose(Kernel kernel, int[] inPixels,
+            int[] outPixels, int width, int height, boolean alpha,
+            boolean premultiply, boolean unpremultiply, int edgeAction) {
         float[] matrix = kernel.getKernelData(null);
         int cols = kernel.getWidth();
         int cols2 = cols / 2;
@@ -125,15 +127,17 @@ public class GaussianFilter extends ConvolveFilter {
                     if (f != 0) {
                         int ix = x + col;
                         if (ix < 0) {
-                            if (edgeAction == CLAMP_EDGES)
+                            if (edgeAction == CLAMP_EDGES) {
                                 ix = 0;
-                            else if (edgeAction == WRAP_EDGES)
+                            } else if (edgeAction == WRAP_EDGES) {
                                 ix = (x + width) % width;
+                            }
                         } else if (ix >= width) {
-                            if (edgeAction == CLAMP_EDGES)
+                            if (edgeAction == CLAMP_EDGES) {
                                 ix = width - 1;
-                            else if (edgeAction == WRAP_EDGES)
+                            } else if (edgeAction == WRAP_EDGES) {
                                 ix = (x + width) % width;
+                            }
                         }
                         int rgb = inPixels[ioffset + ix];
                         int pa = (rgb >> 24) & 0xff;
@@ -186,15 +190,18 @@ public class GaussianFilter extends ConvolveFilter {
         int index = 0;
         for (int row = -r; row <= r; row++) {
             float distance = row * row;
-            if (distance > radius2)
+            if (distance > radius2) {
                 matrix[index] = 0;
-            else
-                matrix[index] = (float) Math.exp(-(distance) / sigma22) / sqrtSigmaPi2;
+            } else {
+                matrix[index] = (float) Math.exp(-(distance) / sigma22)
+                        / sqrtSigmaPi2;
+            }
             total += matrix[index];
             index++;
         }
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < rows; i++) {
             matrix[i] /= total;
+        }
 
         return new Kernel(rows, 1, matrix);
     }

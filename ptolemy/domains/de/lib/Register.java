@@ -92,9 +92,10 @@ public class Register extends MostRecent {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-10\" y=\"-20\" " + "width=\"20\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-10\" y=\"-20\" "
+                        + "width=\"20\" height=\"40\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

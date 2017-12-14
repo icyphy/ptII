@@ -632,8 +632,8 @@ public class Time implements Comparable {
         // signal precision and
         // (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double presision.
-        int minimumNumberOfBits = (int) Math.floor(-1
-                * ExtendedMath.log2(_timeResolution())) + 1;
+        int minimumNumberOfBits = (int) Math
+                .floor(-1 * ExtendedMath.log2(_timeResolution())) + 1;
         int maximumGain = 52 - minimumNumberOfBits;
 
         return ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY
@@ -683,40 +683,40 @@ public class Time implements Comparable {
 
         // Note: a time value of a Time object can be either positive infinite
         // or negative infinite.
-        if (time._isNegativeInfinite ) {
-            if (_isNegativeInfinite ) {
+        if (time._isNegativeInfinite) {
+            if (_isNegativeInfinite) {
                 throw new ArithmeticException(
-                    "Subtracting negative infinity from negative infinity yields an invalid time.");
+                        "Subtracting negative infinity from negative infinity yields an invalid time.");
             }
-            return( Double.POSITIVE_INFINITY );
+            return (Double.POSITIVE_INFINITY);
         }
 
-        if (time._isPositiveInfinite ) {
-            if (_isPositiveInfinite ) {
+        if (time._isPositiveInfinite) {
+            if (_isPositiveInfinite) {
                 throw new ArithmeticException(
-                    "Subtracting positive infinity from positive infinity yields an invalid time.");
+                        "Subtracting positive infinity from positive infinity yields an invalid time.");
             }
-            return( Double.NEGATIVE_INFINITY );
+            return (Double.NEGATIVE_INFINITY);
         }
 
-        if (_isPositiveInfinite ) {
-            return( Double.POSITIVE_INFINITY );
+        if (_isPositiveInfinite) {
+            return (Double.POSITIVE_INFINITY);
         }
 
-        if (_isNegativeInfinite ) {
-            return( Double.NEGATIVE_INFINITY );
+        if (_isNegativeInfinite) {
+            return (Double.NEGATIVE_INFINITY);
         }
 
         // Handle case of different resolutions.
         final double resolution = _timeResolution();
-        if (resolution != time._timeResolution() ) {
+        if (resolution != time._timeResolution()) {
             final double thisValue = getDoubleValue();
             final double thatValue = time.getDoubleValue();
-            return( thisValue - thatValue );
+            return (thisValue - thatValue);
         }
 
         final BigInteger difference = _timeValue.subtract(time._timeValue);
-        return( DoubleUtilities.bigToDouble(difference) * resolution );
+        return (DoubleUtilities.bigToDouble(difference) * resolution);
     }
 
     /** Return the string representation of this time object.
@@ -803,16 +803,14 @@ public class Time implements Comparable {
         long multiple = Math.round(value / precision);
 
         if (Math.abs(multiple * precision - value) > precision) {
-            throw new IllegalActionException(
-                    "The given time value "
-                            + value
-                            + " is too large to be converted precisely to an "
-                            + "instance of Time with the specified time resolution of "
-                            + precision
-                            + ". The maximum value that can always be precisely converted is "
-                            + maximumAccurateValueAsDouble()
-                            + ". A number close to your value that can be converted is "
-                            + multiple * precision);
+            throw new IllegalActionException("The given time value " + value
+                    + " is too large to be converted precisely to an "
+                    + "instance of Time with the specified time resolution of "
+                    + precision
+                    + ". The maximum value that can always be precisely converted is "
+                    + maximumAccurateValueAsDouble()
+                    + ". A number close to your value that can be converted is "
+                    + multiple * precision);
         }
 
         return BigInteger.valueOf(multiple);

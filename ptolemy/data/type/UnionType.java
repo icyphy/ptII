@@ -108,7 +108,7 @@ public class UnionType extends AssociativeType implements Cloneable {
         for (int i = 0; i < labels.length; i++) {
             labels[i] = (String) labelsObj[i];
 
-            FieldType fieldType = (FieldType) _fields.get(labels[i]);
+            FieldType fieldType = _fields.get(labels[i]);
             types[i] = fieldType._declaredType;
         }
 
@@ -138,8 +138,8 @@ public class UnionType extends AssociativeType implements Cloneable {
     @Override
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
-            throw new IllegalArgumentException(
-                    Token.notSupportedConversionMessage(token, this.toString()));
+            throw new IllegalArgumentException(Token
+                    .notSupportedConversionMessage(token, this.toString()));
         }
 
         UnionToken unionToken = (UnionToken) token;
@@ -221,7 +221,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      */
     @Override
     public Type get(String label) {
-        FieldType fieldType = (FieldType) _fields.get(label);
+        FieldType fieldType = _fields.get(label);
 
         if (fieldType == null) {
             return null;
@@ -245,7 +245,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @see ptolemy.graph.InequalityTerm
      */
     public InequalityTerm getTypeTerm(String label) {
-        return (InequalityTerm) _fields.get(label);
+        return _fields.get(label);
     }
 
     /** Return a hash code value for this object.
@@ -262,7 +262,7 @@ public class UnionType extends AssociativeType implements Cloneable {
     @Override
     public void initialize(Type type) {
         try {
-            for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+            for (Map.Entry<String, FieldType> fields : _fields.entrySet()) {
                 FieldType fieldType = fields.getValue();
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
@@ -414,7 +414,7 @@ public class UnionType extends AssociativeType implements Cloneable {
         }
 
         // Loop over all the labels.
-        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+        for (Map.Entry<String, FieldType> fields : _fields.entrySet()) {
             FieldType fieldType = fields.getValue();
 
             Type myDeclaredType = fieldType._declaredType;
@@ -507,7 +507,7 @@ public class UnionType extends AssociativeType implements Cloneable {
                     + "Cannot update this type to the new type.");
         }
 
-        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+        for (Map.Entry<String, FieldType> fields : _fields.entrySet()) {
             FieldType fieldType = fields.getValue();
             if (fieldType.isSettable()) {
                 //Type newFieldType = ((UnionType) newType).get(label);

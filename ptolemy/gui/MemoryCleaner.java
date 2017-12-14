@@ -146,7 +146,7 @@ public class MemoryCleaner {
             }
 
             for (int a = 0; a < count; a++) {
-                Object [] keys = actionMap.keys();
+                Object[] keys = actionMap.keys();
                 if (keys != null) {
                     for (int k = 0; k < keys.length; k++) {
                         actionMap.remove(keys[k]);
@@ -203,8 +203,8 @@ public class MemoryCleaner {
                     listenersRemoved++;
                 } else {
                     if (_isDebugging) {
-                        System.out.println((c == null ? "null" : c.getClass()
-                                .getName()));
+                        System.out.println(
+                                (c == null ? "null" : c.getClass().getName()));
                     }
                 }
             }

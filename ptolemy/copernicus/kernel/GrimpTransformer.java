@@ -73,8 +73,8 @@ public class GrimpTransformer extends SceneTransformer {
                 SootMethod method = (SootMethod) methods.next();
 
                 if (method.isConcrete()) {
-                    method.setActiveBody(Grimp.v().newBody(
-                            method.retrieveActiveBody(), "gb"));
+                    method.setActiveBody(Grimp.v()
+                            .newBody(method.retrieveActiveBody(), "gb"));
                 }
             }
         }

@@ -145,11 +145,11 @@ public class Slice extends FixTransformer {
                     .shiftRight(shiftBits));
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                    .getExpression());
+                            .getExpression());
             if (newEndValue - newStartValue != precision.getNumberOfBits()) {
-                throw new IllegalActionException(this, "Bit width of "
-                        + (newEndValue - newStartValue)
-                        + " is not equal to precision " + precision);
+                throw new IllegalActionException(this,
+                        "Bit width of " + (newEndValue - newStartValue)
+                                + " is not equal to precision " + precision);
             }
 
             Overflow overflow = Overflow
@@ -160,8 +160,8 @@ public class Slice extends FixTransformer {
                     .getName(((Parameter) getAttribute("outputRounding"))
                             .getExpression().toLowerCase(Locale.getDefault()));
 
-            FixPoint result = new FixPoint(value, new FixPointQuantization(
-                    precision, overflow, rounding));
+            FixPoint result = new FixPoint(value,
+                    new FixPointQuantization(precision, overflow, rounding));
 
             sendOutput(output, 0, new FixToken(result));
         }

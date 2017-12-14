@@ -88,7 +88,8 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public DistributedTypedCompositeActor(CompositeEntity container, String name)
+    public DistributedTypedCompositeActor(CompositeEntity container,
+            String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

@@ -28,7 +28,6 @@
 
 package org.ptolemy.ptango.lib.webSocket;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jetty.websocket.WebSocket;

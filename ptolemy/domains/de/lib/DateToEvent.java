@@ -98,8 +98,7 @@ public class DateToEvent extends Transformer {
         if (director instanceof DEDirector) {
             if (!((BooleanToken) ((DEDirector) director).synchronizeToRealTime
                     .getToken()).booleanValue()) {
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "This actor can only be used when synchronizeToRealTime "
                                 + "in the director is enabled because a reference to real time is needed to compare "
                                 + "dates.");
@@ -122,10 +121,12 @@ public class DateToEvent extends Transformer {
             _debug("System time: " + systemTime);
         }
         Time time = _director.getModelTime();
-        if (_outputTokensForChannel != null && _outputTokensForChannel.size() > 0) {
+        if (_outputTokensForChannel != null
+                && _outputTokensForChannel.size() > 0) {
             Time t = (Collections.min(_outputTokensForChannel.keySet()));
             if (_debugging) {
-                _debug("at model time " + time + " output tokens > 0 starting with " + t);
+                _debug("at model time " + time
+                        + " output tokens > 0 starting with " + t);
             }
             if (t.compareTo(time) == 0) {
                 List<Integer> channels = _outputTokensForChannel.get(t);
@@ -138,30 +139,34 @@ public class DateToEvent extends Transformer {
         for (int channel = 0; channel < input.getWidth(); channel++) {
             if (input.hasToken(0)) {
                 DateToken token = (DateToken) input.get(0);
-                if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
+                if (token.getCalendarInstance()
+                        .getTimeInMillis() < systemTime) {
                     throw new IllegalActionException(this,
-                            "The date on the input port ("
-                            + token.toString()
-                            + ") lies in the past.");
+                            "The date on the input port (" + token.toString()
+                                    + ") lies in the past.");
                 } else {
-                        if (_manager == null) {
-                            _manager = ((CompositeActor) getContainer()).getManager();
+                    if (_manager == null) {
+                        _manager = ((CompositeActor) getContainer())
+                                .getManager();
                     }
-                    long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis()
+                    long realTimeDifferenceInMillis = token
+                            .getCalendarInstance().getTimeInMillis()
                             - _manager.getRealStartTime();
-                    Time fireTime = new Time(
-                            _director,
+                    Time fireTime = new Time(_director,
                             ((double) realTimeDifferenceInMillis / 1000)); // The default unit of time is seconds.
                     if (_debugging) {
-                            _debug("director start time (ms): " + _director.elapsedTimeSinceStart());
-                            _debug("real time difference (ms):" + realTimeDifferenceInMillis);
+                        _debug("director start time (ms): "
+                                + _director.elapsedTimeSinceStart());
+                        _debug("real time difference (ms):"
+                                + realTimeDifferenceInMillis);
                         _debug("Scheduling firing at (model time):" + fireTime);
                     }
                     _director.fireAt(this, fireTime);
                     if (_outputTokensForChannel == null) {
                         _outputTokensForChannel = new HashMap<Time, List<Integer>>();
                     }
-                    List<Integer> channels = _outputTokensForChannel.get(fireTime);
+                    List<Integer> channels = _outputTokensForChannel
+                            .get(fireTime);
                     if (channels == null) {
                         channels = new ArrayList<Integer>();
                     }

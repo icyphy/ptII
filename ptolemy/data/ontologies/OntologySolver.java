@@ -45,8 +45,8 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating Red (mankit)
  *  @Pt.AcceptedRating Red (mankit)
  */
-public abstract class OntologySolver extends OntologySolverBase implements
-Testable {
+public abstract class OntologySolver extends OntologySolverBase
+        implements Testable {
 
     /**
      * Construct an OntologySolver with the specified container and name. If this

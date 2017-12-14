@@ -58,8 +58,8 @@ import ptolemy.vergil.gt.IterativeParameterIcon;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class IterativeParameter extends Parameter implements MatchCallback,
-ValueIterator {
+public class IterativeParameter extends Parameter
+        implements MatchCallback, ValueIterator {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -130,8 +130,8 @@ ValueIterator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        IterativeParameter newObject = (IterativeParameter) super
-                .clone(workspace);
+        IterativeParameter newObject = (IterativeParameter) super.clone(
+                workspace);
         newObject.setTypeAtLeast(newObject.initial);
         newObject.setTypeAtLeast(newObject.next);
         return newObject;
@@ -180,11 +180,11 @@ ValueIterator {
     public Token next() throws IllegalActionException {
         Object mode = this.mode.getChosenValue();
         if (mode == Mode.STOP_WHEN_MATCH && _foundMatch) {
-            throw new IllegalActionException("Stop because the last match "
-                    + "was successful.");
+            throw new IllegalActionException(
+                    "Stop because the last match " + "was successful.");
         } else if (mode == Mode.STOP_WHEN_NOT_MATCH && !_foundMatch) {
-            throw new IllegalActionException("Stop because the last match "
-                    + "was not successful.");
+            throw new IllegalActionException(
+                    "Stop because the last match " + "was not successful.");
         }
 
         Token nextToken = next.getToken();
@@ -246,7 +246,7 @@ ValueIterator {
     /**
      The exception to denote that the constraint is violated and no more values
      are available.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -269,7 +269,7 @@ ValueIterator {
 
     /**
      The modes of this parameter.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

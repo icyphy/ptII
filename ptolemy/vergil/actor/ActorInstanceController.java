@@ -77,8 +77,8 @@ public class ActorInstanceController extends ActorController {
 
         if (access == FULL) {
             // The following do not require a configuration.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _convertToClassAction));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_convertToClassAction));
         }
     }
 

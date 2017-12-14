@@ -61,8 +61,8 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ClassConceptFunctionDefinitionAttribute extends
-ConceptFunctionDefinitionAttribute {
+public class ClassConceptFunctionDefinitionAttribute
+        extends ConceptFunctionDefinitionAttribute {
 
     /** Construct the ClassConceptFunctionDefinitionAttribute attribute
      *  with the given container and name.
@@ -74,8 +74,8 @@ ConceptFunctionDefinitionAttribute {
      *   actor with this name.
      */
     public ClassConceptFunctionDefinitionAttribute(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         conceptFunctionClassName = new StringAttribute(this,
@@ -125,16 +125,17 @@ ConceptFunctionDefinitionAttribute {
             try {
                 // Verify that the conceptFunctionClassName correctly
                 // specifies an existing actor class.
-                conceptFunctionClass = Class.forName(
-                        conceptFunctionClassNameString).asSubclass(
-                                ConceptFunction.class);
+                conceptFunctionClass = Class
+                        .forName(conceptFunctionClassNameString)
+                        .asSubclass(ConceptFunction.class);
             } catch (ClassNotFoundException classEx) {
                 throw new IllegalActionException(this, classEx,
                         "ConceptFunction class "
                                 + conceptFunctionClassNameString
                                 + " not found.");
             }
-            _cachedConceptFunction = _createConceptFunctionInstance(conceptFunctionClass);
+            _cachedConceptFunction = _createConceptFunctionInstance(
+                    conceptFunctionClass);
             _conceptFunctionVersion = workspace().getVersion();
         }
         return _cachedConceptFunction;
@@ -174,7 +175,7 @@ ConceptFunctionDefinitionAttribute {
      */
     private ConceptFunction _createConceptFunctionInstance(
             Class<? extends ConceptFunction> conceptFunctionClass)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         _setConstructorArgsArrays();
 
@@ -203,13 +204,14 @@ ConceptFunctionDefinitionAttribute {
                     + "passed to the constructor for the ConceptFunction "
                     + "class " + conceptFunctionClass + ".");
         } catch (InstantiationException ex) {
-            throw new IllegalActionException(this, ex, "Unable to instantiate"
-                    + " the ConceptFunction class " + conceptFunctionClass
-                    + ".");
+            throw new IllegalActionException(this, ex,
+                    "Unable to instantiate" + " the ConceptFunction class "
+                            + conceptFunctionClass + ".");
         } catch (IllegalAccessException ex) {
-            throw new IllegalActionException(this, ex, "Do not have access "
-                    + " the constructor for the ConceptFunction class "
-                    + conceptFunctionClass + " within this method.");
+            throw new IllegalActionException(this, ex,
+                    "Do not have access "
+                            + " the constructor for the ConceptFunction class "
+                            + conceptFunctionClass + " within this method.");
         }
 
         return conceptFunctionInstance;

@@ -77,7 +77,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.process.BranchController
 
  */
-public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver {
+public class MailboxBoundaryReceiver extends Mailbox
+        implements ProcessReceiver {
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
     public MailboxBoundaryReceiver() {
@@ -201,8 +202,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      * @exception InvalidStateException
      */
     @Override
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-    IllegalActionException {
+    public boolean isConnectedToBoundaryInside()
+            throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -217,7 +218,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      * @exception IllegalActionException
      */
     @Override
-    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
+    public boolean isConnectedToBoundaryOutside()
+            throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 

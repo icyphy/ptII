@@ -61,14 +61,14 @@ public class JToolBarComponentBuilder implements ComponentBuilder {
     public java.awt.Component getInstance(
             java.util.Map<String, Object> beanProperties) throws Exception {
         JToolBar toolbar = new JToolBar();
-        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-                "New24.gif"))));
-        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-                "Remove24.gif"))));
-        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-                "RowDelete24.gif"))));
-        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-                "RowInsertAfter24.gif"))));
+        toolbar.add(new JButton(
+                new ImageIcon(this.getClass().getResource("New24.gif"))));
+        toolbar.add(new JButton(
+                new ImageIcon(this.getClass().getResource("Remove24.gif"))));
+        toolbar.add(new JButton(
+                new ImageIcon(this.getClass().getResource("RowDelete24.gif"))));
+        toolbar.add(new JButton(new ImageIcon(
+                this.getClass().getResource("RowInsertAfter24.gif"))));
 
         return toolbar;
     }

@@ -193,7 +193,7 @@ public class XmlReader extends LoggableOp {
      */
     private void parse(XmlDocument document, URL systemId, URL publicId,
             Reader reader, InputStream stream, String encoding)
-                    throws Exception {
+            throws Exception {
         String pubString;
         String sysString;
 
@@ -274,7 +274,8 @@ public class XmlReader extends LoggableOp {
         public void attribute(String name, String value, boolean specified)
                 throws Exception {
             if (isVerbose()) {
-                logInfo("attr", name + "=\"" + value + "\" (" + specified + ")");
+                logInfo("attr",
+                        name + "=\"" + value + "\" (" + specified + ")");
             }
 
             if (name == null) {
@@ -289,7 +290,8 @@ public class XmlReader extends LoggableOp {
          * the current XML element.
          */
         @Override
-        public void charData(char[] c, int offset, int length) throws Exception {
+        public void charData(char[] c, int offset, int length)
+                throws Exception {
             String s = new String(c, offset, length);
 
             if (isVerbose()) {
@@ -315,8 +317,8 @@ public class XmlReader extends LoggableOp {
         public void doctypeDecl(String name, String publicId, String systemId)
                 throws java.lang.Exception {
             if (isVerbose()) {
-                logInfo("doctype", name + " \"" + publicId + "\" \"" + systemId
-                        + "\"");
+                logInfo("doctype",
+                        name + " \"" + publicId + "\" \"" + systemId + "\"");
             }
 
             _document.setDocType(name);
@@ -499,8 +501,8 @@ public class XmlReader extends LoggableOp {
         @Override
         public void startElement(String name) {
             if (isVerbose()) {
-                logInfo("start", "<" + name + "> (" + printEntityType(name)
-                        + ")");
+                logInfo("start",
+                        "<" + name + "> (" + printEntityType(name) + ")");
                 indent();
             }
 

@@ -99,8 +99,8 @@ public class Undefined extends Source {
             Type newType = BaseType.forName(typeName);
 
             if (newType == null) {
-                throw new IllegalActionException(this, "Unrecognized type: "
-                        + typeName);
+                throw new IllegalActionException(this,
+                        "Unrecognized type: " + typeName);
             } else {
                 output.setTypeEquals(newType);
             }

@@ -61,18 +61,18 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
      */
     public MultiplyDivide(LatticeOntologySolver solver,
             ptolemy.actor.lib.MultiplyDivide actor)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, actor, false);
 
         _multiplyDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
         _divideDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         _reciprocalDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.RECIPROCAL_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.RECIPROCAL_FUNCTION_NAME);
 
         // If definitions for multiplication, division, and reciprocal concept
         // functions cannot be found, just use the default constraints.
@@ -113,23 +113,24 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 && divideFunction != null) {
             if (interconnectConstraintType == ConstraintType.EQUALS
                     || interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
-                List<IOPort> multiplyInputs = _getSourcePortList(actor.multiply);
+                List<IOPort> multiplyInputs = _getSourcePortList(
+                        actor.multiply);
 
                 // If the multiply input is a multiport with multiple input ports,
                 // set up the constraint to be the product of the inputs.
                 if (multiplyInputs.size() > 1) {
                     InequalityTerm[] plusTerms = new InequalityTerm[multiplyInputs
-                                                                    .size()];
+                            .size()];
                     for (int i = 0; i < plusTerms.length; i++) {
                         plusTerms[i] = getPropertyTerm(multiplyInputs.get(i));
                     }
-                    setAtLeast(
-                            actor.multiply,
+                    setAtLeast(actor.multiply,
                             new ConceptFunctionInequalityTerm(
                                     new ApplyBinaryFunctionToMultipleArguments(
-                                            "productMultiplyInputs", _solver
-                                            .getOntology(),
-                                            multiplyFunction), plusTerms));
+                                            "productMultiplyInputs",
+                                            _solver.getOntology(),
+                                            multiplyFunction),
+                                    plusTerms));
                 }
 
                 // If the divide input is a multiport with multiple input ports,
@@ -137,17 +138,15 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 List<IOPort> divideInputs = _getSourcePortList(actor.divide);
                 if (divideInputs.size() > 1) {
                     InequalityTerm[] divideTerms = new InequalityTerm[divideInputs
-                                                                      .size()];
+                            .size()];
                     for (int i = 0; i < divideTerms.length; i++) {
                         divideTerms[i] = getPropertyTerm(divideInputs.get(i));
                     }
-                    setAtLeast(
-                            actor.divide,
-                            new ConceptFunctionInequalityTerm(
-                                    new ApplyBinaryFunctionToMultipleArguments(
-                                            "productDivideInputs", _solver
-                                            .getOntology(),
-                                            multiplyFunction), divideTerms));
+                    setAtLeast(actor.divide, new ConceptFunctionInequalityTerm(
+                            new ApplyBinaryFunctionToMultipleArguments(
+                                    "productDivideInputs",
+                                    _solver.getOntology(), multiplyFunction),
+                            divideTerms));
                 }
 
                 // If the divide input port is unconnected, then the output
@@ -158,25 +157,26 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                     // If the multiply input port is unconnected, then the output
                     // is >= reciprocal of the divide input.
                 } else if (multiplyInputs.size() == 0) {
-                    setAtLeast(
-                            actor.output,
+                    setAtLeast(actor.output,
                             new ConceptFunctionInequalityTerm(
-                                    reciprocalFunction,
-                                    new InequalityTerm[] { getPropertyTerm(actor.divide) }));
+                                    reciprocalFunction, new InequalityTerm[] {
+                                            getPropertyTerm(actor.divide) }));
 
                     // Otherwise the output is >= multiply input / divide input.
                 } else {
-                    setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                            divideFunction, new InequalityTerm[] {
-                                    getPropertyTerm(actor.multiply),
-                                    getPropertyTerm(actor.divide) }));
+                    setAtLeast(actor.output,
+                            new ConceptFunctionInequalityTerm(divideFunction,
+                                    new InequalityTerm[] {
+                                            getPropertyTerm(actor.multiply),
+                                            getPropertyTerm(actor.divide) }));
                 }
             }
         }
 
         // Add back in default constraints for the output to input relationship.
         if (!_useDefaultConstraints
-                && (interconnectConstraintType == ConstraintType.EQUALS || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
+                && (interconnectConstraintType == ConstraintType.EQUALS
+                        || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
             setAtLeast(actor.multiply, actor.output);
             setAtLeast(actor.divide, actor.output);
         }

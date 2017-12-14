@@ -351,8 +351,8 @@ public class ModalBasePort extends TypedIOPort {
             }
         }
         // Remove the relation as well.
-        ComponentRelation relation = oldContainer.getRelation(getName()
-                + "Relation");
+        ComponentRelation relation = oldContainer
+                .getRelation(getName() + "Relation");
 
         if (relation != null) {
             relation.setContainer(null);
@@ -455,8 +455,8 @@ public class ModalBasePort extends TypedIOPort {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
-    protected void _setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 

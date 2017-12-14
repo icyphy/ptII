@@ -90,8 +90,8 @@ public class ConceptRelation extends ComponentRelation {
      *  @exception NameDuplicationException If the name coincides with
      *   any relation already in the container.
      */
-    public ConceptRelation(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public ConceptRelation(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -199,12 +199,13 @@ public class ConceptRelation extends ComponentRelation {
      *   created for this relation conflict with existing attributes in this
      *   relation.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         annotation = new StringParameter(this, "annotation");
         annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
-        Variable textHighlightHint = new Variable(annotation, "_textHeightHint");
+        Variable textHighlightHint = new Variable(annotation,
+                "_textHeightHint");
         textHighlightHint.setExpression("5");
         textHighlightHint.setPersistent(false);
 

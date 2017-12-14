@@ -106,8 +106,8 @@ public class RemoteObjectList extends JPanel implements ActionListener {
                     Object value, int index, boolean isSelected,
                     boolean cellHasFocus) {
 
-                JLabel label = (JLabel) super.getListCellRendererComponent(
-                        list, value, index, isSelected, cellHasFocus);
+                JLabel label = (JLabel) super.getListCellRendererComponent(list,
+                        value, index, isSelected, cellHasFocus);
 
                 NamedObj object = (NamedObj) value;
                 List iconList = object.attributeList(EditorIcon.class);
@@ -118,8 +118,9 @@ public class RemoteObjectList extends JPanel implements ActionListener {
 
                         label.setText(object.getFullName());
                     } else {
-                        label.setIcon(((EditorIcon) iconList.get(iconList
-                                .size() - 1)).createIcon());
+                        label.setIcon(
+                                ((EditorIcon) iconList.get(iconList.size() - 1))
+                                        .createIcon());
                         label.setText(object.getFullName());
                     }
                 } catch (NameDuplicationException e) {
@@ -167,8 +168,8 @@ public class RemoteObjectList extends JPanel implements ActionListener {
             public void dragEnter(DropTargetDragEvent dropEvent) {
                 try {
                     // Reject is data flavor is not supported.
-                    if (!dropEvent
-                            .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                    if (!dropEvent.isDataFlavorSupported(
+                            PtolemyTransferable.namedObjFlavor)) {
                         dropEvent.rejectDrag();
                         return;
                     }
@@ -205,12 +206,14 @@ public class RemoteObjectList extends JPanel implements ActionListener {
                 } catch (UnsupportedFlavorException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
+                                    + dropEvent,
+                            e);
                     return;
                 } catch (IOException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
+                                    + dropEvent,
+                            e);
                     return;
                 }
             }
@@ -221,8 +224,8 @@ public class RemoteObjectList extends JPanel implements ActionListener {
             @Override
             public void drop(DropTargetDropEvent dropEvent) {
 
-                if (!dropEvent
-                        .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                if (!dropEvent.isDataFlavorSupported(
+                        PtolemyTransferable.namedObjFlavor)) {
                     dropEvent.rejectDrop();
                     return;
                 }
@@ -231,17 +234,19 @@ public class RemoteObjectList extends JPanel implements ActionListener {
                     List<?> dropObjects = (java.util.List) dropEvent
                             .getTransferable().getTransferData(
                                     PtolemyTransferable.namedObjFlavor);
-                    _mainFrame.addNonVisualNamedObject((NamedObj) dropObjects
-                            .get(0));
+                    _mainFrame.addNonVisualNamedObject(
+                            (NamedObj) dropObjects.get(0));
                 } catch (UnsupportedFlavorException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
+                                    + dropEvent,
+                            e);
                     return;
                 } catch (IOException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
+                                    + dropEvent,
+                            e);
                     return;
                 }
                 dropEvent.acceptDrop(DnDConstants.ACTION_LINK);

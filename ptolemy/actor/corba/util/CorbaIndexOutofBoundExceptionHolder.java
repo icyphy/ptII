@@ -6,8 +6,8 @@ package ptolemy.actor.corba.util;
  * from CorbaActor.idl
  * Thursday, January 18, 2001 7:07:58 PM PST
  */
-public final class CorbaIndexOutofBoundExceptionHolder implements
-org.omg.CORBA.portable.Streamable {
+public final class CorbaIndexOutofBoundExceptionHolder
+        implements org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaIndexOutofBoundException value = null;
 
     public CorbaIndexOutofBoundExceptionHolder() {

@@ -95,7 +95,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  */
 @SuppressWarnings("serial")
 public class ActorGraphFrame extends ExtendedGraphFrame
-/*implements ActionListener*/{
+/*implements ActionListener*/ {
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -380,7 +380,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
         NamedObj ptModel = getModel();
 
-        if (ptModel instanceof CompositeActor && ptModel.getContainer() == null) {
+        if (ptModel instanceof CompositeActor
+                && ptModel.getContainer() == null) {
             CompositeActor ptActorModel = (CompositeActor) ptModel;
             Manager manager = ptActorModel.getManager();
 
@@ -405,8 +406,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         // is only one configuration, or that if there are multiple configurations
         // in this execution, that the first one will determine whether PDF
         // export is provided.
-        Configuration configuration = (Configuration) Configuration
-                .configurations().get(0);
+        Configuration configuration = Configuration.configurations().get(0);
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
         //int i = 0;
         for (JMenuItem item : fileMenuItems) {
@@ -586,8 +586,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     if (model instanceof Actor) {
                         // Dialog to ask for a delay time.
                         Query query = new Query();
-                        query.addLine("delay",
-                                "Time (in ms) to hold highlight",
+                        query.addLine("delay", "Time (in ms) to hold highlight",
                                 Long.toString(_lastDelayTime));
 
                         ComponentDialog dialog = new ComponentDialog(
@@ -596,8 +595,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
                         if (dialog.buttonPressed().equals("OK")) {
                             try {
-                                _lastDelayTime = Long.parseLong(query
-                                        .getStringValue("delay"));
+                                _lastDelayTime = Long.parseLong(
+                                        query.getStringValue("delay"));
                                 _controller.setAnimationDelay(_lastDelayTime);
 
                                 Director director = ((Actor) model)
@@ -616,28 +615,29 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                 if (director != null
                                         && _listeningTo != director) {
                                     if (_listeningTo != null) {
-                                        _listeningTo
-                                        .removeDebugListener(_controller);
+                                        _listeningTo.removeDebugListener(
+                                                _controller);
                                     }
 
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
                                 } else {
                                     MessageHandler
-                                    .error("Cannot find the director. "
-                                            + "Possibly this is because this "
-                                            + "is a class, not an instance.");
+                                            .error("Cannot find the director. "
+                                                    + "Possibly this is because this "
+                                                    + "is a class, not an instance.");
                                 }
 
                             } catch (NumberFormatException ex) {
                                 MessageHandler.error(
                                         "Invalid time, which is required "
-                                                + "to be an integer", ex);
+                                                + "to be an integer",
+                                        ex);
                             }
                         }
                     } else {
-                        MessageHandler
-                        .error("Model is not an actor. Cannot animate.");
+                        MessageHandler.error(
+                                "Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {
@@ -648,8 +648,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 }
             } catch (KernelException ex) {
                 try {
-                    MessageHandler.warning("Failed to create debug listener: "
-                            + ex);
+                    MessageHandler
+                            .warning("Failed to create debug listener: " + ex);
                 } catch (CancelException exception) {
                 }
             }
@@ -729,8 +729,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         + "\"><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></property></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, context,
+                        moml);
                 context.requestChange(request);
             }
         }
@@ -816,8 +816,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         + "><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></entity></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, context,
+                        moml);
                 context.requestChange(request);
             }
         }
@@ -848,9 +848,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          */
         public CreateHierarchyAction() {
             super("Create Hierarchy");
-            putValue("tooltip",
-                    "Create a TypedCompositeActor that contains the"
-                            + " selected actors.");
+            putValue("tooltip", "Create a TypedCompositeActor that contains the"
+                    + " selected actors.");
 
             // putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
             // KeyStroke.getKeyStroke(KeyEvent.VK_H,
@@ -1003,8 +1002,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></port></group>";
 
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, context,
+                        moml);
                 context.requestChange(request);
             }
         }
@@ -1054,8 +1053,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 // We catch exceptions here because this method used to
                 // not throw Exceptions, and we don't want to break
                 // compatibility.
-                MessageHandler.error("Failed to save \"" + entity.getName()
-                        + "\".");
+                MessageHandler
+                        .error("Failed to save \"" + entity.getName() + "\".");
             }
         }
     }

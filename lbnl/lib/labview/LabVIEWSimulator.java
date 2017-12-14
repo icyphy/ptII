@@ -147,10 +147,8 @@ public class LabVIEWSimulator extends Simulator {
             if (dblRea.length == 1) {
                 output.send(0, new DoubleToken(dblRea[0]));
             } else if (dblRea.length != 0) {
-                throw new IllegalActionException(
-                        this,
-                        "Received data from "
-                                + "LabVIEW, the only supported data lenght right now is 1.");
+                throw new IllegalActionException(this, "Received data from "
+                        + "LabVIEW, the only supported data lenght right now is 1.");
             }
         } else { // Either client is down or this is the first time step. Consume token
             input.get(0);

@@ -108,15 +108,14 @@ public class LineReader extends Source {
         fileOrURL = new FilePortParameter(this, "fileOrURL");
         // Parameter to get Vergil to label the fileOrURL port.
         new SingletonParameter(fileOrURL.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip");
         numberOfLinesToSkip.setExpression("0");
         numberOfLinesToSkip.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "</svg>\n");
@@ -191,8 +190,8 @@ public class LineReader extends Source {
                     .intValue();
 
             if (linesToSkip < 0) {
-                throw new IllegalActionException(this, "The number of lines "
-                        + "to skip cannot be negative.");
+                throw new IllegalActionException(this,
+                        "The number of lines " + "to skip cannot be negative.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -324,8 +323,8 @@ public class LineReader extends Source {
         _reader = fileOrURL.openForReading();
 
         if (_reader == null) {
-            throw new IllegalActionException(this, "Failed to read file: "
-                    + fileOrURL.getDisplayName());
+            throw new IllegalActionException(this,
+                    "Failed to read file: " + fileOrURL.getDisplayName());
         }
 
         try {
@@ -341,9 +340,9 @@ public class LineReader extends Source {
                 }
 
                 if (_currentLine == null) {
-                    throw new IllegalActionException(this, "The file '"
-                            + fileOrURL.stringValue() + "' does not "
-                            + "have any data.");
+                    throw new IllegalActionException(this,
+                            "The file '" + fileOrURL.stringValue()
+                                    + "' does not " + "have any data.");
                 }
             }
             _nextLine = _reader.readLine();

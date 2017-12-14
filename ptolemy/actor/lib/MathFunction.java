@@ -124,9 +124,10 @@ public class MathFunction extends TypedAtomicActor {
         firstOperand.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                        + "width=\"60\" height=\"30\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -288,8 +289,8 @@ public class MathFunction extends TypedAtomicActor {
                                 .doubleValue();
                         double input2 = ((DoubleToken) inArray2[i])
                                 .doubleValue();
-                        _resultArray[i] = new DoubleToken(_doFunction(input1,
-                                input2));
+                        _resultArray[i] = new DoubleToken(
+                                _doFunction(input1, input2));
                     }
 
                     output.send(0, _resultArray, count);
@@ -322,8 +323,8 @@ public class MathFunction extends TypedAtomicActor {
 
     /** Create the second port needed by modulo function
      */
-    private void _createSecondPort() throws NameDuplicationException,
-    IllegalActionException {
+    private void _createSecondPort()
+            throws NameDuplicationException, IllegalActionException {
         // Go looking for the port in case somebody else created the port
         // already.  For example, this might
         // happen in shallow code generation.

@@ -54,8 +54,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class SingleTokenDistributor extends Transformer implements
-SequenceActor {
+public class SingleTokenDistributor extends Transformer
+        implements SequenceActor {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.

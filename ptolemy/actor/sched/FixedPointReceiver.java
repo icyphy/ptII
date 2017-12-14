@@ -100,7 +100,8 @@ public class FixedPointReceiver extends AbstractReceiver {
         if (isKnown()) {
             if (hasToken()) {
                 throw new IllegalActionException(getContainer(),
-                        "Cannot change the status from present" + " to absent.");
+                        "Cannot change the status from present"
+                                + " to absent.");
             }
         } else {
             _token = null;
@@ -268,10 +269,8 @@ public class FixedPointReceiver extends AbstractReceiver {
                                 + "to a present status.  Call reset() first.");
             } else {
                 if (!token.isEqualTo(_token).booleanValue()) {
-                    throw new IllegalActionException(
-                            getContainer(),
-                            "Cannot put a token with a different value "
-                                    + token
+                    throw new IllegalActionException(getContainer(),
+                            "Cannot put a token with a different value " + token
                                     + " into a receiver with an already established value "
                                     + _token);
                 }

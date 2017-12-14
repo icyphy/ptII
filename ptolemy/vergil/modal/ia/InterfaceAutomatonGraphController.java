@@ -130,8 +130,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
             try {
                 background = jFileChooserBugFix.saveBackground();
                 JFileChooser fileDialog = new JFileChooser();
-                fileDialog
-                .setDialogTitle("Select an interface automaton to compose with.");
+                fileDialog.setDialogTitle(
+                        "Select an interface automaton to compose with.");
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);
@@ -165,8 +165,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                         // but it seems to not work for relative file references:
                         // new URL("file", null, _directory.getAbsolutePath()
                         Configuration configuration = getConfiguration();
-                        Tableau newAutomatonTableau = configuration.openModel(
-                                url, url, url.toExternalForm());
+                        Tableau newAutomatonTableau = configuration
+                                .openModel(url, url, url.toExternalForm());
 
                         // compose the two interface automata and show result
                         InterfaceAutomaton model1 = (InterfaceAutomaton) getFrame()

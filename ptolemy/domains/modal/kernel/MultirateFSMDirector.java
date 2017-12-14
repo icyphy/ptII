@@ -393,7 +393,7 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             IOPort port, String name, List dependents)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         Variable variable = DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
                 .getAttribute("_MultirateFSMRateDependencyDeclaration",
@@ -530,8 +530,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If can not get a rate variable
      *  from the port that is connected to the given port from inside.
      */
-    protected List _getRefinementRateVariables(IOPort port, String parameterName)
-            throws IllegalActionException {
+    protected List _getRefinementRateVariables(IOPort port,
+            String parameterName) throws IllegalActionException {
         List list = new LinkedList();
 
         Iterator insidePorts = port.deepInsidePortList().iterator();
@@ -578,8 +578,7 @@ public class MultirateFSMDirector extends FSMDirector {
             currentState = controller.currentState();
             currentRefinements = currentState.getRefinement();
             if (currentRefinements == null || currentRefinements.length != 1) {
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "Initial state (after any immediate transitions)"
                                 + " is required to have exactly one refinement: "
                                 + currentState.getName());
@@ -595,12 +594,14 @@ public class MultirateFSMDirector extends FSMDirector {
             // Update the refinement's production and consumption rates.
             refinementDir.invalidateSchedule();
             ((StaticSchedulingDirector) refinementDir).getScheduler()
-            .getSchedule();
+                    .getSchedule();
         }
 
         // Record consumption and production rates in the ports of this actor.
-        boolean inputRateChanged = _updateInputTokenConsumptionRates(currentRefinement);
-        boolean outputRateChanged = _updateOutputTokenProductionRates(currentRefinement);
+        boolean inputRateChanged = _updateInputTokenConsumptionRates(
+                currentRefinement);
+        boolean outputRateChanged = _updateOutputTokenProductionRates(
+                currentRefinement);
         // Tell the upper level scheduler that the current schedule
         // is no longer valid.
         // FIXME: Apparently, this can't work because that
@@ -690,8 +691,8 @@ public class MultirateFSMDirector extends FSMDirector {
                         .getContainer();
 
                 // FIXME: Name match is an expensive check. Depth in hierarchy?
-                if (thisPortContainer.getFullName().equals(
-                        refineInPortContainer.getFullName())) {
+                if (thisPortContainer.getFullName()
+                        .equals(refineInPortContainer.getFullName())) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
                     int previousPortRate = DFUtilities
@@ -757,8 +758,8 @@ public class MultirateFSMDirector extends FSMDirector {
                 ComponentEntity thisPortContainer = (ComponentEntity) outputPortOutside
                         .getContainer();
 
-                if (thisPortContainer.getFullName().equals(
-                        refineOutPortContainer.getFullName())) {
+                if (thisPortContainer.getFullName()
+                        .equals(refineOutPortContainer.getFullName())) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
                     int previousPortRate = DFUtilities

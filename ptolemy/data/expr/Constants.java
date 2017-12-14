@@ -170,8 +170,7 @@ public class Constants {
     /** The treemap containing the named constants.
      *  We use a treemap so that we get sorting in natural order.
      */
-    private static TreeMap<String,ptolemy.data.Token> _types
-            = new TreeMap<String,ptolemy.data.Token>();
+    private static TreeMap<String, ptolemy.data.Token> _types = new TreeMap<String, ptolemy.data.Token>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         static initializer                ////

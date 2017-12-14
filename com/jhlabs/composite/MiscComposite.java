@@ -59,7 +59,8 @@ public final class MiscComposite implements Composite {
     private static final int MIN_RULE = BLEND;
     private static final int MAX_RULE = SILHOUETTE;
 
-    public static String[] RULE_NAMES = { "Normal", "Add", "Subtract", "Difference",
+    public static String[] RULE_NAMES = { "Normal", "Add", "Subtract",
+            "Difference",
 
             "Multiply", "Darken", "Burn", "Color Burn",
 
@@ -81,10 +82,12 @@ public final class MiscComposite implements Composite {
     }
 
     private MiscComposite(int rule, float alpha) {
-        if (alpha < 0.0f || alpha > 1.0f)
+        if (alpha < 0.0f || alpha > 1.0f) {
             throw new IllegalArgumentException("alpha value out of range");
-        if (rule < MIN_RULE || rule > MAX_RULE)
+        }
+        if (rule < MIN_RULE || rule > MAX_RULE) {
             throw new IllegalArgumentException("unknown composite rule");
+        }
         this.rule = rule;
         this.extraAlpha = alpha;
     }
@@ -146,8 +149,10 @@ public final class MiscComposite implements Composite {
     }
 
     @Override
-    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
-        return new MiscCompositeContext(rule, extraAlpha, srcColorModel, dstColorModel);
+    public CompositeContext createContext(ColorModel srcColorModel,
+            ColorModel dstColorModel, RenderingHints hints) {
+        return new MiscCompositeContext(rule, extraAlpha, srcColorModel,
+                dstColorModel);
     }
 
     public float getAlpha() {
@@ -165,14 +170,17 @@ public final class MiscComposite implements Composite {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof MiscComposite))
+        if (!(o instanceof MiscComposite)) {
             return false;
+        }
         MiscComposite c = (MiscComposite) o;
 
-        if (rule != c.rule)
+        if (rule != c.rule) {
             return false;
-        if (extraAlpha != c.extraAlpha)
+        }
+        if (extraAlpha != c.extraAlpha) {
             return false;
+        }
         return true;
     }
 

@@ -71,7 +71,8 @@ public class DocBuilderTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try {
-            DocBuilder docBuilder = new DocBuilder(container, container.uniqueName("myDocBuilder"));
+            DocBuilder docBuilder = new DocBuilder(container,
+                    container.uniqueName("myDocBuilder"));
             DocBuilderGUI frame = new DocBuilderGUI(docBuilder, this);
             setFrame(frame);
             frame.setTableau(this);

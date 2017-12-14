@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating
  */
 public class PtidesTopLevelDirector extends Director
-/* CompositeProcessDirector implements TimedDirector*/{
+/* CompositeProcessDirector implements TimedDirector*/ {
 
     /** Construct the code generator adapter associated with the given
      *  PTIDESDirector.

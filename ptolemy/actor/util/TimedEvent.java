@@ -215,8 +215,8 @@ public class TimedEvent implements Comparable<TimedEvent> {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (long) (((TimedEvent) entry).timeStamp.subtract(
-                    _zeroReference).getLongValue() / _binWidth);
+            long value = (long) (((TimedEvent) entry).timeStamp
+                    .subtract(_zeroReference).getLongValue() / _binWidth);
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
@@ -249,7 +249,8 @@ public class TimedEvent implements Comparable<TimedEvent> {
             double[] diff = new double[entryArray.length - 1];
 
             Time firstEntryTime = ((TimedEvent) entryArray[0]).timeStamp;
-            Time lastEntryTime = ((TimedEvent) entryArray[entryArray.length - 1]).timeStamp;
+            Time lastEntryTime = ((TimedEvent) entryArray[entryArray.length
+                    - 1]).timeStamp;
 
             if (firstEntryTime.isInfinite()
                     && firstEntryTime.equals(lastEntryTime)) {

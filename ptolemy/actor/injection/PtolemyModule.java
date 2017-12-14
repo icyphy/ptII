@@ -101,7 +101,7 @@ public class PtolemyModule {
      * @return the (optional) specific class loader for the implementation classes.
      */
     public ClassLoader getClassLoader() {
-      return _classLoader;
+        return _classLoader;
     }
 
     ///////////////////////////////////////////////////////////////////

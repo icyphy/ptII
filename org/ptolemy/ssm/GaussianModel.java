@@ -37,7 +37,7 @@ public interface GaussianModel {
     /** Get model mean.
      *  @return the model mean.
      */
-    public double[] getMean ();
+    public double[] getMean();
 
     /** Get model covariance.
      *  @return the model covariance.

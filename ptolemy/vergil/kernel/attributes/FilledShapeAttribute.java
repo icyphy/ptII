@@ -133,7 +133,8 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == width || attribute == height) && !_inAttributeChanged) {
+        if ((attribute == width || attribute == height)
+                && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
                 // _other_ attribute here (whichever one did _not_ trigger
@@ -186,8 +187,8 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FilledShapeAttribute newObject = (FilledShapeAttribute) super
-                .clone(workspace);
+        FilledShapeAttribute newObject = (FilledShapeAttribute) super.clone(
+                workspace);
         newObject._inAttributeChanged = false;
 
         newObject._icon.setCentered(newObject._centeredValue);

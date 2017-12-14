@@ -156,8 +156,8 @@ public class ModeTransitionTableModel extends AbstractTableModel {
      *  @exception IllegalActionException  If thrown while saving the model.
      *  @exception NameDuplicationException  If thrown while saving the model.
      */
-    public void saveModel() throws IllegalActionException,
-            NameDuplicationException {
+    public void saveModel()
+            throws IllegalActionException, NameDuplicationException {
         Set<State> states = new HashSet<State>();
 
         for (int i = 0; i < _tableContent.size(); i = i + 3) {
@@ -184,8 +184,8 @@ public class ModeTransitionTableModel extends AbstractTableModel {
 
             Transition transition = null;
             for (Object object : source.outgoingPort.linkedRelationList()) {
-                if (destination.incomingPort.linkedRelationList().contains(
-                        object)) {
+                if (destination.incomingPort.linkedRelationList()
+                        .contains(object)) {
                     transition = (Transition) object;
                 }
             }

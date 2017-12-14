@@ -201,8 +201,8 @@ public class FMUCoSimulation extends FMUDriver {
                     .getFmiFunction("fmiInstantiateSlave");
             fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                     new Object[] { _modelIdentifier, fmiModelDescription.guid,
-                fmuLocation, mimeType, timeout, visible,
-                interactive, callbacks, loggingOn });
+                            fmuLocation, mimeType, timeout, visible,
+                            interactive, callbacks, loggingOn });
 
         } else {
             // FMI 1.5 and greater.
@@ -217,8 +217,8 @@ public class FMUCoSimulation extends FMUDriver {
 
             // We use FMUAllocateMemory so that we can retain a reference
             // to the allocated memory and the memory does not get gc'd.
-            Pointer fmiEnvironment = fmiModelDescription.getFMUAllocateMemory().apply(
-                    new NativeSizeT(1), new NativeSizeT(Pointer.SIZE));
+            Pointer fmiEnvironment = fmiModelDescription.getFMUAllocateMemory()
+                    .apply(new NativeSizeT(1), new NativeSizeT(Pointer.SIZE));
 
             // In FMI-1.5 and FMI-2.0, this is a pointer to the
             // structure, which is by default how a subclass of
@@ -245,9 +245,10 @@ public class FMUCoSimulation extends FMUDriver {
                 fmiType = 0;
             }
             fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
-                    Pointer.class, new Object[] { _modelIdentifier, fmiType,
-                        fmiModelDescription.guid,
-                        fmiModelDescription.fmuResourceLocation,
+                    Pointer.class,
+                    new Object[] { _modelIdentifier, fmiType,
+                            fmiModelDescription.guid,
+                            fmiModelDescription.fmuResourceLocation,
                             callbacks20, toBeVisibleFMI2, loggingOnFMI2 });
         }
 
@@ -266,16 +267,16 @@ public class FMUCoSimulation extends FMUDriver {
         }
 
         if (_fmiVersion < 1.5) {
-            invoke(fmiModelDescription, "fmiInitializeSlave", new Object[] {
-                    fmiComponent, startTime, (byte) 1, endTime },
+            invoke(fmiModelDescription, "fmiInitializeSlave",
+                    new Object[] { fmiComponent, startTime, (byte) 1, endTime },
                     "Could not initialize slave: ");
         } else {
             // _fmiVersion => 2.0
             double relativeTolerance = 1e-4;
             byte _toleranceControlled = (byte) 0; // fmiBoolean
-            invoke(fmiModelDescription, "fmiSetupExperiment", new Object[] {
-                    fmiComponent, _toleranceControlled, relativeTolerance,
-                    startTime, (byte) 1, endTime },
+            invoke(fmiModelDescription, "fmiSetupExperiment",
+                    new Object[] { fmiComponent, _toleranceControlled,
+                            relativeTolerance, startTime, (byte) 1, endTime },
                     "Failed to setup the experiment of the FMU: ");
             invoke(fmiModelDescription, "fmiEnterInitializationMode",
                     new Object[] { fmiComponent },
@@ -293,8 +294,8 @@ public class FMUCoSimulation extends FMUDriver {
             //file = new PrintStream(outputFile);
 
             // Fix for FindBugs: Dm: Reliance on default encoding.
-            file = new PrintStream(outputFileName, Charset.defaultCharset()
-                    .toString());
+            file = new PrintStream(outputFileName,
+                    Charset.defaultCharset().toString());
             if (enableLogging) {
                 System.out.println("FMUCoSimulation: about to write header");
             }
@@ -310,14 +311,15 @@ public class FMUCoSimulation extends FMUDriver {
             Function doStep = fmiModelDescription.getFmiFunction("fmiDoStep");
             while (time < endTime) {
                 if (enableLogging) {
-                    System.out.println("FMUCoSimulation: about to call "
-                            + _modelIdentifier
-                            + "_fmiDoStep(Component, /* time */ " + time
-                            + ", /* stepSize */" + stepSize + ", 1)");
+                    System.out.println(
+                            "FMUCoSimulation: about to call " + _modelIdentifier
+                                    + "_fmiDoStep(Component, /* time */ " + time
+                                    + ", /* stepSize */" + stepSize + ", 1)");
                 }
-                invoke(doStep, new Object[] { fmiComponent, time, stepSize,
-                        (byte) 1 }, "doStep(): Could not simulate, time was "
-                                + time + ": ");
+                invoke(doStep,
+                        new Object[] { fmiComponent, time, stepSize, (byte) 1 },
+                        "doStep(): Could not simulate, time was " + time
+                                + ": ");
                 time += stepSize;
                 // Generate a line for this step
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
@@ -353,8 +355,8 @@ public class FMUCoSimulation extends FMUDriver {
         }
 
         if (enableLogging) {
-            System.out.println("Results are in "
-                    + outputFile.getCanonicalPath());
+            System.out
+                    .println("Results are in " + outputFile.getCanonicalPath());
             System.out.flush();
         }
     }

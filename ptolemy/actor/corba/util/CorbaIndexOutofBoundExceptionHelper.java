@@ -39,16 +39,14 @@ abstract public class CorbaIndexOutofBoundExceptionHelper {
 
                     org.omg.CORBA.StructMember[] _members0 = new org.omg.CORBA.StructMember[1];
                     org.omg.CORBA.TypeCode _tcOf_members0 = null;
-                    _tcOf_members0 = org.omg.CORBA.ORB.init().get_primitive_tc(
-                            org.omg.CORBA.TCKind.tk_short);
+                    _tcOf_members0 = org.omg.CORBA.ORB.init()
+                            .get_primitive_tc(org.omg.CORBA.TCKind.tk_short);
                     _members0[0] = new org.omg.CORBA.StructMember("index",
                             _tcOf_members0, null);
-                    __typeCode = org.omg.CORBA.ORB
-                            .init()
-                            .create_struct_tc(
-                                    ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
+                    __typeCode = org.omg.CORBA.ORB.init().create_struct_tc(
+                            ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
                                     .id(),
-                                    "CorbaIndexOutofBoundException", _members0);
+                            "CorbaIndexOutofBoundException", _members0);
                     __active = false;
                 }
             }

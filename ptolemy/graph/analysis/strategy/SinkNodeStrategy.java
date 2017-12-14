@@ -51,8 +51,8 @@ import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
  @author Ming Yung Ko, Shahrooz Shahparnia
  @version $Id$
  */
-public class SinkNodeStrategy extends CachedStrategy implements
-SinkNodeAnalyzer {
+public class SinkNodeStrategy extends CachedStrategy
+        implements SinkNodeAnalyzer {
     /** Construct a sink node analysis for a given graph.
      *  @param graph The given graph.
      */

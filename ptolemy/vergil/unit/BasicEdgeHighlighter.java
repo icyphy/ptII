@@ -122,9 +122,8 @@ public class BasicEdgeHighlighter extends FigureDecorator {
         double w = bounds.getWidth() + 2 * _halo;
         double h = bounds.getHeight() + 2 * _halo;
 
-        getParent().repaint(
-                DamageRegion.createDamageRegion(getTransformContext(), x, y, w,
-                        h));
+        getParent().repaint(DamageRegion
+                .createDamageRegion(getTransformContext(), x, y, w, h));
     }
 
     ///////////////////////////////////////////////////////////////////

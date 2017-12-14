@@ -83,7 +83,8 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
             // This should not be thrown because the context menu
             // (BreakpointDialogFactory) would not have allowed the
             // breakpoint option for non-Actor objects.
-            throw new InternalErrorException("Object selected is not an actor.");
+            throw new InternalErrorException(
+                    "Object selected is not an actor.");
         }
 
         // Save the GraphController associated with _actor.
@@ -107,9 +108,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
                     _sdfDirectorClass = Class
                             .forName("ptolemy.domains.sdf.kernel.SDFDirector");
                 } catch (Throwable throwable) {
-                    throw new InternalErrorException(
-                            object,
-                            throwable,
+                    throw new InternalErrorException(object, throwable,
                             "The breakpoint facility only works with "
                                     + "that are instances of SDFDirector.  The "
                                     + "SDFDirector was not found.");
@@ -117,9 +116,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
             }
 
             if (!_sdfDirectorClass.isInstance(director)) {
-                throw new InternalErrorException(
-                        director,
-                        null,
+                throw new InternalErrorException(director, null,
                         "The breakpoint facility only works with directors "
                                 + "that are instances of SDFDirector.  The director "
                                 + "of this model is a '" + director + "'.");
@@ -190,8 +187,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
             } else {
                 // If the director does not already have a
                 // DebugController, create one.
-                String moml = "<property name=\""
-                        + _DEBUGCONTROLLER
+                String moml = "<property name=\"" + _DEBUGCONTROLLER
                         + "\" class=\"ptolemy.vergil.debugger.DebugController\"/>";
                 ChangeRequest request = new MoMLChangeRequest(this, // originator
                         director, // context
@@ -260,26 +256,26 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
      */
     protected static String[] _firingEventTypeLabels = {
 
-        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
-        //"before prefire",
-        //"after prefire",
-        //"before fire",
-        //"after fire",
-        //"before postfire",
-        //"after postfire",
-        "before iterate", "after iterate" };
+            // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+            //"before prefire",
+            //"after prefire",
+            //"before fire",
+            //"after fire",
+            //"before postfire",
+            //"after postfire",
+            "before iterate", "after iterate" };
 
     /** FiringEventTypes that the user can set breakpoints on. */
     protected static FiringEventType[] _firingEventTypes = {
 
-        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
-        //FiringEvent.BEFORE_PREFIRE,
-        //FiringEvent.AFTER_PREFIRE,
-        //FiringEvent.BEFORE_FIRE,
-        //FiringEvent.AFTER_FIRE,
-        //FiringEvent.BEFORE_POSTFIRE,
-        //FiringEvent.AFTER_POSTFIRE,
-        FiringEvent.BEFORE_ITERATE, FiringEvent.AFTER_ITERATE };
+            // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+            //FiringEvent.BEFORE_PREFIRE,
+            //FiringEvent.AFTER_PREFIRE,
+            //FiringEvent.BEFORE_FIRE,
+            //FiringEvent.AFTER_FIRE,
+            //FiringEvent.BEFORE_POSTFIRE,
+            //FiringEvent.AFTER_POSTFIRE,
+            FiringEvent.BEFORE_ITERATE, FiringEvent.AFTER_ITERATE };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

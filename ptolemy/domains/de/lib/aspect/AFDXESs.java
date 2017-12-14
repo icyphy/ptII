@@ -115,9 +115,10 @@ public class AFDXESs extends AtomicCommunicationAspect {
         _afdxSchedMuxsQueue = new HashMap<String, LinkedList<TimedEvent>>();
 
         // icon description
-        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                        + "width=\"60\" height=\"20\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -206,37 +207,39 @@ public class AFDXESs extends AtomicCommunicationAspect {
                     AFDXVlink vl = _virtualLinkTable.get(entry.getKey());
 
                     // lastTimeStamp and multicast (factorization)
-                    if (_afdxSchedMuxsQueue.get(vl.getSchedulerMux()).size() > 0) {
-                        Object[] last = (Object[]) _afdxSchedMuxsQueue.get(
-                                vl.getSchedulerMux()).getLast().contents;
+                    if (_afdxSchedMuxsQueue.get(vl.getSchedulerMux())
+                            .size() > 0) {
+                        Object[] last = (Object[]) _afdxSchedMuxsQueue
+                                .get(vl.getSchedulerMux()).getLast().contents;
                         Object[] output = (Object[]) e.contents;
 
-                        if (((AFDXVlink) output[2]).getSource().equals(
-                                ((AFDXVlink) last[2]).getSource())
+                        if (((AFDXVlink) output[2]).getSource()
+                                .equals(((AFDXVlink) last[2]).getSource())
                                 && ((Time) output[3]).compareTo(last[3]) == 0) {
                             multicast = true;
                         }
 
-                        lastTimeStamp = _afdxSchedMuxsQueue.get(
-                                vl.getSchedulerMux()).getLast().timeStamp;
+                        lastTimeStamp = _afdxSchedMuxsQueue
+                                .get(vl.getSchedulerMux()).getLast().timeStamp;
                     }
 
                     if (multicast) {
                         computedTimeStamp = lastTimeStamp;
                         multicast = false;
                     } else {
-                        computedTimeStamp = lastTimeStamp.add(vl.getFrameSize()
-                                / (_bitRate * 1000000));
+                        computedTimeStamp = lastTimeStamp
+                                .add(vl.getFrameSize() / (_bitRate * 1000000));
                     }
-                    _afdxSchedMuxsQueue.get(vl.getSchedulerMux()).add(
-                            new TimedEvent(computedTimeStamp, e.contents));
+                    _afdxSchedMuxsQueue.get(vl.getSchedulerMux())
+                            .add(new TimedEvent(computedTimeStamp, e.contents));
 
                     entry.getValue().remove(e);
                 }
             }
         }
 
-        if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
+        if (_nextFireTime != null
+                && currentTime.compareTo(_nextFireTime) == 0) {
 
             // Delivers (if required) the intended token to the intended receiver
             for (Entry<String, LinkedList<TimedEvent>> entry : _afdxSchedMuxsQueue
@@ -257,9 +260,10 @@ public class AFDXESs extends AtomicCommunicationAspect {
                             Token[] values = new Token[] {
                                     new DoubleToken(
                                             e.timeStamp.getDoubleValue()),
-                                            new ObjectToken(output[2]),
-                                            (Token) output[1] };
-                            RecordToken record = new RecordToken(labels, values);
+                                    new ObjectToken(output[2]),
+                                    (Token) output[1] };
+                            RecordToken record = new RecordToken(labels,
+                                    values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else {
                             // case: the receiver is an actor
@@ -420,8 +424,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
         vl.setSource(emitterSource);
 
         if (!_lastEmissionTable.containsKey(vl.getName())) {
-            _lastEmissionTable.put(vl.getName(), new Time(getDirector(),
-                    currentTime.getDoubleValue()));
+            _lastEmissionTable.put(vl.getName(),
+                    new Time(getDirector(), currentTime.getDoubleValue()));
         }
 
         if (!_virtualLinkTable.containsKey(vl.getName())) {
@@ -439,12 +443,13 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
         // last emission timestamp and multicast (factorization)
         if (_afdxVLinksQueue.get(vl.getName()).size() > 0) {
-            lastTimeStamp = _afdxVLinksQueue.get(vl.getName()).getLast().timeStamp;
+            lastTimeStamp = _afdxVLinksQueue.get(vl.getName())
+                    .getLast().timeStamp;
 
             Object[] output = (Object[]) _afdxVLinksQueue.get(vl.getName())
                     .getLast().contents;
-            if (((AFDXVlink) output[2]).getSource().equals(
-                    ((IntermediateReceiver) source).source)
+            if (((AFDXVlink) output[2]).getSource()
+                    .equals(((IntermediateReceiver) source).source)
                     && ((Time) output[3]).compareTo(currentTime) == 0) {
                 multicast = true;
             }
@@ -454,29 +459,31 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
         if (multicast) {
             _lastEmissionTable.put(vl.getName(), lastTimeStamp);
-            _afdxVLinksQueue.get(vl.getName()).add(
-                    new TimedEvent(lastTimeStamp, new Object[] { receiver,
-                            token, vl, currentTime }));
+            _afdxVLinksQueue.get(vl.getName()).add(new TimedEvent(lastTimeStamp,
+                    new Object[] { receiver, token, vl, currentTime }));
             multicast = false;
         } else {
             // Compute the delay according to the AFDX bag emission policy
             if (lastTimeStamp.compareTo(currentTime) == 0
                     && _afdxVLinksQueue.get(vl.getName()).size() < 1) {
                 _delay = 0.0;
-            } else if (lastTimeStamp.add(vl.getBag()).compareTo(currentTime) < 0) {
+            } else if (lastTimeStamp.add(vl.getBag())
+                    .compareTo(currentTime) < 0) {
                 _delay = 0.0;
-            } else if (lastTimeStamp.add(vl.getBag()).compareTo(currentTime) == 0) {
+            } else if (lastTimeStamp.add(vl.getBag())
+                    .compareTo(currentTime) == 0) {
                 _delay = 0.0;
-            } else if (lastTimeStamp.add(vl.getBag()).compareTo(currentTime) > 0) {
+            } else if (lastTimeStamp.add(vl.getBag())
+                    .compareTo(currentTime) > 0) {
                 _delay = lastTimeStamp.add(vl.getBag()).subtract(currentTime)
                         .getDoubleValue();
             }
 
             _lastEmissionTable.put(vl.getName(), currentTime.add(_delay));
 
-            _afdxVLinksQueue.get(vl.getName()).add(
-                    new TimedEvent(currentTime.add(_delay), new Object[] {
-                        receiver, token, vl, currentTime }));
+            _afdxVLinksQueue.get(vl.getName())
+                    .add(new TimedEvent(currentTime.add(_delay),
+                            new Object[] { receiver, token, vl, currentTime }));
         }
 
         _tokenCount++;
@@ -647,7 +654,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
      *  AFDXESs. XXX
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
-    public static class AFDXESsAttributes extends CommunicationAspectAttributes {
+    public static class AFDXESsAttributes
+            extends CommunicationAspectAttributes {
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.
          *  @param decorator The decorator.
@@ -766,7 +774,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
                         "schedulerMultiplexorName");
                 schedulerMultiplexorName.setTypeEquals(BaseType.STRING);
                 schedulerMultiplexorName
-                .setExpression("\"Scheduler multiplexor name\"");
+                        .setExpression("\"Scheduler multiplexor name\"");
 
                 //portIn = new Parameter(this, "portIn", new IntToken(0));
                 //portOut = new Parameter(this, "portOut", new IntToken(1));

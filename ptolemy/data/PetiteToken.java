@@ -99,8 +99,8 @@ public class PetiteToken extends ScalarToken {
                 // Need to get the value of the DoubleToken and _adjust it
                 return new PetiteToken(((DoubleToken) token).doubleValue());
             } else {
-                throw new IllegalActionException(notSupportedConversionMessage(
-                        token, "petite"));
+                throw new IllegalActionException(
+                        notSupportedConversionMessage(token, "petite"));
             }
         }
     }
@@ -260,8 +260,8 @@ public class PetiteToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseAnd", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -270,8 +270,8 @@ public class PetiteToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                this, this));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseNot", this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -283,8 +283,8 @@ public class PetiteToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseOr", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -296,8 +296,8 @@ public class PetiteToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseXor", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -329,7 +329,8 @@ public class PetiteToken extends ScalarToken {
      *   to that of the argument.
      */
     @Override
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.DoubleMatrixMath.within(); if this
         // implementation changes, also change the corresponding
@@ -359,8 +360,8 @@ public class PetiteToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         PetiteToken convertedArgument = (PetiteToken) rightArgument;
-        return BooleanToken.getInstance(_value < convertedArgument
-                .doubleValue());
+        return BooleanToken
+                .getInstance(_value < convertedArgument.doubleValue());
     }
 
     /** Return a new token whose value is the value of this token

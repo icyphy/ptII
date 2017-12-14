@@ -267,7 +267,7 @@ public class MatchResultViewer extends GTFrame {
                 try {
                     new MatchResultTableau.Factory(entity,
                             entity.uniqueName("_tableauFactory"))
-                    .setPersistent(false);
+                                    .setPersistent(false);
                 } catch (KernelException e) {
                     throw new KernelRuntimeException(e, "Unexpected exception");
                 }
@@ -338,8 +338,8 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    protected class MatchResultActorGraphController extends
-    ActorEditorGraphController {
+    protected class MatchResultActorGraphController
+            extends ActorEditorGraphController {
 
         @Override
         protected void _createControllers() {
@@ -353,8 +353,8 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    protected class MatchResultExternalPortController extends
-    ExternalIOPortController {
+    protected class MatchResultExternalPortController
+            extends ExternalIOPortController {
 
         MatchResultExternalPortController(GraphController controller) {
             super(controller);
@@ -390,8 +390,8 @@ public class MatchResultViewer extends GTFrame {
         @Override
         public Figure drawNode(Object node) {
             Figure figure = super.drawNode(node);
-            ((MatchResultStateController) _stateController)._highlightNode(
-                    node, figure);
+            ((MatchResultStateController) _stateController)._highlightNode(node,
+                    figure);
             return figure;
         }
 
@@ -487,8 +487,8 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    protected class MatchResultTransitionController extends
-    TransitionController {
+    protected class MatchResultTransitionController
+            extends TransitionController {
 
         public MatchResultTransitionController(GraphController controller) {
             super(controller);
@@ -557,19 +557,19 @@ public class MatchResultViewer extends GTFrame {
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         UndoStackAttribute prevStack = UndoStackAttribute.getUndoInfo(from);
-        UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone(to
-                .workspace());
+        UndoStackAttribute stack = (UndoStackAttribute) prevStack
+                .clone(to.workspace());
         stack.setContainer(to);
     }
 
     private void _enableOrDisableActions() {
         if (_previousItem != null && _results != null) {
-            _previousItem.setEnabled(!_results.isEmpty()
-                    && _currentPosition > 0);
+            _previousItem
+                    .setEnabled(!_results.isEmpty() && _currentPosition > 0);
         }
         if (_previousButton != null && _results != null) {
-            _previousButton.setEnabled(!_results.isEmpty()
-                    && _currentPosition > 0);
+            _previousButton
+                    .setEnabled(!_results.isEmpty() && _currentPosition > 0);
         }
         if (_nextItem != null && _results != null) {
             _nextItem.setEnabled(_currentPosition < _results.size() - 1);
@@ -590,21 +590,20 @@ public class MatchResultViewer extends GTFrame {
             _nextFileButton.setEnabled(_isNextFileEnabled);
         }
         if (_transformItem != null && _results != null) {
-            _transformItem.setEnabled(_currentPosition < _results.size()
-                    && _rule != null);
+            _transformItem.setEnabled(
+                    _currentPosition < _results.size() && _rule != null);
         }
         if (_transformButton != null && _results != null) {
-            _transformButton.setEnabled(_currentPosition < _results.size()
-                    && _rule != null);
+            _transformButton.setEnabled(
+                    _currentPosition < _results.size() && _rule != null);
         }
         if (_transformUntilFixpointItem != null && _results != null) {
-            _transformUntilFixpointItem.setEnabled(_currentPosition < _results
-                    .size() && _rule != null);
+            _transformUntilFixpointItem.setEnabled(
+                    _currentPosition < _results.size() && _rule != null);
         }
         if (_transformUntilFixpointButton != null && _results != null) {
-            _transformUntilFixpointButton
-            .setEnabled(_currentPosition < _results.size()
-                    && _rule != null);
+            _transformUntilFixpointButton.setEnabled(
+                    _currentPosition < _results.size() && _rule != null);
         }
     }
 
@@ -725,8 +724,8 @@ public class MatchResultViewer extends GTFrame {
             for (MatchResultViewer subviewer : _subviewers) {
                 subviewer._statusBar.setMessage(text.toString());
                 if (_results != null) {
-                    subviewer._statusBar.progressBar().setValue(
-                            _currentPosition + 1);
+                    subviewer._statusBar.progressBar()
+                            .setValue(_currentPosition + 1);
                     subviewer._statusBar.progressBar().setMaximum(max);
                 }
             }
@@ -744,15 +743,17 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    private void _renderNamedObj(CompositeFigure figure, Object semanticObject) {
+    private void _renderNamedObj(CompositeFigure figure,
+            Object semanticObject) {
         if (semanticObject instanceof NamedObj && figure != null) {
             Color color = _getHighlightColor((NamedObj) semanticObject);
             if (color != null) {
                 Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
                 float padding = _HIGHLIGHT_PADDING;
                 BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
-                        bounds.getY() - padding, bounds.getWidth() + padding
-                        * 2.0, bounds.getHeight() + padding * 2.0,
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0,
                         _HIGHLIGHT_THICKNESS);
                 bf.setStrokePaint(color);
 
@@ -768,7 +769,8 @@ public class MatchResultViewer extends GTFrame {
     private void _renderState(CompositeFigure figure, Object semanticObject) {
         if (semanticObject instanceof NamedObj && figure != null
                 && _results != null && _currentPosition < _results.size()
-                && _results.get(_currentPosition).containsValue(semanticObject)) {
+                && _results.get(_currentPosition)
+                        .containsValue(semanticObject)) {
             Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
             float padding = _HIGHLIGHT_PADDING;
             RoundedRectangle rf = new RoundedRectangle(bounds.getX() - padding,
@@ -797,8 +799,8 @@ public class MatchResultViewer extends GTFrame {
         try {
             CompositeEntity currentModel = (CompositeEntity) getModel();
             Workspace workspace = currentModel.workspace();
-            CompositeEntity model = (CompositeEntity) GTTools.cleanupModel(
-                    currentModel, workspace);
+            CompositeEntity model = (CompositeEntity) GTTools
+                    .cleanupModel(currentModel, workspace);
             workspace.remove(currentModel);
             Tableau tableau = getFrameController().getConfiguration()
                     .openModel(model);
@@ -813,8 +815,8 @@ public class MatchResultViewer extends GTFrame {
                 ((TableauFrame) tableau.getFrame()).setModified(true);
             }
         } catch (Exception e) {
-            MessageHandler.error("Cannot open default tableau for the "
-                    + "model.", e);
+            MessageHandler.error(
+                    "Cannot open default tableau for the " + "model.", e);
         }
     }
 
@@ -941,21 +943,22 @@ public class MatchResultViewer extends GTFrame {
         public CloseAction() {
             super("Close Transformation Window");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/close.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/close_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/gt/img/close.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/gt/img/close_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/gt/img/close_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/close_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/gt/img/close_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Close the current view and open the model in "
                     + "model editor");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_K, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_K,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -975,20 +978,21 @@ public class MatchResultViewer extends GTFrame {
         public NextAction() {
             super("Next");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/next.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/next_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/gt/img/next.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/gt/img/next_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/gt/img/next_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/next_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/gt/img/next_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Highlight next match (Ctrl+->)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_RIGHT,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1008,20 +1012,21 @@ public class MatchResultViewer extends GTFrame {
         public NextFileAction() {
             super("Next File");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/nextfile.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/nextfile_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/gt/img/nextfile.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/gt/img/nextfile_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/gt/img/nextfile_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/nextfile_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/gt/img/nextfile_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match next file (Ctrl+.)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_PERIOD, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_PERIOD,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1041,20 +1046,21 @@ public class MatchResultViewer extends GTFrame {
         public PreviousAction() {
             super("Previous");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/previous.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/previous_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/gt/img/previous.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/gt/img/previous_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/gt/img/previous_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/previous_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/gt/img/previous_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Highlight previous match (Ctrl+<-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_LEFT,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1075,20 +1081,21 @@ public class MatchResultViewer extends GTFrame {
         public PreviousFileAction() {
             super("Previous File");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/previousfile.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/previousfile_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/gt/img/previousfile.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/gt/img/previousfile_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/gt/img/previousfile_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/previousfile_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/gt/img/previousfile_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match previous file (Ctrl+,)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_COMMA, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_COMMA,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1108,21 +1115,22 @@ public class MatchResultViewer extends GTFrame {
         public TransformAction() {
             super("Transform");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/transform.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/transform_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/gt/img/transform.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/gt/img/transform_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/gt/img/transform_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/transform_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/gt/img/transform_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Transform the current highlighted occurrence "
                     + "(Ctrl+/)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_SLASH, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_SLASH,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1143,21 +1151,22 @@ public class MatchResultViewer extends GTFrame {
         public TransformUntilFixpointAction() {
             super("Transform Until Fixpoint");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/transformfixpoint.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/gt/img/transformfixpoint_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/gt/img/transformfixpoint.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/gt/img/transformfixpoint_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/gt/img/transformfixpoint_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/gt/img/transformfixpoint_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/gt/img/transformfixpoint_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Transform a random occurrence of the pattern "
                     + "until no more matches can be found (Ctrl+\\)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_BACK_SLASH, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_BACK_SLASH,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -1182,8 +1191,8 @@ public class MatchResultViewer extends GTFrame {
                     .cleanupModel(currentModel);
             _delegateUndoStack(currentModel, oldModel);
             ModelChangeRequest request = new ModelChangeRequest(viewer, viewer,
-                    _model, new UndoChangeModelAction(oldModel,
-                            _currentPosition));
+                    _model,
+                    new UndoChangeModelAction(oldModel, _currentPosition));
             request.setUndoable(true);
             request.execute();
 

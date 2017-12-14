@@ -89,8 +89,8 @@ public class PlotMLApplet extends PlotApplet {
         byte[] peek = new byte[8];
         int bytesRead = bin.read(peek);
         if (bytesRead != peek.length) {
-            throw new IOException("Read only " + bytesRead
-                    + "bytes, expecting " + peek.length);
+            throw new IOException("Read only " + bytesRead + "bytes, expecting "
+                    + peek.length);
         }
         bin.reset();
 

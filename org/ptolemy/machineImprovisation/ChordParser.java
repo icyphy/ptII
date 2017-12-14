@@ -124,6 +124,7 @@ public class ChordParser extends TypedAtomicActor {
      */
     public TypedIOPort chords;
 
+    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -148,8 +149,8 @@ public class ChordParser extends TypedAtomicActor {
         if (endChord.hasToken(0)) {
             _terminateChord = true;
             _chordLength = ((IntToken) endChord.get(0)).intValue();
-            _orderedChords.put(_chordLength + 1, new Chord(
-                    MusicSpecs.TERMINATION_CHORD, 0.0));
+            _orderedChords.put(_chordLength + 1,
+                    new Chord(MusicSpecs.TERMINATION_CHORD, 0.0));
         }
 
         if (_chordNames.size() == _durations.size()
@@ -160,8 +161,8 @@ public class ChordParser extends TypedAtomicActor {
                 int index = _timestamps.get(i);
                 if (index < _durations.size() && index < _chordNames.size()) {
                     double duration = _durations.get(index);
-                    _orderedChords.put(index, new Chord(_chordNames.get(index),
-                            duration));
+                    _orderedChords.put(index,
+                            new Chord(_chordNames.get(index), duration));
                     _timestamps.remove(i);
                 }
             }
@@ -173,7 +174,8 @@ public class ChordParser extends TypedAtomicActor {
             Collections.sort(keysSoFar);
             Iterator iter = keysSoFar.iterator();
             while (iter.hasNext()) {
-                chords.send(0, new ObjectToken(_orderedChords.get(iter.next())));
+                chords.send(0,
+                        new ObjectToken(_orderedChords.get(iter.next())));
             }
             _orderedChords.clear();
             _chordNames.clear();

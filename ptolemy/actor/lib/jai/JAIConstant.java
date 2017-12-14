@@ -78,8 +78,8 @@ public class JAIConstant extends Source {
 
         IntToken[] defaultValues = { IntToken.ZERO };
 
-        bandValues = new Parameter(this, "bandValues", new ArrayToken(
-                BaseType.INT, defaultValues));
+        bandValues = new Parameter(this, "bandValues",
+                new ArrayToken(BaseType.INT, defaultValues));
         _values = ((ArrayToken) bandValues.getToken()).arrayValue();
 
         dataFormat = new StringAttribute(this, "dataFormat");
@@ -171,8 +171,8 @@ public class JAIConstant extends Source {
             Byte[] byteValues = new Byte[_values.length];
 
             for (int i = 0; i < _values.length; i++) {
-                byteValues[i] = Byte.valueOf((byte) ((ScalarToken) _values[i])
-                        .intValue());
+                byteValues[i] = Byte
+                        .valueOf((byte) ((ScalarToken) _values[i]).intValue());
             }
 
             parameters.add(byteValues);
@@ -180,8 +180,8 @@ public class JAIConstant extends Source {
             Double[] doubleValues = new Double[_values.length];
 
             for (int i = 0; i < _values.length; i++) {
-                doubleValues[i] = Double.valueOf(((ScalarToken) _values[i])
-                        .doubleValue());
+                doubleValues[i] = Double
+                        .valueOf(((ScalarToken) _values[i]).doubleValue());
             }
 
             parameters.add(doubleValues);
@@ -189,9 +189,8 @@ public class JAIConstant extends Source {
             Float[] floatValues = new Float[_values.length];
 
             for (int i = 0; i < _values.length; i++) {
-                floatValues[i] = Float
-                        .valueOf((float) ((ScalarToken) _values[i])
-                                .doubleValue());
+                floatValues[i] = Float.valueOf(
+                        (float) ((ScalarToken) _values[i]).doubleValue());
             }
 
             parameters.add(floatValues);
@@ -199,8 +198,8 @@ public class JAIConstant extends Source {
             Integer[] intValues = new Integer[_values.length];
 
             for (int i = 0; i < _values.length; i++) {
-                intValues[i] = Integer.valueOf(((ScalarToken) _values[i])
-                        .intValue());
+                intValues[i] = Integer
+                        .valueOf(((ScalarToken) _values[i]).intValue());
             }
 
             parameters.add(intValues);

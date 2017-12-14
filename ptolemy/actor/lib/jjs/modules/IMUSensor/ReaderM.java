@@ -115,7 +115,8 @@ public class ReaderM extends Thread {
                         int magy = UCharToInt(packet[14], packet[15]);
                         int magz = UCharToInt(packet[16], packet[17]);
 
-                        int[] raw = { ax, ay, az, gx, gy, gz, magx, magy, magz };
+                        int[] raw = { ax, ay, az, gx, gy, gz, magx, magy,
+                                magz };
                         preProcess(raw);
                     }
 
@@ -229,6 +230,5 @@ public class ReaderM extends Thread {
 
     /** Holds six integer arrays of sample values - [accX, accY, accZ, gyroX, gyroY, gyroZ]. */
     private CircularFifoQueue<int[]> _buffer;
-
 
 }

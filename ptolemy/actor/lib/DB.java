@@ -79,8 +79,8 @@ public class DB extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        inputIsPower = new Parameter(this, "inputIsPower", new BooleanToken(
-                false));
+        inputIsPower = new Parameter(this, "inputIsPower",
+                new BooleanToken(false));
         inputIsPower.setTypeEquals(BaseType.BOOLEAN);
         min = new Parameter(this, "min", new DoubleToken(-100.0));
         min.setTypeEquals(BaseType.DOUBLE);

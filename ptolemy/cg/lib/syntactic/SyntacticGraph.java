@@ -172,8 +172,8 @@ public class SyntacticGraph extends CompositeEntity {
      * @exception IllegalActionException If thrown while adding a node, making Bijective, removing feedback, setting the structure, inserting permutations or laying out the graph
      * @exception NameDuplicationException If thrown while adding a node, making Bijective, removing feedback, setting the structure, inserting permutations or laying out the graph
      */
-    public boolean build(CompositeEntity model) throws IllegalActionException,
-            NameDuplicationException {
+    public boolean build(CompositeEntity model)
+            throws IllegalActionException, NameDuplicationException {
         _representedModel = model;
 
         List<ComponentEntity> ents = model.entityList();
@@ -192,7 +192,7 @@ public class SyntacticGraph extends CompositeEntity {
                     Integer rwidth = SyntacticPort.portWidth(rport);
                     System.out.print("      -> " + rport.getName() + "(" + rtype + ": " + rwidth + ")\n");
                 }
-
+            
             }
              */
         }
@@ -213,8 +213,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  @exception IllegalActionException If thrown while creating a new SyntacticNode or adding an entity.
      *  @exception NameDuplicationException If thrown while creating a new SyntacticNode or adding an entity.
      */
-    public void addNode2(Entity entity) throws IllegalActionException,
-            NameDuplicationException {
+    public void addNode2(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
         int repcount = _representors.size();
         SyntacticNode node = new SyntacticNode(this, "rep_" + repcount);
         node.representEntity(entity);
@@ -228,8 +228,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  @exception IllegalActionException If thrown while creating a new SyntacticNode or adding an entity.
      *  @exception NameDuplicationException If thrown while creating a new SyntacticNode or adding an entity.
      */
-    public void addNode(Entity entity) throws IllegalActionException,
-    NameDuplicationException {
+    public void addNode(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
 
         int repcount = _representors.size();
         SyntacticNode node = new SyntacticNode(this, "rep_" + repcount);
@@ -248,8 +248,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  after certain transformations are done to the graph.
      *  @exception NameDuplicationException if duplicate names are used.
      */
-    public void addNode(SyntacticNode node) throws IllegalActionException,
-    NameDuplicationException {
+    public void addNode(SyntacticNode node)
+            throws IllegalActionException, NameDuplicationException {
 
         // Disallow adding nodes after certain transformations are done.
         if (!_canAdd) {
@@ -261,8 +261,8 @@ public class SyntacticGraph extends CompositeEntity {
         for (SyntacticPort port : inputs) {
             // Terminate empty ports syntactically
             if (port.isEmpty()) {
-                SyntacticNode interm = new SyntacticNode(this, "term_"
-                        + _pureCount);
+                SyntacticNode interm = new SyntacticNode(this,
+                        "term_" + _pureCount);
                 ++_pureCount;
                 interm.setCap(false);
 
@@ -291,13 +291,13 @@ public class SyntacticGraph extends CompositeEntity {
                     Entity centity = (Entity) centity_ob;
                     if (centity instanceof CompositeEntity
                             && centity == _representedModel) {
-                        if (!(cport instanceof IOPort && ((IOPort) cport)
-                                .isInput())) {
+                        if (!(cport instanceof IOPort
+                                && ((IOPort) cport).isInput())) {
                             continue;
                         }
 
-                        SyntacticNode exin = new SyntacticNode(this, "exin_"
-                                + _pureCount);
+                        SyntacticNode exin = new SyntacticNode(this,
+                                "exin_" + _pureCount);
                         ++_pureCount;
                         exin.representExteriorPort(cport);
                         _addExteriorNode(exin);
@@ -342,8 +342,8 @@ public class SyntacticGraph extends CompositeEntity {
 
             // Terminate empty ports syntactically
             if (port.isEmpty()) {
-                SyntacticNode outterm = new SyntacticNode(this, "init_"
-                        + _pureCount);
+                SyntacticNode outterm = new SyntacticNode(this,
+                        "init_" + _pureCount);
                 ++_pureCount;
                 outterm.setCap(true);
 
@@ -372,13 +372,13 @@ public class SyntacticGraph extends CompositeEntity {
                     Entity centity = (Entity) centity_ob;
                     if (centity instanceof CompositeEntity
                             && centity == _representedModel) {
-                        if (!(cport instanceof IOPort && ((IOPort) cport)
-                                .isOutput())) {
+                        if (!(cport instanceof IOPort
+                                && ((IOPort) cport).isOutput())) {
                             continue;
                         }
 
-                        SyntacticNode exout = new SyntacticNode(this, "exout_"
-                                + _pureCount);
+                        SyntacticNode exout = new SyntacticNode(this,
+                                "exout_" + _pureCount);
                         ++_pureCount;
                         exout.representExteriorPort(cport);
                         _addExteriorNode(exout);
@@ -430,8 +430,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  SyntacticNode, setting a Mediator, removing a connection or
      *  adding a connection.
      */
-    public void makeBijective() throws IllegalActionException,
-            NameDuplicationException {
+    public void makeBijective()
+            throws IllegalActionException, NameDuplicationException {
         if (_nodes == null) {
             System.out.print("Node-list _nodes.\n");
             return;
@@ -454,8 +454,8 @@ public class SyntacticGraph extends CompositeEntity {
                     //continue;
                 }
 
-                SyntacticNode mediator = new SyntacticNode(this, "med_"
-                        + _pureCount + "_" + port.getName());
+                SyntacticNode mediator = new SyntacticNode(this,
+                        "med_" + _pureCount + "_" + port.getName());
                 ++_pureCount;
                 mediator.setMediator(false, r_outn);
 
@@ -500,8 +500,8 @@ public class SyntacticGraph extends CompositeEntity {
                     //continue;
                 }
 
-                SyntacticNode mediator = new SyntacticNode(this, "med_"
-                        + _pureCount + "_" + port.getName());
+                SyntacticNode mediator = new SyntacticNode(this,
+                        "med_" + _pureCount + "_" + port.getName());
                 ++_pureCount;
                 mediator.setMediator(true, r_inn);
 
@@ -550,13 +550,13 @@ public class SyntacticGraph extends CompositeEntity {
      *  @exception NameDuplicationException If thrown while creating
      *  a new node or setting the feedback.
      */
-    public void removeFeedback() throws IllegalActionException,
-    NameDuplicationException {
+    public void removeFeedback()
+            throws IllegalActionException, NameDuplicationException {
         Collection<SyntacticNode> rootSet = _getRootSet();
         if (rootSet.size() == 0) {
             // Here I should preload a node at random?
-            System.out
-            .print("The graph is compact. A root node is being chosen.\n");
+            System.out.print(
+                    "The graph is compact. A root node is being chosen.\n");
             if (_nodes.isEmpty()) {
                 return;
             }
@@ -658,12 +658,12 @@ public class SyntacticGraph extends CompositeEntity {
      *  @exception NameDuplicationException If thrown while setting the
      *  identity or removing or making the connection.
      */
-    public void structure() throws IllegalActionException,
-    NameDuplicationException {
+    public void structure()
+            throws IllegalActionException, NameDuplicationException {
 
         if (!(_feedbackRemoved && _madeBijective)) {
-            System.out
-            .print("Feedback must be removed and bijection should be established.\n");
+            System.out.print(
+                    "Feedback must be removed and bijection should be established.\n");
             return;
         }
 
@@ -711,8 +711,8 @@ public class SyntacticGraph extends CompositeEntity {
                         hasTerminals = true;
                     }
                 } else {
-                    SyntacticNode identity = new SyntacticNode(this, "id_"
-                            + _pureCount);
+                    SyntacticNode identity = new SyntacticNode(this,
+                            "id_" + _pureCount);
                     ++_pureCount;
 
                     identity.setIdentity();
@@ -813,8 +813,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  @exception NameDuplicationException If thrown while creating
      *  a node.
      */
-    public void insertPermutations() throws IllegalActionException,
-    NameDuplicationException {
+    public void insertPermutations()
+            throws IllegalActionException, NameDuplicationException {
         if (_series.size() < 2) {
             return;
         }
@@ -851,8 +851,8 @@ public class SyntacticGraph extends CompositeEntity {
             }
 
             if (!isordered) {
-                SyntacticNode permnode = new SyntacticNode(this, "perm_"
-                        + _pureCount);
+                SyntacticNode permnode = new SyntacticNode(this,
+                        "perm_" + _pureCount);
                 ++_pureCount;
                 permnode.setPermutation(permutation);
 
@@ -897,8 +897,8 @@ public class SyntacticGraph extends CompositeEntity {
      *  @exception NameDuplicationException If thrown while
      *  setting the location.
      */
-    public void layoutGraph() throws IllegalActionException,
-             NameDuplicationException {
+    public void layoutGraph()
+            throws IllegalActionException, NameDuplicationException {
         double colpos = 10.0, coldepth = 10.0;
         for (SyntacticTerm termIt : _series) {
             coldepth = 10.0;

@@ -165,8 +165,8 @@ public class GlassPaneWidget extends NamedObjectWidget {
                     return;
                 }
                 _glassPane.setSize(_componentWidget.getClientArea().getSize());
-                _containerPanel.setSize(_componentWidget.getClientArea()
-                        .getSize());
+                _containerPanel
+                        .setSize(_componentWidget.getClientArea().getSize());
             }
         });
     }
@@ -233,8 +233,7 @@ public class GlassPaneWidget extends NamedObjectWidget {
                 newEvent = new MouseWheelEvent(component, mouseEvent.getID(),
                         mouseEvent.getWhen(), mouseEvent.getModifiers(),
                         componentPoint.x, componentPoint.y,
-                        mouseEvent.getClickCount(),
-                        mouseEvent.isPopupTrigger(),
+                        mouseEvent.getClickCount(), mouseEvent.isPopupTrigger(),
                         mouseWheelEvent.getScrollType(),
                         mouseWheelEvent.getScrollAmount(),
                         mouseWheelEvent.getWheelRotation());
@@ -242,8 +241,8 @@ public class GlassPaneWidget extends NamedObjectWidget {
                 newEvent = new MouseEvent(component, mouseEvent.getID(),
                         mouseEvent.getWhen(), mouseEvent.getModifiers(),
                         componentPoint.x, componentPoint.y,
-                        mouseEvent.getClickCount(),
-                        mouseEvent.isPopupTrigger(), mouseEvent.getButton());
+                        mouseEvent.getClickCount(), mouseEvent.isPopupTrigger(),
+                        mouseEvent.getButton());
             }
         } else if (awtEvent instanceof KeyEvent) {
             newEvent = awtEvent;

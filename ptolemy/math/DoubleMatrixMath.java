@@ -750,7 +750,8 @@ public class DoubleMatrixMath {
      *  output matrix will contain a column of zeros for all redundant
      *  input columns.
      */
-    public static final double[][] orthogonalizeColumns(final double[][] matrix) {
+    public static final double[][] orthogonalizeColumns(
+            final double[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));
         return transpose((double[][]) orthoInfo[0]);
     }
@@ -771,7 +772,8 @@ public class DoubleMatrixMath {
      *  the output matrix will contain a column of zeros for all
      *  redundant input columns.
      */
-    public static final double[][] orthonormalizeColumns(final double[][] matrix) {
+    public static final double[][] orthonormalizeColumns(
+            final double[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
@@ -1149,7 +1151,7 @@ public class DoubleMatrixMath {
      */
     protected static final void _checkSameDimension(final String caller,
             final double[][] matrix1, final double[][] matrix2)
-                    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1251,10 +1253,9 @@ public class DoubleMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = DoubleArrayMath.subtract(
-                        rowArray,
-                        DoubleArrayMath.scale(orthogonalMatrix[j], dotProduct
-                                * oneOverNormSquaredArray[j]));
+                rowArray = DoubleArrayMath.subtract(rowArray,
+                        DoubleArrayMath.scale(orthogonalMatrix[j],
+                                dotProduct * oneOverNormSquaredArray[j]));
             }
 
             // Compute the dot product between the input and output vector

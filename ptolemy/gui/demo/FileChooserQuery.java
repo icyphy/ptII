@@ -97,8 +97,8 @@ public class FileChooserQuery extends JFrame implements QueryListener {
      */
     @Override
     public void changed(String name) {
-        System.out.println("Changed " + name + " to: "
-                + _query.getStringValue(name));
+        System.out.println(
+                "Changed " + name + " to: " + _query.getStringValue(name));
     }
 
     /** Create a FileChooserQuery and configure it.

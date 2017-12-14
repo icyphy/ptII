@@ -98,8 +98,8 @@ public class ReadParametersInContainer extends TypedAtomicActor {
         if (input.hasToken(0)) {
             sum = ((DoubleToken) input.get(0)).doubleValue();
         }
-        Variable variableInContainer = (Variable) getContainer().getAttribute(
-                "VariableInContainer");
+        Variable variableInContainer = (Variable) getContainer()
+                .getAttribute("VariableInContainer");
         if (variableInContainer == null) {
             throw new IllegalActionException(this,
                     "Could not find a parameter named \"VariableInContainer\" in "

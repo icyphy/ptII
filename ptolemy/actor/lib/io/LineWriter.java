@@ -96,7 +96,7 @@ public class LineWriter extends Sink {
         fileName = new FilePortParameter(this, "fileName");
         fileName.setExpression("System.out");
         new SingletonParameter(fileName.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         append = new Parameter(this, "append");
         append.setTypeEquals(BaseType.BOOLEAN);
@@ -114,9 +114,8 @@ public class LineWriter extends Sink {
         alwaysFlush.setTypeEquals(BaseType.BOOLEAN);
         alwaysFlush.setToken(BooleanToken.FALSE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "</svg>\n");
@@ -245,9 +244,8 @@ public class LineWriter extends Sink {
                             // Query for overwrite.
                             // FIXME: This should be called in the event thread!
                             // There is a chance of deadlock since it is not.
-                            if (!MessageHandler
-                                    .yesNoQuestion("OK to overwrite " + file
-                                            + "?")) {
+                            if (!MessageHandler.yesNoQuestion(
+                                    "OK to overwrite " + file + "?")) {
                                 throw new IllegalActionException(this,
                                         "Please select another file name.");
                             }

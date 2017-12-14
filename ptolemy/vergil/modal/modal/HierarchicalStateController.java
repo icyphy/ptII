@@ -91,15 +91,16 @@ public class HierarchicalStateController extends StateController {
      *  @param controller The associated graph controller.
      *  @param access The access level.
      */
-    public HierarchicalStateController(GraphController controller, Access access) {
+    public HierarchicalStateController(GraphController controller,
+            Access access) {
         super(controller, access);
 
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _addRefinementAction));
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _removeRefinementAction));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(_addRefinementAction));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(_removeRefinementAction));
         _menuFactory
-        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -162,8 +163,8 @@ public class HierarchicalStateController extends StateController {
                 Iterator iterator = refinementList.iterator();
                 while (iterator.hasNext()) {
                     Entity entity = (Entity) iterator.next();
-                    refinementClasses.put(entity.getName(), entity.getClass()
-                            .getName());
+                    refinementClasses.put(entity.getName(),
+                            entity.getClass().getName());
                 }
             } else {
                 refinementClasses = getRefinementClasses();
@@ -189,7 +190,8 @@ public class HierarchicalStateController extends StateController {
 
             String[] choiceNames = (String[]) refinementClasses.keySet()
                     .toArray(new String[refinementClasses.size()]);
-            query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
+            query.addChoice("Class", "Class", choiceNames, choiceNames[0],
+                    true);
             if (firstExtenderDescription != null) {
                 query.set("Class", firstExtenderDescription);
             }
@@ -220,7 +222,7 @@ public class HierarchicalStateController extends StateController {
 
             /*
             String currentRefinements = state.refinementName.getExpression();
-
+            
             if ((currentRefinements == null) || currentRefinements.equals("")) {
                 currentRefinements = newName;
             } else {
@@ -263,7 +265,7 @@ public class HierarchicalStateController extends StateController {
 
             if (!(target instanceof State)) {
                 MessageHandler
-                .error("Can only remove refinements from states.");
+                        .error("Can only remove refinements from states.");
                 return;
             }
 

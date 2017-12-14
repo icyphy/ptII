@@ -100,8 +100,10 @@ public class SparkleFilter extends PointFilter {
         super.setDimensions(width, height);
         randomNumbers.setSeed(seed);
         rayLengths = new float[rays];
-        for (int i = 0; i < rays; i++)
-            rayLengths[i] = radius + randomness / 100.0f * radius * (float) randomNumbers.nextGaussian();
+        for (int i = 0; i < rays; i++) {
+            rayLengths[i] = radius + randomness / 100.0f * radius
+                    * (float) randomNumbers.nextGaussian();
+        }
     }
 
     @Override
@@ -115,7 +117,8 @@ public class SparkleFilter extends PointFilter {
         float f = d - i;
 
         if (radius != 0) {
-            float length = ImageMath.lerp(f, rayLengths[i % rays], rayLengths[(i + 1) % rays]);
+            float length = ImageMath.lerp(f, rayLengths[i % rays],
+                    rayLengths[(i + 1) % rays]);
             float g = length * length / (distance + 0.0001f);
             g = (float) Math.pow(g, (100 - amount) / 50.0);
             f -= 0.5f;

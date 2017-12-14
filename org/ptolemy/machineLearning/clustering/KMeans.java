@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
  */
 package org.ptolemy.machineLearning.clustering;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,8 +78,7 @@ public class KMeans extends TypedAtomicActor {
     public KMeans(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = new TypedIOPort(this,"input",true,false);
-
+        input = new TypedIOPort(this, "input", true, false);
 
         clusters = new TypedIOPort(this, "clusters", false, true);
         clusters.setTypeEquals(new ArrayType(BaseType.INT));
@@ -97,8 +95,8 @@ public class KMeans extends TypedAtomicActor {
 
         _clusterCenters = new ArrayList();
 
-
     }
+
     /** The sequence of inputs to be classified. */
     public TypedIOPort input;
 
@@ -118,9 +116,10 @@ public class KMeans extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numClusters) {
-            _numClusters = ((IntToken)numClusters.getToken()).intValue();
+            _numClusters = ((IntToken) numClusters.getToken()).intValue();
         } else if (attribute == distanceMeasure) {
-            String distMeasure = ((StringToken) distanceMeasure.getToken()).stringValue();
+            String distMeasure = ((StringToken) distanceMeasure.getToken())
+                    .stringValue();
             switch (distMeasure.toLowerCase()) {
             case "euclidean":
                 _distanceMeasure = Metric.EUCLIDEAN;
@@ -136,8 +135,7 @@ public class KMeans extends TypedAtomicActor {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        KMeans newObject = (KMeans) super
-                .clone(workspace);
+        KMeans newObject = (KMeans) super.clone(workspace);
         newObject._clusterCenters = null;
         newObject._prevClusterAssignment = null;
         newObject._clusterAssignment = null;
@@ -150,20 +148,22 @@ public class KMeans extends TypedAtomicActor {
         super.fire();
         if (input.hasToken(0)) {
             ArrayToken inputToken = (ArrayToken) input.get(0);
-            if ( inputToken.getElementType().isCompatible(BaseType.DOUBLE)) {
+            if (inputToken.getElementType().isCompatible(BaseType.DOUBLE)) {
                 _trainingData = new double[inputToken.length()][1];
                 _featureLength = 1;
-                for (int i = 0 ; i < inputToken.length(); i++) {
-                    _trainingData[i][0] = ((DoubleToken)inputToken.getElement(i)).doubleValue();
+                for (int i = 0; i < inputToken.length(); i++) {
+                    _trainingData[i][0] = ((DoubleToken) inputToken
+                            .getElement(i)).doubleValue();
                 }
-            } else if ( inputToken.getElementType().isCompatible(new ArrayType(BaseType.DOUBLE))) {
-                _featureLength = ((ArrayToken)(inputToken.getElement(0))).length();
+            } else if (inputToken.getElementType()
+                    .isCompatible(new ArrayType(BaseType.DOUBLE))) {
+                _featureLength = ((ArrayToken) (inputToken.getElement(0)))
+                        .length();
                 _trainingData = new double[inputToken.length()][_featureLength];
-                for (int i = 0 ; i < inputToken.length(); i++) {
-                    for (int j = 0 ; j < _featureLength; j++) {
-                        _trainingData[i][j] = ((DoubleToken)((ArrayToken)
-                                inputToken.getElement(i)).getElement(j))
-                                .doubleValue();
+                for (int i = 0; i < inputToken.length(); i++) {
+                    for (int j = 0; j < _featureLength; j++) {
+                        _trainingData[i][j] = ((DoubleToken) ((ArrayToken) inputToken
+                                .getElement(i)).getElement(j)).doubleValue();
                     }
                 }
             }
@@ -176,34 +176,35 @@ public class KMeans extends TypedAtomicActor {
                 _assignSamplesToClusters();
                 _updateClusterCenters();
                 converged = _checkForConvergence();
-                iters ++;
+                iters++;
             }
 
             // send the assigned clusters to the clusters port.
 
             IntToken[] clusterAssignments = new IntToken[_trainingData.length];
-            for (int i=0; i< _clusterAssignment.length; i++) {
+            for (int i = 0; i < _clusterAssignment.length; i++) {
                 clusterAssignments[i] = new IntToken(_clusterAssignment[i]);
             }
             ArrayToken clustersToken = new ArrayToken(clusterAssignments);
             clusters.broadcast(clustersToken);
-            System.out.println("K-Means Converged in " + iters + " iterations.");
+            System.out
+                    .println("K-Means Converged in " + iters + " iterations.");
 
             // output cluster centers
 
-
             if (_featureLength == 1) {
-                DoubleToken[] clusterCentersToken  = new DoubleToken[_numClusters];
+                DoubleToken[] clusterCentersToken = new DoubleToken[_numClusters];
                 for (int i = 0; i < _numClusters; i++) {
-                    clusterCentersToken[i] = new DoubleToken((double)_clusterCenters.get(i));
+                    clusterCentersToken[i] = new DoubleToken(
+                            (double) _clusterCenters.get(i));
                 }
                 clusterCenters.send(0, new ArrayToken(clusterCentersToken));
             } else {
-                ArrayToken[] clusterCentersToken  = new ArrayToken[_numClusters];
+                ArrayToken[] clusterCentersToken = new ArrayToken[_numClusters];
                 for (int i = 0; i < _numClusters; i++) {
-                    double [] clusterCenter = (double[]) _clusterCenters.get(i);
-                    DoubleToken [] cToken = new DoubleToken[_featureLength];
-                    for (int k=0; k < _featureLength; k++) {
+                    double[] clusterCenter = (double[]) _clusterCenters.get(i);
+                    DoubleToken[] cToken = new DoubleToken[_featureLength];
+                    for (int k = 0; k < _featureLength; k++) {
                         cToken[k] = new DoubleToken(clusterCenter[k]);
                     }
                     clusterCentersToken[i] = new ArrayToken(cToken);
@@ -214,17 +215,16 @@ public class KMeans extends TypedAtomicActor {
         }
     }
 
-
     private void _assignSamplesToClusters() {
         _clusterAssignment = new int[_trainingData.length];
-        double [] minDistance = new double[_trainingData.length];
+        double[] minDistance = new double[_trainingData.length];
         Arrays.fill(minDistance, Double.MAX_VALUE);
 
-
-        for ( int k = 0; k < _numClusters; k++) {
+        for (int k = 0; k < _numClusters; k++) {
             for (int j = 0; j < _trainingData.length; j++) {
-                double [] sample = _trainingData[j];
-                double distanceToCluster = distance(sample, (double[])_clusterCenters.get(k));
+                double[] sample = _trainingData[j];
+                double distanceToCluster = distance(sample,
+                        (double[]) _clusterCenters.get(k));
                 if (distanceToCluster < minDistance[j]) {
                     minDistance[j] = distanceToCluster;
                     _clusterAssignment[j] = k;
@@ -232,14 +232,16 @@ public class KMeans extends TypedAtomicActor {
             }
         }
     }
+
     private double distance(double[] sample, double[] center) {
         switch (_distanceMeasure) {
-        case EUCLIDEAN: return Math.sqrt(DoubleArrayMath.
-                l2norm(DoubleArrayMath.subtract(sample, center)));
-        default: return Double.NaN;
+        case EUCLIDEAN:
+            return Math.sqrt(DoubleArrayMath
+                    .l2norm(DoubleArrayMath.subtract(sample, center)));
+        default:
+            return Double.NaN;
         }
     }
-
 
     private boolean _checkForConvergence() {
         if (_prevClusterAssignment == null) {
@@ -247,8 +249,8 @@ public class KMeans extends TypedAtomicActor {
             return false;
         } else {
             boolean equal = true;
-            for (int i = 0; i < _clusterAssignment.length ; i++) {
-                if (_clusterAssignment[i]!=_prevClusterAssignment[i]) {
+            for (int i = 0; i < _clusterAssignment.length; i++) {
+                if (_clusterAssignment[i] != _prevClusterAssignment[i]) {
                     equal = false;
                     break;
                 }
@@ -263,7 +265,6 @@ public class KMeans extends TypedAtomicActor {
         return false;
     }
 
-
     /**
      * Pick k random cluster centers given the range of input data.
      * This implementation uses the Random Partition method for initialization,
@@ -272,8 +273,7 @@ public class KMeans extends TypedAtomicActor {
      * @exception IllegalActionException
      *
      */
-    private void _initializeClusterCenters()
-            throws IllegalActionException {
+    private void _initializeClusterCenters() throws IllegalActionException {
         //TODO: Forgy initialization algorithm to be added as an option
         Random clusterIndex = new Random();
         _clusterAssignment = new int[_trainingData.length];
@@ -289,29 +289,28 @@ public class KMeans extends TypedAtomicActor {
      * simply the average of the points in the cluster.
      * @exception IllegalActionException
      */
-    private void _updateClusterCenters()
-            throws IllegalActionException {
+    private void _updateClusterCenters() throws IllegalActionException {
         _clusterCenters.clear();
 
         switch (_distanceMeasure) {
         case EUCLIDEAN:
-            double [][] newClusterCenters = new double[_numClusters][_featureLength];
+            double[][] newClusterCenters = new double[_numClusters][_featureLength];
             int[] samplesInCluster = new int[_numClusters];
-            for (int i=0; i < _trainingData.length; i++) {
-                for (int j = 0 ; j < _featureLength; j++) {
+            for (int i = 0; i < _trainingData.length; i++) {
+                for (int j = 0; j < _featureLength; j++) {
                     newClusterCenters[_clusterAssignment[i]][j] += _trainingData[i][j];
                 }
-                samplesInCluster[_clusterAssignment[i]] ++;
+                samplesInCluster[_clusterAssignment[i]]++;
             }
 
-            for (int i=0; i < _numClusters; i++) {
-                for (int j = 0 ; j < _featureLength; j++) {
-                    if ( samplesInCluster[i] > 0) {
-                        newClusterCenters[i][j]/= samplesInCluster[i];
+            for (int i = 0; i < _numClusters; i++) {
+                for (int j = 0; j < _featureLength; j++) {
+                    if (samplesInCluster[i] > 0) {
+                        newClusterCenters[i][j] /= samplesInCluster[i];
                     }
                 }
             }
-            for (int i=0; i < _numClusters; i++) {
+            for (int i = 0; i < _numClusters; i++) {
                 if (_featureLength > 1) {
                     _clusterCenters.add(newClusterCenters[i]);
                 } else {
@@ -319,9 +318,12 @@ public class KMeans extends TypedAtomicActor {
                 }
             }
             break;
-        default: throw new IllegalActionException(this, "Distance measure not supported.");
+        default:
+            throw new IllegalActionException(this,
+                    "Distance measure not supported.");
         }
     }
+
     @Override
     public void wrapup() throws IllegalActionException {
         _clusterCenters.clear();
@@ -330,6 +332,7 @@ public class KMeans extends TypedAtomicActor {
         _trainingData = null;
         super.wrapup();
     }
+
     private double[][] _trainingData;
     private int[] _clusterAssignment;
     private int[] _prevClusterAssignment;
@@ -338,6 +341,7 @@ public class KMeans extends TypedAtomicActor {
     private int _numClusters;
     private Metric _distanceMeasure;
     private final static int MAX_ITER = 10000;
+
     private enum Metric {
         EUCLIDEAN
     };

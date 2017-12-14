@@ -208,7 +208,8 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      *  multiple pieces of information.
      */
     @Override
-    public synchronized void handlePublishedItems(ItemPublishEvent<Item> items) {
+    public synchronized void handlePublishedItems(
+            ItemPublishEvent<Item> items) {
         // Check if initialize() has been called yet.  If not, wait, releasing
         // the lock so that initialize may be called.  Further invocations of
         // handlePublishedItems might also be called, but these will also wait

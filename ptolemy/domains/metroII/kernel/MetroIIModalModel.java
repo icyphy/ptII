@@ -111,7 +111,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                                    throws CollectionAbortedException {
+                            throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -170,8 +170,8 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
                 // everything that is not a port parameter.
                 // The director will also update the schedule in
                 // the process, if necessary.
-                for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext() && !_stopRequested;) {
+                for (Iterator<?> inputPorts = inputPortList()
+                        .iterator(); inputPorts.hasNext() && !_stopRequested;) {
                     IOPort p = (IOPort) inputPorts.next();
 
                     if (!(p instanceof ParameterPort)) {
@@ -216,10 +216,10 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
     /**
      * Updates the expression with 'MetroIIFSMDirector' instead of 'FSMDirector'
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
-        directorClass
-        .setExpression("ptolemy.domains.metroII.kernel.MetroIIFSMDirector");
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
+        directorClass.setExpression(
+                "ptolemy.domains.metroII.kernel.MetroIIFSMDirector");
     }
 
 }

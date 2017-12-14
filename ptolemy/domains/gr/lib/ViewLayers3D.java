@@ -133,8 +133,8 @@ public class ViewLayers3D extends TypedAtomicActor {
         scalable = new Parameter(this, "scalable", new BooleanToken(false));
         scalable.setTypeEquals(BaseType.BOOLEAN);
 
-        translatable = new Parameter(this, "translatable", new BooleanToken(
-                false));
+        translatable = new Parameter(this, "translatable",
+                new BooleanToken(false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
         showAxes = new Parameter(this, "showAxes", new BooleanToken(false));
@@ -365,8 +365,8 @@ public class ViewLayers3D extends TypedAtomicActor {
         // Setup the lights.
         BranchGroup lightRoot = new BranchGroup();
 
-        AmbientLight lightAmbient = new AmbientLight(new Color3f(0.8f, 0.8f,
-                0.8f));
+        AmbientLight lightAmbient = new AmbientLight(
+                new Color3f(0.8f, 0.8f, 0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
 
@@ -482,7 +482,7 @@ public class ViewLayers3D extends TypedAtomicActor {
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         Material material = new Material();
 
-        DoubleToken thicknessToken = (DoubleToken)layerThickness.getToken();
+        DoubleToken thicknessToken = (DoubleToken) layerThickness.getToken();
 
         for (int i = 0; i < width; i++) {
             BranchGroup branchGroup = new BranchGroup();
@@ -499,41 +499,32 @@ public class ViewLayers3D extends TypedAtomicActor {
             float alpha = 1.0f;
             if (layerColor.stringValue().equals("red")) {
                 red = 1.0f;
-            }
-            else if (layerColor.stringValue().equals("blue")) {
-                    blue = 1.0f;
-            }
-            else if (layerColor.stringValue().equals("green")) {
-                    green = 1.0f;
-            }
-            else if (layerColor.stringValue().equals("cyan")) {
-                    green = 1.0f;
-                    blue = 1.0f;
-            }
-            else if (layerColor.stringValue().equals("magenta")) {
-                    red = 1.0f;
-                    blue = 1.0f;
-            }
-            else if (layerColor.stringValue().equals("yellow")) {
-                    red = 1.0f;
-                    green = 1.0f;
-            }
-            else if (layerColor.stringValue().equals("gray")) {
-                    red = 0.5f;
-                    green = 0.5f;
-                    blue = 0.5f;
-            }
-            else if (layerColor.stringValue().equals("white")) {
-                    red = 1.0f;
-                    green = 1.0f;
-                    blue = 1.0f;
-            }
-            else if (layerColor.stringValue().equals("black")) {
-            }
-            else {
-                    red = 0.7f;
-                    green = 0.7f;
-                    blue = 0.7f;
+            } else if (layerColor.stringValue().equals("blue")) {
+                blue = 1.0f;
+            } else if (layerColor.stringValue().equals("green")) {
+                green = 1.0f;
+            } else if (layerColor.stringValue().equals("cyan")) {
+                green = 1.0f;
+                blue = 1.0f;
+            } else if (layerColor.stringValue().equals("magenta")) {
+                red = 1.0f;
+                blue = 1.0f;
+            } else if (layerColor.stringValue().equals("yellow")) {
+                red = 1.0f;
+                green = 1.0f;
+            } else if (layerColor.stringValue().equals("gray")) {
+                red = 0.5f;
+                green = 0.5f;
+                blue = 0.5f;
+            } else if (layerColor.stringValue().equals("white")) {
+                red = 1.0f;
+                green = 1.0f;
+                blue = 1.0f;
+            } else if (layerColor.stringValue().equals("black")) {
+            } else {
+                red = 0.7f;
+                green = 0.7f;
+                blue = 0.7f;
             }
 
             Appearance appearance = new Appearance();
@@ -542,23 +533,25 @@ public class ViewLayers3D extends TypedAtomicActor {
             material.setDiffuseColor(color3f);
             appearance.setMaterial(material);
 
-            float zLen = (float)thicknessToken.doubleValue()/2;
+            float zLen = (float) thicknessToken.doubleValue() / 2;
 
-                node = new Box(1.0f, 1.0f, zLen, primitiveFlags, appearance);
+            node = new Box(1.0f, 1.0f, zLen, primitiveFlags, appearance);
             if (layerShape.stringValue().equals("rect")) {
-                    float layerLen = (float)layerSize.doubleValue();
-                    node = new Box(layerLen, zLen, layerLen, primitiveFlags, appearance);
-            }
-            else if (layerShape.stringValue().equals("circ")) {
-                    float layerRadius = (float)layerSize.doubleValue();
-                    node = new Cylinder(layerRadius, zLen * 2, primitiveFlags, appearance);
+                float layerLen = (float) layerSize.doubleValue();
+                node = new Box(layerLen, zLen, layerLen, primitiveFlags,
+                        appearance);
+            } else if (layerShape.stringValue().equals("circ")) {
+                float layerRadius = (float) layerSize.doubleValue();
+                node = new Cylinder(layerRadius, zLen * 2, primitiveFlags,
+                        appearance);
             }
 
             Transform3D transform = new Transform3D();
             float zOffset = 0.0f;
             float xOffset = 0.0f;
 
-            float yOffset = (float)(thicknessToken.doubleValue() * _layerCount);
+            float yOffset = (float) (thicknessToken.doubleValue()
+                    * _layerCount);
             _layerCount++;
 
             transform.setTranslation(new Vector3d(xOffset, yOffset, zOffset));

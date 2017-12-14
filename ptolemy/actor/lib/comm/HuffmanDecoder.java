@@ -88,8 +88,8 @@ public class HuffmanDecoder extends HuffmanBasic {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanDecoder newObject = (HuffmanDecoder) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.alphabet));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.alphabet));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

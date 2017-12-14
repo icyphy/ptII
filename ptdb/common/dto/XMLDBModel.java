@@ -136,8 +136,8 @@ public class XMLDBModel implements Comparable {
     @Override
     public int compareTo(Object otherModel) {
 
-        return _modelName.compareToIgnoreCase(((XMLDBModel) otherModel)
-                .getModelName());
+        return _modelName
+                .compareToIgnoreCase(((XMLDBModel) otherModel).getModelName());
     }
 
     /** Return true if this XMLDBModel has the same

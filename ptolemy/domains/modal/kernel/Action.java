@@ -127,8 +127,8 @@ public abstract class Action extends StringAttribute {
      *   an attribute with the name of this action.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         // An Action is used in a Transition in the FSM domain, or an Event in
         // the Ptera domain.
 

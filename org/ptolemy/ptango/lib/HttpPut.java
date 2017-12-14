@@ -78,9 +78,9 @@ public class HttpPut extends TypedAtomicActor {
         contentType.setExpression("application/x-www-form-urlencoded");
 
         new SingletonParameter(contentType.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
         (new StringAttribute(contentType.getPort(), "_cardinal"))
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
 
         url = new PortParameter(this, "url");
         url.setStringMode(true);
@@ -94,9 +94,9 @@ public class HttpPut extends TypedAtomicActor {
         timeoutResponse = new StringParameter(this, "timeoutResponse");
 
         new SingletonParameter(url.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
         (new StringAttribute(url.getPort(), "_cardinal"))
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
@@ -194,9 +194,9 @@ public class HttpPut extends TypedAtomicActor {
             _request.setUrl(new URL(urlValue));
 
             _request.setMethod(Method.PUT);
-            _request.setProperties(new RecordToken(
-                    new String[] { "Content-Type" }, new Token[] { contentType
-                            .getToken() }));
+            _request.setProperties(
+                    new RecordToken(new String[] { "Content-Type" },
+                            new Token[] { contentType.getToken() }));
             _request.setBody(((StringToken) input.get(0)).stringValue());
 
             // If a timeout has been specified, set it.
@@ -214,9 +214,9 @@ public class HttpPut extends TypedAtomicActor {
                 }
                 String timeout = timeoutResponse.stringValue();
                 if (timeout.trim().equals("")) {
-                    throw new IllegalActionException(this, "HTTP "
-                            + _request.getMethod() + " "
-                            + response.getResponseMessage());
+                    throw new IllegalActionException(this,
+                            "HTTP " + _request.getMethod() + " "
+                                    + response.getResponseMessage());
                 }
             }
 

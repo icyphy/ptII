@@ -323,7 +323,8 @@ public final class GraphUtilities {
      * @deprecated use totallyContainedEdges instead.
      */
     @Deprecated
-    public static final Iterator localEdges(Object composite, GraphModel model) {
+    public static final Iterator localEdges(Object composite,
+            GraphModel model) {
         return totallyContainedEdges(composite, model);
     }
 
@@ -334,7 +335,8 @@ public final class GraphUtilities {
 
         private Object _composite;
 
-        public PartiallyContainedEdgeFilter(GraphModel model, Object composite) {
+        public PartiallyContainedEdgeFilter(GraphModel model,
+                Object composite) {
             _model = model;
             _composite = composite;
         }

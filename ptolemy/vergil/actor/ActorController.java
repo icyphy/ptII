@@ -133,9 +133,9 @@ public abstract class ActorController extends AttributeController {
         // get the "Look Inside" menu to work for composite actors in
         // Kepler, we create these menu items now.
         _menuFactory
-        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _openInstanceAction));
+                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        _menuFactory
+                .addMenuItemFactory(new MenuActionFactory(_openInstanceAction));
 
         if (_configuration != null) {
             if (access == FULL) {
@@ -159,8 +159,8 @@ public abstract class ActorController extends AttributeController {
         // so we have a frame.
         // NOTE: This requires that the configuration be non null, or it
         // will report an error.
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new SaveInLibraryAction()));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new SaveInLibraryAction()));
 
         // }
         // "Set Breakpoints"
@@ -289,7 +289,8 @@ public abstract class ActorController extends AttributeController {
 
     /** An action that handles rotating the ports by 90 degrees. */
     protected RotateOrFlipPorts _rotatePortsCounterclockwise = new RotateOrFlipPorts(
-            RotateOrFlipPorts.COUNTERCLOCKWISE, "Rotate Ports Counterclockwise");
+            RotateOrFlipPorts.COUNTERCLOCKWISE,
+            "Rotate Ports Counterclockwise");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -301,8 +302,8 @@ public abstract class ActorController extends AttributeController {
         _editIconAction.setConfiguration(_configuration);
         _removeIconAction.setConfiguration(_configuration);
         Action[] actions = { _editIconAction, _removeIconAction,
-                _flipPortsHorizontal, _flipPortsVertical,
-                _rotatePortsClockwise, _rotatePortsCounterclockwise };
+                _flipPortsHorizontal, _flipPortsVertical, _rotatePortsClockwise,
+                _rotatePortsCounterclockwise };
         _appearanceMenuActionFactory.addActions(actions, "Appearance");
     }
 
@@ -365,8 +366,8 @@ public abstract class ActorController extends AttributeController {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null && _tableauFrame == null) {
-                MessageHandler
-                .error("Cannot listen to actor without a configuration.");
+                MessageHandler.error(
+                        "Cannot listen to actor without a configuration.");
                 return;
             }
 
@@ -399,8 +400,8 @@ public abstract class ActorController extends AttributeController {
                         effigy.uniqueName("debugListener" + object.getName()));
 
                 DebugListenerTableau debugTableau = new DebugListenerTableau(
-                        textEffigy, textEffigy.uniqueName("debugListener"
-                                + object.getName()));
+                        textEffigy, textEffigy.uniqueName(
+                                "debugListener" + object.getName()));
                 debugTableau.setDebuggable(object);
             } catch (KernelException ex) {
                 MessageHandler.error("Failed to create debug listener.", ex);
@@ -435,8 +436,8 @@ public abstract class ActorController extends AttributeController {
     private class OpenInstanceAction extends FigureAction {
         public OpenInstanceAction() {
             super("Open Instance");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, java.awt.Event.ALT_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke
+                    .getKeyStroke(KeyEvent.VK_L, java.awt.Event.ALT_MASK));
         }
 
         @Override
@@ -454,7 +455,8 @@ public abstract class ActorController extends AttributeController {
             try {
                 StringParameter actorInteractionAddonParameter;
                 actorInteractionAddonParameter = (StringParameter) _configuration
-                        .getAttribute("_actorInteractionAddon", Parameter.class);
+                        .getAttribute("_actorInteractionAddon",
+                                Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
                     String actorInteractionAddonClassName = actorInteractionAddonParameter
@@ -488,9 +490,8 @@ public abstract class ActorController extends AttributeController {
                 // do something different here as the method above will
                 // open the source code as a last resort.
                 Frame parent = getFrame();
-                DialogTableau dialogTableau = DialogTableau.createDialog(
-                        parent, _configuration,
-                        ((TableauFrame) parent).getEffigy(),
+                DialogTableau dialogTableau = DialogTableau.createDialog(parent,
+                        _configuration, ((TableauFrame) parent).getEffigy(),
                         OpenInstanceDialog.class, (Entity) object);
 
                 if (dialogTableau != null) {
@@ -577,8 +578,8 @@ public abstract class ActorController extends AttributeController {
                     // We catch exceptions here because this method used to
                     // not throw Exceptions, and we don't want to break
                     // compatibility.
-                    MessageHandler.error("Failed to save \"" + entity.getName()
-                            + "\".");
+                    MessageHandler.error(
+                            "Failed to save \"" + entity.getName() + "\".");
                 }
             }
         }

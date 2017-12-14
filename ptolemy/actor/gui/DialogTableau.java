@@ -120,8 +120,8 @@ public class DialogTableau extends Tableau {
             NamedObj container = effigy.getContainer();
 
             if (container != null && container instanceof PtolemyEffigy) {
-                dialogs = ((PtolemyEffigy) container).entityList(
-                        DialogTableau.class).iterator();
+                dialogs = ((PtolemyEffigy) container)
+                        .entityList(DialogTableau.class).iterator();
 
                 while (dialogs.hasNext()) {
                     DialogTableau dialogTableau = (DialogTableau) dialogs
@@ -169,8 +169,8 @@ public class DialogTableau extends Tableau {
             }
 
             if (dialog == null) {
-                throw new KernelException(target, null, "Can't create a "
-                        + dialogClass);
+                throw new KernelException(target, null,
+                        "Can't create a " + dialogClass);
             }
 
             newDialogTableau.setFrame(dialog);

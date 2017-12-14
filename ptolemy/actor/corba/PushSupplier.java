@@ -194,8 +194,8 @@ public class PushSupplier extends Sink {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) remoteConsumerName.getToken()).stringValue(),
                     "");
-            _debug(getName(), " looking for name: ", remoteConsumerName
-                    .getToken().toString());
+            _debug(getName(), " looking for name: ",
+                    remoteConsumerName.getToken().toString());
 
             NameComponent[] path = { namecomp };
 
@@ -235,8 +235,7 @@ public class PushSupplier extends Sink {
             }
         } catch (UserException ex) {
             //ex.printStackTrace();
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     " initialize ORB failed. Please make sure the "
                             + "naming server has already started and the "
                             + "ORBInitProperty parameter is configured correctly. "

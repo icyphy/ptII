@@ -185,7 +185,8 @@ public class CausticsFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         Random random = new Random(0);
 
         s = (float) Math.sin(0.1);
@@ -203,8 +204,9 @@ public class CausticsFilter extends WholeImageFilter {
         }
 
         int v = brightness / samples;
-        if (v == 0)
+        if (v == 0) {
             v = 1;
+        }
 
         float rs = 1.0f / scale;
         float d = 0.95f;
@@ -224,36 +226,45 @@ public class CausticsFilter extends WholeImageFilter {
                     if (dispersion > 0) {
                         for (int c = 0; c < 3; c++) {
                             float ca = (1 + c * dispersion);
-                            float srcX = sx + scale * focus * xDisplacement * ca;
-                            float srcY = sy + scale * focus * yDisplacement * ca;
+                            float srcX = sx
+                                    + scale * focus * xDisplacement * ca;
+                            float srcY = sy
+                                    + scale * focus * yDisplacement * ca;
 
-                            if (srcX < 0 || srcX >= outWidth - 1 || srcY < 0 || srcY >= outHeight - 1) {
+                            if (srcX < 0 || srcX >= outWidth - 1 || srcY < 0
+                                    || srcY >= outHeight - 1) {
                             } else {
                                 int i = ((int) srcY) * outWidth + (int) srcX;
                                 int rgb = pixels[i];
                                 int r = (rgb >> 16) & 0xff;
                                 int g = (rgb >> 8) & 0xff;
                                 int b = rgb & 0xff;
-                                if (c == 2)
+                                if (c == 2) {
                                     r += v;
-                                else if (c == 1)
+                                } else if (c == 1) {
                                     g += v;
-                                else
+                                } else {
                                     b += v;
-                                if (r > 255)
+                                }
+                                if (r > 255) {
                                     r = 255;
-                                if (g > 255)
+                                }
+                                if (g > 255) {
                                     g = 255;
-                                if (b > 255)
+                                }
+                                if (b > 255) {
                                     b = 255;
-                                pixels[i] = 0xff000000 | (r << 16) | (g << 8) | b;
+                                }
+                                pixels[i] = 0xff000000 | (r << 16) | (g << 8)
+                                        | b;
                             }
                         }
                     } else {
                         float srcX = sx + scale * focus * xDisplacement;
                         float srcY = sy + scale * focus * yDisplacement;
 
-                        if (srcX < 0 || srcX >= outWidth - 1 || srcY < 0 || srcY >= outHeight - 1) {
+                        if (srcX < 0 || srcX >= outWidth - 1 || srcY < 0
+                                || srcY >= outHeight - 1) {
                         } else {
                             int i = ((int) srcY) * outWidth + (int) srcX;
                             int rgb = pixels[i];
@@ -263,12 +274,15 @@ public class CausticsFilter extends WholeImageFilter {
                             r += v;
                             g += v;
                             b += v;
-                            if (r > 255)
+                            if (r > 255) {
                                 r = 255;
-                            if (g > 255)
+                            }
+                            if (g > 255) {
                                 g = 255;
-                            if (b > 255)
+                            }
+                            if (b > 255) {
                                 b = 255;
+                            }
                             pixels[i] = 0xff000000 | (r << 16) | (g << 8) | b;
                         }
                     }
@@ -278,7 +292,8 @@ public class CausticsFilter extends WholeImageFilter {
         return pixels;
     }
 
-    private static float turbulence2(float x, float y, float time, float octaves) {
+    private static float turbulence2(float x, float y, float time,
+            float octaves) {
         float value = 0.0f;
         float remainder;
         float lacunarity = 2.0f;
@@ -297,8 +312,9 @@ public class CausticsFilter extends WholeImageFilter {
         }
 
         remainder = octaves - (int) octaves;
-        if (remainder != 0)
+        if (remainder != 0) {
             value += remainder * Noise.noise3(x, y, time) / f;
+        }
 
         return value;
     }
@@ -306,7 +322,8 @@ public class CausticsFilter extends WholeImageFilter {
     private float evaluate(float x, float y) {
         float xt = s * x + c * time;
         float tt = c * x - c * time;
-        float f = turbulence == 0.0 ? Noise.noise3(xt, y, tt) : turbulence2(xt, y, tt, turbulence);
+        float f = turbulence == 0.0 ? Noise.noise3(xt, y, tt)
+                : turbulence2(xt, y, tt, turbulence);
         return f;
     }
 

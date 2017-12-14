@@ -115,7 +115,7 @@ public class ProxyModelBuilder {
      * @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
      */
     public void build() throws IllegalActionException, TypeConflictException,
-    NameDuplicationException, CloneNotSupportedException {
+            NameDuplicationException, CloneNotSupportedException {
         _proxySinkMap.clear();
         _proxySourceMap.clear();
         _remoteAttributesMap.clear();
@@ -125,8 +125,8 @@ public class ProxyModelBuilder {
         HashSet<ComponentEntity> sources = new HashSet<ComponentEntity>();
         for (Object obj : _topLevelActor.deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
-            System.out.println("ProxyModelBuilder.build: "
-                    + actor.getFullName());
+            System.out
+                    .println("ProxyModelBuilder.build: " + actor.getFullName());
             // find actors that have a remote tag
             Attribute remoteAttribute = actor
                     .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
@@ -159,8 +159,8 @@ public class ProxyModelBuilder {
                 getRemoteAttributesMap());
 
         // The manager must be created because type resolution for some models requires it
-        _topLevelActor.setManager(new Manager(_topLevelActor.workspace(),
-                "manager"));
+        _topLevelActor
+                .setManager(new Manager(_topLevelActor.workspace(), "manager"));
         // Resolve types.
         if (_topLevelActor instanceof TypedCompositeActor) {
             TypedCompositeActor typedActor = (TypedCompositeActor) _topLevelActor;
@@ -205,8 +205,9 @@ public class ProxyModelBuilder {
                                 .get(container);
                         if (dummyAttribute == null) {
                             dummyAttribute = new StringAttribute(
-                                    container.getContainer(), container
-                                    .getContainer().uniqueName("dummy"));
+                                    container.getContainer(),
+                                    container.getContainer()
+                                            .uniqueName("dummy"));
                             dummyAttribute.setPersistent(true);
                             containerToDummyAttributeMap.put(container,
                                     dummyAttribute);
@@ -335,8 +336,8 @@ public class ProxyModelBuilder {
      */
     private void _captureModelTypes(HashSet<ComponentEntity> entities)
             throws IllegalActionException {
-        System.out
-                .println("ProxyModelBuilder._captureModelTypes() start. # of entities: "
+        System.out.println(
+                "ProxyModelBuilder._captureModelTypes() start. # of entities: "
                         + entities.size());
         for (ComponentEntity entity : entities) {
             System.out.println("ProxyModelBuilder._captureModelTypes() entity "
@@ -349,10 +350,9 @@ public class ProxyModelBuilder {
                 if (port instanceof IOPort) {
                     // If it's TypedIOPort, capture its types.
                     if (port instanceof TypedIOPort) {
-                        System.out
-                                .println("ProxyModelBuilder._captureModelTypes() port "
-                                        + port.getFullName()
-                                        + " type: "
+                        System.out.println(
+                                "ProxyModelBuilder._captureModelTypes() port "
+                                        + port.getFullName() + " type: "
                                         + ((TypedIOPort) port).getType());
                         // Note: using toString on Type is not elegant
                         // and could break but this is the only way to serialize port information
@@ -364,7 +364,8 @@ public class ProxyModelBuilder {
                 }
             }
             // Also capture type information of all Typeable attributes.
-            for (Attribute attribute : ServerUtility.deepAttributeList(entity)) {
+            for (Attribute attribute : ServerUtility
+                    .deepAttributeList(entity)) {
                 if (attribute instanceof Typeable) {
                     getModelTypes().put(((Nameable) attribute).getFullName(),
                             ((Typeable) attribute).getType().toString());
@@ -380,7 +381,7 @@ public class ProxyModelBuilder {
             if (_proxySourceMap.containsKey(container.getFullName())
                     || _proxySinkMap.containsKey(container.getFullName())
                     || _remoteAttributesMap
-                    .containsKey(container.getFullName())) {
+                            .containsKey(container.getFullName())) {
                 return true;
             }
             container = container.getContainer();

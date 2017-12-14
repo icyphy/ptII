@@ -82,8 +82,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (neuendor)
  */
 @SuppressWarnings("serial")
-public class EditParametersDialog extends ComponentDialog implements
-ChangeListener {
+public class EditParametersDialog extends ComponentDialog
+        implements ChangeListener {
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -162,8 +162,8 @@ ChangeListener {
                 String moml = "<deleteProperty name=\"" + deleteName + "\"/>";
                 _target.addChangeListener(this);
 
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        _target, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
+                        moml);
                 request.setUndoable(true);
                 _target.requestChange(request);
             }
@@ -216,8 +216,8 @@ ChangeListener {
                             .getConfiguration();
 
                     if (configuration != null) {
-                        configuration
-                        .openModel(null, doc, doc.toExternalForm());
+                        configuration.openModel(null, doc,
+                                doc.toExternalForm());
                         success = true;
                     }
                 }
@@ -231,8 +231,8 @@ ChangeListener {
                 }
             } catch (Exception ex) {
                 try {
-                    MessageHandler.warning("Cannot open help page \"" + helpURL
-                            + "\".", ex);
+                    MessageHandler.warning(
+                            "Cannot open help page \"" + helpURL + "\".", ex);
                 } catch (CancelException exception) {
                     // Ignore the cancel.
                 }
@@ -338,18 +338,19 @@ ChangeListener {
             _query.setMessage(message);
         }
 
-        _query.addChoice("class", "Class", new String[] {
-                "ptolemy.data.expr.Parameter",
-                "ptolemy.data.expr.FileParameter",
-                "ptolemy.kernel.util.StringAttribute",
-        "ptolemy.actor.gui.ColorAttribute" },
-        "ptolemy.data.expr.Parameter", true);
+        _query.addChoice("class", "Class",
+                new String[] { "ptolemy.data.expr.Parameter",
+                        "ptolemy.data.expr.FileParameter",
+                        "ptolemy.kernel.util.StringAttribute",
+                        "ptolemy.actor.gui.ColorAttribute" },
+                "ptolemy.data.expr.Parameter", true);
 
         _query.addLine("name", "Name", name);
         _query.addLine("default", "Default value", defValue);
 
         ComponentDialog dialog = new ComponentDialog(_owner,
-                "Add a new parameter to " + _target.getFullName(), _query, null);
+                "Add a new parameter to " + _target.getFullName(), _query,
+                null);
 
         String parameterClass = _query.getStringValue("class");
 
@@ -359,8 +360,8 @@ ChangeListener {
         String newName = _query.getStringValue("name");
 
         // Need to escape quotes in default value.
-        String newDefValue = StringUtilities.escapeForXML(_query
-                .getStringValue("default"));
+        String newDefValue = StringUtilities
+                .escapeForXML(_query.getStringValue("default"));
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\"" + newName + "\" value=\""
@@ -403,9 +404,10 @@ ChangeListener {
             }
 
             String newName = _query.getStringValue("name");
-            ComponentDialog dialog = _openAddDialog(_exception.getMessage()
-                    + "\n\nPlease enter a new default value:", newName,
-                    _query.getStringValue("default"),
+            ComponentDialog dialog = _openAddDialog(
+                    _exception.getMessage()
+                            + "\n\nPlease enter a new default value:",
+                    newName, _query.getStringValue("default"),
                     _query.getStringValue("class"));
             _target.removeChangeListener(EditParametersDialog.this);
 
@@ -413,8 +415,8 @@ ChangeListener {
                 // Remove the parameter, since it seems to be erroneous
                 // and the user hit cancel or close.
                 String moml = "<deleteProperty name=\"" + newName + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        _target, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
+                        moml);
                 request.setUndoable(true);
                 _target.requestChange(request);
             }
@@ -493,5 +495,5 @@ ChangeListener {
     ////                         private variables                 ////
     // Button labels.
     private static String[] _moreButtons = { "Commit", "Add", "Remove",
-        "Defaults", "Preferences", "Help", "Cancel" };
+            "Defaults", "Preferences", "Help", "Cancel" };
 }

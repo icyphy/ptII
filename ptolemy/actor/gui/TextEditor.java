@@ -197,8 +197,8 @@ public class TextEditor extends TableauFrame
                     int firstMatch = location;
                     // Highlight the first match.
                     int end = location + search.length();
-                    Highlighter.HighlightPainter painter =
-                            new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+                    Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(
+                            Color.YELLOW);
                     try {
                         highlighter.addHighlight(location, end, painter);
                     } catch (BadLocationException e1) {
@@ -209,7 +209,8 @@ public class TextEditor extends TableauFrame
                     text.setCaretPosition(location);
                     text.moveCaretPosition(end);
                     // Highlight the remaining matches.
-                    painter = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
+                    painter = new DefaultHighlighter.DefaultHighlightPainter(
+                            Color.CYAN);
                     int count = 1;
                     while (location >= 0 && end < textValue.length()) {
                         location = textValue.indexOf(search, end);
@@ -217,7 +218,8 @@ public class TextEditor extends TableauFrame
                             count++;
                             end = location + search.length();
                             try {
-                                highlighter.addHighlight(location, end, painter);
+                                highlighter.addHighlight(location, end,
+                                        painter);
                             } catch (BadLocationException e) {
                                 // Ignore. Should not occur.
                             }
@@ -235,8 +237,8 @@ public class TextEditor extends TableauFrame
                         }
                         location = textValue.indexOf(search, end);
                     }
-                    _query.set("Result", "Found " + count +
-                            ((count > 1)? " matches" : " match"));
+                    _query.set("Result", "Found " + count
+                            + ((count > 1) ? " matches" : " match"));
                 } else {
                     _query.set("Result", "Not found");
                 }
@@ -315,9 +317,10 @@ public class TextEditor extends TableauFrame
     public synchronized BufferedImage exportImage() {
         Dimension dimension = getSize();
         Rectangle rectangle = new Rectangle(dimension.height, dimension.width);
-        return exportImage(new BufferedImage(rectangle.width, rectangle.height,
-                BufferedImage.TYPE_INT_ARGB), rectangle,
-                _defaultImageRenderingHints(), false);
+        return exportImage(
+                new BufferedImage(rectangle.width, rectangle.height,
+                        BufferedImage.TYPE_INT_ARGB),
+                rectangle, _defaultImageRenderingHints(), false);
     }
 
     /** Draw this plot onto the specified image at the position of the
@@ -380,8 +383,8 @@ public class TextEditor extends TableauFrame
             ImageIO.write(image, formatName, out);
         } catch (Exception ex) {
             String message = "Export failed: " + ex.getMessage();
-            JOptionPane.showMessageDialog(this, message,
-                    "Ptolemy Plot Message", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, message, "Ptolemy Plot Message",
+                    JOptionPane.ERROR_MESSAGE);
 
             // Rethrow the exception so that we don't report success,
             // and so the stack trace is displayed on standard out.
@@ -420,16 +423,16 @@ public class TextEditor extends TableauFrame
         double lineHeight = graphics2D.getFontMetrics().getHeight()
                 - graphics2D.getFontMetrics().getLeading() / 2;
 
-        int linesPerPage = (int) Math.floor((format.getHeight()
-                - format.getImageableY() - bottomMargin)
-                / lineHeight);
+        int linesPerPage = (int) Math.floor(
+                (format.getHeight() - format.getImageableY() - bottomMargin)
+                        / lineHeight);
 
         int lineYPosition = (int) Math
                 .ceil(format.getImageableY() + lineHeight);
 
         return _print(graphics2D, index, linesPerPage, lineHeight,
-                (int) format.getImageableX(), lineYPosition, format.getHeight()
-                - bottomMargin);
+                (int) format.getImageableX(), lineYPosition,
+                format.getHeight() - bottomMargin);
 
     }
 
@@ -466,8 +469,8 @@ public class TextEditor extends TableauFrame
         double lineHeight = graphics2D.getFontMetrics().getHeight()
                 - graphics2D.getFontMetrics().getLeading() / 2;
 
-        int linesPerPage = (int) Math.floor((drawRect.height - bottomMargin)
-                / lineHeight);
+        int linesPerPage = (int) Math
+                .floor((drawRect.height - bottomMargin) / lineHeight);
 
         int lineYPosition = (int) Math.ceil(lineHeight);
 
@@ -530,6 +533,7 @@ public class TextEditor extends TableauFrame
 
     /** Create an edit menu.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -613,13 +617,15 @@ public class TextEditor extends TableauFrame
         }
 
         _query.addQueryListener(this);
-        String[] buttons = {"Next", "Close", "Replace", "Replace and Find", "Replace All"};
+        String[] buttons = { "Next", "Close", "Replace", "Replace and Find",
+                "Replace All" };
         new ComponentDialog(this, "Find and Replace", _query, buttons) {
             /** If the contents of this dialog implements the CloseListener
              *  interface, then notify it that the window has closed, unless
              *  notification has already been done (it is guaranteed to be done
              *  only once).
              */
+            @Override
             protected void _handleClosing() {
                 switch (_buttonPressed) {
                 case "Close":
@@ -652,7 +658,8 @@ public class TextEditor extends TableauFrame
                             continue;
                         }
                         text.replaceRange(_previousReplacement,
-                                highlight.getStartOffset(), highlight.getEndOffset());
+                                highlight.getStartOffset(),
+                                highlight.getEndOffset());
                     }
                     _undo.endCompoundEdit();
                     return;
@@ -783,10 +790,9 @@ public class TextEditor extends TableauFrame
         int endLine = startLine + linesPerPage;
         for (int line = startLine; line < endLine; line++) {
             try {
-                String linetext = text.getText(
-                        text.getLineStartOffset(line),
+                String linetext = text.getText(text.getLineStartOffset(line),
                         text.getLineEndOffset(line)
-                        - text.getLineStartOffset(line));
+                                - text.getLineStartOffset(line));
                 graphics2D.drawString(linetext, lineXPosition, linePosition);
             } catch (BadLocationException e) {
                 // Ignore. Never a bad location.
@@ -832,6 +838,7 @@ public class TextEditor extends TableauFrame
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     Integer.valueOf(KeyEvent.VK_O));
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             text.copy();
@@ -852,6 +859,7 @@ public class TextEditor extends TableauFrame
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     Integer.valueOf(KeyEvent.VK_C));
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             text.cut();
@@ -890,8 +898,8 @@ public class TextEditor extends TableauFrame
                 fileDialog.setDialogTitle("Specify a file to write to.");
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
-                fileDialog.addChoosableFileFilter(new ExtensionFilenameFilter(
-                        extensions));
+                fileDialog.addChoosableFileFilter(
+                        new ExtensionFilenameFilter(extensions));
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);
@@ -905,16 +913,14 @@ public class TextEditor extends TableauFrame
                     String currentWorkingDirectory = StringUtilities
                             .getProperty("user.dir");
                     if (currentWorkingDirectory != null) {
-                        fileDialog.setCurrentDirectory(new File(
-                                currentWorkingDirectory));
+                        fileDialog.setCurrentDirectory(
+                                new File(currentWorkingDirectory));
                     }
                 }
 
                 // Here, we differ from PlotTableauFrame:
-                int returnVal = fileDialog.showDialog(
-                        TextEditor.this,
-                        "Export "
-                                + _formatName.toUpperCase(Locale.getDefault()));
+                int returnVal = fileDialog.showDialog(TextEditor.this, "Export "
+                        + _formatName.toUpperCase(Locale.getDefault()));
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = fileDialog.getCurrentDirectory();
@@ -922,12 +928,12 @@ public class TextEditor extends TableauFrame
 
                     if (file.getName().indexOf(".") == -1) {
                         // If the user has not given the file an extension, add it
-                        file = new File(file.getAbsolutePath() + "."
-                                + _formatName);
+                        file = new File(
+                                file.getAbsolutePath() + "." + _formatName);
                     }
                     if (file.exists()) {
-                        if (!MessageHandler.yesNoQuestion("Overwrite "
-                                + file.getName() + "?")) {
+                        if (!MessageHandler.yesNoQuestion(
+                                "Overwrite " + file.getName() + "?")) {
                             return;
                         }
                     }
@@ -945,14 +951,13 @@ public class TextEditor extends TableauFrame
                     // FIXME: We don't do the right thing with PNG files.
                     // It just opens in a text editor.
                     // _read(file.toURI().toURL());
-                    MessageHandler.message("Image file exported to "
-                            + file.getName());
+                    MessageHandler.message(
+                            "Image file exported to " + file.getName());
                 }
             } catch (Exception ex) {
-                MessageHandler.error(
-                        "Export to "
-                                + _formatName.toUpperCase(Locale.getDefault())
-                                + " failed", ex);
+                MessageHandler.error("Export to "
+                        + _formatName.toUpperCase(Locale.getDefault())
+                        + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }
@@ -975,6 +980,7 @@ public class TextEditor extends TableauFrame
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     Integer.valueOf(KeyEvent.VK_F));
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -999,6 +1005,7 @@ public class TextEditor extends TableauFrame
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     Integer.valueOf(KeyEvent.VK_P));
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             text.paste();
@@ -1019,6 +1026,7 @@ public class TextEditor extends TableauFrame
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     Integer.valueOf(KeyEvent.VK_R));
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -1043,6 +1051,7 @@ public class TextEditor extends TableauFrame
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     Integer.valueOf(KeyEvent.VK_U));
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {

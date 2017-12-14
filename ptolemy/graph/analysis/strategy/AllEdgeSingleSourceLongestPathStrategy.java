@@ -53,7 +53,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
-implements SingleSourceLongestPathAnalyzer {
+        implements SingleSourceLongestPathAnalyzer {
     /** Construct an instance of this analyzer.
      *
      *  @param graph The given graph.
@@ -114,7 +114,8 @@ implements SingleSourceLongestPathAnalyzer {
 
             do {
                 pathNodes.add(predecessor);
-                predecessorsIndex = predecessors[graph().nodeLabel(predecessor)];
+                predecessorsIndex = predecessors[graph()
+                        .nodeLabel(predecessor)];
 
                 if (predecessorsIndex != -1) {
                     predecessor = graph().node(predecessorsIndex);
@@ -222,8 +223,8 @@ implements SingleSourceLongestPathAnalyzer {
             Collection successors = graph.successors(u);
 
             if (successors != null) {
-                for (Iterator successorNodes = successors.iterator(); successorNodes
-                        .hasNext();) {
+                for (Iterator successorNodes = successors
+                        .iterator(); successorNodes.hasNext();) {
                     Node v = (Node) successorNodes.next();
                     double predecessorDistance = distance[graph().nodeLabel(u)];
                     double actualDistance = distance[graph().nodeLabel(v)];

@@ -67,8 +67,8 @@ public class TextView extends AbstractView {
             // Get notified every time text is changed in the component to update
             // our text document.  The "Document" here is a
             // javax.swing.text.Document.  Don't get confused!
-            _editorPane.getDocument().addDocumentListener(
-                    new DocumentListener() {
+            _editorPane.getDocument()
+                    .addDocumentListener(new DocumentListener() {
                         @Override
                         public void changedUpdate(DocumentEvent e) {
                             getTextDocument().setText(_editorPane.getText());

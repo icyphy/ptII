@@ -258,13 +258,13 @@ public class EditorIcon extends Attribute implements IconAttribute {
                         }
                     }
 
-                    Locatable location = (Locatable) attribute.getAttribute(
-                            "_location", Locatable.class);
+                    Locatable location = (Locatable) attribute
+                            .getAttribute("_location", Locatable.class);
 
                     if (location != null) {
                         double[] locationValue = location.getLocation();
-                        CanvasUtilities.translateTo(subFigure,
-                                locationValue[0], locationValue[1]);
+                        CanvasUtilities.translateTo(subFigure, locationValue[0],
+                                locationValue[1]);
                     }
                 } catch (IllegalActionException e) {
                     throw new InternalErrorException(e);
@@ -411,8 +411,8 @@ public class EditorIcon extends Attribute implements IconAttribute {
 
                 // Shift the label slightly right and down so it doesn't
                 // collide with ports.
-                label.translateTo(backBounds.getX() + 5, backBounds.getY()
-                        + backBounds.getHeight() + 5);
+                label.translateTo(backBounds.getX() + 5,
+                        backBounds.getY() + backBounds.getHeight() + 5);
                 figure.add(label);
             }
         }

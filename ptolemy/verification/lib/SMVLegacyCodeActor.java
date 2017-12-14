@@ -90,9 +90,9 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
                 + " * would be generated automatically.\n" + " */";
         embeddedSMVCode.setExpression(code);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"64\" height=\"30\" "
-                + "style=\"fill:black\"/>\n" + "<text x=\"-29\" y=\"4\""
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                + "width=\"64\" height=\"30\" " + "style=\"fill:black\"/>\n"
+                + "<text x=\"-29\" y=\"4\""
                 + "style=\"font-size:9; fill:white; font-family:SansSerif\">"
                 + "EmbeddedSMV</text>\n" + "</svg>\n");
 
@@ -118,8 +118,8 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
      */
     @Override
     public void preinitialize() throws IllegalActionException {
-        throw new IllegalActionException(this, getName() + " can not run in "
-                + "simulation mode.");
+        throw new IllegalActionException(this,
+                getName() + " can not run in " + "simulation mode.");
     }
 
     ///////////////////////////////////////////////////////////////////

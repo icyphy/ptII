@@ -82,7 +82,8 @@ public class StreamErrorHandler implements ErrorHandler {
      *  @return CONTINUE to request skipping this element.
      */
     @Override
-    public int handleError(String element, NamedObj context, Throwable exception) {
+    public int handleError(String element, NamedObj context,
+            Throwable exception) {
         _output.println("Error encountered in:\n" + element + "\n"
                 + KernelException.stackTraceToString(exception));
         return CONTINUE;

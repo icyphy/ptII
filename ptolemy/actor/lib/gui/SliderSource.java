@@ -342,8 +342,8 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         public SliderFrame(int minimum, int maximum, int majorTickSpacing,
                 int minorTickSpacing, String title) {
 
-            JPanel panel = createSliderPanel(minimum, maximum,
-                    majorTickSpacing, minorTickSpacing, title);
+            JPanel panel = createSliderPanel(minimum, maximum, majorTickSpacing,
+                    minorTickSpacing, title);
             _slider = (JSlider) panel.getComponent(0);
             getContentPane().add(panel);
             pack();

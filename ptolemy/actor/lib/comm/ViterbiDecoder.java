@@ -475,10 +475,10 @@ public class ViterbiDecoder extends Transformer {
                     _truthTable[state][head][0] = outValue;
 
                     int oldState = reg >> _inputNumber;
-                        _truthTable[state][head][1] = oldState;
+                    _truthTable[state][head][1] = oldState;
 
-                        int input = reg & inputMask;
-                        _truthTable[state][head][2] = input;
+                    int input = reg & inputMask;
+                    _truthTable[state][head][2] = input;
                 }
             }
         }
@@ -530,8 +530,8 @@ public class ViterbiDecoder extends Transformer {
                         y[i] = ((BooleanToken) inputToken[i]).booleanValue();
                     }
 
-                    d = _computeHardDistance(y,
-                            _truthTable[state][colIndex][0], _maskNumber);
+                    d = _computeHardDistance(y, _truthTable[state][colIndex][0],
+                            _maskNumber);
                 }
 
                 // The previous state for that possibility.
@@ -673,8 +673,8 @@ public class ViterbiDecoder extends Transformer {
             int truthBit = truthValue & 1;
             truthValue = truthValue >> 1;
 
-        // Compute Hamming distance for hard decoding.
-        hammingDistance = hammingDistance + ((y[i] ? 1 : 0) ^ truthBit);
+            // Compute Hamming distance for hard decoding.
+            hammingDistance = hammingDistance + ((y[i] ? 1 : 0) ^ truthBit);
         }
 
         return hammingDistance;

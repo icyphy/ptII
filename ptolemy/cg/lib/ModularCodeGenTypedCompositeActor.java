@@ -84,8 +84,8 @@ public class ModularCodeGenTypedCompositeActor extends
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ModularCodeGenTypedCompositeActor() throws IllegalActionException,
-            NameDuplicationException {
+    public ModularCodeGenTypedCompositeActor()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -117,8 +117,8 @@ public class ModularCodeGenTypedCompositeActor extends
      *   actor with this name.
      */
     public ModularCodeGenTypedCompositeActor(CompositeEntity container,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
     }
@@ -145,10 +145,11 @@ public class ModularCodeGenTypedCompositeActor extends
             // FIXME: this breaks lazyness.  A better
             // solution would be to look up the tree for a parent
             if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
-                List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+                List<?> entities = entityList(
+                        ModularCodeGenTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
-                    .setToken(new BooleanToken(true));
+                            .setToken(new BooleanToken(true));
                 }
             }
             //        } else if (attribute == recompileThisLevel) {
@@ -198,7 +199,8 @@ public class ModularCodeGenTypedCompositeActor extends
                 return super.portList();
             } catch (IllegalActionException e) {
                 profile = null;
-                List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+                List<?> entities = entityList(
+                        ModularCodeGenTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCodeGenTypedCompositeActor) entity).populate();
                 }
@@ -235,8 +237,8 @@ public class ModularCodeGenTypedCompositeActor extends
             if (_debugging) {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
-            System.out
-            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+            System.out.println(
+                    "ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -319,12 +321,10 @@ public class ModularCodeGenTypedCompositeActor extends
                     } catch (ClassNotFoundException ex2) {
                         ex2.printStackTrace();
                         throw new ClassNotFoundException("Failed to load "
-                                + className
-                                + " using URLClassLoader based on "
-                                + url
-                                + ", urls were: "
-                                + java.util.Arrays.deepToString(classLoader
-                                        .getURLs()) + "\n" + ex2);
+                                + className + " using URLClassLoader based on "
+                                + url + ", urls were: " + java.util.Arrays
+                                        .deepToString(classLoader.getURLs())
+                                + "\n" + ex2);
                     }
                 }
 
@@ -419,16 +419,16 @@ public class ModularCodeGenTypedCompositeActor extends
                             for (Object actorPort : ports) {
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
-                                    DFUtilities
-                                    .setRateVariable(
+                                    DFUtilities.setRateVariable(
                                             (IOPort) actorPort,
-                                            port.input() ? "tokenConsumptionRate"
+                                            port.input()
+                                                    ? "tokenConsumptionRate"
                                                     : "tokenProductionRate",
-                                                    port.rate());
+                                            port.rate());
                                     ((TypedIOPort) actorPort)
-                                    .setTypeEquals(JavaCodeGenerator
-                                            .codeGenTypeToPtType(port
-                                                    .type()));
+                                            .setTypeEquals(JavaCodeGenerator
+                                                    .codeGenTypeToPtType(
+                                                            port.type()));
                                     break;
                                 }
                             }
@@ -441,15 +441,16 @@ public class ModularCodeGenTypedCompositeActor extends
                                         BooleanToken.TRUE);
                                 newPort.setInput(port.input());
                                 newPort.setOutput(port.output());
-                                DFUtilities.setRateVariable(newPort, port
-                                        .input() ? "tokenConsumptionRate"
-                                                : "tokenProductionRate", port.rate());
+                                DFUtilities.setRateVariable(newPort,
+                                        port.input() ? "tokenConsumptionRate"
+                                                : "tokenProductionRate",
+                                        port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                    .linkToPublishedPort(
-                                            port.getPubSubChannelName(),
-                                            newPort);
+                                            .linkToPublishedPort(
+                                                    port.getPubSubChannelName(),
+                                                    newPort);
                                 }
                             }
                         }
@@ -491,7 +492,8 @@ public class ModularCodeGenTypedCompositeActor extends
             throws NameDuplicationException, IllegalActionException {
         try {
             ++_creatingPubSub;
-            if (_subscriberPorts != null && _subscriberPorts.containsKey(name)) {
+            if (_subscriberPorts != null
+                    && _subscriberPorts.containsKey(name)) {
                 // The model was run with a subscriber without a publisher. This resulted
                 // in a number of stub subscriber ports. These should be cleaned up since
                 // we now have a publisher.
@@ -575,8 +577,8 @@ public class ModularCodeGenTypedCompositeActor extends
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _createCodeGenerator() throws IllegalActionException,
-    NameDuplicationException {
+    private void _createCodeGenerator()
+            throws IllegalActionException, NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularCodeGenerator(this,
                     "ModularCodeGenerator");
@@ -591,8 +593,8 @@ public class ModularCodeGenTypedCompositeActor extends
      *  @exception NameDuplicationException If the actor already has a
      *   parameter with this name.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
         // However, a parent class, TypedCompositeActor sets the classname
@@ -633,9 +635,10 @@ public class ModularCodeGenTypedCompositeActor extends
         _codeGenerator.createProfile();
         int returnValue = 0;
         if ((returnValue = _codeGenerator.generateCode()) != 0) {
-            throw new KernelException(this, null, "Failed to generate code, "
-                    + "the return value of the last subprocess was "
-                    + returnValue);
+            throw new KernelException(this, null,
+                    "Failed to generate code, "
+                            + "the return value of the last subprocess was "
+                            + returnValue);
         }
     }
 
@@ -707,7 +710,7 @@ public class ModularCodeGenTypedCompositeActor extends
     private boolean _modelChanged() throws IllegalActionException {
         if (((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                .booleanValue()) {
+                        .booleanValue()) {
             return true;
         }
 

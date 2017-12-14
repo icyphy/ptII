@@ -27,19 +27,24 @@ public class DespeckleFilter extends WholeImageFilter {
     }
 
     private short pepperAndSalt(short c, short v1, short v2) {
-        if (c < v1)
+        if (c < v1) {
             c++;
-        if (c < v2)
+        }
+        if (c < v2) {
             c++;
-        if (c > v1)
+        }
+        if (c > v1) {
             c--;
-        if (c > v2)
+        }
+        if (c > v2) {
             c--;
+        }
         return c;
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int index = 0;
         short[][] r = new short[3][width];
         short[][] g = new short[3][width];
@@ -93,7 +98,8 @@ public class DespeckleFilter extends WholeImageFilter {
                     ob = pepperAndSalt(ob, b[2][w], b[0][e]);
                 }
 
-                outPixels[index] = (inPixels[index] & 0xff000000) | (or << 16) | (og << 8) | ob;
+                outPixels[index] = (inPixels[index] & 0xff000000) | (or << 16)
+                        | (og << 8) | ob;
                 index++;
             }
             short[] t;

@@ -131,8 +131,8 @@ public class ModelCombine extends Transformer {
                 moml.append("\n");
                 moml.append(StringUtilities.getIndentPrefix(1));
                 moml.append("</group>");
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        entity1, moml.toString());
+                MoMLChangeRequest request = new MoMLChangeRequest(this, entity1,
+                        moml.toString());
                 request.execute();
             }
         }

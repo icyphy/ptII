@@ -129,8 +129,8 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     @Override
     public void initializeEffigy() throws IllegalActionException {
         // Need an effigy and a tableau so that menu ops work properly.
-        Effigy containerEffigy = Configuration.findEffigy(_plotterBase
-                .toplevel());
+        Effigy containerEffigy = Configuration
+                .findEffigy(_plotterBase.toplevel());
 
         if (containerEffigy == null) {
             try {
@@ -176,8 +176,8 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * @exception IllegalActionException If there is a problem initializing the effigy
      */
     @Override
-    public void initWindowAndSizeProperties() throws IllegalActionException,
-    NameDuplicationException {
+    public void initWindowAndSizeProperties()
+            throws IllegalActionException, NameDuplicationException {
         _windowProperties = (WindowPropertiesAttribute) _plotterBase
                 .getAttribute("_windowProperties",
                         WindowPropertiesAttribute.class);

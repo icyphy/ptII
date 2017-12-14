@@ -107,8 +107,8 @@ public class ComboBox extends GUIProperty implements ItemListener {
      *   an attribute already in the container.
      */
     public ComboBox(NamedObj container, String name, JComponent component,
-            Object constraint) throws IllegalActionException,
-            NameDuplicationException {
+            Object constraint)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, component, constraint);
     }
 
@@ -171,7 +171,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
 
     /**
      The base class for an item that can be added to the combo box as a choice.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -240,7 +240,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
             super.setContainer(container);
             if (container != null) {
                 ((JComboBox) ((ComboBox) container).getComponent())
-                .addItem(this);
+                        .addItem(this);
             }
         }
 

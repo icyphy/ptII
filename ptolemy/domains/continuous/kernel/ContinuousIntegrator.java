@@ -127,8 +127,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (yuhong)
  */
-public class ContinuousIntegrator extends TypedAtomicActor implements
-ContinuousStatefulComponent, ContinuousStepSizeController {
+public class ContinuousIntegrator extends TypedAtomicActor
+        implements ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.
@@ -154,8 +154,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
         state = new TypedIOPort(this, "state", false, true);
         state.setTypeEquals(BaseType.DOUBLE);
 
-        initialState = new PortParameter(this, "initialState", new DoubleToken(
-                0.0));
+        initialState = new PortParameter(this, "initialState",
+                new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
         cardinality = new StringAttribute(initialState.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
@@ -221,8 +221,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ContinuousIntegrator newObject = (ContinuousIntegrator) super
-                .clone(workspace);
+        ContinuousIntegrator newObject = (ContinuousIntegrator) super.clone(
+                workspace);
         newObject._auxVariables = null;
         newObject._causalityInterface = new IntegratorCausalityInterface(
                 newObject, BooleanDependency.OTIMES_IDENTITY);
@@ -255,8 +255,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
 
         if (_debugging) {
             Time currentTime = dir.getModelTime();
-            _debug("Fire at time " + currentTime + " and microstep "
-                    + microstep + " with step size " + stepSize);
+            _debug("Fire at time " + currentTime + " and microstep " + microstep
+                    + " with step size " + stepSize);
         }
         // First handle the impulse input.
         if (impulse.getWidth() > 0 && impulse.hasToken(0)) {
@@ -381,8 +381,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
      *  @exception IllegalActionException If thrown while reading
      *  the input.
      */
-    public double getDerivative() throws NoTokenException,
-    IllegalActionException {
+    public double getDerivative()
+            throws NoTokenException, IllegalActionException {
         double result = ((DoubleToken) derivative.get(0)).doubleValue();
         if (_debugging) {
             _debug("Read input: " + result);
@@ -503,8 +503,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if ((impulse.getWidth() == 0 || impulse.isKnown(0))
-                && (initialState.getPort().getWidth() == 0 || initialState
-                .getPort().isKnown(0))) {
+                && (initialState.getPort().getWidth() == 0
+                        || initialState.getPort().isKnown(0))) {
             return result;
         }
         return false;
@@ -622,8 +622,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
      *  equivalent (the base class will make all ports equivalent because
      *  the initialState input is a ParameterPort).
      */
-    private static class IntegratorCausalityInterface extends
-    DefaultCausalityInterface {
+    private static class IntegratorCausalityInterface
+            extends DefaultCausalityInterface {
         public IntegratorCausalityInterface(ContinuousIntegrator actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);

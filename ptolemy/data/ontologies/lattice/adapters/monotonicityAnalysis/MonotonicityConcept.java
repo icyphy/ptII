@@ -147,8 +147,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
                 case CPO.SAME:
                     break;
                 default:
-                    throw new IllegalActionException(
-                            this,
+                    throw new IllegalActionException(this,
                             "ConceptGraph compare "
                                     + "did not return one of the defined CPO values. "
                                     + "Return value was " + result
@@ -212,8 +211,8 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
     // FIXME: GLB method needs to be implemented.
     @Override
     public Concept greatestLowerBound(Concept concept) {
-        throw new IllegalArgumentException("greatestLowerBound method not "
-                + "implemented.");
+        throw new IllegalArgumentException(
+                "greatestLowerBound method not " + "implemented.");
     }
 
     /** Compute the least upper bound (LUB) of this and another concept.

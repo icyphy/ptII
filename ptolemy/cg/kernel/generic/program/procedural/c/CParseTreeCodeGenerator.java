@@ -122,7 +122,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         //_fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
         //String[] elements = new String[numChildren];
-        StringBuffer result = new StringBuffer(numChildren + ", " + numChildren);
+        StringBuffer result = new StringBuffer(
+                numChildren + ", " + numChildren);
 
         // Convert up to LUB.
         // Assume UNKNOWN is the lower type.
@@ -164,8 +165,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         if (elementType instanceof ArrayType) {
             _childCode = "$new(" + "Array(" + result + "))";
         } else {
-            _childCode = "$new(" + _codeGenType(elementType) + "Array("
-                    + result + "))";
+            _childCode = "$new(" + _codeGenType(elementType) + "Array(" + result
+                    + "))";
 
         }
 
@@ -218,11 +219,11 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         functionCode += " $actorSymbol(function) (";
         List argumentNames = node.getArgumentNameList();
         Type[] argumentTypes = node.getArgumentTypes();
-
+        
         if (argumentNames.size() > 0) {
             functionCode += argumentTypes[0] + " ";
             functionCode += argumentNames.get(0);
-
+        
             for (int i = 1; i < argumentNames.size(); i++) {
                 functionCode += ", " + argumentTypes[i] + " ";
                 functionCode += argumentNames.get(i);
@@ -273,7 +274,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
         /*
          ptolemy.data.Token test = _evaluatedChildToken;
-
+        
          if (!(test instanceof BooleanToken)) {
          throw new IllegalActionException(
          "Functional-if must branch on a boolean, but instead test "
@@ -281,16 +282,16 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
          + test.toString() + "an instance of "
          + test.getClass().getName()));
          }
-
+        
          boolean value = ((BooleanToken) test).booleanValue();
-
+        
          // Choose the correct sub-expression to evaluate,
          // and type check the other.
          if (_typeInference == null) {
          _typeInference = new ParseTreeTypeInference();
          }
-
-
+        
+        
          if (value) {
          */
         //_fireCode.append(" ? ");
@@ -313,8 +314,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         ptolemy.data.Token token1 = _evaluatedChildToken;
         ptolemy.data.Token token2 = _evaluatedChildToken;
 
-        Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(
-                token1.getType(), token2.getType());
+        Type conversionType = (Type) TypeLattice.lattice()
+                .leastUpperBound(token1.getType(), token2.getType());
 
         _evaluatedChildToken = conversionType.convert(token1);
 
@@ -331,7 +332,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             if (_evaluatedChildToken instanceof StringToken) {
@@ -340,8 +342,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
                 //_fireCode.append(escapeForTargetLanguage(_evaluatedChildToken.toString()));
 
-                _childCode = escapeForTargetLanguage(_evaluatedChildToken
-                        .toString());
+                _childCode = escapeForTargetLanguage(
+                        _evaluatedChildToken.toString());
 
             } else if (_evaluatedChildToken instanceof LongToken) {
                 //_fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
@@ -405,8 +407,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
             return;
         }
 
-        throw new IllegalActionException("The ID " + node.getName()
-                + " is undefined.");
+        throw new IllegalActionException(
+                "The ID " + node.getName() + " is undefined.");
     }
 
     /** Construct a matrix containing the children nodes.
@@ -430,8 +432,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[row * column];
 
         //_fireCode.append("((Token*) $new(Matrix(" + row + ", " + column);
-        StringBuffer result = new StringBuffer(row + ", " + column + ", " + row
-                * column);
+        StringBuffer result = new StringBuffer(
+                row + ", " + column + ", " + row * column);
 
         ptolemy.data.Token childToken = null;
         ptolemy.data.type.Type elementType = BaseType.UNKNOWN;
@@ -468,8 +470,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
             } else {
                 result.append(", TYPE_" + codegenType);
             }
-            result = new StringBuffer("($new(" + /*codegenType + */"Matrix("
-                    + result.toString());
+            result = new StringBuffer(
+                    "($new(" + /*codegenType + */"Matrix(" + result.toString());
             _childCode = result.toString() + ")))";
 
             childToken = MatrixToken.arrayToMatrix(tokens, node.getRowCount(),
@@ -495,14 +497,13 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                                                                           .getRowCount() * columnCount];
+                        .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
-                    ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i], tokens[3 * i + 1],
-                                    columnCount);
-                    System.arraycopy(newTokens, 0, matrixTokens, columnCount
-                            * i, columnCount);
+                    ptolemy.data.Token[] newTokens = MatrixToken.createSequence(
+                            tokens[3 * i], tokens[3 * i + 1], columnCount);
+                    System.arraycopy(newTokens, 0, matrixTokens,
+                            columnCount * i, columnCount);
                 }
 
                 childToken = MatrixToken.arrayToMatrix(matrixTokens,
@@ -574,10 +575,10 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
                 }
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
-                    result = new StringBuffer("$divide_"
-                            + _codeGenType(resultType) + "_"
-                            + _codeGenType(type) + "(" + result + ", "
-                            + _childCode + ")");
+                    result = new StringBuffer(
+                            "$divide_" + _codeGenType(resultType) + "_"
+                                    + _codeGenType(type) + "(" + result + ", "
+                                    + _childCode + ")");
 
                     resultType = resultType.divide(type);
 
@@ -648,8 +649,8 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         Type elementType = ((ArrayType) type).getElementType();
 
         //_fireCode.append("Array_get(");
-        StringBuffer result = new StringBuffer(_codeGenType(elementType)
-                + "Array_get(");
+        StringBuffer result = new StringBuffer(
+                _codeGenType(elementType) + "Array_get(");
 
         String name = value.toString();
         if (name.startsWith("object(")) {

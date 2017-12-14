@@ -120,9 +120,8 @@ public class Gem5Wrapper extends SequenceSource {
         output.setAutomaticTypeConversion(false);
         //output.setTypeEquals(BaseType.Arra);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-20,10 20,-10 20,10\" "
                 + "style=\"fill:grey\"/>\n" + "</svg>\n");
 
@@ -165,6 +164,7 @@ public class Gem5Wrapper extends SequenceSource {
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -178,6 +178,7 @@ public class Gem5Wrapper extends SequenceSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Gem5Wrapper newObject = (Gem5Wrapper) super.clone(workspace);
 
@@ -205,9 +206,8 @@ public class Gem5Wrapper extends SequenceSource {
                 }
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to read "
-                    +  pipePathPrefix.getValueAsString() + "/write_pipe");
+            throw new IllegalActionException(this, ex, "Failed to read "
+                    + pipePathPrefix.getValueAsString() + "/write_pipe");
         }
         StringBuilder result = new StringBuilder();
         ArrayList<RecordToken> tokenArray = new ArrayList<RecordToken>();
@@ -233,28 +233,36 @@ public class Gem5Wrapper extends SequenceSource {
                         if (isFirstToken) {
                             isFirstToken = false;
 
-                            long cpuInitTime = Long.parseLong(curToken.substring(0, curToken.length() - 1));
-                            initTime = (int)((cpuInitTime + _systemClockPeriod) / _systemClockPeriod); // in ns
+                            long cpuInitTime = Long.parseLong(curToken
+                                    .substring(0, curToken.length() - 1));
+                            initTime = (int) ((cpuInitTime + _systemClockPeriod)
+                                    / _systemClockPeriod); // in ns
                             serviceTime = initTime % _sampleTime;
                         } else if (curToken.contains("Rank")) {
                             isRank = true;
                         } else if (isRank) {
                             isRank = false;
-                            rankNumber = Integer.parseInt(curToken.substring(0, curToken.length()));
+                            rankNumber = Integer.parseInt(
+                                    curToken.substring(0, curToken.length()));
                         } else if (curToken.contains("Bank")) {
                             isBank = true;
                         } else if (isBank) {
                             isBank = false;
-                            bankNumber = Integer.parseInt(curToken.substring(0, curToken.length()));
-                        } else if (curToken.contains("PRE") || curToken.contains("ACT")
-                                || curToken.contains("READ") || curToken.contains("WRITE")) {
+                            bankNumber = Integer.parseInt(
+                                    curToken.substring(0, curToken.length()));
+                        } else if (curToken.contains("PRE")
+                                || curToken.contains("ACT")
+                                || curToken.contains("READ")
+                                || curToken.contains("WRITE")) {
                             isCommand = true;
-                            command = new String(curToken.substring(0, curToken.length() - 1));
+                            command = new String(curToken.substring(0,
+                                    curToken.length() - 1));
                         } else if (isCommand) {
                             isCommand = false;
                             // from previous delay
                             int delayDiff = Integer.parseInt(curToken);
-                            delayDiff = ((delayDiff + _systemClockPeriod) / _systemClockPeriod); // in ns
+                            delayDiff = ((delayDiff + _systemClockPeriod)
+                                    / _systemClockPeriod); // in ns
                             commandTime += delayDiff;
                             tokens[0] = new StringToken(command);
                             tokens[1] = new IntToken(initTime + commandTime);
@@ -283,8 +291,7 @@ public class Gem5Wrapper extends SequenceSource {
         Token[] dummy = new Token[0];
         if (tokenArray.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             return new ArrayToken(tokenArray.toArray(dummy));
         }
     }
@@ -293,6 +300,7 @@ public class Gem5Wrapper extends SequenceSource {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -308,6 +316,7 @@ public class Gem5Wrapper extends SequenceSource {
      *  parameter on each iteration (in the postfire() method).
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -320,14 +329,18 @@ public class Gem5Wrapper extends SequenceSource {
                 _writePipe = null;
             }
 
-            String outputFileName = pipePathPrefix.getValueAsString() + "/read_pipe";
-            _readPipe = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFileName))));
+            String outputFileName = pipePathPrefix.getValueAsString()
+                    + "/read_pipe";
+            _readPipe = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(new File(outputFileName))));
 
             _readPipe.newLine();
             _readPipe.flush();
 
-            String inputFileName = pipePathPrefix.getValueAsString() + "/write_pipe";
-            _writePipe = new InputStreamReader(new FileInputStream(new File(inputFileName)));
+            String inputFileName = pipePathPrefix.getValueAsString()
+                    + "/write_pipe";
+            _writePipe = new InputStreamReader(
+                    new FileInputStream(new File(inputFileName)));
             //_process = pb.start();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -343,10 +356,10 @@ public class Gem5Wrapper extends SequenceSource {
                             "Failed to close the temporary pipe.");
                 }
             }
-            _tempPipe = new BufferedReader(new FileReader(pipePathPrefix.getValueAsString() + "/temp_pipe"));
+            _tempPipe = new BufferedReader(new FileReader(
+                    pipePathPrefix.getValueAsString() + "/temp_pipe"));
         } catch (FileNotFoundException ex) {
-            throw new InternalErrorException(this, ex,
-                    "Failed to create "
+            throw new InternalErrorException(this, ex, "Failed to create "
                     + pipePathPrefix.getValueAsString() + "/temp_pipe");
         }
     }
@@ -362,6 +375,7 @@ public class Gem5Wrapper extends SequenceSource {
      *  @exception IllegalActionException If the firingCountLimit parameter
      *   has an invalid expression.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
 
         // FIXME: If the init and step PortParameters remain, this
@@ -375,7 +389,7 @@ public class Gem5Wrapper extends SequenceSource {
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to close or flush the "
-                    +  pipePathPrefix.getValueAsString() + "/read_pipe");
+                            + pipePathPrefix.getValueAsString() + "/read_pipe");
         }
         return super.postfire();
     }
@@ -383,7 +397,8 @@ public class Gem5Wrapper extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static String[] _labels =  {"cmd", "cmd_time", "rank", "bank", "service_time"};
+    private static String[] _labels = { "cmd", "cmd_time", "rank", "bank",
+            "service_time" };
 
     /** The pipePathPrefix/temp_pipe. */
     private BufferedReader _tempPipe;
@@ -394,23 +409,26 @@ public class Gem5Wrapper extends SequenceSource {
     private BufferedWriter _readPipe;
 
     private int _systemClockPeriod = 1000;
-    private int _sampleTime = 500 * 1000;        // 0.5 ms
+    private int _sampleTime = 500 * 1000; // 0.5 ms
 
-    private static Type[] _types = {BaseType.STRING, BaseType.INT, BaseType.INT, BaseType.INT, BaseType.INT};
+    private static Type[] _types = { BaseType.STRING, BaseType.INT,
+            BaseType.INT, BaseType.INT, BaseType.INT };
 
     /** The pipePathPrefix/write_pipe. */
     private InputStreamReader _writePipe;
 
     /** Sort by the difference between the command times. */
-    public static class SortByCommandTime implements Comparator<RecordToken>, Serializable {
+    public static class SortByCommandTime
+            implements Comparator<RecordToken>, Serializable {
         /** Return the difference between time 1 and time2.
          *  @param t1 The record token containing the first time.
          *  @param t2 The record token containing the first time.
          *  @return The difference between the two times.
          */
+        @Override
         public int compare(RecordToken t1, RecordToken t2) {
-            int time1 = ((IntToken)t1.get(_labels[1])).intValue();
-            int time2 = ((IntToken)t2.get(_labels[1])).intValue();
+            int time1 = ((IntToken) t1.get(_labels[1])).intValue();
+            int time2 = ((IntToken) t2.get(_labels[1])).intValue();
             return (time1 - time2);
         }
     }

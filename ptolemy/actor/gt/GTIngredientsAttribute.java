@@ -104,8 +104,8 @@ public class GTIngredientsAttribute extends StringAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GTIngredientsAttribute newObject = (GTIngredientsAttribute) super
-                .clone(workspace);
+        GTIngredientsAttribute newObject = (GTIngredientsAttribute) super.clone(
+                workspace);
         try {
             newObject._parse();
         } catch (MalformedStringException ex) {
@@ -121,7 +121,8 @@ public class GTIngredientsAttribute extends StringAttribute {
      *  @exception MalformedStringException If error occurs while parsing the
      *   expression.
      */
-    public GTIngredientList getIngredientList() throws MalformedStringException {
+    public GTIngredientList getIngredientList()
+            throws MalformedStringException {
         if (!_parsed) {
             _parse();
         }

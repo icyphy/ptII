@@ -90,12 +90,12 @@ public class ReceiverComparator implements Comparator {
             if (object2 instanceof PrioritizedTimedQueue) {
                 receiver2 = (PrioritizedTimedQueue) object2;
             } else {
-                throw new ClassCastException(object2
-                        + " is not a PrioritizedTimedQueue.");
+                throw new ClassCastException(
+                        object2 + " is not a PrioritizedTimedQueue.");
             }
         } else {
-            throw new ClassCastException(object1
-                    + " is not a PrioritizedTimedQueue.");
+            throw new ClassCastException(
+                    object1 + " is not a PrioritizedTimedQueue.");
         }
 
         //

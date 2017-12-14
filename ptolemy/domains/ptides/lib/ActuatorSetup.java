@@ -128,8 +128,8 @@ public class ActuatorSetup extends OutputDevice {
 
         // Perform port consistency check if the schedulerExecutionTime
         // parameter of the director is 0.0.
-        Parameter parameter = (Parameter) getDirector().getAttribute(
-                "schedulerExecutionTime");
+        Parameter parameter = (Parameter) getDirector()
+                .getAttribute("schedulerExecutionTime");
         if (parameter != null
                 && ((DoubleToken) parameter.getToken()).doubleValue() != 0.0) {
             boolean flag = false;

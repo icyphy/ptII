@@ -46,9 +46,8 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
  */
-public class SDFDirector
-        extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+public class SDFDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -68,8 +67,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.ker
     @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the inside.")));
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
@@ -83,7 +82,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.ker
                     " is not an instance of TypedIOPort.");
         }
 
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(inputPort);
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(
+                inputPort);
 
         // FIXME: not sure what to do with this offset here.
         String offset = "";
@@ -124,7 +124,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.ker
 
             code.append(inputCode);
             code.append(" = ");
-            code.append(portAdapter.generateGetCode(Integer.toString(i), offset));
+            code.append(
+                    portAdapter.generateGetCode(Integer.toString(i), offset));
             code.append(";" + _eol);
             code.append("}" + _eol);
         }
@@ -143,10 +144,10 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.ker
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     @Override
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the outside.")));
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("SDFDirector: " + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
@@ -155,7 +156,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.ker
         //TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
         //    .getAdapter(container);
 
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(
+                outputPort);
 
         // FIXME: not sure what to do with this offset here.
         String offset = "";
@@ -179,8 +181,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.ker
                 //                    outputCode.append("[" + bufferSize + "]");
             }
 
-            code.append(portAdapter.generatePutCode(Integer.toString(i),
-                    offset, outputCode.toString()));
+            code.append(portAdapter.generatePutCode(Integer.toString(i), offset,
+                    outputCode.toString()));
         }
 
         // The offset of the ports connected to the output port is

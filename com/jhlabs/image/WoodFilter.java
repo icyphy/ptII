@@ -210,9 +210,9 @@ public class WoodFilter extends PointFilter {
 
         int a = rgb & 0xff000000;
         int v;
-        if (colormap != null)
+        if (colormap != null) {
             v = colormap.getColor(f);
-        else {
+        } else {
             v = PixelUtils.clamp((int) (f * 255));
             int r = v << 16;
             int g = v << 8;

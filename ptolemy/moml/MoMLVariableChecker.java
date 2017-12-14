@@ -109,15 +109,15 @@ public class MoMLVariableChecker {
             MoMLParser.setErrorHandler(null);
             try {
                 // Parse the momlToBeChecked.
-                parsedContainer = (TypedCompositeActor) parser
-                        .parse("<entity name=\"auto\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                                + _variableBuffer.toString()
-                                + momlToBeChecked
+                parsedContainer = (TypedCompositeActor) parser.parse(
+                        "<entity name=\"auto\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                                + _variableBuffer.toString() + momlToBeChecked
                                 + "</entity>");
                 doParse = false;
             } catch (MissingClassException ex1) {
                 try {
-                    doParse = _findMissingClass(ex1, container, parsedContainer);
+                    doParse = _findMissingClass(ex1, container,
+                            parsedContainer);
                 } catch (Exception ex1a) {
                     return _variableBuffer.toString();
                 }
@@ -183,7 +183,7 @@ public class MoMLVariableChecker {
     private void _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(
             Attribute attribute, NamedObj container,
             TypedCompositeActor parsedContainer, boolean hideVariables)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         if (attribute instanceof Variable) {
             Variable variable = (Variable) attribute;
@@ -273,12 +273,11 @@ public class MoMLVariableChecker {
                 String missingClassName = exception.missingClassName();
                 if (missingClassName.equals(containedObject.getName())
                         || missingClassName.startsWith(".")
-                        && missingClassName.substring(1).equals(
-                                containedObject.getName())) {
+                                && missingClassName.substring(1)
+                                        .equals(containedObject.getName())) {
                     try {
-                        String moml = containedObject.exportMoML()
-                                .replaceFirst("<class",
-                                        "<class createIfNecessary=\"true\"");
+                        String moml = containedObject.exportMoML().replaceFirst(
+                                "<class", "<class createIfNecessary=\"true\"");
 
                         MoMLChangeRequest change = new MoMLChangeRequest(
                                 parsedContainer, parsedContainer, moml);
@@ -317,7 +316,7 @@ public class MoMLVariableChecker {
     private boolean _findUndefinedConstantsOrIdentifiers(
             IllegalActionException exception, NamedObj container,
             TypedCompositeActor parsedContainer, boolean hideVariables)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // True if we should rerun the outer parse or getToken
 
         // Ok, we have a variable that might have an appropriate
@@ -355,11 +354,8 @@ public class MoMLVariableChecker {
         // Find the variable in the object we are copying.
 
         // Get the name of the variable without the .auto.
-        String variableName = exception
-                .getNameable1()
-                .getFullName()
-                .substring(
-                        ((NamedObj) exception.getNameable1()).toplevel()
+        String variableName = exception.getNameable1().getFullName()
+                .substring(((NamedObj) exception.getNameable1()).toplevel()
                         .getName().length() + 2);
 
         return _findUndefinedConstantsOrIdentifiers(variableName,
@@ -385,7 +381,7 @@ public class MoMLVariableChecker {
     private boolean _findUndefinedConstantsOrIdentifiers(String variableName,
             String nodeName, NamedObj container,
             TypedCompositeActor parsedContainer, boolean hideVariables)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         boolean doRerun = false;
 
         Attribute masterAttribute = container.getAttribute(variableName);

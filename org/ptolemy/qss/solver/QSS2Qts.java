@@ -56,6 +56,7 @@ public final class QSS2Qts extends QSSBase {
     /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
+    @Override
     public final int getStateModelOrder() {
         return (1);
     }
@@ -63,6 +64,7 @@ public final class QSS2Qts extends QSSBase {
     /**
      * Initialize object fields (QSS-specific).
      */
+    @Override
     public final void _initializeWorker() {
 
         // Check internal consistency.
@@ -97,8 +99,9 @@ public final class QSS2Qts extends QSSBase {
      *  @param quantEvtTimeMax The maximum quantization event time.
      *  @return the predicted quantization-event time for a state (QSS-specific).
      */
-    protected final Time _predictQuantizationEventTimeWorker(
-            final int stateIdx, final Time quantEvtTimeMax) {
+    @Override
+    protected final Time _predictQuantizationEventTimeWorker(final int stateIdx,
+            final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
         // storing the returned result.
@@ -180,6 +183,7 @@ public final class QSS2Qts extends QSSBase {
      *
      *  @param stateIdx The state index.
      */
+    @Override
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -187,7 +191,8 @@ public final class QSS2Qts extends QSSBase {
         // Initialize.
         final ModelPolynomial qStateModel = _qStateModels[stateIdx];
         final ModelPolynomial cStateModel = _cStateModels[stateIdx];
-        final double dtStateModel = _currSimTime.subtractToDouble(cStateModel.tModel);
+        final double dtStateModel = _currSimTime
+                .subtractToDouble(cStateModel.tModel);
 
         // Update the external, quantized state model.
         qStateModel.tModel = _currSimTime;
@@ -199,6 +204,7 @@ public final class QSS2Qts extends QSSBase {
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
+    @Override
     protected final void _triggerRateEventWorker() throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -308,7 +314,8 @@ public final class QSS2Qts extends QSSBase {
             //   Note that here, know all continuous state models have same time.
             // Therefore can use same delta-time for all evals.
             for (int ii = 0; ii < _stateCt; ++ii) {
-                _stateValsSample2_xx[ii] = _cStateModels[ii].evaluate(dtSample2);
+                _stateValsSample2_xx[ii] = _cStateModels[ii]
+                        .evaluate(dtSample2);
             }
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample2_xx[ii] = _ivModels[ii].evaluate(tSample2);
@@ -323,7 +330,8 @@ public final class QSS2Qts extends QSSBase {
             //   Note that here, know all continuous state models have same time.
             // Therefore can use same delta-time for all evals.
             for (int ii = 0; ii < _stateCt; ++ii) {
-                _stateValsSample3_xx[ii] = _cStateModels[ii].evaluate(dtSample3);
+                _stateValsSample3_xx[ii] = _cStateModels[ii]
+                        .evaluate(dtSample3);
             }
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample3_xx[ii] = _ivModels[ii].evaluate(dtSample3);
@@ -334,8 +342,8 @@ public final class QSS2Qts extends QSSBase {
                     _stateVals_xx, _ivVals_xx, tSample, _stateValsSample_xx,
                     _ivValsSample_xx, dtSample, tSample2, _stateValsSample2_xx,
                     _ivValsSample2_xx, dtSample2, tSample3,
-                    _stateValsSample3_xx, _ivValsSample3_xx, dtSample3,
-                    null, null, null, 0.0, null, null, null, 0.0,
+                    _stateValsSample3_xx, _ivValsSample3_xx, dtSample3, null,
+                    null, null, 0.0, null, null, null, 0.0,
                     getStateModelOrder());
         }
     }
@@ -343,6 +351,7 @@ public final class QSS2Qts extends QSSBase {
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
+    @Override
     protected final void _triggerRateEventWorkerEventDetection()
             throws Exception {
 

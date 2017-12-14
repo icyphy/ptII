@@ -181,8 +181,8 @@ public class DocViewer extends HTMLViewer {
                         .get(docAttributes.size() - 1);
                 Effigy effigy = getEffigy();
                 DocEffigy newEffigy = new DocEffigy(
-                        (CompositeEntity) effigy.getContainer(), effigy
-                        .getContainer().uniqueName("parentClass"));
+                        (CompositeEntity) effigy.getContainer(),
+                        effigy.getContainer().uniqueName("parentClass"));
                 newEffigy.setDocAttribute(attribute);
                 DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                 tableau.show();
@@ -278,8 +278,8 @@ public class DocViewer extends HTMLViewer {
      */
     private void _adjustIconDisplay(final NamedObj sample,
             final CompositeEntity container, final GraphPane graphPane,
-            final JGraph jgraph) throws IllegalActionException,
-            NameDuplicationException {
+            final JGraph jgraph)
+            throws IllegalActionException, NameDuplicationException {
         // Now make appropriate modifications.
         // First, if the object has ports, add parameters to the ports
         // to display them.
@@ -293,7 +293,8 @@ public class DocViewer extends HTMLViewer {
             }
         }
         // Next, set options to display parameter values.
-        StringParameter show = new StringParameter(container, "_showParameters");
+        StringParameter show = new StringParameter(container,
+                "_showParameters");
         show.setExpression("All");
 
         // Defer this to get it to happen after rendering.
@@ -349,8 +350,9 @@ public class DocViewer extends HTMLViewer {
         //the name of the param.  a "contains" exclusion just requires that the
         //name of exclusion is contained in the name of the exclusion.
         Configuration config = getConfiguration();
-        Iterator itt = config.attributeList(
-                ptolemy.kernel.util.StringAttribute.class).iterator();
+        Iterator itt = config
+                .attributeList(ptolemy.kernel.util.StringAttribute.class)
+                .iterator();
         Vector exclusions = new Vector();
         while (itt.hasNext()) {
             NamedObj att = (NamedObj) itt.next();
@@ -403,8 +405,8 @@ public class DocViewer extends HTMLViewer {
                 // See if the next tier has documentation.
                 DocManager nextTier = manager.getNextTier();
                 if (nextTier != null) {
-                    String nextDoc = nextTier.getPropertyDoc(parameter
-                            .getName());
+                    String nextDoc = nextTier
+                            .getPropertyDoc(parameter.getName());
                     if (nextDoc != null) {
                         doc = nextDoc;
                     }
@@ -576,7 +578,8 @@ public class DocViewer extends HTMLViewer {
      *  @param manager The manager.
      *  @return Port-parameter table entries, or null if there are no port-parameters.
      */
-    private String _getPortParameterEntries(NamedObj target, DocManager manager) {
+    private String _getPortParameterEntries(NamedObj target,
+            DocManager manager) {
         StringBuffer parameters = new StringBuffer();
         parameters.append(_tr);
         parameters.append(_tdColSpan);
@@ -597,8 +600,8 @@ public class DocViewer extends HTMLViewer {
                 // See if the next tier has documentation.
                 DocManager nextTier = manager.getNextTier();
                 if (nextTier != null) {
-                    String nextDoc = nextTier.getPropertyDoc(parameter
-                            .getName());
+                    String nextDoc = nextTier
+                            .getPropertyDoc(parameter.getName());
                     if (nextDoc != null) {
                         doc = nextDoc;
                     }
@@ -628,7 +631,8 @@ public class DocViewer extends HTMLViewer {
      *  @param target The target whose parent may need to be included.
      *  @param buffer The buffer to append the definition to.
      */
-    private void _includeClassDefinitions(NamedObj target, StringBuffer buffer) {
+    private void _includeClassDefinitions(NamedObj target,
+            StringBuffer buffer) {
         if (target instanceof Instantiable) {
             NamedObj parent = (NamedObj) ((Instantiable) target).getParent();
             if (parent != null && target.toplevel().deepContains(parent)) {
@@ -648,7 +652,8 @@ public class DocViewer extends HTMLViewer {
                 buffer.append(parent.getElementName());
                 buffer.append(" name=\"");
                 buffer.append(parent.getName());
-                buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"true\"/></");
+                buffer.append(
+                        "\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"true\"/></");
                 buffer.append(parent.getElementName());
                 buffer.append(">");
             }
@@ -722,8 +727,8 @@ public class DocViewer extends HTMLViewer {
                     + className;
             int lastDot = javaDocDirectory.lastIndexOf(".");
             javaDocDirectory = javaDocDirectory.substring(0, lastDot);
-            URL base = getClass().getClassLoader().getResource(
-                    javaDocDirectory.replace('.', '/') + "/");
+            URL base = getClass().getClassLoader()
+                    .getResource(javaDocDirectory.replace('.', '/') + "/");
             setBase(base);
         }
 
@@ -757,19 +762,19 @@ public class DocViewer extends HTMLViewer {
         JEditorPane titlePane = new JEditorPane();
         titlePane.setContentType("text/html");
         titlePane.setEditable(false);
-        titlePane.setText(_HTML_HEADER + "<H2>&nbsp; " + title + "</H2>"
-                + _HTML_TAIL);
+        titlePane.setText(
+                _HTML_HEADER + "<H2>&nbsp; " + title + "</H2>" + _HTML_TAIL);
         // Set the view to the start of the text.
         titlePane.getCaret().setDot(0);
-        Dimension titleSize = new Dimension(_DESCRIPTION_WIDTH
-                + _ICON_WINDOW_WIDTH + _SPACING, 40);
+        Dimension titleSize = new Dimension(
+                _DESCRIPTION_WIDTH + _ICON_WINDOW_WIDTH + _SPACING, 40);
         titlePane.setPreferredSize(titleSize);
         // Set the min and max size so that resizing the window does not expand the title.
         titlePane.setMinimumSize(titleSize);
         titlePane.setMaximumSize(titleSize);
         titlePane.setSize(titleSize);
-        titlePane.setBorder(BorderFactory
-                .createEtchedBorder(EtchedBorder.RAISED));
+        titlePane.setBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         titlePanel.add(Box.createRigidArea(horizontalSpace));
         titlePanel.add(titlePane);
         titlePanel.add(Box.createRigidArea(horizontalSpace));
@@ -798,7 +803,8 @@ public class DocViewer extends HTMLViewer {
              *  @param exception The exception that was thrown.
              */
             @Override
-            public void changeFailed(ChangeRequest change, Exception exception) {
+            public void changeFailed(ChangeRequest change,
+                    Exception exception) {
                 if (_graphPane == null) {
                     super.changeFailed(change, exception);
                     return;
@@ -813,14 +819,15 @@ public class DocViewer extends HTMLViewer {
         };
         _graphPane = new GraphPane(controller, graphModel);
         _jgraph = new JGraph(_graphPane);
-        _jgraph.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        _jgraph.setBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         // The icon window was of fixed size until we added the JSplitPane.
         //_jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH,
         //        _ICON_WINDOW_HEIGHT));
         //_jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH,
         //        _ICON_WINDOW_HEIGHT));
-        _jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH,
-                _ICON_WINDOW_HEIGHT));
+        _jgraph.setPreferredSize(
+                new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
         _jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
         _jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
         //descriptionPanel.add(_jgraph);
@@ -832,15 +839,15 @@ public class DocViewer extends HTMLViewer {
         descriptionPane.setEditable(false);
 
         JScrollPane scroller = new JScrollPane(descriptionPane);
-        scroller.setPreferredSize(new Dimension(_DESCRIPTION_WIDTH,
-                _ICON_WINDOW_HEIGHT));
-        scroller.setBorder(BorderFactory
-                .createEtchedBorder(EtchedBorder.RAISED));
+        scroller.setPreferredSize(
+                new Dimension(_DESCRIPTION_WIDTH, _ICON_WINDOW_HEIGHT));
+        scroller.setBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         //descriptionPanel.add(scroller);
         //descriptionPanel.add(Box.createRigidArea(horizontalSpace));
 
-        JSplitPane descriptionSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                _jgraph, scroller);
+        JSplitPane descriptionSplitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT, _jgraph, scroller);
         descriptionSplitPane.setDividerLocation(_ICON_WINDOW_WIDTH);
         // Add the main content pane now.
         JPanel middle = new JPanel();
@@ -852,10 +859,10 @@ public class DocViewer extends HTMLViewer {
 
         _scroller = new JScrollPane(pane);
         // Default, which can be overridden by calling setSize().
-        _scroller.setPreferredSize(new Dimension(_MAIN_WINDOW_WIDTH,
-                _MAIN_WINDOW_HEIGHT));
-        _scroller.setBorder(BorderFactory
-                .createEtchedBorder(EtchedBorder.RAISED));
+        _scroller.setPreferredSize(
+                new Dimension(_MAIN_WINDOW_WIDTH, _MAIN_WINDOW_HEIGHT));
+        _scroller.setBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         middle.add(Box.createRigidArea(horizontalSpace));
         middle.add(_scroller);
         middle.add(Box.createRigidArea(horizontalSpace));
@@ -864,23 +871,24 @@ public class DocViewer extends HTMLViewer {
         // https://projects.ecoinformatics.org/ecoinfo/issues/5720
         JSplitPane upperSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 descriptionSplitPane, middle);
-                //                descriptionPanel, middle);
-        upperSplitPane.setPreferredSize(new Dimension(
-                      _AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
-                      _ICON_WINDOW_HEIGHT + _MAIN_WINDOW_HEIGHT));
+        //                descriptionPanel, middle);
+        upperSplitPane.setPreferredSize(
+                new Dimension(_AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
+                        _ICON_WINDOW_HEIGHT + _MAIN_WINDOW_HEIGHT));
         upperSplitPane.setOneTouchExpandable(true);
         upperSplitPane.setDividerLocation(_ICON_WINDOW_HEIGHT);
 
         // Add a panel for the icon + description and middle
         JPanel descriptionMiddlePanel = new JPanel();
         descriptionMiddlePanel.add(upperSplitPane);
-        descriptionMiddlePanel.setPreferredSize(new Dimension(
-                        _AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
+        descriptionMiddlePanel.setPreferredSize(
+                new Dimension(_AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
                         _ICON_WINDOW_HEIGHT + _MAIN_WINDOW_HEIGHT));
-        descriptionMiddlePanel.setMinimumSize(new Dimension(
-                        _AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
+        descriptionMiddlePanel.setMinimumSize(
+                new Dimension(_AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
                         _MAIN_WINDOW_HEIGHT));
-        descriptionMiddlePanel.setLayout(new BoxLayout(descriptionMiddlePanel, BoxLayout.X_AXIS));
+        descriptionMiddlePanel.setLayout(
+                new BoxLayout(descriptionMiddlePanel, BoxLayout.X_AXIS));
 
         //contentPane.add(upperSplitPane);
         contentPane.add(descriptionMiddlePanel);
@@ -902,8 +910,8 @@ public class DocViewer extends HTMLViewer {
                 _BOTTOM_HEIGHT);
         authorScroller.setPreferredSize(authorSize);
         authorScroller.setSize(authorSize);
-        authorScroller.setBorder(BorderFactory
-                .createEtchedBorder(EtchedBorder.RAISED));
+        authorScroller.setBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         bottom.add(authorScroller);
         bottom.add(Box.createRigidArea(horizontalSpace));
         // Pane for "see also" information.
@@ -915,8 +923,8 @@ public class DocViewer extends HTMLViewer {
         Dimension seeAlsoSize = new Dimension(_SEE_ALSO_WIDTH, _BOTTOM_HEIGHT);
         seeAlsoScroller.setPreferredSize(seeAlsoSize);
         seeAlsoScroller.setSize(seeAlsoSize);
-        seeAlsoScroller.setBorder(BorderFactory
-                .createEtchedBorder(EtchedBorder.RAISED));
+        seeAlsoScroller.setBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         bottom.add(seeAlsoScroller);
         bottom.add(Box.createRigidArea(horizontalSpace));
 
@@ -953,7 +961,8 @@ public class DocViewer extends HTMLViewer {
             buffer.append(target.getElementName());
             buffer.append(" name=\"");
             buffer.append(target.getName());
-            buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"false\"/></");
+            buffer.append(
+                    "\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"false\"/></");
             buffer.append(target.getElementName());
             buffer.append(">");
 
@@ -966,11 +975,8 @@ public class DocViewer extends HTMLViewer {
             // it is, and whether it has an appropriate constructor.
             if (manager.isTargetInstantiableAttribute()) {
                 // To make it visible, need to include a location attribute.
-                moml = "<property name=\""
-                        + rootName
-                        + "\" class=\""
-                        + className
-                        + "\">"
+                moml = "<property name=\"" + rootName + "\" class=\""
+                        + className + "\">"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{50, 50}\"/>"
                         + "</property>";
             } else if (manager.isTargetInstantiableEntity()) {
@@ -1208,11 +1214,9 @@ public class DocViewer extends HTMLViewer {
 
     /** HTML Header information. */
     private static String _HTML_HEADER = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-            + "\"http://www.w3.org/TR/html4/loose.dtd\">"
-            + "\n<html>\n<head>\n"
+            + "\"http://www.w3.org/TR/html4/loose.dtd\">" + "\n<html>\n<head>\n"
             + "<title>Ptolemy II Documentation</title>"
-            + "<STYLE TYPE=\"text/css\">\n"
-            + "<!--\n"
+            + "<STYLE TYPE=\"text/css\">\n" + "<!--\n"
             + "h1, h2, h3, td, tr, body, p {font-family: Arial, Helvetica, sans-serif;}\n"
             + "-->\n" + "</STYLE>" + "</head><body>";
 

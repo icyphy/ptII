@@ -172,8 +172,8 @@ public class ResourcePool extends CSPActor {
         ResourcePool newObject = (ResourcePool) super.clone(workspace);
         // set type constraints.
         try {
-            newObject.grant.setTypeAtLeast(ArrayType
-                    .elementType(newObject.initialPool));
+            newObject.grant.setTypeAtLeast(
+                    ArrayType.elementType(newObject.initialPool));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -236,8 +236,8 @@ public class ResourcePool extends CSPActor {
             Token received = branches[successfulBranch].getToken();
             _pool.add(received);
             if (_debugging) {
-                _debug("Resource released on channel " + successfulBranch
-                        + ": " + received);
+                _debug("Resource released on channel " + successfulBranch + ": "
+                        + received);
             }
         } else {
             // Rendezvous occurred with a grant output.

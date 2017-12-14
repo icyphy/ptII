@@ -83,8 +83,8 @@ public class ArrayAverage extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayAverage newObject = (ArrayAverage) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.input));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.input));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

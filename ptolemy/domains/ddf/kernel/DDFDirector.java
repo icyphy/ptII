@@ -157,8 +157,8 @@ public class DDFDirector extends Director {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public DDFDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public DDFDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -172,8 +172,8 @@ public class DDFDirector extends Director {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public DDFDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public DDFDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -247,8 +247,7 @@ public class DDFDirector extends Director {
                 // pause the model easily if the whole execution is in
                 // one iteration. And the same effect can be achieved
                 // by setting the parameter iterations to zero anyway.
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "Cannot set runUntilDeadlockInOneIteration to be "
                                 + "true if this DDFDirector is at top level. "
                                 + "Instead you should set the parameter iterations "
@@ -501,9 +500,10 @@ public class DDFDirector extends Director {
 
                 _actorsToCheckNumberOfFirings.add(actor);
             } else {
-                throw new IllegalActionException(this, actor, "The variable "
-                        + "requiredFiringsPerIteration must contain "
-                        + "an IntToken.");
+                throw new IllegalActionException(this, actor,
+                        "The variable "
+                                + "requiredFiringsPerIteration must contain "
+                                + "an IntToken.");
             }
         }
     }
@@ -534,7 +534,7 @@ public class DDFDirector extends Director {
     public void merge(DDFDirector insideDirector) {
         _disabledActors.addAll(insideDirector._disabledActors);
         _actorsToCheckNumberOfFirings
-        .addAll(insideDirector._actorsToCheckNumberOfFirings);
+                .addAll(insideDirector._actorsToCheckNumberOfFirings);
         _actorsInfo.putAll(insideDirector._actorsInfo);
     }
 
@@ -603,7 +603,8 @@ public class DDFDirector extends Director {
                         // port is directly connected to an output port
                         // of the container.
                         if (port.getContainer() != getContainer()) {
-                            int tokenConsumptionRate = _getTokenConsumptionRate(deepReceiver);
+                            int tokenConsumptionRate = _getTokenConsumptionRate(
+                                    deepReceiver);
 
                             if (deepReceiver.size() < tokenConsumptionRate) {
                                 isDeadlocked = false;
@@ -660,7 +661,7 @@ public class DDFDirector extends Director {
                         _debug("Channel " + i + " of port "
                                 + inputPort.getFullName()
                                 + " does not have enough tokens: " + rate[i]
-                                        + ". Prefire returns false.");
+                                + ". Prefire returns false.");
                     }
                     if (_debugging) {
                         _debug("DDFDirector.prefire() returns false.");
@@ -696,7 +697,7 @@ public class DDFDirector extends Director {
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector",
                 "ptolemy.domains.modal.kernel.FSMDirector",
-        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -750,24 +751,19 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring input from channel " + i
-                                        + " of input port "
-                                        + port.getName());
+                                                + " of input port "
+                                                + port.getName());
                             }
 
                             port.sendInside(i, t);
                             wasTransferred = true;
                         } else {
-                            throw new IllegalActionException(
-                                    this,
-                                    port,
-                                    "Channel "
-                                            + i
-                                            + "should consume "
-                                            + rate[i]
-                                                    + " tokens, but there were only "
-                                                    + k
-                                                    + " tokens available. Maybe the rate"
-                                                    + " is set wrong?");
+                            throw new IllegalActionException(this, port,
+                                    "Channel " + i + "should consume " + rate[i]
+                                            + " tokens, but there were only "
+                                            + k
+                                            + " tokens available. Maybe the rate"
+                                            + " is set wrong?");
                         }
                     }
 
@@ -781,9 +777,8 @@ public class DDFDirector extends Director {
                         Token token = port.get(i);
 
                         if (_debugging) {
-                            _debug(getName(),
-                                    "transferring input from channel " + i
-                                    + " of port " + port.getName());
+                            _debug(getName(), "transferring input from channel "
+                                    + i + " of port " + port.getName());
                         }
 
                         port.sendInside(i, token);
@@ -860,23 +855,19 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring output from channel " + i
-                                        + " of port " + port.getName());
+                                                + " of port " + port.getName());
                             }
 
                             port.send(i, token);
                             wasTransferred = true;
                         } else {
-                            throw new IllegalActionException(
-                                    this,
-                                    port,
-                                    "Channel "
-                                            + i
-                                            + " should produce "
+                            throw new IllegalActionException(this, port,
+                                    "Channel " + i + " should produce "
                                             + rate[i]
-                                                    + " tokens, but there were only "
-                                                    + k
-                                                    + " tokens available. Maybe the rate"
-                                                    + " is set wrong?");
+                                            + " tokens, but there were only "
+                                            + k
+                                            + " tokens available. Maybe the rate"
+                                            + " is set wrong?");
                         }
                     }
 
@@ -890,7 +881,7 @@ public class DDFDirector extends Director {
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring output from channel " + i
-                                    + " of port " + port.getName());
+                                            + " of port " + port.getName());
                         }
 
                         port.send(i, token);
@@ -1031,7 +1022,8 @@ public class DDFDirector extends Director {
                         continue;
                     }
 
-                    int tokenConsumptionRate = _getTokenConsumptionRate(farReceiver);
+                    int tokenConsumptionRate = _getTokenConsumptionRate(
+                            farReceiver);
 
                     if (tokenConsumptionRate >= 0
                             && farReceiver.size() >= tokenConsumptionRate) {
@@ -1344,13 +1336,14 @@ public class DDFDirector extends Director {
      *  and a <i>runUntilDeadlockInOneIteration</i> parameter with default
      *  value false.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setToken(new IntToken(0));
 
-        maximumReceiverCapacity = new Parameter(this, "maximumReceiverCapacity");
+        maximumReceiverCapacity = new Parameter(this,
+                "maximumReceiverCapacity");
         maximumReceiverCapacity.setTypeEquals(BaseType.INT);
         maximumReceiverCapacity.setToken(new IntToken(0));
 

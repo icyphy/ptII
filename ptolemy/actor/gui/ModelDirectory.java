@@ -142,7 +142,8 @@ public class ModelDirectory extends CompositeEntity {
                 Object remaining = remainingEntities.get(0);
 
                 if (remaining instanceof PtolemyEffigy) {
-                    if (((PtolemyEffigy) remaining).getModel() instanceof Configuration) {
+                    if (((PtolemyEffigy) remaining)
+                            .getModel() instanceof Configuration) {
                         try {
                             // This clause gets called when the window is closed.
                             _purgeConfigurationURL();
@@ -175,13 +176,14 @@ public class ModelDirectory extends CompositeEntity {
             if (!anyTableau) {
                 try {
                     // This gets reentrant...  Ugh..
-                    for (Iterator effigies = remainingEntities.iterator(); effigies
-                            .hasNext();) {
+                    for (Iterator effigies = remainingEntities
+                            .iterator(); effigies.hasNext();) {
                         Effigy effigy = (Effigy) effigies.next();
                         effigy.setContainer(null);
                     }
                 } catch (KernelException ex) {
-                    throw new InternalErrorException("Cannot remove directory!");
+                    throw new InternalErrorException(
+                            "Cannot remove directory!");
                 }
             }
         }

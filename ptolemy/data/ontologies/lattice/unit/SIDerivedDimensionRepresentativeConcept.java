@@ -62,8 +62,8 @@ import ptolemy.kernel.util.StringAttribute;
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
  */
-public class SIDerivedDimensionRepresentativeConcept extends
-DerivedDimensionRepresentativeConcept {
+public class SIDerivedDimensionRepresentativeConcept
+        extends DerivedDimensionRepresentativeConcept {
 
     /** Create a new SIDerivedUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -75,8 +75,8 @@ DerivedDimensionRepresentativeConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     public SIDerivedDimensionRepresentativeConcept(CompositeEntity ontology,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
         unitFullName = new StringAttribute(this, "unitFullName");
         unitAbbreviation = new StringAttribute(this, "unitAbbreviation");
@@ -128,10 +128,8 @@ DerivedDimensionRepresentativeConcept {
 
         // If not using unit abbreviations, react to a change in the
         // unitFullName parameter.
-        if ((attribute.equals(useAbbreviation)
-                || attribute.equals(unitFullName) || attribute
-                .equals(baseUnitRecord))
-                && !useUnitAbbreviation
+        if ((attribute.equals(useAbbreviation) || attribute.equals(unitFullName)
+                || attribute.equals(baseUnitRecord)) && !useUnitAbbreviation
                 && baseUnitRecordToken != null) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
@@ -141,9 +139,8 @@ DerivedDimensionRepresentativeConcept {
             // If using unit abbreviations, react to a change in the
             // unitAbbreviation parameter.
         } else if ((attribute.equals(useAbbreviation)
-                || attribute.equals(unitAbbreviation) || attribute
-                .equals(baseUnitRecord))
-                && useUnitAbbreviation
+                || attribute.equals(unitAbbreviation)
+                || attribute.equals(baseUnitRecord)) && useUnitAbbreviation
                 && baseUnitRecordToken != null) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(

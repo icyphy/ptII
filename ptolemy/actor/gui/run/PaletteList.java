@@ -86,8 +86,8 @@ customization is to require a PtolemyFormEditor constructor argument.
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
  */
-public class PaletteList extends JList implements DragSourceListener,
-DragGestureListener {
+public class PaletteList extends JList
+        implements DragSourceListener, DragGestureListener {
 
     /** Construct a PaletteList.
      * @param editor The form editor
@@ -119,14 +119,16 @@ DragGestureListener {
      *  @param dragSourceDropEvent Ignored.
      */
     @Override
-    public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
+    public void dragDropEnd(
+            java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
     }
 
     /** In this derived class, do nothing.
      *  @param dragSourceDragEvent Ignored.
      */
     @Override
-    public void dragEnter(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
+    public void dragEnter(
+            java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
     /** In this derived class, do nothing.

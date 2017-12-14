@@ -175,8 +175,8 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
             try {
                 rule.validate();
             } catch (ValidationException e) {
-                throw new ValidationException("Rule " + i + ": "
-                        + e.getMessage());
+                throw new ValidationException(
+                        "Rule " + i + ": " + e.getMessage());
             }
         }
     }

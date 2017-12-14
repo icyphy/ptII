@@ -110,8 +110,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         // **We can only create a new shared utilities object
         // only once per model.
         if (ontologySolverUtilitiesWrapper.getExpression().length() == 0) {
-            ontologySolverUtilitiesWrapper.setToken(new ObjectToken(
-                    new OntologySolverUtilities()));
+            ontologySolverUtilitiesWrapper
+                    .setToken(new ObjectToken(new OntologySolverUtilities()));
         }
 
         Collection<SharedParameter> parameters = ontologySolverUtilitiesWrapper
@@ -174,8 +174,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        OntologySolverBase newObject = (OntologySolverBase) super
-                .clone(workspace);
+        OntologySolverBase newObject = (OntologySolverBase) super.clone(
+                workspace);
         newObject._ontologySolverUtilities = null;
         newObject.reset();
         return newObject;
@@ -189,7 +189,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * @exception IllegalActionException If there is an exception from getting
      * all the subAdapters.
      */
-    public List<OntologyAdapter> getAllAdapters() throws IllegalActionException {
+    public List<OntologyAdapter> getAllAdapters()
+            throws IllegalActionException {
         NamedObj topLevel = _toplevel();
         List<OntologyAdapter> result = new LinkedList<OntologyAdapter>();
         List<OntologyAdapter> subAdapters = new LinkedList<OntologyAdapter>();
@@ -447,7 +448,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public void resetAll() {
         _resetParser();
-        for (OntologySolver solver : getAllSolvers(ontologySolverUtilitiesWrapper)) {
+        for (OntologySolver solver : getAllSolvers(
+                ontologySolverUtilitiesWrapper)) {
             solver.reset();
         }
         getOntologySolverUtilities().resetAll();
@@ -514,8 +516,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
         String packageName = _getPackageName(solver);
         String defaultAdaptersPackageName = solver.getClass().getPackage()
-                .getName()
-                + ".adapters.defaultAdapters";
+                .getName() + ".adapters.defaultAdapters";
 
         Class componentClass = component.getClass();
 
@@ -536,9 +537,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
                 // If adapter class cannot be found, search the adapter class
                 // in the default adapters package.
                 try {
-                    adapterClass = Class
-                            .forName(componentClass.getName().replaceFirst(
-                                    "ptolemy", defaultAdaptersPackageName));
+                    adapterClass = Class.forName(
+                            componentClass.getName().replaceFirst("ptolemy",
+                                    defaultAdaptersPackageName));
 
                 } catch (ClassNotFoundException e2) {
                     // If adapter class cannot be found, search the adapter class
@@ -552,8 +553,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         Class solverClass = solver.getClass();
         while (constructor == null && solverClass != null) {
             try {
-                constructor = adapterClass.getConstructor(new Class[] {
-                        solverClass, componentClass });
+                constructor = adapterClass.getConstructor(
+                        new Class[] { solverClass, componentClass });
 
             } catch (NoSuchMethodException ex) {
                 solverClass = solverClass.getSuperclass();
@@ -569,8 +570,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         Object adapterObject = null;
 
         try {
-            adapterObject = constructor.newInstance(new Object[] { solver,
-                    component });
+            adapterObject = constructor
+                    .newInstance(new Object[] { solver, component });
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
@@ -606,7 +607,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
                     "No ontology has been given.");
         }
         return solver.getClass().getPackage().getName() + ".adapters."
-        + ontology.getName();
+                + ontology.getName();
     }
 
     /**

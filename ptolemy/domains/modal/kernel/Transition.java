@@ -223,8 +223,8 @@ public class Transition extends ComponentRelation {
      *  @exception NameDuplicationException If the name coincides with
      *   any relation already in the container.
      */
-    public Transition(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public Transition(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -530,9 +530,10 @@ public class Transition extends ComponentRelation {
                         .getEntity(name);
 
                 if (element == null) {
-                    throw new IllegalActionException(this, "Cannot find "
-                            + "refinement with name \"" + name + "\" in "
-                            + containerContainer.getFullName());
+                    throw new IllegalActionException(this,
+                            "Cannot find " + "refinement with name \"" + name
+                                    + "\" in "
+                                    + containerContainer.getFullName());
                 }
 
                 _refinement[index++] = element;
@@ -1047,9 +1048,8 @@ public class Transition extends ComponentRelation {
         if (getContainer() != null) {
             if (_fsmTransitionParameter == null) {
                 _fsmTransitionParameter = (FSMTransitionParameter) getContainer()
-                        .getAttribute(
-                                ((StringToken) fsmTransitionParameterName
-                                        .getToken()).stringValue());
+                        .getAttribute(((StringToken) fsmTransitionParameterName
+                                .getToken()).stringValue());
                 if (_fsmTransitionParameter != null) {
                     try {
                         _fsmTransitionParameter.setTransition(this);
@@ -1075,13 +1075,17 @@ public class Transition extends ComponentRelation {
                         + "        <property name=\"numberOfLines\" value=\"100\"/>\n"
                         + "    </property>\n"
                         + "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"["
-                        + (int) (destinationStateLocation.getLocation()[0] + (sourceStateLocation
-                                .getLocation()[0] - destinationStateLocation
-                                .getLocation()[0]) / 2)
+                        + (int) (destinationStateLocation.getLocation()[0]
+                                + (sourceStateLocation.getLocation()[0]
+                                        - destinationStateLocation
+                                                .getLocation()[0])
+                                        / 2)
                         + ", "
-                        + (int) (destinationStateLocation.getLocation()[1] + (sourceStateLocation
-                                .getLocation()[1] - destinationStateLocation
-                                .getLocation()[1]) / 2)
+                        + (int) (destinationStateLocation.getLocation()[1]
+                                + (sourceStateLocation.getLocation()[1]
+                                        - destinationStateLocation
+                                                .getLocation()[1])
+                                        / 2)
                         + "]\"/>\n"
                         + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
                         + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
@@ -1098,8 +1102,8 @@ public class Transition extends ComponentRelation {
     }
 
     // Initialize the variables of this transition.
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         fsmTransitionParameterName = new StringParameter(this,
                 "fsmTransitionParameterName");
         fsmTransitionParameterName.setExpression(this.getName() + "Parameter");

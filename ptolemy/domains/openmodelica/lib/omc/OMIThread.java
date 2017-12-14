@@ -100,8 +100,8 @@ public class OMIThread extends Thread {
         _controlClient = new Socket("localhost", 10501);
 
         // Set up an output stream to send the operation to Control Server.
-        _toServer = new BufferedWriter(new OutputStreamWriter(
-                _controlClient.getOutputStream()));
+        _toServer = new BufferedWriter(
+                new OutputStreamWriter(_controlClient.getOutputStream()));
 
         // Set the protocol of Control Server.
         _toServer.write("setcontrolclienturl#1#127.0.0.1#10500#end");
@@ -111,8 +111,8 @@ public class OMIThread extends Thread {
         _controlConnection = _controlServer.accept();
 
         // Set up an input stream to receive the simulation result back from Control Server.
-        _inFromControlServer = new BufferedReader(new InputStreamReader(
-                _controlConnection.getInputStream()));
+        _inFromControlServer = new BufferedReader(
+                new InputStreamReader(_controlConnection.getInputStream()));
 
         // Set the protocol of Transfer Server.
         _toServer.write("settransferclienturl#2#127.0.0.1#10502#end");
@@ -122,8 +122,8 @@ public class OMIThread extends Thread {
         _transferConnection = _transferServer.accept();
 
         // Set up an input stream to receive the simulation result back from Transfer Server.
-        _inFromTransferServer = new BufferedReader(new InputStreamReader(
-                _transferConnection.getInputStream()));
+        _inFromTransferServer = new BufferedReader(
+                new InputStreamReader(_transferConnection.getInputStream()));
 
         if (_controlClient.isConnected() && _toServer != null) {
             try {
@@ -139,7 +139,7 @@ public class OMIThread extends Thread {
                     // The setfilter message is sent to the server to set the filter for variable(s) and parameter(s)
                     // which should send from OMI to Ptolemy II.
                     _toServer
-                    .write("setfilter#3#" + parameterSequence + "#end");
+                            .write("setfilter#3#" + parameterSequence + "#end");
                     _toServer.flush();
                 } else if (parameters.length == 1) {
                     _toServer.write("setfilter#3#" + parameters[0] + "#end");
@@ -218,7 +218,7 @@ public class OMIThread extends Thread {
                             .read(transferServerBuffer)) != -1) {
 
                         wholeSimulationResult = new String(transferServerBuffer)
-                        .trim();
+                                .trim();
                         lineSplitResult = wholeSimulationResult
                                 .split(lineDelimiter);
                         for (int i = 0; i < lineSplitResult.length - 1; i++) {
@@ -249,13 +249,13 @@ public class OMIThread extends Thread {
                             outputResult += "\n";
                         }
                     }
-                try {
-                    _outputPort.send(0, new StringToken(outputResult));
-                } catch (NoRoomException e) {
-                    new IOException(e.getMessage()).printStackTrace();
-                } catch (IllegalActionException e) {
-                    new IOException(e.getMessage()).printStackTrace();
-                }
+                    try {
+                        _outputPort.send(0, new StringToken(outputResult));
+                    } catch (NoRoomException e) {
+                        new IOException(e.getMessage()).printStackTrace();
+                    } catch (IllegalActionException e) {
+                        new IOException(e.getMessage()).printStackTrace();
+                    }
                 } catch (IOException e) {
                     new IOException(e.getMessage()).printStackTrace();
                 }

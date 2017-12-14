@@ -94,11 +94,12 @@ public class HideAnnotationNames extends MoMLFilterSimple {
 
         if (_currentlyProcessingAnnotation) {
             if (container != null) {
-                if (!container.getFullName().equals(_currentAnnotationFullName)) {
+                if (!container.getFullName()
+                        .equals(_currentAnnotationFullName)) {
                     if (_currentAnnotationFullName == null
                             || (!_currentAnnotationFullName
-                                    .startsWith(container.getFullName()) && !container
-                                    .getFullName().startsWith(
+                                    .startsWith(container.getFullName())
+                                    && !container.getFullName().startsWith(
                                             _currentAnnotationFullName))) {
                         // We found another class in a different container
                         // while handling an annotation.

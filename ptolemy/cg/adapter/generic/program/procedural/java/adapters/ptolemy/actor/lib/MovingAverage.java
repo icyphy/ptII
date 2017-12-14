@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class MovingAverage
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.MovingAverage {
+public class MovingAverage extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.MovingAverage {
     /**
      * Construct an adapter for ptlemy.actor.lib.MovingAverage.
      * @param actor the associated actor.

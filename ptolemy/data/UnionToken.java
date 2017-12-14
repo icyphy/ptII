@@ -58,8 +58,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
      */
     public UnionToken(String label, Token value) throws IllegalActionException {
         if (label == null || value == null) {
-            throw new IllegalActionException("UnionToken: The label or the "
-                    + "value is null.");
+            throw new IllegalActionException(
+                    "UnionToken: The label or the " + "value is null.");
         }
 
         _label = label;
@@ -84,8 +84,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
             _value = unionToken.value();
 
             if (_label == null || _value == null) {
-                throw new IllegalActionException("UnionToken: The label "
-                        + "or the value is null.");
+                throw new IllegalActionException(
+                        "UnionToken: The label " + "or the value is null.");
             }
         } else {
             throw new IllegalActionException("An union token cannot be"
@@ -209,7 +209,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._add: The label "
                     + "of the argument token (" + unionToken.label()
-                    + ") is different from that of this token (" + _label + ".");
+                    + ") is different from that of this token (" + _label
+                    + ".");
         }
 
         Token value = _value.add(unionToken.value());
@@ -232,7 +233,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._divide: The label "
                     + "of the argument token (" + unionToken.label()
-                    + ") is different from that of this token (" + _label + ".");
+                    + ") is different from that of this token (" + _label
+                    + ".");
         }
 
         Token value = _value.divide(unionToken.value());
@@ -306,7 +308,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._modulo: The label "
                     + "of the argument token (" + unionToken.label()
-                    + ") is different from that of this token (" + _label + ".");
+                    + ") is different from that of this token (" + _label
+                    + ".");
         }
 
         Token value = _value.modulo(unionToken.value());
@@ -330,7 +333,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._multiply: The label "
                     + "of the argument token (" + unionToken.label()
-                    + ") is different from that of this token (" + _label + ".");
+                    + ") is different from that of this token (" + _label
+                    + ".");
         }
 
         Token value = _value.multiply(unionToken.value());
@@ -354,7 +358,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._subtract: The label "
                     + "of the argument token (" + unionToken.label()
-                    + ") is different from that of this token (" + _label + ".");
+                    + ") is different from that of this token (" + _label
+                    + ".");
         }
 
         Token value = _value.subtract(unionToken.value());

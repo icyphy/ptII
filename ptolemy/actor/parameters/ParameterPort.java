@@ -86,7 +86,8 @@ public class ParameterPort extends TypedIOPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    protected ParameterPort(ComponentEntity container, String name, PortParameter parameter)
+    protected ParameterPort(ComponentEntity container, String name,
+            PortParameter parameter)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setInput(true);
@@ -151,7 +152,7 @@ public class ParameterPort extends TypedIOPort {
             if (container != null) {
                 Attribute candidate = container.getAttribute(getName());
                 if (candidate instanceof PortParameter) {
-                    _parameter = (PortParameter)candidate;
+                    _parameter = (PortParameter) candidate;
                     _setTypeConstraints();
                 }
             }
@@ -239,8 +240,8 @@ public class ParameterPort extends TypedIOPort {
      *   contains an attribute with the proposed name.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (_settingName) {
             return;
         }

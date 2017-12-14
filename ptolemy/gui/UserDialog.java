@@ -122,7 +122,8 @@ public class UserDialog extends JPanel {
             public void run() {
                 _responseTextArea.append(text + "\n");
                 // Scroll down as we generate text.
-                _responseTextArea.setCaretPosition(_responseTextArea.getText().length());
+                _responseTextArea
+                        .setCaretPosition(_responseTextArea.getText().length());
             }
         };
         SwingUtilities.invokeLater(doAppendJTextArea);

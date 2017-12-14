@@ -71,18 +71,23 @@ public class PointillizeFilter extends CellularFilter {
         float f = evaluate(nx, ny);
 
         float f1 = results[0].distance;
-        int srcx = ImageMath.clamp((int) ((results[0].x - 1000) * scale), 0, width - 1);
-        int srcy = ImageMath.clamp((int) ((results[0].y - 1000) * scale), 0, height - 1);
+        int srcx = ImageMath.clamp((int) ((results[0].x - 1000) * scale), 0,
+                width - 1);
+        int srcy = ImageMath.clamp((int) ((results[0].y - 1000) * scale), 0,
+                height - 1);
         int v = inPixels[srcy * width + srcx];
 
         if (fadeEdges) {
             float f2 = results[1].distance;
-            srcx = ImageMath.clamp((int) ((results[1].x - 1000) * scale), 0, width - 1);
-            srcy = ImageMath.clamp((int) ((results[1].y - 1000) * scale), 0, height - 1);
+            srcx = ImageMath.clamp((int) ((results[1].x - 1000) * scale), 0,
+                    width - 1);
+            srcy = ImageMath.clamp((int) ((results[1].y - 1000) * scale), 0,
+                    height - 1);
             int v2 = inPixels[srcy * width + srcx];
             v = ImageMath.mixColors(0.5f * f1 / f2, v, v2);
         } else {
-            f = 1 - ImageMath.smoothStep(edgeThickness, edgeThickness + fuzziness, f1);
+            f = 1 - ImageMath.smoothStep(edgeThickness,
+                    edgeThickness + fuzziness, f1);
             v = ImageMath.mixColors(f, edgeColor, v);
         }
         return v;

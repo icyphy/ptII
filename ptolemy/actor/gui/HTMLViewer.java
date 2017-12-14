@@ -101,8 +101,8 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (johnr)
  */
 @SuppressWarnings("serial")
-public class HTMLViewer extends TableauFrame implements Printable,
-HyperlinkListener {
+public class HTMLViewer extends TableauFrame
+        implements Printable, HyperlinkListener {
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
@@ -164,13 +164,13 @@ HyperlinkListener {
         }
         Class getDocumentationActionClass = Class
                 .forName(getDocumentationActionClassName);
-        Method getDocumentationMethod = getDocumentationActionClass.getMethod(
-                "getDocumentation", new Class[] { Configuration.class,
-                        String.class, Effigy.class });
+        Method getDocumentationMethod = getDocumentationActionClass
+                .getMethod("getDocumentation", new Class[] {
+                        Configuration.class, String.class, Effigy.class });
         //GetDocumentationAction.getDocumentation(configuration,
         //        event.getDescription().substring(6), getEffigy());
-        getDocumentationMethod.invoke(null, new Object[] { configuration,
-                className, context });
+        getDocumentationMethod.invoke(null,
+                new Object[] { configuration, className, context });
     }
 
     /** Get the page displayed by this viewer.
@@ -210,21 +210,19 @@ HyperlinkListener {
                             getConfiguration());
 
                 } catch (Throwable throwable) {
-                    MessageHandler.error(
-                            "Problem processing '" + event.getDescription()
-                            + "'.", throwable);
+                    MessageHandler.error("Problem processing '"
+                            + event.getDescription() + "'.", throwable);
                 }
             }
 
             if (event.getDescription().startsWith("ptdoc:")) {
                 // Process "ptdoc:" hyperlinks
                 try {
-                    getDocumentation(getConfiguration(), event.getDescription()
-                            .substring(6), getEffigy());
+                    getDocumentation(getConfiguration(),
+                            event.getDescription().substring(6), getEffigy());
                 } catch (Throwable throwable) {
-                    MessageHandler.error(
-                            "Problem processing '" + event.getDescription()
-                            + "'.", throwable);
+                    MessageHandler.error("Problem processing '"
+                            + event.getDescription() + "'.", throwable);
                 }
             }
             // NOTE: It would be nice to use target="_browser" or some
@@ -340,7 +338,8 @@ HyperlinkListener {
                                             eventURL.toExternalForm());
                                 } catch (Throwable throwable) {
                                     if (eventDescription.indexOf(":/") == -1
-                                            || eventDescription.startsWith("/")) {
+                                            || eventDescription
+                                                    .startsWith("/")) {
                                         URL eventURL2 = null;
                                         try {
                                             // Try in the $CLASSPATH.
@@ -353,10 +352,9 @@ HyperlinkListener {
                                             }
                                             String classpathEventDescription = "$CLASSPATH/"
                                                     + eventDescription;
-                                            eventURL2 = FileUtilities
-                                                    .nameToURL(
-                                                            classpathEventDescription,
-                                                            null, null);
+                                            eventURL2 = FileUtilities.nameToURL(
+                                                    classpathEventDescription,
+                                                    null, null);
                                             if (eventURL2 == null) {
                                                 throw new NullPointerException(
                                                         "Could not find \""
@@ -369,10 +367,10 @@ HyperlinkListener {
                                         } catch (Throwable throwable2) {
                                             IOException exception = new IOException(
                                                     "Failed to find " + newURL
-                                                    + ", also tried\n "
-                                                    + eventURL
-                                                    + " and\n"
-                                                    + eventURL2);
+                                                            + ", also tried\n "
+                                                            + eventURL
+                                                            + " and\n"
+                                                            + eventURL2);
                                             exception.initCause(ex);
                                             throw exception;
                                         }
@@ -420,7 +418,8 @@ HyperlinkListener {
         }
 
         AffineTransform at = new AffineTransform();
-        at.translate((int) format.getImageableX(), (int) format.getImageableY());
+        at.translate((int) format.getImageableX(),
+                (int) format.getImageableY());
         at.translate(0, -(format.getImageableHeight() * index));
         at.scale(scale, scale);
 
@@ -542,8 +541,8 @@ HyperlinkListener {
     /** Initialize the HTMLViewer.
      */
     private void _init() {
-        getContentPane().setLayout(
-                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane()
+                .setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         pane.setContentType("text/html");
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
@@ -594,8 +593,8 @@ HyperlinkListener {
     static {
         try {
             Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
-            _styleSheetURL = refClass.getClassLoader().getResource(
-                    "doc/default.css");
+            _styleSheetURL = refClass.getClassLoader()
+                    .getResource("doc/default.css");
         } catch (Throwable ex) {
             ex.printStackTrace();
             // Ignore, we just use the wrong style sheets.

@@ -106,13 +106,13 @@ public class GraphicsParser {
      * String) for a description of legal types and their attributes.
      *
      */
-    public static PaintedObject createPaintedObject(String type,
-            Map attributes, String content) {
+    public static PaintedObject createPaintedObject(String type, Map attributes,
+            String content) {
         double[] coords = parseCoordString((String) attributes.get("coords"));
 
         if (type.equals("rectangle")) {
-            PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                    coords[0], coords[1], coords[2], coords[3]));
+            PaintedShape ps = new PaintedShape(new Rectangle2D.Double(coords[0],
+                    coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {
@@ -169,12 +169,13 @@ public class GraphicsParser {
      * that are not recognized will be ignored.  See the add(String,
      * String) for a description of legal types and their attributes.
      */
-    public static PaintedObject createPaintedObject(String type, Map attributes) {
+    public static PaintedObject createPaintedObject(String type,
+            Map attributes) {
         double[] coords = parseCoordString((String) attributes.get("coords"));
 
         if (type.equals("rectangle")) {
-            PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                    coords[0], coords[1], coords[2], coords[3]));
+            PaintedShape ps = new PaintedShape(new Rectangle2D.Double(coords[0],
+                    coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {

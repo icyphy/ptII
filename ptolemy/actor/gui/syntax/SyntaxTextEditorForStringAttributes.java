@@ -62,7 +62,8 @@ import ptolemy.vergil.toolbox.TextEditorForStringAttributes;
  @Pt.AcceptedRating Red (eal)
  */
 @SuppressWarnings("serial")
-public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttributes {
+public class SyntaxTextEditorForStringAttributes
+        extends TextEditorForStringAttributes {
 
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.
@@ -73,7 +74,8 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
      *  @param document The document
      */
     public SyntaxTextEditorForStringAttributes(TextEditorFactory factory,
-            Attribute attributeToEdit, int rows, int columns, String title, Document document) {
+            Attribute attributeToEdit, int rows, int columns, String title,
+            Document document) {
         super(factory, attributeToEdit, rows, columns, title, document);
     }
 
@@ -82,17 +84,24 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
 
     /** Create an edit menu.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
         _editMenu.addSeparator();
 
-        GUIUtilities.addMenuItem(_editMenu, new RSyntaxTextAreaEditorKit.IncreaseFontSizeAction(
-                "Increase Font", null, "Increase the font size.", 8, KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Toolkit
-                        .getDefaultToolkit().getMenuShortcutKeyMask())));
-        GUIUtilities.addMenuItem(_editMenu, new RSyntaxTextAreaEditorKit.DecreaseFontSizeAction(
-                "Decrease Font", null, "Decrease the font size.", 9, KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, Toolkit
-                        .getDefaultToolkit().getMenuShortcutKeyMask())));
+        GUIUtilities.addMenuItem(_editMenu,
+                new RSyntaxTextAreaEditorKit.IncreaseFontSizeAction(
+                        "Increase Font", null, "Increase the font size.", 8,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+                                Toolkit.getDefaultToolkit()
+                                        .getMenuShortcutKeyMask())));
+        GUIUtilities.addMenuItem(_editMenu,
+                new RSyntaxTextAreaEditorKit.DecreaseFontSizeAction(
+                        "Decrease Font", null, "Decrease the font size.", 9,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
+                                Toolkit.getDefaultToolkit()
+                                        .getMenuShortcutKeyMask())));
     }
 
     /** Initializes an empty text editor with the specified title and
@@ -103,25 +112,27 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
      *  @param title The title to put in the title bar.
      *  @param document The document containing text.
      */
+    @Override
     protected void _init(final String title, Document document) {
         // No idea why this needs to be invoked later, but if it's invoked now,
         // the title on the window ends up being "Unnamed".
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 setTitle(title);
             }
         });
 
         if (document instanceof RSyntaxDocument) {
-            text = new RSyntaxTextArea((RSyntaxDocument)document);
+            text = new RSyntaxTextArea((RSyntaxDocument) document);
             // The default tab size is odd: 5.
             text.setTabSize(4);
             text.setCaretPosition(0);
             // ((RSyntaxTextArea)text).addHyperlinkListener(this);
             text.requestFocusInWindow();
             // ((RSyntaxTextArea)text).setMarkOccurrences(true);
-            ((RSyntaxTextArea)text).setCodeFoldingEnabled(true);
-            ((RSyntaxTextArea)text).setClearWhitespaceLinesEnabled(false);
+            ((RSyntaxTextArea) text).setCodeFoldingEnabled(true);
+            ((RSyntaxTextArea) text).setClearWhitespaceLinesEnabled(false);
         } else if (document != null) {
             text = new JTextArea(document);
         } else {
@@ -140,7 +151,7 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
         //        gutter.setBookmarkIcon(new ImageIcon(url));
         // Will need to copy the img/bookmark.png from the rsyntaxtextarea_demo_2.5.1_Source dir.
 
-        ErrorStrip errorStrip = new ErrorStrip((RSyntaxTextArea)text);
+        ErrorStrip errorStrip = new ErrorStrip((RSyntaxTextArea) text);
         getContentPane().add(errorStrip, BorderLayout.LINE_END);
 
         getContentPane().add(_scrollPane, BorderLayout.CENTER);

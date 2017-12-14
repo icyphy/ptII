@@ -76,8 +76,8 @@ public class Transform {
                 height / 2.0);
 
         if (!(rotate == 180 || rotate == 360)) {
-            rotateAffineTransform.translate(width / 2 - height / 2, width / 2
-                    - height / 2);
+            rotateAffineTransform.translate(width / 2 - height / 2,
+                    width / 2 - height / 2);
         }
 
         // Paint image.
@@ -111,8 +111,8 @@ public class Transform {
         int scaledHeight = (int) (scale * originalImage.getHeight(null));
 
         // Create an image buffer in which to paint on.
-        BufferedImage outputImage = new BufferedImage(scaledWidth,
-                scaledHeight, BufferedImage.TYPE_INT_RGB);
+        BufferedImage outputImage = new BufferedImage(scaledWidth, scaledHeight,
+                BufferedImage.TYPE_INT_RGB);
 
         // Set the scale.
         AffineTransform scaleAffineTransform = new AffineTransform();

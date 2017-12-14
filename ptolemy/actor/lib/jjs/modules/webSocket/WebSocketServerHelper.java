@@ -80,7 +80,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param resource The resource to serve upon a request for this path.
      *  @param contentType The content type.
      */
-    public void addResource(final String path, Object resource, String contentType) {
+    public void addResource(final String path, Object resource,
+            String contentType) {
         Buffer buffer = Buffer.buffer();
         // FIXME: byte content is fixed here to IMAGEs in JPEG format.
         // Need to convert the contentType into a DATA_TYPE and image type (null below
@@ -95,13 +96,13 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  asynchronously. The server may not be closed when this returns.
      */
     public void closeServer() {
-            // Ask the verticle to perform the close.
-            submit(() -> {
-                if (_server != null) {
-                    _server.close();
-                    _server = null;
-                }
-            });
+        // Ask the verticle to perform the close.
+        submit(() -> {
+            if (_server != null) {
+                _server.close();
+                _server = null;
+            }
+        });
     }
 
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
@@ -120,11 +121,11 @@ public class WebSocketServerHelper extends VertxHelperBase {
      */
     public static WebSocketServerHelper createServer(Object actor,
             ScriptObjectMirror currentObj, String hostInterface, boolean sslTls,
-            String pfxKeyCertPassword, String pfxKeyCertPath,
-            int port, String receiveType, String sendType) {
-        return new WebSocketServerHelper(actor,
-                currentObj, hostInterface, sslTls, pfxKeyCertPassword, pfxKeyCertPath,
-                port, receiveType, sendType);
+            String pfxKeyCertPassword, String pfxKeyCertPath, int port,
+            String receiveType, String sendType) {
+        return new WebSocketServerHelper(actor, currentObj, hostInterface,
+                sslTls, pfxKeyCertPassword, pfxKeyCertPath, port, receiveType,
+                sendType);
     }
 
     /** Set the response.
@@ -141,21 +142,25 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  socket as an argument.
      */
     public void startServer() {
-            // Ask the verticle to start the server.
+        // Ask the verticle to start the server.
         submit(() -> {
             HttpServerOptions serverOptions = new HttpServerOptions();
             serverOptions.setSsl(_sslTls);
             if (serverOptions.isSsl()) {
                 PfxOptions pfxOptions = new PfxOptions();
-                File pfxKeyCertFile = FileUtilities.nameToFile(_pfxKeyCertPath, null);
+                File pfxKeyCertFile = FileUtilities.nameToFile(_pfxKeyCertPath,
+                        null);
                 if (pfxKeyCertFile == null) {
-                    _error(_currentObj, "Empty pemCertPath option. Can't find the server key-certificate.");
+                    _error(_currentObj,
+                            "Empty pemCertPath option. Can't find the server key-certificate.");
                     return;
                 }
                 try {
                     pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
                 } catch (IOException e) {
-                    _error(_currentObj, "Failed to find the server key-certificate at " + pfxKeyCertFile);
+                    _error(_currentObj,
+                            "Failed to find the server key-certificate at "
+                                    + pfxKeyCertFile);
                     return;
                 }
                 pfxOptions.setPassword(_pfxKeyCertPassword);
@@ -174,8 +179,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
                     // sent after the connection is established.
                     // Pass this helper to ensure that the verticle and event bus handler
                     // of this verticle is used rather than creating a new one.
-                    _currentObj.callMember(
-                            "_socketCreated", serverWebSocket, WebSocketServerHelper.this);
+                    _currentObj.callMember("_socketCreated", serverWebSocket,
+                            WebSocketServerHelper.this);
                 }
             });
 
@@ -185,7 +190,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
             // This assumes the accessors repo is
             // installed locally at $PTII/org/terraswarm/accessor
             Router router = Router.router(_vertx);
-            router.get("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
+            router.get("/accessors/*").handler(StaticHandler
+                    .create("org/terraswarm/accessor/accessors/web"));
 
             // new Exception("Start of Server(" + port + ")").printStackTrace();
 
@@ -209,7 +215,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
                     // The body has now been fully read, so retrieve the form attributes
                     MultiMap formAttributes = request.formAttributes();
                     JsonObject json = new JsonObject();
-                    for (Map.Entry<String, String> entry : formAttributes.entries()) {
+                    for (Map.Entry<String, String> entry : formAttributes
+                            .entries()) {
                         json.put(entry.getKey(), entry.getValue());
                     }
                     _currentObj.callMember("post", path, json);
@@ -227,7 +234,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
                     Buffer buffer = _resourceData.get(path);
                     if (buffer != null) {
                         // Path matches a resource that has been added using addResource().
-                        response.putHeader("content-type", _resourceContentType.get(path));
+                        response.putHeader("content-type",
+                                _resourceContentType.get(path));
                         response.setChunked(true);
                         response.write(buffer);
                         response.end();
@@ -246,14 +254,14 @@ public class WebSocketServerHelper extends VertxHelperBase {
             // Start the server listening.
             _server.listen(_port, _hostInterface,
                     new Handler<AsyncResult<HttpServer>>() {
-                @Override
-                public void handle(AsyncResult<HttpServer> result) {
-                    // Do this in the vertx thread, not the director thread, so that the
-                    // listening event is assured of occurring before the 'connection'
-                    // event, which is emitted above by _socketCreated().
-                    _currentObj.callMember("emit", "listening");
-                }
-            });
+                        @Override
+                        public void handle(AsyncResult<HttpServer> result) {
+                            // Do this in the vertx thread, not the director thread, so that the
+                            // listening event is assured of occurring before the 'connection'
+                            // event, which is emitted above by _socketCreated().
+                            _currentObj.callMember("emit", "listening");
+                        }
+                    });
         });
     }
 
@@ -270,14 +278,12 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
      */
-    private WebSocketServerHelper(Object actor,
-            ScriptObjectMirror currentObj,
-            String hostInterface, boolean sslTls,
-            String pfxKeyCertPassword, String pfxKeyCertPath,
-            int port, String receiveType,
+    private WebSocketServerHelper(Object actor, ScriptObjectMirror currentObj,
+            String hostInterface, boolean sslTls, String pfxKeyCertPassword,
+            String pfxKeyCertPath, int port, String receiveType,
             String sendType) {
-            // NOTE: Really should have only one of these per actor,
-            // and the argument below should be the actor.
+        // NOTE: Really should have only one of these per actor,
+        // and the argument below should be the actor.
         super(actor, currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {

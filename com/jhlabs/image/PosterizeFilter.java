@@ -53,9 +53,11 @@ public class PosterizeFilter extends PointFilter {
     */
     protected void initialize() {
         levels = new int[256];
-        if (numLevels != 1)
-            for (int i = 0; i < 256; i++)
+        if (numLevels != 1) {
+            for (int i = 0; i < 256; i++) {
                 levels[i] = 255 * (numLevels * i / 256) / (numLevels - 1);
+            }
+        }
     }
 
     @Override

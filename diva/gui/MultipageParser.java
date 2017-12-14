@@ -142,9 +142,10 @@ public class MultipageParser extends HandlerBase {
      * the array.
      */
     @Override
-    public void charData(char[] chars, int offset, int length) throws Exception {
-        Object model = _modelParser.parse(new CharArrayReader(chars, offset,
-                length));
+    public void charData(char[] chars, int offset, int length)
+            throws Exception {
+        Object model = _modelParser
+                .parse(new CharArrayReader(chars, offset, length));
         _currentPage.setModel(model);
     }
 

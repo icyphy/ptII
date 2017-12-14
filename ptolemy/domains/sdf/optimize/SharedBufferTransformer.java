@@ -54,8 +54,8 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 @Pt.AcceptedRating Red ()
  */
 
-public abstract class SharedBufferTransformer extends Transformer implements
-BufferingProfile {
+public abstract class SharedBufferTransformer extends Transformer
+        implements BufferingProfile {
 
     /**
      * Construct an instance of a SharedBufferTransformer. Should not be used

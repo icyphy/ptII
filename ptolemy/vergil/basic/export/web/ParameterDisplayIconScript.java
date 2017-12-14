@@ -129,10 +129,10 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
             }
         }
         if (hasParameter) {
-            table.insert(0, "<table border=\"1\">"
-                    + "<tr><td><b>Parameter</b></td>"
-                    + "<td><b>Expression</b></td>"
-                    + "<td><b>Value</b></td></tr>");
+            table.insert(0,
+                    "<table border=\"1\">" + "<tr><td><b>Parameter</b></td>"
+                            + "<td><b>Expression</b></td>"
+                            + "<td><b>Value</b></td></tr>");
             table.append("</table>");
         } else {
             table.append("Has no parameters.");
@@ -235,13 +235,11 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
         webElement = WebElement.createWebElement(getContainer(),
                 "afterImageWebElement", "afterImage");
         webElement.setParent(WebElement.END);
-        webElement
-        .setExpression("<div id=\"afterImage\">\n"
+        webElement.setExpression("<div id=\"afterImage\">\n"
                 + "  <script type=\"text/javascript\">\n"
                 + "     writeText('Mouse over the icons to see their parameters. "
                 + "Click on composites and plotters to reveal their contents (if provided).');\n"
-                + "  </script>\n"
-                + "  <noscript>\n"
+                + "  </script>\n" + "  <noscript>\n"
                 + "     Your browser does not support JavaScript so moving the mouse\n"
                 + "     over the actors will not display their parameters. To enable\n"
                 + "     JavaScript, consult the security preferences of your browser.\n"

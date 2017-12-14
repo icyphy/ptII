@@ -179,8 +179,8 @@ public class GraphicElement {
     @Override
     public String toString() {
         StringBuffer result = new StringBuffer("{");
-        result.append(getClass().getName() + " {" + _type + "}"
-                + " attributes {");
+        result.append(
+                getClass().getName() + " {" + _type + "}" + " attributes {");
 
         Set attributeSet = attributeNameSet();
         Iterator names = attributeSet.iterator();

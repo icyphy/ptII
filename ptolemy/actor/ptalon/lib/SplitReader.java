@@ -132,9 +132,8 @@ public class SplitReader extends Source {
         numberOfOutputs.setExpression("1");
         numberOfOutputs.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "</svg>\n");
@@ -216,22 +215,22 @@ public class SplitReader extends Source {
                     .intValue();
 
             if (linesToSkip < 0) {
-                throw new IllegalActionException(this, "The number of lines "
-                        + "to skip cannot be negative.");
+                throw new IllegalActionException(this,
+                        "The number of lines " + "to skip cannot be negative.");
             }
         } else if (attribute == blockSize) {
             int size = ((IntToken) blockSize.getToken()).intValue();
 
             if (size < 1) {
-                throw new IllegalActionException(this, "The bock size "
-                        + "must be greater than zero.");
+                throw new IllegalActionException(this,
+                        "The bock size " + "must be greater than zero.");
             }
         } else if (attribute == numberOfOutputs) {
             int size = ((IntToken) numberOfOutputs.getToken()).intValue();
 
             if (size < 1) {
-                throw new IllegalActionException(this, "The bock size "
-                        + "must be greater than zero.");
+                throw new IllegalActionException(this,
+                        "The bock size " + "must be greater than zero.");
             }
 
         } else {
@@ -409,9 +408,9 @@ public class SplitReader extends Source {
                 _currentLine = _reader.readLine();
 
                 if (_currentLine == null) {
-                    throw new IllegalActionException(this, "The file '"
-                            + fileOrURL.stringValue() + "' does not "
-                            + "have enough lines.");
+                    throw new IllegalActionException(this,
+                            "The file '" + fileOrURL.stringValue()
+                                    + "' does not " + "have enough lines.");
                 }
             }
             for (int i = 0; i < outputs; i++) {

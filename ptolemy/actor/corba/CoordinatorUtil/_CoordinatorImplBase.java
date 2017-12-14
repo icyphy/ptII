@@ -10,10 +10,10 @@ package ptolemy.actor.corba.CoordinatorUtil;
 /* A CORBA compatible interface for a coordinator.
  */
 @SuppressWarnings("serial")
-public abstract class _CoordinatorImplBase extends
-org.omg.CORBA.portable.ObjectImpl implements
-ptolemy.actor.corba.CoordinatorUtil.Coordinator,
-org.omg.CORBA.portable.InvokeHandler {
+public abstract class _CoordinatorImplBase
+        extends org.omg.CORBA.portable.ObjectImpl
+        implements ptolemy.actor.corba.CoordinatorUtil.Coordinator,
+        org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _CoordinatorImplBase() {
     }
@@ -53,7 +53,7 @@ org.omg.CORBA.portable.InvokeHandler {
             } catch (ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                .write(out, $ex);
+                        .write(out, $ex);
             }
 
             break;
@@ -72,7 +72,7 @@ org.omg.CORBA.portable.InvokeHandler {
             } catch (ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                .write(out, $ex);
+                        .write(out, $ex);
             }
 
             break;
@@ -90,7 +90,7 @@ org.omg.CORBA.portable.InvokeHandler {
             } catch (ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                .write(out, $ex);
+                        .write(out, $ex);
             }
 
             break;

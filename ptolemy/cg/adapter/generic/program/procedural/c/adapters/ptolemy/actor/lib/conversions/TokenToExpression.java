@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class TokenToExpression
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.TokenToExpression {
+public class TokenToExpression extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.TokenToExpression {
     /**
      *  Construct a TokenToExpression adapter.
      *  @param actor The given ptolemy.actor.lib.TokenToExpression actor.

@@ -81,8 +81,8 @@ public class SequenceDirector extends SequencedModelDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SequenceDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public SequenceDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -97,8 +97,8 @@ public class SequenceDirector extends SequencedModelDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SequenceDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public SequenceDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

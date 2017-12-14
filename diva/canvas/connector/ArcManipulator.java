@@ -89,8 +89,8 @@ public class ArcManipulator extends ConnectorManipulator {
         }
 
         GrabHandleFactory factory = getGrabHandleFactory();
-        _midpointHandle = factory.createGrabHandle(((ArcConnector) connector)
-                .getMidpointSite());
+        _midpointHandle = factory
+                .createGrabHandle(((ArcConnector) connector).getMidpointSite());
         _midpointHandle.setParent(this);
         _midpointHandle.setInteractor(getHandleInteractor());
         addGrabHandle(_midpointHandle);

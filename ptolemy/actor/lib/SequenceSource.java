@@ -56,8 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
-public class SequenceSource extends LimitedFiringSource implements
-SequenceActor {
+public class SequenceSource extends LimitedFiringSource
+        implements SequenceActor {
     /** Construct an actor with the given container and name.
      *  The <i>firingCountLimit</i> parameter is also constructed.
      *  @param container The container.

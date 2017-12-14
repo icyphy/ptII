@@ -87,8 +87,8 @@ public class PteraGraphTableau extends FSMGraphTableau {
      */
 
     public PteraGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, defaultLibrary);
     }
 
@@ -107,7 +107,8 @@ public class PteraGraphTableau extends FSMGraphTableau {
     @Override
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        PteraGraphFrame frame = new PteraGraphFrame(model, this, defaultLibrary);
+        PteraGraphFrame frame = new PteraGraphFrame(model, this,
+                defaultLibrary);
 
         try {
             setFrame(frame);
@@ -177,20 +178,20 @@ public class PteraGraphTableau extends FSMGraphTableau {
                         windowsPropertiesAttribute.setPersistent(true);
                     }
 
-                    Attribute sizeAttribute = controller.getAttribute(
-                            "_vergilSize", SizeAttribute.class);
+                    Attribute sizeAttribute = controller
+                            .getAttribute("_vergilSize", SizeAttribute.class);
                     if (sizeAttribute != null) {
                         sizeAttribute.setPersistent(true);
                     }
 
-                    Attribute zoomFactorAttribute = controller.getAttribute(
-                            "_vergilZoomFactor", Parameter.class);
+                    Attribute zoomFactorAttribute = controller
+                            .getAttribute("_vergilZoomFactor", Parameter.class);
                     if (zoomFactorAttribute != null) {
                         zoomFactorAttribute.setPersistent(true);
                     }
 
-                    Attribute centerAttribute = controller.getAttribute(
-                            "_vergilCenter", Parameter.class);
+                    Attribute centerAttribute = controller
+                            .getAttribute("_vergilCenter", Parameter.class);
                     if (centerAttribute != null) {
                         centerAttribute.setPersistent(true);
                     }

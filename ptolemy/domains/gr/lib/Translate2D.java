@@ -134,7 +134,8 @@ public class Translate2D extends GRTransform2D {
      *  parameters can't be obtained.
      */
     @Override
-    protected void _applyTransform(Figure figure) throws IllegalActionException {
+    protected void _applyTransform(Figure figure)
+            throws IllegalActionException {
         boolean applyTransform = false;
         double xOffset = 0.0;
         double yOffset = 0.0;

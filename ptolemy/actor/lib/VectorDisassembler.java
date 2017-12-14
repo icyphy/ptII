@@ -77,9 +77,9 @@ public class VectorDisassembler extends Transformer {
         input.setMultiport(false);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"0\" y=\"0\" width=\"6\" "
-                + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                        + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

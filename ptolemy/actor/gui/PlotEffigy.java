@@ -186,8 +186,7 @@ public class PlotEffigy extends PtolemyEffigy {
                 String extension = getExtension(input);
 
                 if (extension.equals("xml")) {
-                    if (checkForDTD(
-                            input,
+                    if (checkForDTD(input,
                             "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML",
                             null)) {
                         // This is a plot file.
@@ -196,7 +195,8 @@ public class PlotEffigy extends PtolemyEffigy {
                         effigy.uri.setURL(input);
                         return effigy;
                     }
-                } else if (extension.equals("plt") || extension.equals("plot")) {
+                } else if (extension.equals("plt")
+                        || extension.equals("plot")) {
                     PlotEffigy effigy = new PlotEffigy(container,
                             container.uniqueName("effigy"));
                     effigy.uri.setURL(input);

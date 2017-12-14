@@ -105,7 +105,8 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     }
 
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }

@@ -297,7 +297,8 @@ public class FigureTutorial {
          * @param width   a double
          * @param height  a double
          */
-        public CustomRectangle(double x, double y, double width, double height) {
+        public CustomRectangle(double x, double y, double width,
+                double height) {
             _bounds = new Rectangle2D.Double(x, y, width, height);
         }
 

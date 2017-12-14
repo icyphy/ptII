@@ -92,14 +92,14 @@ public class FMIEventInfo extends Structure {
 
     /** Access the structure by reference.
      */
-    public static class ByReference extends FMIEventInfo implements
-            Structure.ByReference {
+    public static class ByReference extends FMIEventInfo
+            implements Structure.ByReference {
     };
 
     /** Access the structure by value.
      */
-    public static class ByValue extends FMIEventInfo implements
-            Structure.ByValue {
+    public static class ByValue extends FMIEventInfo
+            implements Structure.ByValue {
     };
 
     // The fields below are in the order in which they are expected to be in the

@@ -185,7 +185,8 @@ public class BoundsGeometry implements Geometry {
     @Override
     public void setShape(Shape shape) {
         if (!(shape instanceof Rectangle2D)) {
-            throw new IllegalArgumentException("Argument must be a Rectangle2D");
+            throw new IllegalArgumentException(
+                    "Argument must be a Rectangle2D");
         }
 
         // Important: make a copy of it

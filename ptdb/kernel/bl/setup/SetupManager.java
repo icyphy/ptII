@@ -125,7 +125,8 @@ public class SetupManager {
         } catch (DBConnectionException e) {
             throw new DBConnectionException(
                     "Unable to create connection with the given parameters."
-                            + " - " + e.getMessage(), e);
+                            + " - " + e.getMessage(),
+                    e);
         } finally {
             if (mainConnection != null) {
                 mainConnection.closeConnection();
@@ -165,16 +166,16 @@ public class SetupManager {
 
             if (file.createNewFile() == false) {
 
-                throw new IOException("Could not create the properties file "
-                        + ptdbParams);
+                throw new IOException(
+                        "Could not create the properties file " + ptdbParams);
             }
         }
 
         URL url = FileUtilities.nameToURL(ptdbParams, null, null);
 
         if (url == null) {
-            throw new IOException("Could not find the properties file "
-                    + ptdbParams);
+            throw new IOException(
+                    "Could not find the properties file " + ptdbParams);
         }
 
         String defaultDBClassName = "";

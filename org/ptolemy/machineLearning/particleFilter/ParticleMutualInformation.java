@@ -47,6 +47,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
@@ -128,7 +129,6 @@ public class ParticleMutualInformation extends TypedAtomicActor {
      */
     public TypedIOPort jacobianOfMutualInformation;
 
-
     /**
      * Index of the robot which is optimizing location.  Jacobian of
      * mutual information will be dMI/dRob_i, where Rob_i is the
@@ -137,13 +137,12 @@ public class ParticleMutualInformation extends TypedAtomicActor {
      */
     public Parameter robotID;
 
-//    /**
-//     * Index list of the robots which are optimizing location.
-//     * Jacobian of mutual information will be [0 ... dMI/dRob_i ... 0],
-//     * where i is a part of robotIDList.
-//     */
-//    public Parameter robotIdList;
-
+    //    /**
+    //     * Index list of the robots which are optimizing location.
+    //     * Jacobian of mutual information will be [0 ... dMI/dRob_i ... 0],
+    //     * where i is a part of robotIDList.
+    //     */
+    //    public Parameter robotIdList;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -178,11 +177,14 @@ public class ParticleMutualInformation extends TypedAtomicActor {
                 //But it should be modified by StateSpaceModel.
                 for (int k = 0; k < _labels.length; k++) {
                     if (_labels[k].equals("weight")) {
-                        _weights[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
+                        _weights[i] = ((DoubleToken) token.get(_labels[k]))
+                                .doubleValue();
                     } else if (_labels[k].equals("x")) {
-                        _px[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
+                        _px[i] = ((DoubleToken) token.get(_labels[k]))
+                                .doubleValue();
                     } else if (_labels[k].equals("y")) {
-                        _py[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
+                        _py[i] = ((DoubleToken) token.get(_labels[k]))
+                                .doubleValue();
                     }
                 }
             }
@@ -205,11 +207,13 @@ public class ParticleMutualInformation extends TypedAtomicActor {
                         .getElement(i);
                 _robotLocations.add(robotLocation);
             }
-            _robotPos = new double[_nRobots*2];
+            _robotPos = new double[_nRobots * 2];
             for (int j = 0; j < _nRobots; j++) {
                 RecordToken robotJ = _robotLocations.get(j);
-                _robotPos[j*2] = ((DoubleToken) robotJ.get("x")).doubleValue();
-                _robotPos[j*2+1] = ((DoubleToken) robotJ.get("y")).doubleValue();
+                _robotPos[j * 2] = ((DoubleToken) robotJ.get("x"))
+                        .doubleValue();
+                _robotPos[j * 2 + 1] = ((DoubleToken) robotJ.get("y"))
+                        .doubleValue();
             }
         } else {
             _nRobots = 0;
@@ -221,45 +225,48 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         /////////////////////////////////////
         // check result
         /////////////////////////////////////
-//        double mutualInformation = Hz();
-//        double[][] tempJacobian = DoubleMatrixMath.multiply(_jacobian, 1.0);
-//        double[] tempRobotPos  = DoubleArrayMath.allocCopy(_robotPos);
-//        double[] change_val = new double[_nRobots*2];
-//        for (int count=0; count<1; count++) {
-//            for (int i=0; i<_nRobots*2; i++) {
-//                change_val[i] = Math.random() - 0.5;
-//            }
-//            //change current states
-//            for (int i=0; i<_robotPos.length; i++) {
-//                _robotPos[i] = tempRobotPos[i] + change_val[i];
-//            }
-//            //compute MI
-//            double newMI = Hz();
-//            // verify
-//            double[] dMI = DoubleMatrixMath.multiply(change_val, tempJacobian);
-//            double approximatedMI = mutualInformation + dMI[0];
-//
-//            //print out
-//            System.out.println("MI = "+mutualInformation + ", newMI = " + newMI + ", appNewMI = " + approximatedMI);
-//            System.out.println("jacobian = ");
-//            printMatrix(tempJacobian);
-//            System.out.println("dx = ");
-//            printVector(change_val);
-//            double verify = Math.abs(newMI-approximatedMI);
-//            double norm = DoubleArrayMath.dotProduct(change_val, change_val);
-//            verify /= Math.abs(newMI-mutualInformation);
-//            System.out.println("error prop = " + verify);
-//            System.out.println();
-//        }
-//
+        //        double mutualInformation = Hz();
+        //        double[][] tempJacobian = DoubleMatrixMath.multiply(_jacobian, 1.0);
+        //        double[] tempRobotPos  = DoubleArrayMath.allocCopy(_robotPos);
+        //        double[] change_val = new double[_nRobots*2];
+        //        for (int count=0; count<1; count++) {
+        //            for (int i=0; i<_nRobots*2; i++) {
+        //                change_val[i] = Math.random() - 0.5;
+        //            }
+        //            //change current states
+        //            for (int i=0; i<_robotPos.length; i++) {
+        //                _robotPos[i] = tempRobotPos[i] + change_val[i];
+        //            }
+        //            //compute MI
+        //            double newMI = Hz();
+        //            // verify
+        //            double[] dMI = DoubleMatrixMath.multiply(change_val, tempJacobian);
+        //            double approximatedMI = mutualInformation + dMI[0];
+        //
+        //            //print out
+        //            System.out.println("MI = "+mutualInformation + ", newMI = " + newMI + ", appNewMI = " + approximatedMI);
+        //            System.out.println("jacobian = ");
+        //            printMatrix(tempJacobian);
+        //            System.out.println("dx = ");
+        //            printVector(change_val);
+        //            double verify = Math.abs(newMI-approximatedMI);
+        //            double norm = DoubleArrayMath.dotProduct(change_val, change_val);
+        //            verify /= Math.abs(newMI-mutualInformation);
+        //            System.out.println("error prop = " + verify);
+        //            System.out.println();
+        //        }
+        //
     }
 
     @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
-        if (particles.hasToken(0) && locations.hasToken(0)) return true;
+        if (particles.hasToken(0) && locations.hasToken(0)) {
+            return true;
+        }
         return false;
     }
+
     @Override
     public void wrapup() throws IllegalActionException {
         // TODO Auto-generated method stub
@@ -270,14 +277,9 @@ public class ParticleMutualInformation extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void printMatrix(double[][] matrix) {
-        for (int row=0; row<matrix.length; row++) {
-            printVector(matrix[row]);
-        }
-    }
     private void printVector(double[] dx) {
-        for (int col=0; col<dx.length; col++) {
-            System.out.print(" "+dx[col]);
+        for (int col = 0; col < dx.length; col++) {
+            System.out.print(" " + dx[col]);
         }
         System.out.println();
     }
@@ -304,17 +306,20 @@ public class ParticleMutualInformation extends TypedAtomicActor {
             }
         }
         double[][] gaussianMeans = new double[N][_nRobots];
-        int numOfVariable = _nRobots*2; //number of variables
+        int numOfVariable = _nRobots * 2; //number of variables
         // If _robotId >= 0, we assume only the location of _robotId is variable.
-        if (_robotId >= 0) numOfVariable = 2;
+        if (_robotId >= 0) {
+            numOfVariable = 2;
+        }
         double[][][] dMeansDpos = new double[N][_nRobots][numOfVariable];
         for (int i = 0; i < N; i++) {
             //To be modified: This equation must refer to the measurement equation of sensors
             //defined by StateSpaceModel.
             // gmi = { |Rob0 - Pi|, ..., |Robj - Pi|, ... , |RobM - Pi|}
             for (int j = 0; j < _nRobots; j++) {
-                gaussianMeans[i][j] = Math.sqrt(
-                        Math.pow(_robotPos[j*2] - _px[i], 2) + Math.pow(_robotPos[j*2+1] - _py[i], 2));
+                gaussianMeans[i][j] = Math
+                        .sqrt(Math.pow(_robotPos[j * 2] - _px[i], 2)
+                                + Math.pow(_robotPos[j * 2 + 1] - _py[i], 2));
             }
         }
         for (int i = 0; i < N; i++) {
@@ -326,24 +331,29 @@ public class ParticleMutualInformation extends TypedAtomicActor {
             //
             for (int j = 0; j < _nRobots; j++) {
                 if (_robotId < 0) {
-                    dMeansDpos[i][j][j*2]   = (_robotPos[j*2]-_px[i]) / gaussianMeans[i][j];
-                    dMeansDpos[i][j][j*2+1] = (_robotPos[j*2+1]-_py[i]) / gaussianMeans[i][j];
+                    dMeansDpos[i][j][j * 2] = (_robotPos[j * 2] - _px[i])
+                            / gaussianMeans[i][j];
+                    dMeansDpos[i][j][j * 2
+                            + 1] = (_robotPos[j * 2 + 1] - _py[i])
+                                    / gaussianMeans[i][j];
                 } else if (_robotId == j) {
-                    dMeansDpos[i][j][0]   = (_robotPos[j*2]-_px[i]) / gaussianMeans[i][j];
-                    dMeansDpos[i][j][1] = (_robotPos[j*2+1]-_py[i]) / gaussianMeans[i][j];
+                    dMeansDpos[i][j][0] = (_robotPos[j * 2] - _px[i])
+                            / gaussianMeans[i][j];
+                    dMeansDpos[i][j][1] = (_robotPos[j * 2 + 1] - _py[i])
+                            / gaussianMeans[i][j];
                 }
             }
-//            System.out.println("Mean = ");
-//            printVector(gaussianMeans[i]);
-//            System.out.println("dMean = ");
-//            printMatrix(dMeansDx[i]);
+            //            System.out.println("Mean = ");
+            //            printVector(gaussianMeans[i]);
+            //            System.out.println("dMean = ");
+            //            printMatrix(dMeansDx[i]);
         }
         // Prepare Inverse and Determinant of Sigma before Integration
         // so that Hz will be calculated faster.
         double[][] invSigma = DoubleMatrixMath.inverse(Sigma);
         double detSigma = DoubleMatrixMath.determinant(Sigma);
-        detSigma = Math.sqrt(1.0 / (Math.pow(Math.PI * 2,
-                gaussianMeans[0].length) * detSigma));
+        detSigma = Math.sqrt(1.0
+                / (Math.pow(Math.PI * 2, gaussianMeans[0].length) * detSigma));
 
         double[] logSums = new double[N];
         // logSum_i = w0*mvnpdf(gmi, gm0) + ... + wj*mvnpdf(gmi, gmj) + ... + wN*mvnpdf(gmi, gmN)
@@ -363,14 +373,18 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         double[][][][] dlogSum_dgm = new double[N][N][1][gaussianMeans[0].length];
         for (int row = 0; row < N; row++) {
             for (int col = 0; col < N; col++) {
-                if (row==col) continue;
-                double[][] dmvnpdf_dgm = _calcJacobianOfmvnpdf(gaussianMeans[row], gaussianMeans[col],
-                        Sigma, invSigma, detSigma);
-                double[][] weightedMatrix = DoubleMatrixMath.multiply(dmvnpdf_dgm, _weights[col]);
+                if (row == col) {
+                    continue;
+                }
+                double[][] dmvnpdf_dgm = _calcJacobianOfmvnpdf(
+                        gaussianMeans[row], gaussianMeans[col], Sigma, invSigma,
+                        detSigma);
+                double[][] weightedMatrix = DoubleMatrixMath
+                        .multiply(dmvnpdf_dgm, _weights[col]);
                 // d_mvnpdf(gmi, gmj)/d_gmj = - d_mvnpdf(gmi, gmj)/d_gmi
                 for (int r = 0; r < dmvnpdf_dgm.length; r++) {
                     for (int c = 0; c < dmvnpdf_dgm[0].length; c++) {
-                        dlogSum_dgm[row][col][r][c] = - weightedMatrix[r][c];
+                        dlogSum_dgm[row][col][r][c] = -weightedMatrix[r][c];
                     }
                 }
                 // calculation of diagonal ( SUM(wj*d_mvnpdf(gm_row, gmj)/dgm_row) )
@@ -387,31 +401,31 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         double[][] dHz_dL = new double[1][N];
         // d_Hz/d_logsum = [-w0/logSum0, -w1/logSum1, ..., -wN/logSumN]
         for (int col = 0; col < N; col++) {
-            dHz_dL[0][col] = -_weights[col]/logSums[col];
+            dHz_dL[0][col] = -_weights[col] / logSums[col];
         }
-
 
         // compute jacobian of mutual information
         // J = dHz/dRob = d_Hz/d_logSum * d_logSum/d_gm * d_gm/d_rob
         double[][] d_logSum_d_rob = new double[N][numOfVariable];
         for (int row = 0; row < N; row++) {
             for (int col = 0; col < N; col++) {
-//                System.out.println("dlogSum_dgm" + row + "_" + col + " = ");
-//                printMatrix(dlogSum_dgm[row][col]);
-                double[][] tempMatrix = DoubleMatrixMath.multiply(dlogSum_dgm[row][col], dMeansDpos[col]);
-//                System.out.println("tempMatrix = ");
-//                printMatrix(tempMatrix);
+                //                System.out.println("dlogSum_dgm" + row + "_" + col + " = ");
+                //                printMatrix(dlogSum_dgm[row][col]);
+                double[][] tempMatrix = DoubleMatrixMath
+                        .multiply(dlogSum_dgm[row][col], dMeansDpos[col]);
+                //                System.out.println("tempMatrix = ");
+                //                printMatrix(tempMatrix);
                 for (int i = 0; i < numOfVariable; i++) {
                     d_logSum_d_rob[row][i] += tempMatrix[0][i]; //tempMatrix is 1 x numOfVariable.
                 }
             }
         }
-        _jacobian= DoubleMatrixMath.multiply(dHz_dL, d_logSum_d_rob);
+        _jacobian = DoubleMatrixMath.multiply(dHz_dL, d_logSum_d_rob);
         return Hz;
     }
 
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         particles = new TypedIOPort(this, "particles", true, false);
         //To be modified: Parameter names are hard-coded. It should be obtained using StateSpaceModel.
         ArrayToken names = new ArrayToken("{\"x\",\"y\"}"); //{"x","y"}
@@ -438,7 +452,8 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        jacobianOfMutualInformation = new TypedIOPort(this, "jacobianOfMI", false, true);
+        jacobianOfMutualInformation = new TypedIOPort(this, "jacobianOfMI",
+                false, true);
         jacobianOfMutualInformation.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         _firstStep = true;
@@ -446,10 +461,10 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         _covariance = 2.0; //This parameter should be defined by StateSpaceModel.
 
         _robotId = -1;
-        robotID  = new Parameter(this, "robot id");
+        robotID = new Parameter(this, "robot id");
         robotID.setExpression("-1");
         robotID.setTypeEquals(BaseType.INT);
-        robotID.setVisibility(Parameter.EXPERT);
+        robotID.setVisibility(Settable.EXPERT);
     }
 
     /**
@@ -463,17 +478,19 @@ public class ParticleMutualInformation extends TypedAtomicActor {
      */
     private double _mvnpdf(double[] x, double[] mu, double[][] Sigma,
             double[][] invSigma, double detSigma) {
-        double multiplier = Math.sqrt(1.0/(Math.pow(Math.PI*2, x.length)*detSigma));
+        double multiplier = Math
+                .sqrt(1.0 / (Math.pow(Math.PI * 2, x.length) * detSigma));
         double[] x_mu = new double[x.length];
         for (int i = 0; i < x.length; i++) {
             x_mu[i] = x[i] - mu[i];
         }
-        double exponent = DoubleArrayMath.dotProduct(
-                DoubleMatrixMath.multiply(x_mu, invSigma), x_mu);
+        double exponent = DoubleArrayMath
+                .dotProduct(DoubleMatrixMath.multiply(x_mu, invSigma), x_mu);
 
         return multiplier * Math.exp(-0.5 * exponent);
 
     }
+
     /**
      * Compute jacobian matrix of the multivariate PDF (d_mvnPDF/d_x)
      * Note that jacobian d_mvnPDF/d_mu = - d_mvnPDF/d_x.
@@ -484,15 +501,16 @@ public class ParticleMutualInformation extends TypedAtomicActor {
      * @param detSigma Determinant of covariance matrix
      * @return jacobian matrix of the PDF computed at x
      */
-    private double[][] _calcJacobianOfmvnpdf(double[] x, double[] mu, double[][] Sigma,
-            double[][] invSigma, double detSigma) {
-        double multiplier = Math.sqrt(1.0/(Math.pow(Math.PI*2, x.length)*detSigma));
+    private double[][] _calcJacobianOfmvnpdf(double[] x, double[] mu,
+            double[][] Sigma, double[][] invSigma, double detSigma) {
+        double multiplier = Math
+                .sqrt(1.0 / (Math.pow(Math.PI * 2, x.length) * detSigma));
         double[] x_mu = new double[x.length];
         for (int i = 0; i < x.length; i++) {
             x_mu[i] = x[i] - mu[i];
         }
-        double exponent = DoubleArrayMath.dotProduct(
-                DoubleMatrixMath.multiply(x_mu, invSigma), x_mu);
+        double exponent = DoubleArrayMath
+                .dotProduct(DoubleMatrixMath.multiply(x_mu, invSigma), x_mu);
         double mvnpdfVal = multiplier * Math.exp(-0.5 * exponent);
 
         // d[multiplier * exp(-0.5 * exponent)]/dx
@@ -501,8 +519,8 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         // = mvnpdfVal * -1.0 *[x_mu*invSigma]*I   /// (d[x_mu]/dx is identity matrix)
         double[][] jacobianOfmvnpdf = new double[1][x.length];
         double[] dExponentDx = DoubleMatrixMath.multiply(invSigma, x_mu);
-        for (int i=0; i<dExponentDx.length; i++) {
-            jacobianOfmvnpdf[0][i] = mvnpdfVal*-1.0*dExponentDx[i];
+        for (int i = 0; i < dExponentDx.length; i++) {
+            jacobianOfmvnpdf[0][i] = mvnpdfVal * -1.0 * dExponentDx[i];
         }
         return jacobianOfmvnpdf;
     }

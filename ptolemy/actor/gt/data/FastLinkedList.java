@@ -404,8 +404,8 @@ public class FastLinkedList<E> implements Collection<E> {
     @Override
     public <T> T[] toArray(T[] array) {
         if (array.length < size()) {
-            array = (T[]) Array.newInstance(
-                    array.getClass().getComponentType(), size());
+            array = (T[]) Array.newInstance(array.getClass().getComponentType(),
+                    size());
         }
         int i = 0;
         Entry entry = _head;
@@ -421,7 +421,7 @@ public class FastLinkedList<E> implements Collection<E> {
 
     /**
      An entry in this linked list that contains an element.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

@@ -63,8 +63,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (glp)
  *
  */
-public class MetroIISequentialSDFDirector extends SDFDirector implements
-GetFirable {
+public class MetroIISequentialSDFDirector extends SDFDirector
+        implements GetFirable {
 
     /**
      * Constructs a director in the default workspace with an empty string as its
@@ -78,8 +78,8 @@ GetFirable {
      *                If the container already contains an entity with the
      *                specified name.
      */
-    public MetroIISequentialSDFDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public MetroIISequentialSDFDirector()
+            throws IllegalActionException, NameDuplicationException {
     }
 
     /**
@@ -135,8 +135,8 @@ GetFirable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIISequentialSDFDirector newObject = (MetroIISequentialSDFDirector) super
-                .clone(workspace);
+        MetroIISequentialSDFDirector newObject = (MetroIISequentialSDFDirector) super.clone(
+                workspace);
         newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
                 .clone();
         newObject._pendingIteration = (Hashtable<String, Integer>) _pendingIteration
@@ -170,8 +170,8 @@ GetFirable {
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
                 } else {
-                    _actorDictionary.put(actor.getFullName(), new BlockingFire(
-                            actor));
+                    _actorDictionary.put(actor.getFullName(),
+                            new BlockingFire(actor));
                 }
                 _pendingIteration.put(actor.getFullName(), 0);
             }
@@ -190,7 +190,7 @@ GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                                    throws CollectionAbortedException {
+                            throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -213,8 +213,8 @@ GetFirable {
             Scheduler scheduler = getScheduler();
 
             if (scheduler == null) {
-                throw new IllegalActionException("Attempted to fire "
-                        + "system with no scheduler");
+                throw new IllegalActionException(
+                        "Attempted to fire " + "system with no scheduler");
             }
 
             // This will throw IllegalActionException if this director
@@ -236,13 +236,14 @@ GetFirable {
                 _pendingIteration.put(actor.getFullName(), iterationCount);
 
                 int returnValue = Executable.NOT_READY;
-                FireMachine firingProcess = _actorDictionary.get(actor
-                        .getFullName());
+                FireMachine firingProcess = _actorDictionary
+                        .get(actor.getFullName());
                 while (_pendingIteration.get(actor.getFullName()) > 0) {
                     _pendingIteration.put(actor.getFullName(),
                             _pendingIteration.get(actor.getFullName()) - 1);
                     // Check if the actor has reached the end of postfire()
-                    while (firingProcess.getState() != FireMachine.State.FINAL) {
+                    while (firingProcess
+                            .getState() != FireMachine.State.FINAL) {
                         LinkedList<Event.Builder> metroIIEventList = new LinkedList<Event.Builder>();
                         firingProcess.startOrResume(metroIIEventList);
                         resultHandler.handleResult(metroIIEventList);
@@ -261,16 +262,12 @@ GetFirable {
                     _postfireReturns = false;
                 } else if (returnValue == NOT_READY) {
                     // See de/test/auto/knownFailedTests/DESDFClockTest.xml
-                    throw new IllegalActionException(
-                            this,
-                            actor,
-                            "Actor "
-                                    + "is not ready to fire.  Perhaps "
-                                    + actor.getName()
-                                    + ".prefire() returned false? "
-                                    + "Try debugging the actor by selecting "
-                                    + "\"Listen to Actor\".  Also, for SDF check moml for "
-                                    + "tokenConsumptionRate on input.");
+                    throw new IllegalActionException(this, actor, "Actor "
+                            + "is not ready to fire.  Perhaps "
+                            + actor.getName() + ".prefire() returned false? "
+                            + "Try debugging the actor by selecting "
+                            + "\"Listen to Actor\".  Also, for SDF check moml for "
+                            + "tokenConsumptionRate on input.");
                 }
 
                 if (_debugging) {

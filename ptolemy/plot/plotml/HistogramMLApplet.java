@@ -53,10 +53,8 @@ public class HistogramMLApplet extends PlotMLApplet {
      */
     @Override
     public String getAppletInfo() {
-        return "HistogramMLApplet "
-                + PlotBox.PTPLOT_RELEASE
-                + ": A histogram plotter.\n"
-                + "By: Edward A. Lee.\n"
+        return "HistogramMLApplet " + PlotBox.PTPLOT_RELEASE
+                + ": A histogram plotter.\n" + "By: Edward A. Lee.\n"
                 + "($Id$)";
     }
 

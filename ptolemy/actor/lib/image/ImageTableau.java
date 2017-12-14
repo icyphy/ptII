@@ -103,8 +103,8 @@ public class ImageTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public ImageTableau(Effigy container, String name, TableauFrame frame,
-            int width, int height) throws IllegalActionException,
-            NameDuplicationException {
+            int width, int height)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, frame);
         _oldxsize = width;
         _oldysize = height;

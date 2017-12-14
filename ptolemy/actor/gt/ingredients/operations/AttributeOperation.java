@@ -98,7 +98,8 @@ public class AttributeOperation extends Operation {
         NamedObj container = owner.getOwner().getContainer();
         _attributeName = attributeName;
         _attributeClass = attributeClass;
-        _attributeValue = new PtolemyExpressionString(container, attributeValue);
+        _attributeValue = new PtolemyExpressionString(container,
+                attributeValue);
     }
 
     /** Get the change request to update the object in the host model.
@@ -130,16 +131,15 @@ public class AttributeOperation extends Operation {
         } else {
             Attribute oldAttribute = hostObject.getAttribute(_attributeName);
             if (oldAttribute == null) {
-                throw new IllegalActionException(
-                        "Unable to determine the class" + " of attribute "
-                                + _attributeName + " for entity " + hostObject
-                                + ".");
+                throw new IllegalActionException("Unable to determine the class"
+                        + " of attribute " + _attributeName + " for entity "
+                        + hostObject + ".");
             }
             attributeClass = oldAttribute.getClassName();
         }
 
-        ParserScope scope = NamedObjVariable.getNamedObjVariable(hostObject,
-                true).getParserScope();
+        ParserScope scope = NamedObjVariable
+                .getNamedObjVariable(hostObject, true).getParserScope();
         GTParameter.Evaluator evaluator = new GTParameter.Evaluator(pattern,
                 matchResult);
         String expression;
@@ -148,18 +148,21 @@ public class AttributeOperation extends Operation {
             for (int i = 0; i < _valueParseTree.jjtGetNumChildren(); i++) {
                 ASTPtRootNode child = (ASTPtRootNode) _valueParseTree
                         .jjtGetChild(i);
-                if (!(child.isConstant() && child.getToken() instanceof StringToken)) {
+                if (!(child.isConstant()
+                        && child.getToken() instanceof StringToken)) {
                     ASTPtLeafNode newNode = _evaluate(child, evaluator, scope);
-                    buffer.append(_parseTreeWriter
-                            .parseTreeToExpression(newNode));
+                    buffer.append(
+                            _parseTreeWriter.parseTreeToExpression(newNode));
                 } else {
-                    buffer.append(((StringToken) child.getToken())
-                            .stringValue());
+                    buffer.append(
+                            ((StringToken) child.getToken()).stringValue());
                 }
             }
             expression = buffer.toString();
-        } else if (!(_valueParseTree.isConstant() && _valueParseTree.getToken() instanceof StringToken)) {
-            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator, scope);
+        } else if (!(_valueParseTree.isConstant()
+                && _valueParseTree.getToken() instanceof StringToken)) {
+            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator,
+                    scope);
             expression = _parseTreeWriter.parseTreeToExpression(newRoot);
         } else {
             expression = _attributeValue.get();
@@ -307,8 +310,8 @@ public class AttributeOperation extends Operation {
             throw new ValidationException("Name must not be empty.");
         }
         if (_attributeName.contains(".")) {
-            throw new ValidationException("Name must not have period (\".\") "
-                    + "in it.");
+            throw new ValidationException(
+                    "Name must not have period (\".\") " + "in it.");
         }
 
         if (isAttributeClassEnabled()) {
@@ -319,8 +322,8 @@ public class AttributeOperation extends Operation {
             try {
                 Class.forName(_attributeClass);
             } catch (Throwable t) {
-                throw new ValidationException("Cannot load class \""
-                        + _attributeClass + "\".", t);
+                throw new ValidationException(
+                        "Cannot load class \"" + _attributeClass + "\".", t);
             }
         }
 
@@ -341,15 +344,15 @@ public class AttributeOperation extends Operation {
      */
     protected void _reparse() throws IllegalActionException {
         _valueParseTree = new PtParser()
-        .generateStringParseTree(_attributeValue.get());
+                .generateStringParseTree(_attributeValue.get());
     }
 
     /** The elements.
      */
     private static final OperationElement[] _ELEMENTS = {
-        new StringOperationElement("name", false, false),
-        new StringOperationElement("type", true, false),
-        new StringOperationElement("value", false, true) };
+            new StringOperationElement("name", false, false),
+            new StringOperationElement("type", true, false),
+            new StringOperationElement("value", false, true) };
 
     /** Value of the attributeClass element.
      */

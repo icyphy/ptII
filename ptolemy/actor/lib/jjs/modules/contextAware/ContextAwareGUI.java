@@ -38,14 +38,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-
 /** A GUI for the Context Aware accessor.
  * @author Anne H. Ngu (angu@txstate.edu)
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class ContextAwareGUI  {
+public class ContextAwareGUI {
 
     /** Construct the gui for a context-aware accessor.
      *  @param list A of list values to present.
@@ -56,7 +55,7 @@ public class ContextAwareGUI  {
         JPanel panel = new JPanel();
         textFields = new ArrayList<JTextField>();
         labels = new ArrayList<JLabel>();
-        for (int i=0; i<= list.length; i++ ) {
+        for (int i = 0; i <= list.length; i++) {
             labels.add(new JLabel());
             textFields.add(new JTextField(10));
             labels.get(i).setVisible(false);
@@ -66,83 +65,145 @@ public class ContextAwareGUI  {
         listModel = new DefaultListModel<String>();
         servicesList = new JList<String>(list);
         _groupLayout = new GroupLayout(panel);
-        _groupLayout.setHorizontalGroup(
-                _groupLayout.createParallelGroup(Alignment.LEADING)
+        _groupLayout.setHorizontalGroup(_groupLayout
+                .createParallelGroup(Alignment.LEADING)
                 .addGroup(_groupLayout.createSequentialGroup()
-                        .addComponent(servicesList, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-                        .addGroup(_groupLayout.createParallelGroup(Alignment.LEADING)
+                        .addComponent(servicesList, GroupLayout.PREFERRED_SIZE,
+                                110, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(_groupLayout
+                                .createParallelGroup(Alignment.LEADING)
                                 .addGroup(_groupLayout.createSequentialGroup()
-                                        .addGap(207)
-                                        .addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
+                                        .addGap(207).addComponent(searchButton,
+                                                GroupLayout.PREFERRED_SIZE, 89,
+                                                GroupLayout.PREFERRED_SIZE))
                                 .addGroup(_groupLayout.createSequentialGroup()
                                         .addGap(18)
-                                        .addGroup(_groupLayout.createParallelGroup(Alignment.LEADING)
-                                                .addGroup(_groupLayout.createSequentialGroup()
-                                                        .addComponent(labels.get(5))
-                                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                                        .addComponent(textFields.get(5)))
-                                                .addGroup(_groupLayout.createSequentialGroup()
-                                                        .addComponent(labels.get(4))
-                                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                                        .addComponent(textFields.get(4)))
-                                                .addGroup(_groupLayout.createSequentialGroup()
-                                                        .addComponent(labels.get(3))
-                                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                                        .addComponent(textFields.get(3)))
-                                                .addGroup(_groupLayout.createSequentialGroup()
-                                                        .addComponent(labels.get(2))
-                                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                                        .addComponent(textFields.get(2)))
-                                                .addGroup(_groupLayout.createSequentialGroup()
-                                                        .addComponent(labels.get(1))
-                                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                                        .addComponent(textFields.get(1)))
-                                                .addGroup(_groupLayout.createSequentialGroup()
-                                                        .addComponent(labels.get(0))
-                                                        .addPreferredGap(ComponentPlacement.RELATED)
-                                                        .addComponent(textFields.get(0), GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)))
+                                        .addGroup(_groupLayout
+                                                .createParallelGroup(
+                                                        Alignment.LEADING)
+                                                .addGroup(_groupLayout
+                                                        .createSequentialGroup()
+                                                        .addComponent(
+                                                                labels.get(5))
+                                                        .addPreferredGap(
+                                                                ComponentPlacement.RELATED)
+                                                        .addComponent(textFields
+                                                                .get(5)))
+                                                .addGroup(_groupLayout
+                                                        .createSequentialGroup()
+                                                        .addComponent(
+                                                                labels.get(4))
+                                                        .addPreferredGap(
+                                                                ComponentPlacement.RELATED)
+                                                        .addComponent(textFields
+                                                                .get(4)))
+                                                .addGroup(_groupLayout
+                                                        .createSequentialGroup()
+                                                        .addComponent(
+                                                                labels.get(3))
+                                                        .addPreferredGap(
+                                                                ComponentPlacement.RELATED)
+                                                        .addComponent(textFields
+                                                                .get(3)))
+                                                .addGroup(_groupLayout
+                                                        .createSequentialGroup()
+                                                        .addComponent(
+                                                                labels.get(2))
+                                                        .addPreferredGap(
+                                                                ComponentPlacement.RELATED)
+                                                        .addComponent(textFields
+                                                                .get(2)))
+                                                .addGroup(_groupLayout
+                                                        .createSequentialGroup()
+                                                        .addComponent(
+                                                                labels.get(1))
+                                                        .addPreferredGap(
+                                                                ComponentPlacement.RELATED)
+                                                        .addComponent(textFields
+                                                                .get(1)))
+                                                .addGroup(_groupLayout
+                                                        .createSequentialGroup()
+                                                        .addComponent(
+                                                                labels.get(0))
+                                                        .addPreferredGap(
+                                                                ComponentPlacement.RELATED)
+                                                        .addComponent(
+                                                                textFields
+                                                                        .get(0),
+                                                                GroupLayout.DEFAULT_SIZE,
+                                                                217,
+                                                                Short.MAX_VALUE)))
                                         .addGap(9)))
-                        .addGap(122))
-                                       );
-        _groupLayout.setVerticalGroup(
-                _groupLayout.createParallelGroup(Alignment.LEADING)
-                .addComponent(servicesList, GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addGroup(Alignment.TRAILING, _groupLayout.createSequentialGroup()
-                        .addGap(24)
-                        .addGroup(_groupLayout.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(textFields.get(0), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(labels.get(0)))
-                        .addGap(5)
-                        .addGroup(_groupLayout.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(labels.get(1), GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textFields.get(1), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addGap(5)
-                        .addGroup(_groupLayout.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(labels.get(2), GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textFields.get(2), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addGap(5)
-                        .addGroup(_groupLayout.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(labels.get(3), GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(textFields.get(3), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addGap(5)
-                        .addGroup(_groupLayout.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(textFields.get(4), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(labels.get(4)))
-                        .addGap(5)
-                        .addGroup(_groupLayout.createParallelGroup(Alignment.BASELINE)
-                                .addComponent(textFields.get(5), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(labels.get(5)))
-                        .addPreferredGap(ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                        .addComponent(searchButton)
-                        .addContainerGap())
-                                     );
+                        .addGap(122)));
+        _groupLayout.setVerticalGroup(_groupLayout
+                .createParallelGroup(Alignment.LEADING)
+                .addComponent(servicesList, GroupLayout.DEFAULT_SIZE, 294,
+                        Short.MAX_VALUE)
+                .addGroup(Alignment.TRAILING,
+                        _groupLayout.createSequentialGroup().addGap(24)
+                                .addGroup(_groupLayout
+                                        .createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(textFields.get(0),
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(labels.get(0)))
+                                .addGap(5)
+                                .addGroup(_groupLayout
+                                        .createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(labels.get(1),
+                                                GroupLayout.PREFERRED_SIZE, 20,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(textFields.get(1),
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE))
+                                .addGap(5)
+                                .addGroup(_groupLayout
+                                        .createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(labels.get(2),
+                                                GroupLayout.PREFERRED_SIZE, 20,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(textFields.get(2),
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE))
+                                .addGap(5)
+                                .addGroup(_groupLayout
+                                        .createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(labels.get(3),
+                                                GroupLayout.PREFERRED_SIZE, 20,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(textFields.get(3),
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE))
+                                .addGap(5)
+                                .addGroup(_groupLayout
+                                        .createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(textFields.get(4),
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(labels.get(4)))
+                                .addGap(5)
+                                .addGroup(_groupLayout
+                                        .createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(textFields.get(5),
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(labels.get(5)))
+                                .addPreferredGap(ComponentPlacement.RELATED,
+                                        111, Short.MAX_VALUE)
+                                .addComponent(searchButton).addContainerGap()));
 
         _groupLayout.setHonorsVisibility(true);
         panel.setLayout(_groupLayout);
 
-        frame.setSize(300,200);
-        panel.add(searchButton);                       // add button to panel
-        frame.setContentPane(panel);    // add panel to frame
+        frame.setSize(300, 200);
+        panel.add(searchButton); // add button to panel
+        frame.setContentPane(panel); // add panel to frame
         frame.setVisible(true);
     }
 

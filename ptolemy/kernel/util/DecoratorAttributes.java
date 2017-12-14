@@ -79,8 +79,8 @@ public class DecoratorAttributes extends Attribute {
      */
     public DecoratorAttributes(NamedObj container, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
-        super(container, container.uniqueName("DecoratorAttributesFor_"
-                + decorator.getName()));
+        super(container, container
+                .uniqueName("DecoratorAttributesFor_" + decorator.getName()));
         _decorator = decorator;
 
         decoratorName = new StringAttribute(this, "decoratorName");
@@ -150,8 +150,8 @@ public class DecoratorAttributes extends Attribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DecoratorAttributes newObject = (DecoratorAttributes) super
-                .clone(workspace);
+        DecoratorAttributes newObject = (DecoratorAttributes) super.clone(
+                workspace);
         newObject._decorator = null;
         return newObject;
     }

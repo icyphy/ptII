@@ -156,8 +156,8 @@ public class TDLRefinementPort extends RefinementPort {
      * @exception IllegalActionException Thrown if parameters cannot be set.
      * @exception NameDuplicationException Thrown if parameters cannot be set.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         setMirrorDisable(false);
         frequency = new Parameter(this, "frequency");
         initialValue = new Parameter(this, "initialValue");

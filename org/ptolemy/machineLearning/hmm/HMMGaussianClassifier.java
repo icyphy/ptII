@@ -86,8 +86,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
 
         covariance = new PortParameter(this, "covariance");
         covariance.setExpression("{10E-3,50E-3}");
-        cardinality = new StringAttribute(covariance.getPort(),
-                "_cardinal");
+        cardinality = new StringAttribute(covariance.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
 
         //_nStates = ((ArrayToken) meanToken).length();
@@ -111,8 +110,8 @@ public class HMMGaussianClassifier extends ObservationClassifier {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HMMGaussianClassifier newObject = (HMMGaussianClassifier) super
-                .clone(workspace);
+        HMMGaussianClassifier newObject = (HMMGaussianClassifier) super.clone(
+                workspace);
         newObject._mu = null;
         newObject._sigma = null;
         return newObject;
@@ -145,7 +144,8 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         }
 
         int obsDim = 1;
-        if (((ArrayToken) mean.getToken()).getElementType().isCompatible(BaseType.DOUBLE)) {
+        if (((ArrayToken) mean.getToken()).getElementType()
+                .isCompatible(BaseType.DOUBLE)) {
             _mu = new double[_nStates][obsDim];
             _sigma = new double[_nStates][obsDim][obsDim];
             for (int i = 0; i < _nStates; i++) {
@@ -155,15 +155,17 @@ public class HMMGaussianClassifier extends ObservationClassifier {
                         .getElement(i)).doubleValue();
             }
         } else {
-            obsDim = ((ArrayToken)((ArrayToken) mean.getToken()).getElement(0)).length();
+            obsDim = ((ArrayToken) ((ArrayToken) mean.getToken()).getElement(0))
+                    .length();
             _mu = new double[_nStates][obsDim];
             _sigma = new double[_nStates][obsDim][obsDim];
             for (int i = 0; i < _nStates; i++) {
                 _sigma[i] = ((DoubleMatrixToken) ((ArrayToken) covariance
                         .getToken()).getElement(i)).doubleMatrix();
                 for (int j = 0; j < obsDim; j++) {
-                    _mu[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) mean.getToken())
-                            .getElement(i)).getElement(j)).doubleValue();
+                    _mu[i][j] = ((DoubleToken) ((ArrayToken) ((ArrayToken) mean
+                            .getToken()).getElement(i)).getElement(j))
+                                    .doubleValue();
                 }
             }
         }
@@ -189,22 +191,22 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     }
 
     @Override
-    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException
-    {
+    protected double emissionProbability(double[] y, int hiddenState)
+            throws IllegalActionException {
 
         double[][] s = _sigma[hiddenState];
         double[] m = _mu[hiddenState];
 
         double[] xt = new double[y.length];
         Token[] xmat = new Token[y.length];
-        for (int i = 0; i < y.length; i ++) {
+        for (int i = 0; i < y.length; i++) {
             xt[i] = y[i] - m[i];
             xmat[i] = new DoubleToken(xt[i]);
         }
         MatrixToken X = MatrixToken.arrayToMatrix(xmat, y.length, 1);
         DoubleMatrixToken Covariance;
         try {
-            Covariance = new DoubleMatrixToken( DoubleMatrixMath.inverse(s));
+            Covariance = new DoubleMatrixToken(DoubleMatrixMath.inverse(s));
         } catch (IllegalArgumentException e) {
             return 0.0;
         }
@@ -212,9 +214,9 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         Token exponent = Xtranspose.multiply(Covariance);
         exponent = exponent.multiply(X);
 
-        double value = ((DoubleMatrixToken) exponent)
-                .getElementAt(0, 0);
-        double result = ( 1.0 / (Math.sqrt(2 * Math.PI) * DoubleMatrixMath.determinant(s))
+        double value = ((DoubleMatrixToken) exponent).getElementAt(0, 0);
+        double result = (1.0
+                / (Math.sqrt(2 * Math.PI) * DoubleMatrixMath.determinant(s))
                 * Math.exp(-0.5 * value));
 
         return result;

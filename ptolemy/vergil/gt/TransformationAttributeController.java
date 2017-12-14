@@ -76,8 +76,8 @@ public class TransformationAttributeController extends AttributeController {
             Access access) {
         super(controller, access);
 
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new LookInsideAction()));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new LookInsideAction()));
     }
 
     public static class Factory extends NodeControllerFactory {
@@ -93,8 +93,8 @@ public class TransformationAttributeController extends AttributeController {
         }
     }
 
-    private static class Listener extends TransformationListener implements
-    ChangeListener, WindowListener {
+    private static class Listener extends TransformationListener
+            implements ChangeListener, WindowListener {
 
         @Override
         public void changeExecuted(ChangeRequest change) {
@@ -112,11 +112,11 @@ public class TransformationAttributeController extends AttributeController {
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.PREINITIALIZING) {
                 try {
-                    _model = (CompositeEntity) GTTools.cleanupModel(_parent
-                            .getModel());
+                    _model = (CompositeEntity) GTTools
+                            .cleanupModel(_parent.getModel());
                 } catch (IllegalActionException e) {
-                    throw new InternalErrorException(null, e, "Unable to "
-                            + "clean up model.");
+                    throw new InternalErrorException(null, e,
+                            "Unable to " + "clean up model.");
                 }
             }
             super.managerStateChanged(manager);

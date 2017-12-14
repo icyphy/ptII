@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class Minimum
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Minimum {
+public class Minimum extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Minimum {
     /**
      * Construct an adapter for ptlemy.actor.lib.Minimum.
      * @param actor the associated actor.

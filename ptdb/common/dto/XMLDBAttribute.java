@@ -224,12 +224,13 @@ public class XMLDBAttribute {
 
         StringBuffer attributeBuffer = new StringBuffer(attributeNode);
 
-        if (_attributeType.equalsIgnoreCase(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+        if (_attributeType
+                .equalsIgnoreCase(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
             if (_attributeValues != null && _attributeValues.size() > 0) {
                 for (int i = 0; i < _attributeValues.size(); i++) {
-                    attributeBuffer.append("<item name='"
-                            + _attributeValues.get(i) + "'/>");
+                    attributeBuffer.append(
+                            "<item name='" + _attributeValues.get(i) + "'/>");
                 }
             }
         }

@@ -103,8 +103,8 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                 URL toRead = ConfigurationApplication.specToURL(urlSpec);
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Cannot open URL: "
-                        + urlSpec);
+                throw new IllegalActionException(this, ex,
+                        "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);

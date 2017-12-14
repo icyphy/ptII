@@ -107,13 +107,12 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
             System.out.println("Warning, failed to delete " + _cgDirectory);
         }
 
-        LinkedList<String> argumentsList = new LinkedList<String>(
-                Arrays.asList("-language", language, "-generateInSubdirectory",
-                        Boolean.toString(generateInSubdirectory), "-inline",
-                        Boolean.toString(inline), "-maximumLinesPerBlock",
-                        Integer.toString(maximumLinesPerBlock),
-                        "-variablesAsArrays",
-                        Boolean.toString(variablesAsArrays)));
+        LinkedList<String> argumentsList = new LinkedList<String>(Arrays.asList(
+                "-language", language, "-generateInSubdirectory",
+                Boolean.toString(generateInSubdirectory), "-inline",
+                Boolean.toString(inline), "-maximumLinesPerBlock",
+                Integer.toString(maximumLinesPerBlock), "-variablesAsArrays",
+                Boolean.toString(variablesAsArrays)));
         if (generatorPackageList != null && generatorPackageList.length() > 0) {
             argumentsList.add("-generatorPackageList");
             argumentsList.add(generatorPackageList);
@@ -122,8 +121,8 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
 
         String[] args = argumentsList.toArray(new String[argumentsList.size()]);
 
-        System.out
-                .print("----------------- (Known Failure) AutoCG $PTII/bin/ptcg");
+        System.out.print(
+                "----------------- (Known Failure) AutoCG $PTII/bin/ptcg");
         for (int i = 0; i < args.length; i++) {
             System.out.print(" " + args[i]);
         }
@@ -132,9 +131,9 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
             int returnValue = ((Integer) _generateCodeMethod.invoke(null,
                     (Object) args)).intValue();
             if (returnValue != 0) {
-                System.out
-                .println("Known Failure: Return value of the last command executed was not zero, it was: "
-                        + returnValue);
+                System.out.println(
+                        "Known Failure: Return value of the last command executed was not zero, it was: "
+                                + returnValue);
             }
         } catch (Throwable throwable) {
             System.out.println("Known Failure: " + throwable);

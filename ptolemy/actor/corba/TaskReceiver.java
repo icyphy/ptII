@@ -254,8 +254,9 @@ public class TaskReceiver extends Source {
     public void stop() {
         if (_coordinator != null) {
             try {
-                _coordinator.unregister(((StringToken) thisClientName
-                        .getToken()).stringValue());
+                _coordinator
+                        .unregister(((StringToken) thisClientName.getToken())
+                                .stringValue());
             } catch (CorbaIllegalActionException ex) {
                 //e.printStackTrace();
                 throw new KernelRuntimeException(this,
@@ -304,8 +305,8 @@ public class TaskReceiver extends Source {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) coordinatorName.getToken()).stringValue(),
                     "Multi");
-            _debug(getName(), " looking for name: ", coordinatorName.getToken()
-                    .toString());
+            _debug(getName(), " looking for name: ",
+                    coordinatorName.getToken().toString());
 
             NameComponent[] path = { namecomp };
             _coordinator = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
@@ -314,9 +315,9 @@ public class TaskReceiver extends Source {
             _orb.connect(_client);
 
             if (_coordinator != null) {
-                _coordinator
-                .register(((StringToken) thisClientName.getToken())
-                        .stringValue(), _client);
+                _coordinator.register(
+                        ((StringToken) thisClientName.getToken()).stringValue(),
+                        _client);
             }
 
             //registe the consumer with the given name

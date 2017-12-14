@@ -56,7 +56,8 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
  @Pt.AcceptedRating Red (ltrnc)
  */
 
-public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions {
+public class DeltaConstraintSolverDisplayActions
+        extends OntologyDisplayActions {
 
     /** Construct a DeltaConstraintSolverDisplayActions controller with the
      *  specified container and name.
@@ -88,8 +89,8 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
     /** The controller that adds commands to the context menu for the
      *  DeltaConstraintSolver ontology solver.
      */
-    private static class DeltaConstraintSolverHighlighterController extends
-    HighlighterController {
+    private static class DeltaConstraintSolverHighlighterController
+            extends HighlighterController {
 
         /** Create a DeltaConstraintSolverHighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.
@@ -101,8 +102,8 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
             super(displayActions, controller);
 
             HighlightConflicts highlightConflicts = displayActions.new HighlightConflicts();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    highlightConflicts));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(highlightConflicts));
         }
     }
 
@@ -149,8 +150,8 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
                         solver.getMoMLHandler().showConceptAnnotations();
                     }
                 } catch (KernelException ex) {
-                    MessageHandler.error(
-                            "Identifying solver conflicts failed.", ex);
+                    MessageHandler.error("Identifying solver conflicts failed.",
+                            ex);
                 }
             }
         }

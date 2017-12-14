@@ -64,7 +64,8 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public InvalidStateException(Nameable object, Throwable cause, String detail) {
+    public InvalidStateException(Nameable object, Throwable cause,
+            String detail) {
         super(object, null, cause, detail);
     }
 

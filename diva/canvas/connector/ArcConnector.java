@@ -156,12 +156,10 @@ public class ArcConnector extends AbstractConnector {
     public Point2D getArcMidpoint() {
         // Hm... I don't know why I need the PI/2 here -- johnr
         return new Point2D.Double(
-                _centerX
-                + _radius
-                * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
-                _centerY
-                + _radius
-                * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
+                _centerX + _radius * Math
+                        .sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
+                _centerY + _radius * Math
+                        .cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
     }
 
     /** Get the site that marks the midpoint of the connector.
@@ -365,8 +363,9 @@ public class ArcConnector extends AbstractConnector {
         //        }
 
         // Set the arc
-        _arc.setArcByCenter(centerX, centerY, radius, _startAngle / Math.PI
-                * 180, _extentAngle / Math.PI * 180, Arc2D.OPEN);
+        _arc.setArcByCenter(centerX, centerY, radius,
+                _startAngle / Math.PI * 180, _extentAngle / Math.PI * 180,
+                Arc2D.OPEN);
 
         // Move the label
         repositionLabel();

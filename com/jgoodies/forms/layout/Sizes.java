@@ -93,7 +93,8 @@ public final class Sizes {
     /**
      * Use the maximum of all component preferred sizes as column or row size.
      */
-    public static final ComponentSize PREFERRED = new ComponentSize("preferred");
+    public static final ComponentSize PREFERRED = new ComponentSize(
+            "preferred");
 
     /**
      * Use the maximum of all component sizes as column or row size;
@@ -106,7 +107,8 @@ public final class Sizes {
      * An array of all enumeration values used to canonicalize
      * deserialized component sizes.
      */
-    private static final ComponentSize[] VALUES = { MINIMUM, PREFERRED, DEFAULT };
+    private static final ComponentSize[] VALUES = { MINIMUM, PREFERRED,
+            DEFAULT };
 
     // Singleton State *******************************************************
 
@@ -205,8 +207,8 @@ public final class Sizes {
      * @return the given Millimeters as pixels
      */
     public static int millimeterAsPixel(double mm, Component component) {
-        return mm == 0d ? 0 : getUnitConverter().millimeterAsPixel(mm,
-                component);
+        return mm == 0d ? 0
+                : getUnitConverter().millimeterAsPixel(mm, component);
     }
 
     /**
@@ -218,8 +220,8 @@ public final class Sizes {
      * @return the given Centimeters as pixels
      */
     public static int centimeterAsPixel(double cm, Component component) {
-        return cm == 0d ? 0 : getUnitConverter().centimeterAsPixel(cm,
-                component);
+        return cm == 0d ? 0
+                : getUnitConverter().centimeterAsPixel(cm, component);
     }
 
     /**
@@ -243,8 +245,8 @@ public final class Sizes {
      * @return the given horizontal dialog units as pixels
      */
     public static int dialogUnitXAsPixel(int dluX, Component component) {
-        return dluX == 0 ? 0 : getUnitConverter().dialogUnitXAsPixel(dluX,
-                component);
+        return dluX == 0 ? 0
+                : getUnitConverter().dialogUnitXAsPixel(dluX, component);
     }
 
     /**
@@ -256,8 +258,8 @@ public final class Sizes {
      * @return the given vertical dialog units as pixels
      */
     public static int dialogUnitYAsPixel(int dluY, Component component) {
-        return dluY == 0 ? 0 : getUnitConverter().dialogUnitYAsPixel(dluY,
-                component);
+        return dluY == 0 ? 0
+                : getUnitConverter().dialogUnitYAsPixel(dluY, component);
     }
 
     // Accessing the Unit Converter *******************************************

@@ -78,8 +78,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (ismael)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ViewScreen2D extends GRActor2D implements Placeable,
-ViewScreenInterface {
+public class ViewScreen2D extends GRActor2D
+        implements Placeable, ViewScreenInterface {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -130,8 +130,8 @@ ViewScreenInterface {
         showAxes = new Parameter(this, "showAxes", new BooleanToken(false));
         showAxes.setTypeEquals(BaseType.BOOLEAN);
 
-        translatable = new Parameter(this, "translatable", new BooleanToken(
-                false));
+        translatable = new Parameter(this, "translatable",
+                new BooleanToken(false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
@@ -412,12 +412,12 @@ ViewScreenInterface {
         _canvas = new JCanvas(pane);
 
         _container.add("Center", _canvas);
-        _canvas.setMinimumSize(new Dimension(horizontalDimension,
-                verticalDimension));
-        _canvas.setMaximumSize(new Dimension(horizontalDimension,
-                verticalDimension));
-        _canvas.setPreferredSize(new Dimension(horizontalDimension,
-                verticalDimension));
+        _canvas.setMinimumSize(
+                new Dimension(horizontalDimension, verticalDimension));
+        _canvas.setMaximumSize(
+                new Dimension(horizontalDimension, verticalDimension));
+        _canvas.setPreferredSize(
+                new Dimension(horizontalDimension, verticalDimension));
 
         if (_frame != null) {
             _frame.pack();
@@ -432,16 +432,17 @@ ViewScreenInterface {
         double lowerRightYValue = ((IntToken) lowerRightY.getToken())
                 .doubleValue();
         java.awt.geom.Rectangle2D visibleRect = new java.awt.geom.Rectangle2D.Double(
-                upperLeftXValue, upperLeftYValue, lowerRightXValue
-                - upperLeftXValue, lowerRightYValue - upperLeftYValue);
+                upperLeftXValue, upperLeftYValue,
+                lowerRightXValue - upperLeftXValue,
+                lowerRightYValue - upperLeftYValue);
 
         if (visibleRect.getHeight() == 0 || visibleRect.getWidth() == 0) {
             throw new IllegalActionException(this, "The width and height "
                     + "of the visible rectangle cannot be zero.");
         }
 
-        AffineTransform transform = CanvasUtilities.computeTransform(
-                visibleRect, _canvas.getBounds());
+        AffineTransform transform = CanvasUtilities
+                .computeTransform(visibleRect, _canvas.getBounds());
         System.out.println("transform = " + transform);
 
         //       _origin = new Point2D.Double(
@@ -450,10 +451,10 @@ ViewScreenInterface {
         pane.setTransform(transform);
         pane.setAntialiasing(true);
 
-        _crosshairX = new BasicFigure(new java.awt.geom.Line2D.Double(0, 2, 0,
-                -2));
-        _crosshairY = new BasicFigure(new java.awt.geom.Line2D.Double(2, 0, -2,
-                0));
+        _crosshairX = new BasicFigure(
+                new java.awt.geom.Line2D.Double(0, 2, 0, -2));
+        _crosshairY = new BasicFigure(
+                new java.awt.geom.Line2D.Double(2, 0, -2, 0));
         _overlayLayer.add(_crosshairX.getShape());
         _overlayLayer.add(_crosshairY.getShape());
 
@@ -538,8 +539,8 @@ ViewScreenInterface {
 
     /** Listen for Layer, LayerMotion and Key events.
      */
-    public class ViewScreen2DListener implements LayerListener,
-    LayerMotionListener, KeyListener {
+    public class ViewScreen2DListener
+            implements LayerListener, LayerMotionListener, KeyListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -593,7 +594,7 @@ ViewScreenInterface {
 
             if (selectedFigure != null) {
                 ((FigureInteractor) selectedFigure.getInteractor())
-                .keyReleased(e);
+                        .keyReleased(e);
             }
 
             if (e.getKeyCode() == KeyEvent.VK_O) {
@@ -634,14 +635,14 @@ ViewScreenInterface {
         public void mouseDragged(LayerEvent e) {
             //Translate the origin while the mouse cursor is in the window
             //and the user is dragging the origin marker.
-            if (_originRelocatable
-                    && _mouseInWindow
+            if (_originRelocatable && _mouseInWindow
                     && (getCrosshairX().getBounds().contains(e.getLayerPoint())
-                            || getCrosshairY().getBounds().contains(
-                                    e.getLayerPoint()) || _mouseDragging == true)) {
+                            || getCrosshairY().getBounds()
+                                    .contains(e.getLayerPoint())
+                            || _mouseDragging == true)) {
                 _mouseDragging = true;
-                _canvas.setCursor(Cursor
-                        .getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                _canvas.setCursor(
+                        Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 _origin = (Point2D.Double) e.getLayerPoint();
                 _canvas.getCanvasPane().translate(_origin.x, _origin.y);
             }
@@ -686,7 +687,7 @@ ViewScreenInterface {
 
                 if (!figure.contains(e.getLayerPoint())) {
                     ((FigureInteractor) figure.getInteractor())
-                    .setSelected(false);
+                            .setSelected(false);
                 }
             }
         }
@@ -698,7 +699,8 @@ ViewScreenInterface {
         @Override
         public void mouseReleased(LayerEvent e) {
             _mouseDragging = false;
-            _canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            _canvas.setCursor(
+                    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
         ///////////////////////////////////////////////////////////////////

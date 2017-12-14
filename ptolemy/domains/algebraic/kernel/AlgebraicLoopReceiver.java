@@ -132,7 +132,8 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
      *   explicitly.
      */
     @Override
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");

@@ -34,7 +34,8 @@ public class ImageCombiningFilter {
         return (a1 << 24) | (r << 16) | (g << 8) | b;
     }
 
-    public ImageProducer filter(Image image1, Image image2, int x, int y, int w, int h) {
+    public ImageProducer filter(Image image1, Image image2, int x, int y, int w,
+            int h) {
         int[] pixels1 = new int[w * h];
         int[] pixels2 = new int[w * h];
         int[] pixels3 = new int[w * h];

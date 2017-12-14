@@ -118,8 +118,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
-            throws IllegalActionException {
+    public String traceParseTreeEvaluation(ASTPtRootNode node,
+            ParserScope scope) throws IllegalActionException {
         _scope = scope;
         _trace = new StringBuffer();
         _depth = 0;
@@ -228,8 +228,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
             if (!(nextToken instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException("Operation "
-                        + node.getOperator().image + " not defined on "
-                        + result
+                        + node.getOperator().image + " not defined on " + result
                         + " which does not support bitwise operations.");
             }
 
@@ -429,9 +428,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     // Note that we do not want to store a reference to
                     // the parser, because parsers take up alot of memory.
                     PtParser parser = new PtParser();
-                    ASTPtRootNode tree = parser
-                            .generateParseTree(((StringToken) token)
-                                    .stringValue());
+                    ASTPtRootNode tree = parser.generateParseTree(
+                            ((StringToken) token).stringValue());
 
                     // Note that we evaluate the recursed parse tree
                     // in the same scope as this parse tree.
@@ -456,18 +454,17 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             if (token instanceof StringToken) {
                 String expression = ((StringToken) token).stringValue();
                 ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
-                Set freeVariables = collector
-                        .collectFreeVariables(node, _scope);
+                Set freeVariables = collector.collectFreeVariables(node,
+                        _scope);
                 _evaluatedChildToken = MatlabUtilities.evaluate(expression,
                         freeVariables, _scope);
                 return;
             } else {
-                throw new IllegalActionException(
-                        "The function \"matlab\" is"
-                                + " reserved for invoking the matlab engine, and takes"
-                                + " a string matlab expression argument followed by"
-                                + " a list of variable names that the matlab expression"
-                                + " refers to.");
+                throw new IllegalActionException("The function \"matlab\" is"
+                        + " reserved for invoking the matlab engine, and takes"
+                        + " a string matlab expression argument followed by"
+                        + " a list of variable names that the matlab expression"
+                        + " refers to.");
             }
         }
 
@@ -475,11 +472,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             if (argCount == 3) {
                 if (argValues[0] instanceof FunctionToken) {
                     FunctionToken function = (FunctionToken) argValues[0];
-                    if (((FunctionType) function.getType()).getArgCount() != 2) {
-                        throw new IllegalActionException(
-                                "The first argument "
-                                        + "to the function \"fold\" must be a function "
-                                        + "that accepts two arguments.");
+                    if (((FunctionType) function.getType())
+                            .getArgCount() != 2) {
+                        throw new IllegalActionException("The first argument "
+                                + "to the function \"fold\" must be a function "
+                                + "that accepts two arguments.");
                     }
                     ptolemy.data.Token current = argValues[1];
                     if (argValues[2] instanceof ArrayToken) {
@@ -500,9 +497,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                     second = ConversionUtilities
                                             .convertJavaTypeToToken(second);
                                 }
-                                current = function
-                                        .apply(new ptolemy.data.Token[] {
-                                                current,
+                                current = function.apply(
+                                        new ptolemy.data.Token[] { current,
                                                 (ptolemy.data.Token) second });
                             }
                             _evaluatedChildToken = current;
@@ -515,9 +511,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                     second = ConversionUtilities
                                             .convertJavaTypeToToken(second);
                                 }
-                                current = function
-                                        .apply(new ptolemy.data.Token[] {
-                                                current,
+                                current = function.apply(
+                                        new ptolemy.data.Token[] { current,
                                                 (ptolemy.data.Token) second });
                             }
                             _evaluatedChildToken = current;
@@ -673,8 +668,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token token = _evaluatedChildToken;
         Type type = _typeInference.inferTypes(typeChild, _scope);
 
-        Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(
-                type, token.getType());
+        Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(type,
+                token.getType());
 
         token = conversionType.convert(token);
         _evaluatedChildToken = token;
@@ -691,7 +686,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             return;
@@ -754,9 +750,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = _evaluatedChildToken;
 
         if (!(result instanceof BooleanToken)) {
-            throw new IllegalActionException("Cannot perform logical "
-                    + "operation on " + result + " which is a "
-                    + result.getClass().getName());
+            throw new IllegalActionException(
+                    "Cannot perform logical " + "operation on " + result
+                            + " which is a " + result.getClass().getName());
         }
 
         // Make sure that exactly one of AND or OR is set.
@@ -778,9 +774,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token nextToken = _evaluatedChildToken;
 
             if (!(nextToken instanceof BooleanToken)) {
-                throw new IllegalActionException("Cannot perform logical "
-                        + "operation on " + nextToken + " which is a "
-                        + result.getClass().getName());
+                throw new IllegalActionException(
+                        "Cannot perform logical " + "operation on " + nextToken
+                                + " which is a " + result.getClass().getName());
             }
 
             if (flag != ((BooleanToken) nextToken).booleanValue()) {
@@ -842,11 +838,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
-                    ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i], tokens[3 * i + 1],
-                                    columnCount);
-                    System.arraycopy(newTokens, 0, matrixTokens, columnCount
-                            * i, columnCount);
+                    ptolemy.data.Token[] newTokens = MatrixToken.createSequence(
+                            tokens[3 * i], tokens[3 * i + 1], columnCount);
+                    System.arraycopy(newTokens, 0, matrixTokens,
+                            columnCount * i, columnCount);
                 }
 
                 result = MatrixToken.arrayToMatrix(matrixTokens,
@@ -1034,8 +1029,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 "The number of labels and values does not "
                         + "match in parsing a record expression.");
 
-        String[] labels = (String[]) node.getFieldNames().toArray(
-                new String[numChildren]);
+        String[] labels = (String[]) node.getFieldNames()
+                .toArray(new String[numChildren]);
 
         if (node instanceof ASTPtOrderedRecordConstructNode) {
             _evaluatedChildToken = new OrderedRecordToken(labels, tokens);
@@ -1059,7 +1054,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
-        _assert(numChildren == 2, node, "The number of child nodes must be two");
+        _assert(numChildren == 2, node,
+                "The number of child nodes must be two");
 
         Token operator = node.getOperator();
         ptolemy.data.Token leftToken = tokens[0];
@@ -1071,7 +1067,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             result = leftToken.isEqualTo(rightToken).not();
         } else {
-            if (!(leftToken instanceof PartiallyOrderedToken && rightToken instanceof PartiallyOrderedToken)) {
+            if (!(leftToken instanceof PartiallyOrderedToken
+                    && rightToken instanceof PartiallyOrderedToken)) {
                 throw new IllegalActionException("The " + operator.image
                         + " operator can only be applied on partial orders.");
             }
@@ -1080,20 +1077,20 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             PartiallyOrderedToken rightScalar = (PartiallyOrderedToken) rightToken;
 
             if (operator.kind == PtParserConstants.GTE) {
-                result = rightScalar.isLessThan(leftScalar).or(
-                        leftToken.isEqualTo(rightToken));
+                result = rightScalar.isLessThan(leftScalar)
+                        .or(leftToken.isEqualTo(rightToken));
             } else if (operator.kind == PtParserConstants.GT) {
                 result = rightScalar.isLessThan(leftScalar);
             } else if (operator.kind == PtParserConstants.LTE) {
-                result = leftScalar.isLessThan(rightScalar).or(
-                        leftToken.isEqualTo(rightToken));
+                result = leftScalar.isLessThan(rightScalar)
+                        .or(leftToken.isEqualTo(rightToken));
             } else if (operator.kind == PtParserConstants.LT) {
                 result = leftScalar.isLessThan(rightScalar);
             } else {
-                throw new IllegalActionException("Invalid operation "
-                        + operator.image + " between "
-                        + leftToken.getClass().getName() + " and "
-                        + rightToken.getClass().getName());
+                throw new IllegalActionException(
+                        "Invalid operation " + operator.image + " between "
+                                + leftToken.getClass().getName() + " and "
+                                + rightToken.getClass().getName());
             }
         }
 
@@ -1119,7 +1116,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
-        _assert(numChildren == 2, node, "The number of child nodes must be two");
+        _assert(numChildren == 2, node,
+                "The number of child nodes must be two");
 
         Token operator = node.getOperator();
         ptolemy.data.Token token = tokens[0];
@@ -1127,15 +1125,15 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = null;
 
         if (!(token instanceof ScalarToken)) {
-            throw new IllegalActionException("The " + operator
-                    + " operator requires "
-                    + "the left operand to be a scalar.");
+            throw new IllegalActionException(
+                    "The " + operator + " operator requires "
+                            + "the left operand to be a scalar.");
         }
 
         if (!(bitsToken instanceof ScalarToken)) {
-            throw new IllegalActionException("The " + operator
-                    + " operator requires "
-                    + "the right operand to be a scalar.");
+            throw new IllegalActionException(
+                    "The " + operator + " operator requires "
+                            + "the right operand to be a scalar.");
         }
 
         // intValue() is used rather than testing for IntToken
@@ -1149,15 +1147,15 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 result = ((ScalarToken) token)
                         .rightShift(((ScalarToken) bitsToken).intValue());
             } else if (operator.kind == PtParserConstants.LSHR) {
-                result = ((ScalarToken) token)
-                        .logicalRightShift(((ScalarToken) bitsToken).intValue());
+                result = ((ScalarToken) token).logicalRightShift(
+                        ((ScalarToken) bitsToken).intValue());
             } else {
                 _assert(false, node, "Invalid operation");
             }
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException("The " + operator
-                    + " operator requires "
-                    + "the right operand to have an integer value.");
+            throw new IllegalActionException(
+                    "The " + operator + " operator requires "
+                            + "the right operand to have an integer value.");
         }
 
         _evaluatedChildToken = result;
@@ -1277,8 +1275,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 "The number of labels and values does not "
                         + "match in parsing a record expression.");
 
-        String[] labels = (String[]) node.getLabelNames().toArray(
-                new String[numChildren]);
+        String[] labels = (String[]) node.getLabelNames()
+                .toArray(new String[numChildren]);
 
         //_assert(labels.length == 1, node,
         //        "has more than one member type of the union.");
@@ -1421,8 +1419,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     integerColumnIndex);
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException("The index (" + rowIndex + ","
-                    + columnIndex + ") is out of bounds on the matrix '"
-                    + value + "'.");
+                    + columnIndex + ") is out of bounds on the matrix '" + value
+                    + "'.");
         }
     }
 
@@ -1448,8 +1446,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
         } else {
-            throw new IllegalActionException("No function found matching "
-                    + method.toString());
+            throw new IllegalActionException(
+                    "No function found matching " + method.toString());
         }
     }
 
@@ -1461,8 +1459,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @return The value of returned by the specified method.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    protected ptolemy.data.Token _methodCall(String methodName,
-            Type[] argTypes, Object[] argValues) throws IllegalActionException {
+    protected ptolemy.data.Token _methodCall(String methodName, Type[] argTypes,
+            Object[] argValues) throws IllegalActionException {
 
         CachedMethod method = CachedMethod.findMethod(methodName, argTypes,
                 CachedMethod.METHOD);
@@ -1549,8 +1547,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        throw new IllegalActionException("No method found matching "
-                + method.toString());
+        throw new IllegalActionException(
+                "No method found matching " + method.toString());
     }
 
     /** Add a record to the current trace corresponding to the given message.
@@ -1597,8 +1595,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 _trace.append("  ");
             }
 
-            _trace.append("Node " + node.getClass().getName()
-                    + " evaluated to " + _evaluatedChildToken + "\n");
+            _trace.append("Node " + node.getClass().getName() + " evaluated to "
+                    + _evaluatedChildToken + "\n");
         }
     }
 
@@ -1655,15 +1653,15 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                             args[i] = ((ObjectToken) argument).getValue();
                         } else if (argument instanceof ptolemy.data.Token) {
                             args[i] = ConversionUtilities
-                                    .convertTokenToJavaType((ptolemy.data.Token) argument);
+                                    .convertTokenToJavaType(
+                                            (ptolemy.data.Token) argument);
                         } else {
                             args[i] = argument;
                         }
                     }
                 }
-                if (compatible
-                        && (object != null || Modifier.isStatic(method
-                                .getModifiers()))) {
+                if (compatible && (object != null
+                        || Modifier.isStatic(method.getModifiers()))) {
                     try {
                         result = method.invoke(object, args);
                         if (result == null) {

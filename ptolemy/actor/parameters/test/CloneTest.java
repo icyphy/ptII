@@ -56,10 +56,11 @@ public class CloneTest {
 
         // Use ArrayContains because it has few type constraints.
         TypedAtomicActor actor = new ArrayContains(compositeEntity, "myActor");
-        TypedAtomicActor clone = (TypedAtomicActor)actor.clone(workspace);
+        TypedAtomicActor clone = (TypedAtomicActor) actor.clone(workspace);
 
         Set<Inequality> masterConstraints = actor.typeConstraints();
-        System.out.println(masterConstraints.size() + " master type constraints:");
+        System.out.println(
+                masterConstraints.size() + " master type constraints:");
         Inequality firstElement = null;
         Inequality secondElement = null;
         Inequality lastElement = null;
@@ -75,19 +76,23 @@ public class CloneTest {
         System.out.println(secondElement.equals(lastElement));
 
         Set<Inequality> cloneConstraints = clone.typeConstraints();
-        System.out.println("\n\n" + cloneConstraints.size() + " clone type constraints:");
+        System.out.println(
+                "\n\n" + cloneConstraints.size() + " clone type constraints:");
         for (Inequality inequality : cloneConstraints) {
             System.out.println(inequality);
         }
         System.out.println("\n\n");
 
         if (masterConstraints.size() != cloneConstraints.size()) {
-            throw new Exception("The number of type constraints in the master (" + masterConstraints.size()
-                    + ") is not equal to the number of type constraints in the clone (" + cloneConstraints.size() + ")");
+            throw new Exception("The number of type constraints in the master ("
+                    + masterConstraints.size()
+                    + ") is not equal to the number of type constraints in the clone ("
+                    + cloneConstraints.size() + ")");
         }
 
         if (masterConstraints.equals(cloneConstraints)) {
-            throw new Exception("The master type constraints and the clone type constraints are not equal.");
+            throw new Exception(
+                    "The master type constraints and the clone type constraints are not equal.");
         }
     }
 }

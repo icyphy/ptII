@@ -94,33 +94,40 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
 
         // an array of control value for robots
         controlInput = new TypedIOPort(this, "control_input", true, false);
-        controlInput.setTypeEquals(new ArrayType (new ArrayType(BaseType.DOUBLE)));
+        controlInput
+                .setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
 
         // an array of state of robots
         currentState = new TypedIOPort(this, "current_state", true, false);
-        ArrayToken names = new ArrayToken("{\"x\",\"y\",\"vx\",\"vy\",\"covariance\"}");
+        ArrayToken names = new ArrayToken(
+                "{\"x\",\"y\",\"vx\",\"vy\",\"covariance\"}");
         _labels = new String[names.length()];
         _types = new Type[names.length()];
-        for (int i = 0; i < names.length()-1; i++) {
-            String stateName = ((StringToken) names.getElement(i)).stringValue();
+        for (int i = 0; i < names.length() - 1; i++) {
+            String stateName = ((StringToken) names.getElement(i))
+                    .stringValue();
             _labels[i] = stateName;
             _types[i] = BaseType.DOUBLE; // preset to be double
         }
-        _labels[names.length()-1] =  ((StringToken) names.getElement(names.length()-1)).stringValue();
-        _types[names.length()-1] = BaseType.DOUBLE_MATRIX; // preset to be double
+        _labels[names.length()
+                - 1] = ((StringToken) names.getElement(names.length() - 1))
+                        .stringValue();
+        _types[names.length() - 1] = BaseType.DOUBLE_MATRIX; // preset to be double
 
         currentState.setTypeEquals(new RecordType(_labels, _types));
 
         // an array of predicted states of a robot
-        predictedStates = new TypedIOPort(this, "predicted_states", false, true);
-        predictedStates.setTypeEquals(new ArrayType(new RecordType(_labels, _types)));
+        predictedStates = new TypedIOPort(this, "predicted_states", false,
+                true);
+        predictedStates
+                .setTypeEquals(new ArrayType(new RecordType(_labels, _types)));
 
         _timeHorizon = 1;
         timeHorizon = new PortParameter(this, "predictionHorizon");
         timeHorizon.setExpression("1");
         timeHorizon.setTypeEquals(BaseType.INT);
         new StringAttribute(timeHorizon.getPort(), "_cardinal")
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
         new Parameter(timeHorizon.getPort(), "_showName").setExpression("true");
     }
 
@@ -169,25 +176,27 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
             ArrayToken uArray = (ArrayToken) arrayOfControl.getElement(0);
             _uValue = new double[arrayOfControl.length()][uArray.length()];
             for (int i = 0; i < _uValue.length; i++) {
-                for (int it_u =0; it_u < _uValue[0].length; it_u++) {
+                for (int it_u = 0; it_u < _uValue[0].length; it_u++) {
                     uArray = (ArrayToken) arrayOfControl.getElement(i);
-                    _uValue[i][it_u] = ((DoubleToken) uArray.getElement(it_u)).doubleValue();
+                    _uValue[i][it_u] = ((DoubleToken) uArray.getElement(it_u))
+                            .doubleValue();
                 }
             }
         }
         if (currentState.hasToken(0)) {
             _currentState = new double[_labels.length];
             RecordToken incoming = (RecordToken) currentState.get(0);
-            for (int it=0; it<_labels.length-1; it++) {
-                _currentState[it] = ((DoubleToken) incoming.get(_labels[it])).doubleValue();
+            for (int it = 0; it < _labels.length - 1; it++) {
+                _currentState[it] = ((DoubleToken) incoming.get(_labels[it]))
+                        .doubleValue();
             }
-            _currentCovariance = ((DoubleMatrixToken) incoming.get(_labels[_labels.length-1])).doubleMatrix();
+            _currentCovariance = ((DoubleMatrixToken) incoming
+                    .get(_labels[_labels.length - 1])).doubleMatrix();
         }
 
         _calcPredict();
         predictedStates.send(0, new ArrayToken(_predictedStates));
     }
-
 
     @Override
     public boolean prefire() throws IllegalActionException {
@@ -198,13 +207,14 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
         }
         return true;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double[][] _currentCovariance;
     private double[] _currentState;
     private String[] _labels;
     private RecordToken[] _predictedStates;
-    private int  _timeHorizon;
+    private int _timeHorizon;
     private Type[] _types;
     private double[][] _uValue;
 
@@ -216,8 +226,10 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
         int predict_step = 0;
         //First predicted states are calclated from current states.
         Token[] result_values = new Token[_labels.length]; //x, y, vx, vy, covariance
-        result_values[0] = new DoubleToken(_currentState[0] + _currentState[2] + 0.5*_uValue[0][0]);
-        result_values[1] = new DoubleToken(_currentState[1] + _currentState[3] + 0.5*_uValue[0][1]);
+        result_values[0] = new DoubleToken(
+                _currentState[0] + _currentState[2] + 0.5 * _uValue[0][0]);
+        result_values[1] = new DoubleToken(
+                _currentState[1] + _currentState[3] + 0.5 * _uValue[0][1]);
         result_values[2] = new DoubleToken(_currentState[2] + _uValue[0][0]);
         result_values[3] = new DoubleToken(_currentState[3] + _uValue[0][1]);
         ////////////////////////////////////
@@ -229,24 +241,41 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
         double[][] transitionMatrix = DoubleMatrixMath.identityMatrixDouble(4);
         transitionMatrix[0][2] = 1;
         transitionMatrix[1][3] = 1;
-        double[][] tTransitionMatrix = DoubleMatrixMath.transpose(transitionMatrix);
+        double[][] tTransitionMatrix = DoubleMatrixMath
+                .transpose(transitionMatrix);
         ////////////////////////////////////
-        _currentCovariance = DoubleMatrixMath.multiply(_currentCovariance, tTransitionMatrix);
-        _currentCovariance = DoubleMatrixMath.multiply(transitionMatrix, _currentCovariance);
+        _currentCovariance = DoubleMatrixMath.multiply(_currentCovariance,
+                tTransitionMatrix);
+        _currentCovariance = DoubleMatrixMath.multiply(transitionMatrix,
+                _currentCovariance);
         result_values[4] = new DoubleMatrixToken(_currentCovariance);
-        _predictedStates[predict_step] = new RecordToken(_labels, result_values);
+        _predictedStates[predict_step] = new RecordToken(_labels,
+                result_values);
 
         for (predict_step = 1; predict_step < _timeHorizon; predict_step++) {
-            int control_step = Math.min(_uValue.length-1, predict_step);
+            int control_step = Math.min(_uValue.length - 1, predict_step);
             //If array length of _uValue is shorter than TimeHorizon, the last _uValue is held until the last of prediction step.
-            result_values[0] = new DoubleToken(((DoubleToken)result_values[0]).doubleValue() + ((DoubleToken)result_values[2]).doubleValue() + 0.5*_uValue[control_step][0]);
-            result_values[1] = new DoubleToken(((DoubleToken)result_values[1]).doubleValue() + ((DoubleToken)result_values[3]).doubleValue() + 0.5*_uValue[control_step][1]);
-            result_values[2] = new DoubleToken(((DoubleToken)result_values[2]).doubleValue() + _uValue[control_step][0]);
-            result_values[3] = new DoubleToken(((DoubleToken)result_values[3]).doubleValue() + _uValue[control_step][1]);
-            _currentCovariance = DoubleMatrixMath.multiply(_currentCovariance, tTransitionMatrix);
-            _currentCovariance = DoubleMatrixMath.multiply(transitionMatrix, _currentCovariance);
+            result_values[0] = new DoubleToken(
+                    ((DoubleToken) result_values[0]).doubleValue()
+                            + ((DoubleToken) result_values[2]).doubleValue()
+                            + 0.5 * _uValue[control_step][0]);
+            result_values[1] = new DoubleToken(
+                    ((DoubleToken) result_values[1]).doubleValue()
+                            + ((DoubleToken) result_values[3]).doubleValue()
+                            + 0.5 * _uValue[control_step][1]);
+            result_values[2] = new DoubleToken(
+                    ((DoubleToken) result_values[2]).doubleValue()
+                            + _uValue[control_step][0]);
+            result_values[3] = new DoubleToken(
+                    ((DoubleToken) result_values[3]).doubleValue()
+                            + _uValue[control_step][1]);
+            _currentCovariance = DoubleMatrixMath.multiply(_currentCovariance,
+                    tTransitionMatrix);
+            _currentCovariance = DoubleMatrixMath.multiply(transitionMatrix,
+                    _currentCovariance);
             result_values[4] = new DoubleMatrixToken(_currentCovariance);
-            _predictedStates[predict_step] = new RecordToken(_labels, result_values);
+            _predictedStates[predict_step] = new RecordToken(_labels,
+                    result_values);
         }
     }
 }

@@ -62,7 +62,7 @@ public interface InstanceOpener {
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public void openAnInstance(NamedObj entity) throws IllegalActionException,
-    NameDuplicationException;
+    public void openAnInstance(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException;
 
 }

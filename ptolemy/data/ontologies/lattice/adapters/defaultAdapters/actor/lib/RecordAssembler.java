@@ -61,7 +61,7 @@ public class RecordAssembler extends LatticeOntologyAdapter {
      */
     public RecordAssembler(LatticeOntologySolver solver,
             ptolemy.actor.lib.RecordAssembler actor)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, actor, false);
     }
 
@@ -87,7 +87,8 @@ public class RecordAssembler extends LatticeOntologyAdapter {
         // in the exact same order as the SortedSet fieldLabels set of
         // label names.  This is necessary to ensure that the RecordFromIndividualConcepts
         // concept function is correctly evaluated.
-        InequalityTerm[] inputPortTerms = new InequalityTerm[fieldLabels.size()];
+        InequalityTerm[] inputPortTerms = new InequalityTerm[fieldLabels
+                .size()];
         int counter = 0;
         for (String field : fieldLabels) {
             inputPortTerms[counter++] = getPropertyTerm(actor.getPort(field));
@@ -95,18 +96,22 @@ public class RecordAssembler extends LatticeOntologyAdapter {
 
         if (interconnectConstraintType == ConstraintType.EQUALS
                 || interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
-            setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                    new RecordFromIndividualConcepts("recordConcept",
-                            fieldLabels, ontology), inputPortTerms));
+            setAtLeast(actor.output,
+                    new ConceptFunctionInequalityTerm(
+                            new RecordFromIndividualConcepts("recordConcept",
+                                    fieldLabels, ontology),
+                            inputPortTerms));
         }
 
         if (interconnectConstraintType == ConstraintType.EQUALS
                 || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK) {
             for (Object port : actor.inputPortList()) {
-                setAtLeast(port, new ConceptFunctionInequalityTerm(
-                        new ConceptFromRecordField("conceptFromRecord",
-                                ((Port) port).getName(), ontology),
-                                new InequalityTerm[] { getPropertyTerm(actor.output) }));
+                setAtLeast(port,
+                        new ConceptFunctionInequalityTerm(
+                                new ConceptFromRecordField("conceptFromRecord",
+                                        ((Port) port).getName(), ontology),
+                                new InequalityTerm[] {
+                                        getPropertyTerm(actor.output) }));
             }
         }
 

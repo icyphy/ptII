@@ -101,8 +101,8 @@ public class PortParameterActor extends TypedAtomicActor {
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(myPortParameter.getTypeTerm(), output
-                .getTypeTerm()));
+        result.add(new Inequality(myPortParameter.getTypeTerm(),
+                output.getTypeTerm()));
         return result;
     }
 

@@ -80,7 +80,8 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  @Pt.AcceptedRating Red (johnr)
  */
 @SuppressWarnings("serial")
-public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener {
+public class FSMGraphFrame extends ExtendedGraphFrame
+        implements ActionListener {
 
     /** Construct a frame associated with the specified FSM model.
      *  After constructing this, it is necessary
@@ -144,19 +145,19 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
             for (NamedObj namedObj : namedObjSet) {
                 if (namedObj instanceof State) {
                     ((State) namedObj).saveRefinementsInConfigurer
-                    .setToken(BooleanToken.TRUE);
+                            .setToken(BooleanToken.TRUE);
                 }
             }
             super.copy();
         } catch (IllegalActionException e) {
-            MessageHandler.error("Unable to set attributes of the selected "
-                    + "states.");
+            MessageHandler.error(
+                    "Unable to set attributes of the selected " + "states.");
         } finally {
             for (NamedObj namedObj : namedObjSet) {
                 if (namedObj instanceof State) {
                     try {
                         ((State) namedObj).saveRefinementsInConfigurer
-                        .setToken(BooleanToken.FALSE);
+                                .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -307,18 +308,18 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                         State state = (State) object;
                         modifiedStates.add(state);
                         state.saveRefinementsInConfigurer
-                        .setToken(BooleanToken.TRUE);
+                                .setToken(BooleanToken.TRUE);
                     }
                 }
                 super._exportDesignPattern(writer, model, name);
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(null, e, "Unable to set "
-                        + "attributes for the states.");
+                throw new InternalErrorException(null, e,
+                        "Unable to set " + "attributes for the states.");
             } finally {
                 for (State state : modifiedStates) {
                     try {
                         state.saveRefinementsInConfigurer
-                        .setToken(BooleanToken.FALSE);
+                                .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -381,8 +382,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                 }
             }
         } catch (Exception e) {
-            throw new InternalErrorException(null, e, "Fail to prepare for "
-                    + "exporting a design pattern.");
+            throw new InternalErrorException(null, e,
+                    "Fail to prepare for " + "exporting a design pattern.");
         }
     }
 
@@ -429,7 +430,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                             effigy.uniqueName("debug listener"));
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
-                    tableau.setDebuggable(((FSMActor) getModel()).getDirector());
+                    tableau.setDebuggable(
+                            ((FSMActor) getModel()).getDirector());
                 } else if (actionCommand.equals("Listen to State Machine")) {
                     Effigy effigy = (Effigy) getTableau().getContainer();
 
@@ -450,8 +452,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
 
                     if (dialog.buttonPressed().equals("OK")) {
                         try {
-                            _lastDelayTime = Long.parseLong(query
-                                    .getStringValue("delay"));
+                            _lastDelayTime = Long
+                                    .parseLong(query.getStringValue("delay"));
                             _controller.setAnimationDelay(_lastDelayTime);
 
                             NamedObj model = getModel();
@@ -459,15 +461,15 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                             if (model != null && _listeningTo != model) {
                                 if (_listeningTo != null) {
                                     _listeningTo
-                                    .removeDebugListener(_controller);
+                                            .removeDebugListener(_controller);
                                 }
 
                                 _listeningTo = model;
                                 _listeningTo.addDebugListener(_controller);
                             }
                         } catch (NumberFormatException ex) {
-                            MessageHandler.error(
-                                    "Invalid time, which is required "
+                            MessageHandler
+                                    .error("Invalid time, which is required "
                                             + "to be an integer: ", ex);
                         }
                     }
@@ -479,8 +481,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                 }
             } catch (KernelException ex) {
                 try {
-                    MessageHandler.warning("Failed to create debug listener: "
-                            + ex);
+                    MessageHandler
+                            .warning("Failed to create debug listener: " + ex);
                 } catch (CancelException exception) {
                 }
             }

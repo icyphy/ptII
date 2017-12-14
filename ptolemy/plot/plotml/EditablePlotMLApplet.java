@@ -88,10 +88,8 @@ public class EditablePlotMLApplet extends PlotMLApplet {
      */
     @Override
     public String getAppletInfo() {
-        return "EditablePlotDemo "
-                + PlotBox.PTPLOT_RELEASE
-                + ": Demo of EditablePlot.\n"
-                + "By: Edward A. Lee\n "
+        return "EditablePlotDemo " + PlotBox.PTPLOT_RELEASE
+                + ": Demo of EditablePlot.\n" + "By: Edward A. Lee\n "
                 + "($Id$)";
     }
 

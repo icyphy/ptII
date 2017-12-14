@@ -222,7 +222,8 @@ public class PolyCylinder3D extends GRShadedShape {
             k = k + 12;
         }
 
-        GeometryInfo geometryInfo = new GeometryInfo(GeometryInfo.POLYGON_ARRAY);
+        GeometryInfo geometryInfo = new GeometryInfo(
+                GeometryInfo.POLYGON_ARRAY);
         geometryInfo.setCoordinates(data);
         geometryInfo.setStripCounts(stripCount);
 

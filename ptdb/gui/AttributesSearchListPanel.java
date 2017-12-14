@@ -102,8 +102,8 @@ public class AttributesSearchListPanel extends AttributesListPanel {
     public void addGenericAttribute() {
 
         JPanel modelDeletePanel = new JPanel();
-        modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
-                BoxLayout.X_AXIS));
+        modelDeletePanel
+                .setLayout(new BoxLayout(modelDeletePanel, BoxLayout.X_AXIS));
         modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
         modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
 
@@ -127,7 +127,8 @@ public class AttributesSearchListPanel extends AttributesListPanel {
             @Override
             public void actionPerformed(ActionEvent event) {
 
-                _attListPanel.remove((JPanel) _AttDelete.get(event.getSource()));
+                _attListPanel
+                        .remove((JPanel) _AttDelete.get(event.getSource()));
                 _AttDelete.remove(event.getSource());
                 _attListPanel.remove((JButton) event.getSource());
 
@@ -173,10 +174,10 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                             stringParameter = new StringParameter(
                                     new NamedObj(),
                                     ((ModelAttributePanel) element2)
-                                    .getAttributeName());
-                            stringParameter
-                            .setExpression(((ModelAttributePanel) element2)
-                                    .getValue());
+                                            .getAttributeName());
+                            stringParameter.setExpression(
+                                    ((ModelAttributePanel) element2)
+                                            .getValue());
                             returnList.add(stringParameter);
 
                         } catch (NameDuplicationException e) {
@@ -210,20 +211,19 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
                             if (((GenericAttributePanel) element2)
                                     .getAttributeClass().length() > 0) {
-                                attribute
-                                .setGenericClassName(((GenericAttributePanel) element2)
-                                        .getAttributeClass());
+                                attribute.setGenericClassName(
+                                        ((GenericAttributePanel) element2)
+                                                .getAttributeClass());
                             }
 
-                            attribute
-                            .setName(((GenericAttributePanel) element2)
+                            attribute.setName(((GenericAttributePanel) element2)
                                     .getAttributeName());
 
                             //if ((((GenericAttributePanel) componentArray2[j])
                             //        .getValue()).length()>0) {
-                            attribute
-                            .setExpression(((GenericAttributePanel) element2)
-                                    .getValue());
+                            attribute.setExpression(
+                                    ((GenericAttributePanel) element2)
+                                            .getValue());
                             //}
 
                             returnList.add(attribute);

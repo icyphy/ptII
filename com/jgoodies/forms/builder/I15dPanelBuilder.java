@@ -187,8 +187,8 @@ public class I15dPanelBuilder extends PanelBuilder {
             CellConstraints labelConstraints, Component component,
             CellConstraints componentConstraints) {
 
-        return addLabel(getI15dString(resourceKey), labelConstraints,
-                component, componentConstraints);
+        return addLabel(getI15dString(resourceKey), labelConstraints, component,
+                componentConstraints);
     }
 
     /**
@@ -214,8 +214,8 @@ public class I15dPanelBuilder extends PanelBuilder {
      */
     public final JComponent addI15dSeparator(String resourceKey,
             String encodedConstraints) {
-        return addI15dSeparator(resourceKey, new CellConstraints(
-                encodedConstraints));
+        return addI15dSeparator(resourceKey,
+                new CellConstraints(encodedConstraints));
     }
 
     /**

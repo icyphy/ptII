@@ -110,8 +110,8 @@ public abstract class GUIProperty extends Attribute {
      *   an attribute already in the container.
      */
     public GUIProperty(NamedObj container, String name, JComponent component,
-            Object constraint) throws IllegalActionException,
-            NameDuplicationException {
+            Object constraint)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         preferredSize = new Parameter(this, "preferredSize");
@@ -221,8 +221,8 @@ public abstract class GUIProperty extends Attribute {
      *  @see #getContainer()
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         if (getComponent() == null || _add(container)) {
             super.setContainer(container);
         } else {

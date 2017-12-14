@@ -96,7 +96,8 @@ public class AuthManager extends AbstractInitializableAttribute {
 
         authSourceDirectory = new FileParameter(this, "authSourceDirectory");
         new Parameter(authSourceDirectory, "allowFiles", BooleanToken.FALSE);
-        new Parameter(authSourceDirectory, "allowDirectories", BooleanToken.TRUE);
+        new Parameter(authSourceDirectory, "allowDirectories",
+                BooleanToken.TRUE);
         authSourceDirectory.setExpression("$PTII/vendors/iotauth");
 
         isLocalAuth = new Parameter(this, "isLocalAuth");
@@ -153,10 +154,9 @@ public class AuthManager extends AbstractInitializableAttribute {
      *  @exception IllegalActionException If there are problems accessing the parameter.
      *  @exception IOException If there are problems accessing or build the repositories.
      */
-    public static void downloadAndBuild(FileParameter authSourceDirectoryParameter,
-            boolean cleanAuth,
-            boolean buildAuth)
-            throws IllegalActionException, IOException {
+    public static void downloadAndBuild(
+            FileParameter authSourceDirectoryParameter, boolean cleanAuth,
+            boolean buildAuth) throws IllegalActionException, IOException {
         // This method is static to make it easier to test.
         File authSourceDirectory = authSourceDirectoryParameter.asFile();
 
@@ -194,11 +194,11 @@ public class AuthManager extends AbstractInitializableAttribute {
                         ((BooleanToken) cleanAuth.getToken()).booleanValue(),
                         ((BooleanToken) buildAuth.getToken()).booleanValue());
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to build Auth.");
+                throw new IllegalActionException(this, ex,
+                        "Failed to build Auth.");
             }
         }
     }
-
 
     /** Stop Auth processes.
      *  @exception IllegalActionException If the parent class throws it
@@ -208,7 +208,6 @@ public class AuthManager extends AbstractInitializableAttribute {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -220,8 +219,8 @@ public class AuthManager extends AbstractInitializableAttribute {
      *  @param lastRepoPullTime The time of the repo was last cloned or updated.
      *  @exception IOException If there is a problem cloning or updating the repo.
      */
-    private static void _cloneOrPull(File directory, String repository, long lastRepoPullTime)
-    throws IOException {
+    private static void _cloneOrPull(File directory, String repository,
+            long lastRepoPullTime) throws IOException {
         if (directory.isFile()) {
             throw new IOException(directory + _badFileMessage);
         }
@@ -229,8 +228,8 @@ public class AuthManager extends AbstractInitializableAttribute {
         List execCommands = new LinkedList<String>();
 
         String commands = "";
-        System.out.println("AuthManager._cloneOrPull(" + directory
-                + ", " + repository + ", " + lastRepoPullTime);
+        System.out.println("AuthManager._cloneOrPull(" + directory + ", "
+                + repository + ", " + lastRepoPullTime);
 
         if (!directory.exists()) {
             if (!directory.exists()) {
@@ -245,9 +244,11 @@ public class AuthManager extends AbstractInitializableAttribute {
         } else {
             // Only pull the repo the first time this is run, and every 10 seconds after that.
             final long repoPullPeriod = 10L * 1000L;
-            if (!(lastRepoPullTime < 0
-                            || (System.currentTimeMillis() - lastRepoPullTime > repoPullPeriod))) {
-                MessageHandler.status("Last pull was within last pull period (in ms): " + repoPullPeriod);
+            if (!(lastRepoPullTime < 0 || (System.currentTimeMillis()
+                    - lastRepoPullTime > repoPullPeriod))) {
+                MessageHandler.status(
+                        "Last pull was within last pull period (in ms): "
+                                + repoPullPeriod);
                 return;
             }
             exec.setWorkingDirectory(directory);
@@ -264,26 +265,29 @@ public class AuthManager extends AbstractInitializableAttribute {
         int returnCode = exec.getLastSubprocessReturnCode();
         String patternLog = exec.getPatternLog();
         System.out.println("patternLog: " + patternLog);
-        String repositoryShortName = repository.substring(repository.lastIndexOf(File.separatorChar) + 1);
+        String repositoryShortName = repository
+                .substring(repository.lastIndexOf(File.separatorChar) + 1);
         lastRepoPullTime = System.currentTimeMillis();
 
         if (returnCode == 0) {
             MessageHandler.status("Checked out the " + repositoryShortName);
             // No pattern "Already up-to-date."
             if (patternLog.length() == 0) {
-                MessageHandler.status("New pull was available, credentials need to be (re-)generated.");
+                MessageHandler.status(
+                        "New pull was available, credentials need to be (re-)generated.");
                 _needToGenerateCredentials = true;
             }
         } else {
-            MessageHandler.status("Failed to check out the " + repositoryShortName);
-            throw new IOException("Failed to check out the " + repositoryShortName
-                    + commands + "\n"
-                    + exec.buffer);
+            MessageHandler
+                    .status("Failed to check out the " + repositoryShortName);
+            throw new IOException("Failed to check out the "
+                    + repositoryShortName + commands + "\n" + exec.buffer);
         }
         _lastAuthRepoPullTime = lastRepoPullTime;
     }
 
-    private static void _generateCredentials(File directory, String subdirectory) throws IOException {
+    private static void _generateCredentials(File directory,
+            String subdirectory) throws IOException {
 
         if (directory.isFile()) {
             throw new IOException(directory + _badFileMessage);
@@ -292,19 +296,16 @@ public class AuthManager extends AbstractInitializableAttribute {
         //List execCommands = new LinkedList<String>();
 
         //String commands = "";
-        System.out.println("AuthManager._generateCredentials(" + directory + ", " + subdirectory);
+        System.out.println("AuthManager._generateCredentials(" + directory
+                + ", " + subdirectory);
         //File subdirectoryDirectory = new File(directory, subdirectory);
 
     }
 
     private static String _badFileMessage = " is a file, it must either be a directory or not exist.";
 
-
     /** The location of the Auth repository. */
     private static File _auth;
-
-    /** The hostname. */
-    private String _hostName;
 
     /** True if credentials need to be generated for Auth and entities */
     private static boolean _needToGenerateCredentials;

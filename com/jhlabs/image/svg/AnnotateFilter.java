@@ -88,7 +88,8 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
      *  @return The filtered image.
      */
     @Override
-    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+    public BufferedImage filter(BufferedImage source,
+            BufferedImage destination) {
         if (destination == null) {
             // If no destination is provided, overwrite the source.
             destination = source;
@@ -101,7 +102,8 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
                 // NOTE: The second argument is supposed to be a unique name.
                 // If the graphic changes on multiple invocations of this method,
                 // will have to use a new name, or the old graphic will be rendered.
-                URI uri = icon.getSvgUniverse().loadSVG(reader, "/graphic" + _graphicVersion);
+                URI uri = icon.getSvgUniverse().loadSVG(reader,
+                        "/graphic" + _graphicVersion);
                 // Unfortunately, if the string is malformed SVG, the above prints to stderr
                 // and returns null rather than throwing an exception.
                 if (uri != null) {
@@ -137,7 +139,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
             } catch (Exception e) {
                 // FIXME Auto-generated catch block
                 e.printStackTrace();
-
+        
                 // If all else fails, paint default graphic.
                 Graphics2D g = destination.createGraphics();
                 g.setStroke(new BasicStroke(2));
@@ -158,9 +160,11 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         transform.preConcatenate(translation);
         g.transform(transform);
         // Make sure anti-aliasing is turned on.
-        Map<RenderingHints.Key,Object> hints = new HashMap<RenderingHints.Key,Object>();
-        hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        Map<RenderingHints.Key, Object> hints = new HashMap<RenderingHints.Key, Object>();
+        hints.put(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.addRenderingHints(hints);
         // Above seems insufficient. Have to set it in the icon too.
         icon.setAntiAlias(true);
@@ -231,7 +235,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
             // if a user edits a non-running model.  (I.e., the counter starts
             // at "1", the user stops the model, edits the svg, runs the model
             // and the counter is reset to "1" again).
-            _graphicVersion = (int) (new Date().getTime()/1000);
+            _graphicVersion = (int) (new Date().getTime() / 1000);
         }
         _graphic = graphic;
     }

@@ -26,8 +26,9 @@ public class JavaLnFFilter extends PointFilter {
 
     @Override
     public int filterRGB(int x, int y, int rgb) {
-        if ((x & 1) == (y & 1))
+        if ((x & 1) == (y & 1)) {
             return rgb;
+        }
         return ImageMath.mixColors(0.25f, 0xff999999, rgb);
     }
 

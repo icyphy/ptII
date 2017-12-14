@@ -222,8 +222,8 @@ public class Plot extends Event implements ConfigurableEntity {
         String header = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"
                 + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
 
-        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
-                + ">\n");
+        output.write(
+                _getIndentPrefix(depth) + "<configure" + sourceSpec + ">\n");
         output.write("<?plotml " + header + "\n<plot>\n");
 
         PrintWriter print = new PrintWriter(output);

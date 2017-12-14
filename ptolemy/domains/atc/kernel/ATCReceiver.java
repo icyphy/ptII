@@ -65,13 +65,15 @@ public class ATCReceiver extends DEReceiver {
      *  @exception NoRoomException If there is no room.
      */
     @Override
-    public void put(Token token) throws IllegalActionException, NoRoomException {
+    public void put(Token token)
+            throws IllegalActionException, NoRoomException {
         IOPort port = getContainer();
         if (port != null) {
             NamedObj actor = port.getContainer();
             if (actor instanceof Rejecting) {
-                if (((Rejecting)actor).reject(token, port)) {
-                    throw new NoRoomException(actor, "Rejected input on port " + port.getName());
+                if (((Rejecting) actor).reject(token, port)) {
+                    throw new NoRoomException(actor,
+                            "Rejected input on port " + port.getName());
                 }
             }
         }

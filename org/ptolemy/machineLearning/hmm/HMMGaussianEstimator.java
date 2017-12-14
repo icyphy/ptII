@@ -113,7 +113,8 @@ public class HMMGaussianEstimator extends ParameterEstimator {
             throws IllegalActionException {
         if (attribute == meanVectorGuess) {
             int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
-            if (((ArrayToken) meanVectorGuess.getToken()).getElementType().equals(BaseType.DOUBLE)) {
+            if (((ArrayToken) meanVectorGuess.getToken()).getElementType()
+                    .equals(BaseType.DOUBLE)) {
                 _obsDimension = 1;
                 _mu0 = new double[nS][1];
                 for (int i = 0; i < nS; i++) {
@@ -121,25 +122,30 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                             .getToken()).getElement(i)).doubleValue();
                 }
             } else {
-                _obsDimension = ((ArrayToken)((ArrayToken) meanVectorGuess.getToken()).getElement(0)).length();
+                _obsDimension = ((ArrayToken) ((ArrayToken) meanVectorGuess
+                        .getToken()).getElement(0)).length();
                 _mu0 = new double[nS][_obsDimension];
                 for (int i = 0; i < nS; i++) {
                     for (int j = 0; j < _obsDimension; j++) {
-                        _mu0[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) meanVectorGuess
-                                .getToken()).getElement(i)).getElement(j)).doubleValue();
+                        _mu0[i][j] = ((DoubleToken) ((ArrayToken) ((ArrayToken) meanVectorGuess
+                                .getToken()).getElement(i)).getElement(j))
+                                        .doubleValue();
                     }
                 }
             }
             if (_obsDimension > 1) {
-                mean.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
-                standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+                mean.setTypeEquals(
+                        new ArrayType(new ArrayType(BaseType.DOUBLE)));
+                standardDeviation
+                        .setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
             } else {
                 mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
                 standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
             }
         } else if (attribute == standardDeviationGuess) {
             int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
-            if (((ArrayToken) standardDeviationGuess.getToken()).getElementType().equals(BaseType.DOUBLE)) {
+            if (((ArrayToken) standardDeviationGuess.getToken())
+                    .getElementType().equals(BaseType.DOUBLE)) {
                 _obsDimension = 1;
                 _sigma0 = new double[nS][1][1];
                 for (int i = 0; i < nS; i++) {
@@ -147,7 +153,8 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                             .getToken()).getElement(i)).doubleValue();
                 }
             } else {
-                _obsDimension = ((DoubleMatrixToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(0)).getColumnCount();
+                _obsDimension = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
+                        .getToken()).getElement(0)).getColumnCount();
                 _sigma0 = new double[nS][_obsDimension][_obsDimension];
                 for (int i = 0; i < nS; i++) {
                     _sigma0[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
@@ -187,8 +194,8 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HMMGaussianEstimator newObject = (HMMGaussianEstimator) super
-                .clone(workspace);
+        HMMGaussianEstimator newObject = (HMMGaussianEstimator) super.clone(
+                workspace);
         newObject._sigma0 = null;
         newObject._mu0 = null;
         return newObject;
@@ -209,7 +216,6 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         Token[] mTokens = new Token[_nStates];
         Token[] sTokens = new Token[_nStates];
         Token[] pTokens = new Token[_nStates];
-
 
         for (int i = 0; i < _nStates; i++) {
             if (_obsDimension > 1) {
@@ -249,10 +255,10 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     @Override
     protected boolean _checkForConvergence(int iterations) {
 
-//        double normMatrix = DoubleArrayMath.l2norm(DoubleMatrixMath.fromMatrixToArray(m_new));
-//        if (DoubleMatrixMath.within(_mu, m_new, 0.01*normMatrix)) {
-//            return true;
-//        }
+        //        double normMatrix = DoubleArrayMath.l2norm(DoubleMatrixMath.fromMatrixToArray(m_new));
+        //        if (DoubleMatrixMath.within(_mu, m_new, 0.01*normMatrix)) {
+        //            return true;
+        //        }
         if (Math.abs(likelihood - _likelihood) < _likelihoodThreshold) {
             return true;
         } else {
@@ -293,7 +299,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         if (Double.isNaN(m_new[0][0]) || Double.isNaN(s_new[0][0][0])
                 || Double.isNaN(A_new[0][0]) || Double.isNaN(prior_new[0])) {
             if (_randomize) {
-                for (int j = 0 ; j < _obsDimension; j++) {
+                for (int j = 0; j < _obsDimension; j++) {
                     // randomize means
                     double minO = _observations[0][j];
                     double maxO = _observations[0][j];
@@ -308,8 +314,8 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                     double L = maxO - minO;
                     // make new random guess
                     for (int i = 0; i < _nStates; i++) {
-                        m_new[i][j] = L / _nStates * Math.random() + L * i / _nStates
-                                + minO;
+                        m_new[i][j] = L / _nStates * Math.random()
+                                + L * i / _nStates + minO;
                         s_new[i][j][j] = Math.abs((maxO - minO) * Math.random())
                                 / _nStates;
                     }
@@ -336,19 +342,18 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     /**  Standard deviation guess. */
     private double[][][] _sigma0 = null;
 
-
     // // if no convergence in 10 iterations, issue warning message.
-//    if ((iterations >= _nIterations - 1)) {
-//        // return the guess parameters
-//        m_new = _mu0;
-//        s_new = _sigma0;
-//        A_new = _A0;
-//        prior_new = _priors;
-//        System.out.println("Failed");
-//        throw new InternalErrorException("EM did not converge in " + iterations + " iterations.");
-//
-//
-//    } else {
+    //    if ((iterations >= _nIterations - 1)) {
+    //        // return the guess parameters
+    //        m_new = _mu0;
+    //        s_new = _sigma0;
+    //        A_new = _A0;
+    //        prior_new = _priors;
+    //        System.out.println("Failed");
+    //        throw new InternalErrorException("EM did not converge in " + iterations + " iterations.");
+    //
+    //
+    //    } else {
     /**  Updated Transition probability matrix estimate. */
     private double[][] A_new = null;
     /**  Updated mean estimate. */

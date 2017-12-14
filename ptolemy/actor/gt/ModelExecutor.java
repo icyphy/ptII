@@ -108,8 +108,8 @@ public class ModelExecutor extends TypedAtomicActor {
         Workspace workspace = new Workspace();
         Entity actor = ((ActorToken) actorInput.get(0)).getEntity(workspace);
         if (actor instanceof ComponentEntity) {
-            ComponentEntity entity = (ComponentEntity) GTTools.cleanupModel(
-                    actor, workspace);
+            ComponentEntity entity = (ComponentEntity) GTTools
+                    .cleanupModel(actor, workspace);
             workspace.remove(actor);
             try {
                 Wrapper wrapper = new Wrapper(workspace);
@@ -142,8 +142,8 @@ public class ModelExecutor extends TypedAtomicActor {
             _wrapperEffigy = new PtolemyEffigy(parentEffigy,
                     parentEffigy.uniqueName("_wrapperEffigy"));
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e, "Unable to create an "
-                    + "effigy for the model.");
+            throw new IllegalActionException(this, e,
+                    "Unable to create an " + "effigy for the model.");
         } finally {
             parentEffigy.workspace().doneWriting();
         }
@@ -194,7 +194,7 @@ public class ModelExecutor extends TypedAtomicActor {
 
     /**
      A wrapper composite actor in which input models are executed.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -230,11 +230,11 @@ public class ModelExecutor extends TypedAtomicActor {
                         executorPort = (TypedIOPort) executorPortObject;
                         if (executorPort.getName().equals(entityPort.getName())
                                 && executorPort.isInput() == entityPort
-                                .isInput()
+                                        .isInput()
                                 && executorPort.isOutput() == entityPort
-                                .isOutput()
-                                && entityPort.getType().isCompatible(
-                                        executorPort.getType())) {
+                                        .isOutput()
+                                && entityPort.getType()
+                                        .isCompatible(executorPort.getType())) {
                             found = true;
                             break;
                         }
@@ -287,8 +287,8 @@ public class ModelExecutor extends TypedAtomicActor {
          *  @exception NameDuplicationException If the container already contains
          *   an entity with the specified name.
          */
-        Wrapper(Workspace workspace) throws IllegalActionException,
-        NameDuplicationException {
+        Wrapper(Workspace workspace)
+                throws IllegalActionException, NameDuplicationException {
             super(workspace);
             new WrapperDirector(this, "_director");
         }
@@ -299,7 +299,7 @@ public class ModelExecutor extends TypedAtomicActor {
         /**
          The director to be used in the wrapper that handles requests from the
          directors of the models to be executed.
-
+        
          @author Thomas Huining Feng
          @version $Id$
          @since Ptolemy II 8.0
@@ -342,8 +342,8 @@ public class ModelExecutor extends TypedAtomicActor {
             @Override
             public Object clone(Workspace workspace)
                     throws CloneNotSupportedException {
-                WrapperDirector director = (WrapperDirector) super
-                        .clone(workspace);
+                WrapperDirector director = (WrapperDirector) super.clone(
+                        workspace);
                 director._eventQueue = new PriorityQueue<TimedEvent>(1,
                         new TimedEvent.TimeComparator());
                 return director;
@@ -382,7 +382,8 @@ public class ModelExecutor extends TypedAtomicActor {
                                 // Cannot use transferOutputs because it raises
                                 // exception if the tokens inside have already
                                 // been transferred.
-                                for (int i = 0; i < port.getWidthInside(); i++) {
+                                for (int i = 0; i < port
+                                        .getWidthInside(); i++) {
                                     if (port.isKnownInside(i)
                                             && port.hasTokenInside(i)) {
                                         port.send(i, port.getInside(i));
@@ -530,7 +531,7 @@ public class ModelExecutor extends TypedAtomicActor {
     /**
      The port of the wrapper. The get and send methods delegate to the port with
      the same name of the model executor.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -563,8 +564,8 @@ public class ModelExecutor extends TypedAtomicActor {
          *     it.
          */
         @Override
-        public void broadcast(Token token) throws NoRoomException,
-        IllegalActionException {
+        public void broadcast(Token token)
+                throws NoRoomException, IllegalActionException {
             // super.broadcast() is not called because we want to send on
             // the executorPort, not on this port.
 
@@ -635,8 +636,8 @@ public class ModelExecutor extends TypedAtomicActor {
          *   if the channel index is out of range.
          */
         @Override
-        public Token get(int channelIndex) throws NoTokenException,
-        IllegalActionException {
+        public Token get(int channelIndex)
+                throws NoTokenException, IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             return executorPort.get(channelIndex);
@@ -715,7 +716,8 @@ public class ModelExecutor extends TypedAtomicActor {
          *   of range.
          */
         @Override
-        public boolean hasToken(int channelIndex) throws IllegalActionException {
+        public boolean hasToken(int channelIndex)
+                throws IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             return executorPort.hasToken(channelIndex);
@@ -776,8 +778,8 @@ public class ModelExecutor extends TypedAtomicActor {
          *  @exception NoRoomException If there is no room in the receiver.
          */
         @Override
-        public void send(int channelIndex, Token token) throws NoRoomException,
-        IllegalActionException {
+        public void send(int channelIndex, Token token)
+                throws NoRoomException, IllegalActionException {
             // super.send() is not called because we want to send on
             // the executorPort, not on this port.
 
@@ -860,8 +862,8 @@ public class ModelExecutor extends TypedAtomicActor {
          *   a port already in the container.
          */
         WrapperPort(Wrapper container, String name, boolean isInput,
-                boolean isOutput) throws IllegalActionException,
-                NameDuplicationException {
+                boolean isOutput)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name, isInput, isOutput);
         }
     }

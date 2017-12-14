@@ -53,7 +53,8 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
-    public TestAbstractReceiver(IOPort container) throws IllegalActionException {
+    public TestAbstractReceiver(IOPort container)
+            throws IllegalActionException {
         super(container);
     }
 
@@ -133,7 +134,8 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *   (e.g. because of incompatible types).
      */
     @Override
-    public void put(Token token) throws NoRoomException, IllegalActionException {
+    public void put(Token token)
+            throws NoRoomException, IllegalActionException {
 
     }
 }

@@ -152,8 +152,8 @@ public abstract class GraphAnalyzer {
         List<?> relationList = new LinkedList<Object>(
                 startPort.linkedRelationList());
         if (startPort instanceof ComponentPort) {
-            ((Collection<?>) relationList).addAll(((ComponentPort) startPort)
-                    .insideRelationList());
+            ((Collection<?>) relationList)
+                    .addAll(((ComponentPort) startPort).insideRelationList());
         }
 
         _removeIgnoredObjects(relationList);
@@ -172,7 +172,8 @@ public abstract class GraphAnalyzer {
 
             currentList.setSecond(i);
             visitedRelations.add(relation);
-            List<?> portList = new LinkedList<Object>(relation.linkedPortList());
+            List<?> portList = new LinkedList<Object>(
+                    relation.linkedPortList());
 
             _removeIgnoredObjects(portList);
 
@@ -293,8 +294,8 @@ public abstract class GraphAnalyzer {
         while (entry != null) {
             IndexedList markedEntityList = entry.getElement();
             List<?> entityList = markedEntityList.getFirst();
-            for (int index = markedEntityList.getSecond() + 1; index < entityList
-                    .size(); index++) {
+            for (int index = markedEntityList.getSecond()
+                    + 1; index < entityList.size(); index++) {
                 markedEntityList.setSecond(index);
                 path.removeAllAfter(entry);
 
@@ -375,7 +376,7 @@ public abstract class GraphAnalyzer {
 
     /**
      A pair of a list and an index number.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -397,8 +398,8 @@ public abstract class GraphAnalyzer {
         public boolean equals(Object object) {
             if (object instanceof IndexedList) {
                 IndexedList list = (IndexedList) object;
-                return getFirst().get(getSecond()) == list.getFirst().get(
-                        list.getSecond());
+                return getFirst().get(getSecond()) == list.getFirst()
+                        .get(list.getSecond());
             } else {
                 return false;
             }
@@ -430,7 +431,7 @@ public abstract class GraphAnalyzer {
 
     /**
      A list of IndexedLists.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -445,7 +446,7 @@ public abstract class GraphAnalyzer {
 
     /**
      A path between two ports.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -516,8 +517,8 @@ public abstract class GraphAnalyzer {
          */
         @Override
         public int hashCode() {
-            return Arrays.hashCode(new int[] { _startPort.hashCode(),
-                    super.hashCode() });
+            return Arrays.hashCode(
+                    new int[] { _startPort.hashCode(), super.hashCode() });
         }
 
         /** Return a string that describes this path.

@@ -86,8 +86,8 @@ public class MirrorPortParameter extends PortParameter {
      *   an parameter already in the container.
      */
     public MirrorPortParameter(NamedObj container, String name,
-            ptolemy.data.Token token) throws IllegalActionException,
-            NameDuplicationException {
+            ptolemy.data.Token token)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
     }
 

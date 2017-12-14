@@ -27,8 +27,6 @@
  */
 package ptolemy.domains.tcs.lib;
 
-
-
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -68,7 +66,7 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
  *  @version $Id$
  *  @since Ptolemy II 11.0
  */
-public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
+public class AbstractTrack extends TypedAtomicActor implements Rejecting {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -88,7 +86,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
 
         input = new TypedIOPort(this, "input", true, false);
 
-        output =new TypedIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new RecordType(_labels, _types));
 
         trackId = new Parameter(this, "trackId");
@@ -121,7 +119,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
         _shape.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
 
         //This part of  icon is used to show the shape of the track.
-        _rectangle=new RectangleAttribute(node_icon, "_trackShape");
+        _rectangle = new RectangleAttribute(node_icon, "_trackShape");
         _rectangle.centered.setToken("true");
         _rectangle.width.setToken("30");
         _rectangle.height.setToken("10");
@@ -155,7 +153,8 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
     ////                         public methods                    ////
     @Override
     public boolean reject(Token token, IOPort port) {
-        boolean unAvailable=(_inTransit != null || ((BooleanToken)_isBroken).booleanValue());
+        boolean unAvailable = (_inTransit != null
+                || ((BooleanToken) _isBroken).booleanValue());
         return unAvailable;
     }
 
@@ -163,38 +162,38 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
      * Symbol is the symbol of the line.
      */
     @Override
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        Director director=getDirector();
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        Director director = getDirector();
         if (attribute == broken) {
-             if (broken.getToken()!=null) {
-                _isBroken=broken.getToken();
+            if (broken.getToken() != null) {
+                _isBroken = broken.getToken();
 
                 //Change color of the storm zone.
-                if (((BooleanToken)_isBroken).booleanValue()==true) {
+                if (((BooleanToken) _isBroken).booleanValue() == true) {
                     _circle.fillColor.setToken("{1.0,0.2,0.2,1.0}");
-                }
-                else {
+                } else {
                     _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
                 }
-                ((TCSDirector)director).handleTrackAttributeChanged(this);
+                ((TCSDirector) director).handleTrackAttributeChanged(this);
             }
-        } else if (attribute==lineSymbol && lineSymbol.getToken()!=null) {
-            _symbol=((StringToken)lineSymbol.getToken()).stringValue();
-            if (_symbol.length()>1)
+        } else if (attribute == lineSymbol && lineSymbol.getToken() != null) {
+            _symbol = ((StringToken) lineSymbol.getToken()).stringValue();
+            if (_symbol.length() > 1) {
                 throw new IllegalActionException("Inappropriate line symbol");
-            _color=((TCSDirector)director).getColor(_symbol);
+            }
+            _color = ((TCSDirector) director).getColor(_symbol);
             _rectangle.fillColor.setToken(_color);
             _rectangle.lineColor.setToken(_color);
-        }
-        else {
+        } else {
             super.attributeChanged(attribute);
         }
     }
 
     @Override
- public void declareDelayDependency() throws IllegalActionException {
-     _declareDelayDependency(input, output, 0.0);
- }
+    public void declareDelayDependency() throws IllegalActionException {
+        _declareDelayDependency(input, output, 0.0);
+    }
 
     @Override
     public void fire() throws IllegalActionException {
@@ -202,16 +201,18 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
         Time currentTime = _director.getModelTime();
         if (currentTime.equals(_transitExpires) && _inTransit != null) {
             try {
-                    output.send(0, _inTransit);
-            }
-            catch (NoRoomException ex) {
-             // Token rejected by the destination.
+                output.send(0, _inTransit);
+            } catch (NoRoomException ex) {
+                // Token rejected by the destination.
                 if (!(_director instanceof TCSDirector)) {
-                    throw new IllegalActionException(this, "Track must be used with an TCSDirector.");
+                    throw new IllegalActionException(this,
+                            "Track must be used with an TCSDirector.");
                 }
-                double additionalDelay = ((TCSDirector)_director).handleRejectionWithDelay(this);
+                double additionalDelay = ((TCSDirector) _director)
+                        .handleRejectionWithDelay(this);
                 if (additionalDelay < 0.0) {
-                    throw new IllegalActionException(this, "Unable to handle rejection.");
+                    throw new IllegalActionException(this,
+                            "Unable to handle rejection.");
                 }
                 _transitExpires = _transitExpires.add(additionalDelay);
                 _director.fireAt(this, _transitExpires);
@@ -224,42 +225,43 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
         }
         // Handle any input that have been accepted.
 
-            if (input.hasNewToken(0))
-            {
-                // This if is used for checking safety. Instead of throwing exception we can write a record to the file.
-                if (_inTransit!=null)
-                {
-                    throw new IllegalActionException("two train in one track");
-                }
-
-                _inTransit=input.get(0);
-                _setIconForTrain(((RecordToken)_inTransit).get("trainId"));
-                double movingTime=((TCSDirector)_director).movingTimeOfTrain(_inTransit,_id);
-                if (movingTime<=0.0)
-                    throw new IllegalActionException("Minstake in calculating moving time of Train");
-                _transitExpires=currentTime.add(movingTime);
-                _director.fireAt(this, _transitExpires);
+        if (input.hasNewToken(0)) {
+            // This if is used for checking safety. Instead of throwing exception we can write a record to the file.
+            if (_inTransit != null) {
+                throw new IllegalActionException("two train in one track");
             }
+
+            _inTransit = input.get(0);
+            _setIconForTrain(((RecordToken) _inTransit).get("trainId"));
+            double movingTime = ((TCSDirector) _director)
+                    .movingTimeOfTrain(_inTransit, _id);
+            if (movingTime <= 0.0) {
+                throw new IllegalActionException(
+                        "Minstake in calculating moving time of Train");
+            }
+            _transitExpires = currentTime.add(movingTime);
+            _director.fireAt(this, _transitExpires);
+        }
     }
-
-
 
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _director=getDirector();
+        _director = getDirector();
         _inTransit = null;
-        _id=trackId.getToken();
-        _isBroken=broken.getToken();
-        if (_isBroken==null)
-            _isBroken=(Token)(new BooleanToken(false));
-       ((TCSDirector)_director).handleInitializedTrack(this);
-           if (lineSymbol.getToken()==null)
-           _symbol="";
-       else
-           _symbol=((StringToken)lineSymbol.getToken()).stringValue();
+        _id = trackId.getToken();
+        _isBroken = broken.getToken();
+        if (_isBroken == null) {
+            _isBroken = (new BooleanToken(false));
+        }
+        ((TCSDirector) _director).handleInitializedTrack(this);
+        if (lineSymbol.getToken() == null) {
+            _symbol = "";
+        } else {
+            _symbol = ((StringToken) lineSymbol.getToken()).stringValue();
+        }
 
-       _changeIcon(_symbol);
+        _changeIcon(_symbol);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -272,13 +274,11 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
     protected void _changeIcon(String symbol) throws IllegalActionException {
         _shape.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _shape.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
-        if (symbol.equals(""))
-        {
+        if (symbol.equals("")) {
             _rectangle.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
             _rectangle.lineColor.setToken("{0.0, 0.0, 0.0, 1.0}");
-        }
-        else {
-            _color=((TCSDirector)_director).getColor(symbol);
+        } else {
+            _color = ((TCSDirector) _director).getColor(symbol);
             _rectangle.fillColor.setToken(_color);
             _rectangle.lineColor.setToken(_color);
         }
@@ -288,8 +288,9 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
     *  @param idOfTrain The id of the train .
     *  @exception IllegalActionException
     */
-    protected void _setIconForTrain(Token idOfTrain) throws IllegalActionException {
-        int id=((IntToken)idOfTrain).intValue();
+    protected void _setIconForTrain(Token idOfTrain)
+            throws IllegalActionException {
+        int id = ((IntToken) idOfTrain).intValue();
         _rectangle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _rectangle.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _shape.fillColor.setToken(_setIcon(id));
@@ -303,13 +304,14 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
      */
     protected ArrayToken _setIcon(int id) throws IllegalActionException {
         ArrayToken color = _noTrainColor;
-            if (id > -1) {
-                Director _director = getDirector();
-                color = ((TCSDirector)_director).handleTrainColor(id);
-                if (color == null) {
-                    throw new IllegalActionException("Color for the train " + id + " has not been set");
-                }
+        if (id > -1) {
+            Director _director = getDirector();
+            color = ((TCSDirector) _director).handleTrainColor(id);
+            if (color == null) {
+                throw new IllegalActionException(
+                        "Color for the train " + id + " has not been set");
             }
+        }
         return color;
     }
 
@@ -322,20 +324,23 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-
     private EllipseAttribute _circle;
     private ArrayToken _color;
     private Director _director;
     private Token _id;
     private Token _isBroken;
     private Token _inTransit;
-    private String[] _labels={"trainId","trainSymbol","movingMap","trainSpeed","fuel","arrivalTimeToStation","dipartureTimeFromStation"};
+    private String[] _labels = { "trainId", "trainSymbol", "movingMap",
+            "trainSpeed", "fuel", "arrivalTimeToStation",
+            "dipartureTimeFromStation" };
     private DoubleToken _one = new DoubleToken(1.0);
-    private Token[] _white = {_one, _one, _one, _one};
+    private Token[] _white = { _one, _one, _one, _one };
     private ArrayToken _noTrainColor = new ArrayToken(_white);
     private RectangleAttribute _rectangle;
     private String _symbol;
     private Time _transitExpires;
-    private Type[] _types={BaseType.INT,BaseType.STRING,new ArrayType(BaseType.STRING), BaseType.INT,BaseType.DOUBLE,BaseType.DOUBLE,BaseType.DOUBLE};
+    private Type[] _types = { BaseType.INT, BaseType.STRING,
+            new ArrayType(BaseType.STRING), BaseType.INT, BaseType.DOUBLE,
+            BaseType.DOUBLE, BaseType.DOUBLE };
 
 }

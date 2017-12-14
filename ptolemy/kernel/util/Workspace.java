@@ -406,7 +406,8 @@ public final class Workspace implements Nameable {
         // everywhere this method is called, which is a huge amount
         // of work.
         Thread current = Thread.currentThread();
-        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, true);
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current,
+                true);
 
         if (record.readDepth > 0) {
             // If the current thread has read permission, then grant
@@ -439,8 +440,8 @@ public final class Workspace implements Nameable {
             } catch (InterruptedException ex) {
                 throw new InternalErrorException(this, ex,
                         current.getName()
-                        + ": Thread interrupted while waiting to get "
-                        + "read access: " + ex.getMessage());
+                                + ": Thread interrupted while waiting to get "
+                                + "read access: " + ex.getMessage());
             }
         }
 
@@ -502,7 +503,8 @@ public final class Workspace implements Nameable {
             return;
         }
 
-        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, true);
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current,
+                true);
 
         // Probably need to wait for write access.
         // First increment this to make the record not empty, so as to
@@ -516,8 +518,8 @@ public final class Workspace implements Nameable {
         while (true) {
             if (_writer == null) {
                 // There are no writers. Are there any readers?
-                if (_numReaders == 0 || _numReaders == 1
-                        && record.readDepth > 0) {
+                if (_numReaders == 0
+                        || _numReaders == 1 && record.readDepth > 0) {
                     // No readers
                     // or the only reader is the current thread
                     _writer = current;
@@ -563,8 +565,8 @@ public final class Workspace implements Nameable {
             } catch (InterruptedException ex) {
                 throw new InternalErrorException(this, ex,
                         current.getName()
-                        + ": Thread interrupted while waiting to get "
-                        + "write access: " + ex.getMessage());
+                                + ": Thread interrupted while waiting to get "
+                                + "write access: " + ex.getMessage());
             } finally {
                 _waitingWriteRequests--;
                 if (depth > 0) {
@@ -873,7 +875,8 @@ public final class Workspace implements Nameable {
     private final synchronized void _doneWriting(
             boolean incrementWorkspaceVersion) {
         Thread current = Thread.currentThread();
-        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, false);
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current,
+                false);
 
         if (incrementWorkspaceVersion) {
             incrVersion();
@@ -909,8 +912,8 @@ public final class Workspace implements Nameable {
      *  @param createNew True if a new thread is to be created.
      *  @return The AccessRecord
      */
-    private final AccessRecord _lastReaderRecordOrCurrentAccessRecord(Thread thread,
-            boolean createNew) {
+    private final AccessRecord _lastReaderRecordOrCurrentAccessRecord(
+            Thread thread, boolean createNew) {
         AccessRecord record = null;
         // This is a separate method so as to avoid code duplication.
         if (_lastReader != null && thread == _lastReader.get()) {
@@ -933,7 +936,7 @@ public final class Workspace implements Nameable {
         // If this object has been serialized and deserialized, then
         // _readerRecords could be null.
         if (_readerRecords == null) {
-            _readerRecords = new WeakHashMap<Thread,AccessRecord>();
+            _readerRecords = new WeakHashMap<Thread, AccessRecord>();
         }
 
         AccessRecord record = _readerRecords.get(current);
@@ -991,11 +994,12 @@ public final class Workspace implements Nameable {
         }
 
         Thread current = Thread.currentThread();
-        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, false);
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current,
+                false);
 
         if (record == null || count > record.failedReadAttempts) {
-            throw new InvalidStateException(this, "Trying to reacquire "
-                    + "read permission not in record.");
+            throw new InvalidStateException(this,
+                    "Trying to reacquire " + "read permission not in record.");
         }
 
         // Go into an infinite 'while (true)' loop, and each time through
@@ -1006,8 +1010,8 @@ public final class Workspace implements Nameable {
         while (true) {
             // If the current thread has write permission, or if there
             // are no pending write requests, then grant read permission.
-            if (current == _writer || _waitingWriteRequests == 0
-                    && _writer == null) {
+            if (current == _writer
+                    || _waitingWriteRequests == 0 && _writer == null) {
                 _numReaders++;
                 record.failedReadAttempts -= count;
                 record.readDepth = count;
@@ -1019,9 +1023,9 @@ public final class Workspace implements Nameable {
             } catch (InterruptedException ex) {
                 throw new InternalErrorException(this, ex,
                         current.getName()
-                        + ": Thread interrupted while waiting to get "
-                        + " read access: " + ex.getMessage());
-           }
+                                + ": Thread interrupted while waiting to get "
+                                + " read access: " + ex.getMessage());
+            }
         }
     }
 
@@ -1034,7 +1038,8 @@ public final class Workspace implements Nameable {
      */
     private synchronized int _releaseAllReadPermissions() {
         // Find the current thread.
-        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(Thread.currentThread(), false);
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(
+                Thread.currentThread(), false);
 
         if (record == null || record.readDepth == 0) {
             // current thread is not a reader

@@ -142,7 +142,8 @@ import ptolemy.util.FileUtilities;
  @Pt.AcceptedRating Yellow (cxh)
  @see URIAttribute
  */
-public class FileParameter extends StringParameter implements FileOrURLAccessor {
+public class FileParameter extends StringParameter
+        implements FileOrURLAccessor {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -248,11 +249,11 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
         String name = stringValue();
 
         try {
-            return FileUtilities.nameToURL(name, getBaseDirectory(), getClass()
-                    .getClassLoader());
+            return FileUtilities.nameToURL(name, getBaseDirectory(),
+                    getClass().getClassLoader());
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Cannot read file '"
-                    + name + "'");
+            throw new IllegalActionException(this, ex,
+                    "Cannot read file '" + name + "'");
         }
     }
 

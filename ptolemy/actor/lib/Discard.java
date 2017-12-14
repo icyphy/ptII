@@ -137,8 +137,8 @@ public class Discard extends Sink implements Configurable {
         HashSet<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL),
+                    input.getTypeTerm()));
         }
         return result;
     }

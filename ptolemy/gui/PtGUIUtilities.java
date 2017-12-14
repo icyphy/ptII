@@ -84,12 +84,12 @@ public class PtGUIUtilities {
             String macOSProperty = StringUtilities
                     .getProperty("ptolemy.ptII.MacOS");
             if (macOSProperty.equals("true")) {
-                System.out.println("ptolemy.ptII.MacOS = "
-                        + "true property detected");
+                System.out.println(
+                        "ptolemy.ptII.MacOS = " + "true property detected");
                 return true;
             } else if (macOSProperty.equals("false")) {
-                System.out.println("ptolemy.ptII.MacOS = "
-                        + "false property detected");
+                System.out.println(
+                        "ptolemy.ptII.MacOS = " + "false property detected");
                 return false;
             }
         } catch (SecurityException ex) {
@@ -140,8 +140,8 @@ public class PtGUIUtilities {
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5725
         if (System.getProperty("os.name").equals("Mac OS X")
                 && System.getProperty("os.version").startsWith("10.8")
-                && System.getProperty("java.specification.version").equals(
-                        "1.6")) {
+                && System.getProperty("java.specification.version")
+                        .equals("1.6")) {
             return false;
         }
 

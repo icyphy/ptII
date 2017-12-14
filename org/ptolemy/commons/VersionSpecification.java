@@ -45,7 +45,8 @@ import java.util.Arrays;
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
-public abstract class VersionSpecification implements Comparable<VersionSpecification>, Serializable {
+public abstract class VersionSpecification
+        implements Comparable<VersionSpecification>, Serializable {
     private static final long serialVersionUID = 4728405057895700793L;
 
     ///////////////////////////////////////////////////////////////////
@@ -72,19 +73,25 @@ public abstract class VersionSpecification implements Comparable<VersionSpecific
         String[] versionIds = version.split("[\\.\\-_]");
 
         if (versionIds.length < 3) {
-            throw new IllegalArgumentException("Version must consist of minimally 3 digits <" + version + ">");
+            throw new IllegalArgumentException(
+                    "Version must consist of minimally 3 digits <" + version
+                            + ">");
         } else {
             if (version.indexOf(' ') != -1) {
-                throw new IllegalArgumentException("3-digit Version can not contain spaces <" + version + ">");
+                throw new IllegalArgumentException(
+                        "3-digit Version can not contain spaces <" + version
+                                + ">");
             }
 
             int major = Integer.parseInt(versionIds[0]);
             int minor = Integer.parseInt(versionIds[1]);
             int micro = Integer.parseInt(versionIds[2]);
             if (versionIds.length == 3) {
-                versionSpec = new ThreeDigitVersionSpecification(major, minor, micro);
+                versionSpec = new ThreeDigitVersionSpecification(major, minor,
+                        micro);
             } else {
-                versionSpec = new ThreeDigitVersionSpecification(major, minor, micro,
+                versionSpec = new ThreeDigitVersionSpecification(major, minor,
+                        micro,
                         Arrays.copyOfRange(versionIds, 3, versionIds.length));
             }
             versionSpec._versionString = version;

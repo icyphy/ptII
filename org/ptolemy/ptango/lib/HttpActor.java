@@ -127,8 +127,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (ltrnc)
  *  @see org.ptolemy.ptango.lib.WebServer
  */
-public class HttpActor extends TypedAtomicActor implements HttpService,
-        ExceptionSubscriber {
+public class HttpActor extends TypedAtomicActor
+        implements HttpService, ExceptionSubscriber {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -784,11 +784,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
 
         String ajax = "";
         if (_request.requestType == 0) {
-            ajax = "jQuery.get(\""
-                    + _request.requestURI
-                    + "\")\n"
-                    + ".done(function(data) { \n "
-                    +
+            ajax = "jQuery.get(\"" + _request.requestURI + "\")\n"
+                    + ".done(function(data) { \n " +
                     // Wrap result page with <div> </div> since an HTML page is not
                     // valid xml due to unclosed <!DOCTYPE HTML> tag
                     // jQuery has problems parsing otherwise
@@ -810,19 +807,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 if (parameters.length() > 0) {
                     parameters.deleteCharAt(parameters.length() - 1);
                     parameters.append('}');
-                    ajax = "jQuery.post(\""
-                            + _request.requestURI
-                            + "\", "
-                            + parameters.toString()
-                            + ")\n"
+                    ajax = "jQuery.post(\"" + _request.requestURI + "\", "
+                            + parameters.toString() + ")\n"
                             + ".done(function(data) { \n "
                             + "result = \"<div>\" + data + \"</div>\";"
                             + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
                             + "\n });";
                 } else {
-                    ajax = "jQuery.post(\""
-                            + _request.requestURI
-                            + "\")\n"
+                    ajax = "jQuery.post(\"" + _request.requestURI + "\")\n"
                             + ".done(function(data) { \n "
                             + "result = \"<div>\" + data + \"</div>\";"
                             + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
@@ -835,21 +827,22 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
 
         message.append("<!DOCTYPE html>\n<html>\n<head> "
                 + "<meta charset=\"UTF-8\">\n");
-        message.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n");
+        message.append(
+                "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n");
         message.append("<script>\n var count=" + timeoutValue + ";\n");
         message.append("var interval=setInterval(timer,1000);\nvar result;\n");
         message.append("function timer() {\n " + "count=count-1;\n"
                 + "jQuery(\"#countdown\").html(count+1);\n"
                 + "if (count <= 0) {\n" + "clearInterval(interval);\n"
                 + ajax.toString() + "\n}\n}\n");
-        message.append("jQuery(document).ready(function() {\n"
-                + "timer();\n});");
+        message.append(
+                "jQuery(document).ready(function() {\n" + "timer();\n});");
         message.append("</script></head>\n");
         message.append("<body><div id=\"contents\"> \n"
                 + "<h1> Internal Server Error (code "
                 + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + ")</h1>\n");
-        message.append("<div> Retrying in <div id=\"countdown\">"
-                + timeoutValue + "</div></div></div>\n");
+        message.append("<div> Retrying in <div id=\"countdown\">" + timeoutValue
+                + "</div></div></div>\n");
         message.append("</body></html>");
 
         _response.response = message.toString();
@@ -941,8 +934,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          */
         @Override
         protected synchronized void doGet(HttpServletRequest request,
-                HttpServletResponse response) throws ServletException,
-                IOException {
+                HttpServletResponse response)
+                throws ServletException, IOException {
             _handleRequest(request, response, 0);
         }
 
@@ -961,8 +954,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          */
         @Override
         protected synchronized void doPost(HttpServletRequest request,
-                HttpServletResponse response) throws ServletException,
-                IOException {
+                HttpServletResponse response)
+                throws ServletException, IOException {
             _handleRequest(request, response, 1);
         }
 
@@ -981,8 +974,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          */
         @Override
         protected synchronized void doPut(HttpServletRequest request,
-                HttpServletResponse response) throws ServletException,
-                IOException {
+                HttpServletResponse response)
+                throws ServletException, IOException {
             _handleRequest(request, response, 2);
         }
 
@@ -999,7 +992,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          */
         private void _handleRequest(HttpServletRequest request,
                 HttpServletResponse response, int type)
-                        throws ServletException, IOException {
+                throws ServletException, IOException {
             // The following codeblock is synchronized on the enclosing
             // actor. This lock _is_ released while waiting for the response,
             // allowing the fire method to execute its own synchronized blocks.
@@ -1019,8 +1012,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 // flushing
 
                 if (_debugging) {
-                    _debug("**** Handling a " + ((type == 0) ? "get" :
-                        (type == 1)? "post" : "put")
+                    _debug("**** Handling a "
+                            + ((type == 0) ? "get"
+                                    : (type == 1) ? "post" : "put")
                             + " request to URI " + _request.requestURI);
                 }
 
@@ -1033,10 +1027,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     // Note that each parameter name may have more than one value,
                     // hence the array of strings.
                     RecordToken content = _readContent(request);
-                    _request.parameters =
-                            (RecordToken) content.get("parameters");
+                    _request.parameters = (RecordToken) content
+                            .get("parameters");
                     _request.body = content.get("body");
-
 
                     // Figure out what time to request a firing for.
                     long elapsedRealTime = System.currentTimeMillis()
@@ -1083,7 +1076,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                             // Ignore and use default of 30 seconds.
                         }
                         HttpActor.this.wait(timeoutValue);
-                        if (System.currentTimeMillis() - startTime >= timeoutValue) {
+                        if (System.currentTimeMillis()
+                                - startTime >= timeoutValue) {
                             if (_debugging) {
                                 _debug("**** Request timed out.");
                             }
@@ -1106,7 +1100,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                             // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
                             writer.close();
                             bytes.close();
-                            response.setStatus(HttpServletResponse.SC_REQUEST_TIMEOUT);
+                            response.setStatus(
+                                    HttpServletResponse.SC_REQUEST_TIMEOUT);
 
                             return;
                         }
@@ -1133,7 +1128,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                         // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
                         writer.close();
                         bytes.close();
-                        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        response.setStatus(
+                                HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                         return;
                     }
                 }
@@ -1248,29 +1244,30 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 parameters = _readParameterMap(request.getParameterMap());
                 body = new Token();
 
-            } else if (request.getContentType() != null &&
-                    request.getContentType().startsWith("image")) {
+            } else if (request.getContentType() != null
+                    && request.getContentType().startsWith("image")) {
 
                 // Images.  Supported: bmp, gif, jpg, png, and wbmp
                 // See:  https://docs.oracle.com/javase/tutorial/2d/images/loadimage.html
 
-               try {
+                try {
 
-                   BufferedImage image = ImageIO.read(request.getInputStream());
+                    BufferedImage image = ImageIO
+                            .read(request.getInputStream());
 
-                   if (image != null) {
-                       body = new AWTImageToken(image);
-                   } else {
-                       body = Token.NIL;
-                   }
+                    if (image != null) {
+                        body = new AWTImageToken(image);
+                    } else {
+                        body = Token.NIL;
+                    }
 
                     // Read any remaining URL parameters
                     parameters = _readParameterMap(request.getParameterMap());
 
-               } catch (IOException e) {
-                   throw new IllegalActionException("Can't read body of "
-                           + " HTTP request");
-               }
+                } catch (IOException e) {
+                    throw new IllegalActionException(
+                            "Can't read body of " + " HTTP request");
+                }
             } else {
 
                 // Anything else - Read as string
@@ -1281,19 +1278,18 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 StringBuffer content = new StringBuffer();
 
                 // Text or JSON - return StringToken
-                    try {
-                        BufferedReader reader = new BufferedReader(new
-                            InputStreamReader(request.getInputStream()));
+                try {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(request.getInputStream()));
 
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            content.append(line);
-                        }
-                    } catch (IOException e) {
-                        throw new IllegalActionException("Can't read body of "
-                                + " HTTP request");
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        content.append(line);
                     }
-
+                } catch (IOException e) {
+                    throw new IllegalActionException(
+                            "Can't read body of " + " HTTP request");
+                }
 
                 body = new StringToken(content.toString());
 
@@ -1324,7 +1320,6 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
             return content;
         }
 
-
         /** Read the parameters from the parameter map, construct a RecordToken
          *  containing the parameters, and return that record token.
          *  @param parameterMap  The HttpServletRequest's parameter map.
@@ -1336,8 +1331,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          *  @exception IllegalActionException If construction of the record token fails.
          */
 
-        private RecordToken _readParameterMap(Map<String,
-                String[]> parameterMap) throws IllegalActionException {
+        private RecordToken _readParameterMap(
+                Map<String, String[]> parameterMap)
+                throws IllegalActionException {
             // FIXME:  This currently treats all values as StringTokens,
             // which they may not be.  How to either 1) correctly determine
             // the type of the token, or 2) create a token of unspecified
@@ -1419,9 +1415,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          *  @param message The error message to write.
          *  @exception IOException If the write fails.
          */
-        private void _writeError(HttpServletResponse response,
-                int responseCode, String message, ByteArrayOutputStream bytes,
-                PrintWriter writer) throws IOException {
+        private void _writeError(HttpServletResponse response, int responseCode,
+                String message, ByteArrayOutputStream bytes, PrintWriter writer)
+                throws IOException {
 
             response.setContentType("text/html");
             response.setStatus(responseCode);

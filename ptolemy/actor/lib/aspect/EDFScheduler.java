@@ -156,7 +156,8 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
     @Override
-    protected double _getPriority(NamedObj actor) throws IllegalActionException {
+    protected double _getPriority(NamedObj actor)
+            throws IllegalActionException {
         return _deadlines.get(actor).getDoubleValue();
     }
 

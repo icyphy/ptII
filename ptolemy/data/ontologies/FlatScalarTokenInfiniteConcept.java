@@ -121,8 +121,8 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
      */
     protected FlatScalarTokenInfiniteConcept(Ontology ontology,
             FlatScalarTokenRepresentativeConcept representative,
-            ScalarToken value) throws IllegalActionException,
-            NameDuplicationException {
+            ScalarToken value)
+            throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, value);
     }
 }

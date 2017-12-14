@@ -62,6 +62,7 @@ public class HttpPost extends HttpSink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    @Override
     protected Method getMethod() {
         return Method.POST;
     }

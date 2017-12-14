@@ -62,8 +62,9 @@ public class SkyFilter extends PointFilter {
 
     public SkyFilter() {
         if (skyColors == null) {
-            skyColors = ImageUtils.createImage(
-                    Toolkit.getDefaultToolkit().getImage(getClass().getResource("SkyColors.png")).getSource());
+            skyColors = ImageUtils.createImage(Toolkit.getDefaultToolkit()
+                    .getImage(getClass().getResource("SkyColors.png"))
+                    .getSource());
         }
     }
 
@@ -283,15 +284,18 @@ public class SkyFilter extends PointFilter {
 
         int h = src.getHeight();
         tan = new float[h];
-        for (int i = 0; i < h; i++)
+        for (int i = 0; i < h; i++) {
             tan[i] = (float) Math.tan(fov * i / h * Math.PI * 0.5);
+        }
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         int t = (int) (63 * time);
         //                skyPixels = getRGB( skyColors, t, 0, 1, 64, skyPixels );
         Graphics2D g = dst.createGraphics();
-        g.drawImage(skyColors, 0, 0, dst.getWidth(), dst.getHeight(), t, 0, t + 1, 64, null);
+        g.drawImage(skyColors, 0, 0, dst.getWidth(), dst.getHeight(), t, 0,
+                t + 1, 64, null);
         g.dispose();
         super.filter(dst, dst);
         //                g.drawRenderedImage( clouds, null );
@@ -319,8 +323,9 @@ public class SkyFilter extends PointFilter {
         }
 
         remainder = octaves - (int) octaves;
-        if (remainder != 0)
+        if (remainder != 0) {
             value += remainder * Noise.noise3(x, y, t) * exponents[i];
+        }
 
         return value;
     }
@@ -357,8 +362,9 @@ public class SkyFilter extends PointFilter {
 
         // Work out cloud cover
         float c = f - cloudCover;
-        if (c < 0)
+        if (c < 0) {
             c = 0;
+        }
 
         float cloudAlpha = 1 - (float) Math.pow(cloudSharpness, c);
         //cloudAlpha *= amount;
@@ -403,7 +409,8 @@ public class SkyFilter extends PointFilter {
                         b += (cloudColor-b) * cloudAlpha;
         */
         // Clouds get darker as they get thicker
-        float ca = (1 - cloudAlpha * cloudAlpha * cloudAlpha * cloudAlpha) /** (1 + sun)*/
+        float ca = (1 - cloudAlpha * cloudAlpha * cloudAlpha
+                * cloudAlpha) /** (1 + sun)*/
                 * amount;
         float cloudR = sunR * ca;
         float cloudG = sunG * ca;

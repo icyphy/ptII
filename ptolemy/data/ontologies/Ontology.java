@@ -107,7 +107,8 @@ public class Ontology extends CompositeEntity {
         // If the concept is not found, check to see if it is an infinite
         // concept that is represented by a concept in this ontology.
         if (result == null) {
-            for (InfiniteConceptRepresentative infiniteRepresentative : entityList(InfiniteConceptRepresentative.class)) {
+            for (InfiniteConceptRepresentative infiniteRepresentative : entityList(
+                    InfiniteConceptRepresentative.class)) {
                 if (infiniteRepresentative
                         .containsThisInfiniteConceptString(conceptString)) {
                     return infiniteRepresentative
@@ -203,17 +204,17 @@ public class Ontology extends CompositeEntity {
             for (FiniteConcept concept : concepts) {
                 @SuppressWarnings("unchecked")
                 List<ConceptRelation> relationLinks = concept.abovePort
-                .linkedRelationList();
+                        .linkedRelationList();
                 for (ConceptRelation link : relationLinks) {
                     @SuppressWarnings("unchecked")
                     List<ComponentPort> remotePorts = link
-                    .linkedPortList(concept.abovePort);
-                    assert remotePorts.size() == 1 : "ConceptRelations can only connect two concepts";
+                            .linkedPortList(concept.abovePort);
+                    assert remotePorts
+                            .size() == 1 : "ConceptRelations can only connect two concepts";
                     for (ComponentPort remotePort : remotePorts) {
-                        ((DAGConceptGraph) _graph)
-                        .addRelation(concept,
-                                (FiniteConcept) remotePort
-                                .getContainer(), link);
+                        ((DAGConceptGraph) _graph).addRelation(concept,
+                                (FiniteConcept) remotePort.getContainer(),
+                                link);
                     }
                 }
             }

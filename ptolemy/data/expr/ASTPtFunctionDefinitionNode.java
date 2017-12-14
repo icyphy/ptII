@@ -97,8 +97,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
-        ASTPtFunctionDefinitionNode newNode = (ASTPtFunctionDefinitionNode) super
-                .clone();
+        ASTPtFunctionDefinitionNode newNode = (ASTPtFunctionDefinitionNode) super.clone();
         newNode._argList = (ArrayList) _argList.clone();
         return newNode;
     }
@@ -154,7 +153,8 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
 
         Iterator argNames = functionNode.getArgumentNameList().iterator();
 
-        for (Iterator names = getArgumentNameList().iterator(); names.hasNext();) {
+        for (Iterator names = getArgumentNameList().iterator(); names
+                .hasNext();) {
             String name = (String) names.next();
             String argName = (String) argNames.next();
             newRenaming.put(name, argName);

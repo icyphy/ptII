@@ -151,9 +151,9 @@ public class RemoveClasses extends MoMLFilterSimple {
      */
     @Override
     public String toString() {
-        StringBuffer results = new StringBuffer(getClass().getName()
-                + ": Remove or replace classes.\n"
-                + "The following actors are affected:\n");
+        StringBuffer results = new StringBuffer(
+                getClass().getName() + ": Remove or replace classes.\n"
+                        + "The following actors are affected:\n");
         Iterator classNames = _graphicalClasses.keySet().iterator();
 
         while (classNames.hasNext()) {

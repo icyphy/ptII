@@ -93,8 +93,8 @@ import ptolemy.moml.MoMLParser;
  @see FSMActor
  @see FSMDirector
  */
-public class State extends ComponentEntity implements ConfigurableEntity,
-DropTargetHandler, Flowable {
+public class State extends ComponentEntity
+        implements ConfigurableEntity, DropTargetHandler, Flowable {
 
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -257,7 +257,7 @@ DropTargetHandler, Flowable {
                     if (((FSMActor) container)._initialState != null
                             && ((FSMActor) container)._initialState != this) {
                         ((FSMActor) container)._initialState.isInitialState
-                        .setToken("false");
+                                .setToken("false");
                     }
                     ((FSMActor) container)._initialState = this;
                     // If the initial state name of the container is set,
@@ -266,7 +266,7 @@ DropTargetHandler, Flowable {
                             .getExpression();
                     if (!name.equals("")) {
                         ((FSMActor) container).initialStateName
-                        .setExpression("");
+                                .setExpression("");
                     }
                 }
             }
@@ -522,9 +522,10 @@ DropTargetHandler, Flowable {
                         .getEntity(name);
 
                 if (element == null) {
-                    throw new IllegalActionException(this, "Cannot find "
-                            + "refinement with name \"" + name + "\" in "
-                            + containerContainer.getFullName());
+                    throw new IllegalActionException(this,
+                            "Cannot find " + "refinement with name \"" + name
+                                    + "\" in "
+                                    + containerContainer.getFullName());
                 }
 
                 _refinement[index++] = element;
@@ -624,13 +625,13 @@ DropTargetHandler, Flowable {
                 if (actors != null) {
                     for (TypedActor actor : actors) {
                         if (!configurePrinted) {
-                            output.write(_getIndentPrefix(depth)
-                                    + "<configure>\n");
+                            output.write(
+                                    _getIndentPrefix(depth) + "<configure>\n");
                             configurePrinted = true;
                         }
                         if (actor instanceof FSMActor) {
-                            ((FSMActor) actor).exportSubmodel(output,
-                                    depth + 1, actor.getName());
+                            ((FSMActor) actor).exportSubmodel(output, depth + 1,
+                                    actor.getName());
                         } else {
                             ((NamedObj) actor).exportMoML(output, depth + 1);
                         }
@@ -668,9 +669,8 @@ DropTargetHandler, Flowable {
     private void _populateRefinements() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
         CompositeEntity modalModel = (CompositeEntity) container.getContainer();
-        boolean isModalModelInvisible = modalModel != null
-                && !modalModel.attributeList(InvisibleModalModel.class)
-                .isEmpty();
+        boolean isModalModelInvisible = modalModel != null && !modalModel
+                .attributeList(InvisibleModalModel.class).isEmpty();
         if (!(modalModel instanceof TypedCompositeActor)
                 || isModalModelInvisible) {
             if (modalModel == null || isModalModelInvisible) {
@@ -798,8 +798,7 @@ DropTargetHandler, Flowable {
                             .equals("")) {
                         for (Actor refinementActor : refinements) {
                             if (!(refinementActor instanceof ModalRefinement)) {
-                                throw new IllegalActionException(
-                                        transition,
+                                throw new IllegalActionException(transition,
                                         "Termination transition cannot have output actions because "
                                                 + "such a transition is taken in the postfire phase of execution.");
                             }
@@ -860,7 +859,7 @@ DropTargetHandler, Flowable {
      a design pattern whose top-level is an FSMActor. In that case, a modal
      model is automatically created to contain the FSMActor, and this attribute
      is associated with the created (invisible) modal model.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -894,7 +893,7 @@ DropTargetHandler, Flowable {
     /**
      A change request the updates the refinements of a state if it contains a
      configure element.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

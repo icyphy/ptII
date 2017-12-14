@@ -68,8 +68,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (ptolemy)
  */
-public class TextEditorConfigureFactory extends EditorFactory implements
-TextEditorFactory {
+public class TextEditorConfigureFactory extends EditorFactory
+        implements TextEditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -166,45 +166,58 @@ TextEditorFactory {
                         try {
                             // Attempt to create a styled document.
                             // Use reflection here to avoid a hard dependency on an external package.
-                            Class<?> docClass = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxDocument");
-                            Constructor<?> docClassConstructor = docClass.getConstructor(String.class);
-                            doc = (Document) docClassConstructor.newInstance(new Object[] {style});
+                            Class<?> docClass = Class.forName(
+                                    "org.fife.ui.rsyntaxtextarea.RSyntaxDocument");
+                            Constructor<?> docClassConstructor = docClass
+                                    .getConstructor(String.class);
+                            doc = (Document) docClassConstructor
+                                    .newInstance(new Object[] { style });
                         } catch (Throwable ex) {
                             // Ignore and use default text editor.
-                            System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                            System.out.println(
+                                    "Note: failed to open syntax-directed editor: "
+                                            + ex.getMessage());
                         }
 
                         if (doc != null) {
                             Class<?> editorClass = Class.forName(
                                     "ptolemy.actor.gui.syntax.SyntaxTextEditorForStringAttributes");
-                            Constructor<?> constructor = editorClass.getConstructor(
-                                    new Class[] {
-                                            TextEditorFactory.class, Attribute.class,
-                                            Integer.TYPE, Integer.TYPE,
-                                            String.class, Document.class
-                                            });
-                            _editor = (TextEditorForStringAttributes) constructor.newInstance(
-                                    new Object[] {
-                                            this, attributeToEdit,
-                                            numberOfRows, numberOfColumns,
-                                            "Editor for " + attributeName.getExpression() + " of "
-                                                    + getContainer().getFullName(), doc});
+                            Constructor<?> constructor = editorClass
+                                    .getConstructor(new Class[] {
+                                            TextEditorFactory.class,
+                                            Attribute.class, Integer.TYPE,
+                                            Integer.TYPE, String.class,
+                                            Document.class });
+                            _editor = (TextEditorForStringAttributes) constructor
+                                    .newInstance(new Object[] { this,
+                                            attributeToEdit, numberOfRows,
+                                            numberOfColumns,
+                                            "Editor for "
+                                                    + attributeName
+                                                            .getExpression()
+                                                    + " of "
+                                                    + getContainer()
+                                                            .getFullName(),
+                                            doc });
 
-                            _editor.text.append(TextEditorTableauFactory.getTextToEdit(attributeToEdit));
+                            _editor.text.append(TextEditorTableauFactory
+                                    .getTextToEdit(attributeToEdit));
                             // The above will mark the text object modified. Reverse this.
                             _editor.setModified(false);
 
                         }
                     } catch (Throwable ex) {
                         // Ignore and use default text editor.
-                        System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                        System.out.println(
+                                "Note: failed to open syntax-directed editor: "
+                                        + ex.getMessage());
                     }
                 }
                 if (_editor == null) {
                     _editor = new TextEditorForStringAttributes(this,
                             attributeToEdit, numberOfRows, numberOfColumns,
-                            "Editor for " + attributeName.getExpression() + " of "
-                                    + getContainer().getFullName());
+                            "Editor for " + attributeName.getExpression()
+                                    + " of " + getContainer().getFullName());
                 }
             } catch (IllegalActionException ex) {
                 MessageHandler.error(

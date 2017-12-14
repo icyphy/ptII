@@ -144,7 +144,8 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
                 if (immediateContainer != null) {
                     NamedObj container = immediateContainer.getContainer();
                     if (container instanceof CompositeActor
-                            && !(_channel == null || _channel.trim().equals(""))) {
+                            && !(_channel == null
+                                    || _channel.trim().equals(""))) {
                         ((CompositeActor) container).unlinkToPublishedPort(
                                 _channelPattern, this, _global);
                     }
@@ -163,7 +164,8 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
                 if (immediateContainer != null) {
                     NamedObj container = immediateContainer.getContainer();
                     if (container instanceof CompositeActor
-                            && !(_channel == null || _channel.trim().equals(""))) {
+                            && !(_channel == null
+                                    || _channel.trim().equals(""))) {
                         ((CompositeActor) container).unlinkToPublishedPort(
                                 _channelPattern, this, _global);
                     }
@@ -196,11 +198,10 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *   if the channel index is not 0.
      */
     @Override
-    public Token get(int channelIndex) throws NoTokenException,
-    IllegalActionException {
+    public Token get(int channelIndex)
+            throws NoTokenException, IllegalActionException {
         if (channelIndex != 0) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "Although it is a multiport, you can only read"
                             + " from channel 0 of a SubscriptionAggregatorPort.");
         }
@@ -248,8 +249,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     public Token[] get(int channelIndex, int vectorLength)
             throws NoTokenException, IllegalActionException {
         if (channelIndex != 0) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "Although it is a multiport, you can only read"
                             + " from channel 0 of a SubscriptionAggregatorPort.");
         }
@@ -350,8 +350,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
     public void preinitialize() throws IllegalActionException {
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "SubscriptionAggregatorPorts cannot be used at the top level, use a SubscriptionAggregator actor instead.");
         }
         super.preinitialize();

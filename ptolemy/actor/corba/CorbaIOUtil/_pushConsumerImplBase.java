@@ -10,10 +10,10 @@ package ptolemy.actor.corba.CorbaIOUtil;
 /* A CORBA compatible interface for a push consumer.
  */
 @SuppressWarnings("serial")
-public abstract class _pushConsumerImplBase extends
-org.omg.CORBA.portable.ObjectImpl implements
-ptolemy.actor.corba.CorbaIOUtil.pushConsumer,
-org.omg.CORBA.portable.InvokeHandler {
+public abstract class _pushConsumerImplBase
+        extends org.omg.CORBA.portable.ObjectImpl
+        implements ptolemy.actor.corba.CorbaIOUtil.pushConsumer,
+        org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _pushConsumerImplBase() {
     }
@@ -49,7 +49,7 @@ org.omg.CORBA.portable.InvokeHandler {
             } catch (ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                .write(out, $ex);
+                        .write(out, $ex);
             }
 
             break;

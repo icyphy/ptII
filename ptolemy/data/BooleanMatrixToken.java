@@ -71,8 +71,8 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public BooleanMatrixToken(boolean[][] value) throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("BooleanMatrixToken: The "
-                    + "specified matrix is null.");
+            throw new IllegalActionException(
+                    "BooleanMatrixToken: The " + "specified matrix is null.");
         }
 
         _initialize(value);
@@ -118,9 +118,8 @@ public class BooleanMatrixToken extends MatrixToken {
         }
 
         if (tokens.length != rows * columns) {
-            throw new IllegalActionException(
-                    "BooleanMatrixToken: The specified"
-                            + " array is not of the correct length");
+            throw new IllegalActionException("BooleanMatrixToken: The specified"
+                    + " array is not of the correct length");
         }
 
         _rowCount = rows;
@@ -199,8 +198,8 @@ public class BooleanMatrixToken extends MatrixToken {
         //         }
         // The argument is below BooleanMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "[boolean]"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[boolean]"));
     }
 
     /** Return a new matrix that is a sub-matrix of this matrix.
@@ -213,8 +212,8 @@ public class BooleanMatrixToken extends MatrixToken {
      *   parameters result in out of bounds accesses.
      */
     @Override
-    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
-            throws IllegalActionException {
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan,
+            int colSpan) throws IllegalActionException {
         boolean[][] value = this.booleanMatrix();
         try {
             boolean[][] result = new boolean[rowSpan][colSpan];
@@ -226,8 +225,8 @@ public class BooleanMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                    + ", colStart = " + colStart + ", rowSpan = "
-                    + rowSpan + ", colSpan = " + colSpan + ").");
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -374,7 +373,8 @@ public class BooleanMatrixToken extends MatrixToken {
     @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
-        if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
+        if (matrices == null || matrices.length == 0
+                || matrices[0].length == 0) {
             throw new IllegalActionException("matrixJoin: No input matrices.");
         }
         // Calculate the size of the result.
@@ -446,8 +446,8 @@ public class BooleanMatrixToken extends MatrixToken {
                     // There is no BooleanMatrixMath class, so we need
                     // to implement the matrix copy here.
                     for (int ii = 0; ii < rowspan; ii++) {
-                        System.arraycopy(source[row + ii], column,
-                                contents[ii], 0, columnspan);
+                        System.arraycopy(source[row + ii], column, contents[ii],
+                                0, columnspan);
                     }
                 }
                 column += columns[j];
@@ -510,8 +510,8 @@ public class BooleanMatrixToken extends MatrixToken {
             return new BooleanMatrixToken(new boolean[_rowCount][_columnCount]);
         } catch (IllegalActionException illegalAction) {
             // should not happen
-            throw new InternalErrorException("BooleanMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
+            throw new InternalErrorException(
+                    "BooleanMatrixToken.zero: " + "Cannot create zero matrix.");
         }
     }
 

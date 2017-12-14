@@ -78,8 +78,8 @@ public class JAIBandSelect extends Transformer {
         IntToken[] initialArray = { new IntToken(0), new IntToken(1),
                 new IntToken(2) };
 
-        bandIndices = new Parameter(this, "bandIndices", new ArrayToken(
-                BaseType.INT, initialArray));
+        bandIndices = new Parameter(this, "bandIndices",
+                new ArrayToken(BaseType.INT, initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////

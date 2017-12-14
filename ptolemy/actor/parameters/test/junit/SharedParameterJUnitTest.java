@@ -81,7 +81,8 @@ public class SharedParameterJUnitTest {
         /* SharedParameter sharedParameter = */new SharedParameter(
                 compositeActor, "sharedParameter", null, "4.5");
 
-        Collection<Initializable> initializables = _getInitializableField(compositeActor);
+        Collection<Initializable> initializables = _getInitializableField(
+                compositeActor);
 
         // - During a clone(), the entities are not deep-cloned. The
         // result is that a cloned Director/Actor (i.e. during the
@@ -95,7 +96,8 @@ public class SharedParameterJUnitTest {
         CompositeActor clonedCompositeActor = (CompositeActor) compositeActor
                 .clone(clonedWorkspace);
 
-        Collection<Initializable> clonedInitializables = _getInitializableField(clonedCompositeActor);
+        Collection<Initializable> clonedInitializables = _getInitializableField(
+                clonedCompositeActor);
 
         assertTrue(initializables.size() == clonedInitializables.size());
 
@@ -120,7 +122,8 @@ public class SharedParameterJUnitTest {
                 assertTrue(!initializable.equals(clonedInitializable));
 
                 // Then, check for the same container.
-                if (initializableContainer.equals(clonedInitializableContainer)) {
+                if (initializableContainer
+                        .equals(clonedInitializableContainer)) {
                     System.out.println("Error!.  The container of "
                             + ((NamedObj) initializable).getFullName() + " is "
                             + initializableContainer.getFullName()
@@ -170,9 +173,9 @@ public class SharedParameterJUnitTest {
             if (fields[i].getName().equals("_initializables")) {
                 Collection<Initializable> initializables = (Collection<Initializable>) fields[i]
                         .get(compositeActor);
-                System.out.println("fields: " + fields[i].getName() + ": "
-                        + initializables + " workspace: "
-                        + compositeActor.workspace());
+                System.out.println(
+                        "fields: " + fields[i].getName() + ": " + initializables
+                                + " workspace: " + compositeActor.workspace());
                 return initializables;
             }
         }

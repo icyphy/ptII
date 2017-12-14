@@ -282,7 +282,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
             _inputTokens.put(i, new LinkedList<TimedEvent>());
             _outputTokens.put(i, new LinkedList<TimedEvent>());
         }
-
+        
         // Read the switching table from the parameters.
         for (int i = 0; i < attributeList().size(); i++) {
             Attribute attribute = (Attribute) attributeList().get(i);
@@ -328,7 +328,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
 
         // In a continuous domain this actor could be fired before any token has
         // been received; _nextTimeFree could be null.
-        if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
+        if (_nextFireTime != null
+                && currentTime.compareTo(_nextFireTime) == 0) {
 
             // Move tokens from input queue to switch fabric.
 
@@ -342,13 +343,15 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                             Object[] last = (Object[]) _switchFabricQueue
                                     .getLast().contents;
                             Object[] eObj = (Object[]) event.contents;
-                            if (((AFDXVlink) last[2]).getSource().equals(
-                                    ((AFDXVlink) eObj[2]).getSource())
-                                    && ((Time) last[3]).compareTo(eObj[3]) == 0) {
+                            if (((AFDXVlink) last[2]).getSource()
+                                    .equals(((AFDXVlink) eObj[2]).getSource())
+                                    && ((Time) last[3])
+                                            .compareTo(eObj[3]) == 0) {
                                 multicast = true;
                             }
 
-                            lastTimeStamp = _switchFabricQueue.getLast().timeStamp;
+                            lastTimeStamp = _switchFabricQueue
+                                    .getLast().timeStamp;
                         }
 
                         if (multicast) {
@@ -358,8 +361,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                             computedTimeStamp = currentTime
                                     .add(_technologicalDelay);
                         }
-                        _switchFabricQueue.add(new TimedEvent(
-                                computedTimeStamp, event.contents));
+                        _switchFabricQueue.add(new TimedEvent(computedTimeStamp,
+                                event.contents));
 
                         _inputTokens.get(i).remove(event);
                     }
@@ -386,10 +389,10 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
 
                     Time lastTimeStamp = currentTime;
                     if (_outputTokens.get(outputPortID).size() > 0) {
-                        Object[] last = (Object[]) _outputTokens.get(
-                                outputPortID).getLast().contents;
-                        if (((AFDXVlink) last[2]).getSource().equals(
-                                ((AFDXVlink) output[2]).getSource())
+                        Object[] last = (Object[]) _outputTokens
+                                .get(outputPortID).getLast().contents;
+                        if (((AFDXVlink) last[2]).getSource()
+                                .equals(((AFDXVlink) output[2]).getSource())
                                 && ((Time) last[3]).compareTo(output[3]) == 0) {
                             multicast = true;
                         }
@@ -403,8 +406,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                         multicast = false;
                     } else {
                         AFDXVlink vl = (AFDXVlink) output[2];
-                        computedTimeStamp = lastTimeStamp.add(vl.getFrameSize()
-                                / (_bitRate * 1000000));
+                        computedTimeStamp = lastTimeStamp
+                                .add(vl.getFrameSize() / (_bitRate * 1000000));
                     }
                     _outputTokens.get(outputPortID).add(
                             new TimedEvent(computedTimeStamp, event.contents));
@@ -430,9 +433,10 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                             Token[] values = new Token[] {
                                     new DoubleToken(
                                             event.timeStamp.getDoubleValue()),
-                                            new ObjectToken(output[2]),
-                                            (Token) output[1] };
-                            RecordToken record = new RecordToken(labels, values);
+                                    new ObjectToken(output[2]),
+                                    (Token) output[1] };
+                            RecordToken record = new RecordToken(labels,
+                                    values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else { // Else the receiver is an actor.
                             Token token = (Token) output[1];
@@ -506,9 +510,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
             // GL: XXX: FIXME: .add(_inputBufferDelay);
         }
 
-        _inputTokens.get(inputPortID).add(
-                new TimedEvent(computedTimeStamp, new Object[] { receiver, tok,
-                        vl, currentTime }));
+        _inputTokens.get(inputPortID).add(new TimedEvent(computedTimeStamp,
+                new Object[] { receiver, tok, vl, currentTime }));
 
         _tokenCount++;
         //sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
@@ -622,7 +625,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
     protected void _scheduleRefire() throws IllegalActionException {
         _nextFireTime = Time.POSITIVE_INFINITY;
         for (int i = 0; i < _numberOfPorts; i++) {
-            _nextFireTime = _getNextFireTime(_nextFireTime, _inputTokens.get(i));
+            _nextFireTime = _getNextFireTime(_nextFireTime,
+                    _inputTokens.get(i));
             _nextFireTime = _getNextFireTime(_nextFireTime,
                     _outputTokens.get(i));
         }
@@ -687,8 +691,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  are going out of the switch.
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
-    public static class AfdxSwitchAttributes extends
-    CommunicationAspectAttributes {
+    public static class AfdxSwitchAttributes
+            extends CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.

@@ -75,10 +75,10 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      *
      * @param extensions the file extensions to use
      */
-    public ExtensionFilenameFilter(String [] extensions) {
+    public ExtensionFilenameFilter(String[] extensions) {
         // This method is used by Kepler in gui/src/org/kepler/gui/kar/OpenArchiveAction.java
         // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile"
-       this(extensions, null);
+        this(extensions, null);
     }
 
     /**
@@ -106,7 +106,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * @param description a description of the types of files with one
      * of the given extensions
      */
-    public ExtensionFilenameFilter(String [] extensions, String description) {
+    public ExtensionFilenameFilter(String[] extensions, String description) {
         // This method is used by Kepler in reporting/src/org/kepler/reporting/gui/ReportDesignerPanel.java
         // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile"
         for (int i = 0; i < extensions.length; i++) {
@@ -203,7 +203,8 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
         if (extension == null || "".equals(extension.trim())) {
             return;
         } else {
-            _registeredExtensions.add(extension.trim().toLowerCase(Locale.getDefault()));
+            _registeredExtensions
+                    .add(extension.trim().toLowerCase(Locale.getDefault()));
         }
     }
 

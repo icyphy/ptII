@@ -141,36 +141,29 @@ public class HistogramMLApplication extends PlotMLApplication {
      */
     @Override
     protected void _about() {
-        JOptionPane
-        .showMessageDialog(
-                this,
-                "HistogramMLApplication class\n"
-                        + "By: Edward A. Lee "
-                        + "and Christopher Hylands\n"
-                        + "Version "
-                        + PlotBox.PTPLOT_RELEASE
-                        + ", Build: $Id$\n\n"
-                        + "For more information, see\n"
-                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                        + "Copyright (c) 1997-2014 "
-                        + "The Regents of the University of California.",
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "HistogramMLApplication class\n"
+                + "By: Edward A. Lee " + "and Christopher Hylands\n"
+                + "Version " + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                + "Copyright (c) 1997-2014 "
+                + "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     @Override
     protected void _help() {
-        JOptionPane
-        .showMessageDialog(
-                this,
+        JOptionPane.showMessageDialog(this,
                 "HistogramMLApplication is a standalone plot "
                         + " application.\n"
                         + "  File formats understood: PlotML and Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.\n"
                         + "  Right mouse button: Editing data (use edit menu to select "
                         + "a dataset).\n\n" + _usage(),
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Create a new parser object for the application.  Derived classes can

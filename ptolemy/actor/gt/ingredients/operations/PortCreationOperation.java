@@ -312,8 +312,8 @@ public class PortCreationOperation extends Operation {
                             + "ptolemy.kernel.Port.");
                 }
             } catch (ClassNotFoundException e) {
-                throw new ValidationException("Port class " + _portClass
-                        + "not found.");
+                throw new ValidationException(
+                        "Port class " + _portClass + "not found.");
             }
         }
 
@@ -330,13 +330,13 @@ public class PortCreationOperation extends Operation {
     /** The elements.
      */
     private static final OperationElement[] _ELEMENTS = {
-        new StringOperationElement("name", false, false),
-        new StringOperationElement("class", true, false),
-        new StringOperationElement("type", true, false),
-        new BooleanOperationElement("input", false),
-        new BooleanOperationElement("output", false),
-        new BooleanOperationElement("multiport", false),
-        new BooleanOperationElement("autoRename", false) };
+            new StringOperationElement("name", false, false),
+            new StringOperationElement("class", true, false),
+            new StringOperationElement("type", true, false),
+            new BooleanOperationElement("input", false),
+            new BooleanOperationElement("output", false),
+            new BooleanOperationElement("multiport", false),
+            new BooleanOperationElement("autoRename", false) };
 
     /** Value of the autoRename element.
      */

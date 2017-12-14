@@ -35,8 +35,8 @@ import java.util.EventListener;
  * @version        $Id$
  * @author         John Reekie
  */
-public class LayerEventMulticaster extends AWTEventMulticaster implements
-LayerListener, LayerMotionListener {
+public class LayerEventMulticaster extends AWTEventMulticaster
+        implements LayerListener, LayerMotionListener {
     /**
      * Create an event multicaster from two listeners.
      */
@@ -119,7 +119,8 @@ LayerListener, LayerMotionListener {
      * @param a event listener-a
      * @param b event listener-b
      */
-    protected static EventListener addInternal(EventListener a, EventListener b) {
+    protected static EventListener addInternal(EventListener a,
+            EventListener b) {
         if (a == null) {
             return b;
         }

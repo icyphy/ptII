@@ -122,8 +122,8 @@ public class Box3D extends GRShadedShape {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Check that a box has been previously created.
-        if (_changesAllowedNow
-                && (attribute == xLength || attribute == yHeight || attribute == zWidth)) {
+        if (_changesAllowedNow && (attribute == xLength || attribute == yHeight
+                || attribute == zWidth)) {
             if (_scaleTransform != null) {
                 float height = (float) (((DoubleToken) yHeight.getToken())
                         .doubleValue() / 2.0);
@@ -190,13 +190,14 @@ public class Box3D extends GRShadedShape {
         // Although it is completely undocument in Java3D, the "dimension"
         // parameters of the box are more like radii than like width,
         // length, and height. So we have to divide by two.
-        float height = (float) (((DoubleToken) yHeight.getToken())
-                .doubleValue() / 2.0);
+        float height = (float) (((DoubleToken) yHeight.getToken()).doubleValue()
+                / 2.0);
 
-        float length = (float) (((DoubleToken) xLength.getToken())
-                .doubleValue() / 2.0);
+        float length = (float) (((DoubleToken) xLength.getToken()).doubleValue()
+                / 2.0);
 
-        float width = (float) (((DoubleToken) zWidth.getToken()).doubleValue() / 2.0);
+        float width = (float) (((DoubleToken) zWidth.getToken()).doubleValue()
+                / 2.0);
 
         if (_changesAllowedNow) {
             Box box = new Box(1.0f, 1.0f, 1.0f, primitiveFlags, _appearance);

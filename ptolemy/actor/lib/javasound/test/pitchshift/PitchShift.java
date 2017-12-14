@@ -130,7 +130,7 @@ public class PitchShift {
             //inputRingBuf[inputRingBufWritePos] = in[curInSamp];
             // Add some delay, to compensate for the pitch detector.
             _inputRingBuf[(_inputRingBufWritePos + _pitchDetectorDelay)
-                          % ringBufSize] = in[curInSamp];
+                    % ringBufSize] = in[curInSamp];
 
             //////////////////////////////////////////////////////
             //////////////////////////////////////////////////////
@@ -186,9 +186,8 @@ public class PitchShift {
 
                     // Period scale factor.
                     periodRatio = 1.0 / correctedPitchScale;
-                    _outputRingBufPitchMarkerPos = (int) (_outputRingBufPitchMarkerPos + inputPeriodLength
-                            * periodRatio)
-                            % ringBufSize;
+                    _outputRingBufPitchMarkerPos = (int) (_outputRingBufPitchMarkerPos
+                            + inputPeriodLength * periodRatio) % ringBufSize;
 
                     /* Do an OLA (in the output buffer)
                      * about the synthesis pitch
@@ -202,15 +201,16 @@ public class PitchShift {
                      * an audible impact, I think.
                      */
                     for (olaIndex = -inputPeriodLength; olaIndex <= inputPeriodLength; ++olaIndex) {
-                        windowVal = (1 + Math.cos(Math.PI * olaIndex
-                                / inputPeriodLength)) * 0.5;
+                        windowVal = (1 + Math
+                                .cos(Math.PI * olaIndex / inputPeriodLength))
+                                * 0.5;
 
-                        _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos + ringBufSize)
-                                       % ringBufSize] += windowVal
-                                       * _inputRingBuf[(olaIndex
-                                               + _inputRingBufWritePos
-                                               - minimumPitchSamps + ringBufSize)
-                                               % ringBufSize];
+                        _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos
+                                + ringBufSize) % ringBufSize] += windowVal
+                                        * _inputRingBuf[(olaIndex
+                                                + _inputRingBufWritePos
+                                                - minimumPitchSamps
+                                                + ringBufSize) % ringBufSize];
                     }
 
                     // Update loop condition variable.
@@ -252,7 +252,8 @@ public class PitchShift {
                 }
 
                 // correctedPitchIn = 441.0;  // FOR DEBUG
-                inputPeriodLength = (int) (1.0 / correctedPitchIn * _sampleRate);
+                inputPeriodLength = (int) (1.0 / correctedPitchIn
+                        * _sampleRate);
 
                 // inputPeriodLength = 100;  // FOR DEBUG
                 samplesLeftInPeriod = inputPeriodLength;

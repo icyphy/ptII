@@ -50,8 +50,8 @@ import ptolemy.kernel.util.NamedObj;
  * @see ptolemy.actor.TypeOpaqueCompositeActor
  * @see ptolemy.vergil.actor.ActorGraphTableau.Factory
  */
-public class TypeOpaqueCompositeActorTableauFactory extends
-ActorGraphTableau.Factory {
+public class TypeOpaqueCompositeActorTableauFactory
+        extends ActorGraphTableau.Factory {
     /** Create an factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -61,8 +61,8 @@ ActorGraphTableau.Factory {
      *   an attribute already in the container.
      */
     public TypeOpaqueCompositeActorTableauFactory(NamedObj container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -83,7 +83,8 @@ ActorGraphTableau.Factory {
     @Override
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (effigy instanceof PtolemyEffigy) {
-            if (((PtolemyEffigy) effigy).getModel() instanceof TypeOpaqueCompositeActor) {
+            if (((PtolemyEffigy) effigy)
+                    .getModel() instanceof TypeOpaqueCompositeActor) {
                 return super.createTableau(effigy);
             }
         }

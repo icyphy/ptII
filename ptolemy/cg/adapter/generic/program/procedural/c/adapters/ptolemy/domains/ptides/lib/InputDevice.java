@@ -57,7 +57,8 @@ public abstract class InputDevice extends NamedProgramCodeGeneratorAdapter {
      * is the empty string
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateSensorSensingFuncCode() throws IllegalActionException {
+    public String generateSensorSensingFuncCode()
+            throws IllegalActionException {
         return "";
     }
 

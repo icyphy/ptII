@@ -80,7 +80,7 @@ public class TrackWriter extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fileName=new FileParameter(this, "fileName");
+        fileName = new FileParameter(this, "fileName");
         fileName.setExpression("System.out");
     }
 
@@ -124,12 +124,13 @@ public class TrackWriter extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-  @Override
-  public Object clone(Workspace workspace) throws CloneNotSupportedException {
-      TrackWriter newObject = (TrackWriter) super.clone(workspace);
-      newObject._writer = null;
-      return newObject;
-  }
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TrackWriter newObject = (TrackWriter) super.clone(workspace);
+        newObject._writer = null;
+        return newObject;
+    }
+
     /** Read the value of alwaysFlush parameter.
      *  @exception IllegalActionException If there is an error reading the
      *  alwaysFlush parameter.
@@ -215,7 +216,7 @@ public class TrackWriter extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown while opening the file or
      *  writing to it.
      */
-    protected void _writingToFile(Token param) throws IllegalActionException{
+    protected void _writingToFile(Token param) throws IllegalActionException {
         // FIXME: Is "writing" the best name for the method?  How about _writeToFile()?
         if (_writer == null) {
             // File has not been opened.
@@ -233,7 +234,7 @@ public class TrackWriter extends TypedAtomicActor {
             }
 
             _writer = new PrintWriter(fileName.openForWriting(false), true);
-          //  _writeToken(_delayToken);
+            //  _writeToken(_delayToken);
         }
         _writeToken(param);
     }
@@ -260,9 +261,5 @@ public class TrackWriter extends TypedAtomicActor {
 
     /** The current writer. */
     protected PrintWriter _writer;
-
-
-
-
 
 }

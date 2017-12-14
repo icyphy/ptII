@@ -192,8 +192,8 @@ public class ComponentDef implements Comparable<Object> {
                 try {
                     jf.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \"" + jarFileName
-                            + "\": " + ex);
+                    System.out.println(
+                            "Failed to close \"" + jarFileName + "\": " + ex);
                 }
             }
         }
@@ -240,8 +240,9 @@ public class ComponentDef implements Comparable<Object> {
                 try {
                     paletteStream.close();
                 } catch (Exception ex) {
-                    throw new RuntimeException("Failed to close paletteStream "
-                            + paletteStream, ex);
+                    throw new RuntimeException(
+                            "Failed to close paletteStream " + paletteStream,
+                            ex);
                 }
             }
         }

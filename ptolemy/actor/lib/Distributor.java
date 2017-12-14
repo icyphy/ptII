@@ -149,7 +149,7 @@ public class Distributor extends Transformer implements SequenceActor {
         newObject.input_tokenConsumptionRate = (Parameter) newObject.input
                 .getAttribute("tokenConsumptionRate");
         ((WidthDependentParameter) newObject.input_tokenConsumptionRate)
-        .setPort(newObject.output);
+                .setPort(newObject.output);
         return newObject;
     }
 
@@ -236,8 +236,8 @@ public class Distributor extends Transformer implements SequenceActor {
      */
     private class WidthDependentParameter extends Parameter {
         public WidthDependentParameter(NamedObj container, String name,
-                Token token, IOPort port) throws IllegalActionException,
-                NameDuplicationException {
+                Token token, IOPort port)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name, token);
             _port = port;
             setPersistent(false);
@@ -246,7 +246,8 @@ public class Distributor extends Transformer implements SequenceActor {
         @Override
         public ptolemy.data.Token getToken() throws IllegalActionException {
             IntToken blockSizeValue = (IntToken) blockSize.getToken();
-            setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
+            setToken(
+                    new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
         }
 

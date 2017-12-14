@@ -302,10 +302,8 @@ public class ProcessAttribute extends SequenceAttribute {
 
                 // Check to make sure sequence number is positive or zero.
                 if (seqNumber < 0) {
-                    throw new IllegalActionException(
-                            this,
-                            "In ProcessAttribute "
-                                    + getName()
+                    throw new IllegalActionException(this,
+                            "In ProcessAttribute " + getName()
                                     + " the sequence number must be a positive integer. "
                                     + "It cannot be zero or negative.");
                 }

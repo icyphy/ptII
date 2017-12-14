@@ -76,8 +76,8 @@ public class MoMLGenerator extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         ActorToken token = (ActorToken) input.get(0);
-        output.send(0, new StringToken(token.getEntity(new Workspace())
-                .exportMoML()));
+        output.send(0,
+                new StringToken(token.getEntity(new Workspace()).exportMoML()));
     }
 
     /** Return true if there is a model at the input port, or false otherwise.

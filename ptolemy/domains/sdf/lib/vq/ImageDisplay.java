@@ -104,8 +104,8 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
                         + "so ImageDisplay is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    ImageDisplayInterface.class);
+            _implementation = PtolemyInjector.getInjector()
+                    .getInstance(ImageDisplayInterface.class);
             try {
                 _implementation.init(this);
             } catch (NameDuplicationException e) {

@@ -51,10 +51,8 @@ public class PlotLiveDemoApplet extends PlotLiveApplet {
      */
     @Override
     public String getAppletInfo() {
-        return "PlotLiveDemoApplet "
-                + PlotBox.PTPLOT_RELEASE
-                + " : Demo of PlotLive.\n"
-                + "By: Edward A. Lee\n"
+        return "PlotLiveDemoApplet " + PlotBox.PTPLOT_RELEASE
+                + " : Demo of PlotLive.\n" + "By: Edward A. Lee\n"
                 + "    Christopher Hylands\n"
                 + "($Id$)";
     }

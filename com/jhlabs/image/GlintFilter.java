@@ -156,8 +156,8 @@ public class GlintFilter extends AbstractBufferedImageOp {
                 int r = (argb >> 16) & 0xff;
                 int g = (argb >> 8) & 0xff;
                 int b = argb & 0xff;
-                argb = (argb & 0xff000000) | ((int) (amount * r) << 16) | ((int) (amount * g) << 8)
-                        | (int) (amount * b);
+                argb = (argb & 0xff000000) | ((int) (amount * r) << 16)
+                        | ((int) (amount * g) << 8) | (int) (amount * b);
                 colors[i] = argb;
             }
             for (int i = 0; i <= length2; i++) {
@@ -165,13 +165,14 @@ public class GlintFilter extends AbstractBufferedImageOp {
                 int r = (argb >> 16) & 0xff;
                 int g = (argb >> 8) & 0xff;
                 int b = argb & 0xff;
-                argb = (argb & 0xff000000) | ((int) (amount * r) << 16) | ((int) (amount * g) << 8)
-                        | (int) (amount * b);
+                argb = (argb & 0xff000000) | ((int) (amount * r) << 16)
+                        | ((int) (amount * g) << 8) | (int) (amount * b);
                 colors2[i] = argb;
             }
         }
 
-        BufferedImage mask = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage mask = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
 
         int threshold3 = (int) (threshold * 3 * 255);
         for (int y = 0; y < height; y++) {
@@ -183,9 +184,9 @@ public class GlintFilter extends AbstractBufferedImageOp {
                 int g = (rgb >> 8) & 0xff;
                 int b = rgb & 0xff;
                 int l = r + g + b;
-                if (l < threshold3)
+                if (l < threshold3) {
                     pixels[x] = 0xff000000;
-                else {
+                } else {
                     l /= 3;
                     pixels[x] = a | (l << 16) | (l << 8) | l;
                 }
@@ -193,16 +194,19 @@ public class GlintFilter extends AbstractBufferedImageOp {
             setRGB(mask, 0, y, width, 1, pixels);
         }
 
-        if (blur != 0)
+        if (blur != 0) {
             mask = new GaussianFilter(blur).filter(mask, null);
+        }
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         int[] dstPixels;
-        if (glintOnly)
+        if (glintOnly) {
             dstPixels = new int[width * height];
-        else
+        } else {
             dstPixels = getRGB(src, 0, 0, width, height, null);//FIXME - only need 2*length
+        }
 
         for (int y = 0; y < height; y++) {
             int index = y * width;
@@ -219,36 +223,58 @@ public class GlintFilter extends AbstractBufferedImageOp {
                     int xmax2 = Math.min(x + length2, width - 1) - x;
 
                     // Horizontal
-                    for (int i = 0, k = 0; i <= xmax; i++, k++)
-                        dstPixels[index + i] = PixelUtils.combinePixels(dstPixels[index + i], colors[k],
+                    for (int i = 0, k = 0; i <= xmax; i++, k++) {
+                        dstPixels[index + i] = PixelUtils.combinePixels(
+                                dstPixels[index + i], colors[k],
                                 PixelUtils.ADD);
-                    for (int i = -1, k = 1; i >= xmin; i--, k++)
-                        dstPixels[index + i] = PixelUtils.combinePixels(dstPixels[index + i], colors[k],
+                    }
+                    for (int i = -1, k = 1; i >= xmin; i--, k++) {
+                        dstPixels[index + i] = PixelUtils.combinePixels(
+                                dstPixels[index + i], colors[k],
                                 PixelUtils.ADD);
+                    }
                     // Vertical
-                    for (int i = 1, j = index + width, k = 0; i <= ymax; i++, j += width, k++)
-                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j], colors[k], PixelUtils.ADD);
-                    for (int i = -1, j = index - width, k = 0; i >= ymin; i--, j -= width, k++)
-                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j], colors[k], PixelUtils.ADD);
+                    for (int i = 1, j = index
+                            + width, k = 0; i <= ymax; i++, j += width, k++) {
+                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j],
+                                colors[k], PixelUtils.ADD);
+                    }
+                    for (int i = -1, j = index
+                            - width, k = 0; i >= ymin; i--, j -= width, k++) {
+                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j],
+                                colors[k], PixelUtils.ADD);
+                    }
 
                     Math.max(xmin2, ymin2);
                     Math.min(xmax2, ymax2);
                     // SE
                     int count = Math.min(xmax2, ymax2);
-                    for (int i = 1, j = index + width + 1, k = 0; i <= count; i++, j += width + 1, k++)
-                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j], colors2[k], PixelUtils.ADD);
+                    for (int i = 1, j = index + width
+                            + 1, k = 0; i <= count; i++, j += width + 1, k++) {
+                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j],
+                                colors2[k], PixelUtils.ADD);
+                    }
                     // NW
                     count = Math.min(-xmin2, -ymin2);
-                    for (int i = 1, j = index - width - 1, k = 0; i <= count; i++, j -= width + 1, k++)
-                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j], colors2[k], PixelUtils.ADD);
+                    for (int i = 1, j = index - width
+                            - 1, k = 0; i <= count; i++, j -= width + 1, k++) {
+                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j],
+                                colors2[k], PixelUtils.ADD);
+                    }
                     // NE
                     count = Math.min(xmax2, -ymin2);
-                    for (int i = 1, j = index - width + 1, k = 0; i <= count; i++, j += -width + 1, k++)
-                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j], colors2[k], PixelUtils.ADD);
+                    for (int i = 1, j = index - width
+                            + 1, k = 0; i <= count; i++, j += -width + 1, k++) {
+                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j],
+                                colors2[k], PixelUtils.ADD);
+                    }
                     // SW
                     count = Math.min(-xmin2, ymax2);
-                    for (int i = 1, j = index + width - 1, k = 0; i <= count; i++, j += width - 1, k++)
-                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j], colors2[k], PixelUtils.ADD);
+                    for (int i = 1, j = index + width
+                            - 1, k = 0; i <= count; i++, j += width - 1, k++) {
+                        dstPixels[j] = PixelUtils.combinePixels(dstPixels[j],
+                                colors2[k], PixelUtils.ADD);
+                    }
                 }
                 index++;
             }

@@ -247,8 +247,8 @@ public class MapWorker extends TypedAtomicActor {
             objectClass = Class.forName("java.lang.Object");
 
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException("No class named " + className
-                    + " could be found.");
+            throw new IllegalActionException(
+                    "No class named " + className + " could be found.");
         }
         Class<?> superClass = mapClass;
         while (!superClass.equals(objectClass)) {
@@ -265,8 +265,8 @@ public class MapWorker extends TypedAtomicActor {
         try {
             _algorithm = (MapReduceAlgorithm) mapClass.newInstance();
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(className
-                    + " does not have a no argument constructor");
+            throw new IllegalActionException(
+                    className + " does not have a no argument constructor");
         } catch (InstantiationException e) {
             throw new IllegalActionException(className + " is abstract.");
         } catch (ClassCastException e) {

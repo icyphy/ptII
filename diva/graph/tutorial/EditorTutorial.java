@@ -95,8 +95,8 @@ public class EditorTutorial {
         GraphPane pane = new GraphPane(new BasicGraphController(), _model);
         _editor = new JGraph(pane);
         context.getContentPane().add("Center", _editor);
-        _target = new BasicLayoutTarget(_editor.getGraphPane()
-                .getGraphController());
+        _target = new BasicLayoutTarget(
+                _editor.getGraphPane().getGraphController());
         _layout = new LevelLayout(_target);
 
         LayoutWidget lw = new LayoutWidget(_target, _model.getRoot(), true);
@@ -148,7 +148,8 @@ public class EditorTutorial {
          * initialize some default layout styles if the useDefaults parameter
          * is true.  All layouts will be performed on the given layout target.
          */
-        public LayoutWidget(LayoutTarget lt, Object graph, boolean useDefaults) {
+        public LayoutWidget(LayoutTarget lt, Object graph,
+                boolean useDefaults) {
             // lt is ignored.
             _graph = graph;
             _nameMap = new HashMap();
@@ -193,16 +194,16 @@ public class EditorTutorial {
             _applyBtn.setEnabled(true);
         }
 
-        private class SelectionListener implements
-        java.awt.event.ActionListener {
+        private class SelectionListener
+                implements java.awt.event.ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 /* String name = (String) */_layoutList.getSelectedItem();
             }
         }
 
-        private class LayoutActionListener implements
-        java.awt.event.ActionListener {
+        private class LayoutActionListener
+                implements java.awt.event.ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = (String) _layoutList.getSelectedItem();

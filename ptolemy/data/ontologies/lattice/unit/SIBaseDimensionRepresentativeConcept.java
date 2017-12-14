@@ -61,8 +61,8 @@ import ptolemy.kernel.util.StringAttribute;
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
  */
-public class SIBaseDimensionRepresentativeConcept extends
-BaseDimensionRepresentativeConcept {
+public class SIBaseDimensionRepresentativeConcept
+        extends BaseDimensionRepresentativeConcept {
 
     /** Create a new SIBaseUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -74,8 +74,8 @@ BaseDimensionRepresentativeConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     public SIBaseDimensionRepresentativeConcept(CompositeEntity ontology,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
         unitFullName = new StringAttribute(this, "unitFullName");
         unitAbbreviation = new StringAttribute(this, "unitAbbreviation");
@@ -120,8 +120,8 @@ BaseDimensionRepresentativeConcept {
 
         // If not using unit abbreviations, react to a change in the
         // unitFullName parameter.
-        if ((attribute.equals(useAbbreviation) || attribute
-                .equals(unitFullName)) && !useUnitAbbreviation) {
+        if ((attribute.equals(useAbbreviation)
+                || attribute.equals(unitFullName)) && !useUnitAbbreviation) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitFullName.getValueAsString(), useUnitAbbreviation,
@@ -129,8 +129,8 @@ BaseDimensionRepresentativeConcept {
 
             // If using unit abbreviations, react to a change in the
             // unitAbbreviation parameter.
-        } else if ((attribute.equals(useAbbreviation) || attribute
-                .equals(unitAbbreviation)) && useUnitAbbreviation) {
+        } else if ((attribute.equals(useAbbreviation)
+                || attribute.equals(unitAbbreviation)) && useUnitAbbreviation) {
 
             SIPrefixUnitConversionInfo.createAllSIPrefixConversionParameters(
                     this, unitAbbreviation.getValueAsString(),

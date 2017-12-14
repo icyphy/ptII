@@ -71,7 +71,7 @@ import com.jgoodies.forms.layout.CellConstraints;
  */
 @SuppressWarnings("serial")
 class DnDTable extends JTable implements DragSourceListener,
-DragGestureListener, DropTargetListener, Autoscroll {
+        DragGestureListener, DropTargetListener, Autoscroll {
     protected DragSource fDragSource = null;
     protected DropTarget fDropTarget = null;
     protected Component dragComponent = null;
@@ -172,8 +172,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
             y = visible.height + SCROLL_AMOUNT;
             height = SCROLL_AMOUNT;
         }
-        ((JComponent) getParent()).scrollRectToVisible(new Rectangle(x, y,
-                width, height));
+        ((JComponent) getParent())
+                .scrollRectToVisible(new Rectangle(x, y, width, height));
     }
 
     @Override
@@ -233,8 +233,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
     @Override
     public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
         try {
-            if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-                    DataFlavor.javaJVMLocalObjectMimeType))) {
+            if (dropTargetDragEvent.isDataFlavorSupported(
+                    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType))) {
                 dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
             } else {
                 dropTargetDragEvent.rejectDrag();
@@ -253,8 +253,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
             //int col = columnAtPoint(location);
             //int row = rowAtPoint(location);
 
-            if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-                    DataFlavor.javaJVMLocalObjectMimeType))) {
+            if (dropTargetDragEvent.isDataFlavorSupported(
+                    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType))) {
                 dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
             } else {
                 dropTargetDragEvent.rejectDrag();
@@ -299,8 +299,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
                 if (dropObject instanceof ComponentDef) {
                     ComponentDef componentDef = (ComponentDef) dropObject;
 
-                    NewComponentDialog dlg = NewComponentDialog.doDialog(
-                            (JFrame) superparent, componentDef);
+                    NewComponentDialog dlg = NewComponentDialog
+                            .doDialog((JFrame) superparent, componentDef);
                     if (dlg.succeeded()) {
                         String componentName = dlg.getComponentName();
                         componentDef = dlg.componentDef;
@@ -317,7 +317,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
 
                         try {
                             component = dlg.getInstance();
-                            componentConstraints = new CellConstraints(col, row);
+                            componentConstraints = new CellConstraints(col,
+                                    row);
 
                             // Earlier attempts to use beaninfo wasn't working for JPanel,
                             // and did identify the JGoodies buttonbar as a container (which
@@ -370,14 +371,16 @@ DragGestureListener, DropTargetListener, Autoscroll {
                     if (col > 0 && row > 0) {
                         componentConstraints.gridX = col;
                         componentConstraints.gridY = row;
-                        componentConstraints.gridWidth = Math.min(
-                                componentConstraints.gridWidth,
-                                parent.containerLayout.getColumnCount()
-                                - componentConstraints.gridX + 1);
-                        componentConstraints.gridHeight = Math.min(
-                                componentConstraints.gridHeight,
-                                parent.containerLayout.getRowCount()
-                                - componentConstraints.gridY + 1);
+                        componentConstraints.gridWidth = Math
+                                .min(componentConstraints.gridWidth,
+                                        parent.containerLayout.getColumnCount()
+                                                - componentConstraints.gridX
+                                                + 1);
+                        componentConstraints.gridHeight = Math
+                                .min(componentConstraints.gridHeight,
+                                        parent.containerLayout.getRowCount()
+                                                - componentConstraints.gridY
+                                                + 1);
 
                         if (!component.isVisible()) {
                             component.setVisible(true);

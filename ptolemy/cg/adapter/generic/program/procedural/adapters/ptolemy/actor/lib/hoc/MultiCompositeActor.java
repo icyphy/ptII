@@ -75,8 +75,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
                 .deepEntityList().iterator();
         while (refinements.hasNext()) {
             CompositeActor refinement = (CompositeActor) refinements.next();
-            code.append(getCodeGenerator().comment(
-                    "Case Variable Declarations for "
+            code.append(
+                    getCodeGenerator().comment("Case Variable Declarations for "
                             + refinement.getFullName()));
             //             Director director = refinement.getDirector();
             //             NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(director);
@@ -94,9 +94,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
             ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) ports
                     .next();
             code.append(getCodeGenerator()
-                    .comment(
-                            "Case Variable Declarations for port "
-                                    + port.getFullName()));
+                    .comment("Case Variable Declarations for port "
+                            + port.getFullName()));
             //NamedProgramCodeGeneratorAdapter portAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(port);
             _portVariableDeclaration(code, port);
         }
@@ -137,8 +136,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
         }
 
         // Get the name of the port that refers to the array of all ports.
-        return getCodeGenerator()
-                .generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
+        return getCodeGenerator().generatePortName(port, portName,
+                1 /*_ports.getBufferSize(port)*/);
     }
 
     private void _portVariableDeclaration(StringBuffer codeResult,

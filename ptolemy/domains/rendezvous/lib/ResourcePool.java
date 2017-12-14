@@ -183,8 +183,8 @@ public class ResourcePool extends TypedAtomicActor {
         newObject._pool = new LinkedList();
         // set type constraints.
         try {
-            newObject.grant.setTypeAtLeast(ArrayType
-                    .elementType(newObject.initialPool));
+            newObject.grant.setTypeAtLeast(
+                    ArrayType.elementType(newObject.initialPool));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

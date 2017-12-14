@@ -141,21 +141,18 @@ public class Unit implements UnitPresentation {
                         .getUnit().getPrimaryLabel());
 
                 for (int i = 1; i < numerator.size(); i++) {
-                    retv.append(" "
-                            + ((UnitTerm) numerator.elementAt(i)).getUnit()
-                            .getPrimaryLabel());
+                    retv.append(" " + ((UnitTerm) numerator.elementAt(i))
+                            .getUnit().getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
-                retv.append("/"
-                        + ((UnitTerm) denominator.elementAt(0)).getUnit()
-                        .getPrimaryLabel());
+                retv.append("/" + ((UnitTerm) denominator.elementAt(0))
+                        .getUnit().getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
-                    retv.append(" "
-                            + ((UnitTerm) denominator.elementAt(i)).getUnit()
-                            .getPrimaryLabel());
+                    retv.append(" " + ((UnitTerm) denominator.elementAt(i))
+                            .getUnit().getPrimaryLabel());
                 }
             }
 
@@ -465,8 +462,8 @@ public class Unit implements UnitPresentation {
      */
     @Override
     public String toString() {
-        StringBuffer retv = new StringBuffer("Unit:(" + getLabelsString()
-                + ") " + _scale + "*<" + _type[0]);
+        StringBuffer retv = new StringBuffer(
+                "Unit:(" + getLabelsString() + ") " + _scale + "*<" + _type[0]);
 
         for (int i = 1; i < UnitLibrary.getNumCategories(); i++) {
             retv.append(", " + _type[i]);

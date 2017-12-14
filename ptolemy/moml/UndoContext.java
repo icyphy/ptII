@@ -251,7 +251,8 @@ public class UndoContext {
      *   or if either argument is null.
      *  @see #moveContextEnd(NamedObj, NamedObj)
      */
-    public static String moveContextStart(NamedObj context, NamedObj containee) {
+    public static String moveContextStart(NamedObj context,
+            NamedObj containee) {
         if (context == null || containee == null) {
             return "";
         }

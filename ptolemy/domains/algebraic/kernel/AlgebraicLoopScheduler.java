@@ -68,8 +68,8 @@ public class AlgebraicLoopScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public AlgebraicLoopScheduler(StaticSchedulingDirector container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

@@ -115,9 +115,8 @@ public class KeyWriter extends KeyStoreActor {
                 _keyStore.setKeyEntry(_alias, key, _keyPassword.toCharArray(),
                         null /* No certificate */);
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to set key '" + key + "' to alias '" + alias
-                        + "'");
+                throw new IllegalActionException(this, ex, "Failed to set key '"
+                        + key + "' to alias '" + alias + "'");
             }
 
             try {

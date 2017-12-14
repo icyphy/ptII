@@ -253,8 +253,8 @@ public class SCRTableFrame extends PtolemyFrame {
                                 _initialState = state;
                             }
                         } catch (IllegalActionException e) {
-                            MessageHandler.error(
-                                    "Error retrieving initial state", e);
+                            MessageHandler
+                                    .error("Error retrieving initial state", e);
                         }
                     }
                 }
@@ -366,8 +366,8 @@ public class SCRTableFrame extends PtolemyFrame {
 
                 Parameter parameter = null;
                 try {
-                    parameter = new Parameter(_model, parameterNameTxt
-                            .getText());
+                    parameter = new Parameter(_model,
+                            parameterNameTxt.getText());
                 } catch (IllegalActionException e1) {
                     MessageHandler.error(e1.getMessage(), e1);
                 } catch (NameDuplicationException e1) {

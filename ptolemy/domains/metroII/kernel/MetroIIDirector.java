@@ -392,9 +392,10 @@ public class MetroIIDirector extends Director {
         int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         double stopTimeValue = ((DoubleToken) stopTime.getToken())
                 .doubleValue();
-        if (_stopRequested || iterationsValue >= 0
-                && _iterationCount >= iterationsValue || stopTimeValue > 0
-                && _timeScheduler.getTime() > stopTimeValue) {
+        if (_stopRequested
+                || iterationsValue >= 0 && _iterationCount >= iterationsValue
+                || stopTimeValue > 0
+                        && _timeScheduler.getTime() > stopTimeValue) {
             _stopRequested = true;
             _iterationCount = 0;
             for (StartOrResumable actor : _actorList) {
@@ -467,7 +468,7 @@ public class MetroIIDirector extends Director {
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
                                 "Failed to open mapping file \"" + filename
-                                + "\".");
+                                        + "\".");
                     }
                     if (_debugging) {
                         _debug(_mappingConstraintSolver.toString());
@@ -483,8 +484,8 @@ public class MetroIIDirector extends Director {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void _initializeParameters() throws IllegalActionException,
-    NameDuplicationException {
+    private void _initializeParameters()
+            throws IllegalActionException, NameDuplicationException {
         startTime.setVisibility(Settable.NOT_EDITABLE);
         startTime.setExpression("0.0");
         mappingFileName = new FileParameter(this, "mappingFileName");

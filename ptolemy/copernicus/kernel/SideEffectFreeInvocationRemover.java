@@ -121,8 +121,8 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             // object implements, is reachable.
             //  System.out.println("forcing interfaces of " + theClass);
             if (!theClass.isInterface()) {
-                for (Iterator interfaces = theClass.getInterfaces().iterator(); interfaces
-                        .hasNext();) {
+                for (Iterator interfaces = theClass.getInterfaces()
+                        .iterator(); interfaces.hasNext();) {
                     SootClass theInterface = (SootClass) interfaces.next();
 
                     _addMethodsFrom(forcedReachableMethodSet, theInterface,
@@ -147,15 +147,16 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         // Construct the graph of all method invocations, so we know what
         // method contains each invocation and what method(s) can be
         // targeted by that invocation.
-        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v() /*, true*/);
+        CallGraphBuilder cg = new CallGraphBuilder(
+                DumbPointerAnalysis.v() /*, true*/);
         cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         Scene.v().setCallGraph(callGraph);
 
         SideEffectAnalysis analysis = new SideEffectAnalysis();
 
-        for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
-                .hasNext();) {
+        for (Iterator classes = Scene.v().getApplicationClasses()
+                .iterator(); classes.hasNext();) {
             SootClass theClass = (SootClass) classes.next();
 
             for (Iterator methods = theClass.getMethods().iterator(); methods
@@ -258,14 +259,15 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 classMethod = theClass.getMethod(method.getSubSignature());
                 forcedReachableMethodSet.add(classMethod);
             } catch (Exception ex) {
-                System.err
-                        .println("SideEffectFreeInvocationRemover: could not add "
-                                + classMethod + " to the reachable method set.");
+                System.err.println(
+                        "SideEffectFreeInvocationRemover: could not add "
+                                + classMethod
+                                + " to the reachable method set.");
             }
         }
 
-        for (Iterator superInterfaces = theInterface.getInterfaces().iterator(); superInterfaces
-                .hasNext();) {
+        for (Iterator superInterfaces = theInterface.getInterfaces()
+                .iterator(); superInterfaces.hasNext();) {
             _addMethodsFrom(forcedReachableMethodSet,
                     (SootClass) superInterfaces.next(), theClass);
         }
@@ -280,8 +282,8 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             SootMethod method = (SootMethod) methods.next();
 
             if (method != null) {
-                System.out.println("Assuming method " + method
-                        + " is reachable");
+                System.out
+                        .println("Assuming method " + method + " is reachable");
                 methodSet.add(method);
             }
         }

@@ -56,6 +56,7 @@ public final class QSS3Fd extends QSSBase {
     /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
+    @Override
     public final int getStateModelOrder() {
         return (2);
     }
@@ -63,6 +64,7 @@ public final class QSS3Fd extends QSSBase {
     /**
      * Initialize object fields (QSS-specific).
      */
+    @Override
     public final void _initializeWorker() {
 
         // Check internal consistency.
@@ -105,8 +107,9 @@ public final class QSS3Fd extends QSSBase {
      *  @param quantEvtTimeMax The maximum quantization event time.
      *  @return the predicted quantization-event time for a state (QSS-specific).
      */
-    protected final Time _predictQuantizationEventTimeWorker(
-            final int stateIdx, final Time quantEvtTimeMax) {
+    @Override
+    protected final Time _predictQuantizationEventTimeWorker(final int stateIdx,
+            final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
         // storing the returned result.
@@ -188,6 +191,7 @@ public final class QSS3Fd extends QSSBase {
      *
      *  @param stateIdx The state index.
      */
+    @Override
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -195,19 +199,22 @@ public final class QSS3Fd extends QSSBase {
         // Initialize.
         final ModelPolynomial qStateModel = _qStateModels[stateIdx];
         final ModelPolynomial cStateModel = _cStateModels[stateIdx];
-        final double dtStateModel = _currSimTime.subtractToDouble(cStateModel.tModel);
+        final double dtStateModel = _currSimTime
+                .subtractToDouble(cStateModel.tModel);
 
         // Update the external, quantized state model.
         qStateModel.tModel = _currSimTime;
         qStateModel.coeffs[0] = cStateModel.evaluate(dtStateModel);
         qStateModel.coeffs[1] = cStateModel.evaluateDerivative(dtStateModel);
-        qStateModel.coeffs[2] = cStateModel.evaluateDerivative2(dtStateModel) / 2;
+        qStateModel.coeffs[2] = cStateModel.evaluateDerivative2(dtStateModel)
+                / 2;
 
     }
 
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
+    @Override
     protected final void _triggerRateEventWorker() throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -337,12 +344,12 @@ public final class QSS3Fd extends QSSBase {
             //   Note that here, know all continuous state models have same time.
             // Therefore can use same delta-time for all evals.
             for (int ii = 0; ii < _stateCt; ++ii) {
-                _stateValsSample3_xx[ii] = _cStateModels[ii].evaluate(dtSample3);
+                _stateValsSample3_xx[ii] = _cStateModels[ii]
+                        .evaluate(dtSample3);
             }
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample3_xx[ii] = _ivModels[ii].evaluate(dtSample3);
             }
-
 
             // Choose a sample time, different from {_currSimTime} and different from {tSample3}.
             //   For estimating third derivatives.
@@ -354,7 +361,8 @@ public final class QSS3Fd extends QSSBase {
             //   Note that here, know all continuous state models have same time.
             // Therefore can use same delta-time for all evals.
             for (int ii = 0; ii < _stateCt; ++ii) {
-                _stateValsSample4_xx[ii] = _cStateModels[ii].evaluate(dtSample4);
+                _stateValsSample4_xx[ii] = _cStateModels[ii]
+                        .evaluate(dtSample4);
             }
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample4_xx[ii] = _ivModels[ii].evaluate(dtSample4);
@@ -370,12 +378,12 @@ public final class QSS3Fd extends QSSBase {
             //   Note that here, know all continuous state models have same time.
             // Therefore can use same delta-time for all evals.
             for (int ii = 0; ii < _stateCt; ++ii) {
-                _stateValsSample5_xx[ii] = _cStateModels[ii].evaluate(dtSample5);
+                _stateValsSample5_xx[ii] = _cStateModels[ii]
+                        .evaluate(dtSample5);
             }
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample5_xx[ii] = _ivModels[ii].evaluate(dtSample5);
             }
-
 
             // Provide inputs to evaluate derivative function at {_currSimTime}.
             retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
@@ -383,15 +391,16 @@ public final class QSS3Fd extends QSSBase {
                     _ivValsSample_xx, dtSample, tSample2, _stateValsSample2_xx,
                     _ivValsSample2_xx, dtSample2, tSample3,
                     _stateValsSample3_xx, _ivValsSample3_xx, dtSample3,
-                    tSample4, _stateValsSample4_xx, _ivValsSample4_xx, dtSample4,
-                    tSample5, _stateValsSample5_xx, _ivValsSample5_xx, dtSample5,
-                    getStateModelOrder());
+                    tSample4, _stateValsSample4_xx, _ivValsSample4_xx,
+                    dtSample4, tSample5, _stateValsSample5_xx,
+                    _ivValsSample5_xx, dtSample5, getStateModelOrder());
         }
     }
 
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
+    @Override
     protected final void _triggerRateEventWorkerEventDetection()
             throws Exception {
 
@@ -457,7 +466,8 @@ public final class QSS3Fd extends QSSBase {
         }
 
         // Update the internal, continuous state models.
-        final double oneOverThreeDtSampleSq = 1.0 / (3 * dtSample[2] * dtSample[2]);
+        final double oneOverThreeDtSampleSq = 1.0
+                / (3 * dtSample[2] * dtSample[2]);
         for (int ii = 0; ii < _stateCt; ++ii) {
             _cStateModels[ii].coeffs[3] = oneOverThreeDtSampleSq
                     * (_stateDerivs3_xx[ii] - _stateDerivs_xx[ii]
@@ -493,6 +503,5 @@ public final class QSS3Fd extends QSSBase {
     private double[] _stateValsSample5_xx;
     private double[] _ivValsSample5_xx;
     private double[] _rtDerivs_xx;
-
 
 }

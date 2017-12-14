@@ -55,8 +55,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Red (mankit)
  */
 
-public class IOPort extends NamedProgramCodeGeneratorAdapter implements
-PortCodeGenerator {
+public class IOPort extends NamedProgramCodeGeneratorAdapter
+        implements PortCodeGenerator {
 
     /**
      * Construct the code generator adapter for the given IOPort.
@@ -104,11 +104,11 @@ PortCodeGenerator {
             if (channelIndex >= receivers.length) {
                 throw new IllegalActionException(getComponent(),
                         "The channelIndex \"" + channelIndex
-                        + "\" is greater than "
-                        + "or equal to the length of the receiver \""
-                        + receivers.length + "\".  The channel was: \""
-                        + channel + "\", the offset was: \"" + offset
-                        + "\".");
+                                + "\" is greater than "
+                                + "or equal to the length of the receiver \""
+                                + receivers.length + "\".  The channel was: \""
+                                + channel + "\", the offset was: \"" + offset
+                                + "\".");
             }
             if (receivers[channelIndex].length > 1) {
                 throw new IllegalActionException(
@@ -126,12 +126,14 @@ PortCodeGenerator {
                     //             .generateGetCode(offset);
                     // }
                     if (port.getContainer() != null
-                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
+                            && ((Actor) port.getContainer())
+                                    .getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
                         return receivers[channelIndex][0]
                                 .generateGetCode(offset);
                     }
                     if (port.getContainer() != null
-                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.de.kernel.DEDirector) {
+                            && ((Actor) port.getContainer())
+                                    .getDirector() instanceof ptolemy.domains.de.kernel.DEDirector) {
                         return receivers[channelIndex][0]
                                 .generateGetCode(offset);
                     } else {
@@ -139,8 +141,8 @@ PortCodeGenerator {
                         // FIXME: A real hack.  The problem is that ptolemy.actor.lib.hoc.CaseDirector
                         // extends actor.Director.  However, in cg, we end up needing a SDFDirector.
                         // This code is duplicated from StaticSchedulingDirector.generatePortName()
-                        String portName = StringUtilities.sanitizeName(port
-                                .getFullName());
+                        String portName = StringUtilities
+                                .sanitizeName(port.getFullName());
                         if (portName.startsWith("_")) {
                             portName = portName.substring(1, portName.length());
                         }
@@ -157,8 +159,8 @@ PortCodeGenerator {
 
                             // Get the name of the port that refers to the array of all ports.
                             // FIXME: we don't handle ports that have a BufferSize > 1.
-                            return getCodeGenerator()
-                                    .generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
+                            return getCodeGenerator().generatePortName(port,
+                                    portName, 1 /*_ports.getBufferSize(port)*/);
                         }
                         //return "";
                     }
@@ -166,7 +168,7 @@ PortCodeGenerator {
                     throw new IllegalActionException(getComponent(), throwable,
                             " Failed to generate code for receiver "
                                     + receivers[channelIndex][0]
-                                            + " on channel " + channelIndex);
+                                    + " on channel " + channelIndex);
                 }
             }
         }
@@ -183,18 +185,15 @@ PortCodeGenerator {
                     // FIXME: Why do we need to escape other characters here?
                     // FIXME: Shouldn't this happen every where?
                     // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
-                    return "\""
-                    + parameter.getExpression().replace("\\d", "\\\\d")
-                    .replace("\\D", "\\\\D")
-                    .replace("\"", "\\\"")
-                    .replace("\\b", "\\\\b") + "\"";
+                    return "\"" + parameter.getExpression()
+                            .replace("\\d", "\\\\d").replace("\\D", "\\\\D")
+                            .replace("\"", "\\\"").replace("\\b", "\\\\b")
+                            + "\"";
                 } else {
                     return parameter.getValueAsString();
                 }
             } else {
-                throw new InternalErrorException(
-                        port,
-                        null,
+                throw new InternalErrorException(port, null,
                         "Should not be happening, "
                                 + "a ParameterPort is connected, but not handled earlier?");
             }
@@ -221,6 +220,7 @@ PortCodeGenerator {
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
+    @Override
     public String generateGetCodeWithoutType(String channel, String offset)
             throws IllegalActionException {
         return generateGetCode(channel, offset);
@@ -240,6 +240,7 @@ PortCodeGenerator {
      *                If the receiver adapter is not found or it encounters an
      *                error while generating the get code.
      */
+    @Override
     public String generateGetAndFree(String channel, String offset)
             throws IllegalActionException {
         Receiver[][] receivers = getReceiverAdapters();
@@ -258,11 +259,11 @@ PortCodeGenerator {
             if (channelIndex >= receivers.length) {
                 throw new IllegalActionException(getComponent(),
                         "The channelIndex \"" + channelIndex
-                        + "\" is greater than "
-                        + "or equal to the length of the receiver \""
-                        + receivers.length + "\".  The channel was: \""
-                        + channel + "\", the offset was: \"" + offset
-                        + "\".");
+                                + "\" is greater than "
+                                + "or equal to the length of the receiver \""
+                                + receivers.length + "\".  The channel was: \""
+                                + channel + "\", the offset was: \"" + offset
+                                + "\".");
             }
             if (receivers[channelIndex].length > 1) {
                 throw new IllegalActionException(
@@ -280,12 +281,14 @@ PortCodeGenerator {
                     //             .generateGetCode(offset);
                     // }
                     if (port.getContainer() != null
-                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
+                            && ((Actor) port.getContainer())
+                                    .getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
                         return receivers[channelIndex][0]
                                 .generateGetCode(offset);
                     }
                     if (port.getContainer() != null
-                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.de.kernel.DEDirector) {
+                            && ((Actor) port.getContainer())
+                                    .getDirector() instanceof ptolemy.domains.de.kernel.DEDirector) {
                         return receivers[channelIndex][0]
                                 .generateGetCode(offset);
                     } else {
@@ -293,8 +296,8 @@ PortCodeGenerator {
                         // FIXME: A real hack.  The problem is that ptolemy.actor.lib.hoc.CaseDirector
                         // extends actor.Director.  However, in cg, we end up needing a SDFDirector.
                         // This code is duplicated from StaticSchedulingDirector.generatePortName()
-                        String portName = StringUtilities.sanitizeName(port
-                                .getFullName());
+                        String portName = StringUtilities
+                                .sanitizeName(port.getFullName());
                         if (portName.startsWith("_")) {
                             portName = portName.substring(1, portName.length());
                         }
@@ -311,8 +314,8 @@ PortCodeGenerator {
 
                             // Get the name of the port that refers to the array of all ports.
                             // FIXME: we don't handle ports that have a BufferSize > 1.
-                            return getCodeGenerator()
-                                    .generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
+                            return getCodeGenerator().generatePortName(port,
+                                    portName, 1 /*_ports.getBufferSize(port)*/);
                         }
                         //return "";
                     }
@@ -320,7 +323,7 @@ PortCodeGenerator {
                     throw new IllegalActionException(getComponent(), throwable,
                             " Failed to generate code for receiver "
                                     + receivers[channelIndex][0]
-                                            + " on channel " + channelIndex);
+                                    + " on channel " + channelIndex);
                 }
             }
         }
@@ -337,18 +340,15 @@ PortCodeGenerator {
                     // FIXME: Why do we need to escape other characters here?
                     // FIXME: Shouldn't this happen every where?
                     // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
-                    return "\""
-                    + parameter.getExpression().replace("\\d", "\\\\d")
-                    .replace("\\D", "\\\\D")
-                    .replace("\"", "\\\"")
-                    .replace("\\b", "\\\\b") + "\"";
+                    return "\"" + parameter.getExpression()
+                            .replace("\\d", "\\\\d").replace("\\D", "\\\\D")
+                            .replace("\"", "\\\"").replace("\\b", "\\\\b")
+                            + "\"";
                 } else {
                     return parameter.getValueAsString();
                 }
             } else {
-                throw new InternalErrorException(
-                        port,
-                        null,
+                throw new InternalErrorException(port, null,
                         "Should not be happening, "
                                 + "a ParameterPort is connected, but not handled earlier?");
             }
@@ -367,14 +367,6 @@ PortCodeGenerator {
         // FIXME: This is wrong, this could be a PortParameter.
         return returnValue;
     }
-
-
-
-
-
-
-
-
 
     /**
      * Generate code to check if the receiver has a token. This delegates to the
@@ -466,8 +458,8 @@ PortCodeGenerator {
             if (dataToken.equals("object(null)")) {
                 // This model needs to convert object(null) to object.
                 // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelayObjectNull.xml
-                System.out
-                .println("Warning: cg IOPort hack, found object(null), converting to null");
+                System.out.println(
+                        "Warning: cg IOPort hack, found object(null), converting to null");
                 dataToken = "null";
             }
             code.append(targetType(type) + " temporary = " + dataToken + ";"
@@ -475,19 +467,19 @@ PortCodeGenerator {
 
             boolean debug = ((IntToken) getCodeGenerator().verbosity.getToken())
                     .intValue() > 9;
-                    for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
-                        if (debug) {
-                            code.append("/* IOPort.generatePutCode start. " + dataToken
-                                    + " */" + _eol);
-                        }
-                        code.append(remoteReceivers[channelIndex][i].generatePutCode(
-                                (ptolemy.actor.IOPort) this.getComponent(), offset,
-                                "temporary"));
-                        if (debug) {
-                            code.append("/* IOPort.generatePutCode end. */" + _eol);
-                        }
-                    }
-                    code.append("}" + _eol);
+            for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
+                if (debug) {
+                    code.append("/* IOPort.generatePutCode start. " + dataToken
+                            + " */" + _eol);
+                }
+                code.append(remoteReceivers[channelIndex][i].generatePutCode(
+                        (ptolemy.actor.IOPort) this.getComponent(), offset,
+                        "temporary"));
+                if (debug) {
+                    code.append("/* IOPort.generatePutCode end. */" + _eol);
+                }
+            }
+            code.append("}" + _eol);
         }
         return code.toString();
     }
@@ -619,7 +611,8 @@ PortCodeGenerator {
             if (farReceivers[i] != null) {
                 receiverAdapters[i] = new Receiver[farReceivers[i].length];
                 for (int j = 0; j < farReceivers[i].length; j++) {
-                    receiverAdapters[i][j] = (Receiver) getAdapter(farReceivers[i][j]);
+                    receiverAdapters[i][j] = (Receiver) getAdapter(
+                            farReceivers[i][j]);
                 }
             }
         }

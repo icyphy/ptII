@@ -308,7 +308,8 @@ public class PortCriterion extends Criterion {
                 return false;
             } else if (isOutputEnabled() && _output != port.isOutput()) {
                 return false;
-            } else if (isMultiportEnabled() && _multiport != port.isMultiport()) {
+            } else if (isMultiportEnabled()
+                    && _multiport != port.isMultiport()) {
                 return false;
             }
         } else if (object instanceof Port) {
@@ -530,12 +531,12 @@ public class PortCriterion extends Criterion {
     /** The elements.
      */
     private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("name", true, true, false),
-        new ChoiceCriterionElement("type", true, false, true, true),
-        new BooleanCriterionElement("input", true),
-        new BooleanCriterionElement("output", true),
-        new BooleanCriterionElement("multi", true),
-        new StringCriterionElement("matcherName", true, false, false) };
+            new StringCriterionElement("name", true, true, false),
+            new ChoiceCriterionElement("type", true, false, true, true),
+            new BooleanCriterionElement("input", true),
+            new BooleanCriterionElement("output", true),
+            new BooleanCriterionElement("multi", true),
+            new StringCriterionElement("matcherName", true, false, false) };
 
     /** Value of the input element.
      */

@@ -207,8 +207,8 @@ public class SchedulingRelation extends Transition {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SchedulingRelation relation = (SchedulingRelation) super
-                .clone(workspace);
+        SchedulingRelation relation = (SchedulingRelation) super.clone(
+                workspace);
         relation._argumentsTree = null;
         relation._argumentsTreeVersion = -1;
         relation._delayTree = null;
@@ -232,8 +232,8 @@ public class SchedulingRelation extends Transition {
         }
         Token token = _parseTreeEvaluator.evaluateParseTree(_argumentsTree,
                 scope);
-        if (token == null
-                || !(token instanceof ArrayToken || token instanceof RecordToken)) {
+        if (token == null || !(token instanceof ArrayToken
+                || token instanceof RecordToken)) {
             throw new IllegalActionException(this, "Unable to evaluate "
                     + "arguments \"" + arguments.getExpression() + "\".");
         }
@@ -288,8 +288,8 @@ public class SchedulingRelation extends Transition {
             boolean emptyArguments = trimmedArguments.startsWith("{")
                     && trimmedArguments.endsWith("}")
                     && trimmedArguments
-                    .substring(1, trimmedArguments.length() - 1).trim()
-                    .equals("");
+                            .substring(1, trimmedArguments.length() - 1).trim()
+                            .equals("");
             if (!emptyArguments) {
                 if (buffer.length() > 0) {
                     buffer.append("\n");
@@ -425,8 +425,8 @@ public class SchedulingRelation extends Transition {
      *  @return True if the expression is statically equal to 0.0.
      */
     private boolean _isZero(String expression) {
-        String trimmedExpression = expression.trim().toLowerCase(
-                Locale.getDefault());
+        String trimmedExpression = expression.trim()
+                .toLowerCase(Locale.getDefault());
         for (String zeroConst : _ZERO_CONSTS) {
             if (trimmedExpression.equals(zeroConst)) {
                 return true;
@@ -441,11 +441,12 @@ public class SchedulingRelation extends Transition {
      *   arguments.
      */
     private void _parseArguments() throws IllegalActionException {
-        _argumentsTree = new PtParser().generateParseTree(arguments
-                .getExpression());
+        _argumentsTree = new PtParser()
+                .generateParseTree(arguments.getExpression());
         _argumentsTreeVersion = _workspace.getVersion();
         if (!(_argumentsTree == null
-                || _argumentsTree instanceof ASTPtArrayConstructNode || _argumentsTree instanceof ASTPtRecordConstructNode)) {
+                || _argumentsTree instanceof ASTPtArrayConstructNode
+                || _argumentsTree instanceof ASTPtRecordConstructNode)) {
             throw new IllegalActionException(this, "The arguments for a "
                     + "scheduling edge must be in an array or a record in the "
                     + "form of {...}.");
@@ -463,7 +464,7 @@ public class SchedulingRelation extends Transition {
 
     /** An array of all recognizable constant values that equal to 0.0d. */
     private static final String[] _ZERO_CONSTS = new String[] { "0", "0.0",
-        "0l", "0s", "0ub", "0.0d", "0.0f" };
+            "0l", "0s", "0ub", "0.0d", "0.0f" };
 
     /** The parse tree of arguments. */
     private ASTPtRootNode _argumentsTree;

@@ -168,8 +168,8 @@ public class Sphere3D extends GRShadedShape {
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
-            _scaleTransform.setScale(new Vector3d(radiusValue, radiusValue,
-                    radiusValue));
+            _scaleTransform.setScale(
+                    new Vector3d(radiusValue, radiusValue, radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(_containedNode);
             _containedNode = scaler;

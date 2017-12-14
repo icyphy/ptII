@@ -148,7 +148,8 @@ public class GLBFunction extends MonotonicFunction {
      */
     protected void _updateArguments() {
         List<IOPort> destinations = null;
-        if (_sourcePort.getContainer().workspace().getVersion() == _previousWorkspaceVersion) {
+        if (_sourcePort.getContainer().workspace()
+                .getVersion() == _previousWorkspaceVersion) {
             return;
         }
         ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();

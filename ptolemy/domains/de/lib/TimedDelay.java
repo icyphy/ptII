@@ -259,7 +259,7 @@ public class TimedDelay extends DETransformer {
         // Process the current input.
         if (_currentInput != null) {
             _delayedOutputTokens
-            .put(new TimedEvent(delayToTime, _currentInput));
+                    .put(new TimedEvent(delayToTime, _currentInput));
             _fireAt(delayToTime);
         }
 
@@ -274,8 +274,8 @@ public class TimedDelay extends DETransformer {
      *  @exception NameDuplicationException If there already is a parameter
      *  named "delay".
      */
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
         _delay = ((DoubleToken) delay.getToken()).doubleValue();

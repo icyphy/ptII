@@ -27,7 +27,6 @@
  */
 package org.ptolemy.machineLearning.particleFilter;
 
-
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -139,8 +138,8 @@ public class ParticleFilter extends AbstractParticleFilter {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public ParticleFilter(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public ParticleFilter(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -148,12 +147,10 @@ public class ParticleFilter extends AbstractParticleFilter {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-
     /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise
      * at the moment).
      */
     public Parameter measurementCovariance;
-
 
     /** An expression for the prior distribution from which the samples are drawn.
      */
@@ -168,7 +165,6 @@ public class ParticleFilter extends AbstractParticleFilter {
      *  The default is an ArrayToken of an empty String.
      */
     public Parameter stateVariableNames;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -214,10 +210,10 @@ public class ParticleFilter extends AbstractParticleFilter {
                     _particleLabels[names.length()] = "weight";
                     _particleTypes[names.length()] = BaseType.DOUBLE;
 
-                    particleOutput.setTypeEquals(new RecordType(
-                            _particleLabels, _particleTypes));
-                    stateEstimate.setTypeEquals(new RecordType(_stateLabels,
-                            _stateTypes));
+                    particleOutput.setTypeEquals(
+                            new RecordType(_particleLabels, _particleTypes));
+                    stateEstimate.setTypeEquals(
+                            new RecordType(_stateLabels, _stateTypes));
 
                 } catch (NameDuplicationException e) {
                     // should not happen
@@ -228,8 +224,6 @@ public class ParticleFilter extends AbstractParticleFilter {
             super.attributeChanged(attribute);
         }
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -262,13 +256,10 @@ public class ParticleFilter extends AbstractParticleFilter {
             String equation = name + UPDATE_POSTFIX;
 
             if (getAttribute(equation) == null) {
-                throw new IllegalActionException(
-                        this,
-                        "Please add a "
-                                + "parameter with name \""
-                                + equation
-                                + "\" that gives the state update expression for state "
-                                + name + ".");
+                throw new IllegalActionException(this, "Please add a "
+                        + "parameter with name \"" + equation
+                        + "\" that gives the state update expression for state "
+                        + name + ".");
             }
         }
     }
@@ -284,24 +275,24 @@ public class ParticleFilter extends AbstractParticleFilter {
             throws IllegalActionException {
         Attribute attr = this.getAttribute(parameterName);
         if (attr != null) {
-            return ((Parameter)attr);
+            return ((Parameter) attr);
         } else {
-            throw new IllegalActionException("Missing Parameter named: " + parameterName);
+            throw new IllegalActionException(
+                    "Missing Parameter named: " + parameterName);
         }
     }
 
-
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
         stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
 
         processNoise = new Parameter(this, "processNoise");
-        processNoise
-        .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
+        processNoise.setExpression(
+                "multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
 
         prior = new Parameter(this, "prior");
         prior.setExpression("random()*200-100");
@@ -313,7 +304,7 @@ public class ParticleFilter extends AbstractParticleFilter {
     @Override
     protected Parameter getMeasurementParameter(String fullName)
             throws IllegalActionException {
-        String portName = fullName.substring(0,fullName.length()-2);
+        String portName = fullName.substring(0, fullName.length() - 2);
         return getUserDefinedParameter(portName);
     }
 
@@ -330,7 +321,7 @@ public class ParticleFilter extends AbstractParticleFilter {
     @Override
     protected Parameter getNoiseParameter(String inputName) {
         //just one noise parameter for this actor
-        return (Parameter)this.getAttribute("measurementCovariance");
+        return (Parameter) this.getAttribute("measurementCovariance");
 
     }
 

@@ -94,8 +94,8 @@ public abstract class AbstractInitializableParameter extends Parameter
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractInitializableParameter newObject = (AbstractInitializableParameter) super
-                .clone(workspace);
+        AbstractInitializableParameter newObject = (AbstractInitializableParameter) super.clone(
+                workspace);
         newObject._initializables = null;
         return newObject;
     }
@@ -187,8 +187,8 @@ public abstract class AbstractInitializableParameter extends Parameter
      *   an entity with the name of this entity.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         super.setContainer(container);

@@ -83,8 +83,8 @@ public class JAIBandCombine extends Transformer {
         double[][] initialMatrix = { { 1.0D, 0.0D, 0.0D, 0.0D },
                 { 0.0D, 1.0D, 0.0D, 0.0D }, { 0.0D, 0.0D, 1.0D, 0.0D } };
 
-        matrix = new Parameter(this, "matrix", new DoubleMatrixToken(
-                initialMatrix));
+        matrix = new Parameter(this, "matrix",
+                new DoubleMatrixToken(initialMatrix));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,8 +147,8 @@ public class JAIBandCombine extends Transformer {
         } catch (IllegalArgumentException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to band combine the image\n" + ex.getMessage()
-                    + "\n  Number of bands: " + oldImage.getNumBands()
-                    + "\n  Image: " + oldImage.toString());
+                            + "\n  Number of bands: " + oldImage.getNumBands()
+                            + "\n  Image: " + oldImage.toString());
         }
 
         output.send(0, new JAIImageToken(newImage));

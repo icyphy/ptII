@@ -72,8 +72,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)
  */
-public class MoMLSimpleStatisticalApplication extends
-ptolemy.moml.MoMLSimpleApplication {
+public class MoMLSimpleStatisticalApplication
+        extends ptolemy.moml.MoMLSimpleApplication {
     /** Parse the xml file and run it.
      *  @param args The command line arguments
      *  @exception Exception If there was a problem parsing
@@ -136,8 +136,8 @@ ptolemy.moml.MoMLSimpleApplication {
         String standardStats = Manager.timeAndMemory(startTime, totalMemory2,
                 freeMemory2);
 
-        System.out.println(modelName + ": Execution stats:           "
-                + standardStats);
+        System.out.println(
+                modelName + ": Execution stats:           " + standardStats);
 
         // Third, we gc and print memory stats.
         System.gc();
@@ -159,10 +159,10 @@ ptolemy.moml.MoMLSimpleApplication {
 
         // Print out the standard stats at the end
         // so as not to break too many scripts
-        System.out.println(standardStats + " Stat: "
-                + (totalMemory1 - freeMemory1) + "K StatRT: "
-                + (freeMemory1 - freeMemory3) + "K DynRT: "
-                + (freeMemory3 - freeMemory2) + "K");
+        System.out.println(
+                standardStats + " Stat: " + (totalMemory1 - freeMemory1)
+                        + "K StatRT: " + (freeMemory1 - freeMemory3)
+                        + "K DynRT: " + (freeMemory3 - freeMemory2) + "K");
     }
 
     /** Parse a command-line argument.
@@ -181,9 +181,7 @@ ptolemy.moml.MoMLSimpleApplication {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out
-            .println("Version "
-                    + VersionAttribute.CURRENT_VERSION
+            System.out.println("Version " + VersionAttribute.CURRENT_VERSION
                     + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
@@ -256,9 +254,9 @@ ptolemy.moml.MoMLSimpleApplication {
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
                     if (i >= args.length - 1) {
-                        throw new IllegalActionException("Cannot set "
-                                + "parameter " + arg + " when no value is "
-                                + "given.");
+                        throw new IllegalActionException(
+                                "Cannot set " + "parameter " + arg
+                                        + " when no value is " + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -267,8 +265,8 @@ ptolemy.moml.MoMLSimpleApplication {
                     i++;
                 } else {
                     // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
+                    throw new IllegalActionException(
+                            "Unrecognized option: " + arg);
                 }
             }
         }

@@ -95,8 +95,8 @@ public class ConvertToLazy implements ChangeListener {
             // because parseFile() works best on relative pathnames and
             // has problems finding resources like files specified in
             // parameters if the xml file was specified as an absolute path.
-            TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(
-                    null, new File(xmlFileName).toURI().toURL());
+            TypedCompositeActor toplevel = (TypedCompositeActor) parser
+                    .parse(null, new File(xmlFileName).toURI().toURL());
             convert(toplevel, threshold);
 
             // We export and then reparse and then export again so
@@ -166,10 +166,11 @@ public class ConvertToLazy implements ChangeListener {
             if (entity instanceof TypedCompositeActor) {
                 // Do the conversion depth-first.
                 convert((TypedCompositeActor) entity, threshold);
-                if (entity.getClassName().equals(
-                        "ptolemy.actor.TypedCompositeActor")
+                if (entity.getClassName()
+                        .equals("ptolemy.actor.TypedCompositeActor")
                         && count((TypedCompositeActor) entity) >= threshold) {
-                    entity.setClassName("ptolemy.actor.LazyTypedCompositeActor");
+                    entity.setClassName(
+                            "ptolemy.actor.LazyTypedCompositeActor");
                 }
             }
         }
@@ -200,9 +201,8 @@ public class ConvertToLazy implements ChangeListener {
         List<ComponentEntity> entities = actor.entityList();
         for (ComponentEntity entity : entities) {
             result++;
-            if (entity instanceof TypedCompositeActor
-                    && !entity.getClassName().equals(
-                            "ptolemy.actor.lib.LazyTypedCompositeActor")) {
+            if (entity instanceof TypedCompositeActor && !entity.getClassName()
+                    .equals("ptolemy.actor.lib.LazyTypedCompositeActor")) {
                 result += count((TypedCompositeActor) entity);
             }
         }

@@ -150,8 +150,8 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *   the director's parameters.
      */
     @Override
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
         super._init();
         if (_memory == null) {
             _memory = new Memory();

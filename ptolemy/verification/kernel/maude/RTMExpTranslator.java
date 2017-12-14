@@ -74,7 +74,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         this.isTime = time;
     }
 
-    public String translateExpression(String exp) throws IllegalActionException {
+    public String translateExpression(String exp)
+            throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode pt = parser.generateParseTree(exp);
         return translateParseTree(pt);
@@ -91,7 +92,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             String res = node.getToken().toString();
             try { // when number
@@ -318,8 +320,9 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         Iterator separators = separatorList.iterator();
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
-                _writer.print(" "
-                        + _transformOp(((Token) separators.next()).image) + " ");
+                _writer.print(
+                        " " + _transformOp(((Token) separators.next()).image)
+                                + " ");
             }
             _printChild(node, i);
         }

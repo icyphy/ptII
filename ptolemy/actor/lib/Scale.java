@@ -79,9 +79,9 @@ public class Scale extends Transformer {
         output.setTypeAtLeast(factor);
 
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

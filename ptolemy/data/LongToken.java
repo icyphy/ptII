@@ -76,8 +76,8 @@ public class LongToken extends ScalarToken {
      */
     public LongToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(notSupportedNullNilStringMessage(
-                    "LongToken", init));
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("LongToken", init));
         }
 
         // Throw away the ending L or l, if necessary.
@@ -90,8 +90,8 @@ public class LongToken extends ScalarToken {
         try {
             _value = Long.parseLong(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(null, e, "Failed to parse \""
-                    + init + "\" as a number.");
+            throw new IllegalActionException(null, e,
+                    "Failed to parse \"" + init + "\" as a number.");
         }
     }
 
@@ -135,8 +135,7 @@ public class LongToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken intToken = IntToken.convert(token);
             LongToken result = new LongToken(intToken.longValue());
-            if (intToken._unitCategoryExponents != null
-                    && !UnitUtilities
+            if (intToken._unitCategoryExponents != null && !UnitUtilities
                     .isUnitless(intToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = intToken
                         ._copyOfCategoryExponents();
@@ -144,8 +143,8 @@ public class LongToken extends ScalarToken {
             return result;
         }
 
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "long"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "long"));
     }
 
     /**  Return true if the argument's class is LongToken and it has the
@@ -299,8 +298,8 @@ public class LongToken extends ScalarToken {
             return UnsignedByteToken.NIL;
         }
         if (_value < 0 || _value > 255) {
-            throw new IllegalActionException("Value cannot be represented"
-                    + " as an unsigned Byte");
+            throw new IllegalActionException(
+                    "Value cannot be represented" + " as an unsigned Byte");
         } else {
             return new UnsignedByteToken((int) _value);
         }
@@ -435,7 +434,8 @@ public class LongToken extends ScalarToken {
      *   argument is close to the value of this token.
      */
     @Override
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.LongMatrixMath.within(); if this
         // implementation changes, also change the corresponding

@@ -212,16 +212,16 @@ public class PID extends DETransformer {
             _currentInput = new TimedEvent(currentTime, currentToken);
 
             // Add proportional component to controller output.
-            DoubleToken currentOutput = (DoubleToken) currentToken.multiply(Kp
-                    .getToken());
+            DoubleToken currentOutput = (DoubleToken) currentToken
+                    .multiply(Kp.getToken());
 
             // If a previous input was given, then add integral and
             // derivative components.
             if (_lastInput != null) {
                 DoubleToken lastToken = (DoubleToken) _lastInput.contents;
                 Time lastTime = _lastInput.timeStamp;
-                DoubleToken timeGap = new DoubleToken(currentTime.subtract(
-                        lastTime).getDoubleValue());
+                DoubleToken timeGap = new DoubleToken(
+                        currentTime.subtract(lastTime).getDoubleValue());
 
                 //If the timeGap is zero, then we have received a
                 // simultaneous event. If the value of the input has
@@ -233,8 +233,9 @@ public class PID extends DETransformer {
 
                 if (timeGap.isCloseTo(DoubleToken.ZERO, Complex.EPSILON)
                         .booleanValue()) {
-                    if (!((DoubleToken) Kd.getToken()).isCloseTo(
-                            DoubleToken.ZERO, Complex.EPSILON).booleanValue()
+                    if (!((DoubleToken) Kd.getToken())
+                            .isCloseTo(DoubleToken.ZERO, Complex.EPSILON)
+                            .booleanValue()
                             && !currentToken.equals(lastToken)) {
                         throw new IllegalActionException(this,
                                 "PID controller recevied discontinuous input.");
@@ -243,12 +244,12 @@ public class PID extends DETransformer {
                 // Otherwise, the signal is continuous and we add
                 // integral and derivative components.
                 else {
-                    if (!((DoubleToken) Ki.getToken()).isCloseTo(
-                            DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
+                    if (!((DoubleToken) Ki.getToken())
+                            .isCloseTo(DoubleToken.ZERO, Complex.EPSILON)
+                            .booleanValue()) {
                         //Calculate integral component and accumulate
-                        _accumulated = (DoubleToken) _accumulated
-                                .add(currentToken.add(lastToken)
-                                        .multiply(timeGap)
+                        _accumulated = (DoubleToken) _accumulated.add(
+                                currentToken.add(lastToken).multiply(timeGap)
                                         .multiply(new DoubleToken(0.5)));
                         // Add integral component to controller output.
                         currentOutput = (DoubleToken) currentOutput
@@ -256,11 +257,11 @@ public class PID extends DETransformer {
                     }
 
                     // Add derivative component to controller output.
-                    if (!((DoubleToken) Kd.getToken()).isCloseTo(
-                            DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
-                        currentOutput = (DoubleToken) currentOutput
-                                .add(currentToken.subtract(lastToken)
-                                        .divide(timeGap)
+                    if (!((DoubleToken) Kd.getToken())
+                            .isCloseTo(DoubleToken.ZERO, Complex.EPSILON)
+                            .booleanValue()) {
+                        currentOutput = (DoubleToken) currentOutput.add(
+                                currentToken.subtract(lastToken).divide(timeGap)
                                         .multiply(Kd.getToken()));
                     }
                 }

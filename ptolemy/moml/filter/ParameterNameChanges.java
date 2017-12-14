@@ -146,11 +146,11 @@ public class ParameterNameChanges extends MoMLFilterSimple {
                 _currentlyProcessingActorWithParameterNameChanges = true;
 
                 // Coverity says that container could be null.
-                String containerName = (container == null ? "" : container
-                        .getFullName());
+                String containerName = (container == null ? ""
+                        : container.getFullName());
 
                 _currentActorFullName = containerName + "." + _lastNameSeen;
-                _propertyMap = (HashMap) _classesWithParameterNameChanges
+                _propertyMap = _classesWithParameterNameChanges
                         .get(attributeValue);
             } else if (_currentlyProcessingActorWithParameterNameChanges
                     && _newName != null) {
@@ -167,8 +167,8 @@ public class ParameterNameChanges extends MoMLFilterSimple {
             } else if (_currentlyProcessingActorWithParameterNameChanges
                     && container != null
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(
-                            _currentActorFullName)) {
+                    && !container.getFullName()
+                            .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 _currentlyProcessingActorWithParameterNameChanges = false;
@@ -197,15 +197,15 @@ public class ParameterNameChanges extends MoMLFilterSimple {
     @Override
     public String toString() {
         StringBuffer results = new StringBuffer(getClass().getName()
-                + ": Update any Parameter names\n"
-                + "that have been renamed.\n"
+                + ": Update any Parameter names\n" + "that have been renamed.\n"
                 + "Below are the actors that are affected, along "
                 + "with the Parameter name \nand the new name:\n");
-        for (Map.Entry<String,HashMap<String,String>> classChange: _classesWithParameterNameChanges.entrySet()) {
+        for (Map.Entry<String, HashMap<String, String>> classChange : _classesWithParameterNameChanges
+                .entrySet()) {
             String actor = classChange.getKey();
             results.append("\t" + actor + "\n");
 
-            HashMap<String,String> propertyMap = classChange.getValue();
+            HashMap<String, String> propertyMap = classChange.getValue();
 
             Iterator propertiesMapEntries = propertyMap.entrySet().iterator();
 
@@ -213,8 +213,8 @@ public class ParameterNameChanges extends MoMLFilterSimple {
                 Map.Entry properties = (Map.Entry) propertiesMapEntries.next();
                 String oldProperty = (String) properties.getKey();
                 String newProperty = (String) properties.getValue();
-                results.append("\t\t" + oldProperty + "\t -> " + newProperty
-                        + "\n");
+                results.append(
+                        "\t\t" + oldProperty + "\t -> " + newProperty + "\n");
             }
         }
 
@@ -254,8 +254,8 @@ public class ParameterNameChanges extends MoMLFilterSimple {
 
         // Key = property name, Value = new class name
         pnDirectorChanges.put("Initial_queue_capacity", "initialQueueCapacity");
-        _classesWithParameterNameChanges.put(
-                "ptolemy.domains.pn.kernel.PNDirector", pnDirectorChanges);
+        _classesWithParameterNameChanges
+                .put("ptolemy.domains.pn.kernel.PNDirector", pnDirectorChanges);
 
         // VariableDelay: After 4.0, 'defaultDelay'
         // property is now 'delay'
@@ -277,8 +277,8 @@ public class ParameterNameChanges extends MoMLFilterSimple {
         {
             HashMap codegen = new HashMap<String, String>();
             codegen.put("generateJNI", "generateEmbeddedCode");
-            _classesWithParameterNameChanges.put(
-                    "ptolemy.codegen.kernel.CodeGenerator", codegen);
+            _classesWithParameterNameChanges
+                    .put("ptolemy.codegen.kernel.CodeGenerator", codegen);
         }
         {
             HashMap codegen = new HashMap<String, String>();
@@ -290,13 +290,13 @@ public class ParameterNameChanges extends MoMLFilterSimple {
         {
             HashMap codegen = new HashMap<String, String>();
             codegen.put("generateJNI", "generateEmbeddedCode");
-            _classesWithParameterNameChanges.put(
-                    "ptolemy.codegen.c.kernel.CCodeGenerator", codegen);
+            _classesWithParameterNameChanges
+                    .put("ptolemy.codegen.c.kernel.CCodeGenerator", codegen);
         }
 
         HashMap embeddedCodeActorChanges = new HashMap<String, String>();
         embeddedCodeActorChanges.put("embeddedCCode", "embeddedCode");
-        _classesWithParameterNameChanges.put(
-                "ptolemy.cg.lib.EmbeddedCodeActor", embeddedCodeActorChanges);
+        _classesWithParameterNameChanges.put("ptolemy.cg.lib.EmbeddedCodeActor",
+                embeddedCodeActorChanges);
     }
 }

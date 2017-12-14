@@ -61,8 +61,8 @@ import java.util.List;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (janneck)
  */
-public class ConfigurableAttribute extends Attribute implements Configurable,
-Settable {
+public class ConfigurableAttribute extends Attribute
+        implements Configurable, Settable {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  default workspace directory.
@@ -124,8 +124,8 @@ Settable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConfigurableAttribute newObject = (ConfigurableAttribute) super
-                .clone(workspace);
+        ConfigurableAttribute newObject = (ConfigurableAttribute) super.clone(
+                workspace);
 
         newObject._base = null;
 
@@ -352,7 +352,8 @@ Settable {
             BufferedReader reader = null;
 
             try {
-                reader = new BufferedReader(new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
+                reader = new BufferedReader(new InputStreamReader(stream,
+                        java.nio.charset.Charset.defaultCharset()));
 
                 String line = reader.readLine();
 
@@ -400,8 +401,8 @@ Settable {
             sourceSpec = " source=\"" + _configureSource + "\"";
 
             if (_configureText == null) {
-                output.write(_getIndentPrefix(depth) + "<configure"
-                        + sourceSpec + "/>\n");
+                output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
+                        + "/>\n");
             }
         }
 

@@ -90,7 +90,7 @@ public class ElementList extends LabeledList {
 
         if (element.hasWeight()) {
             Object weight = element.getWeight();
-            ArrayList sameWeightList = (ArrayList) _weightMap.get(weight);
+            ArrayList sameWeightList = _weightMap.get(weight);
 
             if (sameWeightList == null) {
                 return false;
@@ -144,7 +144,7 @@ public class ElementList extends LabeledList {
             //     nextList = (List) _weightMap.get(nextWeight);
             //     found = nextList.contains(element);
             // }
-            for (Map.Entry<Object, ArrayList> entry: _weightMap.entrySet()) {
+            for (Map.Entry<Object, ArrayList> entry : _weightMap.entrySet()) {
                 nextList = entry.getValue();
                 found = nextList.contains(element);
                 if (found) {
@@ -171,8 +171,7 @@ public class ElementList extends LabeledList {
             } else {
                 // FIXME: use an internal error exception here.
                 throw new RuntimeException("Internal error: the specified "
-                        + _descriptor
-                        + " is neither unweighted nor associated "
+                        + _descriptor + " is neither unweighted nor associated "
                         + "with a weight."
                         + GraphException.elementDump(element, _graph));
             }
@@ -248,7 +247,7 @@ public class ElementList extends LabeledList {
         if (weight == null) {
             return Collections.unmodifiableCollection(_unweightedSet);
         } else {
-            Collection sameWeightElements = (Collection) _weightMap.get(weight);
+            Collection sameWeightElements = _weightMap.get(weight);
 
             if (sameWeightElements == null) {
                 return _emptyCollection;
@@ -267,7 +266,7 @@ public class ElementList extends LabeledList {
     public void registerWeight(Element element) {
         if (element.hasWeight()) {
             Object weight = element.getWeight();
-            ArrayList sameWeightList = (ArrayList) _weightMap.get(weight);
+            ArrayList sameWeightList = _weightMap.get(weight);
 
             if (sameWeightList == null) {
                 sameWeightList = new ArrayList();
@@ -311,8 +310,8 @@ public class ElementList extends LabeledList {
                 // This 'dump' of a null weight will also dump the graph.
                 // We use null as an argument instead of oldWeight to
                 // avoid FindBugs warnings.
-                throw new GraphWeightException(/*oldWeight*/null, null,
-                        _graph, "Incorrect previous weight specified.");
+                throw new GraphWeightException(/*oldWeight*/null, null, _graph,
+                        "Incorrect previous weight specified.");
             }
 
             if (newWeight == null) {
@@ -325,7 +324,7 @@ public class ElementList extends LabeledList {
             // The weight may have changed in value even if comparison under
             // the equals method has not changed. Thus we proceed
             // with the removal unconditionally.
-            List elementList = (List) _weightMap.get(oldWeight);
+            List elementList = _weightMap.get(oldWeight);
 
             if (elementList == null || !elementList.remove(element)) {
                 throw new GraphWeightException(oldWeight, null, _graph,

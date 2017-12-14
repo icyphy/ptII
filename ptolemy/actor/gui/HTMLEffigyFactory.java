@@ -149,8 +149,8 @@ public class HTMLEffigyFactory extends EffigyFactory {
             try {
                 contentType = connection.getContentType();
             } catch (SecurityException ex) {
-                throw new SecurityException("Failed to open " + base + " "
-                        + input, ex);
+                throw new SecurityException(
+                        "Failed to open " + base + " " + input, ex);
             }
 
             if (contentType == null) {

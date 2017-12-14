@@ -128,17 +128,16 @@ public class Replacement extends CompositeActorMatcher {
         try {
             container.workspace().getReadAccess();
             if (container instanceof GTEntity) {
-                if (GTTools.getCorrespondingPatternObject(container) == attribute
-                        .getContainer()) {
+                if (GTTools.getCorrespondingPatternObject(
+                        container) == attribute.getContainer()) {
                     GTEntity gtEntity = (GTEntity) container;
                     gtEntity.updateAppearance(attribute);
                 }
             }
             for (Object entity : container.entityList()) {
                 if (entity instanceof GTEntity) {
-                    if (GTTools
-                            .getCorrespondingPatternObject((NamedObj) entity) == attribute
-                            .getContainer()) {
+                    if (GTTools.getCorrespondingPatternObject(
+                            (NamedObj) entity) == attribute.getContainer()) {
                         GTEntity gtEntity = (GTEntity) entity;
                         gtEntity.updateAppearance(attribute);
                     }

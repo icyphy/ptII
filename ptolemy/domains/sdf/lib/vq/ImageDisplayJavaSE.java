@@ -58,9 +58,9 @@ classes.</p>
 @Pt.AcceptedRating
  */
 
-public class ImageDisplayJavaSE extends
-ptolemy.actor.lib.image.ImageDisplayJavaSE implements
-ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
+public class ImageDisplayJavaSE
+        extends ptolemy.actor.lib.image.ImageDisplayJavaSE
+        implements ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -145,7 +145,8 @@ ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
             // of graphical context here.  This is a huge shortcoming of
             // awt.  Just because I'm operating on images, I should not
             // need a frame.
-            Image image = _imageWindowFrame.getContentPane().createImage(imageSource);
+            Image image = _imageWindowFrame.getContentPane()
+                    .createImage(imageSource);
 
             AWTImageToken token = new AWTImageToken(image);
 
@@ -167,7 +168,8 @@ ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
                 _picture = new Picture(xSize, ySize);
 
                 //_picture.setImage(image);
-                _picture.setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
+                _picture.setImage(
+                        _convertBWImageToPackedRGBImage((IntMatrixToken) in));
                 _picture.setBackground(null);
                 container.add("Center", _picture);
                 container.validate();
@@ -188,7 +190,8 @@ ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
                 }
             } else {
                 // The _imageWindowFrame is null, the size has not changed, set the image.
-                _picture.setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
+                _picture.setImage(
+                        _convertBWImageToPackedRGBImage((IntMatrixToken) in));
                 _picture.displayImage();
                 _picture.repaint();
             }

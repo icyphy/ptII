@@ -68,8 +68,7 @@ public class ProxyModelAdapter implements ProxyModelListener {
      * @param event The remote event
      */
     @Override
-    public void onRemoteEvent(
-            ProxyModelInfrastructure proxyModelInfrastructure,
+    public void onRemoteEvent(ProxyModelInfrastructure proxyModelInfrastructure,
             RemoteEventToken event) {
 
     }

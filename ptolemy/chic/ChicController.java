@@ -82,10 +82,10 @@ public class ChicController extends AttributeController {
         super(controller, access);
 
         // Add commands to invoke Chic
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new AsynchronousIOAction()));
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new SynchronousAGAction()));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new AsynchronousIOAction()));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new SynchronousAGAction()));
 
         //        _menuFactory.addMenuItemFactory(
         //                new MenuActionFactory(new BidirectionalSynAction()));
@@ -97,8 +97,8 @@ public class ChicController extends AttributeController {
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
         }
     }
 
@@ -115,8 +115,8 @@ public class ChicController extends AttributeController {
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
         }
     }
 
@@ -211,7 +211,7 @@ public class ChicController extends AttributeController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                .error("Cannot look inside without a configuration.");
+                        .error("Cannot look inside without a configuration.");
                 return;
             }
 

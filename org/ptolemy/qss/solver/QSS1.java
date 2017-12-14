@@ -51,6 +51,7 @@ public final class QSS1 extends QSSBase {
     /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
+    @Override
     public final int getStateModelOrder() {
         return (0);
     }
@@ -58,6 +59,7 @@ public final class QSS1 extends QSSBase {
     /**
      * Initialize object fields (QSS-specific).
      */
+    @Override
     public final void _initializeWorker() {
 
         // Check internal consistency.
@@ -86,8 +88,9 @@ public final class QSS1 extends QSSBase {
      *  @param quantEvtTimeMax The maximum quantization event time.
      *  @return the predicted quantization-event time for a state (QSS-specific).
      */
-    protected final Time _predictQuantizationEventTimeWorker(
-            final int stateIdx, final Time quantEvtTimeMax) {
+    @Override
+    protected final Time _predictQuantizationEventTimeWorker(final int stateIdx,
+            final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
         // storing the returned result.
@@ -119,7 +122,8 @@ public final class QSS1 extends QSSBase {
         } else {
             // Here, most recent event was a rate-event.
             tMostRecent = cStateModel.tModel;
-            final double constDiff = qStateModel.coeffs[0] - cStateModel.coeffs[0];
+            final double constDiff = qStateModel.coeffs[0]
+                    - cStateModel.coeffs[0];
             if (cStateDeriv > 0) {
                 dt = (constDiff + dq) / cStateDeriv;
             } else {
@@ -178,6 +182,7 @@ public final class QSS1 extends QSSBase {
      *
      *  @param stateIdx The state index.
      */
+    @Override
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -195,6 +200,7 @@ public final class QSS1 extends QSSBase {
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
+    @Override
     protected final void _triggerRateEventWorker() throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -270,14 +276,15 @@ public final class QSS1 extends QSSBase {
             retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
                     _stateVals_xx, _ivVals_xx, tSample, _stateValsSample_xx,
                     _ivValsSample_xx, dtSample, null, null, null, 0.0, null,
-                    null, null, 0.0, null, null, null, 0.0, null,
-                    null, null, 0.0, getStateModelOrder());
+                    null, null, 0.0, null, null, null, 0.0, null, null, null,
+                    0.0, getStateModelOrder());
         }
     }
 
     /**
      * Form new internal, continuous state models (QSS-specific) for event detection.
      */
+    @Override
     protected final void _triggerRateEventWorkerEventDetection()
             throws Exception {
 

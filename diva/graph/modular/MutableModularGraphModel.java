@@ -42,7 +42,7 @@ import diva.graph.MutableGraphModel;
  * @Pt.AcceptedRating Red
  */
 public abstract class MutableModularGraphModel extends ModularGraphModel
-implements MutableGraphModel {
+        implements MutableGraphModel {
     /**
      * Construct an empty graph model whose
      * root is the given semantic object.
@@ -196,8 +196,8 @@ implements MutableGraphModel {
         Object prevHead = getMutableEdgeModel(edge).getHead(edge);
         getMutableEdgeModel(edge).setHead(edge, head);
 
-        GraphEvent e = new GraphEvent(eventSource,
-                GraphEvent.EDGE_HEAD_CHANGED, edge, prevHead);
+        GraphEvent e = new GraphEvent(eventSource, GraphEvent.EDGE_HEAD_CHANGED,
+                edge, prevHead);
         dispatchGraphEvent(e);
     }
 
@@ -210,8 +210,8 @@ implements MutableGraphModel {
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
         getMutableEdgeModel(edge).setTail(edge, tail);
 
-        GraphEvent e = new GraphEvent(eventSource,
-                GraphEvent.EDGE_TAIL_CHANGED, edge, prevTail);
+        GraphEvent e = new GraphEvent(eventSource, GraphEvent.EDGE_TAIL_CHANGED,
+                edge, prevTail);
         dispatchGraphEvent(e);
     }
 }

@@ -116,7 +116,7 @@ public class RExpression2 extends TypedAtomicActor {
      *                If the container already has an actor with this name.
      */
     public RExpression2(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         expression = new StringAttribute(this, "expression");
@@ -163,14 +163,13 @@ public class RExpression2 extends TypedAtomicActor {
         numYPixels.setExpression("480");
 
         graphicsFileName = new TypedIOPort(this, "graphicsFileName", false,
-                                           true);
+                true);
         graphicsFileName.setTypeEquals(BaseType.STRING);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
     }
-
 
     /** The log. */
     public static Log log = LogFactory.getLog(RExpression2.class);
@@ -250,6 +249,7 @@ public class RExpression2 extends TypedAtomicActor {
      *                If a derived class contains an attribute that cannot be
      *                cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RExpression2 newObject = (RExpression2) super.clone(workspace);
         String lcOSName = System.getProperty("os.name").toLowerCase();
@@ -275,6 +275,7 @@ public class RExpression2 extends TypedAtomicActor {
      * the script in the expressions parameter. Then the R engine should be
      * started and run, with the output sent to the output port.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         super.fire();
 
@@ -282,6 +283,7 @@ public class RExpression2 extends TypedAtomicActor {
         _fireUsingJRI();
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -291,14 +293,16 @@ public class RExpression2 extends TypedAtomicActor {
 
         // if not a directory, use 'home'
         if (!homeFile.isDirectory()) {
-            throw new IllegalActionException(this, "Rcwd = \"" + _home + "\", which is not a directory?");
+            throw new IllegalActionException(this,
+                    "Rcwd = \"" + _home + "\", which is not a directory?");
             // home = DotKeplerManager.getInstance()
             // .getTransientModuleDirectory("r").toString();
         }
 
         _home = _home.replace('\\', '/');
-        if (!_home.endsWith("/"))
+        if (!_home.endsWith("/")) {
             _home = _home + "/";
+        }
 
         // reset the name when workflow execution completes
         // this.getManager().addExecutionListener(
@@ -308,14 +312,16 @@ public class RExpression2 extends TypedAtomicActor {
         // workflowName = workflowName.replace(' ','_');
         // workflowName = workflowName.replace('-','_');
         String execDir = _home + workflowName + "_"
-            //+ WorkflowExecutionListener.getInstance().getId(toplevel())
-            + "/";
+        //+ WorkflowExecutionListener.getInstance().getId(toplevel())
+                + "/";
 
         File dir = new File(execDir);
         if (!dir.exists()) {
             if (!dir.mkdir()) {
-                throw new IllegalActionException(null, this, "Failed to make directory " + dir);
-            };
+                throw new IllegalActionException(null, this,
+                        "Failed to make directory " + dir);
+            }
+            ;
         }
         _home = execDir;
 
@@ -332,6 +338,7 @@ public class RExpression2 extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by the
      *  base class or while accessing the ports.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // NOTE: there is a note about commenting out this method:
         // "remove for now since it causes problems with ENMs"
@@ -344,7 +351,7 @@ public class RExpression2 extends TypedAtomicActor {
         while (_iterO.hasNext()) {
             TypedIOPort tiop = (TypedIOPort) _iterO.next();
             if (tiop.getName().equals("output")
-                || tiop.getName().equals("graphicsFileName")) {
+                    || tiop.getName().equals("graphicsFileName")) {
                 continue;
             }
             tiop.setTypeEquals(BaseType.GENERAL);
@@ -368,44 +375,46 @@ public class RExpression2 extends TypedAtomicActor {
             }
             long columnRef = 0;
             if ((token_type_string.equals("{double}"))
-                || (token_type_string.equals("{int}"))
-                || (token_type_string.equals("{string}"))
-                || (token_type_string.equals("{boolean}"))
-                || (token_type_string.startsWith("arrayType"))) {
+                    || (token_type_string.equals("{int}"))
+                    || (token_type_string.equals("{string}"))
+                    || (token_type_string.equals("{boolean}"))
+                    || (token_type_string.startsWith("arrayType"))) {
 
                 // make primative arrays for R
                 if ((token_type_string.equals("{double}"))
-                    || (token_type_string.startsWith("arrayType(double"))) {
+                        || (token_type_string.startsWith("arrayType(double"))) {
                     double[] values = _convertArrayToken(arrayToken);
                     columnRef = _rEngine.rniPutDoubleArray(values);
                 } else if ((token_type_string.equals("{int}"))
-                           || (token_type_string.startsWith("arrayType(int"))) {
+                        || (token_type_string.startsWith("arrayType(int"))) {
                     int[] values = _convertArrayTokenToInt(arrayToken);
                     columnRef = _rEngine.rniPutIntArray(values);
                 } else if ((token_type_string.equals("{string}"))
-                           || (token_type_string.startsWith("arrayType(string"))) {
+                        || (token_type_string.startsWith("arrayType(string"))) {
                     String[] values = _convertArrayTokenToString(arrayToken);
                     columnRef = _rEngine.rniPutStringArray(values);
                 } else if ((token_type_string.equals("{boolean}"))
-                           || (token_type_string.startsWith("arrayType(boolean"))) {
+                        || (token_type_string
+                                .startsWith("arrayType(boolean"))) {
                     boolean[] values = _convertArrayTokenToBoolean(arrayToken);
                     columnRef = _rEngine.rniPutBoolArray(values);
                 }
             } else if (token_type_string.equals("string")) {
-                columnRef = _rEngine.rniPutStringArray( new String[] { ((StringToken)genericToken).stringValue() });
-            }
-            else if (token_type_string.equals("double")) {
-                columnRef = _rEngine.rniPutDoubleArray( new double[] { ((DoubleToken)genericToken).doubleValue() });
-            }
-            else if (token_type_string.equals("int")) {
-                columnRef = _rEngine.rniPutIntArray( new int[] { ((IntToken)genericToken).intValue() });
-            }
-            else if (token_type_string.equals("boolean")) {
-                columnRef = _rEngine.rniPutBoolArray( new boolean[] { ((BooleanToken)genericToken).booleanValue() });
+                columnRef = _rEngine.rniPutStringArray(new String[] {
+                        ((StringToken) genericToken).stringValue() });
+            } else if (token_type_string.equals("double")) {
+                columnRef = _rEngine.rniPutDoubleArray(new double[] {
+                        ((DoubleToken) genericToken).doubleValue() });
+            } else if (token_type_string.equals("int")) {
+                columnRef = _rEngine.rniPutIntArray(
+                        new int[] { ((IntToken) genericToken).intValue() });
+            } else if (token_type_string.equals("boolean")) {
+                columnRef = _rEngine.rniPutBoolArray(new boolean[] {
+                        ((BooleanToken) genericToken).booleanValue() });
             }
             columnRefs.add(columnRef);
         } // while
-        // capture the column references in a "vector"
+          // capture the column references in a "vector"
         long[] columns = new long[columnRefs.size()];
         for (int i = 0; i < columnRefs.size(); i++) {
             columns[i] = (Long) columnRefs.get(i);
@@ -454,21 +463,23 @@ public class RExpression2 extends TypedAtomicActor {
             }
             long columnRef = 0;
             if ((token_type_string.equals("{double}"))
-                || (token_type_string.equals("{int}"))
-                || (token_type_string.equals("{string}"))
-                || (token_type_string.equals("{boolean}"))
-                || (token_type_string.startsWith("arrayType"))) {
+                    || (token_type_string.equals("{int}"))
+                    || (token_type_string.equals("{string}"))
+                    || (token_type_string.equals("{boolean}"))
+                    || (token_type_string.startsWith("arrayType"))) {
                 // for now, assume that token is an arrayToken !!!
                 // other token types are just ignored
                 if (arrayLength == -1) {
                     arrayLength = arrayToken.length();
                 } else {
                     if (arrayToken == null) {
-                        log.error("Could not parse " + recordToken + ", arrayToken == null?");
+                        log.error("Could not parse " + recordToken
+                                + ", arrayToken == null?");
                     } else {
                         int a_len = arrayToken.length();
                         if (a_len != arrayLength) {
-                            log.error("record elements are not all the same length!");
+                            log.error(
+                                    "record elements are not all the same length!");
                             return;
                         }
                     }
@@ -476,41 +487,43 @@ public class RExpression2 extends TypedAtomicActor {
 
                 // make primative arrays for R
                 if ((token_type_string.equals("{double}"))
-                    || (token_type_string.startsWith("arrayType(double"))) {
+                        || (token_type_string.startsWith("arrayType(double"))) {
                     double[] values = _convertArrayToken(arrayToken);
                     columnRef = _rEngine.rniPutDoubleArray(values);
                 } else if ((token_type_string.equals("{int}"))
-                           || (token_type_string.startsWith("arrayType(int"))) {
+                        || (token_type_string.startsWith("arrayType(int"))) {
                     int[] values = _convertArrayTokenToInt(arrayToken);
                     columnRef = _rEngine.rniPutIntArray(values);
                 } else if ((token_type_string.equals("{string}"))
-                           || (token_type_string.startsWith("arrayType(string"))) {
+                        || (token_type_string.startsWith("arrayType(string"))) {
                     String[] values = _convertArrayTokenToString(arrayToken);
                     columnRef = _rEngine.rniPutStringArray(values);
                 } else if ((token_type_string.equals("{boolean}"))
-                           || (token_type_string.startsWith("arrayType(boolean"))) {
+                        || (token_type_string
+                                .startsWith("arrayType(boolean"))) {
                     boolean[] values = _convertArrayTokenToBoolean(arrayToken);
                     columnRef = _rEngine.rniPutBoolArray(values);
                 }
             } else if (token_type_string.equals("string")) {
-                columnRef = _rEngine.rniPutStringArray( new String[] { ((StringToken)genericToken).stringValue() });
+                columnRef = _rEngine.rniPutStringArray(new String[] {
+                        ((StringToken) genericToken).stringValue() });
                 arrayLength = 1;
-            }
-            else if (token_type_string.equals("double")) {
-                columnRef = _rEngine.rniPutDoubleArray( new double[] { ((DoubleToken)genericToken).doubleValue() });
+            } else if (token_type_string.equals("double")) {
+                columnRef = _rEngine.rniPutDoubleArray(new double[] {
+                        ((DoubleToken) genericToken).doubleValue() });
                 arrayLength = 1;
-            }
-            else if (token_type_string.equals("int")) {
-                columnRef = _rEngine.rniPutIntArray( new int[] { ((IntToken)genericToken).intValue() });
+            } else if (token_type_string.equals("int")) {
+                columnRef = _rEngine.rniPutIntArray(
+                        new int[] { ((IntToken) genericToken).intValue() });
                 arrayLength = 1;
-            }
-            else if (token_type_string.equals("boolean")) {
-                columnRef = _rEngine.rniPutBoolArray( new boolean[] { ((BooleanToken)genericToken).booleanValue() });
+            } else if (token_type_string.equals("boolean")) {
+                columnRef = _rEngine.rniPutBoolArray(new boolean[] {
+                        ((BooleanToken) genericToken).booleanValue() });
                 arrayLength = 1;
             }
             columnRefs.add(columnRef);
         } // while
-        // capture the column references in a "vector"
+          // capture the column references in a "vector"
         long[] columns = new long[columnRefs.size()];
         for (int i = 0; i < columnRefs.size(); i++) {
             columns[i] = (Long) columnRefs.get(i);
@@ -527,7 +540,7 @@ public class RExpression2 extends TypedAtomicActor {
         // this works now - and is very important!
         String[] rowNames = new String[arrayLength];
         for (int i = 0; i < rowNames.length; i++) {
-            rowNames[i] = "" + (i+1);
+            rowNames[i] = "" + (i + 1);
         }
         long rowNamesRef = _rEngine.rniPutStringArray(rowNames);
         _rEngine.rniSetAttr(tableRef, "row.names", rowNamesRef);
@@ -540,7 +553,9 @@ public class RExpression2 extends TypedAtomicActor {
         _rEngine.rniAssign(portName, tableRef, 0);
 
         //make the character columns into factors (default DF behavior)
-        _rEngine.eval(portName + "[sapply(" + portName + ", is.character)] <- lapply(" + portName + "[sapply(" + portName + ", is.character)], as.factor)");
+        _rEngine.eval(portName + "[sapply(" + portName
+                + ", is.character)] <- lapply(" + portName + "[sapply("
+                + portName + ", is.character)], as.factor)");
 
     }
 
@@ -645,7 +660,7 @@ public class RExpression2 extends TypedAtomicActor {
                         Token token = tiop.get(i);
                         String token_type_string = token.getType().toString();
                         String token_class_name = token.getType()
-                            .getTokenClass().getName();
+                                .getTokenClass().getName();
                         log.debug("setting: " + portName + "=" + token);
 
                         // check token type and convert to R appropriately
@@ -660,10 +675,10 @@ public class RExpression2 extends TypedAtomicActor {
 
                             // check for special strings that indicate dataframe
                             // file reference
-                            at = (Token) token;
+                            at = token;
                             tokenValue = at.toString();
-                            tokenValue =
-                                tokenValue.substring(1, tokenValue.length() - 1); // remove quotes
+                            tokenValue = tokenValue.substring(1,
+                                    tokenValue.length() - 1); // remove quotes
 
                             // DATAFRAME (old)
                             if (tokenValue.startsWith("_dataframe_:")) {
@@ -674,14 +689,13 @@ public class RExpression2 extends TypedAtomicActor {
                                 REXP x = null;
                                 Token myToken = null;
 
-                                RPortInfo =
-                                    "conn <- file('" + tokenValue + "', 'rb');";
+                                RPortInfo = "conn <- file('" + tokenValue
+                                        + "', 'rb');";
                                 x = _rEngine.eval(RPortInfo, true);
                                 myToken = _convertToToken(x, null);
                                 log.debug("myToken=" + myToken);
 
-                                RPortInfo =
-                                    portName + " <- unserialize(conn);";
+                                RPortInfo = portName + " <- unserialize(conn);";
                                 x = _rEngine.eval(RPortInfo, true);
                                 myToken = _convertToToken(x, null);
                                 log.debug("myToken=" + myToken);
@@ -702,7 +716,8 @@ public class RExpression2 extends TypedAtomicActor {
 
                             if (tokenValue.startsWith("\\")) {
                                 //use this evaluation as a workaround for getting the escaped chars (like tabs)
-                                _rEngine.eval(portName + " <- '" + tokenValue + "'");
+                                _rEngine.eval(
+                                        portName + " <- '" + tokenValue + "'");
                             } else {
                                 // set the string in the r engine directly
                                 _rEngine.assign(portName, tokenValue);
@@ -711,19 +726,21 @@ public class RExpression2 extends TypedAtomicActor {
 
                         // BOOLEAN
                         else if (token_type_string.equals("boolean")) {
-                            at = (Token) token;
+                            at = token;
                             tokenValue = at.toString();
                             //use a boolean - JRI uses arrays...
-                            boolean booleanValue = Boolean.parseBoolean(tokenValue);
-                            _rEngine.assign(portName, new boolean[] {booleanValue});
+                            boolean booleanValue = Boolean
+                                    .parseBoolean(tokenValue);
+                            _rEngine.assign(portName,
+                                    new boolean[] { booleanValue });
                             //_rEngine.assign(portName, tokenValue);
                         }
 
                         // NUMBERS
                         else if (token_type_string.equals("double")
-                                 || token_type_string.equals("float")
-                                 || token_type_string.equals("int")) {
-                            at = (Token) token;
+                                || token_type_string.equals("float")
+                                || token_type_string.equals("int")) {
+                            at = token;
                             tokenValue = at.toString();
                             // TODO need support for assigning numeric scalars
                             _rEngine.eval(portName + " <- " + tokenValue);
@@ -732,59 +749,70 @@ public class RExpression2 extends TypedAtomicActor {
 
                         // ARRAYS
                         else if ((token_type_string.equals("{double}"))
-                                 || (token_type_string
-                                     .startsWith("arrayType(double"))) {
-                            double[] values = _convertArrayToken((ArrayToken) token);
+                                || (token_type_string
+                                        .startsWith("arrayType(double"))) {
+                            double[] values = _convertArrayToken(
+                                    (ArrayToken) token);
                             _rEngine.assign(portName, values);
                         } else if ((token_type_string.equals("{int}"))
-                                   || (token_type_string
-                                       .startsWith("arrayType(int"))) {
-                            int[] values = _convertArrayTokenToInt((ArrayToken) token);
+                                || (token_type_string
+                                        .startsWith("arrayType(int"))) {
+                            int[] values = _convertArrayTokenToInt(
+                                    (ArrayToken) token);
                             _rEngine.assign(portName, values);
                         } else if ((token_type_string.equals("{string}"))
-                                   || (token_type_string
-                                       .startsWith("arrayType(string"))) {
-                            String[] values = _convertArrayTokenToString((ArrayToken) token);
+                                || (token_type_string
+                                        .startsWith("arrayType(string"))) {
+                            String[] values = _convertArrayTokenToString(
+                                    (ArrayToken) token);
                             _rEngine.assign(portName, values);
                         } else if ((token_type_string.equals("{boolean}"))
-                                   || (token_type_string
-                                       .startsWith("arrayType(boolean"))) {
-                            boolean[] values = _convertArrayTokenToBoolean((ArrayToken) token);
+                                || (token_type_string
+                                        .startsWith("arrayType(boolean"))) {
+                            boolean[] values = _convertArrayTokenToBoolean(
+                                    (ArrayToken) token);
                             _rEngine.assign(portName, values);
                         } else if ((token_type_string.equals("{scalar}"))
-                                   || (token_type_string
-                                       .startsWith("arrayType(scalar"))) {
+                                || (token_type_string
+                                        .startsWith("arrayType(scalar"))) {
                             //TODO: keep specific types for each item
-                            Object[] values = _convertScalarArrayTokenToString((ArrayToken) token);
+                            Object[] values = _convertScalarArrayTokenToString(
+                                    (ArrayToken) token);
                             REXP objVal = new REXP(REXP.XT_ARRAY_STR, values);
                             _rEngine.assign(portName, objVal);
-                        } else if (token_type_string.startsWith("arrayType(arrayType")) {
+                        } else if (token_type_string
+                                .startsWith("arrayType(arrayType")) {
                             //handle arrays of arrays
-                            _convertArrayTokenToObject((ArrayToken) token, portName);
+                            _convertArrayTokenToObject((ArrayToken) token,
+                                    portName);
                         }
 
                         // MATRIX
-                        else if ((token_class_name.indexOf("IntMatrixToken") > -1)
-                                 || (token_class_name
-                                     .indexOf("DoubleMatrixToken") > -1)
-                                 || (token_class_name
-                                     .indexOf("BooleanMatrixToken") > -1)) {
+                        else if ((token_class_name
+                                .indexOf("IntMatrixToken") > -1)
+                                || (token_class_name
+                                        .indexOf("DoubleMatrixToken") > -1)
+                                || (token_class_name
+                                        .indexOf("BooleanMatrixToken") > -1)) {
                             int rows = ((MatrixToken) token).getRowCount();
                             int cols = ((MatrixToken) token).getColumnCount();
-                            ArrayToken matrixAsArray =
-                                ((MatrixToken) token).toArrayColumnMajor();
+                            ArrayToken matrixAsArray = ((MatrixToken) token)
+                                    .toArrayColumnMajor();
                             String matrixType = matrixAsArray.getType()
-                                .toString();
+                                    .toString();
                             if (matrixType.startsWith("arrayType(int")) {
-                                int[] values = _convertArrayTokenToInt((ArrayToken) matrixAsArray);
+                                int[] values = _convertArrayTokenToInt(
+                                        matrixAsArray);
                                 _rEngine.assign(portName, values);
                             } else if (matrixType
-                                       .startsWith("arrayType(double")) {
-                                double[] values = _convertArrayToken((ArrayToken) matrixAsArray);
+                                    .startsWith("arrayType(double")) {
+                                double[] values = _convertArrayToken(
+                                        matrixAsArray);
                                 _rEngine.assign(portName, values);
                             } else if (matrixType
-                                       .startsWith("arrayType(boolean")) {
-                                boolean[] values = _convertArrayTokenToBoolean((ArrayToken) matrixAsArray);
+                                    .startsWith("arrayType(boolean")) {
+                                boolean[] values = _convertArrayTokenToBoolean(
+                                        matrixAsArray);
                                 _rEngine.assign(portName, values);
                             }
 
@@ -793,8 +821,8 @@ public class RExpression2 extends TypedAtomicActor {
 
                             // make a matrix from the array
                             String cmd = portName + " <- " + "matrix("
-                                + portName + ", nrow=" + rows + ", ncol="
-                                + cols + ")";
+                                    + portName + ", nrow=" + rows + ", ncol="
+                                    + cols + ")";
                             _rEngine.eval(cmd, false);
                             // REXP x = _rEngine.eval(cmd, true);
                             // _rEngine.assign(portName, x);
@@ -806,12 +834,12 @@ public class RExpression2 extends TypedAtomicActor {
                             if (i == 0) {
                                 // create list
                                 commandList = finalPortName + " <- list("
-                                    + portName + ")";
+                                        + portName + ")";
                             } else if (i > 0) {
                                 // append to list
                                 commandList = finalPortName + " <- c("
-                                    + finalPortName + ", list(" + portName
-                                    + ") )";
+                                        + finalPortName + ", list(" + portName
+                                        + ") )";
                             }
                             // set in the R environment
                             _rEngine.eval(commandList);
@@ -831,7 +859,7 @@ public class RExpression2 extends TypedAtomicActor {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            }// multiport loop
+            } // multiport loop
         }
         log.debug("Done reading data from input ports");
     }
@@ -920,18 +948,22 @@ public class RExpression2 extends TypedAtomicActor {
      */
     public static boolean[][] asBooleanMatrix(REXP x) {
         int[] ct = x.asIntArray();
-        if (ct == null)
+        if (ct == null) {
             return null;
+        }
         REXP dim = x.getAttribute("dim");
-        if (dim == null || dim.getType() != REXP.XT_ARRAY_INT)
+        if (dim == null || dim.getType() != REXP.XT_ARRAY_INT) {
             return null; // we need dimension attr
+        }
         int[] ds = dim.asIntArray();
-        if (ds == null || ds.length != 2)
+        if (ds == null || ds.length != 2) {
             return null; // matrix must be 2-dimensional
+        }
         int m = ds[0], n = ds[1];
         boolean[][] r = new boolean[m][n];
-        if (ct == null)
+        if (ct == null) {
             return null;
+        }
         // R stores matrices as matrix(c(1,2,3,4),2,2) = col1:(1,2), col2:(3,4)
         // we need to copy everything, since we create 2d array from 1d array
         int i = 0, k = 0;
@@ -957,10 +989,10 @@ public class RExpression2 extends TypedAtomicActor {
         log.debug("setting up graphics device: ");
 
         boolean graphicsOutputValue = ((BooleanToken) graphicsOutput.getToken())
-            .booleanValue();
+                .booleanValue();
 
         boolean displayGraphicsOutputValue = ((BooleanToken) displayGraphicsOutput
-                                              .getToken()).booleanValue();
+                .getToken()).booleanValue();
 
         String graphicsFormatString = graphicsFormat.stringValue();
 
@@ -979,7 +1011,7 @@ public class RExpression2 extends TypedAtomicActor {
 
         String setCWD = "setwd('" + _home + "')\n";
         String graphicsDeviceCode = _generateGraphicsDeviceCode(
-                                                                graphicsFormatString, graphicsOutputValue);
+                graphicsFormatString, graphicsOutputValue);
 
         if (graphicsDeviceCode != null && graphicsDeviceCode.length() > 0) {
             log.debug(setCWD + graphicsDeviceCode);
@@ -1032,25 +1064,25 @@ public class RExpression2 extends TypedAtomicActor {
                 REXP rDataObject = _rEngine.eval(tiop.getName());
                 if (rDataObject != null) {
                     log.debug("Symbol found for port " + tiop.getName() + ": "
-                              + rDataObject.toString());
+                            + rDataObject.toString());
 
                     // get the token from R
                     Token t = _convertToToken(rDataObject, tiop.getName());
 
                     // make sure that the sinks can handle the token
                     for (int channelIndex = 0; channelIndex < numSinks; channelIndex++) {
-                        Type sinkType = ((TypedIOPort) tiop.sinkPortList().get(
-                                                                               channelIndex)).getType();
+                        Type sinkType = ((TypedIOPort) tiop.sinkPortList()
+                                .get(channelIndex)).getType();
 
                         if (!sinkType.isCompatible(t.getType())) {
                             log.debug("[re]Setting sink type to: "
-                                      + t.getType().toString());
+                                    + t.getType().toString());
                             // set the Type for the sinks
                             // POSSIBLE BUG - not sure why the automatic type
                             // resolution was failing for downstream port
                             ((TypedIOPort) tiop.sinkPortList()
-                             .get(channelIndex)).setTypeEquals(t
-                                                               .getType());
+                                    .get(channelIndex))
+                                            .setTypeEquals(t.getType());
                         }
                     }
 
@@ -1071,7 +1103,7 @@ public class RExpression2 extends TypedAtomicActor {
     private void _showGraphics() throws IllegalActionException {
 
         boolean displayGraphicsOutputValue = ((BooleanToken) displayGraphicsOutput
-                                              .getToken()).booleanValue();
+                .getToken()).booleanValue();
 
         if (displayGraphicsOutputValue) {
             try {
@@ -1106,7 +1138,7 @@ public class RExpression2 extends TypedAtomicActor {
      * @exception IllegalActionException
      */
     private Token _convertToToken(REXP rDataObject, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Token t = null;
         Token[] tokenArray = null;
         if (rDataObject != null) {
@@ -1142,7 +1174,8 @@ public class RExpression2 extends TypedAtomicActor {
                         StringToken stringToken = new StringToken(factor.at(i));
                         factorValues.add(stringToken);
                     }
-                    t = new ArrayToken((Token[]) factorValues.toArray(new Token[0]));
+                    t = new ArrayToken(
+                            (Token[]) factorValues.toArray(new Token[0]));
                 }
                 break;
             case REXP.XT_INT:
@@ -1164,9 +1197,8 @@ public class RExpression2 extends TypedAtomicActor {
                             values.add(token);
                         }
                         // put it all together in a record
-                        t = new OrderedRecordToken(
-                                                   keys,
-                                                   (Token[]) values.toArray(new Token[0]));
+                        t = new OrderedRecordToken(keys,
+                                (Token[]) values.toArray(new Token[0]));
                     }
                 }
                 break;
@@ -1192,8 +1224,9 @@ public class RExpression2 extends TypedAtomicActor {
                     List names = vector.getNames();
                     if (names != null) {
                         // preserve _every_ aspect of the data object
-                        if (((BooleanToken) serializeData.getToken()).booleanValue()) {
-                        t = _serializeRDataObject(rDataObject, name);
+                        if (((BooleanToken) serializeData.getToken())
+                                .booleanValue()) {
+                            t = _serializeRDataObject(rDataObject, name);
                         } else {
                             List values = new ArrayList();
                             for (int i = 0; i < names.size(); i++) {
@@ -1204,8 +1237,10 @@ public class RExpression2 extends TypedAtomicActor {
                                 values.add(token);
                             }
                             // put it all together in a record
-                            String[] namesArray = (String[]) names.toArray(new String[0]);
-                            Token[] valuesArray = (Token[]) values.toArray(new Token[0]);
+                            String[] namesArray = (String[]) names
+                                    .toArray(new String[0]);
+                            Token[] valuesArray = (Token[]) values
+                                    .toArray(new Token[0]);
                             t = new OrderedRecordToken(namesArray, valuesArray);
                         }
                     } else {
@@ -1221,7 +1256,8 @@ public class RExpression2 extends TypedAtomicActor {
                         if (values.isEmpty()) {
                             t = new ArrayToken(Token.NIL.getType());
                         } else {
-                            t = new ArrayToken((Token[]) values.toArray(new Token[0]));
+                            t = new ArrayToken(
+                                    (Token[]) values.toArray(new Token[0]));
                         }
                     }
                 }
@@ -1233,8 +1269,8 @@ public class RExpression2 extends TypedAtomicActor {
                 } else {
                     tokenArray = new Token[xb.length];
                     for (int i = 0; i < xb.length; i++) {
-                        String val = xb[i] == 0 ? "false" : (xb[i] == 1 ? "true"
-                                                             : "nil");
+                        String val = xb[i] == 0 ? "false"
+                                : (xb[i] == 1 ? "true" : "nil");
                         BooleanToken bt = new BooleanToken(val);
                         tokenArray[i] = bt;
                     }
@@ -1254,8 +1290,8 @@ public class RExpression2 extends TypedAtomicActor {
                 } else {
                     tokenArray = new Token[xbi.length];
                     for (int i = 0; i < xbi.length; i++) {
-                        String val = xbi[i] == 0 ? "false" : (xbi[i] == 1 ? "true"
-                                                          : "nil");
+                        String val = xbi[i] == 0 ? "false"
+                                : (xbi[i] == 1 ? "true" : "nil");
                         BooleanToken bt = new BooleanToken(val);
                         tokenArray[i] = bt;
                     }
@@ -1321,8 +1357,8 @@ public class RExpression2 extends TypedAtomicActor {
         boolean asArrayToken = true;
         if (!asArrayToken) {
             if (t instanceof ArrayToken) {
-                if ( ((ArrayToken)t).length() == 1) {
-                    t = ((ArrayToken)t).getElement(0);
+                if (((ArrayToken) t).length() == 1) {
+                    t = ((ArrayToken) t).getElement(0);
                 }
             }
         }
@@ -1330,7 +1366,7 @@ public class RExpression2 extends TypedAtomicActor {
     }
 
     private String _generateGraphicsDeviceCode(String graphicsFormatString,
-                                               boolean graphicsOutputValue) {
+            boolean graphicsOutputValue) {
         String nxs = "";
         String nys = "";
         try {
@@ -1363,11 +1399,11 @@ public class RExpression2 extends TypedAtomicActor {
             double nyd = nyp / 72.0;
             if (graphicsFormatString.equals("pdf")) {
                 graphicsDevice = "pdf(file = '" + _graphicsOutputFile + "'"
-                    + ",width = " + nxd + ", height = " + nyd + ")";
+                        + ",width = " + nxd + ", height = " + nyd + ")";
             } else {
                 graphicsDevice = "png(filename = '" + _graphicsOutputFile + "'"
-                    + ",width = " + nxs + ", height = " + nys
-                    + ", pointsize = 12, bg = 'white')";
+                        + ",width = " + nxs + ", height = " + nys
+                        + ", pointsize = 12, bg = 'white')";
             }
         }
         return graphicsDevice;
@@ -1409,12 +1445,14 @@ public class RExpression2 extends TypedAtomicActor {
         try {
             tempFile = _getUniqueFileName("r");
             // write to file
-            OutputStreamWriter w = new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8");
+            OutputStreamWriter w = new OutputStreamWriter(
+                    new FileOutputStream(tempFile), "UTF-8");
             printWriter = new PrintWriter(w);
             printWriter.write(script);
         } catch (IOException e1) {
             log.error("could not create temp R source file");
-            throw new IllegalActionException(this, e1, "Could not create temp R source file: " + tempFile );
+            throw new IllegalActionException(this, e1,
+                    "Could not create temp R source file: " + tempFile);
         } finally {
             if (printWriter != null) {
                 printWriter.close();
@@ -1435,10 +1473,11 @@ public class RExpression2 extends TypedAtomicActor {
         if (showEval) {
             try {
                 Token token = _convertToToken(x, null);
-                _console.rWriteConsole(_rEngine, "Result: " + token + "\n", x.rtype);
-            }
-            catch (Exception e) {
-                log.debug("error showing debug results from R engine: " + e.getMessage());
+                _console.rWriteConsole(_rEngine, "Result: " + token + "\n",
+                        x.rtype);
+            } catch (Exception e) {
+                log.debug("error showing debug results from R engine: "
+                        + e.getMessage());
             }
         }
         log.debug(x);
@@ -1447,10 +1486,10 @@ public class RExpression2 extends TypedAtomicActor {
     }
 
     private static String _noRErrorMessage = "There has been a problem launching R!\n"
-        + "It may be that R is not installed on your system, or it\n"
-        + "may not be on your path and cannot be located by Kepler.\n Please"
-        + "make sure R is installed and the R command line \n executable is in the path."
-        + "For more information, see \n section 8.2.2 of the Kepler User Manual.";
+            + "It may be that R is not installed on your system, or it\n"
+            + "may not be on your path and cannot be located by Kepler.\n Please"
+            + "make sure R is installed and the R command line \n executable is in the path."
+            + "For more information, see \n section 8.2.2 of the Kepler User Manual.";
 
     private Rengine _rEngine = null;
 

@@ -71,23 +71,26 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] inPixels = new int[width * height];
         int[] outPixels = new int[width * height];
         getRGB(src, 0, 0, width, height, inPixels);
 
-        if (premultiplyAlpha)
+        if (premultiplyAlpha) {
             ImageMath.premultiply(inPixels, 0, inPixels.length);
+        }
         for (int i = 0; i < iterations; i++) {
             blur(inPixels, outPixels, width, height, hRadius);
             blur(outPixels, inPixels, height, width, vRadius);
         }
         blurFractional(inPixels, outPixels, width, height, hRadius);
         blurFractional(outPixels, inPixels, height, width, vRadius);
-        if (premultiplyAlpha)
+        if (premultiplyAlpha) {
             ImageMath.unpremultiply(inPixels, 0, inPixels.length);
+        }
 
         setRGB(dst, 0, 0, width, height, inPixels);
         return dst;
@@ -101,14 +104,16 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
      * @param height the height of the pixel array
      * @param radius the radius of blur
      */
-    public static void blur(int[] in, int[] out, int width, int height, float radius) {
+    public static void blur(int[] in, int[] out, int width, int height,
+            float radius) {
         int widthMinus1 = width - 1;
         int r = (int) radius;
         int tableSize = 2 * r + 1;
         int divide[] = new int[256 * tableSize];
 
-        for (int i = 0; i < 256 * tableSize; i++)
+        for (int i = 0; i < 256 * tableSize; i++) {
             divide[i] = i / tableSize;
+        }
 
         int inIndex = 0;
 
@@ -125,14 +130,17 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
             }
 
             for (int x = 0; x < width; x++) {
-                out[outIndex] = (divide[ta] << 24) | (divide[tr] << 16) | (divide[tg] << 8) | divide[tb];
+                out[outIndex] = (divide[ta] << 24) | (divide[tr] << 16)
+                        | (divide[tg] << 8) | divide[tb];
 
                 int i1 = x + r + 1;
-                if (i1 > widthMinus1)
+                if (i1 > widthMinus1) {
                     i1 = widthMinus1;
+                }
                 int i2 = x - r;
-                if (i2 < 0)
+                if (i2 < 0) {
                     i2 = 0;
+                }
                 int rgb1 = in[inIndex + i1];
                 int rgb2 = in[inIndex + i2];
 
@@ -146,7 +154,8 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
         }
     }
 
-    public static void blurFractional(int[] in, int[] out, int width, int height, float radius) {
+    public static void blurFractional(int[] in, int[] out, int width,
+            int height, float radius) {
         radius -= (int) radius;
         float f = 1.0f / (1 + 2 * radius);
         int inIndex = 0;

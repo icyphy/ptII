@@ -164,10 +164,10 @@ public class DCT8x8 extends TypedAtomicActor {
 
             _ftemp[i][0] = (_block[0] + _block[1]) * cos_values[4];
             _ftemp[i][4] = (_block[0] - _block[1]) * cos_values[4];
-            _ftemp[i][2] = _block[2] * cos_values[6] + _block[3]
-                    * cos_values[2];
-            _ftemp[i][6] = _block[3] * cos_values[6] - _block[2]
-                    * cos_values[2];
+            _ftemp[i][2] = _block[2] * cos_values[6]
+                    + _block[3] * cos_values[2];
+            _ftemp[i][6] = _block[3] * cos_values[6]
+                    - _block[2] * cos_values[2];
 
             _temp[4] = _block[4] + _block[5];
             _temp[7] = _block[7] + _block[6];
@@ -200,10 +200,10 @@ public class DCT8x8 extends TypedAtomicActor {
 
             _ftemp[0][i] = (_block[0] + _block[1]) * cos_values[4];
             _ftemp[4][i] = (_block[0] - _block[1]) * cos_values[4];
-            _ftemp[2][i] = _block[2] * cos_values[6] + _block[3]
-                    * cos_values[2];
-            _ftemp[6][i] = _block[3] * cos_values[6] - _block[2]
-                    * cos_values[2];
+            _ftemp[2][i] = _block[2] * cos_values[6]
+                    + _block[3] * cos_values[2];
+            _ftemp[6][i] = _block[3] * cos_values[6]
+                    - _block[2] * cos_values[2];
 
             _temp[4] = _block[4] + _block[5];
             _temp[7] = _block[7] + _block[6];

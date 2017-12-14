@@ -133,10 +133,10 @@ public abstract class InfiniteConcept extends Concept {
      *  @exception NameDuplicationException Not thrown.
      *  @exception IllegalActionException If the base class throws it.
      */
-    protected InfiniteConcept(Ontology ontology) throws IllegalActionException,
-    NameDuplicationException {
-        super(ontology, "__InfiniteConcept_"
-                + _incrementAndReturnConceptNumber());
+    protected InfiniteConcept(Ontology ontology)
+            throws IllegalActionException, NameDuplicationException {
+        super(ontology,
+                "__InfiniteConcept_" + _incrementAndReturnConceptNumber());
         setName(getName() + " (of " + getClass().getSimpleName() + ")");
 
         // Don't store InfiniteConcept instances in the MoML model.

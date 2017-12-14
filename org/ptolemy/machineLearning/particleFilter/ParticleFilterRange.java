@@ -154,8 +154,8 @@ public class ParticleFilterRange extends ParticleFilter {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         StringToken[] stateNames = new StringToken[2];
         stateNames[0] = new StringToken("x");
@@ -190,7 +190,8 @@ public class ParticleFilterRange extends ParticleFilter {
 
         // The parameter that contains the measurement expression.
         z = new Parameter(this, "z");
-        z.setExpression("sqrt((x-observerPosition(0))^2 + (y-observerPosition(1))^2)");
+        z.setExpression(
+                "sqrt((x-observerPosition(0))^2 + (y-observerPosition(1))^2)");
         z.setVisibility(Settable.EXPERT);
 
         x_update = new Parameter(this, "x_update");
@@ -202,8 +203,8 @@ public class ParticleFilterRange extends ParticleFilter {
         measurementCovariance.setExpression("[2.0]");
         prior.setExpression("{random()*200-100,random()*200-100}");
 
-        processNoise
-                .setExpression("multivariateGaussian({0.0,0.0},[3.0,0.0;0.0,3.0])");
+        processNoise.setExpression(
+                "multivariateGaussian({0.0,0.0},[3.0,0.0;0.0,3.0])");
 
         particleCount.setExpression("2000");
 

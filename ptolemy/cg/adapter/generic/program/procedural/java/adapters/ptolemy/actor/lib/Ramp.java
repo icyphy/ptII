@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)
  */
-public class Ramp
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Ramp {
+public class Ramp extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Ramp {
     /**
      *  Construct the Ramp adapter.
      *  @param actor the associated actor

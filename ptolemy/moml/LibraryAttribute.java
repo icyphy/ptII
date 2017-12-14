@@ -143,7 +143,8 @@ public class LibraryAttribute extends ConfigurableAttribute {
             if (!(library instanceof CompositeEntity)) {
                 throw new IllegalActionException(this,
                         "Expected library to be in an instance of CompositeEntity,"
-                                + " but it is: " + library.getClass().getName());
+                                + " but it is: "
+                                + library.getClass().getName());
             }
             // Ensure that the library is marked as a library.
             Attribute marker = library.getAttribute("_libraryMarker");

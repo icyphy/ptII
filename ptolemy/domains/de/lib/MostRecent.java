@@ -117,9 +117,8 @@ public class MostRecent extends Transformer {
         // Leave type undeclared.
         initialValue = new Parameter(this, "initialValue");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"0,20 0,0\"/>\n"
                 + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
@@ -294,7 +293,7 @@ public class MostRecent extends Transformer {
      */
     /*    public Set<Inequality> typeConstraints() {
             Set<Inequality> typeConstraints = super.typeConstraints();
-
+    
             try {
                 if (initialValue.getToken() != null) {
                     // Set type of initialValue to be equal to input type
@@ -303,7 +302,7 @@ public class MostRecent extends Transformer {
                     typeConstraints.add(ineq);
                     ineq = new Inequality(input.getTypeTerm(),
                             initialValue.getTypeTerm());
-
+    
                     typeConstraints.add(ineq);
                 }
             } catch (IllegalActionException ex) {
@@ -312,7 +311,7 @@ public class MostRecent extends Transformer {
                 // class.
                 throw new InternalErrorException("Bad initialValue value!");
             }
-
+    
             return typeConstraints;
         }
      */
@@ -327,10 +326,10 @@ public class MostRecent extends Transformer {
         try {
             // Set type of initialValue to be equal to input type
             if (initialValue.getToken() != null) {
-                result.add(new Inequality(initialValue.getTypeTerm(), input
-                        .getTypeTerm()));
-                result.add(new Inequality(input.getTypeTerm(), initialValue
-                        .getTypeTerm()));
+                result.add(new Inequality(initialValue.getTypeTerm(),
+                        input.getTypeTerm()));
+                result.add(new Inequality(input.getTypeTerm(),
+                        initialValue.getTypeTerm()));
             }
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should already

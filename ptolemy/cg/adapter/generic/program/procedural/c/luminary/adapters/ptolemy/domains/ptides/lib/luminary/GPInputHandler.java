@@ -60,7 +60,7 @@ public class GPInputHandler extends InputDevice {
      */
     public GPInputHandler(
             ptolemy.domains.ptides.lib.luminary.GPInputHandler actor)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(actor);
 
         Parameter pinParameter = actor.pin;
@@ -94,7 +94,8 @@ public class GPInputHandler extends InputDevice {
      * block or processing the code stream.
      */
     @Override
-    public String generateSensorSensingFuncCode() throws IllegalActionException {
+    public String generateSensorSensingFuncCode()
+            throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
@@ -107,16 +108,16 @@ public class GPInputHandler extends InputDevice {
         _codeStream.append("saveState();" + _eol);
         _codeStream.append("stackedModelTagIndex++;" + _eol);
         _codeStream.append("if (stackedModelTagIndex > MAX_EVENTS) {" + _eol);
-        _codeStream
-        .append("die(\"MAX_EVENTS too small for stackedModelTagIndex\");"
-                + _eol);
+        _codeStream.append(
+                "die(\"MAX_EVENTS too small for stackedModelTagIndex\");"
+                        + _eol);
         _codeStream.append("}" + _eol);
-        _codeStream
-        .append("executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;"
-                + _eol);
-        _codeStream
-        .append("executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;"
-                + _eol);
+        _codeStream.append(
+                "executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;"
+                        + _eol);
+        _codeStream.append(
+                "executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;"
+                        + _eol);
         _codeStream.append("getRealTime(&currentModelTime);" + _eol);
         _codeStream.append("currentMicrostep = 0;" + _eol);
 
@@ -130,12 +131,12 @@ public class GPInputHandler extends InputDevice {
         _codeStream.append("if (temp != FREE_EVENT_LIST) {" + _eol);
         _codeStream.append("addStack();" + _eol);
         _codeStream.append("} else {" + _eol);
-        _codeStream
-        .append("currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;"
-                + _eol);
-        _codeStream
-        .append("currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;"
-                + _eol);
+        _codeStream.append(
+                "currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;"
+                        + _eol);
+        _codeStream.append(
+                "currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;"
+                        + _eol);
         _codeStream.append("stackedModelTagIndex--;" + _eol);
         _codeStream.append("loadState();" + _eol);
         _codeStream.append("}" + _eol);
@@ -156,8 +157,8 @@ public class GPInputHandler extends InputDevice {
         List args = new ArrayList();
         args.add(_padID);
         args.add(_pinID);
-        code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
-                "initializeGPInput", args)));
+        code.append(processCode(_templateParser.getCodeStream()
+                .getCodeBlock("initializeGPInput", args)));
         return code.toString();
     }
 

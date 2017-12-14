@@ -67,9 +67,8 @@ public class PxgraphApplet extends PlotApplet {
      */
     @Override
     public String getAppletInfo() {
-        return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE
-                + ": A data plotter.\n" + "By: Edward A. Lee and\n "
-                + "Christopher Hylands\n"
+        return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE + ": A data plotter.\n"
+                + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
                 + "($Id$)";
     }
 
@@ -81,7 +80,8 @@ public class PxgraphApplet extends PlotApplet {
                 { "background", "hexcolor value", "background color" },
                 { "foreground", "hexcolor value", "foreground color" },
                 { "dataurl", "url", "the URL of the data to plot" },
-                { "pxgraphargs", "args", "pxgraph style command line arguments" } };
+                { "pxgraphargs", "args",
+                        "pxgraph style command line arguments" } };
         return pinfo;
     }
 

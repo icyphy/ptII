@@ -170,7 +170,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
             int branchID, Token token, ConditionalBranchController controller)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(guard, port, branchID, controller);
         _port = port;
         _channel = channel;
@@ -184,8 +184,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             }
 
             if (channel >= port.getWidth() || channel < 0) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "channel index out of range.");
+                throw new IllegalActionException(port,
+                        "ConditionalSend: " + "channel index out of range.");
             }
 
             Receiver[][] receivers = port.getRemoteReceivers();
@@ -195,9 +195,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         + "Trying to rendezvous with null receiver");
             }
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
-                throw new IllegalActionException(port, "ConditionalSend: "
-                        + "channel " + channel + " does not have a receiver "
-                        + "of type CSPReceiver.");
+                throw new IllegalActionException(port,
+                        "ConditionalSend: " + "channel " + channel
+                                + " does not have a receiver "
+                                + "of type CSPReceiver.");
             }
             _setReceivers(receivers[channel]);
         } finally {
@@ -248,8 +249,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         // Should never happen that a put or a ConditionalSend
                         // is already at the receiver. This would mean there
                         // was more than one output connected to input port.
-                        throw new InvalidStateException(
-                                ((Nameable) controller.getParent()).getName()
+                        throw new InvalidStateException(((Nameable) controller
+                                .getParent()).getName()
                                 + ": ConditionalSend branch is trying to rendezvous "
                                 + "with a receiver that already has a put or a "
                                 + "ConditionalSend waiting.");
@@ -291,7 +292,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             // Do this by falling out of the loop.
                             break; // exit while (true).
                         }
-                    } else if (_isGetOrConditionalReceiveWaitingOnAll(receivers)) {
+                    } else if (_isGetOrConditionalReceiveWaitingOnAll(
+                            receivers)) {
                         if (_debugging) {
                             _debug("ConditionalSend: send() on channel "
                                     + _channel
@@ -313,15 +315,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 if (receiver._isConditionalReceiveWaiting()) {
                                     AbstractBranchController side2 = receiver
                                             ._getOtherController();
-                                    if (side2 != null
-                                            && side2._isBranchReady(receiver
-                                                    ._getOtherID())) {
+                                    if (side2 != null && side2._isBranchReady(
+                                            receiver._getOtherID())) {
                                         if (_debugging) {
                                             _debug("ConditionalSend: send() on channel "
                                                     + _channel
                                                     + ": the other side is also first: "
                                                     + side2.getParent()
-                                                    .getFullName());
+                                                            .getFullName());
                                         }
                                         markedFirst.add(receiver);
                                     } else {
@@ -331,7 +332,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                                         + _channel
                                                         + ": the other side is NOT first: "
                                                         + side2.getParent()
-                                                        .getFullName());
+                                                                .getFullName());
                                             } else {
                                                 _debug("ConditionalSend: send() on channel "
                                                         + _channel
@@ -362,8 +363,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                             .next();
                                     AbstractBranchController side2 = receiver
                                             ._getOtherController();
-                                    side2._branchNotReady(receiver
-                                            ._getOtherID());
+                                    side2._branchNotReady(
+                                            receiver._getOtherID());
                                 }
                                 director.notifyAll();
                             }
@@ -404,8 +405,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // NOTE: This used to be done after the putToAll, outside
                     // the synchronized block, but that led to unpredictable
                     // behavior.  Why?
-                    ((CSPReceiver) receiver)._setConditionalReceive(false,
-                            null, -1);
+                    ((CSPReceiver) receiver)._setConditionalReceive(false, null,
+                            -1);
                 }
 
                 receivers[0].putToAll(getToken(), receivers);
@@ -484,7 +485,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         for (int i = 0; i < receivers.length; i++) {
             if (!((CSPReceiver) receivers[i])._isGetWaiting()
                     && !((CSPReceiver) receivers[i])
-                    ._isConditionalReceiveWaiting()) {
+                            ._isConditionalReceiveWaiting()) {
                 return false;
             }
         }

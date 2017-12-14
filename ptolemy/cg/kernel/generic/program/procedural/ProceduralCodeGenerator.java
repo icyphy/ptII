@@ -76,7 +76,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     public ProceduralCodeGenerator(NamedObj container, String name,
             String outputFileExtension, String templateExtension)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension, templateExtension);
 
         compile = new Parameter(this, "compile");
@@ -174,8 +174,8 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ProceduralCodeGenerator newObject = (ProceduralCodeGenerator) super
-                .clone(workspace);
+        ProceduralCodeGenerator newObject = (ProceduralCodeGenerator) super.clone(
+                workspace);
         newObject._includes = null;
         newObject._libraries = null;
         newObject._modifiedVariables = null;
@@ -198,7 +198,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     public void markFunctionCalled(String name,
             ProceduralTemplateParser templateParser)
-                    throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -251,11 +251,11 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
             if (((BooleanToken) useMake.getToken()).booleanValue()) {
                 commands.add("make -f " + _sanitizedModelName + ".mk ");
             } else {
-                String command = CodeGeneratorUtilities
-                        .substitute(((StringToken) compileCommand.getToken())
-                                .stringValue(), _substituteMap);
-                System.out.println("JavaCodeGenerator: compile command: "
-                        + command);
+                String command = CodeGeneratorUtilities.substitute(
+                        ((StringToken) compileCommand.getToken()).stringValue(),
+                        _substituteMap);
+                System.out.println(
+                        "JavaCodeGenerator: compile command: " + command);
                 commands.add(command);
             }
         }
@@ -266,11 +266,11 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
                 if (((BooleanToken) useMake.getToken()).booleanValue()) {
                     commands.add("make -f " + _sanitizedModelName + ".mk run");
                 } else {
-                    String command = CodeGeneratorUtilities
-                            .substitute(((StringToken) runCommand.getToken())
-                                    .stringValue(), _substituteMap);
-                    System.out.println("JavaCodeGenerator: run command: "
-                            + command);
+                    String command = CodeGeneratorUtilities.substitute(
+                            ((StringToken) runCommand.getToken()).stringValue(),
+                            _substituteMap);
+                    System.out.println(
+                            "JavaCodeGenerator: run command: " + command);
                     commands.add(command);
                 }
             }
@@ -320,7 +320,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  sanitized version of the model name, and a ".mk" extension.
      *  Thus, for a model named "Foo", we might generate a makefile in
      *  "$HOME/codegen/Foo.mk".
-
+    
      *  <p>Under Java under Windows, your <code>$HOME</code> variable
      *  is set to the value of the <code>user.home</code>System property,
      *  which is usually something like

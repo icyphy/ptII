@@ -152,7 +152,8 @@ public class ExecutionTime extends LimitedFiringSource {
             //    dummy++;
             //}
             if (realTimeValue) {
-                moreToDo = System.currentTimeMillis() - start < executionTimeValue;
+                moreToDo = System.currentTimeMillis()
+                        - start < executionTimeValue;
             } else {
                 moreToDo = count < executionTimeValue;
             }

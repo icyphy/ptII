@@ -76,7 +76,8 @@ public class ConstraintManager {
      * @param object The given object.
      * @return The list of constraining terms for the given object.
      */
-    public List<ptolemy.graph.InequalityTerm> getConstrainingTerms(Object object) {
+    public List<ptolemy.graph.InequalityTerm> getConstrainingTerms(
+            Object object) {
         boolean least;
         try {
             least = ((StringToken) _solver.solvingFixedPoint.getToken())

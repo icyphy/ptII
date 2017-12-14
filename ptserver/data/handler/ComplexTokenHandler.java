@@ -55,8 +55,8 @@ public class ComplexTokenHandler implements TokenHandler<ComplexToken> {
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     @Override
-    public void convertToBytes(ComplexToken token, DataOutputStream outputStream)
-            throws IOException {
+    public void convertToBytes(ComplexToken token,
+            DataOutputStream outputStream) throws IOException {
         outputStream.writeDouble(token.complexValue().real);
         outputStream.writeDouble(token.complexValue().imag);
     }

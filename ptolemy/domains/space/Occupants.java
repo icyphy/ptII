@@ -220,7 +220,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      */
     private void _addNewShared(DatabaseManager database, String sourceSpaceID,
             RecordToken sourceRecord, RecordToken destinationRecord)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // Create a new entry that duplicates all the fields of source
         // except the ones that identify the destination location.
         StringBuffer fieldNames = new StringBuffer();
@@ -332,7 +332,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      */
     private RecordToken _editPersonQuery(RecordToken person, String room,
             DatabaseManager database, NamedObj object, Frame parent)
-                    throws CancelException, IllegalActionException {
+            throws CancelException, IllegalActionException {
         Query query = new Query();
         // NOTE: It would be nice to just provide editing of all fields
         // in _occupantInSpaceFields, but the sponsor needs to be dealt
@@ -351,8 +351,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 + "\ndate (if known). Dates should be in format"
                 + "\nYEAR-MONTH-DAY, as in 2008-08-15."
                 + "\nYou may also specify or change the sponsor.";
-        ComponentDialog subdialog = new ComponentDialog(parent,
-                "Edit occupant", query, null, message);
+        ComponentDialog subdialog = new ComponentDialog(parent, "Edit occupant",
+                query, null, message);
 
         if (!"OK".equals(subdialog.buttonPressed())) {
             // User canceled.
@@ -368,7 +368,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 RecordToken sponsor = _searchForPerson(newSponsorName,
                         sponsorFnames, "", "", "", parent, object, database,
                         null, "Find sponsor for " + _getField(person, "fnames")
-                        + " " + _getField(person, "lname"));
+                                + " " + _getField(person, "lname"));
                 // Get confirmation with full information.
                 newSponsorName = _getField(sponsor, "lname");
                 sponsorFnames = _getField(sponsor, "fnames");
@@ -386,8 +386,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
         Map<String, Token> map = _recordAsMap(person);
         map.put("spacenotes",
                 new StringToken(query.getStringValue("spacenotes")));
-        map.put("occupancy", new StringToken(query.getStringValue("occupancy")));
-        map.put("departure", new StringToken(query.getStringValue("departure")));
+        map.put("occupancy",
+                new StringToken(query.getStringValue("occupancy")));
+        map.put("departure",
+                new StringToken(query.getStringValue("departure")));
         map.put("sponsorlname", new StringToken(newSponsorName));
         map.put("sponsorfnames", new StringToken(sponsorFnames));
         map.put("sponsorid", new StringToken(sponsorID));
@@ -561,7 +563,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     String sourceFieldValue = ((StringToken) sourceRecord
                             .get(label)).stringValue();
                     destinationFieldValues
-                    .append(_quotedString(sourceFieldValue));
+                            .append(_quotedString(sourceFieldValue));
 
                     if (sourceFieldValues.length() > 0) {
                         sourceFieldValues.append(", ");
@@ -571,7 +573,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     String destinationFieldValue = ((StringToken) destinationRecord
                             .get(label)).stringValue();
                     sourceFieldValues
-                    .append(_quotedString(destinationFieldValue));
+                            .append(_quotedString(destinationFieldValue));
                 }
             }
 
@@ -649,7 +651,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      */
     private ArrayToken _priorOccupants(DatabaseManager database,
             String building, String room, String deskno)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // Check to see whether the requested space is vacant.
         StringBuffer sql1 = new StringBuffer();
         sql1.append("select spaceid,fnames,lname from ");
@@ -736,8 +738,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
             query.addDisplay("sponsorlname", "sponsor last name", sponsorlname);
         }
 
-        ComponentDialog subdialog = new ComponentDialog(parent,
-                "Find a person", query, null, message);
+        ComponentDialog subdialog = new ComponentDialog(parent, "Find a person",
+                query, null, message);
 
         if (!"OK".equals(subdialog.buttonPressed())) {
             // User canceled.
@@ -803,8 +805,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
             // No pattern was specified.
             MessageHandler.warning("Please specify a search pattern.");
             // Re-open the dialog.
-            return _searchForPerson(lname, fnames, classcd, email,
-                    sponsorlname, parent, object, database, sponsor, message);
+            return _searchForPerson(lname, fnames, classcd, email, sponsorlname,
+                    parent, object, database, sponsor, message);
         }
         sql.append(";");
         ArrayToken matches = database.executeQuery(sql.toString());
@@ -820,8 +822,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
         // to redo the search).
         if (sponsor == null) {
             while (matches.length() == 0) {
-                if (MessageHandler
-                        .yesNoQuestion("No matching entries. Create a new entry?")) {
+                if (MessageHandler.yesNoQuestion(
+                        "No matching entries. Create a new entry?")) {
                     // The next to final null argument forces the sponsor to match in the database.
                     // We need to be able to have a sponsor that is not the people database (e.g.
                     // a center), so we construct a dummy record for that.
@@ -936,18 +938,18 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
                 String[] buttons = { "Close", "Edit occupant", "Move occupant",
                         "Add occupant", "Remove occupant", "Remove space",
-                "Add space" };
+                        "Add space" };
 
                 // Set up table selection interaction.
                 // Set the table to allow only one row selected at a time.
                 _table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                _table.getSelectionModel().addListSelectionListener(
-                        new RowListener());
+                _table.getSelectionModel()
+                        .addListSelectionListener(new RowListener());
 
                 // If there was previously a selection, then make sure it is still selected.
                 if (_selectedRow >= 0 && _selectedRow < _table.getRowCount()) {
-                    _table.getSelectionModel().setSelectionInterval(
-                            _selectedRow, _selectedRow);
+                    _table.getSelectionModel()
+                            .setSelectionInterval(_selectedRow, _selectedRow);
                 }
 
                 ComponentDialog dialog = new ComponentDialog(parent,
@@ -992,8 +994,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
 
                     // First bring up a dialog to specify a search for an existing person.
                     String databaseName = databaseManager.stringValue();
-                    database = DatabaseManager.findDatabaseManager(
-                            databaseName, Occupants.this);
+                    database = DatabaseManager.findDatabaseManager(databaseName,
+                            Occupants.this);
 
                     // Construct a query pre-populated with the specified information.
                     RecordToken newPerson = _editPersonQuery(record, room,
@@ -1012,8 +1014,9 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         first = false;
                         update.append(label);
                         update.append("=");
-                        update.append(_quotedString(((StringToken) newPerson
-                                .get(label)).stringValue()));
+                        update.append(_quotedString(
+                                ((StringToken) newPerson.get(label))
+                                        .stringValue()));
                     }
                     update.append(" where trim(spaceid)='");
                     update.append(sourceSpaceID);
@@ -1038,9 +1041,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         String lname = _getField(record, "lname");
 
                         // If there is no person, warn and abort.
-                        if (fnames.trim().equals("") && lname.trim().equals("")) {
-                            MessageHandler
-                            .warning("No person occupying the selected space.");
+                        if (fnames.trim().equals("")
+                                && lname.trim().equals("")) {
+                            MessageHandler.warning(
+                                    "No person occupying the selected space.");
                             createEditor(object, parent);
                             return;
                         }
@@ -1113,7 +1117,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                     } else if ("Share with occupant"
                                             .equals(confirmResponse)) {
                                         if (_move(database, sourceSpaceID,
-                                                priorOccupantsSpaceID, _ADD_NEW)) {
+                                                priorOccupantsSpaceID,
+                                                _ADD_NEW)) {
                                             // User did not cancel.
                                             // Re-open the dialog until the Close button is pressed.
                                             alteredDatabase = true;
@@ -1145,8 +1150,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         }
                     } catch (KernelException e) {
                         // This should have been caught earlier.
-                        MessageHandler
-                        .error("Update failed. Perhaps you need to resynchronize with the database?",
+                        MessageHandler.error(
+                                "Update failed. Perhaps you need to resynchronize with the database?",
                                 e);
                         return;
                     }
@@ -1164,8 +1169,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                             .stringValue();
 
                     String databaseName = databaseManager.stringValue();
-                    database = DatabaseManager.findDatabaseManager(
-                            databaseName, Occupants.this);
+                    database = DatabaseManager.findDatabaseManager(databaseName,
+                            Occupants.this);
 
                     // Check whether the space is occupied.
                     boolean share = false;
@@ -1227,8 +1232,9 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         first = false;
                         update.append(label);
                         update.append("=");
-                        update.append(_quotedString(((StringToken) newPerson
-                                .get(label)).stringValue()));
+                        update.append(_quotedString(
+                                ((StringToken) newPerson.get(label))
+                                        .stringValue()));
                     }
                     update.append(" where trim(spaceid)='");
                     update.append(sourceSpaceID);
@@ -1284,8 +1290,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     update.append("';");
 
                     String databaseName = databaseManager.stringValue();
-                    database = DatabaseManager.findDatabaseManager(
-                            databaseName, Occupants.this);
+                    database = DatabaseManager.findDatabaseManager(databaseName,
+                            Occupants.this);
 
                     database.executeUpdate(update.toString(), 1);
                     alteredDatabase = true;
@@ -1296,8 +1302,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     try {
                         ArrayToken array = (ArrayToken) records.getToken();
                         if (array.length() <= _selectedRow) {
-                            MessageHandler.error("No such row with index "
-                                    + _selectedRow);
+                            MessageHandler.error(
+                                    "No such row with index " + _selectedRow);
                             return;
                         }
                         RecordToken record = (RecordToken) array
@@ -1305,13 +1311,13 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         String spaceid = ((StringToken) record.get("spaceid"))
                                 .stringValue();
                         if (spaceid == null) {
-                            MessageHandler
-                            .error("No space ID for the selected space.");
+                            MessageHandler.error(
+                                    "No space ID for the selected space.");
                             return;
                         }
                         // Get confirmation.
-                        if (!MessageHandler
-                                .yesNoQuestion("Are you sure you want to permanently remove space with ID "
+                        if (!MessageHandler.yesNoQuestion(
+                                "Are you sure you want to permanently remove space with ID "
                                         + spaceid)) {
                             return;
                         }
@@ -1328,8 +1334,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         alteredDatabase = true;
                     } catch (KernelException e) {
                         // This should have been caught earlier.
-                        MessageHandler
-                        .error("Update failed. Perhaps you need to resynchronize with the database?",
+                        MessageHandler.error(
+                                "Update failed. Perhaps you need to resynchronize with the database?",
                                 e);
                         return;
                     }
@@ -1370,7 +1376,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                             StringBuffer sql = new StringBuffer();
                             sql.append("insert into ");
                             sql.append(table.stringValue());
-                            sql.append(" (bldg,room,deskno,hasdesk,roomtype,spacenotes) values(");
+                            sql.append(
+                                    " (bldg,room,deskno,hasdesk,roomtype,spacenotes) values(");
                             sql.append(_quotedString(building));
                             sql.append(",");
                             sql.append(_quotedString(room));
@@ -1391,8 +1398,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                         }
                     } catch (KernelException e) {
                         // This should have been caught earlier.
-                        MessageHandler
-                        .error("Update failed. Perhaps you need to resynchronize with the database?",
+                        MessageHandler.error(
+                                "Update failed. Perhaps you need to resynchronize with the database?",
                                 e);
                         return;
                     }

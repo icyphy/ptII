@@ -83,8 +83,9 @@ public final class UnionFindSimple {
 
     public int getRepresentative(int id) {
         // terminal case: a node is its own parent.
-        if (data[SZ * id] == id)
+        if (data[SZ * id] == id) {
             return id;
+        }
 
         // otherwise, recurse...
         int root = getRepresentative(data[SZ * id]);
@@ -100,8 +101,9 @@ public final class UnionFindSimple {
         int aroot = getRepresentative(aid);
         int broot = getRepresentative(bid);
 
-        if (aroot == broot)
+        if (aroot == broot) {
             return aroot;
+        }
 
         int asz = data[SZ * aroot + 1];
         int bsz = data[SZ * broot + 1];
@@ -155,15 +157,17 @@ public final class UnionFindSimple {
                     }
                 }
 
-                if (reachable.size() == size0)
+                if (reachable.size() == size0) {
                     break;
+                }
             }
 
             for (int b = 0; b < nnodes; b++) {
-                if (reachable.contains(b))
+                if (reachable.contains(b)) {
                     assert (uf.getRepresentative(a) == uf.getRepresentative(b));
-                else
+                } else {
                     assert (uf.getRepresentative(a) != uf.getRepresentative(b));
+                }
             }
 
             assert (reachable.size() == uf.getSetSize(a));

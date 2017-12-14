@@ -130,8 +130,8 @@ public class Integrator extends DETransformer {
             if (_lastInput != null) {
                 Token lastToken = (Token) _lastInput.contents;
                 Time lastTime = _lastInput.timeStamp;
-                Token timeGap = new DoubleToken(currentTime.subtract(lastTime)
-                        .getDoubleValue());
+                Token timeGap = new DoubleToken(
+                        currentTime.subtract(lastTime).getDoubleValue());
                 Token integrand = new DoubleToken(0.0);
 
                 //Calculate the interpolated value, multiply by dt

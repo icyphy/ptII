@@ -53,8 +53,8 @@ import diva.util.Filter;
  * @author John Reekie
  * @Pt.AcceptedRating Yellow
  */
-public class FigureLayer extends CanvasLayer implements FigureContainer,
-EventAcceptor {
+public class FigureLayer extends CanvasLayer
+        implements FigureContainer, EventAcceptor {
     /** The figures contained in this layer.
      */
     private ZList _zlist = null;
@@ -183,8 +183,8 @@ EventAcceptor {
     @Override
     public void decorate(Figure child, FigureDecorator decorator) {
         if (child.getParent() != this) {
-            throw new IllegalArgumentException("The object " + child
-                    + " is not a child of " + this);
+            throw new IllegalArgumentException(
+                    "The object " + child + " is not a child of " + this);
         }
 
         child.repaint();
@@ -223,8 +223,8 @@ EventAcceptor {
             break;
 
         default:
-            throw new IllegalArgumentException("Unrecognized event type: "
-                    + event);
+            throw new IllegalArgumentException(
+                    "Unrecognized event type: " + event);
         }
     }
 
@@ -325,10 +325,10 @@ EventAcceptor {
      */
     public void grabPointer(LayerEvent e, Figure f) {
         if (e.getID() != MouseEvent.MOUSE_PRESSED) {
-            throw new IllegalArgumentException("The event " + e
-                    + " is not a mouse pressed event.\n"
-                    + "Only mouse pressed events can grab the pointer"
-                    + " (for now)");
+            throw new IllegalArgumentException(
+                    "The event " + e + " is not a mouse pressed event.\n"
+                            + "Only mouse pressed events can grab the pointer"
+                            + " (for now)");
         }
 
         // Remember the grab
@@ -453,8 +453,9 @@ EventAcceptor {
      */
     @Override
     public Figure pick(Rectangle2D region) {
-        return CanvasUtilities.pick(_zlist.getIntersectedFigures(region)
-                .figuresFromFront(), region);
+        return CanvasUtilities.pick(
+                _zlist.getIntersectedFigures(region).figuresFromFront(),
+                region);
     }
 
     /** Get the picked figure. This method recursively traverses the
@@ -553,8 +554,8 @@ EventAcceptor {
     @Override
     public void undecorate(FigureDecorator decorator) {
         if (decorator.getParent() != this) {
-            throw new IllegalArgumentException("The object " + decorator
-                    + "is not a child of " + this);
+            throw new IllegalArgumentException(
+                    "The object " + decorator + "is not a child of " + this);
         }
 
         decorator.repaint();
@@ -673,11 +674,11 @@ EventAcceptor {
             _pointerGrabber = null;
             break;
 
-            // Process a click event only. This code ignores the
-            // grab, as it should have already been cleared by a
-            // preceding MOUSE_RELEASED event. I'm not entirely
-            // sure if this is actually correct or not.
-            //
+        // Process a click event only. This code ignores the
+        // grab, as it should have already been cleared by a
+        // preceding MOUSE_RELEASED event. I'm not entirely
+        // sure if this is actually correct or not.
+        //
         case MouseEvent.MOUSE_CLICKED:
 
             // Get the figure that the mouse hit, if any

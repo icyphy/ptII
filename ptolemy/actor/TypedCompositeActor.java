@@ -406,7 +406,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             if (conflicts.size() > 0) {
                 throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + topLevel.getFullName()
-                        + " on the following inequalities:");
+                                + " on the following inequalities:");
             }
             if (unacceptable.size() > 0) {
                 throw new TypeConflictException(unacceptable,
@@ -467,8 +467,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     Iterator<IOPort> ports = actor.outputPortList().iterator();
 
                     while (ports.hasNext()) {
-                        result.addAll(_destinationTypeConstraints((TypedIOPort) ports
-                                .next()));
+                        result.addAll(_destinationTypeConstraints(
+                                (TypedIOPort) ports.next()));
                     }
                 }
 
@@ -594,8 +594,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   name already in the actor.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
                     "TypedCompositeActor can only contain instances of "
@@ -660,8 +660,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     // both source/destination ports are declared,
                     // check type
                     Type destDeclared = destinationPort.getType();
-                    int compare = TypeLattice
-                            .compare(srcDeclared, destDeclared);
+                    int compare = TypeLattice.compare(srcDeclared,
+                            destDeclared);
 
                     if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         Inequality inequality = new Inequality(
@@ -725,8 +725,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // 2) only setup type constraint if bidirectional type
             // inference is enabled.
             if (isBackwardTypeInferenceEnabled()) {
-                result.add(new Inequality(new GLBFunction(source), source
-                        .getTypeTerm()));
+                result.add(new Inequality(new GLBFunction(source),
+                        source.getTypeTerm()));
             }
         }
 
@@ -769,8 +769,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             TypedActor actor = (TypedActor) entities.next();
 
             if (actor instanceof TypedCompositeActor) {
-                result.addAll(((TypedCompositeActor) actor)
-                        ._checkDeclaredTypes());
+                result.addAll(
+                        ((TypedCompositeActor) actor)._checkDeclaredTypes());
             }
 
             // Type check from all the ports on the contained actor.

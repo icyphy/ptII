@@ -490,7 +490,8 @@ public class CalendarQueue implements Debuggable {
                 // There are more entries in the bucket.
                 Object nextInBucket = bucketHead[currentBucket].contents;
 
-                while (_cqComparator.getVirtualBinNumber(nextInBucket) == virtualBucket) {
+                while (_cqComparator
+                        .getVirtualBinNumber(nextInBucket) == virtualBucket) {
                     // The entry is in the current year. Return it.
                     result[index] = nextInBucket;
                     index++;
@@ -645,8 +646,8 @@ public class CalendarQueue implements Debuggable {
                 // The bucket is not empty.
                 Object minimumInBucket = _bucket[i].head.contents;
 
-                if (_cqComparator.getVirtualBinNumber(minimumInBucket) == _minVirtualBucket
-                        + j) {
+                if (_cqComparator.getVirtualBinNumber(
+                        minimumInBucket) == _minVirtualBucket + j) {
                     // The entry is in the current year. Record its index.
                     _indexOfMinimumBucket = i;
                     break;
@@ -656,7 +657,8 @@ public class CalendarQueue implements Debuggable {
                     if (minSoFar == null) {
                         minSoFar = minimumInBucket;
                         indexOfMinimum = i;
-                    } else if (_cqComparator.compare(minimumInBucket, minSoFar) < 0) {
+                    } else if (_cqComparator.compare(minimumInBucket,
+                            minSoFar) < 0) {
                         minSoFar = minimumInBucket;
                         indexOfMinimum = i;
                     }

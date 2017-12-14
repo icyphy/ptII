@@ -111,8 +111,8 @@ public class FixType extends StructuredType implements Cloneable {
     @Override
     public Token convert(Token token) throws IllegalActionException {
         if (token.getType() instanceof FixType
-                && (_compare((FixType) token.getType()) == CPO.SAME || _compare((FixType) token
-                        .getType()) == CPO.HIGHER)) {
+                && (_compare((FixType) token.getType()) == CPO.SAME
+                        || _compare((FixType) token.getType()) == CPO.HIGHER)) {
 
             // The overflow and rounding modes could be anything here,
             // since the above check should ensure that rounding and
@@ -121,8 +121,8 @@ public class FixType extends StructuredType implements Cloneable {
                     getPrecision(), Overflow.GROW, Rounding.HALF_EVEN));
         }
 
-        throw new IllegalActionException(Token.notSupportedConversionMessage(
-                token, toString()));
+        throw new IllegalActionException(
+                Token.notSupportedConversionMessage(token, toString()));
     }
 
     /** Return a new type which represents the type that results from
@@ -250,7 +250,8 @@ public class FixType extends StructuredType implements Cloneable {
     @Override
     public boolean isSubstitutionInstance(Type type) {
         if (type instanceof StructuredType) {
-            return ((StructuredType) type)._getRepresentative() == _getRepresentative();
+            return ((StructuredType) type)
+                    ._getRepresentative() == _getRepresentative();
         } else {
             return false;
         }
@@ -389,8 +390,8 @@ public class FixType extends StructuredType implements Cloneable {
     @Override
     protected int _compare(StructuredType type) {
         if (!(type instanceof FixType)) {
-            throw new IllegalArgumentException("FixType._compare: "
-                    + "The argument is not a FixType.");
+            throw new IllegalArgumentException(
+                    "FixType._compare: " + "The argument is not a FixType.");
         }
 
         Precision precision = ((FixType) type).getPrecision();
@@ -429,11 +430,13 @@ public class FixType extends StructuredType implements Cloneable {
                 return CPO.SAME;
             }
         } else if (signBit1 && !signBit2) {
-            if (fractionBits1 >= fractionBits2 && integerBits1 >= integerBits2) {
+            if (fractionBits1 >= fractionBits2
+                    && integerBits1 >= integerBits2) {
                 return CPO.HIGHER;
             }
         } else {
-            if (fractionBits1 <= fractionBits2 && integerBits1 <= integerBits2) {
+            if (fractionBits1 <= fractionBits2
+                    && integerBits1 <= integerBits2) {
                 return CPO.LOWER;
             }
         }
@@ -468,8 +471,8 @@ public class FixType extends StructuredType implements Cloneable {
                 _precision.getFractionBitLength());
         int integerBits = Math.min(precision.getIntegerBitLength(),
                 _precision.getIntegerBitLength());
-        return new FixType(new Precision(fractionBits + integerBits,
-                integerBits));
+        return new FixType(
+                new Precision(fractionBits + integerBits, integerBits));
     }
 
     /** Return the least upper bound of this type with the specified
@@ -491,8 +494,8 @@ public class FixType extends StructuredType implements Cloneable {
                 _precision.getFractionBitLength());
         int integerBits = Math.max(precision.getIntegerBitLength(),
                 _precision.getIntegerBitLength());
-        FixType returnType = new FixType(new Precision(fractionBits
-                + integerBits, integerBits));
+        FixType returnType = new FixType(
+                new Precision(fractionBits + integerBits, integerBits));
         returnType._checkPrecision();
         return returnType;
     }
@@ -504,10 +507,8 @@ public class FixType extends StructuredType implements Cloneable {
         if (_precision.getNumberOfBits() > 128) {
             throw new RuntimeException(
                     "Large fixed point type detected during type resolution."
-                            + "  The structured type "
-                            + this
-                            + " has depth larger than the bound "
-                            + 128
+                            + "  The structured type " + this
+                            + " has depth larger than the bound " + 128
                             + ".  This may be an indicator of type constraints "
                             + "in a model with no finite solution, which may occur "
                             + "if there is a feedback loop that requires an "

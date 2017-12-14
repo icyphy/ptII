@@ -80,8 +80,7 @@ public class UDPSocketHelper extends VertxHelperBase {
      *  @param enableBroadcast enabling or not message broadcasting
      *  @return The UDP socket helper.
      */
-    public UDPSocket createSocket(
-            ScriptObjectMirror scriptObjectMirror,
+    public UDPSocket createSocket(ScriptObjectMirror scriptObjectMirror,
             boolean enableBroadcast) {
         // FIXME: Support send and receive types.
         return new UDPSocket(scriptObjectMirror, enableBroadcast);
@@ -94,9 +93,11 @@ public class UDPSocketHelper extends VertxHelperBase {
      *  @param helping The JavaScript object that this is helping.
      *  @return The UDPSocketHelper.
      */
-    public static UDPSocketHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
+    public static UDPSocketHelper getOrCreateHelper(Object actor,
+            ScriptObjectMirror helping) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
-        if (helper instanceof UDPSocketHelper && helper.getHelping() == helping) {
+        if (helper instanceof UDPSocketHelper
+                && helper.getHelping() == helping) {
             return (UDPSocketHelper) helper;
         }
         return new UDPSocketHelper(actor, helping);
@@ -135,11 +136,13 @@ public class UDPSocketHelper extends VertxHelperBase {
          *  @param currentObj The corresponding JavaScript Socket object.
          *  @param enableBroadcast enabling or not message broadcasting
          */
-        public UDPSocket(ScriptObjectMirror currentObj, boolean enableBroadcast) {
+        public UDPSocket(ScriptObjectMirror currentObj,
+                boolean enableBroadcast) {
             _currentObj = currentObj;
             _isOpen = false;
             if (enableBroadcast == true) {
-                _socket = _vertx.createDatagramSocket(new DatagramSocketOptions().setBroadcast(true));
+                _socket = _vertx.createDatagramSocket(
+                        new DatagramSocketOptions().setBroadcast(true));
             } else {
                 _socket = _vertx.createDatagramSocket();
             }
@@ -154,50 +157,70 @@ public class UDPSocketHelper extends VertxHelperBase {
          *  @param callback A callback function to invoke when the binding is complete,
          *   or null to not request a callback.
          */
-        public void bind(
-                final int port,
-                final String address,
+        public void bind(final int port, final String address,
                 final ScriptObjectMirror callback) {
             submit(() -> {
-                _socket.listen(port, address, new Handler<AsyncResult<DatagramSocket>>() {
-                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
-                        if (asyncResult.succeeded()) {
-                            _isOpen = true;
+                _socket.listen(port, address,
+                        new Handler<AsyncResult<DatagramSocket>>() {
+                            @Override
+                            public void handle(
+                                    AsyncResult<DatagramSocket> asyncResult) {
+                                if (asyncResult.succeeded()) {
+                                    _isOpen = true;
 
-                            _socket.handler(new Handler<DatagramPacket>() {
-                                public void handle(final DatagramPacket packet) {
-                                    // Emit the message in the director thread.
-                                    _issueResponse(() -> {
-                                            // Construct a string with the sender information following
-                                            // the JSON format
-                                        String sender = "{\"ipAddress\": \"" + packet.sender().host() + "\",";
-                                        sender += "\"port\": " + packet.sender().port() + "}";
-                                        _emitMessage(packet.data(), sender);
+                                    _socket.handler(
+                                            new Handler<DatagramPacket>() {
+                                                @Override
+                                                public void handle(
+                                                        final DatagramPacket packet) {
+                                                    // Emit the message in the director thread.
+                                                    _issueResponse(() -> {
+                                                        // Construct a string with the sender information following
+                                                        // the JSON format
+                                                        String sender = "{\"ipAddress\": \""
+                                                                + packet.sender()
+                                                                        .host()
+                                                                + "\",";
+                                                        sender += "\"port\": "
+                                                                + packet.sender()
+                                                                        .port()
+                                                                + "}";
+                                                        _emitMessage(
+                                                                packet.data(),
+                                                                sender);
+                                                    });
+                                                }
+                                            });
+                                    _socket.endHandler(new Handler<Void>() {
+                                        @Override
+                                        public void handle(Void foo) {
+                                            close();
+                                        }
                                     });
-                                }
-                            });
-                            _socket.endHandler(new Handler<Void>() {
-                                public void handle(Void foo) {
-                                    close();
-                                }
-                            });
-                            _socket.exceptionHandler(new Handler<Throwable>() {
-                                public void handle(Throwable error) {
-                                    _currentObj.callMember("emit", "error", error.getMessage());
-                                }
-                            });
+                                    _socket.exceptionHandler(
+                                            new Handler<Throwable>() {
+                                                @Override
+                                                public void handle(
+                                                        Throwable error) {
+                                                    _currentObj.callMember(
+                                                            "emit", "error",
+                                                            error.getMessage());
+                                                }
+                                            });
 
-                            _issueResponse(() -> {
-                                if (callback != null) {
-                                    callback.call(_currentObj);
+                                    _issueResponse(() -> {
+                                        if (callback != null) {
+                                            callback.call(_currentObj);
+                                        }
+                                        _currentObj.callMember("emit",
+                                                "listening");
+                                    });
+                                } else {
+                                    _error(_currentObj, "Bind failed: "
+                                            + asyncResult.cause());
                                 }
-                                _currentObj.callMember("emit", "listening");
-                            });
-                        } else {
-                            _error(_currentObj, "Bind failed: " + asyncResult.cause());
-                        }
-                    }
-                });
+                            }
+                        });
             });
         }
 
@@ -222,11 +245,8 @@ public class UDPSocketHelper extends VertxHelperBase {
          *   or if an error occurs. In the latter case, the cause of the error will be passed
          *   as an argument to the callback.
          */
-        public void send(
-                final Object data,
-                final int port,
-                final String hostname,
-                final ScriptObjectMirror callback) {
+        public void send(final Object data, final int port,
+                final String hostname, final ScriptObjectMirror callback) {
             submit(() -> {
                 Buffer buffer = Buffer.buffer();
                 // Handle the case where data is an array.
@@ -236,7 +256,8 @@ public class UDPSocketHelper extends VertxHelperBase {
                         // it seems that Nashorn's Java.to() function creates
                         // a bigger array than needed with trailing null elements.
                         if (element != null) {
-                            _appendToBuffer(element, _sendType, _sendImageType, buffer);
+                            _appendToBuffer(element, _sendType, _sendImageType,
+                                    buffer);
                         }
                     }
                 } else if (data instanceof ScriptObjectMirror) {
@@ -253,15 +274,19 @@ public class UDPSocketHelper extends VertxHelperBase {
                     // create an array if all the keys were numbers
                     // starting with 1 and increasing monotonically.
                     if (!_rawBytes) {
-                        for (Object element : ((ScriptObjectMirror) data).values()) {
+                        for (Object element : ((ScriptObjectMirror) data)
+                                .values()) {
                             if (element != null) {
-                                _appendToBuffer(element, _sendType, _sendImageType, buffer);
+                                _appendToBuffer(element, _sendType,
+                                        _sendImageType, buffer);
                             }
                         }
                     } else {
-                        for (Object element : ((ScriptObjectMirror) data).values()) {
+                        for (Object element : ((ScriptObjectMirror) data)
+                                .values()) {
                             if (element != null) {
-                                byte lowByte = (byte)(((Integer)element) & 0xFF);
+                                byte lowByte = (byte) (((Integer) element)
+                                        & 0xFF);
                                 buffer.appendByte(lowByte);
                             }
                         }
@@ -273,19 +298,25 @@ public class UDPSocketHelper extends VertxHelperBase {
                 // Send a Buffer
                 _socket.send(buffer, port, hostname,
                         new Handler<AsyncResult<DatagramSocket>>() {
-                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
-                        if (asyncResult.succeeded()) {
-                            if (callback != null) {
-                                callback.call(_currentObj);
+                            @Override
+                            public void handle(
+                                    AsyncResult<DatagramSocket> asyncResult) {
+                                if (asyncResult.succeeded()) {
+                                    if (callback != null) {
+                                        callback.call(_currentObj);
+                                    }
+                                } else {
+                                    if (callback != null) {
+                                        callback.call(_currentObj,
+                                                asyncResult.cause());
+                                    }
+                                    _error(_currentObj,
+                                            "Send failed: "
+                                                    + asyncResult.cause(),
+                                            asyncResult.cause());
+                                }
                             }
-                        } else {
-                            if (callback != null) {
-                                callback.call(_currentObj, asyncResult.cause());
-                            }
-                            _error(_currentObj, "Send failed: " + asyncResult.cause(), asyncResult.cause());
-                        }
-                    }
-                });
+                        });
             });
         }
 
@@ -301,7 +332,8 @@ public class UDPSocketHelper extends VertxHelperBase {
          */
         public void setReceiveType(String type) {
             try {
-                _receiveType = Enum.valueOf(DATA_TYPE.class, type.trim().toUpperCase());
+                _receiveType = Enum.valueOf(DATA_TYPE.class,
+                        type.trim().toUpperCase());
             } catch (Exception ex) {
                 _error(_currentObj, "Invalid receive data type: " + type, ex);
             }
@@ -312,7 +344,8 @@ public class UDPSocketHelper extends VertxHelperBase {
          */
         public void setSendType(String type) {
             try {
-                _sendType = Enum.valueOf(DATA_TYPE.class, type.trim().toUpperCase());
+                _sendType = Enum.valueOf(DATA_TYPE.class,
+                        type.trim().toUpperCase());
             } catch (Exception ex) {
                 // It might be an image type.
                 if (getImageTypes().contains(type)) {
@@ -320,7 +353,8 @@ public class UDPSocketHelper extends VertxHelperBase {
                     _sendType = DATA_TYPE.IMAGE;
                 } else {
                     _error(_currentObj, "Invalid send data type: " + type);
-                    throw new IllegalArgumentException("Invalid send data type: " + type);
+                    throw new IllegalArgumentException(
+                            "Invalid send data type: " + type);
                 }
             }
         }
@@ -333,7 +367,8 @@ public class UDPSocketHelper extends VertxHelperBase {
         protected void _emitMessage(Buffer buffer, String sender) {
             if (_receiveType == DATA_TYPE.STRING) {
                 if (!_rawBytes) {
-                    _currentObj.callMember("emit", "message", buffer.getString(0, buffer.length()), sender);
+                    _currentObj.callMember("emit", "message",
+                            buffer.getString(0, buffer.length()), sender);
                 } else {
                     byte[] bytes = buffer.getBytes();
                     _currentObj.callMember("emit", "message", bytes, sender);
@@ -341,16 +376,21 @@ public class UDPSocketHelper extends VertxHelperBase {
             } else if (_receiveType == DATA_TYPE.IMAGE) {
                 try {
                     byte[] bytes = buffer.getBytes();
-                    ByteArrayBackedInputStream byteStream = new ByteArrayBackedInputStream(bytes);
+                    ByteArrayBackedInputStream byteStream = new ByteArrayBackedInputStream(
+                            bytes);
                     BufferedImage image = ImageIO.read(byteStream);
-                    if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
+                    if (image != null && image.getHeight() > 0
+                            && image.getWidth() > 0) {
                         ImageToken token = new AWTImageToken(image);
-                        _currentObj.callMember("emit", "message", token, sender);
+                        _currentObj.callMember("emit", "message", token,
+                                sender);
                     } else {
                         _error(_currentObj, "Received corrupted image.");
                     }
                 } catch (IOException e) {
-                    _error(_currentObj, "Failed to read incoming image: " + e.toString(), e);
+                    _error(_currentObj,
+                            "Failed to read incoming image: " + e.toString(),
+                            e);
                 }
             } else {
                 // Assume a numeric type.
@@ -359,18 +399,22 @@ public class UDPSocketHelper extends VertxHelperBase {
                 // 0, which would invoke _error() but might return so
                 // we check here.
                 if (size == 0) {
-                    _error(_currentObj, "Type " + _receiveType + " is not supported.");
+                    _error(_currentObj,
+                            "Type " + _receiveType + " is not supported.");
                 } else {
                     int length = buffer.length();
                     int numberOfElements = length / size;
                     if (numberOfElements == 1) {
-                        _currentObj.callMember("emit", "message", _extractFromBuffer(buffer, _receiveType, 0), sender);
+                        _currentObj.callMember("emit", "message",
+                                _extractFromBuffer(buffer, _receiveType, 0),
+                                sender);
                     } else if (numberOfElements > 1) {
                         // Using message framing, so we output a single array.
                         Object[] result = new Object[numberOfElements];
                         int position = 0;
                         for (int i = 0; i < result.length; i++) {
-                            result[i] = _extractFromBuffer(buffer, _receiveType, position);
+                            result[i] = _extractFromBuffer(buffer, _receiveType,
+                                    position);
                             position += size;
                         }
                         // NOTE: If we return result, then the emitter will not
@@ -378,11 +422,15 @@ public class UDPSocketHelper extends VertxHelperBase {
                         // dance here which is probably very inefficient (almost
                         // certainly... the array gets copied).
                         try {
-                            _currentObj.callMember("emit", "message", _actor.toJSArray(result), sender);
+                            _currentObj.callMember("emit", "message",
+                                    _actor.toJSArray(result), sender);
                         } catch (Exception e) {
-                            _error(_currentObj, "Failed to convert to a JavaScript array: "
-                                   + e, e);
-                            _currentObj.callMember("emit", "message", result, sender);
+                            _error(_currentObj,
+                                    "Failed to convert to a JavaScript array: "
+                                            + e,
+                                    e);
+                            _currentObj.callMember("emit", "message", result,
+                                    sender);
                         }
                     } else {
                         _error(_currentObj, "Expect to receive type "

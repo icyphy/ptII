@@ -76,8 +76,8 @@ public interface LiveSoundInterface {
      *  @exception IOException If the calling program does not have permission
      *  to access the audio capture resources.
      */
-    public void flushCaptureBuffer(Object consumer) throws IOException,
-    IllegalStateException;
+    public void flushCaptureBuffer(Object consumer)
+            throws IOException, IllegalStateException;
 
     /** Flush queued data from the playback buffer.  The flushed data is
      *  discarded.  It is only legal to flush the playback buffer after
@@ -101,8 +101,8 @@ public interface LiveSoundInterface {
      *  @exception IOException If the calling program does not have permission
      *  to access the audio playback resources.
      */
-    public void flushPlaybackBuffer(Object producer) throws IOException,
-    IllegalStateException;
+    public void flushPlaybackBuffer(Object producer)
+            throws IOException, IllegalStateException;
 
     /** Return the number of bits per audio sample, which is
      *  set by the setBitsPerSample() method. The default
@@ -202,8 +202,8 @@ public interface LiveSoundInterface {
      *  @exception IOException If the calling program does not have permission
      *   to access the audio capture resources.
      */
-    public double[][] getSamples(Object consumer) throws IOException,
-    IllegalStateException;
+    public double[][] getSamples(Object consumer)
+            throws IOException, IllegalStateException;
 
     /** Get the array length (in samples per channel) to use
      *  for capturing and playing samples via the putSamples()
@@ -396,8 +396,8 @@ public interface LiveSoundInterface {
      *  @exception IllegalStateException If this method is called
      *   while audio capture is already active.
      */
-    public void startCapture(Object consumer) throws IOException,
-    IllegalStateException;
+    public void startCapture(Object consumer)
+            throws IOException, IllegalStateException;
 
     /** Start audio playback. The specified object will be
      *  given an exclusive lock on the audio playback resources
@@ -419,8 +419,8 @@ public interface LiveSoundInterface {
      *  @exception IllegalStateException If this method is called
      *   while audio playback is already active.
      */
-    public void startPlayback(Object producer) throws IOException,
-    IllegalStateException;
+    public void startPlayback(Object producer)
+            throws IOException, IllegalStateException;
 
     /** Stop audio capture. If the specified object has
      *  the lock on audio capture when this method is
@@ -438,8 +438,8 @@ public interface LiveSoundInterface {
      *   object did not hold an exclusive lock on the
      *   captured audio resources when this method was invoked.
      */
-    public void stopCapture(Object consumer) throws IOException,
-    IllegalStateException;
+    public void stopCapture(Object consumer)
+            throws IOException, IllegalStateException;
 
     /** Stop audio playback. If the specified object has
      *  the lock on audio playback when this method is
@@ -452,13 +452,13 @@ public interface LiveSoundInterface {
      *
      *  @exception IOException If another object currently has access
      *   to the audio capture resources or if stopping the playback throws it.
-
+    
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   playback audio resources when this method was invoked.
      *
      */
-    public void stopPlayback(Object producer) throws IOException,
-    IllegalStateException;
+    public void stopPlayback(Object producer)
+            throws IOException, IllegalStateException;
 
 }

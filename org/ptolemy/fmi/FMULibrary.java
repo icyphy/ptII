@@ -87,8 +87,8 @@ public interface FMULibrary extends FMILibrary {
          *  @param message The printf style format string.
          */
         @Override
-        public void apply(Pointer fmiComponent, String instanceName,
-                int status, String category, String message
+        public void apply(Pointer fmiComponent, String instanceName, int status,
+                String category, String message
         /*, Pointer*//*...*//*parameters*/) {
             // We place this method in separate file for testing purposes.
             FMULog.log(_modelDescription, fmiComponent, instanceName, status,
@@ -167,8 +167,8 @@ public interface FMULibrary extends FMILibrary {
         @Override
         public void apply(Pointer fmiComponent, int status) {
             // FIXME: More should be done here.
-            System.out.println("Java fmiStepFinished: " + fmiComponent + " "
-                    + status);
+            System.out.println(
+                    "Java fmiStepFinished: " + fmiComponent + " " + status);
         }
     };
 }

@@ -128,18 +128,16 @@ public class DtdDemo extends XmlApp {
                 value = makeLiteral(parser.getEntityValue(ename));
                 break;
 
-                // External binary entity
+            // External binary entity
             case XmlParser.ENTITY_NDATA:
-                value = makeExternalIdentifiers(
-                        parser.getEntityPublicId(ename),
-                        parser.getEntitySystemId(ename))
-                        + "NDATA " + parser.getEntityNotationName(ename);
+                value = makeExternalIdentifiers(parser.getEntityPublicId(ename),
+                        parser.getEntitySystemId(ename)) + "NDATA "
+                        + parser.getEntityNotationName(ename);
                 break;
 
-                // External text entity
+            // External text entity
             case XmlParser.ENTITY_TEXT:
-                value = makeExternalIdentifiers(
-                        parser.getEntityPublicId(ename),
+                value = makeExternalIdentifiers(parser.getEntityPublicId(ename),
                         parser.getEntitySystemId(ename));
                 break;
             }
@@ -305,9 +303,8 @@ public class DtdDemo extends XmlApp {
             return "#REQUIRED";
 
         case XmlParser.ATTRIBUTE_DEFAULT_FIXED:
-            return "#FIXED "
-            + makeLiteral(parser
-                    .getAttributeDefaultValue(elname, aname));
+            return "#FIXED " + makeLiteral(
+                    parser.getAttributeDefaultValue(elname, aname));
         }
 
         return null;

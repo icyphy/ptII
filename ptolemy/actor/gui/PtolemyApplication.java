@@ -116,7 +116,8 @@ public class PtolemyApplication extends MoMLApplication {
      */
     @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
-        URL specificationURL = specToURL("ptolemy/configs/runPanelConfiguration.xml");
+        URL specificationURL = specToURL(
+                "ptolemy/configs/runPanelConfiguration.xml");
 
         Configuration configuration = readConfiguration(specificationURL);
 
@@ -144,9 +145,9 @@ public class PtolemyApplication extends MoMLApplication {
         _parser.setContext(configuration);
         _parser.parse(inURL, inURL);
 
-
         //URL idURL = specToURL("ptolemy/configs/full/intro.htm");
-        File configurationDirectory =  ConfigurationApplication.configurationDirectoryFullOrFirst();
+        File configurationDirectory = ConfigurationApplication
+                .configurationDirectoryFullOrFirst();
         File configurationIntro = new File(configurationDirectory, "intro.htm");
         URL idURL = configurationIntro.toURL();
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");

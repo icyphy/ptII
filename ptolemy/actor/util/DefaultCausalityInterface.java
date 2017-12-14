@@ -82,7 +82,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param defaultDependency The default dependency of an output
      *   port on an input port.
      */
-    public DefaultCausalityInterface(Actor actor, Dependency defaultDependency) {
+    public DefaultCausalityInterface(Actor actor,
+            Dependency defaultDependency) {
         _actor = actor;
         _defaultDependency = defaultDependency;
     }

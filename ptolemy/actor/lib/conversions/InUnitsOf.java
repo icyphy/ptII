@@ -102,8 +102,8 @@ public class InUnitsOf extends Transformer {
         super.fire();
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken) input.get(0);
-            DoubleToken out = (DoubleToken) in.inUnitsOf((DoubleToken) units
-                    .getToken());
+            DoubleToken out = (DoubleToken) in
+                    .inUnitsOf((DoubleToken) units.getToken());
             output.send(0, out);
         }
     }

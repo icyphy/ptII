@@ -39,20 +39,18 @@ abstract public class CorbaUnknownPortExceptionHelper {
 
                     org.omg.CORBA.StructMember[] _members0 = new org.omg.CORBA.StructMember[2];
                     org.omg.CORBA.TypeCode _tcOf_members0 = null;
-                    _tcOf_members0 = org.omg.CORBA.ORB.init().create_string_tc(
-                            0);
+                    _tcOf_members0 = org.omg.CORBA.ORB.init()
+                            .create_string_tc(0);
                     _members0[0] = new org.omg.CORBA.StructMember("portName",
                             _tcOf_members0, null);
-                    _tcOf_members0 = org.omg.CORBA.ORB.init().create_string_tc(
-                            0);
+                    _tcOf_members0 = org.omg.CORBA.ORB.init()
+                            .create_string_tc(0);
                     _members0[1] = new org.omg.CORBA.StructMember("message",
                             _tcOf_members0, null);
-                    __typeCode = org.omg.CORBA.ORB
-                            .init()
-                            .create_struct_tc(
-                                    ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                                    .id(), "CorbaUnknownPortException",
-                                    _members0);
+                    __typeCode = org.omg.CORBA.ORB.init().create_struct_tc(
+                            ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
+                                    .id(),
+                            "CorbaUnknownPortException", _members0);
                     __active = false;
                 }
             }

@@ -88,7 +88,7 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
     @Override
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-                    throws NotSchedulableException {
+            throws NotSchedulableException {
 
         _init();
 
@@ -146,8 +146,8 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                         .next();
                 try {
                     int sequenceNumber = attribute.getSequenceNumber();
-                    _SequenceInfo info = new _SequenceInfo(sequenceNumber,
-                            true, false);
+                    _SequenceInfo info = new _SequenceInfo(sequenceNumber, true,
+                            false);
                     //info.original = sequenceNumber;
                     Actor actor = (Actor) attribute.getContainer();
                     _sequenceInfos.put(actor, info);
@@ -155,14 +155,10 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                 } catch (IllegalActionException e) {
                     List unschedulableActorList = new ArrayList(1);
                     unschedulableActorList.add(attribute.getContainer());
-                    throw new NotSchedulableException(
-                            unschedulableActorList,
-                            e,
-                            "The actor "
-                                    + attribute.getContainer().getName()
+                    throw new NotSchedulableException(unschedulableActorList, e,
+                            "The actor " + attribute.getContainer().getName()
                                     + " cannot be scheduled because "
-                                    + "its SequenceAttribute "
-                                    + attribute
+                                    + "its SequenceAttribute " + attribute
                                     + " does not contain a valid sequence number.");
                 }
             }

@@ -80,7 +80,8 @@ public class Rotate3D extends GRTransform {
         angle = new TypedIOPort(this, "angle", true, false);
 
         angle.setTypeEquals(BaseType.DOUBLE);
-        initialAngle = new Parameter(this, "initialAngle", new DoubleToken(0.0));
+        initialAngle = new Parameter(this, "initialAngle",
+                new DoubleToken(0.0));
 
         axisDirection = new Parameter(this, "axisDirection",
                 new DoubleMatrixToken(new double[][] { { 0.0, 1.0, 0.0 } }));
@@ -158,8 +159,8 @@ public class Rotate3D extends GRTransform {
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
                             _accumulatedAngle));
                 } else {
-                    quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis, in
-                            + originalAngle));
+                    quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
+                            in + originalAngle));
                 }
 
                 _rotation.set(quat);
@@ -177,8 +178,8 @@ public class Rotate3D extends GRTransform {
             _baseZ = (float) pivot.getElementAt(0, 2);
 
             Transform3D bottomTransform = new Transform3D();
-            bottomTransform.setTranslation(new Vector3d(-_baseX, -_baseY,
-                    -_baseZ));
+            bottomTransform
+                    .setTranslation(new Vector3d(-_baseX, -_baseY, -_baseZ));
             _bottomTranslate.setTransform(bottomTransform);
         }
     }

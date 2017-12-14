@@ -60,7 +60,7 @@ public class ClassChanges extends MoMLFilterSimple {
     /** Clear the map of class renames and the set of class removals.
      */
     public static void clear() {
-        _classChanges = new HashMap<String,String>();
+        _classChanges = new HashMap<String, String>();
         _classesToRemove = new HashSet<String>();
     }
 
@@ -103,7 +103,7 @@ public class ClassChanges extends MoMLFilterSimple {
                 // Uncomment this to trace changes.
                 //System.out.println("ClassChanges: " + attributeValue  + " " + _classChanges.get(attributeValue));
 
-                return (String) _classChanges.get(attributeValue);
+                return _classChanges.get(attributeValue);
             } else if (_classesToRemove.contains(attributeValue)) {
                 // We found a class to remove.
                 return null;
@@ -166,10 +166,10 @@ public class ClassChanges extends MoMLFilterSimple {
                 + "Below are original class names followed by "
                 + "the new class names:\n");
 
-        for (Map.Entry<String,String> classChange: _classChanges.entrySet()) {
+        for (Map.Entry<String, String> classChange : _classChanges.entrySet()) {
             String className = classChange.getKey();
-            results.append("\t" + className + "\t -> "
-                    + classChange.getValue() + "\n");
+            results.append("\t" + className + "\t -> " + classChange.getValue()
+                    + "\n");
         }
 
         results.append("\nBelow are the classes to remove:\n");
@@ -187,12 +187,12 @@ public class ClassChanges extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Map of actor names a HashMap of property names to new classes.
-    private static HashMap<String,String> _classChanges;
+    private static HashMap<String, String> _classChanges;
 
     static {
         ///////////////////////////////////////////////////////////
         // Actors and attributes that have changed names.
-        _classChanges = new HashMap<String,String>();
+        _classChanges = new HashMap<String, String>();
 
         // If the ptolemy.ptII.classesToChange property is set, then
         // assume that it is consists of fully qualified class names in
@@ -202,21 +202,23 @@ public class ClassChanges extends MoMLFilterSimple {
         try {
             String classesToChange = System.getProperty(propertyName);
             if (classesToChange != null && !classesToChange.equals("")) {
-                StringTokenizer tokenizer = new StringTokenizer(classesToChange);
+                StringTokenizer tokenizer = new StringTokenizer(
+                        classesToChange);
                 while (tokenizer.hasMoreTokens()) {
                     String oldClassName = tokenizer.nextToken();
                     if (tokenizer.hasMoreTokens()) {
                         String newClassName = tokenizer.nextToken();
-                        System.out.println("ptolemy.moml.filter.ClassChanges(): property "
-                                + propertyName + " was set, adding "
-                                + oldClassName + " -> " + newClassName);
+                        System.out.println(
+                                "ptolemy.moml.filter.ClassChanges(): property "
+                                        + propertyName + " was set, adding "
+                                        + oldClassName + " -> " + newClassName);
                         _classChanges.put(oldClassName, newClassName);
                     }
                 }
             }
         } catch (Throwable throwable) {
-            System.err.println("Failed to handle the \"" + propertyName
-                    + "\": " + throwable);
+            System.err.println("Failed to handle the \"" + propertyName + "\": "
+                    + throwable);
             throwable.printStackTrace();
         }
 
@@ -308,8 +310,8 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel",
                 "ptolemy.domains.modal.modal.ModalModel");
 
-        _classChanges
-        .put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+        _classChanges.put(
+                "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory");
 
         // Moved InterfaceAutomatonTransition
@@ -475,8 +477,7 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.properties.kernel.LatticeElement");
         _classChanges.put("ptolemy.domains.properties.LatticeElementIcon",
                 "ptolemy.vergil.properties.LatticeElementIcon");
-        _classChanges.put(
-                "ptolemy.domains.properties.PropertyLatticeComposite",
+        _classChanges.put("ptolemy.domains.properties.PropertyLatticeComposite",
                 "ptolemy.domains.properties.kernel.PropertyLatticeComposite");
 
         // Renamed the DE Sampler to MostRecent.
@@ -515,8 +516,7 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.vergil.basic.export.web.IconScript");
         _classChanges.put("ptolemy.vergil.basic.export.html.LinkTarget",
                 "ptolemy.vergil.basic.export.web.LinkTarget");
-        _classChanges.put(
-                "ptolemy.vergil.basic.export.html.LinkToOpenTableaux",
+        _classChanges.put("ptolemy.vergil.basic.export.html.LinkToOpenTableaux",
                 "ptolemy.vergil.basic.export.web.LinkToOpenTableaux");
         _classChanges.put(
                 "ptolemy.vergil.basic.export.html.ParameterDisplayIconScript",
@@ -542,10 +542,12 @@ public class ClassChanges extends MoMLFilterSimple {
 
         //Move hlaptolemy classes from $PTII/ptolemy.apps to $PTII/org
         {
-            String[] hlaPt2Classes={"HlaPublisher","HlaManager","HlaSubscriber"};
-            for (int i = 0 ; i < hlaPt2Classes.length;++i) {
-                _classChanges.put("ptolemy.apps.hlacerti.lib."+hlaPt2Classes[i],
-                        "org.hlacerti.lib."+hlaPt2Classes[i]);
+            String[] hlaPt2Classes = { "HlaPublisher", "HlaManager",
+                    "HlaSubscriber" };
+            for (int i = 0; i < hlaPt2Classes.length; ++i) {
+                _classChanges.put(
+                        "ptolemy.apps.hlacerti.lib." + hlaPt2Classes[i],
+                        "org.hlacerti.lib." + hlaPt2Classes[i]);
             }
         }
 

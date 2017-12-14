@@ -45,9 +45,8 @@ import ptolemy.kernel.util.NamedObj;
 @version $Id$
 @since Ptolemy II 10.0
  */
-public class MultiplyDivide
-extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.MultiplyDivide {
+public class MultiplyDivide extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.MultiplyDivide {
     /**
      *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.
@@ -96,14 +95,14 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.Multi
             // This seems wrong, it overwrites timeVariable for each EventHead_ that
             // is non-null.
             result.append("if (Event_Head_" + name + "_divide[" + i
-                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_"
-                    + name + "_divide[" + i + "]->tag.timestamp;\n" + "}\n");
+                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_" + name
+                    + "_divide[" + i + "]->tag.timestamp;\n" + "}\n");
         }
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide) _component).multiply
                 .getWidth(); i++) {
             result.append("if (Event_Head_" + name + "_multiply[" + i
-                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_"
-                    + name + "_multiply[" + i + "]->tag.timestamp;\n" + "}\n");
+                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_" + name
+                    + "_multiply[" + i + "]->tag.timestamp;\n" + "}\n");
         }
         return result.toString();
     }

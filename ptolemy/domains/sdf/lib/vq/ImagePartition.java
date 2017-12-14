@@ -77,8 +77,8 @@ public class ImagePartition extends Transformer {
         output_tokenProductionRate = new Parameter(output,
                 "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
-        output_tokenProductionRate
-        .setExpression("imageColumns * imageRows / partitionColumns / partitionRows");
+        output_tokenProductionRate.setExpression(
+                "imageColumns * imageRows / partitionColumns / partitionRows");
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
@@ -158,8 +158,8 @@ public class ImagePartition extends Transformer {
 
         if (message.getRowCount() != _imageRows
                 || message.getColumnCount() != _imageColumns) {
-            throw new IllegalActionException("Input data must be imageRows "
-                    + "by imageColumns");
+            throw new IllegalActionException(
+                    "Input data must be imageRows " + "by imageColumns");
         }
 
         int[][] image = message.intMatrix();

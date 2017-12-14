@@ -115,15 +115,15 @@ public class DownSample extends SDFTransformer {
             int factorValue = ((IntToken) factor.getToken()).intValue();
 
             if (factorValue <= 0) {
-                throw new IllegalActionException(this, "Invalid factor: "
-                        + factorValue);
+                throw new IllegalActionException(this,
+                        "Invalid factor: " + factorValue);
             }
         } else if (attribute == phase) {
             int phaseValue = ((IntToken) phase.getToken()).intValue();
 
             if (phaseValue < 0) {
-                throw new IllegalActionException(this, "Invalid phase: "
-                        + phaseValue);
+                throw new IllegalActionException(this,
+                        "Invalid phase: " + phaseValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -145,8 +145,8 @@ public class DownSample extends SDFTransformer {
         int phaseValue = ((IntToken) phase.getToken()).intValue();
 
         if (phaseValue >= factorValue) {
-            throw new IllegalActionException(this, "Phase is out of range: "
-                    + phaseValue);
+            throw new IllegalActionException(this,
+                    "Phase is out of range: " + phaseValue);
         }
 
         // Send the token.

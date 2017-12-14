@@ -52,8 +52,8 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class CollectLatticeOntologySolverDetails extends Attribute implements
-Testable {
+public class CollectLatticeOntologySolverDetails extends Attribute
+        implements Testable {
 
     /** Construct the CollectLatticeOntologySolverDetails attribute
      *  with the given container and name.
@@ -65,8 +65,8 @@ Testable {
      *   actor with this name.
      */
     public CollectLatticeOntologySolverDetails(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         solverName = new StringParameter(this, "solverName");
@@ -146,36 +146,31 @@ Testable {
         String currentInitialSolverConstraintsString = initialSolverInfo
                 .get("initialSolverConstraints");
         if (currentInitialSolverConstraintsString == null
-                || !currentInitialSolverConstraintsString
-                .equals(trainedInitialSolverConstraints
-                        .getValueAsString())) {
-            throw new IllegalActionException(
-                    this,
-                    _solver,
+                || !currentInitialSolverConstraintsString.equals(
+                        trainedInitialSolverConstraints.getValueAsString())) {
+            throw new IllegalActionException(this, _solver,
                     "Test failed: The initial solver constraints string collected from the "
                             + _solver.getName()
                             + " LatticeOntologySolver does not match the trained value.\n"
                             + "Trained value:\n"
-                            + trainedInitialSolverConstraints
-                            .getValueAsString() + "\nCurrent value:\n"
+                            + trainedInitialSolverConstraints.getValueAsString()
+                            + "\nCurrent value:\n"
                             + currentInitialSolverConstraintsString);
         }
 
         String currentResolvedSolverConstraintsString = resolvedSolverInfo
                 .get("resolvedSolverConstraints");
         if (currentResolvedSolverConstraintsString == null
-                || !currentResolvedSolverConstraintsString
-                .equals(trainedResolvedSolverConstraints
-                        .getValueAsString())) {
-            throw new IllegalActionException(
-                    this,
-                    _solver,
+                || !currentResolvedSolverConstraintsString.equals(
+                        trainedResolvedSolverConstraints.getValueAsString())) {
+            throw new IllegalActionException(this, _solver,
                     "Test failed: The resolved solver constraints string collected from the "
                             + _solver.getName()
                             + " LatticeOntologySolver does not match the trained value.\n"
                             + "Trained value:\n"
                             + trainedResolvedSolverConstraints
-                            .getValueAsString() + "\nCurrent value:\n"
+                                    .getValueAsString()
+                            + "\nCurrent value:\n"
                             + currentResolvedSolverConstraintsString);
         }
     }
@@ -194,10 +189,10 @@ Testable {
         Hashtable<String, String> resolvedSolverInfo = _solver
                 .getResolvedSolverInformation();
 
-        trainedInitialSolverConstraints.setExpression(initialSolverInfo
-                .get("initialSolverConstraints"));
-        trainedResolvedSolverConstraints.setExpression(resolvedSolverInfo
-                .get("resolvedSolverConstraints"));
+        trainedInitialSolverConstraints.setExpression(
+                initialSolverInfo.get("initialSolverConstraints"));
+        trainedResolvedSolverConstraints.setExpression(
+                resolvedSolverInfo.get("resolvedSolverConstraints"));
         unacceptableTerms.setExpression(_solver.getUnacceptableTermsAsString());
     }
 

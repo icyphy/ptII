@@ -63,7 +63,8 @@ public class FMIMADirector extends SRDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FMIMADirector() throws IllegalActionException, NameDuplicationException {
+    public FMIMADirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _isFirstFire = true;
         _defaultPeriod = new Parameter(this, "default period");
@@ -80,7 +81,8 @@ public class FMIMADirector extends SRDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FMIMADirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public FMIMADirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _isFirstFire = true;
         _defaultPeriod = new Parameter(this, "default period");
@@ -156,8 +158,7 @@ public class FMIMADirector extends SRDirector {
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         if (_debugging) {
-            _debug("FMIMADirector: fireAt("
-                    + time.getLongValue() + ", "
+            _debug("FMIMADirector: fireAt(" + time.getLongValue() + ", "
                     + microstep + ")");
             _debug("* Current period: " + periodValue());
         }
@@ -190,36 +191,36 @@ public class FMIMADirector extends SRDirector {
         _defaultPeriod.setExpression(period.getValueAsString());
     }
 
-//        // We can now compute the step size of the FMU
-//        // Consult all actors that implement TimeRegulator interface.
-//        // FMUs for example, can implement TimeRegulator interface
-//        // to check the acceptance of a step size.
-//
-//
-//        Time proposedFmiTime = getModelTime().add(1E-8);//Time.POSITIVE_INFINITY;
-//
-//        Nameable container = getContainer();
-//        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
-//                .iterator();
-//        while (actors.hasNext()) {
-//            Actor actor = (Actor) actors.next();
-//            if (actor instanceof TimeRegulator) {
-//                Time modifiedTime = ((TimeRegulator) actor).proposeTime(proposedFmiTime);
-//                if (proposedFmiTime.compareTo(modifiedTime) > 0) {
-//                    proposedFmiTime = modifiedTime;
-//                }
-//                if (_debugging) {
-//                    _debug("FMU " + actor.getFullName() + " proposed: "
-//                            + modifiedTime.getLongValue()
-//                            + " at time: "
-//                            + getModelTime());
-//                }
-//            }
-//        }
-//        if (_debugging) {
-//            _debug("Computed future time: " + proposedFmiTime);
-//        }
-//    }
+    //        // We can now compute the step size of the FMU
+    //        // Consult all actors that implement TimeRegulator interface.
+    //        // FMUs for example, can implement TimeRegulator interface
+    //        // to check the acceptance of a step size.
+    //
+    //
+    //        Time proposedFmiTime = getModelTime().add(1E-8);//Time.POSITIVE_INFINITY;
+    //
+    //        Nameable container = getContainer();
+    //        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+    //                .iterator();
+    //        while (actors.hasNext()) {
+    //            Actor actor = (Actor) actors.next();
+    //            if (actor instanceof TimeRegulator) {
+    //                Time modifiedTime = ((TimeRegulator) actor).proposeTime(proposedFmiTime);
+    //                if (proposedFmiTime.compareTo(modifiedTime) > 0) {
+    //                    proposedFmiTime = modifiedTime;
+    //                }
+    //                if (_debugging) {
+    //                    _debug("FMU " + actor.getFullName() + " proposed: "
+    //                            + modifiedTime.getLongValue()
+    //                            + " at time: "
+    //                            + getModelTime());
+    //                }
+    //            }
+    //        }
+    //        if (_debugging) {
+    //            _debug("Computed future time: " + proposedFmiTime);
+    //        }
+    //    }
 
     /** Call postfire() on all contained FMUs that were fired in the current
      *  iteration.  Return false if the model
@@ -235,7 +236,7 @@ public class FMIMADirector extends SRDirector {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        boolean result=  super.postfire();
+        boolean result = super.postfire();
         // restore the default period
         period.setExpression(_defaultPeriod.getValueAsString());
         return result;

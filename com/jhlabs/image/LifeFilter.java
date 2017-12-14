@@ -27,7 +27,8 @@ public class LifeFilter extends BinaryFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int index = 0;
         int[] outPixels = new int[width * height];
 
@@ -43,19 +44,24 @@ public class LifeFilter extends BinaryFilter {
                         ioffset = iy * width;
                         for (int col = -1; col <= 1; col++) {
                             int ix = x + col;
-                            if (!(row == 0 && col == 0) && 0 <= ix && ix < width) {
+                            if (!(row == 0 && col == 0) && 0 <= ix
+                                    && ix < width) {
                                 int rgb = inPixels[ioffset + ix];
-                                if (blackFunction.isBlack(rgb))
+                                if (blackFunction.isBlack(rgb)) {
                                     neighbours++;
+                                }
                             }
                         }
                     }
                 }
 
-                if (blackFunction.isBlack(pixel))
-                    outPixels[index++] = (neighbours == 2 || neighbours == 3) ? pixel : 0xffffffff;
-                else
+                if (blackFunction.isBlack(pixel)) {
+                    outPixels[index++] = (neighbours == 2 || neighbours == 3)
+                            ? pixel
+                            : 0xffffffff;
+                } else {
                     outPixels[index++] = neighbours == 3 ? 0xff000000 : pixel;
+                }
             }
 
         }

@@ -182,12 +182,14 @@ public class SetTableau extends Event {
         TableauState newState = (TableauState) state.getChosenValue();
         switch (newState) {
         case ICONIFIED:
-            if ((frame.getExtendedState() & Frame.ICONIFIED) != Frame.ICONIFIED) {
+            if ((frame.getExtendedState()
+                    & Frame.ICONIFIED) != Frame.ICONIFIED) {
                 frame.setExtendedState(Frame.ICONIFIED);
             }
             break;
         case MAXIMIZED:
-            if ((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH) {
+            if ((frame.getExtendedState()
+                    & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH) {
                 frame.setExtendedState(Frame.MAXIMIZED_BOTH);
             }
             break;
@@ -256,7 +258,7 @@ public class SetTableau extends Event {
 
     /**
      The iconified, maximized or normal state of the tableau.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

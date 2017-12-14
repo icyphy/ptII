@@ -65,21 +65,22 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
     public void createEditor(NamedObj object, final Frame parent) {
         TransformationAttribute attribute = (TransformationAttribute) object;
         try {
-            if (!((BooleanToken) attribute.condition.getToken()).booleanValue()) {
+            if (!((BooleanToken) attribute.condition.getToken())
+                    .booleanValue()) {
                 return;
             }
         } catch (Throwable t) {
-            throw new InternalErrorException(null, t, "Unable to evaluate "
-                    + "application condition \""
-                    + attribute.condition.getExpression() + "\".");
+            throw new InternalErrorException(null, t,
+                    "Unable to evaluate " + "application condition \""
+                            + attribute.condition.getExpression() + "\".");
         }
         BasicGraphFrame frame = (BasicGraphFrame) parent;
         CompositeEntity model = null;
         try {
             model = (CompositeEntity) GTTools.cleanupModel(frame.getModel());
         } catch (IllegalActionException e) {
-            throw new InternalErrorException(null, e, "Unable to clean up "
-                    + "model.");
+            throw new InternalErrorException(null, e,
+                    "Unable to clean up " + "model.");
         }
         if (model != null) {
             new ExecutionThread(attribute, model, frame).start();
@@ -95,8 +96,9 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
             try {
                 manager.execute();
             } catch (Throwable t) {
-                MessageHandler.error("Error while executing the "
-                        + "transformation model.", t);
+                MessageHandler.error(
+                        "Error while executing the " + "transformation model.",
+                        t);
             } finally {
                 manager.removeExecutionListener(_listener);
             }
@@ -107,8 +109,8 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
             _attribute = attribute;
             _model = model;
             _frame = frame;
-            _listener = new TransformationListener(
-                    _attribute.getModelUpdater(), _model, _frame);
+            _listener = new TransformationListener(_attribute.getModelUpdater(),
+                    _model, _frame);
         }
 
         private TransformationAttribute _attribute;

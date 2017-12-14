@@ -65,11 +65,11 @@ public class EntitySootClass extends SootClass {
 
         /*Type stringType = */RefType.v("java.lang.String");
         /*Type compositeEntityType = */RefType
-        .v("ptolemy.kernel.CompositeEntity");
+                .v("ptolemy.kernel.CompositeEntity");
         /*Type workspaceType = */RefType.v("ptolemy.kernel.util.Workspace");
 
-        _initMethod = new SootMethod("__CGInit", new LinkedList(),
-                VoidType.v(), Modifier.PUBLIC);
+        _initMethod = new SootMethod("__CGInit", new LinkedList(), VoidType.v(),
+                Modifier.PUBLIC);
         addMethod(_initMethod);
 
         // Now create constructors to call the superclass constructors,
@@ -89,9 +89,8 @@ public class EntitySootClass extends SootClass {
             Local thisLocal = body.getThisLocal();
 
             // Call the __CGInit method.
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newVirtualInvokeExpr(thisLocal,
-                            _initMethod.makeRef())));
+            units.add(Jimple.v().newInvokeStmt(Jimple.v()
+                    .newVirtualInvokeExpr(thisLocal, _initMethod.makeRef())));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -139,9 +138,8 @@ public class EntitySootClass extends SootClass {
         parameterList.remove(thisLocal);
 
         // Call the super constructor.
-        units.add(Jimple.v().newInvokeStmt(
-                Jimple.v().newSpecialInvokeExpr(thisLocal,
-                        superConstructor.makeRef(), parameterList)));
+        units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                thisLocal, superConstructor.makeRef(), parameterList)));
 
         return constructor;
     }

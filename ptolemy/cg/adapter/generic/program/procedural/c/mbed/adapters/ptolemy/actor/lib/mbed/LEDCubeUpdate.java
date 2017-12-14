@@ -42,8 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class LEDCubeUpdate
-extends NamedProgramCodeGeneratorAdapter {
+public class LEDCubeUpdate extends NamedProgramCodeGeneratorAdapter {
 
     /**
      *  Construct the LEDCubeUpdate adapter.

@@ -136,7 +136,8 @@ public class MappingEditor extends Attribute {
                             .readMappingFile(filename);
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Failed to open mapping file \"" + filename + "\".");
+                            "Failed to open mapping file \"" + filename
+                                    + "\".");
                 }
             }
         }
@@ -163,7 +164,7 @@ public class MappingEditor extends Attribute {
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to save to mapping file \"" + filename
-                            + "\".");
+                                    + "\".");
                 }
             }
         }

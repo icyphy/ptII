@@ -52,7 +52,8 @@ public class BrushedMetalFilter implements BufferedImageOp {
      * @param monochrome  a boolean -- true for monochrome texture
      * @param shine       a float specifying the shine to add
      */
-    public BrushedMetalFilter(int color, int radius, float amount, boolean monochrome, float shine) {
+    public BrushedMetalFilter(int color, int radius, float amount,
+            boolean monochrome, float shine) {
         this.color = color;
         this.radius = radius;
         this.amount = amount;
@@ -65,8 +66,9 @@ public class BrushedMetalFilter implements BufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] inPixels = new int[width];
         int[] outPixels = new int[width];
@@ -82,42 +84,50 @@ public class BrushedMetalFilter implements BufferedImageOp {
                 int tg = g;
                 int tb = b;
                 if (shine != 0) {
-                    int f = (int) (255 * shine * Math.sin((double) x / width * Math.PI));
+                    int f = (int) (255 * shine
+                            * Math.sin((double) x / width * Math.PI));
                     tr += f;
                     tg += f;
                     tb += f;
                 }
                 if (monochrome) {
-                    int n = (int) (255 * (2 * randomNumbers.nextFloat() - 1) * amount);
-                    inPixels[x] = a | (clamp(tr + n) << 16) | (clamp(tg + n) << 8) | clamp(tb + n);
+                    int n = (int) (255 * (2 * randomNumbers.nextFloat() - 1)
+                            * amount);
+                    inPixels[x] = a | (clamp(tr + n) << 16)
+                            | (clamp(tg + n) << 8) | clamp(tb + n);
                 } else {
-                    inPixels[x] = a | (random(tr) << 16) | (random(tg) << 8) | random(tb);
+                    inPixels[x] = a | (random(tr) << 16) | (random(tg) << 8)
+                            | random(tb);
                 }
             }
 
             if (radius != 0) {
                 blur(inPixels, outPixels, width, radius);
                 setRGB(dst, 0, y, width, 1, outPixels);
-            } else
+            } else {
                 setRGB(dst, 0, y, width, 1, inPixels);
+            }
         }
         return dst;
     }
 
     private int random(int x) {
         x += (int) (255 * (2 * randomNumbers.nextFloat() - 1) * amount);
-        if (x < 0)
+        if (x < 0) {
             x = 0;
-        else if (x > 0xff)
+        } else if (x > 0xff) {
             x = 0xff;
+        }
         return x;
     }
 
     private static int clamp(int c) {
-        if (c < 0)
+        if (c < 0) {
             return 0;
-        if (c > 255)
+        }
+        if (c > 255) {
             return 255;
+        }
         return c;
     }
 
@@ -131,8 +141,9 @@ public class BrushedMetalFilter implements BufferedImageOp {
         int n = a / b;
 
         a -= n * b;
-        if (a < 0)
+        if (a < 0) {
             return a + b;
+        }
         return a;
     }
 
@@ -149,14 +160,17 @@ public class BrushedMetalFilter implements BufferedImageOp {
         }
 
         for (int x = 0; x < width; x++) {
-            out[x] = 0xff000000 | ((tr / r2) << 16) | ((tg / r2) << 8) | (tb / r2);
+            out[x] = 0xff000000 | ((tr / r2) << 16) | ((tg / r2) << 8)
+                    | (tb / r2);
 
             int i1 = x + radius + 1;
-            if (i1 > widthMinus1)
+            if (i1 > widthMinus1) {
                 i1 = mod(i1, width);
+            }
             int i2 = x - radius;
-            if (i2 < 0)
+            if (i2 < 0) {
                 i2 = mod(i2, width);
+            }
             int rgb1 = in[i1];
             int rgb2 = in[i2];
 
@@ -257,10 +271,14 @@ public class BrushedMetalFilter implements BufferedImageOp {
     }
 
     @Override
-    public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel dstCM) {
-        if (dstCM == null)
+    public BufferedImage createCompatibleDestImage(BufferedImage src,
+            ColorModel dstCM) {
+        if (dstCM == null) {
             dstCM = src.getColorModel();
-        return new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(src.getWidth(), src.getHeight()),
+        }
+        return new BufferedImage(dstCM,
+                dstCM.createCompatibleWritableRaster(src.getWidth(),
+                        src.getHeight()),
                 dstCM.isAlphaPremultiplied(), null);
     }
 
@@ -271,8 +289,9 @@ public class BrushedMetalFilter implements BufferedImageOp {
 
     @Override
     public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
-        if (dstPt == null)
+        if (dstPt == null) {
             dstPt = new Point2D.Double();
+        }
         dstPt.setLocation(srcPt.getX(), srcPt.getY());
         return dstPt;
     }
@@ -286,12 +305,15 @@ public class BrushedMetalFilter implements BufferedImageOp {
      * A convenience method for setting ARGB pixels in an image. This tries to avoid the performance
      * penalty of BufferedImage.setRGB unmanaging the image.
      */
-    private void setRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
+    private void setRGB(BufferedImage image, int x, int y, int width,
+            int height, int[] pixels) {
         int type = image.getType();
-        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
+        if (type == BufferedImage.TYPE_INT_ARGB
+                || type == BufferedImage.TYPE_INT_RGB) {
             image.getRaster().setDataElements(x, y, width, height, pixels);
-        else
+        } else {
             image.setRGB(x, y, width, height, pixels, 0, width);
+        }
     }
 
     @Override

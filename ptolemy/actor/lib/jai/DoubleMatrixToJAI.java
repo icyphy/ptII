@@ -248,8 +248,8 @@ public class DoubleMatrixToJAI extends Transformer {
         }
 
         // Create a new dataBuffer from the array of doubles
-        DataBufferDouble dataBuffer = new DataBufferDouble(newData, width
-                * height);
+        DataBufferDouble dataBuffer = new DataBufferDouble(newData,
+                width * height);
 
         // The length of the bandOffset array indicates how many bands
         // there are.  Since we are just dealing with a single

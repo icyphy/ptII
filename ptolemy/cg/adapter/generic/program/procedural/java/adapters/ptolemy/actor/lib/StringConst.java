@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class StringConst
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.StringConst {
+public class StringConst extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.StringConst {
 
     /**
      *  Construct a StringConst adapter.

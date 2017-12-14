@@ -94,8 +94,8 @@ public class BoundedBufferTimedDelay extends TimeDelay {
      */
     @Override
     public void preinitialize() throws IllegalActionException {
-        throw new IllegalActionException(this, getName() + " can not run in "
-                + "simulation mode.");
+        throw new IllegalActionException(this,
+                getName() + " can not run in " + "simulation mode.");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,8 +108,8 @@ public class BoundedBufferTimedDelay extends TimeDelay {
      *  @exception NameDuplicationException If the container already has a
      *   PortParameter named "delay" or "bufferSize".
      */
-    protected void _init() throws NameDuplicationException,
-    IllegalActionException {
+    protected void _init()
+            throws NameDuplicationException, IllegalActionException {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);

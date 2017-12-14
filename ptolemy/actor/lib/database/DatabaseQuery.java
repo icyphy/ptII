@@ -109,10 +109,10 @@ public class DatabaseQuery extends Source {
         query.update();
 
         String databaseName = databaseManager.stringValue();
-        DatabaseManager database = DatabaseManager.findDatabaseManager(
-                databaseName, this);
-        ArrayToken result = database.executeQuery(((StringToken) query
-                .getToken()).stringValue());
+        DatabaseManager database = DatabaseManager
+                .findDatabaseManager(databaseName, this);
+        ArrayToken result = database
+                .executeQuery(((StringToken) query.getToken()).stringValue());
         if (result != null) {
             if (_debugging) {
                 _debug("Result of query:\n" + result);

@@ -59,14 +59,16 @@ public class Curve {
 
     public void removeKnot(int n) {
         int numKnots = x.length;
-        if (numKnots <= 2)
+        if (numKnots <= 2) {
             return;
+        }
         float[] nx = new float[numKnots - 1];
         float[] ny = new float[numKnots - 1];
         int j = 0;
         for (int i = 0; i < numKnots - 1; i++) {
-            if (i == n)
+            if (i == n) {
                 j++;
+            }
             nx[i] = x[j];
             ny[i] = y[j];
             j++;

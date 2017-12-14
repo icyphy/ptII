@@ -138,14 +138,15 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // FIXME: What about other directors?
                 String results[] = codeGenerator
-                        .generateFireFunctionVariableAndMethodName((NamedObj) actor);
+                        .generateFireFunctionVariableAndMethodName(
+                                (NamedObj) actor);
                 className = results[0];
 
                 StringBuffer innerClassBuffer = innerClasses.get(className);
                 if (innerClassBuffer == null) {
                     innerClassBuffer = new StringBuffer();
-                    if (!director.isEmbedded()
-                            || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+                    if (!director.isEmbedded() || director
+                            .getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
                         innerClassBuffer.append(codeGenerator
                                 .generateFireFunctionCompositeStart(className));
                     } else {
@@ -169,8 +170,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     innerClassBuffer = innerClasses.get(className);
                     if (innerClassBuffer == null) {
                         innerClassBuffer = new StringBuffer();
-                        innerClassBuffer.append("class " + className + "{"
-                                + _eol);
+                        innerClassBuffer
+                                .append("class " + className + "{" + _eol);
                         innerClasses.put(className, innerClassBuffer);
                     }
                 }
@@ -183,10 +184,10 @@ public class SDFDirector extends StaticSchedulingDirector {
             for (Map.Entry<String, StringBuffer> innerClassBuffer : innerClasses
                     .entrySet()) {
                 code.append(innerClassBuffer.getValue());
-                if (!director.isEmbedded()
-                        || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
-                    code.append(codeGenerator
-                            .generateFireFunctionCompositeEnd());
+                if (!director.isEmbedded() || director
+                        .getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+                    code.append(
+                            codeGenerator.generateFireFunctionCompositeEnd());
                 }
             }
         }
@@ -223,11 +224,8 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
 
             if (resetCode.length() > 0) {
-                code.append(_eol
-                        + getCodeGenerator().comment(
-                                1,
-                                actor.getName()
-                                + "'s input offset initialization"));
+                code.append(_eol + getCodeGenerator().comment(1,
+                        actor.getName() + "'s input offset initialization"));
                 code.append(resetCode);
             }
         }
@@ -235,9 +233,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         // Reset the offset for all of the output ports.
         String resetCode = _resetOutputPortsOffset();
         if (resetCode.length() > 0) {
-            code.append(_eol
-                    + getCodeGenerator().comment(
-                            getComponent().getName()
+            code.append(
+                    _eol + getCodeGenerator().comment(getComponent().getName()
                             + "'s output offset initialization"));
             code.append(resetCode);
         }
@@ -262,11 +259,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                         }
 
                         for (int k = 0; k < rate; k++) {
-                            code.append(containerAdapter.getReference(name
-                                    + "," + k, true));
+                            code.append(containerAdapter
+                                    .getReference(name + "," + k, true));
                             code.append(" = ");
-                            code.append(containerAdapter.getReference("@"
-                                    + name + "," + k, false));
+                            code.append(containerAdapter
+                                    .getReference("@" + name + "," + k, false));
                             code.append(";" + _eol);
                         }
                     }
@@ -406,8 +403,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
-                ports.setWriteOffset(port, i, channelWriteOffset + "[" + i
-                        + "]");
+                ports.setWriteOffset(port, i,
+                        channelWriteOffset + "[" + i + "]");
             }
             channelWriteOffset += "[" + width + "]";
             code.append("static int " + channelWriteOffset + ";\n");
@@ -472,7 +469,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     protected String _createOffsetVariablesIfNeeded(IOPort port,
             int channelNumber, int readTokens, int writeTokens)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         boolean padBuffers = padBuffers();
@@ -484,8 +481,8 @@ public class SDFDirector extends StaticSchedulingDirector {
             bufferSize = _padBuffer(port, channelNumber);
         }
 
-        if (bufferSize != 0
-                && (readTokens % bufferSize != 0 || writeTokens % bufferSize != 0)) {
+        if (bufferSize != 0 && (readTokens % bufferSize != 0
+                || writeTokens % bufferSize != 0)) {
             int width;
             if (port.isInput()) {
                 width = port.getWidth();
@@ -500,8 +497,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
-                channelReadOffset.append(CodeGeneratorAdapter
-                        .generateName(port));
+                channelReadOffset
+                        .append(CodeGeneratorAdapter.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
@@ -519,8 +516,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(CodeGeneratorAdapter
-                        .generateName(port));
+                channelWriteOffset
+                        .append(CodeGeneratorAdapter.generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
                 }
@@ -545,7 +542,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     @Override
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -560,13 +557,14 @@ public class SDFDirector extends StaticSchedulingDirector {
             for (Parameter parameter : _referencedParameters.get(target)) {
                 try {
                     // avoid duplication.
-                    if (!codeGenerator.getModifiedVariables().contains(
-                            parameter)) {
+                    if (!codeGenerator.getModifiedVariables()
+                            .contains(parameter)) {
                         code.append(GenericCodeGenerator.INDENT1
                                 + codeGenerator.generateVariableName(parameter)
                                 + " = "
                                 + target.getParameterValue(parameter.getName(),
-                                        target.getComponent()) + ";" + _eol);
+                                        target.getComponent())
+                                + ";" + _eol);
                     }
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(target.getComponent(),
@@ -592,7 +590,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -618,7 +616,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (!(attribute instanceof Parameter)) {
                 throw new InternalErrorException(attribute, null,
                         "The attribute " + attribute.getFullName()
-                        + " is not a Parameter.");
+                                + " is not a Parameter.");
             } else {
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
@@ -754,9 +752,8 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
         }
         if (tempCode.length() > 0) {
-            code.append("\n"
-                    + getCodeGenerator().comment(
-                            container.getName() + "'s offset variables"));
+            code.append("\n" + getCodeGenerator()
+                    .comment(container.getName() + "'s offset variables"));
             code.append(tempCode);
         }
 
@@ -782,11 +779,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         Variable firings = (Variable) ((NamedObj) actor)
                                 .getAttribute("firingsPerIteration");
                         if (firings == null) {
-                            throw new InternalErrorException(
-                                    actor,
-                                    null,
-                                    "Actor "
-                                            + actor.getFullName()
+                            throw new InternalErrorException(actor, null,
+                                    "Actor " + actor.getFullName()
                                             + " does not have a firingsPerIteration attribute? "
                                             + "This can occur if a previous run created java files that "
                                             + "cannot be compiled.");
@@ -840,9 +834,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                 }
             }
             if (tempCode2.length() > 0) {
-                code.append("\n"
-                        + getCodeGenerator().comment(
-                                actor.getName() + "'s offset variables"));
+                code.append("\n" + getCodeGenerator()
+                        .comment(actor.getName() + "'s offset variables"));
                 code.append(tempCode2);
             }
         }
@@ -870,8 +863,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // size got from the director adapter is final. Otherwise
                 // the buffer size will be updated later on with the maximum
                 // for all possible schedules.
-                int bufferSize = this
-                        /*directorAdapter*/.getBufferSize(port, i);
+                int bufferSize = this/*directorAdapter*/.getBufferSize(port, i);
                 ports.setBufferSize(port, i, bufferSize);
             }
 
@@ -922,8 +914,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     ports.setReadOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Read offset is a variable.
-                    code.append(CodeStream.indent((String) readOffset + " = 0;"
-                            + _eol));
+                    code.append(CodeStream
+                            .indent((String) readOffset + " = 0;" + _eol));
                 }
                 Object writeOffset = ports.getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
@@ -931,8 +923,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     ports.setWriteOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Write offset is a variable.
-                    code.append(CodeStream.indent((String) writeOffset
-                            + " = 0;" + _eol));
+                    code.append(CodeStream
+                            .indent((String) writeOffset + " = 0;" + _eol));
                 }
             }
         }

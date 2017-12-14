@@ -114,9 +114,8 @@ public class PeriodicSampler extends Transformer {
         microstep.setExpression("0");
         microstep.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-30,0 -20,0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
     }
@@ -232,8 +231,8 @@ public class PeriodicSampler extends Transformer {
                         if (i < outputWidth) {
                             output.send(i, token);
                             if (_debugging) {
-                                _debug("Read input and sent to output: "
-                                        + token + " on channel " + i);
+                                _debug("Read input and sent to output: " + token
+                                        + " on channel " + i);
                             }
                         }
                     }

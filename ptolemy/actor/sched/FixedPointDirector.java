@@ -119,8 +119,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (eal)
  */
-public class FixedPointDirector extends StaticSchedulingDirector implements
-SuperdenseTimeDirector {
+public class FixedPointDirector extends StaticSchedulingDirector
+        implements SuperdenseTimeDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -130,8 +130,8 @@ SuperdenseTimeDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public FixedPointDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public FixedPointDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -206,8 +206,8 @@ SuperdenseTimeDirector {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FixedPointDirector newObject = (FixedPointDirector) super
-                .clone(workspace);
+        FixedPointDirector newObject = (FixedPointDirector) super.clone(
+                workspace);
         newObject._receivers = new LinkedList();
 
         newObject._actorsAllowedToFire = new HashSet();
@@ -742,8 +742,7 @@ SuperdenseTimeDirector {
         }
         // Check monotonicity constraint.
         if (!prefireReturns && _actorsAllowedToFire.contains(actor)) {
-            throw new IllegalActionException(
-                    actor,
+            throw new IllegalActionException(actor,
                     "prefire() method returns false, but it"
                             + " has previously returned true in this iteration.");
         }
@@ -829,7 +828,8 @@ SuperdenseTimeDirector {
      *  if actors are finished firing, or while determining if the actor is
      *  strict, or while determining if all the inputs are known.
      */
-    protected boolean _isReadyToFire(Actor actor) throws IllegalActionException {
+    protected boolean _isReadyToFire(Actor actor)
+            throws IllegalActionException {
         return !_actorsFinishedFiring.contains(actor)
                 && (!actor.isStrict() || _areAllInputsKnown(actor));
     }
@@ -928,7 +928,8 @@ SuperdenseTimeDirector {
                             break;
                         }
 
-                        long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+                        long timeToWait = (long) ((currentTime
+                                - elapsedTimeInSeconds) * 1000.0);
 
                         if (_debugging) {
                             _debug("Waiting for real time to pass: "
@@ -998,8 +999,8 @@ SuperdenseTimeDirector {
     /** Initialize the director by creating the parameters and setting their
      *  values and types.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         _zeroTime = new Time(this, 0.0);
 
         iterations = new Parameter(this, "iterations", new IntToken(0));

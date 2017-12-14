@@ -134,7 +134,8 @@ public class ConstVariableModelAnalysis {
             throws IllegalActionException {
         _variableToChangeContext = new HashMap();
 
-        for (Iterator variables = variableSet.iterator(); variables.hasNext();) {
+        for (Iterator variables = variableSet.iterator(); variables
+                .hasNext();) {
             Variable variable = (Variable) variables.next();
             _variableToChangeContext.put(variable, model);
         }
@@ -288,8 +289,9 @@ public class ConstVariableModelAnalysis {
      *  and it depends on no other parameters
      */
     public boolean isIndependent(Variable variable) {
-        if (_dependencyGraph.backwardReachableNodes(
-                _dependencyGraph.node(variable)).size() > 0) {
+        if (_dependencyGraph
+                .backwardReachableNodes(_dependencyGraph.node(variable))
+                .size() > 0) {
             return false;
         } else {
             return true;
@@ -304,8 +306,8 @@ public class ConstVariableModelAnalysis {
         Variable variable = (Variable) declaration.getContainer();
         Node targetNode = _getNode(variable);
 
-        for (Iterator dependents = declaration.getDependents().iterator(); dependents
-                .hasNext();) {
+        for (Iterator dependents = declaration.getDependents()
+                .iterator(); dependents.hasNext();) {
             Variable dependent = (Variable) dependents.next();
             Node dependentNode = _getNode(dependent);
 
@@ -324,7 +326,8 @@ public class ConstVariableModelAnalysis {
         try {
             Set freeIdentifiers = variable.getFreeIdentifiers();
 
-            for (Iterator names = freeIdentifiers.iterator(); names.hasNext();) {
+            for (Iterator names = freeIdentifiers.iterator(); names
+                    .hasNext();) {
                 String name = (String) names.next();
                 Variable dependent = ModelScope.getScopedVariable(variable,
                         variable, name);
@@ -383,8 +386,8 @@ public class ConstVariableModelAnalysis {
         }
 
         // Recurse through the whole model.
-        for (Iterator attributes = container.attributeList().iterator(); attributes
-                .hasNext();) {
+        for (Iterator attributes = container.attributeList()
+                .iterator(); attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
             _collectConstraints(attribute);
         }
@@ -399,8 +402,8 @@ public class ConstVariableModelAnalysis {
         }
 
         if (container instanceof Entity) {
-            for (Iterator ports = ((Entity) container).portList().iterator(); ports
-                    .hasNext();) {
+            for (Iterator ports = ((Entity) container).portList()
+                    .iterator(); ports.hasNext();) {
                 Port port = (Port) ports.next();
                 _collectConstraints(port);
             }

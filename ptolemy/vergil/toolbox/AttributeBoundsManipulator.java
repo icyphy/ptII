@@ -104,8 +104,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             if (_boundsOnMousePressed != null
                     && Math.abs(bounds.getWidth()
                             - _boundsOnMousePressed.getWidth()) < resolution
-                            && Math.abs(bounds.getHeight()
-                                    - _boundsOnMousePressed.getHeight()) < resolution) {
+                    && Math.abs(bounds.getHeight()
+                            - _boundsOnMousePressed.getHeight()) < resolution) {
                 // Change is not big enough. Return.
                 return;
             }
@@ -122,8 +122,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 // Snap the new width and height to the grid (not the parameter values!).
                 // The reason is that it is the new width and height, not the parameter
                 // values, are what is visible on the screen.
-                double[] snappedWidthHeight = _resizer.constrain(
-                        bounds.getWidth(), bounds.getHeight());
+                double[] snappedWidthHeight = _resizer
+                        .constrain(bounds.getWidth(), bounds.getHeight());
 
                 // The new width and height should be proportional to the original
                 // ones. This is because the width and height parameters of the
@@ -197,23 +197,21 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                         // the upper left corner. In this case, we need to scale
                         // displacement according to the following formulas
                         // (this is a tricky geometry problem!).
-                        newX = snappedXY[0]
-                                + snappedWidthHeight[0]
-                                        / _boundsOnMousePressed.getWidth()
-                                        * (previousLocation[0] - _boundsOnMousePressed
-                                                .getX());
-                        newY = snappedXY[1]
-                                + snappedWidthHeight[1]
-                                        / _boundsOnMousePressed.getHeight()
-                                        * (previousLocation[1] - _boundsOnMousePressed
-                                                .getY());
+                        newX = snappedXY[0] + snappedWidthHeight[0]
+                                / _boundsOnMousePressed.getWidth()
+                                * (previousLocation[0]
+                                        - _boundsOnMousePressed.getX());
+                        newY = snappedXY[1] + snappedWidthHeight[1]
+                                / _boundsOnMousePressed.getHeight()
+                                * (previousLocation[1]
+                                        - _boundsOnMousePressed.getY());
                     } else {
                         // This is legacy code. Should never be invoked.
                         // If the figure is centered, have to use the center
                         // instead.
                         try {
-                            Attribute centered = _container.getAttribute(
-                                    "centered", Parameter.class);
+                            Attribute centered = _container
+                                    .getAttribute("centered", Parameter.class);
 
                             if (centered != null) {
                                 boolean isCentered = ((BooleanToken) ((Parameter) centered)
@@ -391,9 +389,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             BoundsManipulator parent = (BoundsManipulator) g.getParent();
             BoundsGeometry geometry = parent.getGeometry();
 
-            parent.getChild().transform(
-                    CanvasUtilities.computeTransform(parent.getChild()
-                            .getBounds(), geometry.getBounds()));
+            parent.getChild().transform(CanvasUtilities.computeTransform(
+                    parent.getChild().getBounds(), geometry.getBounds()));
         }
 
         private SnapConstraint _snapConstraint;

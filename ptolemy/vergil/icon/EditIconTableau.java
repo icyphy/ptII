@@ -61,8 +61,8 @@ public class EditIconTableau extends Tableau {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public EditIconTableau(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public EditIconTableau(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -91,8 +91,8 @@ public class EditIconTableau extends Tableau {
      *   an attribute already in the container.
      */
     public EditIconTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();

@@ -97,8 +97,8 @@ public class BooleanToAnything extends Converter {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        BooleanToAnything newObject = (BooleanToAnything) super
-                .clone(workspace);
+        BooleanToAnything newObject = (BooleanToAnything) super.clone(
+                workspace);
 
         // Set the type constraint.
         newObject.output.setTypeAtLeast(newObject.trueValue);

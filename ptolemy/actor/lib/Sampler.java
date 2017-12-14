@@ -81,9 +81,8 @@ public class Sampler extends Transformer {
 
         output.setTypeSameAs(input);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-30,0 -20,0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
 
@@ -93,9 +92,8 @@ public class Sampler extends Transformer {
         // Width constraint. Not bidirectional to not break any existing models.
         output.setWidthEquals(input, true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"0,20 0,0\"/>\n"
                 + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");

@@ -55,7 +55,8 @@ $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fm
  *  @Pt.ProposedRating red (cxh)
  *  @Pt.AcceptedRating red (cxh)
  */
-public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGenerator*/{
+public class FMIMACodeGenerator
+        extends ProceduralCodeGenerator /*GenericCodeGenerator*/ {
 
     /** Create a new instance of the FMIMACodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -97,12 +98,15 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
     @Override
     public String generateMainEntryCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java"));
-        code.append(comment("Probably the thing to do is to create .c files and copy them over to the cg/ directory."));
-        code.append(comment("Then we can create a few functions that do the real work."));
+        code.append(comment(
+                "ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java"));
+        code.append(comment(
+                "Probably the thing to do is to create .c files and copy them over to the cg/ directory."));
+        code.append(comment(
+                "Then we can create a few functions that do the real work."));
         if (_isTopLevel()) {
-            code.append(_eol + _eol + "int main(int argc, char *argv[]) {"
-                    + _eol);
+            code.append(
+                    _eol + _eol + "int main(int argc, char *argv[]) {" + _eol);
             code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
                     .generateFMIMA());
 
@@ -136,7 +140,8 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
 
         // Hint:  Look at ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
 
-        code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java _generateCode"));
+        code.append(comment(
+                "Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java _generateCode"));
 
         // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/ma.
 
@@ -175,9 +180,9 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
         _copyCFilesTosrc(_pathToSupportFiles + "includes/",
-                directoryFmiIncludes, new String[] { "fmi2.h",
-                        "fmi2FunctionTypes.h", "fmi2Functions.h",
-                        "fmi2TypesPlatform.h" });
+                directoryFmiIncludes,
+                new String[] { "fmi2.h", "fmi2FunctionTypes.h",
+                        "fmi2Functions.h", "fmi2TypesPlatform.h" });
 
         String directoryFmiParser = directoryFmi + "parser/";
         if (new File(directoryFmiParser).mkdirs()) {
@@ -185,12 +190,10 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiParser);
             }
         }
-        _copyCFilesTosrc(
-                        _pathToSupportFiles + "parser/",
-                directoryFmiParser,
+        _copyCFilesTosrc(_pathToSupportFiles + "parser/", directoryFmiParser,
                 new String[] { "XmlElement.cpp", "XmlElement.h",
-                        "XmlParserCApi.cpp", "XmlParserCApi.h",
-                        "XmlParser.cpp", "XmlParserException.h", "XmlParser.h" });
+                        "XmlParserCApi.cpp", "XmlParserCApi.h", "XmlParser.cpp",
+                        "XmlParserException.h", "XmlParser.h" });
 
         String directoryFmiParserLibxml = directoryFmi + "parser/libxml/";
         if (new File(directoryFmiParserLibxml).mkdirs()) {
@@ -199,13 +202,14 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
         _copyCFilesTosrc(_pathToSupportFiles + "parser/libxml/",
-                directoryFmiParserLibxml, new String[] { "dict.h",
-                        "encoding.h", "entities.h", "globals.h", "hash.h",
-                        "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
-                        "threads.h", "tree.h", "valid.h", "xlink.h",
-                        "xmlautomata.h", "xmlerror.h", "xmlexports.h",
-                        "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h",
-                        "xmlschemas.h", "xmlstring.h", "xmlversion.h" });
+                directoryFmiParserLibxml,
+                new String[] { "dict.h", "encoding.h", "entities.h",
+                        "globals.h", "hash.h", "list.h", "parser.h",
+                        "relaxng.h", "SAX2.h", "SAX.h", "threads.h", "tree.h",
+                        "valid.h", "xlink.h", "xmlautomata.h", "xmlerror.h",
+                        "xmlexports.h", "xmlIO.h", "xmlmemory.h", "xmlreader.h",
+                        "xmlregexp.h", "xmlschemas.h", "xmlstring.h",
+                        "xmlversion.h" });
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }

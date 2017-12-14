@@ -105,7 +105,8 @@ public class PortConfigurer extends Query implements QueryListener {
                         optionsDefault);
 
                 String typeEntryName = port.getName() + " type";
-                addLine(typeEntryName, typeEntryName, port.getType().toString());
+                addLine(typeEntryName, typeEntryName,
+                        port.getType().toString());
 
                 // Add a column that controls on which side
                 // of the icon the port lies.
@@ -114,16 +115,17 @@ public class PortConfigurer extends Query implements QueryListener {
                 String cardinalValue = "SOUTH";
 
                 if (cardinal != null) {
-                    cardinalValue = cardinal.getExpression().toUpperCase(
-                            Locale.getDefault());
+                    cardinalValue = cardinal.getExpression()
+                            .toUpperCase(Locale.getDefault());
                 } else if (port.isInput() && !port.isOutput()) {
                     cardinalValue = "WEST";
                 } else if (port.isOutput() && !port.isInput()) {
                     cardinalValue = "EAST";
                 }
 
-                addChoice(port.getName() + " cardinal", port.getName()
-                        + ": cardinal direction", _cardinals, cardinalValue);
+                addChoice(port.getName() + " cardinal",
+                        port.getName() + ": cardinal direction", _cardinals,
+                        cardinalValue);
             }
         }
     }
@@ -171,7 +173,8 @@ public class PortConfigurer extends Query implements QueryListener {
                 // then generate additional MoML.
                 String typeEntryName = name + " type";
 
-                if (_changed.contains(name) || _changed.contains(typeEntryName)) {
+                if (_changed.contains(name)
+                        || _changed.contains(typeEntryName)) {
                     // Change to the type or I/O status.  Create a MoML command.
                     String value = getStringValue(name);
 
@@ -197,19 +200,22 @@ public class PortConfigurer extends Query implements QueryListener {
                     if (selectedValues.contains("input")) {
                         moml.append("<property name=\"input\"/>");
                     } else {
-                        moml.append("<property name=\"input\" value=\"false\"/>");
+                        moml.append(
+                                "<property name=\"input\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("output")) {
                         moml.append("<property name=\"output\"/>");
                     } else {
-                        moml.append("<property name=\"output\" value=\"false\"/>");
+                        moml.append(
+                                "<property name=\"output\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("multiport")) {
                         moml.append("<property name=\"multiport\"/>");
                     } else {
-                        moml.append("<property name=\"multiport\" value=\"false\"/>");
+                        moml.append(
+                                "<property name=\"multiport\" value=\"false\"/>");
                     }
 
                     if (_changed.contains(typeEntryName)) {

@@ -164,7 +164,7 @@ public class DiscreteClock extends TimedSource {
         period.setExpression("1.0");
         period.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(period.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0}");
@@ -271,8 +271,8 @@ public class DiscreteClock extends TimedSource {
             newObject._offsets = new double[offsetsValue.length()];
             System.arraycopy(_offsets, 0, newObject._offsets, 0,
                     _offsets.length);
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException ex) {
             // CloneNotSupportedException does not have a constructor
             // that takes a cause argument, so we use initCause
@@ -345,8 +345,8 @@ public class DiscreteClock extends TimedSource {
             currentIndex = ((SuperdenseTimeDirector) director).getIndex();
         }
         if (_debugging) {
-            _debug("Called fire() at time (" + currentTime + ", "
-                    + currentIndex + ")");
+            _debug("Called fire() at time (" + currentTime + ", " + currentIndex
+                    + ")");
         }
         if (!_enabled) {
             if (_debugging) {
@@ -400,13 +400,9 @@ public class DiscreteClock extends TimedSource {
         }
         // If we get here, then current time has passed our
         // expected next firing time.  This should not occur.
-        throw new IllegalActionException(
-                this,
-                getDirector(),
+        throw new IllegalActionException(this, getDirector(),
                 "Director failed to fire this actor at the requested time "
-                        + _nextOutputTime
-                        + " Current time is "
-                        + currentTime
+                        + _nextOutputTime + " Current time is " + currentTime
                         + ". Perhaps the director is incompatible with DiscreteClock?");
     }
 
@@ -578,9 +574,9 @@ public class DiscreteClock extends TimedSource {
         }
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         if (_offsets[_phase] > periodValue) {
-            throw new IllegalActionException(this, "Offset of "
-                    + _offsets[_phase] + " is greater than the period "
-                    + periodValue);
+            throw new IllegalActionException(this,
+                    "Offset of " + _offsets[_phase]
+                            + " is greater than the period " + periodValue);
         }
         Time nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
         if (_nextOutputTime.equals(nextOutputTime)) {
@@ -640,12 +636,12 @@ public class DiscreteClock extends TimedSource {
         double previous = 0.0;
         for (int i = 0; i < offsetsValue.length(); i++) {
             _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
-                .doubleValue();
+                    .doubleValue();
             // Check nondecreasing property.
             if (_offsets[i] < previous) {
                 throw new IllegalActionException(this,
                         "Value of offsets is not nondecreasing "
-                        + "and nonnegative.");
+                                + "and nonnegative.");
             }
             previous = _offsets[i];
         }
@@ -663,15 +659,14 @@ public class DiscreteClock extends TimedSource {
         // if this constructor calls attributeChanged() and this
         // class has a subclass.  The workaround is to define
         // a separate method.
-        double periodValue = ((DoubleToken) period.getToken())
-            .doubleValue();
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         if (_debugging) {
             _debug("Setting period to " + periodValue);
         }
         if (periodValue <= 0.0) {
             throw new IllegalActionException(this,
-                    "Period is required to be positive.  "
-                    + "Period given: " + periodValue);
+                    "Period is required to be positive.  " + "Period given: "
+                            + periodValue);
         }
     }
 

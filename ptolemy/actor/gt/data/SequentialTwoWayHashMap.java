@@ -64,8 +64,7 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
      */
     @Override
     public Object clone() {
-        SequentialTwoWayHashMap result = (SequentialTwoWayHashMap) super
-                .clone();
+        SequentialTwoWayHashMap result = (SequentialTwoWayHashMap) super.clone();
         result._keySequence = new LinkedList<K>(_keySequence);
         return result;
     }

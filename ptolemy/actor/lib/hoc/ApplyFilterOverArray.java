@@ -99,8 +99,8 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Yellow (ellen_zh)
  @Pt.AcceptedRating Red (ellen_zh)
  */
-public class ApplyFilterOverArray extends TypedAtomicActor implements
-ExecutionListener {
+public class ApplyFilterOverArray extends TypedAtomicActor
+        implements ExecutionListener {
     /** Construct a ApplyFilterOverArray with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -223,8 +223,8 @@ ExecutionListener {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ApplyFilterOverArray newActor = (ApplyFilterOverArray) super
-                .clone(workspace);
+        ApplyFilterOverArray newActor = (ApplyFilterOverArray) super.clone(
+                workspace);
         newActor._manager = null;
         newActor._model = null;
         newActor._throwable = null;
@@ -246,7 +246,8 @@ ExecutionListener {
      *  @param throwable The throwable to report.
      */
     @Override
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
         _throwable = throwable;
 
         //_executing = false;

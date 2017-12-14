@@ -199,8 +199,8 @@ import ptolemy.util.FileUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FilePortParameter extends PortParameter implements
-FileOrURLAccessor {
+public class FilePortParameter extends PortParameter
+        implements FileOrURLAccessor {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -239,8 +239,8 @@ FileOrURLAccessor {
      *   an parameter already in the container.
      */
     public FilePortParameter(NamedObj container, String name,
-            ptolemy.data.Token token) throws IllegalActionException,
-            NameDuplicationException {
+            ptolemy.data.Token token)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -325,11 +325,11 @@ FileOrURLAccessor {
         String name = stringValue();
 
         try {
-            return FileUtilities.nameToURL(name, getBaseDirectory(), getClass()
-                    .getClassLoader());
+            return FileUtilities.nameToURL(name, getBaseDirectory(),
+                    getClass().getClassLoader());
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Cannot read file '"
-                    + name + "'");
+            throw new IllegalActionException(this, ex,
+                    "Cannot read file '" + name + "'");
         }
     }
 
@@ -342,8 +342,8 @@ FileOrURLAccessor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FilePortParameter newObject = (FilePortParameter) super
-                .clone(workspace);
+        FilePortParameter newObject = (FilePortParameter) super.clone(
+                workspace);
         newObject._baseDirectory = null;
         newObject._reader = null;
         newObject._writer = null;

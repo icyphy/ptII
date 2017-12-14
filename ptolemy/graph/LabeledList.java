@@ -106,8 +106,8 @@ public class LabeledList implements List {
     @Override
     public boolean add(Object element) {
         if (element == null) {
-            throw new IllegalArgumentException("Attempt to insert a null "
-                    + "element");
+            throw new IllegalArgumentException(
+                    "Attempt to insert a null " + "element");
         } else if (_labels.containsKey(element)) {
             throw new IllegalArgumentException("Attempt to insert a duplicate "
                     + "element." + _elementDump(element));
@@ -277,10 +277,8 @@ public class LabeledList implements List {
             Integer label = (Integer) _labels.get(element);
 
             if (label == null) {
-                throw new IllegalArgumentException(
-                        "The specified object is not"
-                                + " an element of this list. "
-                                + _elementDump(element));
+                throw new IllegalArgumentException("The specified object is not"
+                        + " an element of this list. " + _elementDump(element));
             } else {
                 return label.intValue();
             }
@@ -456,8 +454,8 @@ public class LabeledList implements List {
 
         while (elements.hasNext()) {
             Object element = elements.next();
-            result.append((includeLabels ? label(element) + ": " : "")
-                    + element + (elements.hasNext() ? delimiter : ""));
+            result.append((includeLabels ? label(element) + ": " : "") + element
+                    + (elements.hasNext() ? delimiter : ""));
         }
 
         return result.toString();

@@ -221,7 +221,8 @@ public class ClassWrapper extends TypedAtomicActor {
     // NOTE: Should this method return a boolean, false when the invocation
     // fails? The actor may have an error output port, and send a token
     // to this port when invocation fails.
-    private void _invoke(IOPort port, Token argv) throws IllegalActionException {
+    private void _invoke(IOPort port, Token argv)
+            throws IllegalActionException {
         // assert port.isInput()
         Object[] methodInfo = (Object[]) _methodTable.get(port);
 
@@ -275,8 +276,8 @@ public class ClassWrapper extends TypedAtomicActor {
             throw new IllegalActionException(this, ex.getTargetException(),
                     "Error invoking method " + m.getName());
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Error invoking method "
-                    + m.getName());
+            throw new IllegalActionException(this, ex,
+                    "Error invoking method " + m.getName());
         }
 
         Token resultToken = null;

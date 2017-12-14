@@ -113,12 +113,12 @@ public class AddSubtract extends TypedAtomicActor {
         // input channels all have the same type.
         plus.setTypeSameAs(minus);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-13\" y=\"-5\" "
-                + "style=\"font-size:18\">\n" + "+ \n" + "</text>\n"
-                + "<text x=\"-13\" y=\"7\" " + "style=\"font-size:18\">\n"
-                + "_ \n" + "</text>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-13\" y=\"-5\" " + "style=\"font-size:18\">\n"
+                + "+ \n" + "</text>\n" + "<text x=\"-13\" y=\"7\" "
+                + "style=\"font-size:18\">\n" + "_ \n" + "</text>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -211,7 +211,8 @@ public class AddSubtract extends TypedAtomicActor {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()) {
-            result.add(new Inequality(output.getTypeTerm(), plus.getTypeTerm()));
+            result.add(
+                    new Inequality(output.getTypeTerm(), plus.getTypeTerm()));
         }
         return result;
     }

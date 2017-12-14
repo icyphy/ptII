@@ -67,11 +67,9 @@ public class TransientState extends State {
         // Just making it invisible in the GUI is not enough.
         isFinalState.setVisibility(Settable.NONE);
 
-        _attachText(
-                "_iconDescription",
-                "<svg>\n"
-                        + "<polygon points=\"0,0 10,10 20,0 10,-10\" style=\"fill:#000000\"/>\n"
-                        + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"0,0 10,10 20,0 10,-10\" style=\"fill:#000000\"/>\n"
+                + "</svg>\n");
         new SingletonAttribute(this, "_hideName");
     }
 }

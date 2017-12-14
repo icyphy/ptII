@@ -96,9 +96,9 @@ public class MatrixToSequence extends SDFTransformer {
         output_tokenProductionRate.setExpression("rows * columns");
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,10 +189,11 @@ public class MatrixToSequence extends SDFTransformer {
 
             if (actualRowCount != rowsValue
                     || actualColumnCount != columnsValue) {
-                throw new IllegalActionException(this, "The input matrix size "
-                        + actualRowCount + "x" + actualColumnCount
-                        + " does not match what the actor requires, "
-                        + rowsValue + "x" + columnsValue);
+                throw new IllegalActionException(this,
+                        "The input matrix size " + actualRowCount + "x"
+                                + actualColumnCount
+                                + " does not match what the actor requires, "
+                                + rowsValue + "x" + columnsValue);
             }
         }
 

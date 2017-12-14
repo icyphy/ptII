@@ -43,8 +43,8 @@ import ptolemy.homer.kernel.PositionableElement;
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
-public abstract class NamedObjectWidget extends Widget implements
-NamedObjectWidgetInterface {
+public abstract class NamedObjectWidget extends Widget
+        implements NamedObjectWidgetInterface {
 
     /** Create new instance of the widget.
      *  @param scene The scene of the widget.

@@ -88,8 +88,8 @@ public class TestGraphReader {
 
         // Determine the source nodes
         Collection sourceCollection = graph.sourceNodes();
-        System.out.println("Number of source nodes = "
-                + sourceCollection.size());
+        System.out
+                .println("Number of source nodes = " + sourceCollection.size());
 
         Iterator sources = sourceCollection.iterator();
         int sourceNumber = 1;
@@ -121,8 +121,8 @@ public class TestGraphReader {
      */
     protected CompositeActor _readGraph(String[] args) {
         if (args.length != 1) {
-            throw new RuntimeException("TestGraphReader expects exactly one "
-                    + "argument.");
+            throw new RuntimeException(
+                    "TestGraphReader expects exactly one " + "argument.");
         }
 
         // The Ptolemy II model returned by the Java parser.
@@ -138,9 +138,9 @@ public class TestGraphReader {
 
         if (!(toplevel instanceof CompositeActor)) {
             throw new RuntimeException("Top level must be a CompositeActor "
-                    + "(in this case, it is '"
-                    + (toplevel == null ? "null" : toplevel.getClass()
-                            .getName()) + "')\n");
+                    + "(in this case, it is '" + (toplevel == null ? "null"
+                            : toplevel.getClass().getName())
+                    + "')\n");
         }
 
         return (CompositeActor) toplevel;

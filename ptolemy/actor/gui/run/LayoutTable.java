@@ -75,7 +75,7 @@ import com.jgoodies.forms.layout.CellConstraints;
  */
 @SuppressWarnings("serial")
 class LayoutTable extends JTable implements DragSourceListener,
-DragGestureListener, DropTargetListener, Autoscroll {
+        DragGestureListener, DropTargetListener, Autoscroll {
     protected DragSource fDragSource = null;
     protected DropTarget fDropTarget = null;
     protected Component dragComponent = null;
@@ -164,8 +164,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
             y = visible.height + SCROLL_AMOUNT;
             height = SCROLL_AMOUNT;
         }
-        ((JComponent) getParent()).scrollRectToVisible(new Rectangle(x, y,
-                width, height));
+        ((JComponent) getParent())
+                .scrollRectToVisible(new Rectangle(x, y, width, height));
     }
 
     @Override
@@ -225,8 +225,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
     @Override
     public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
         try {
-            if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-                    DataFlavor.javaJVMLocalObjectMimeType))) {
+            if (dropTargetDragEvent.isDataFlavorSupported(
+                    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType))) {
                 dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
             } else {
                 dropTargetDragEvent.rejectDrag();
@@ -245,8 +245,8 @@ DragGestureListener, DropTargetListener, Autoscroll {
             //int col = columnAtPoint(location);
             //int row = rowAtPoint(location);
 
-            if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-                    DataFlavor.javaJVMLocalObjectMimeType))) {
+            if (dropTargetDragEvent.isDataFlavorSupported(
+                    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType))) {
                 dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
             } else {
                 dropTargetDragEvent.rejectDrag();

@@ -54,8 +54,8 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception NameDuplicationException
      * @exception IllegalActionException
      */
-    public TDLTaskPort() throws IllegalActionException,
-    NameDuplicationException {
+    public TDLTaskPort()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -71,8 +71,8 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception NameDuplicationException Thrown if the initial value parameter cannot be created.
      * @exception IllegalActionException Thrown if the initial value parameter cannot be created.
      */
-    public TDLTaskPort(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public TDLTaskPort(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -123,8 +123,8 @@ public class TDLTaskPort extends TypedIOPort {
      *                container.
      */
     public TDLTaskPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
+            boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
         _init();
     }
@@ -174,8 +174,8 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception IllegalActionException Thrown if the initial value parameter cannot be created.
      * @exception NameDuplicationException Thrown if the initial value parameter cannot be created.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         initialValue = new Parameter(this, "initialValue");
         initialValue.setVisibility(Settable.FULL);
     }

@@ -116,8 +116,8 @@ public class NonStrictFSMDirector extends FSMDirector {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        NonStrictFSMDirector newObject = (NonStrictFSMDirector) super
-                .clone(workspace);
+        NonStrictFSMDirector newObject = (NonStrictFSMDirector) super.clone(
+                workspace);
         newObject._nonpreemptiveTransitionsInputs = new HashSet();
         newObject._outputActionReferredInputPorts = new HashSet();
         newObject._preemptiveTransitionsInputs = new HashSet();
@@ -256,8 +256,8 @@ public class NonStrictFSMDirector extends FSMDirector {
                     currentState.errorTransitionList(), false, false);
             if (enabledTransitions.size() == 0) {
                 //choose a nonpremptive transition
-                enabledTransitions = controller.enabledTransitions(
-                        transitionList, false, false);
+                enabledTransitions = controller
+                        .enabledTransitions(transitionList, false, false);
             }
 
             // Ensure that if there are multiple enabled transitions, all of them
@@ -356,7 +356,8 @@ public class NonStrictFSMDirector extends FSMDirector {
             throws IllegalActionException {
         List nonpreemptiveTransitionList = state.nonpreemptiveTransitionList();
 
-        _nonpreemptiveTransitionsInputs = getTransitionReferredInputPorts(nonpreemptiveTransitionList);
+        _nonpreemptiveTransitionsInputs = getTransitionReferredInputPorts(
+                nonpreemptiveTransitionList);
     }
 
     /** Given a transition, get a set of input ports referred in the
@@ -401,7 +402,8 @@ public class NonStrictFSMDirector extends FSMDirector {
             throws IllegalActionException {
         List preemptiveTransitionList = state.preemptiveTransitionList();
 
-        _preemptiveTransitionsInputs = getTransitionReferredInputPorts(preemptiveTransitionList);
+        _preemptiveTransitionsInputs = getTransitionReferredInputPorts(
+                preemptiveTransitionList);
     }
 
     /** Given a set of ports, get those that are input ports of the container
@@ -453,9 +455,9 @@ public class NonStrictFSMDirector extends FSMDirector {
 
                             if (inputPortOutside.getContainer() == container
                                     && !_refinementReferredInputPorts
-                                    .contains(inputPortOutside)) {
+                                            .contains(inputPortOutside)) {
                                 _refinementReferredInputPorts
-                                .add(inputPortOutside);
+                                        .add(inputPortOutside);
                             }
                         }
                     }
@@ -542,7 +544,8 @@ public class NonStrictFSMDirector extends FSMDirector {
         super.initialize();
 
         FSMActor controller = getController();
-        getPreemptiveTransitionsReferredInputPorts(controller.getInitialState());
+        getPreemptiveTransitionsReferredInputPorts(
+                controller.getInitialState());
         _referredInputPorts.clear();
         _referredInputPorts.addAll(_preemptiveTransitionsInputs);
     }

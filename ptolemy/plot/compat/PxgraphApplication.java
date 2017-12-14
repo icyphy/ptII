@@ -143,21 +143,16 @@ public class PxgraphApplication extends PlotApplication {
      */
     @Override
     protected void _about() {
-        JOptionPane
-        .showMessageDialog(
-                this,
-                "               pxgraph\n"
-                        + "        A Java Plotting Tool\n\n"
-                        + "By: Edward A. Lee and\n"
-                        + "    Christopher Brooks\n"
-                        + "Version "
-                        + PlotBox.PTPLOT_RELEASE
-                        + ", Build: $Id$\n\n"
-                        + "For help, type 'pxgraph -help', or see \n"
-                        + "the class documentation in the plot.compat package.\n"
-                        + "For more information, see\n"
-                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                        "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "               pxgraph\n"
+                + "        A Java Plotting Tool\n\n" + "By: Edward A. Lee and\n"
+                + "    Christopher Brooks\n" + "Version "
+                + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For help, type 'pxgraph -help', or see \n"
+                + "the class documentation in the plot.compat package.\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+                "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse those command-line arguments that are relevant to the
@@ -171,8 +166,8 @@ public class PxgraphApplication extends PlotApplication {
      *  @exception IOException If there is a problem reading an input.
      */
     @Override
-    protected int _parseArgs(String[] args) throws CmdLineArgException,
-    FileNotFoundException, IOException {
+    protected int _parseArgs(String[] args)
+            throws CmdLineArgException, FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -201,9 +196,7 @@ public class PxgraphApplication extends PlotApplication {
                 continue;
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
-                System.out
-                .println("Version "
-                        + PlotBox.PTPLOT_RELEASE
+                System.out.println("Version " + PlotBox.PTPLOT_RELEASE
                         + ", Build $Id$");
                 StringUtilities.exit(0);
                 continue;
@@ -214,8 +207,8 @@ public class PxgraphApplication extends PlotApplication {
                 // Process =WxH+X+Y
                 int yscreen = 1;
                 boolean screenlocationgiven = false;
-                StringTokenizer stoken = new StringTokenizer(arg.substring(1,
-                        arg.length()), "=x-+");
+                StringTokenizer stoken = new StringTokenizer(
+                        arg.substring(1, arg.length()), "=x-+");
 
                 if (stoken.hasMoreTokens()) {
                     width = Integer.parseInt(stoken.nextToken());
@@ -310,10 +303,8 @@ public class PxgraphApplication extends PlotApplication {
         String[][] commandFlags = {
                 // - is not in the original xgraph.
                 { "-", "", "(read from standard in)" },
-                { "-bar", "BarGraph", "" },
-                { "-bb", "BoundBox", "(Ignored)" },
-                { "-bigendian", "", "" },
-                { "-littleendian", "", "" },
+                { "-bar", "BarGraph", "" }, { "-bb", "BoundBox", "(Ignored)" },
+                { "-bigendian", "", "" }, { "-littleendian", "", "" },
                 { "-binary", "Binary", "" },
                 // -impulses is not in the original X11 pxgraph.
                 { "-impulses", "Impulses", "" }, { "-help", "", "" },
@@ -339,8 +330,8 @@ public class PxgraphApplication extends PlotApplication {
         result.append("\nBoolean flags:\n");
 
         for (i = 0; i < commandFlags.length; i++) {
-            result.append(" " + commandFlags[i][0] + " " + commandFlags[i][2]
-                    + "\n");
+            result.append(
+                    " " + commandFlags[i][0] + " " + commandFlags[i][2] + "\n");
         }
 
         result.append("\nThe following pxgraph features are not supported:\n"

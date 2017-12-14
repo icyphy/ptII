@@ -100,7 +100,8 @@ public class GUIUtilities {
      *  is null, Otherwise, set the
      *  ACCELERATOR_KEY property to the given key stroke.
      */
-    public static void addHotKey(JComponent pane, Action action, KeyStroke key) {
+    public static void addHotKey(JComponent pane, Action action,
+            KeyStroke key) {
         String name = (String) action.getValue(Action.NAME);
 
         if (key == null) {
@@ -167,8 +168,8 @@ public class GUIUtilities {
      * accelerator, if one has been set previously on the action.
      * The item will be enabled by default.
      */
-    public static JMenuItem addMenuItem(JMenu menu, Action action,
-            int mnemonic, String tooltip) {
+    public static JMenuItem addMenuItem(JMenu menu, Action action, int mnemonic,
+            String tooltip) {
         String label = (String) action.getValue(Action.NAME);
         return addMenuItem(menu, label, action, mnemonic, tooltip, true);
     }
@@ -180,8 +181,8 @@ public class GUIUtilities {
      * "menuItem" property.  The menu item's text is set to be "label",
      * and is disabled or enabled according to "isEnabled."
      */
-    public static JMenuItem addMenuItem(JMenu menu, String label,
-            Action action, int mnemonic, String tooltip, boolean isEnabled) {
+    public static JMenuItem addMenuItem(JMenu menu, String label, Action action,
+            int mnemonic, String tooltip, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         } else {
@@ -243,7 +244,8 @@ public class GUIUtilities {
      */
     public static JButton addToolBarButton(JToolBar toolbar, Action action,
             String tooltip, Icon icon, boolean isEnabled) {
-        return addToolBarButton(toolbar, action, tooltip, icon, null, isEnabled);
+        return addToolBarButton(toolbar, action, tooltip, icon, null,
+                isEnabled);
     }
 
     /** Add an action to the toolbar.  If the tool tip is null, use
@@ -388,7 +390,8 @@ public class GUIUtilities {
      *  displaying the whole stack trace, just display the exception message
      *  and a button for displaying the whole stack trace.
      */
-    public static void showException(Component parent, Exception e, String info) {
+    public static void showException(Component parent, Exception e,
+            String info) {
         Object[] message = new Object[1];
         String string;
 
@@ -424,7 +427,8 @@ public class GUIUtilities {
      * string printed at the top of the dialog instead of the Exception
      * message.
      */
-    public static void showStackTrace(Component parent, Exception e, String info) {
+    public static void showStackTrace(Component parent, Exception e,
+            String info) {
         // Show the stack trace in a scrollable text area.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

@@ -96,8 +96,9 @@ public abstract class KernelMain {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
 
             // Note: First appearance of an option has precendence
-            t.setDefaultOptions(defaultOptions + " "
-                    + options.getDefaultOptions() + " " + t.getDefaultOptions());
+            t.setDefaultOptions(
+                    defaultOptions + " " + options.getDefaultOptions() + " "
+                            + t.getDefaultOptions());
             t.setDeclaredOptions(options.getDeclaredOptions() + " "
                     + t.getDeclaredOptions());
         } else {
@@ -134,10 +135,10 @@ public abstract class KernelMain {
             initialize(toplevel);
         } catch (Throwable ex) {
             System.out.println("initialize() failed: " + ex);
-            System.out
-                .println("If the model does not have a director, consider adding \n"
-                        + "<property name=\"DoNothingDirector\" class=\"ptolemy.actor.DoNothingDirector\">\n"
-                        + "</property>");
+            System.out.println(
+                    "If the model does not have a director, consider adding \n"
+                            + "<property name=\"DoNothingDirector\" class=\"ptolemy.actor.DoNothingDirector\">\n"
+                            + "</property>");
         }
 
         if (attribute.getParameter("outputDirectory").indexOf(" ") != -1) {
@@ -166,7 +167,7 @@ public abstract class KernelMain {
         // anything, but the state of the manager must be reset.
         try {
             if (_toplevel instanceof CompositeActor) {
-                ((CompositeActor)_toplevel).getManager().wrapup();
+                ((CompositeActor) _toplevel).getManager().wrapup();
             }
         } catch (Exception exception) {
             // This could be a problem with NonStrictTest.
@@ -202,7 +203,8 @@ public abstract class KernelMain {
         //         args[0] = "java.lang.Object";
         //         // As of soot 2.0.1, this is all that is required.
         //         //        soot.Main.main(args);
-        System.out.println("Copernicus.kernel.KernelMain.generateCode(" + java.util.Arrays.toString(args));
+        System.out.println("Copernicus.kernel.KernelMain.generateCode("
+                + java.util.Arrays.toString(args));
         if (!soot.options.Options.v().parse(args)) {
             throw new KernelRuntimeException("Option parse error");
         }
@@ -211,12 +213,11 @@ public abstract class KernelMain {
         try {
             systemJar = KernelMain._getSystemJar().getCanonicalPath();
         } catch (Throwable throwable) {
-            throw new KernelRuntimeException(throwable, "Could not find rt.jar or classes.jar");
+            throw new KernelRuntimeException(throwable,
+                    "Could not find rt.jar or classes.jar");
         }
-        if (!soot.options.Options.v().parse(new String [] {
-                            "-cp", ptII + ":" + systemJar,
-                            "-w",
-                            "-allow-phantom-refs"})) {
+        if (!soot.options.Options.v().parse(new String[] { "-cp",
+                ptII + ":" + systemJar, "-w", "-allow-phantom-refs" })) {
             throw new KernelRuntimeException("Option parse error");
         }
         PackManager.v().getPack("wjtp").apply();
@@ -244,19 +245,23 @@ public abstract class KernelMain {
 
         // ptolemy.data.ontologies.Ontology is a CompositeEntity, not a CompositeActor.
         if (!(_toplevel instanceof CompositeActor)) {
-            System.err.println("Warning: KernelMain.initialize(): toplevel " + _toplevel.getFullName()
-                    + " is not a CompositeActor, it is a " + _toplevel.getClass());
+            System.err.println("Warning: KernelMain.initialize(): toplevel "
+                    + _toplevel.getFullName()
+                    + " is not a CompositeActor, it is a "
+                    + _toplevel.getClass());
         } else {
             // Applet codegen works with all directors, not just SDF.
-            Director topLevelDirector = ((CompositeActor)_toplevel).getDirector();
+            Director topLevelDirector = ((CompositeActor) _toplevel)
+                    .getDirector();
 
             // FIXME: nearly duplicate code in java/TestApplication.java
-            if (topLevelDirector != null && topLevelDirector instanceof SDFDirector) {
+            if (topLevelDirector != null
+                    && topLevelDirector instanceof SDFDirector) {
                 SDFDirector director = (SDFDirector) topLevelDirector;
                 Parameter iterations = (Parameter) director
-                    .getAttribute("iterations");
+                        .getAttribute("iterations");
                 Parameter copernicus_iterations = (Parameter) director
-                    .getAttribute("copernicus_iterations");
+                        .getAttribute("copernicus_iterations");
 
                 // Set to be a large number of iterations, unless
                 // copernicus_iterations is set.
@@ -264,12 +269,12 @@ public abstract class KernelMain {
                     iterations.setToken(copernicus_iterations.getToken());
                 } else {
                     String copernicusIterations = StringUtilities
-                        .getProperty("ptolemy.ptII.copernicusIterations");
+                            .getProperty("ptolemy.ptII.copernicusIterations");
 
                     if (copernicusIterations.length() > 0) {
                         System.out.println("KernelMain: "
-                            + "Setting number of iterations to "
-                            + copernicusIterations);
+                                + "Setting number of iterations to "
+                                + copernicusIterations);
                         iterations.setToken(new IntToken(copernicusIterations));
                     }
                 }
@@ -278,8 +283,9 @@ public abstract class KernelMain {
             // Initialize the model to ensure type resolution and scheduling
             // are done.
             try {
-                Manager manager = new Manager(((CompositeActor)_toplevel).workspace(), "manager");
-                ((CompositeActor)_toplevel).setManager(manager);
+                Manager manager = new Manager(
+                        ((CompositeActor) _toplevel).workspace(), "manager");
+                ((CompositeActor) _toplevel).setManager(manager);
                 manager.preinitializeAndResolveTypes();
             } catch (Exception exception) {
                 throw new IllegalActionException(_toplevel, exception,
@@ -342,7 +348,7 @@ public abstract class KernelMain {
 
     // Return the path name to the system jar file, usually rt.jar.
     private static File _getSystemJar()
-        throws IOException, FileNotFoundException {
+            throws IOException, FileNotFoundException {
         String systemJarPathName = System.getProperty("java.home")
                 + File.separator + "lib" + File.separator + "rt.jar";
 
@@ -354,23 +360,20 @@ public abstract class KernelMain {
         // The code works with Sun JDK1.2 and 1.3 and IBM JDK1.3.
         if (!systemJar.isFile()) {
             // Try this for IBM JDK 1.4.1
-            String systemJarPathName2 = System.getProperty(
-                        "java.home") + File.separator + "lib" + File.separator
-                    + "core.jar";
+            String systemJarPathName2 = System.getProperty("java.home")
+                    + File.separator + "lib" + File.separator + "core.jar";
             systemJar = new File(systemJarPathName2);
-
 
             if (!systemJar.isFile()) {
                 // Search for Classes.jar on the mac
                 String systemJarPathName3 = System.getProperty("java.home")
-                    + File.separator + "../Classes"
-                    + File.separator + "classes.jar";
+                        + File.separator + "../Classes" + File.separator
+                        + "classes.jar";
                 systemJar = new File(systemJarPathName3);
 
                 if (!systemJar.isFile()) {
                     throw new FileNotFoundException(systemJarPathName + " and "
-                            + systemJarPathName2 + " and "
-                            + systemJarPathName3
+                            + systemJarPathName2 + " and " + systemJarPathName3
                             + " either do not exist or are not readable");
                 } else {
                     systemJarPathName = systemJarPathName3;

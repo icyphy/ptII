@@ -139,30 +139,30 @@ public class ExternalIOPortController extends AttributeController {
 
     /** Polygon coordinates for input output port. */
     public static Integer[] IOPORT_COORDINATES = new Integer[] { 0, 4, 0, 9, 6,
-        4, 12, 4, 12, -4, 6, -4, 0, -9, 0, -4, -8, -4 };
+            4, 12, 4, 12, -4, 6, -4, 0, -9, 0, -4, -8, -4 };
 
     /** Polygon coordinates for input port. */
     public static Integer[] IPORT_COORDINATES = new Integer[] { 0, 4, 0, 9, 12,
-        0, 0, -9, 0, -4, -8, -4 };
+            0, 0, -9, 0, -4, -8, -4 };
 
     /** Polygon coordinates for output port. */
     public static Integer[] OPORT_COORDINATES = new Integer[] { -8, 9, -2, 4,
-        12, 4, 12, -4, -2, -4, -8, -9 };
+            12, 4, 12, -4, -2, -4, -8, -9 };
 
     /** Polygon coordinates for input output multiport. */
-    public static Integer[] MULTI_IPORT_COORDINATES = new Integer[] { -5, 4,
-        -5, 9, 1, 4, 1, 9, 7, 4, 12, 0, 7, -4, 1, -9, 1, -4, -5, -9, -5,
-        -4, -8, -4 };
+    public static Integer[] MULTI_IPORT_COORDINATES = new Integer[] { -5, 4, -5,
+            9, 1, 4, 1, 9, 7, 4, 12, 0, 7, -4, 1, -9, 1, -4, -5, -9, -5, -4, -8,
+            -4 };
 
     /** Polygon coordinates for output multiport. */
-    public static Integer[] MULTI_OPORT_COORDINATES = new Integer[] { -8, 4,
-        -8, 9, -2, 4, -2, 9, 4, 4, 12, 4, 12, -4, 4, -4, -2, -9, -2, -4,
-        -8, -9 };
+    public static Integer[] MULTI_OPORT_COORDINATES = new Integer[] { -8, 4, -8,
+            9, -2, 4, -2, 9, 4, 4, 12, 4, 12, -4, 4, -4, -2, -9, -2, -4, -8,
+            -9 };
 
     /** Polygon coordinates for input multiport. */
     public static Integer[] MULTI_IOPORT_COORDINATES = new Integer[] { -4, 4,
-        -4, 9, 2, 4, 2, 9, 8, 4, 12, 4, 12, -4, 8, -4, 2, -9, 2, -4, -4,
-        -9, -4, -4, -8, -4 };
+            -4, 9, 2, 4, 2, 9, 8, 4, 12, 4, 12, -4, 8, -4, 2, -9, 2, -4, -4, -9,
+            -4, -4, -8, -4 };
 
     // Static initializer.
     static {
@@ -237,11 +237,12 @@ public class ExternalIOPortController extends AttributeController {
                                     location = newLocation;
                                 } else {
                                     // Put at the bottom
-                                    location[0] = 300.0 + _inoutputPortLocations
-                                            .size() * 40;
+                                    location[0] = 300.0
+                                            + _inoutputPortLocations.size()
+                                                    * 40;
                                     location[1] = 380.0;
-                                    _inoutputPortLocations
-                                    .put(ioPort, location);
+                                    _inoutputPortLocations.put(ioPort,
+                                            location);
                                 }
                             } else if (ioPort.isInput()) {
                                 double[] newLocation = _inputPortLocations
@@ -251,8 +252,8 @@ public class ExternalIOPortController extends AttributeController {
                                 } else {
                                     // Put at the left side
                                     location[0] = 20.0;
-                                    location[1] = 200.0 + _inputPortLocations
-                                            .size() * 40;
+                                    location[1] = 200.0
+                                            + _inputPortLocations.size() * 40;
                                     _inputPortLocations.put(ioPort, location);
                                 }
                             } else if (ioPort.isOutput()) {
@@ -263,8 +264,8 @@ public class ExternalIOPortController extends AttributeController {
                                 } else {
                                     // Put at the right side
                                     location[0] = 580.0;
-                                    location[1] = 200.0 + _outputPortLocations
-                                            .size() * 40;
+                                    location[1] = 200.0
+                                            + _outputPortLocations.size() * 40;
                                     _outputPortLocations.put(ioPort, location);
                                 }
                             } else {
@@ -275,8 +276,8 @@ public class ExternalIOPortController extends AttributeController {
                                 } else {
                                     // Put in the middle
                                     location[0] = 300.0;
-                                    location[1] = 200.0 + _otherPortLocations
-                                            .size() * 40;
+                                    location[1] = 200.0
+                                            + _otherPortLocations.size() * 40;
                                     _otherPortLocations.put(ioPort, location);
                                 }
                             }
@@ -329,7 +330,8 @@ public class ExternalIOPortController extends AttributeController {
     @Override
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
-            if (((Locatable) node).getContainer().getAttribute("_hideInside") != null) {
+            if (((Locatable) node).getContainer()
+                    .getAttribute("_hideInside") != null) {
                 return true;
             }
         }
@@ -517,9 +519,11 @@ public class ExternalIOPortController extends AttributeController {
                             polygon = _createPolygon(IOPORT_COORDINATES,
                                     polygon);
                         } else if (ioport.isOutput()) {
-                            polygon = _createPolygon(OPORT_COORDINATES, polygon);
+                            polygon = _createPolygon(OPORT_COORDINATES,
+                                    polygon);
                         } else if (ioport.isInput()) {
-                            polygon = _createPolygon(IPORT_COORDINATES, polygon);
+                            polygon = _createPolygon(IPORT_COORDINATES,
+                                    polygon);
                         } else {
                             polygon = null;
                         }
@@ -609,29 +613,23 @@ public class ExternalIOPortController extends AttributeController {
                         if (direction == SwingConstants.EAST) {
                             startX = x + width;
                             startY = y + height / 2;
-                            endX = startX
-                                    + extent
+                            endX = startX + extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
-                            endY = startY
-                                    + extent
+                            endY = startY + extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.WEST) {
                             startX = x;
                             startY = y + height / 2;
-                            endX = startX
-                                    - extent
+                            endX = startX - extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
-                            endY = startY
-                                    - extent
+                            endY = startY - extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.NORTH) {
                             startX = x + width / 2;
                             startY = y;
-                            endX = startX
-                                    - extent
+                            endX = startX - extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
-                            endY = startY
-                                    - extent
+                            endY = startY - extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         } else {
                             // Coverity: Logically dead code:
@@ -647,11 +645,9 @@ public class ExternalIOPortController extends AttributeController {
 
                             startX = x + width / 2;
                             startY = y + height;
-                            endX = startX
-                                    + extent
+                            endX = startX + extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
-                            endY = startY
-                                    + extent
+                            endY = startY + extent
                                     * IOPortController.MULTIPORT_CONNECTION_SPACING;
                         }
 

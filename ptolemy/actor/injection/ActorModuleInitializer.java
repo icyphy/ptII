@@ -96,8 +96,8 @@ public class ActorModuleInitializer {
      */
     private static final ArrayList<PtolemyModule> _PTOLEMY_MODULES = new ArrayList<PtolemyModule>();
     static {
-        _PTOLEMY_MODULES.add(new PtolemyModule(ResourceBundle
-                .getBundle("ptolemy.actor.ActorModule")));
+        _PTOLEMY_MODULES.add(new PtolemyModule(
+                ResourceBundle.getBundle("ptolemy.actor.ActorModule")));
     }
 
     /**

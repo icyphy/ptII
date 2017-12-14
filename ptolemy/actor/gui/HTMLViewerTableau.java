@@ -119,8 +119,8 @@ public class HTMLViewerTableau extends Tableau {
                 URL toRead = ConfigurationApplication.specToURL(urlSpec);
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Cannot open URL: "
-                        + urlSpec);
+                throw new IllegalActionException(this, ex,
+                        "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -215,8 +215,8 @@ public class HTMLViewerTableau extends Tableau {
                     if (anotherURL == null
                             && urlString.indexOf("$CLASSPATH") != -1) {
                         // The URL contains $CLASSPATH
-                        String classpathString = urlString.substring(urlString
-                                .indexOf("$CLASSPATH"));
+                        String classpathString = urlString
+                                .substring(urlString.indexOf("$CLASSPATH"));
                         anotherURL = FileUtilities.nameToURL(classpathString,
                                 null, null);
                     }
@@ -237,8 +237,8 @@ public class HTMLViewerTableau extends Tableau {
                             // convert to %20
                             URL canonicalizedURL = JNLPUtilities
                                     .canonicalizeJarURL(anotherURL);
-                            effigy.uri.setURI(new URI(canonicalizedURL
-                                    .toString()));
+                            effigy.uri.setURI(
+                                    new URI(canonicalizedURL.toString()));
                             tableau.setTitle(canonicalizedURL.toString());
                         } catch (Throwable ex2) {
                             throw ex;
@@ -270,7 +270,7 @@ public class HTMLViewerTableau extends Tableau {
      *  file:/C:/ptII/doc/codeDoc/ptolemy/util/package-summary.html#package_description]
      *  will return:
      *  jar:file:/C:/cxh/ptII/doc/codeDoc.jar!/doc/codeDoc/ptolemy/kernel/package-summary.html#package_description
-
+    
      *
      *  @param urlName The absolute URL to be converted.
      *  @return The jar url that refers to a file if the file can be found
@@ -316,8 +316,8 @@ public class HTMLViewerTableau extends Tableau {
             } catch (java.net.URISyntaxException ex) {
                 // If the ptIIDirAsURLName has a space in it, then it is
                 // not a legitimate URI, so we substitute in %20
-                ptIIDirAsURI = new URI(StringUtilities.substitute(
-                        ptIIDirAsURLName, " ", "%20"));
+                ptIIDirAsURI = new URI(StringUtilities
+                        .substitute(ptIIDirAsURLName, " ", "%20"));
             }
 
             URI relativeURI = uri.relativize(ptIIDirAsURI);
@@ -330,8 +330,8 @@ public class HTMLViewerTableau extends Tableau {
                 }
 
                 // Hmm, should this be
-                relativePath = uri.toString().substring(
-                        ptIIDirAsURI.toString().length() + offset);
+                relativePath = uri.toString()
+                        .substring(ptIIDirAsURI.toString().length() + offset);
 
                 //relativePath = urlName.substring(ptIIDirAsURLName.length());
             }

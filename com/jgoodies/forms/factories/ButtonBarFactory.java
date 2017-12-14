@@ -104,8 +104,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildLeftAlignedBar(JButton button1, JButton button2,
             JButton button3, JButton button4) {
-        return buildLeftAlignedBar(new JButton[] { button1, button2, button3,
-                button4 }, true);
+        return buildLeftAlignedBar(
+                new JButton[] { button1, button2, button3, button4 }, true);
     }
 
     /**
@@ -120,8 +120,9 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildLeftAlignedBar(JButton button1, JButton button2,
             JButton button3, JButton button4, JButton button5) {
-        return buildLeftAlignedBar(new JButton[] { button1, button2, button3,
-                button4, button5 }, true);
+        return buildLeftAlignedBar(
+                new JButton[] { button1, button2, button3, button4, button5 },
+                true);
     }
 
     /**
@@ -200,8 +201,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildCenteredBar(JButton button1, JButton button2,
             JButton button3, JButton button4) {
-        return buildCenteredBar(new JButton[] { button1, button2, button3,
-                button4 });
+        return buildCenteredBar(
+                new JButton[] { button1, button2, button3, button4 });
     }
 
     /**
@@ -216,8 +217,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildCenteredBar(JButton button1, JButton button2,
             JButton button3, JButton button4, JButton button5) {
-        return buildCenteredBar(new JButton[] { button1, button2, button3,
-                button4, button5 });
+        return buildCenteredBar(
+                new JButton[] { button1, button2, button3, button4, button5 });
     }
 
     /**
@@ -279,8 +280,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildGrowingBar(JButton button1, JButton button2,
             JButton button3, JButton button4) {
-        return buildGrowingBar(new JButton[] { button1, button2, button3,
-                button4 });
+        return buildGrowingBar(
+                new JButton[] { button1, button2, button3, button4 });
     }
 
     /**
@@ -295,8 +296,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildGrowingBar(JButton button1, JButton button2,
             JButton button3, JButton button4, JButton button5) {
-        return buildGrowingBar(new JButton[] { button1, button2, button3,
-                button4, button5 });
+        return buildGrowingBar(
+                new JButton[] { button1, button2, button3, button4, button5 });
     }
 
     /**
@@ -331,7 +332,8 @@ public final class ButtonBarFactory {
      * @param button2  the second button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildRightAlignedBar(JButton button1, JButton button2) {
+    public static JPanel buildRightAlignedBar(JButton button1,
+            JButton button2) {
         return buildRightAlignedBar(new JButton[] { button1, button2 }, true);
     }
 
@@ -345,8 +347,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildRightAlignedBar(JButton button1, JButton button2,
             JButton button3) {
-        return buildRightAlignedBar(
-                new JButton[] { button1, button2, button3 }, true);
+        return buildRightAlignedBar(new JButton[] { button1, button2, button3 },
+                true);
     }
 
     /**
@@ -360,8 +362,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildRightAlignedBar(JButton button1, JButton button2,
             JButton button3, JButton button4) {
-        return buildRightAlignedBar(new JButton[] { button1, button2, button3,
-                button4 }, true);
+        return buildRightAlignedBar(
+                new JButton[] { button1, button2, button3, button4 }, true);
     }
 
     /**
@@ -376,8 +378,9 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildRightAlignedBar(JButton button1, JButton button2,
             JButton button3, JButton button4, JButton button5) {
-        return buildRightAlignedBar(new JButton[] { button1, button2, button3,
-                button4, button5 }, true);
+        return buildRightAlignedBar(
+                new JButton[] { button1, button2, button3, button4, button5 },
+                true);
     }
 
     /**
@@ -461,8 +464,8 @@ public final class ButtonBarFactory {
      */
     public static JPanel buildHelpBar(JButton help, JButton button1,
             JButton button2, JButton button3, JButton button4) {
-        return buildHelpBar(help, new JButton[] { button1, button2, button3,
-                button4 });
+        return buildHelpBar(help,
+                new JButton[] { button1, button2, button3, button4 });
     }
 
     /**

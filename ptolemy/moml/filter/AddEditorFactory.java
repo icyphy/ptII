@@ -106,8 +106,8 @@ public class AddEditorFactory extends MoMLFilterSimple {
             } else if (_currentlyProcessingActorThatMayNeedAnEditorFactory
                     && container != null
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(
-                            _currentActorFullName)) {
+                    && !container.getFullName()
+                            .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
@@ -152,7 +152,7 @@ public class AddEditorFactory extends MoMLFilterSimple {
     @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-                    throws Exception {
+            throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
         } else if (_currentAttributeHasLocation && elementName != null
@@ -182,8 +182,8 @@ public class AddEditorFactory extends MoMLFilterSimple {
                 parser.parse(null, moml);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
-                throw new IllegalActionException(null, ex, "Failed to parse\n"
-                        + moml);
+                throw new IllegalActionException(null, ex,
+                        "Failed to parse\n" + moml);
             }
         }
     }
@@ -193,8 +193,7 @@ public class AddEditorFactory extends MoMLFilterSimple {
      */
     @Override
     public String toString() {
-        return getClass().getName()
-                + ": If a parameter has a _location, then\n"
+        return getClass().getName() + ": If a parameter has a _location, then\n"
                 + "add a VisibleParameterEditorFactory named _editorFactory.\n";
     }
 

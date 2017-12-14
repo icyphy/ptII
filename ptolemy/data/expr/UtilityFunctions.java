@@ -168,8 +168,8 @@ public class UtilityFunctions {
             URL url = file.toURI().toURL();
             return url.toString();
         } catch (java.net.MalformedURLException malformed) {
-            throw new RuntimeException("could not convert '" + file
-                    + "' to a URL", malformed);
+            throw new RuntimeException(
+                    "could not convert '" + file + "' to a URL", malformed);
         }
     }
 
@@ -197,10 +197,12 @@ public class UtilityFunctions {
      * @return lower triangular matrix L such that A=LL*
      * @exception IllegalActionException
      */
-    public static double[][] choleskyDecomposition (double[][] A) throws IllegalActionException {
+    public static double[][] choleskyDecomposition(double[][] A)
+            throws IllegalActionException {
 
         if (A == null || A[0] == null || A.length != A[0].length) {
-            throw new IllegalArgumentException("The input must be a square matrix.");
+            throw new IllegalArgumentException(
+                    "The input must be a square matrix.");
         }
         int N = A.length;
 
@@ -216,7 +218,8 @@ public class UtilityFunctions {
                     L[i][j] = 1.0 / L[j][j] * (A[i][j] - lowerSum);
                 } else {
                     if (A[i][i] - lowerSum < 0.0) {
-                        throw new IllegalActionException("The input matrix must be positive-definite.");
+                        throw new IllegalActionException(
+                                "The input matrix must be positive-definite.");
                     }
                     L[i][j] = Math.sqrt(A[i][i] - lowerSum);
                 }
@@ -306,8 +309,9 @@ public class UtilityFunctions {
                     + secondArrayType + " is not an ArrayType?");
         } else {
             return new ArrayType(
-                    ((ArrayType) TypeLattice.lattice().leastUpperBound(
-                            firstArrayType, secondArrayType)).getElementType(),
+                    ((ArrayType) TypeLattice.lattice()
+                            .leastUpperBound(firstArrayType, secondArrayType))
+                                    .getElementType(),
                     ((ArrayType) firstArrayType).length()
                             + ((ArrayType) secondArrayType).length());
         }
@@ -329,8 +333,8 @@ public class UtilityFunctions {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         if (!(firstArrayType instanceof ArrayType)) {
-            throw new IllegalActionException("Type " + firstArrayType
-                    + " is not an ArrayType?");
+            throw new IllegalActionException(
+                    "Type " + firstArrayType + " is not an ArrayType?");
         } else {
             int nElements = 0;
             ArrayType arrayType = (ArrayType) firstArrayType;
@@ -343,14 +347,11 @@ public class UtilityFunctions {
                 }
             }
             if (nElements > 0) {
-                return new ArrayType(
-                        ((ArrayType) arrayType.getElementType())
-                                .getElementType(),
-                        nElements);
+                return new ArrayType(((ArrayType) arrayType.getElementType())
+                        .getElementType(), nElements);
             } else {
-                return new ArrayType(
-                        ((ArrayType) arrayType.getElementType())
-                                .getElementType());
+                return new ArrayType(((ArrayType) arrayType.getElementType())
+                        .getElementType());
             }
         }
     }
@@ -504,9 +505,8 @@ public class UtilityFunctions {
      *   take exactly one argument, or if the type signature of the function
      *   is not compatible with the other array argument.
      */
-    public static Type filterReturnType(Type predicateType,
-            Type arrayTokenType, Type sizeLimitType)
-            throws IllegalActionException {
+    public static Type filterReturnType(Type predicateType, Type arrayTokenType,
+            Type sizeLimitType) throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         if (predicateType instanceof FunctionType) {
@@ -732,9 +732,7 @@ public class UtilityFunctions {
             return new DoubleMatrixToken(result);
         } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException(
-                    null,
-                    ex,
+            throw new InternalErrorException(null, ex,
                     "UtilityFunction.gaussian: "
                             + "Cannot create the DoubleMatrixToken that contains "
                             + "Gaussian random numbers.");
@@ -761,8 +759,8 @@ public class UtilityFunctions {
         Iterator environmentVariables = environment.entrySet().iterator();
         while (environmentVariables.hasNext()) {
             Map.Entry pairs = (Map.Entry) environmentVariables.next();
-            environmentMap.put((String) pairs.getKey(), new StringToken(
-                    (String) pairs.getValue()));
+            environmentMap.put((String) pairs.getKey(),
+                    new StringToken((String) pairs.getValue()));
         }
         return new RecordToken(environmentMap);
     }
@@ -808,7 +806,8 @@ public class UtilityFunctions {
      *  @param string The string to be parsed and evaluated.
      *  @return A string representing an inferred type.
      */
-    public static String inferType(String string) throws IllegalActionException {
+    public static String inferType(String string)
+            throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         PtParser parser = new PtParser();
@@ -835,7 +834,8 @@ public class UtilityFunctions {
         String[] names = new String[values.length];
         int i = 0;
 
-        for (Iterator iterator = commonNames.iterator(); iterator.hasNext(); i++) {
+        for (Iterator iterator = commonNames.iterator(); iterator
+                .hasNext(); i++) {
             String name = (String) iterator.next();
             values[i] = record1.get(name);
             names[i] = name;
@@ -925,8 +925,8 @@ public class UtilityFunctions {
                                     + "compatible with function argument type.");
                 }
 
-                return new ArrayType(TypeLattice.leastUpperBound(resultType,
-                        initialType));
+                return new ArrayType(
+                        TypeLattice.leastUpperBound(resultType, initialType));
             }
         } else {
             return BaseType.UNKNOWN;
@@ -958,19 +958,22 @@ public class UtilityFunctions {
                 // Unfortunately, pathnames tend to get specified with
                 // a forward slash, even under windows
                 if (debug) {
-                    System.out.println("UtilityFunctions.loadLibrary(" + library + "): System.loadLibrary()");
+                    System.out.println("UtilityFunctions.loadLibrary(" + library
+                            + "): System.loadLibrary()");
                 }
                 System.loadLibrary(library);
             } else {
                 // load() does not work with relative paths.
                 if (debug) {
-                    System.out.println("UtilityFunctions.loadLibrary(" + library + "): System.load()");
+                    System.out.println("UtilityFunctions.loadLibrary(" + library
+                            + "): System.load()");
                 }
                 System.load(library);
             }
         } catch (UnsatisfiedLinkError ex) {
             if (debug) {
-                System.out.println("UtilityFunctions.loadLibrary(" + library + "): " + ex);
+                System.out.println(
+                        "UtilityFunctions.loadLibrary(" + library + "): " + ex);
             }
             String sharedLibrarySuffix = "dll";
 
@@ -1137,7 +1140,8 @@ public class UtilityFunctions {
      *  @param y An unsigned byte.
      *  @return The maximum of x and y.
      */
-    public static UnsignedByteToken max(UnsignedByteToken x, UnsignedByteToken y) {
+    public static UnsignedByteToken max(UnsignedByteToken x,
+            UnsignedByteToken y) {
         if (x.intValue() > y.intValue()) {
             return x;
         } else {
@@ -1195,7 +1199,8 @@ public class UtilityFunctions {
      *  @param y An unsigned byte.
      *  @return The minimum of x and y.
      */
-    public static UnsignedByteToken min(UnsignedByteToken x, UnsignedByteToken y) {
+    public static UnsignedByteToken min(UnsignedByteToken x,
+            UnsignedByteToken y) {
         if (x.intValue() < y.intValue()) {
             return x;
         } else {
@@ -1322,8 +1327,8 @@ public class UtilityFunctions {
                         .doubleValue();
                 correlatedSamples[i] += L[i][j] * uncorr;
             }
-            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]
-                    + mean[i]);
+            correlatedTokens[i] = new DoubleToken(
+                    correlatedSamples[i] + mean[i]);
         }
         return new ArrayToken(BaseType.DOUBLE, correlatedTokens);
     }
@@ -1405,9 +1410,7 @@ public class UtilityFunctions {
             return new DoubleMatrixToken(result);
         } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException(
-                    null,
-                    ex,
+            throw new InternalErrorException(null, ex,
                     "UtilityFunction.random: "
                             + "Cannot create the DoubleMatrixToken that contains "
                             + "random numbers.");
@@ -1509,8 +1512,8 @@ public class UtilityFunctions {
 
         File file = new File(findFile(filename));
         if (!file.exists()) {
-            throw new IllegalActionException("readMatrix: File " + filename
-                    + " not found.");
+            throw new IllegalActionException(
+                    "readMatrix: File " + filename + " not found.");
         }
 
         // Vector containing the matrix
@@ -1887,7 +1890,8 @@ public class UtilityFunctions {
             StringBuffer buffer = new StringBuffer(length);
 
             for (int i = 0; i < array.length(); i++) {
-                buffer.append(((StringToken) array.getElement(i)).stringValue());
+                buffer.append(
+                        ((StringToken) array.getElement(i)).stringValue());
             }
 
             return new StringToken(buffer.toString());
@@ -1990,7 +1994,8 @@ public class UtilityFunctions {
      */
     public static ComplexMatrixToken zeroMatrixComplex(int rows, int columns) {
         try {
-            return new ComplexMatrixToken(ComplexMatrixMath.zero(rows, columns));
+            return new ComplexMatrixToken(
+                    ComplexMatrixMath.zero(rows, columns));
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixComplex: "
@@ -2081,7 +2086,8 @@ public class UtilityFunctions {
 
         String osName = StringUtilities.getProperty("os.name");
         if (debug) {
-            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): osName: " + osName);
+            System.out.println("UtilityFunctions._loadLibrary(" + library + ", "
+                    + sharedLibrarySuffix + "): osName: " + osName);
         }
         if (osName.startsWith("SunOS") || osName.startsWith("Linux")
                 || osName.startsWith("Mac OS X")) {
@@ -2146,12 +2152,18 @@ public class UtilityFunctions {
         }
 
         if (debug) {
-            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): libraryWithSuffix: " + libraryWithSuffix + " libraryPathExists" + libraryPathExists );
+            System.out.println("UtilityFunctions._loadLibrary(" + library + ", "
+                    + sharedLibrarySuffix + "): libraryWithSuffix: "
+                    + libraryWithSuffix + " libraryPathExists"
+                    + libraryPathExists);
         }
 
         if (libraryPath.equals(libraryWithSuffix) || !libraryPathExists) {
             if (debug) {
-                System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): findFile did not find the library try the short name: " + shortLibraryName);
+                System.out.println("UtilityFunctions._loadLibrary(" + library
+                        + ", " + sharedLibrarySuffix
+                        + "): findFile did not find the library try the short name: "
+                        + shortLibraryName);
             }
 
             try {
@@ -2163,11 +2175,16 @@ public class UtilityFunctions {
                 // requires this.
                 if (shortLibraryName != null) {
                     if (debug) {
-                        System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): System.loadLibrary(" + shortLibraryName + ")");
+                        System.out.println("UtilityFunctions._loadLibrary("
+                                + library + ", " + sharedLibrarySuffix
+                                + "): System.loadLibrary(" + shortLibraryName
+                                + ")");
                     }
                     System.loadLibrary(shortLibraryName);
                     if (debug) {
-                        System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): loaded " + shortLibraryName);
+                        System.out.println("UtilityFunctions._loadLibrary("
+                                + library + ", " + sharedLibrarySuffix
+                                + "): loaded " + shortLibraryName);
                     }
                 }
                 return;
@@ -2185,7 +2202,10 @@ public class UtilityFunctions {
                                 .substring(index + 3);
                     }
                     if (debug) {
-                        System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): System.loadLibrary(" + shortLibraryName2 + ")");
+                        System.out.println("UtilityFunctions._loadLibrary("
+                                + library + ", " + sharedLibrarySuffix
+                                + "): System.loadLibrary(" + shortLibraryName2
+                                + ")");
                     }
                     System.loadLibrary(shortLibraryName2);
                     return;
@@ -2221,33 +2241,23 @@ public class UtilityFunctions {
                         // Ignore.
                     }
 
-                    Error error = new UnsatisfiedLinkError(
-                            "Did not find '"
-                                    + library
-                                    + "' in path, searched "
-                                    + "user.home ("
-                                    + userDir
-                                    + ") user.dir ("
-                                    + userHome
-                                    + ") and the classpath for '"
-                                    + libraryPath
-                                    + "', but that was not found either.\n"
-                                    + "The java.library.path property was: "
-                                    + javaLibraryPath
-                                    + "\nThe Java classpath was: "
-                                    + classpath
-                                    + "\nIn addition, loadLibrary(\""
-                                    + shortLibraryName
-                                    + "\") was called, the exception for the "
-                                    + "loadLibrary() call was: "
-                                    + ex2
-                                    + (shortLibraryName
-                                            .equals(shortLibraryName2) ? ""
-                                            : "\nAlso, loadlibrary(\""
-                                                    + shortLibraryName2
-                                                    + "\") was called, "
-                                                    + "the exception  for the loadLibrary call was: "
-                                                    + ex3));
+                    Error error = new UnsatisfiedLinkError("Did not find '"
+                            + library + "' in path, searched " + "user.home ("
+                            + userDir + ") user.dir (" + userHome
+                            + ") and the classpath for '" + libraryPath
+                            + "', but that was not found either.\n"
+                            + "The java.library.path property was: "
+                            + javaLibraryPath + "\nThe Java classpath was: "
+                            + classpath + "\nIn addition, loadLibrary(\""
+                            + shortLibraryName
+                            + "\") was called, the exception for the "
+                            + "loadLibrary() call was: " + ex2
+                            + (shortLibraryName.equals(shortLibraryName2) ? ""
+                                    : "\nAlso, loadlibrary(\""
+                                            + shortLibraryName2
+                                            + "\") was called, "
+                                            + "the exception  for the loadLibrary call was: "
+                                            + ex3));
                     error.initCause(throwable);
                     error.printStackTrace();
                     throw error;
@@ -2262,7 +2272,9 @@ public class UtilityFunctions {
         // For example, if liba.so uses libb.so and we call this
         // method on a, then libb.so will not be found.
         if (debug) {
-            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): System.load(" + libraryPath + ")");
+            System.out.println("UtilityFunctions._loadLibrary(" + library + ", "
+                    + sharedLibrarySuffix + "): System.load(" + libraryPath
+                    + ")");
         }
         System.load(libraryPath);
     }

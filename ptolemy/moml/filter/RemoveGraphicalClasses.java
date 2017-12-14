@@ -108,7 +108,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         } else if (_graphicalClasses.containsKey(attributeValue)) {
             MoMLParser.setModified(true);
             return (String) _graphicalClasses.get(attributeValue);
-        } else if (_removeGR && attributeValue.startsWith("ptolemy.domains.gr")) {
+        } else if (_removeGR
+                && attributeValue.startsWith("ptolemy.domains.gr")) {
             MoMLParser.setModified(true);
             return null;
         }
@@ -167,8 +168,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.actor.lib.LEDMatrix",
                 "ptolemy.moml.filter.DiscardDoubles");
 
-        _graphicalClasses.put(
-                "ptolemy.data.properties.gui.PropertyHighlighter", null);
+        _graphicalClasses.put("ptolemy.data.properties.gui.PropertyHighlighter",
+                null);
 
         _graphicalClasses.put("ptolemy.domains.sr.lib.gui.NonStrictDisplay",
                 "ptolemy.actor.lib.Discard");
@@ -184,8 +185,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put(
                 "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses
-        .put("ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
+        _graphicalClasses.put(
+                "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
@@ -200,8 +201,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.gt.GTTableau$Factory",
                 "ptolemy.kernel.util.Attribute");
-        _graphicalClasses.put(
-                "ptolemy.vergil.gt.GTTableau$ModalTableauFactory",
+        _graphicalClasses.put("ptolemy.vergil.gt.GTTableau$ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
 
         // 4/04 BooleanSwitch uses EditorIcon
@@ -221,8 +221,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ArcAttribute",
                 null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.EllipseAttribute", null);
+        _graphicalClasses
+                .put("ptolemy.vergil.kernel.attributes.EllipseAttribute", null);
 
         _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.FilledShapeAttribute", null);
@@ -230,17 +230,17 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.IDAttribute",
                 null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.ImageAttribute", null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ImageAttribute",
+                null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.ArrowAttribute", null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ArrowAttribute",
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.LineAttribute",
                 null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.kernel.attributes.ShapeAttribute", null);
+        _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ShapeAttribute",
+                null);
 
         _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute",
@@ -254,17 +254,17 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
 
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.BasicJSPlotter",
                 null);
-        _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.web.DygraphsJSPlotter", null);
+        _graphicalClasses
+                .put("ptolemy.vergil.basic.export.web.DygraphsJSPlotter", null);
         // Classes that import ptolemy.vergil.icon.ValueIcon
-        _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.web.DefaultIconLink", null);
-        _graphicalClasses.put(
-                "ptolemy.vergil.basic.export.web.DefaultIconScript", null);
-        _graphicalClasses.put("ptolemy.vergil.basic.export.web.DefaultTitle",
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.DefaultIconLink",
                 null);
         _graphicalClasses
-        .put("ptolemy.vergil.basic.export.web.HTMLImage", null);
+                .put("ptolemy.vergil.basic.export.web.DefaultIconScript", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.DefaultTitle",
+                null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.web.HTMLImage",
+                null);
         // HTMLText extends WebContent which imports ValueIcon
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.HTMLText", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.web.IconLink", null);
@@ -287,16 +287,16 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.ptera.EventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ptera.OctagonEventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ptera.TestIcon", null);
-        _graphicalClasses
-        .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ptera.TimeAdvanceEventIcon",
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.gt.IterativeParameterIcon", null);
         _graphicalClasses.put("ptolemy.vergil.gt.StateMatcherIcon", null);
         _graphicalClasses.put("ptolemy.vergil.gt.TransformationAttributeIcon",
                 null);
 
-        _graphicalClasses
-        .put("ptolemy.vergil.ptera.TimeAdvanceEventIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ptera.TimeAdvanceEventIcon",
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon", null);
@@ -319,8 +319,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         //        "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
                 null);
-        _graphicalClasses.put("ptolemy.vergil.toolbox"
-                + ".VisibleParameterEditorFactory",
+        _graphicalClasses.put(
+                "ptolemy.vergil.toolbox" + ".VisibleParameterEditorFactory",
                 "ptolemy.kernel.util.Attribute");
 
         // Shallow CG of actor/lib/test/auto/URLDirectoryReader3.xml fails
@@ -352,8 +352,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor", null);
 
         // Remove various graphical classes from curriculum
-        _graphicalClasses.put(
-                "ptolemy.domains.curriculum.DependencyHighlighter", null);
+        _graphicalClasses
+                .put("ptolemy.domains.curriculum.DependencyHighlighter", null);
         _graphicalClasses.put("ptolemy.vergil.basic.DependencyHighlighter",
                 null);
         _graphicalClasses.put("ptolemy.domains.curriculum.HighlightEntities",
@@ -373,8 +373,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.properties.LatticeElementIcon",
                 null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.actor.lib.MonitorReceiverContents", null);
+        _graphicalClasses
+                .put("ptolemy.vergil.actor.lib.MonitorReceiverContents", null);
 
         _graphicalClasses.put("ptolemy.vergil.ontologies.ConceptIcon", null);
         _graphicalClasses.put("ptolemy.vergil.ontologies.MultipleConceptIcon",

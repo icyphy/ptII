@@ -126,22 +126,24 @@ public class TDLModuleDirector extends ModalDirector {
     public void fire() throws IllegalActionException {
         boolean iterate = true;
         Time modePeriod = getModePeriod(getController().currentState());
-        Time scheduleTime = new Time(this, getModelTime().getLongValue()
-                % modePeriod.getLongValue());
+        Time scheduleTime = new Time(this,
+                getModelTime().getLongValue() % modePeriod.getLongValue());
         while (iterate) {
             iterate = false;
             System.out.println(_nextEventsTimeStamps.size() + " "
                     + _nodesDependentOnPreviousActions.size());
             _currentWCET = 0;
 
-            List<Node> eventsToFire = _getEventsToFire(scheduleTime, modePeriod);
+            List<Node> eventsToFire = _getEventsToFire(scheduleTime,
+                    modePeriod);
             boolean doneAction;
             for (Node node : eventsToFire) {
                 System.out.println("  TDL: " + getModelTime() + " " + node);
                 doneAction = true;
                 TDLAction action = (TDLAction) node.getWeight();
                 Object obj = action.object;
-                if (!_hasGuard((NamedObj) obj) || _guardIsTrue((NamedObj) obj)) {
+                if (!_hasGuard((NamedObj) obj)
+                        || _guardIsTrue((NamedObj) obj)) {
                     // execute task
                     if (action.actionType == TDLAction.EXECUTETASK) {
                         Actor actor = (Actor) obj;
@@ -177,8 +179,8 @@ public class TDLModuleDirector extends ModalDirector {
                         }
                         _nextEventsTimeStamps.clear();
                         _nodesDependentOnPreviousActions.clear();
-                        Node startNode = _graph.getNode(new TDLAction(new Time(
-                                this, 0.0), TDLAction.AFTERMODESWITCH,
+                        Node startNode = _graph.getNode(new TDLAction(
+                                new Time(this, 0.0), TDLAction.AFTERMODESWITCH,
                                 targetState));
 
                         _fireAt(startNode, getModelTime());
@@ -186,8 +188,8 @@ public class TDLModuleDirector extends ModalDirector {
                     } else if (action.actionType == TDLAction.AFTERMODESWITCH) {
                         // nothing to do
                     } else {
-                        throw new IllegalArgumentException(obj
-                                + " cannot be executed.");
+                        throw new IllegalArgumentException(
+                                obj + " cannot be executed.");
                     }
                 }
                 if (doneAction) {
@@ -207,7 +209,8 @@ public class TDLModuleDirector extends ModalDirector {
                             List<TDLAction> actionsToRemove = new ArrayList();
 
                             if (_nodesDependentOnPreviousActions.get(n) != null
-                                    && _nodesDependentOnPreviousActions.size() > 0) {
+                                    && _nodesDependentOnPreviousActions
+                                            .size() > 0) {
                                 for (TDLAction waitForAction : _nodesDependentOnPreviousActions
                                         .get(n)) {
                                     if (waitForAction.sameActionAs(action,
@@ -217,18 +220,19 @@ public class TDLModuleDirector extends ModalDirector {
                                 }
                                 for (TDLAction actionToRemove : actionsToRemove) {
                                     _nodesDependentOnPreviousActions.get(n)
-                                    .remove(actionToRemove);
+                                            .remove(actionToRemove);
                                 }
                             }
                             if (_nodesDependentOnPreviousActions.get(n) == null
                                     || _nodesDependentOnPreviousActions.get(n)
-                                    .size() == 0) {
-                                if (!_nextEventsTimeStamps.keySet().contains(n)) {
+                                            .size() == 0) {
+                                if (!_nextEventsTimeStamps.keySet()
+                                        .contains(n)) {
                                     _fireAt(n, getModelTime());
                                 }
                                 scheduleEventsAfterAction(n);
-                                _previousAdditionalScheduleTime = new Time(
-                                        this, 0.0);
+                                _previousAdditionalScheduleTime = new Time(this,
+                                        0.0);
                                 //nodesToRemove.add(n);
                                 //iterate = true;
                             }
@@ -504,13 +508,14 @@ public class TDLModuleDirector extends ModalDirector {
 
         }
 
-        if (((Actor) getContainer().getContainer()).getDirector() instanceof DEDirector) {
+        if (((Actor) getContainer().getContainer())
+                .getDirector() instanceof DEDirector) {
             return super.prefire();
         }
 
         Time modePeriod = getModePeriod(getController().currentState());
-        Time scheduleTime = new Time(this, getModelTime().getLongValue()
-                % modePeriod.getLongValue());
+        Time scheduleTime = new Time(this,
+                getModelTime().getLongValue() % modePeriod.getLongValue());
         boolean fire = false;
         List<Node> eventsToFire = _getEventsToFire(scheduleTime, modePeriod);
         for (Node node : eventsToFire) {
@@ -634,8 +639,8 @@ public class TDLModuleDirector extends ModalDirector {
     private void _fireAt(Node node, Time additionalTime)
             throws IllegalActionException {
         Time modePeriod = getModePeriod(getController().currentState());
-        Time scheduleTime = new Time(this, getModelTime().getLongValue()
-                % modePeriod.getLongValue());
+        Time scheduleTime = new Time(this,
+                getModelTime().getLongValue() % modePeriod.getLongValue());
         Time time;
         if (node != null) {
             Time t = ((TDLAction) node.getWeight()).time.subtract(scheduleTime);

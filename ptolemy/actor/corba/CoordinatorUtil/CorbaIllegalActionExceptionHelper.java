@@ -39,16 +39,14 @@ abstract public class CorbaIllegalActionExceptionHelper {
 
                     org.omg.CORBA.StructMember[] _members0 = new org.omg.CORBA.StructMember[1];
                     org.omg.CORBA.TypeCode _tcOf_members0 = null;
-                    _tcOf_members0 = org.omg.CORBA.ORB.init().create_string_tc(
-                            0);
+                    _tcOf_members0 = org.omg.CORBA.ORB.init()
+                            .create_string_tc(0);
                     _members0[0] = new org.omg.CORBA.StructMember("message",
                             _tcOf_members0, null);
-                    __typeCode = org.omg.CORBA.ORB
-                            .init()
-                            .create_exception_tc(
-                                    ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
+                    __typeCode = org.omg.CORBA.ORB.init().create_exception_tc(
+                            ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
                                     .id(),
-                                    "CorbaIllegalActionException", _members0);
+                            "CorbaIllegalActionException", _members0);
                     __active = false;
                 }
             }
@@ -71,8 +69,7 @@ abstract public class CorbaIllegalActionExceptionHelper {
         return value;
     }
 
-    public static void write(
-            org.omg.CORBA.portable.OutputStream ostream,
+    public static void write(org.omg.CORBA.portable.OutputStream ostream,
             ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException value) {
         // write the repository ID
         ostream.write_string(id());

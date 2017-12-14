@@ -72,12 +72,11 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-
         emissionEstimates = new TypedIOPort(this, "emissionEstimates", false,
                 true);
         emissionEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
         new SingletonParameter(emissionEstimates, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         observationProbabilities = new Parameter(this,
                 "observationProbabilities");
@@ -88,7 +87,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         nCategories.setExpression("{3}");
         nCategories.setTypeEquals(new ArrayType(BaseType.INT));
         _nCategories = new int[1];
-        _nCategories[0]= 3;
+        _nCategories[0] = 3;
         _etaDimension = IntStream.of(_nCategories).sum();
 
         observationDimension = new Parameter(this, "observationDimension");
@@ -102,7 +101,8 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == observationDimension) {
-            _obsDimension = ((IntToken)observationDimension.getToken()).intValue();
+            _obsDimension = ((IntToken) observationDimension.getToken())
+                    .intValue();
         } else if (attribute == observationProbabilities) {
 
             int nCat = ((MatrixToken) observationProbabilities.getToken())
@@ -124,8 +124,8 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
             } else {
                 _nCategories = new int[cat.length];
                 int total = 0;
-                for ( int i = 0 ; i < cat.length; i++) {
-                    _nCategories[i] = ((IntToken)cat[i]).intValue();
+                for (int i = 0; i < cat.length; i++) {
+                    _nCategories[i] = ((IntToken) cat[i]).intValue();
                     total += _nCategories[i];
                 }
                 // necessary for the HMM recursion to follow.
@@ -160,14 +160,13 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
      */
     public Parameter nCategories;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMMultinomialEstimator newObject = (HSMMMultinomialEstimator) super
-                .clone(workspace);
+        HSMMMultinomialEstimator newObject = (HSMMMultinomialEstimator) super.clone(
+                workspace);
         newObject._B = null;
         newObject._B0 = null;
         newObject.B_new = null;
@@ -180,7 +179,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        if ( _EMParameterEstimation() == true) {
+        if (_EMParameterEstimation() == true) {
             //System.out.println("Final Likelihood: " +likelihood);
             int _nObservations = _observations.length;
             Token[] pTokens = new Token[_nStates];
@@ -215,10 +214,10 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         }
     }
 
+    @Override
     protected double emissionProbability(double[] y, int hiddenState) {
 
-
-        double probability = _B[hiddenState][(int)y[0]];
+        double probability = _B[hiddenState][(int) y[0]];
 
         // retrieving the joint probability of all observations being equal
         // to the observed y. Note that _B[hiddenState] is a vector that contains
@@ -226,9 +225,9 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         // For instance, if y is a 2-D observation and _nCategories = {M1, M2},
         // _B[hiddenState] will be a vector of length M1+M2.
         int categoryIndex = 0;
-        for (int i = 1; i < y.length; i ++) {
-            categoryIndex += _nCategories[i-1];
-            probability *= _B[hiddenState][(int)y[i] + categoryIndex];
+        for (int i = 1; i < y.length; i++) {
+            categoryIndex += _nCategories[i - 1];
+            probability *= _B[hiddenState][(int) y[i] + categoryIndex];
         }
 
         return probability;
@@ -258,7 +257,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
                 _D = _D0;
                 _durationPriors = _dPriors0;
                 System.out
-                .println("Expectation Maximization failed to converge");
+                        .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
             }
@@ -300,8 +299,6 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         _durationPriors = dPrior_new;
     }
 
-
-
     /** Duration priors.
      */
     private double[] dPrior_new;
@@ -315,7 +312,6 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     /** Initial guess of the emission matrix.
      */
     private double[][] _B0;
-
 
     /** Number of categories.
      */

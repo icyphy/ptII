@@ -167,9 +167,8 @@ public class CircleManipulator extends Manipulator {
             CircleManipulator parent = (CircleManipulator) g.getParent();
             CircleGeometry geometry = parent.getGeometry();
 
-            parent.getChild().transform(
-                    CanvasUtilities.computeTransform(parent.getChild()
-                            .getBounds(), geometry.getBounds()));
+            parent.getChild().transform(CanvasUtilities.computeTransform(
+                    parent.getChild().getBounds(), geometry.getBounds()));
         }
     }
 }

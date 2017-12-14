@@ -86,8 +86,7 @@ public class SmoothToDouble extends Converter {
         DoubleToken inputToken = (DoubleToken) input.get(0);
         DoubleToken result = new DoubleToken(inputToken.doubleValue());
         if (_debugging) {
-            _debug("Transferring input " + inputToken
-                    + " to output " + result
+            _debug("Transferring input " + inputToken + " to output " + result
                     + " at time " + getDirector().getModelTime());
         }
         output.send(0, result);

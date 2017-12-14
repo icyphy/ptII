@@ -96,7 +96,8 @@ public class ImportG4LTLAction extends AbstractAction {
     public ImportG4LTLAction(Top frame) {
         super("Import design using synthesis");
         _frame = frame;
-        putValue("tooltip", "Import design using LTL synthesis (G4LTL, StructuralCoder)");
+        putValue("tooltip",
+                "Import design using LTL synthesis (G4LTL, StructuralCoder)");
         putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
     }
 
@@ -136,8 +137,8 @@ public class ImportG4LTLAction extends AbstractAction {
                 throw new InternalErrorException(null, null,
                         "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
             } else if (!basicGraphFrameClass.isInstance(_frame)) {
-                throw new InternalErrorException("Frame " + _frame
-                        + " is not a BasicGraphFrame?");
+                throw new InternalErrorException(
+                        "Frame " + _frame + " is not a BasicGraphFrame?");
             }
 
             BasicGraphFrame basicGraphFrame = (BasicGraphFrame) _frame;
@@ -147,24 +148,21 @@ public class ImportG4LTLAction extends AbstractAction {
                     "Select a design specification file.",
                     JFileChooser.OPEN_DIALOG);
 
-            ptFileChooser.setCurrentDirectory(basicGraphFrame
-                    .getLastDirectory());
+            ptFileChooser
+                    .setCurrentDirectory(basicGraphFrame.getLastDirectory());
 
             int returnVal = ptFileChooser.showDialog(null, "Import");
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                basicGraphFrame.setLastDirectory(ptFileChooser
-                        .getCurrentDirectory());
+                basicGraphFrame
+                        .setLastDirectory(ptFileChooser.getCurrentDirectory());
 
                 File file = null;
                 ResultLTLSynthesis result = null;
                 try {
                     file = ptFileChooser.getSelectedFile().getCanonicalFile();
 
-
-
                     // --2QBF=Java
-
 
                     String controller = "";
                     try {
@@ -179,11 +177,9 @@ public class ImportG4LTLAction extends AbstractAction {
                             return;
                         }
 
-
                     } catch (UnsupportedSpecException ex) {
                         // StructuralCoder use UnsupportedSpecException as an indicator over improper specification shape
                     }
-
 
                     // Step 1: Invoke the synthesis engine to generate a string in MoML format.
 
@@ -199,7 +195,8 @@ public class ImportG4LTLAction extends AbstractAction {
 
                     int unrollSteps = 0;
                     if (optionTechnique == 0) {
-                        Object[] possibilities = { "1", "2", "3", "4", "5", "6" };
+                        Object[] possibilities = { "1", "2", "3", "4", "5",
+                                "6" };
                         String s = (String) JOptionPane.showInputDialog(null,
                                 "Enter the number of unroll steps",
                                 "G4LTL@Ptolemy II", JOptionPane.PLAIN_MESSAGE,
@@ -219,9 +216,9 @@ public class ImportG4LTLAction extends AbstractAction {
                         int option = JOptionPane.showOptionDialog(null,
                                 "G4LTL unable to find strategy.\n"
                                         + "Perform counter-strategy finding?",
-                                        "G4LTL@Ptolemy II", JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.PLAIN_MESSAGE, icon, options,
-                                        options[0]);
+                                "G4LTL@Ptolemy II", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.PLAIN_MESSAGE, icon, options,
+                                options[0]);
 
                         if (option == 0) {
                             result = G4LTL.synthesizeFromFile(solver, file,

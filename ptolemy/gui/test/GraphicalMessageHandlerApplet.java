@@ -60,8 +60,8 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
         super.destroy();
         // Note: we used to call manager.terminate() here to get rid
         // of a lingering browser problem
-        System.out
-        .println("FIXME: Need to destroy GraphicalMessageHandlerApplet");
+        System.out.println(
+                "FIXME: Need to destroy GraphicalMessageHandlerApplet");
         stop();
     }
 

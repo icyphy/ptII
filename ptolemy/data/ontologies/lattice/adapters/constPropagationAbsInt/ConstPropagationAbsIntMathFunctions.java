@@ -76,9 +76,9 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
         ConceptGraph ontologyGraph = _constPropagationAbsIntOntology
                 .getConceptGraph();
         if (ontologyGraph == null) {
-            throw new IllegalActionException("The Ontology "
-                    + _constPropagationAbsIntOntology
-                    + " has a null concept graph.");
+            throw new IllegalActionException(
+                    "The Ontology " + _constPropagationAbsIntOntology
+                            + " has a null concept graph.");
         } else {
             _topOfTheLattice = ontologyGraph.top();
             _bottomOfTheLattice = ontologyGraph.bottom();
@@ -139,7 +139,8 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
             throws IllegalActionException {
         if (value.isEqualTo(value.zero()).booleanValue()) {
             return _zeroConcept;
-        } else if (value.isLessThan((ScalarToken) value.zero()).booleanValue()) {
+        } else if (value.isLessThan((ScalarToken) value.zero())
+                .booleanValue()) {
             return _negativeRepresentative
                     .getFlatTokenInfiniteConceptByToken(value);
         } else {
@@ -206,8 +207,8 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
         } else if (_mathOperation.equals("/")) {
             return (ScalarToken) token1.divide(token2);
         } else {
-            throw new IllegalActionException("Unrecognized math operation: "
-                    + _mathOperation);
+            throw new IllegalActionException(
+                    "Unrecognized math operation: " + _mathOperation);
         }
     }
 
@@ -236,33 +237,33 @@ public class ConstPropagationAbsIntMathFunctions extends ConceptFunction {
      */
     private void _validateInputConcept(Concept inputConcept)
             throws IllegalActionException {
-        if (!(inputConcept.equals(_zeroConcept) || inputConcept instanceof FlatScalarTokenInfiniteConcept)) {
+        if (!(inputConcept.equals(_zeroConcept)
+                || inputConcept instanceof FlatScalarTokenInfiniteConcept)) {
             throw new IllegalActionException(inputConcept, "Invalid argument: "
                     + "the input concepts must be instances of "
                     + "FlatScalarTokenInfiniteConcept or the Concept Zero.");
-        } else if (!(inputConcept.equals(_zeroConcept) || inputConcept instanceof FlatScalarTokenInfiniteConcept
-                && (_positiveRepresentative
-                        .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
-                                .getRepresentative()) || _negativeRepresentative
-                                .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
-                                        .getRepresentative()))
-                                        && ((FlatScalarTokenInfiniteConcept) inputConcept)
-                                        .getTokenValue() != null)) {
+        } else if (!(inputConcept.equals(_zeroConcept)
+                || inputConcept instanceof FlatScalarTokenInfiniteConcept
+                        && (_positiveRepresentative.equals(
+                                ((FlatScalarTokenInfiniteConcept) inputConcept)
+                                        .getRepresentative())
+                                || _negativeRepresentative.equals(
+                                        ((FlatScalarTokenInfiniteConcept) inputConcept)
+                                                .getRepresentative()))
+                        && ((FlatScalarTokenInfiniteConcept) inputConcept)
+                                .getTokenValue() != null)) {
             throw new IllegalActionException(inputConcept,
-                    "Invalid argument: "
-                            + "the FlatScalarTokenInfiniteConcept "
+                    "Invalid argument: " + "the FlatScalarTokenInfiniteConcept "
                             + inputConcept.getName()
                             + "has an incorrect representative concept or "
                             + "a null token value. It's representative is: "
                             + ((FlatScalarTokenInfiniteConcept) inputConcept)
-                            .getRepresentative()
-                            + " and it should be "
-                            + _positiveRepresentative
-                            + " or "
-                            + _negativeRepresentative
+                                    .getRepresentative()
+                            + " and it should be " + _positiveRepresentative
+                            + " or " + _negativeRepresentative
                             + ". It's token value is "
                             + ((FlatScalarTokenInfiniteConcept) inputConcept)
-                            .getTokenValue());
+                                    .getTokenValue());
         }
     }
 

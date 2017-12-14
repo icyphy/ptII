@@ -122,7 +122,8 @@ public class SmearFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int[] outPixels = new int[width * height];
 
         randomGenerator.setSeed(seed);
@@ -132,11 +133,12 @@ public class SmearFilter extends WholeImageFilter {
         int i = 0;
         int numShapes;
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 outPixels[i] = background ? 0xffffffff : inPixels[i];
                 i++;
             }
+        }
 
         switch (shape) {
         case CROSSES:
@@ -149,14 +151,18 @@ public class SmearFilter extends WholeImageFilter {
                 int rgb = inPixels[y * width + x];
                 for (int x1 = x - length; x1 < x + length + 1; x1++) {
                     if (x1 >= 0 && x1 < width) {
-                        int rgb2 = background ? 0xffffffff : outPixels[y * width + x1];
-                        outPixels[y * width + x1] = ImageMath.mixColors(mix, rgb2, rgb);
+                        int rgb2 = background ? 0xffffffff
+                                : outPixels[y * width + x1];
+                        outPixels[y * width + x1] = ImageMath.mixColors(mix,
+                                rgb2, rgb);
                     }
                 }
                 for (int y1 = y - length; y1 < y + length + 1; y1++) {
                     if (y1 >= 0 && y1 < height) {
-                        int rgb2 = background ? 0xffffffff : outPixels[y1 * width + x];
-                        outPixels[y1 * width + x] = ImageMath.mixColors(mix, rgb2, rgb);
+                        int rgb2 = background ? 0xffffffff
+                                : outPixels[y1 * width + x];
+                        outPixels[y1 * width + x] = ImageMath.mixColors(mix,
+                                rgb2, rgb);
                     }
                 }
             }
@@ -168,7 +174,8 @@ public class SmearFilter extends WholeImageFilter {
                 int sx = (randomGenerator.nextInt() & 0x7fffffff) % width;
                 int sy = (randomGenerator.nextInt() & 0x7fffffff) % height;
                 int rgb = inPixels[sy * width + sx];
-                int length = (randomGenerator.nextInt() & 0x7fffffff) % distance;
+                int length = (randomGenerator.nextInt() & 0x7fffffff)
+                        % distance;
                 int dx = (int) (length * cosAngle);
                 int dy = (int) (length * sinAngle);
 
@@ -178,14 +185,16 @@ public class SmearFilter extends WholeImageFilter {
                 int y1 = sy + dy;
                 int x, y, d, incrE, incrNE, ddx, ddy;
 
-                if (x1 < x0)
+                if (x1 < x0) {
                     ddx = -1;
-                else
+                } else {
                     ddx = 1;
-                if (y1 < y0)
+                }
+                if (y1 < y0) {
                     ddy = -1;
-                else
+                } else {
                     ddy = 1;
+                }
                 dx = x1 - x0;
                 dy = y1 - y0;
                 dx = Math.abs(dx);
@@ -194,8 +203,10 @@ public class SmearFilter extends WholeImageFilter {
                 y = y0;
 
                 if (x < width && x >= 0 && y < height && y >= 0) {
-                    int rgb2 = background ? 0xffffffff : outPixels[y * width + x];
-                    outPixels[y * width + x] = ImageMath.mixColors(mix, rgb2, rgb);
+                    int rgb2 = background ? 0xffffffff
+                            : outPixels[y * width + x];
+                    outPixels[y * width + x] = ImageMath.mixColors(mix, rgb2,
+                            rgb);
                 }
                 if (Math.abs(dx) > Math.abs(dy)) {
                     d = 2 * dy - dx;
@@ -203,16 +214,18 @@ public class SmearFilter extends WholeImageFilter {
                     incrNE = 2 * (dy - dx);
 
                     while (x != x1) {
-                        if (d <= 0)
+                        if (d <= 0) {
                             d += incrE;
-                        else {
+                        } else {
                             d += incrNE;
                             y += ddy;
                         }
                         x += ddx;
                         if (x < width && x >= 0 && y < height && y >= 0) {
-                            int rgb2 = background ? 0xffffffff : outPixels[y * width + x];
-                            outPixels[y * width + x] = ImageMath.mixColors(mix, rgb2, rgb);
+                            int rgb2 = background ? 0xffffffff
+                                    : outPixels[y * width + x];
+                            outPixels[y * width + x] = ImageMath.mixColors(mix,
+                                    rgb2, rgb);
                         }
                     }
                 } else {
@@ -221,16 +234,18 @@ public class SmearFilter extends WholeImageFilter {
                     incrNE = 2 * (dx - dy);
 
                     while (y != y1) {
-                        if (d <= 0)
+                        if (d <= 0) {
                             d += incrE;
-                        else {
+                        } else {
                             d += incrNE;
                             x += ddx;
                         }
                         y += ddy;
                         if (x < width && x >= 0 && y < height && y >= 0) {
-                            int rgb2 = background ? 0xffffffff : outPixels[y * width + x];
-                            outPixels[y * width + x] = ImageMath.mixColors(mix, rgb2, rgb);
+                            int rgb2 = background ? 0xffffffff
+                                    : outPixels[y * width + x];
+                            outPixels[y * width + x] = ImageMath.mixColors(mix,
+                                    rgb2, rgb);
                         }
                     }
                 }
@@ -248,13 +263,17 @@ public class SmearFilter extends WholeImageFilter {
                 for (int x = sx - radius; x < sx + radius + 1; x++) {
                     for (int y = sy - radius; y < sy + radius + 1; y++) {
                         int f;
-                        if (shape == CIRCLES)
+                        if (shape == CIRCLES) {
                             f = (x - sx) * (x - sx) + (y - sy) * (y - sy);
-                        else
+                        } else {
                             f = 0;
-                        if (x >= 0 && x < width && y >= 0 && y < height && f <= radius2) {
-                            int rgb2 = background ? 0xffffffff : outPixels[y * width + x];
-                            outPixels[y * width + x] = ImageMath.mixColors(mix, rgb2, rgb);
+                        }
+                        if (x >= 0 && x < width && y >= 0 && y < height
+                                && f <= radius2) {
+                            int rgb2 = background ? 0xffffffff
+                                    : outPixels[y * width + x];
+                            outPixels[y * width + x] = ImageMath.mixColors(mix,
+                                    rgb2, rgb);
                         }
                     }
                 }

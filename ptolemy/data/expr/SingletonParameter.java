@@ -87,7 +87,8 @@ public class SingletonParameter extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   an parameter already in the container.
      */
-    public SingletonParameter(NamedObj container, String name, ptolemy.data.Token token)
+    public SingletonParameter(NamedObj container, String name,
+            ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
     }
@@ -119,8 +120,8 @@ public class SingletonParameter extends Parameter {
      *   SingletonConfigurableAttribute.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

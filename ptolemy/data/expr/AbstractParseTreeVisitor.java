@@ -86,7 +86,8 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     }
 
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtLeafNode");
     }
 

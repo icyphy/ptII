@@ -140,8 +140,8 @@ public class StaticALU extends TypedAtomicActor {
         Token result = null;
 
         if (A.hasToken(0) && B.hasToken(0)) {
-            int opcode = Integer.parseInt(operation.getExpression().substring(
-                    0, 1));
+            int opcode = Integer
+                    .parseInt(operation.getExpression().substring(0, 1));
             IntToken tokenA = (IntToken) A.get(0);
             IntToken tokenB = (IntToken) B.get(0);
 

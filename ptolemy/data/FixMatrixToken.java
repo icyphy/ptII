@@ -83,8 +83,8 @@ public class FixMatrixToken extends MatrixToken {
      */
     public FixMatrixToken(FixPoint[][] value) throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("FixMatrixToken: The specified "
-                    + "matrix is null.");
+            throw new IllegalActionException(
+                    "FixMatrixToken: The specified " + "matrix is null.");
         }
 
         _initialize(value, null);
@@ -126,8 +126,8 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken(FixPoint[][] value, Precision precision)
             throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("FixMatrixToken: The specified "
-                    + "matrix is null.");
+            throw new IllegalActionException(
+                    "FixMatrixToken: The specified " + "matrix is null.");
         }
         _initialize(value, precision);
     }
@@ -148,8 +148,8 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         if (tokens == null) {
-            throw new IllegalActionException("FixMatrixToken: The specified"
-                    + " array is null.");
+            throw new IllegalActionException(
+                    "FixMatrixToken: The specified" + " array is null.");
         }
 
         if (tokens.length != rows * columns) {
@@ -217,8 +217,8 @@ public class FixMatrixToken extends MatrixToken {
         //         }
         // The argument is below FixMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "[fix]"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[fix]"));
     }
 
     /** Return a new matrix that is a sub-matrix of this matrix.
@@ -232,8 +232,8 @@ public class FixMatrixToken extends MatrixToken {
      *  accesses.
      */
     @Override
-    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
-            throws IllegalActionException {
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan,
+            int colSpan) throws IllegalActionException {
         FixPoint[][] value = this.fixMatrix();
         try {
             FixPoint[][] result = new FixPoint[rowSpan][colSpan];
@@ -245,8 +245,8 @@ public class FixMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                    + ", colStart = " + colStart + ", rowSpan = "
-                    + rowSpan + ", colSpan = " + colSpan + ").");
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -409,7 +409,8 @@ public class FixMatrixToken extends MatrixToken {
     @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
-        if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
+        if (matrices == null || matrices.length == 0
+                || matrices[0].length == 0) {
             throw new IllegalActionException("matrixJoin: No input matrices.");
         }
         // Calculate the size of the result.
@@ -481,16 +482,16 @@ public class FixMatrixToken extends MatrixToken {
                     // There is no FixPointMatrixMath class, so we need
                     // to implement the matrix copy here.
                     for (int ii = 0; ii < rowspan; ii++) {
-                        System.arraycopy(source[row + ii], column,
-                                contents[ii], 0, columnspan);
+                        System.arraycopy(source[row + ii], column, contents[ii],
+                                0, columnspan);
                     }
                 }
                 column += columns[j];
                 try {
                     // Use the precision of the (0,0) element because the entire submatrix
                     // may be zero, in which case the precision cannot be inferred.
-                    result[i][j] = new FixMatrixToken(contents, getElementAt(0,
-                            0).getPrecision());
+                    result[i][j] = new FixMatrixToken(contents,
+                            getElementAt(0, 0).getPrecision());
                 } catch (IllegalActionException e) {
                     throw new InternalErrorException(e);
                 }

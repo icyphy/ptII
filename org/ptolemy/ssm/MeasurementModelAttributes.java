@@ -26,7 +26,6 @@
  */
 package org.ptolemy.ssm;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,27 +81,32 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
         _addedContainerParameters = new ArrayList<>();
     }
 
-
     /**
      * Add the state space variables defined in the scope of this decorator to the
      * container Actor.
      */
     public void addStateSpaceVariablesToContainer() {
-        Parameter stateVariableNames = (Parameter) this.getAttribute("stateVariableNames");
+        Parameter stateVariableNames = (Parameter) this
+                .getAttribute("stateVariableNames");
         if (stateVariableNames != null) {
             try {
                 if (stateVariableNames.getToken() != null) {
-                    Token[] tokens = ((ArrayToken)stateVariableNames.getToken()).arrayValue();
+                    Token[] tokens = ((ArrayToken) stateVariableNames
+                            .getToken()).arrayValue();
                     synchronized (this.getContainer().attributeList()) {
                         for (Token t : tokens) {
-                            String name = ((StringToken)t).stringValue();
-                            Parameter containerParam = (Parameter) this.getContainer().getAttribute(name);
-                            Parameter thisParam = (Parameter) this.getAttribute(name);
+                            String name = ((StringToken) t).stringValue();
+                            Parameter containerParam = (Parameter) this
+                                    .getContainer().getAttribute(name);
+                            Parameter thisParam = (Parameter) this
+                                    .getAttribute(name);
 
                             if (thisParam != null && containerParam == null) {
-                                containerParam = new Parameter(this.getContainer(), name);
+                                containerParam = new Parameter(
+                                        this.getContainer(), name);
                                 _addedContainerParameters.add(name);
-                                containerParam.setExpression(thisParam.getExpression());
+                                containerParam.setExpression(
+                                        thisParam.getExpression());
                                 containerParam.setVisibility(Settable.NONE);
                                 thisParam.setVisibility(Settable.NONE);
                             }
@@ -117,11 +121,11 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
         }
     }
 
-
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
-        MeasurementModelAttributes result = (MeasurementModelAttributes) super.clone(workspace);
+        MeasurementModelAttributes result = (MeasurementModelAttributes) super.clone(
+                workspace);
         result._addedContainerParameters = new ArrayList<>();
         return result;
     }
@@ -132,7 +136,6 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
         addStateSpaceVariablesToContainer();
 
     }
-
 
     @Override
     public void removeDecorationsFromContainer()
@@ -146,20 +149,24 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
      * container Actor.
      */
     public void removeStateSpaceVariablesFromContainer() {
-        Parameter stateVariableNames = (Parameter) this.getAttribute("stateVariableNames");
+        Parameter stateVariableNames = (Parameter) this
+                .getAttribute("stateVariableNames");
         if (stateVariableNames != null) {
             try {
                 if (stateVariableNames.getToken() != null) {
 
-                    Token[] tokens = ((ArrayToken)stateVariableNames.getToken()).arrayValue();
+                    Token[] tokens = ((ArrayToken) stateVariableNames
+                            .getToken()).arrayValue();
                     synchronized (this.getContainer().attributeList()) {
                         for (Token t : tokens) {
-                            String name = ((StringToken)t).stringValue();
+                            String name = ((StringToken) t).stringValue();
                             if (_addedContainerParameters.contains(name)) {
-                                Parameter containerParam = (Parameter) this.getContainer().getAttribute(name);
+                                Parameter containerParam = (Parameter) this
+                                        .getContainer().getAttribute(name);
 
                                 if (containerParam != null) {
-                                    this.getContainer().removeAttribute(containerParam);
+                                    this.getContainer()
+                                            .removeAttribute(containerParam);
                                     _addedContainerParameters.remove(name);
                                 }
                             }
@@ -171,7 +178,7 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
             }
         }
     }
+
     /** Cached list of parameters added to the container by this decorator*/
     private List<String> _addedContainerParameters;
 }
-

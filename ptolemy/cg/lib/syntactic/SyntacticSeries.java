@@ -75,8 +75,8 @@ public class SyntacticSeries extends SyntacticTermList {
             return false;
         }
 
-        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank
-                .compose(this, term);
+        SyntacticRank rank = _rank == null ? term.rank()
+                : SyntacticRank.compose(this, term);
         if (rank == null) {
             return false;
         }
@@ -110,8 +110,8 @@ public class SyntacticSeries extends SyntacticTermList {
             return;
         }
 
-        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank
-                .compose(term, this);
+        SyntacticRank rank = _rank == null ? term.rank()
+                : SyntacticRank.compose(term, this);
         if (rank == null) {
             return;
         }

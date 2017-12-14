@@ -72,8 +72,8 @@ public class TDLModule extends ModalModel {
      *                If the container already contains an entity with the
      *                specified name.
      */
-    public TDLModule(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public TDLModule(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -141,8 +141,8 @@ public class TDLModule extends ModalModel {
                         Director director = getDirector();
 
                         // Contruct a new director
-                        Class newDirectorClass = Class.forName(directorClass
-                                .stringValue());
+                        Class newDirectorClass = Class
+                                .forName(directorClass.stringValue());
                         Constructor newDirectorConstructor = newDirectorClass
                                 .getConstructor(new Class[] {
                                         CompositeEntity.class, String.class });
@@ -215,8 +215,8 @@ public class TDLModule extends ModalModel {
     @Override
     public CausalityInterface getCausalityInterface() {
         if (getDirector().defaultDependency() instanceof BooleanDependency) {
-            return new BreakCausalityInterface(this, getDirector()
-                    .defaultDependency());
+            return new BreakCausalityInterface(this,
+                    getDirector().defaultDependency());
         } else {
             return super.getCausalityInterface();
         }
@@ -304,12 +304,12 @@ public class TDLModule extends ModalModel {
     /**
      * Initialize the model.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         setClassName("ptolemy.domains.tdl.kernel.TDLModule");
         directorClass
-        .setExpression("ptolemy.domains.tdl.kernel.TDLModuleDirector");
+                .setExpression("ptolemy.domains.tdl.kernel.TDLModuleDirector");
         _controller.removeAllEntities();
         _controller.removeAllPorts();
         _controller.removeAllRelations();
@@ -326,7 +326,7 @@ public class TDLModule extends ModalModel {
         _controller = new TDLController(this, "_Controller");
 
         _controller.stateDependentCausality
-        .setExpression("stateDependentCausality");
+                .setExpression("stateDependentCausality");
 
     }
 

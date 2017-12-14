@@ -90,8 +90,8 @@ public class UnitCategory extends Attribute {
     public UnitCategory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        UnitUtilities.registerUnitCategory(((BaseUnit) this.getContainer())
-                .getName());
+        UnitUtilities.registerUnitCategory(
+                ((BaseUnit) this.getContainer()).getName());
     }
 
     /** Return the base unit.
@@ -112,10 +112,10 @@ public class UnitCategory extends Attribute {
      *  throws it.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
-        UnitUtilities.registerUnitCategory(((BaseUnit) this.getContainer())
-                .getName());
+        UnitUtilities.registerUnitCategory(
+                ((BaseUnit) this.getContainer()).getName());
     }
 }

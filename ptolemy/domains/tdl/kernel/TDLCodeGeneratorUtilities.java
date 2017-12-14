@@ -173,8 +173,8 @@ public class TDLCodeGeneratorUtilities {
             // because parseFile() works best on relative pathnames and
             // has problems finding resources like files specified in
             // parameters if the xml file was specified as an absolute path.
-            TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(
-                    null, new File(args[0]).toURI().toURL());
+            TypedCompositeActor toplevel = (TypedCompositeActor) parser
+                    .parse(null, new File(args[0]).toURI().toURL());
 
             System.out.println(generateTDLCode(toplevel));
         } catch (Throwable ex) {
@@ -276,8 +276,8 @@ public class TDLCodeGeneratorUtilities {
      * @exception IllegalActionException If there is a problem
      * getting the model name.
      */
-    protected static void _headerCode(StringBuffer sb, TypedCompositeActor model)
-            throws IllegalActionException {
+    protected static void _headerCode(StringBuffer sb,
+            TypedCompositeActor model) throws IllegalActionException {
     }
 
     /**
@@ -344,14 +344,15 @@ public class TDLCodeGeneratorUtilities {
 
                     String fromPortName = ((Port) ports.get(1)).getFullName()
                             .substring(1);
-                    fromPortName = fromPortName.substring(fromPortName
-                            .indexOf('.') + 1);
-                    fromPortName = fromPortName.replace(fromPortName.substring(
-                            fromPortName.indexOf('.'), fromPortName.indexOf(
-                                    '.', fromPortName.indexOf('.') + 1) + 1),
+                    fromPortName = fromPortName
+                            .substring(fromPortName.indexOf('.') + 1);
+                    fromPortName = fromPortName.replace(
+                            fromPortName.substring(fromPortName.indexOf('.'),
+                                    fromPortName.indexOf('.',
+                                            fromPortName.indexOf('.') + 1) + 1),
                             "");
-                    taskoutputPorts.append(port.getName() + " := "
-                            + fromPortName + "; ");
+                    taskoutputPorts.append(
+                            port.getName() + " := " + fromPortName + "; ");
                 }
             }
             if (taskoutputPorts.toString().length() > 0) {
@@ -434,14 +435,15 @@ public class TDLCodeGeneratorUtilities {
                         if (!(sb.indexOf("import " + importModule) >= 0)) {
                             String insertPosition = "module " + currentModule
                                     + " {";
-                            sb.insert(sb.indexOf(insertPosition)
-                                    + insertPosition.length() + 2, "  import "
-                                            + importModule + ";\n");
+                            sb.insert(
+                                    sb.indexOf(insertPosition)
+                                            + insertPosition.length() + 2,
+                                    "  import " + importModule + ";\n");
                         }
                     }
                 } else {
-                    sb.append("  sensor " + portTypeID + " " + portID
-                            + " uses " + getterName + ";\n");
+                    sb.append("  sensor " + portTypeID + " " + portID + " uses "
+                            + getterName + ";\n");
                 }
             }
         }
@@ -529,9 +531,8 @@ public class TDLCodeGeneratorUtilities {
                 Port inport = (Port) inputs.get(i);
                 for (int j = 0; j < outputs.size(); j++) {
                     Port outport = (Port) outputs.get(j);
-                    if (inport.connectedPortList().size() > 1
-                            && inport.connectedPortList().get(1)
-                            .equals(outport)) {
+                    if (inport.connectedPortList().size() > 1 && inport
+                            .connectedPortList().get(1).equals(outport)) {
                         copiedinputs.remove(inport);
                         continue;
                     }
@@ -582,8 +583,8 @@ public class TDLCodeGeneratorUtilities {
     private static List _getModes(TDLModule module)
             throws IllegalActionException {
         List modes = new ArrayList();
-        Iterator it = ((TDLModuleDirector) module.getDirector())
-                .getController().entityList().iterator();
+        Iterator it = ((TDLModuleDirector) module.getDirector()).getController()
+                .entityList().iterator();
         while (it.hasNext()) {
             State state = (State) it.next();
             modes.add(state);

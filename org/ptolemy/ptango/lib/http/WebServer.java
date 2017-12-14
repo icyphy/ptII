@@ -94,8 +94,8 @@ public class WebServer extends AbstractInitializableAttribute {
 
         preferredPort = new Parameter(this, "preferredPort");
         preferredPort.setTypeEquals(BaseType.INT);
-        preferredPort.setExpression(Integer
-                .toString(WebServerUtilities.DEFAULT_PORT_NUMBER));
+        preferredPort.setExpression(
+                Integer.toString(WebServerUtilities.DEFAULT_PORT_NUMBER));
 
         applicationPath = new StringParameter(this, "applicationPath");
         applicationPath.setExpression("/");
@@ -151,7 +151,8 @@ public class WebServer extends AbstractInitializableAttribute {
         }
         resourceLocation.setExpression(path);
 
-        temporaryFileLocation = new FileParameter(this, "temporaryFileLocation");
+        temporaryFileLocation = new FileParameter(this,
+                "temporaryFileLocation");
         temporaryFileLocation.setExpression("$TMPDIR");
 
         deployedPort = new Parameter(this, "deployedPort");
@@ -414,7 +415,7 @@ public class WebServer extends AbstractInitializableAttribute {
         }
         @SuppressWarnings("unchecked")
         List<Entity<Port>> entities = ((CompositeEntity) container)
-        .allAtomicEntityList();
+                .allAtomicEntityList();
         for (Entity<Port> entity : entities) {
             if (entity instanceof HttpService) {
                 HttpService service = (HttpService) entity;
@@ -433,15 +434,12 @@ public class WebServer extends AbstractInitializableAttribute {
                 try {
                     _appInfo.addServletInfo(path, service.getServlet());
                 } catch (Exception e) {
-                    throw new IllegalActionException(
-                            this,
-                            "Actor "
-                                    + entity.getName()
-                                    + " requested the web service URL "
-                                    + path
-                                    + " , but this URL has already been claimed "
-                                    + "by another actor or by a resource in this WebServer."
-                                    + "  Please specify a unique URL.");
+                    throw new IllegalActionException(this, "Actor "
+                            + entity.getName()
+                            + " requested the web service URL " + path
+                            + " , but this URL has already been claimed "
+                            + "by another actor or by a resource in this WebServer."
+                            + "  Please specify a unique URL.");
                 }
             }
         }
@@ -456,7 +454,8 @@ public class WebServer extends AbstractInitializableAttribute {
         HashSet<URL> seen = new HashSet<URL>();
         for (FileParameter base : bases) {
             // If blank, omit
-            if (base.getExpression() != null && !base.getExpression().isEmpty()) {
+            if (base.getExpression() != null
+                    && !base.getExpression().isEmpty()) {
                 try {
 
                     // Use the ClassLoader to obtain the location (vs. specifying
@@ -513,7 +512,8 @@ public class WebServer extends AbstractInitializableAttribute {
                     }
                 } catch (IOException e3) {
                     throw new IllegalActionException(this,
-                            "Can't access resource base: " + base.stringValue());
+                            "Can't access resource base: "
+                                    + base.stringValue());
                 }
             }
         }
@@ -524,8 +524,8 @@ public class WebServer extends AbstractInitializableAttribute {
             _appInfo.addResourceInfo(new URI(resourcePath.stringValue()),
                     resourceLocations);
         } catch (URISyntaxException e) {
-            throw new IllegalActionException(this, "Resource path is not a "
-                    + "valid URI.");
+            throw new IllegalActionException(this,
+                    "Resource path is not a " + "valid URI.");
         } catch (Exception e2) {
             throw new IllegalActionException(this, e2,
                     "Failed to add resource info.");
@@ -562,12 +562,10 @@ public class WebServer extends AbstractInitializableAttribute {
             // If we are exporting to JNLP, then initialize might not
             // have been called.
 
-            int deployedPortValue = Integer.parseInt(deployedPort
-                    .getExpression());
-            if (_serverManager != null
-                    && _appInfo != null
-                    && _serverManager.isRegistered(_appInfo.getModelName(),
-                            deployedPortValue)) {
+            int deployedPortValue = Integer
+                    .parseInt(deployedPort.getExpression());
+            if (_serverManager != null && _appInfo != null && _serverManager
+                    .isRegistered(_appInfo.getModelName(), deployedPortValue)) {
                 try {
                     _serverManager.unregister(_appInfo, deployedPortValue);
                 } catch (Exception e) {

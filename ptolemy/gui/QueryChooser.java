@@ -47,8 +47,8 @@ import javax.swing.JLabel;
  * @version $Id$
  */
 @SuppressWarnings("serial")
-public abstract class QueryChooser extends Box implements SettableQueryChooser,
-ActionListener {
+public abstract class QueryChooser extends Box
+        implements SettableQueryChooser, ActionListener {
 
     /**
      * Initializes the chooser.

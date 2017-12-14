@@ -101,8 +101,8 @@ public class HMMExponentialClassifier extends ObservationClassifier {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HMMExponentialClassifier newObject = (HMMExponentialClassifier) super
-                .clone(workspace);
+        HMMExponentialClassifier newObject = (HMMExponentialClassifier) super.clone(
+                workspace);
         newObject._lambda = new double[_nStates];
         return newObject;
     }
@@ -150,12 +150,13 @@ public class HMMExponentialClassifier extends ObservationClassifier {
     }
 
     @Override
-    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException {
+    protected double emissionProbability(double[] y, int hiddenState)
+            throws IllegalActionException {
         if (y.length == 1) {
             double m = _lambda[hiddenState];
             return m * Math.exp(-m * y[0]);
         } else {
-            throw new IllegalActionException( this.getClassName()
+            throw new IllegalActionException(this.getClassName()
                     + " supports single dimensional distributions only.");
         }
     }

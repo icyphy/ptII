@@ -88,9 +88,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
     public Component getTreeCellRendererComponent(JTree tree, Object value,
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {
-        DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
-                .getTreeCellRendererComponent(tree, value, selected, expanded,
-                        leaf, row, hasFocus);
+        DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super.getTreeCellRendererComponent(
+                tree, value, selected, expanded, leaf, row, hasFocus);
 
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;
@@ -109,8 +108,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 buffer.append(object.getDisplayName());
                 if (_showSettableValues) {
                     buffer.append("=");
-                    buffer.append(((Settable) object).getExpression().replace(
-                            '\n', ' '));
+                    buffer.append(((Settable) object).getExpression()
+                            .replace('\n', ' '));
                 }
                 component.setText(buffer.toString());
             } else {
@@ -140,7 +139,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 // display in the library. Hence, I've reversed the change. EAL 12/15/11.
                 if (iconList.size() > 0
                         || object.getAttribute("_iconDescription") != null
-                        || object.getAttribute("_smallIconDescription") != null) {
+                        || object.getAttribute(
+                                "_smallIconDescription") != null) {
                     // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
 
@@ -154,8 +154,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                         }
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
-                                "could not create icon in "
-                                        + object
+                                "could not create icon in " + object
                                         + " even though one did not previously exist.");
                     }
 
@@ -164,9 +163,9 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                         component.setIcon(icon.createIcon());
                     } catch (Throwable throwable) {
                         // Ignore this, but print a message
-                        System.err.println("Warning: Failed to create or "
-                                + "set icon " + icon + " for component "
-                                + component);
+                        System.err.println(
+                                "Warning: Failed to create or " + "set icon "
+                                        + icon + " for component " + component);
                         throwable.printStackTrace();
                     }
                 }

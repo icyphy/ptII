@@ -59,8 +59,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (neuendor)
  */
 @SuppressWarnings("serial")
-public class RenameConfigurer extends Query implements ChangeListener,
-QueryListener {
+public class RenameConfigurer extends Query
+        implements ChangeListener, QueryListener {
     /** Construct a rename configurer for the specified entity.
      *  @param object The entity to configure.
      */
@@ -116,13 +116,13 @@ QueryListener {
             if (parent == null) {
                 // Hitting F2 in an empty model and renaming the canvas can result in a NPE.
                 // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=355
-                MessageHandler
-                .message("Please save the model before changing the name.");
+                MessageHandler.message(
+                        "Please save the model before changing the name.");
                 return;
             }
             String oldName = StringUtilities.escapeForXML(_object.getName());
-            String oldDisplayName = StringUtilities.escapeForXML(_object
-                    .getDisplayName());
+            String oldDisplayName = StringUtilities
+                    .escapeForXML(_object.getDisplayName());
 
             StringBuffer moml = new StringBuffer("<");
             String elementName = _object.getElementName();
@@ -157,8 +157,10 @@ QueryListener {
                                     + "class=\"ptolemy.data.expr.SingletonParameter\""
                                     + " value=\"true\"/>");
                         } else {
-                            if (!(_object.getAttribute("_showName") instanceof Parameter)) {
-                                moml.append("<deleteProperty name=\"_showName\"/>");
+                            if (!(_object.getAttribute(
+                                    "_showName") instanceof Parameter)) {
+                                moml.append(
+                                        "<deleteProperty name=\"_showName\"/>");
                             } else {
                                 moml.append("<property name=\"_showName\" "
                                         + "class=\"ptolemy.data.expr.SingletonParameter\""
@@ -172,8 +174,10 @@ QueryListener {
 
                     if (showName != previousShowName) {
                         if (showName) {
-                            if (!(_object.getAttribute("_hideName") instanceof Parameter)) {
-                                moml.append("<deleteProperty name=\"_hideName\"/>");
+                            if (!(_object.getAttribute(
+                                    "_hideName") instanceof Parameter)) {
+                                moml.append(
+                                        "<deleteProperty name=\"_hideName\"/>");
                             } else {
                                 moml.append("<property name=\"_hideName\" "
                                         + "class=\"ptolemy.data.expr.SingletonParameter\""

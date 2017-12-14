@@ -152,7 +152,8 @@ public class AdaptiveMedian extends Transformer {
                         // Create a local region of interest around the pixel.
                         for (int k = i - dist; k <= i + dist; k++) {
                             for (int l = j - dist; l <= j + dist; l++) {
-                                temp[k - (i - dist)][l - (j - dist)] = data[k][l];
+                                temp[k - (i - dist)][l
+                                        - (j - dist)] = data[k][l];
                             }
                         }
 

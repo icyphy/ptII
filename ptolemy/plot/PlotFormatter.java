@@ -91,14 +91,14 @@ public class PlotFormatter extends JPanel {
         _originalYLabel = plot.getYLabel();
         _wideQuery.addLine("ylabel", "Y Label", _originalYLabel);
         _originalXRange = plot.getXRange();
-        _wideQuery.addLine("xrange", "X Range", "" + _originalXRange[0] + ", "
-                + _originalXRange[1]);
+        _wideQuery.addLine("xrange", "X Range",
+                "" + _originalXRange[0] + ", " + _originalXRange[1]);
         _originalYRange = plot.getYRange();
-        _wideQuery.addLine("yrange", "Y Range", "" + _originalYRange[0] + ", "
-                + _originalYRange[1]);
+        _wideQuery.addLine("yrange", "Y Range",
+                "" + _originalYRange[0] + ", " + _originalYRange[1]);
 
         String[] marks = { "none", "points", "dots", "various", "bigdots",
-        "pixels" };
+                "pixels" };
         _originalMarks = "none";
 
         if (plot instanceof Plot) {
@@ -212,7 +212,8 @@ public class PlotFormatter extends JPanel {
                 } else if (name.equals("ylabel")) {
                     _plot.setYLabel(_wideQuery.getStringValue("ylabel"));
                 } else if (name.equals("xrange")) {
-                    _plot.read("XRange: " + _wideQuery.getStringValue("xrange"));
+                    _plot.read(
+                            "XRange: " + _wideQuery.getStringValue("xrange"));
                 } else if (name.equals("xticks")) {
                     String spec = _wideQuery.getStringValue("xticks").trim();
                     _plot.read("XTicks: " + spec);
@@ -238,10 +239,11 @@ public class PlotFormatter extends JPanel {
                     //    _narrowQuery.setEnabled("ylog", false);
                     // }
                 } else if (name.equals("yrange")) {
-                    _plot.read("YRange: " + _wideQuery.getStringValue("yrange"));
+                    _plot.read(
+                            "YRange: " + _wideQuery.getStringValue("yrange"));
                 } else if (name.equals("marks")) {
-                    ((Plot) _plot).setMarksStyle(_wideQuery
-                            .getStringValue("marks"));
+                    ((Plot) _plot)
+                            .setMarksStyle(_wideQuery.getStringValue("marks"));
                 }
 
                 _plot.repaint();
@@ -254,8 +256,8 @@ public class PlotFormatter extends JPanel {
                 if (name.equals("grid")) {
                     _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
                 } else if (name.equals("stems")) {
-                    ((Plot) _plot).setImpulses(_narrowQuery
-                            .getBooleanValue("stems"));
+                    ((Plot) _plot)
+                            .setImpulses(_narrowQuery.getBooleanValue("stems"));
                     _plot.repaint();
                 } else if (name.equals("color")) {
                     _plot.setColor(_narrowQuery.getBooleanValue("color"));
@@ -269,8 +271,8 @@ public class PlotFormatter extends JPanel {
                 } else if (name.equals("connected")) {
                     _setConnected(_narrowQuery.getBooleanValue("connected"));
                 } else if (name.equals("lineStyles")) {
-                    ((Plot) _plot).setLineStyles(_narrowQuery
-                            .getBooleanValue("lineStyles"));
+                    ((Plot) _plot).setLineStyles(
+                            _narrowQuery.getBooleanValue("lineStyles"));
                 }
 
                 _plot.repaint();
@@ -440,13 +442,13 @@ public class PlotFormatter extends JPanel {
         // the one of the individual points (both will be and'ed).
         /*
         boolean[][] result = new boolean[points.size()][];
-
+        
         for (int dataset = 0; dataset < points.size(); dataset++) {
             ArrayList<PlotPoint> pts = points.get(dataset);
             result[dataset] = new boolean[pts.size()];
-
+        
             boolean first = true;
-
+        
             for (int i = 0; i < pts.size(); i++) {
                 PlotPoint pt = pts.get(i);
                 pt.connected = value && !first;

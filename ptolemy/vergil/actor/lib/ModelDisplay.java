@@ -75,8 +75,8 @@ import ptolemy.vergil.actor.ActorGraphModel;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ModelDisplay extends AbstractPlaceableActor implements
-ChangeListener {
+public class ModelDisplay extends AbstractPlaceableActor
+        implements ChangeListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.

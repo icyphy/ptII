@@ -97,8 +97,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FSMTransitionParameter newObject = (FSMTransitionParameter) super
-                .clone(workspace);
+        FSMTransitionParameter newObject = (FSMTransitionParameter) super.clone(
+                workspace);
         newObject._transition = null;
         return newObject;
     }
@@ -167,16 +167,20 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
                     Location destinationStateLocation = (Location) _transition
                             .destinationState().getAttribute("_location");
                     try {
-                        new Location(this, "_location")
-                                .setLocation(new double[] {
-                                        destinationStateLocation.getLocation()[0]
+                        new Location(this, "_location").setLocation(
+                                new double[] { destinationStateLocation
+                                        .getLocation()[0]
+                                        + (sourceStateLocation.getLocation()[0]
+                                                - destinationStateLocation
+                                                        .getLocation()[0])
+                                                / 2,
+                                        destinationStateLocation
+                                                .getLocation()[1]
                                                 + (sourceStateLocation
-                                                        .getLocation()[0] - destinationStateLocation
-                                                        .getLocation()[0]) / 2,
-                                        destinationStateLocation.getLocation()[1]
-                                                + (sourceStateLocation
-                                                        .getLocation()[1] - destinationStateLocation
-                                                        .getLocation()[1]) / 2 });
+                                                        .getLocation()[1]
+                                                        - destinationStateLocation
+                                                                .getLocation()[1])
+                                                        / 2 });
                     } catch (NameDuplicationException ex) {
                         throw new IllegalActionException(_transition, ex,
                                 "Could not add _location?");
@@ -190,8 +194,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      *  attribute in the transition.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
         if (_transition != null) {
             _transition.fsmTransitionParameterName.setExpression(name);
@@ -209,13 +213,13 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     }
 
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container == null && _transition != null) {
             _transition.setFsmTransitionParameter(null);
-            _transition.showFSMTransitionParameter.setToken(new BooleanToken(
-                    false));
+            _transition.showFSMTransitionParameter
+                    .setToken(new BooleanToken(false));
         }
     }
 
@@ -252,8 +256,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         if (getAttribute("_hideName") == null) {
             SingletonParameter hide = new SingletonParameter(this, "_hideName");
             hide.setToken(BooleanToken.TRUE);

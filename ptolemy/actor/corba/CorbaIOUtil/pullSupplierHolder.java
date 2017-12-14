@@ -9,8 +9,8 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 /* A CORBA compatible interface for a pull supplier.
  */
-public final class pullSupplierHolder implements
-org.omg.CORBA.portable.Streamable {
+public final class pullSupplierHolder
+        implements org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.CorbaIOUtil.pullSupplier value = null;
 
     public pullSupplierHolder() {

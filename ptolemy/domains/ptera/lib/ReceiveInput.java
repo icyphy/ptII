@@ -114,7 +114,8 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
         receiveKeyPress.setTypeEquals(BaseType.BOOLEAN);
         receiveKeyPress.setExpression("true");
 
-        acceptableKeyPattern = new StringParameter(this, "acceptableKeyPattern");
+        acceptableKeyPattern = new StringParameter(this,
+                "acceptableKeyPattern");
 
         receiveMousePress = new Parameter(this, "receiveMousePress");
         receiveMousePress.setTypeEquals(BaseType.BOOLEAN);
@@ -274,9 +275,9 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
             keyPressText.setExpression(listener._keyPressText);
         }
         if (listener._mousePressLocation != null) {
-            mousePressLocation.setExpression("["
-                    + listener._mousePressLocation.x + ", "
-                    + listener._mousePressLocation.y + "]");
+            mousePressLocation
+                    .setExpression("[" + listener._mousePressLocation.x + ", "
+                            + listener._mousePressLocation.y + "]");
         }
         return null;
     }
@@ -389,15 +390,15 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
 
     /**
      The input listener to listen to the key and mouse input.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class InputListener extends RefiringData implements KeyListener,
-    MouseListener, WindowListener {
+    private class InputListener extends RefiringData
+            implements KeyListener, MouseListener, WindowListener {
 
         /** React to a key press event.
          *
@@ -405,11 +406,11 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          */
         @Override
         public void keyPressed(KeyEvent e) {
-            if (_receiveKeyPress
-                    && (_acceptableComponentType == null || _acceptableComponentType
-                    .isInstance(e.getComponent()))) {
+            if (_receiveKeyPress && (_acceptableComponentType == null
+                    || _acceptableComponentType.isInstance(e.getComponent()))) {
                 String text = KeyEvent.getKeyText(e.getKeyCode());
-                if (_keyPattern == null || _keyPattern.matcher(text).matches()) {
+                if (_keyPattern == null
+                        || _keyPattern.matcher(text).matches()) {
                     e.consume();
                     _componentType = e.getComponent().getClass();
                     _keyPressText = text;
@@ -464,9 +465,8 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          */
         @Override
         public void mousePressed(MouseEvent e) {
-            if (_receiveMousePress
-                    && (_acceptableComponentType == null || _acceptableComponentType
-                    .isInstance(e.getComponent()))) {
+            if (_receiveMousePress && (_acceptableComponentType == null
+                    || _acceptableComponentType.isInstance(e.getComponent()))) {
                 e.consume();
                 _componentType = e.getComponent().getClass();
                 _mousePressLocation = new Point(e.getX(), e.getY());

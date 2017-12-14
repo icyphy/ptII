@@ -93,10 +93,11 @@ public class SizeDialog extends JPanel {
      *  @return The dimension selected for the scene.
      */
     public Dimension getDimensions() {
-        return new Dimension(((SpinnerNumberModel) _widthSpinner.getModel())
-                .getNumber().intValue(),
+        return new Dimension(
+                ((SpinnerNumberModel) _widthSpinner.getModel()).getNumber()
+                        .intValue(),
                 ((SpinnerNumberModel) _heightSpinner.getModel()).getNumber()
-                .intValue());
+                        .intValue());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,6 +110,6 @@ public class SizeDialog extends JPanel {
 
     /** The width UI element.
      */
-    private final JSpinner _widthSpinner = new JSpinner(new SpinnerNumberModel(
-            100, 1, 9999, 1));
+    private final JSpinner _widthSpinner = new JSpinner(
+            new SpinnerNumberModel(100, 1, 9999, 1));
 }

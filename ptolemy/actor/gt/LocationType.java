@@ -50,7 +50,7 @@ public class LocationType extends RecordType {
      *  are both integers.
      */
     public LocationType() {
-        super(new String[] { "x", "y" }, new Type[] { BaseType.INT,
-                BaseType.INT });
+        super(new String[] { "x", "y" },
+                new Type[] { BaseType.INT, BaseType.INT });
     }
 }

@@ -139,7 +139,8 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  @deprecated Use a ParseTreeEvaluator instead.
      */
     @Deprecated
-    public ptolemy.data.Token evaluateParseTree() throws IllegalActionException {
+    public ptolemy.data.Token evaluateParseTree()
+            throws IllegalActionException {
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         return evaluator.evaluateParseTree(this);
     }
@@ -347,9 +348,9 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  class the visit() method is not implemented here.
      */
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
-        throw new IllegalActionException("The visit() method is not "
-                + " implemented for nodes of type " + getClass().getName()
-                + ".");
+        throw new IllegalActionException(
+                "The visit() method is not " + " implemented for nodes of type "
+                        + getClass().getName() + ".");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -92,7 +92,7 @@ public class XSLTUtilities {
      *       exportMoMLDTD \
      *       /tmp/SwimmingPool_1.xml
      * </pre>
-
+    
      * @param args At least three arguments:
      * <ul>
      * <li> The first argument is the input file name.</li>
@@ -170,8 +170,8 @@ public class XSLTUtilities {
             return builder.parse(new InputSource(filename));
         } catch (SAXException ex) {
             // Rethrow this with the filename included.
-            IOException exception = new IOException("Failed to parse '"
-                    + filename + "'");
+            IOException exception = new IOException(
+                    "Failed to parse '" + filename + "'");
             exception.initCause(ex);
             throw exception;
         }
@@ -262,31 +262,30 @@ public class XSLTUtilities {
 
         // Set a valid transformer.
         try {
-            transformer = transformerFactory.newTransformer(new StreamSource(
-                    xslFileName));
+            transformer = transformerFactory
+                    .newTransformer(new StreamSource(xslFileName));
         } catch (javax.xml.transform.TransformerConfigurationException ex) {
             try {
                 // We might be in the Swing Event thread, so
                 // Thread.currentThread().getContextClassLoader()
                 // .getResource(entry) probably will not work.
                 Class refClass = Class.forName("ptolemy.util.XSLTUtilities");
-                URL entryURL = refClass.getClassLoader().getResource(
-                        xslFileName);
+                URL entryURL = refClass.getClassLoader()
+                        .getResource(xslFileName);
 
                 if (entryURL != null) {
-                    transformer = transformerFactory
-                            .newTransformer(new StreamSource(entryURL
-                                    .toString()));
+                    transformer = transformerFactory.newTransformer(
+                            new StreamSource(entryURL.toString()));
                 } else {
-                    IOException exception = new IOException("Failed to open '"
-                            + xslFileName + "'");
+                    IOException exception = new IOException(
+                            "Failed to open '" + xslFileName + "'");
                     exception.initCause(ex);
                     throw exception;
                 }
             } catch (Exception ex2) {
-                IOException exception = new IOException("Failed to open \""
-                        + xslFileName + "\".\n"
-                        + "Searching the classpath threw:\n" + ex2);
+                IOException exception = new IOException(
+                        "Failed to open \"" + xslFileName + "\".\n"
+                                + "Searching the classpath threw:\n" + ex2);
                 exception.initCause(ex);
                 throw exception;
             }
@@ -389,9 +388,9 @@ public class XSLTUtilities {
             // FIXME: So far, only MoML DTD can be exported. If the support
             // of more DTDs is necessray, modify the main() method and
             // setExportDTD() method to allow configuration of DTD.
-            fileWriter
-            .write("\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" "
-                    + "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");
+            fileWriter.write(
+                    "\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" "
+                            + "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");
             fileWriter.write(outputString.substring(positionToInsertDTD));
         } else {
             fileWriter.write(outputString);

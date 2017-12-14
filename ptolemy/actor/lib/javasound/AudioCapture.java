@@ -186,8 +186,7 @@ public class AudioCapture extends LiveSoundActor {
         super.initialize();
 
         if (LiveSound.isCaptureActive()) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "This actor cannot start audio capture because "
                             + "another actor currently has access to the audio "
                             + "capture resource. Only one AudioCapture actor may "

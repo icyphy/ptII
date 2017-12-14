@@ -83,9 +83,8 @@ public class TimedSource extends Source implements TimedActor {
         stopTimeIsLocal.setTypeEquals(BaseType.BOOLEAN);
         stopTimeIsLocal.setExpression("false");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
                 + "<circle cx=\"0\" cy=\"0\" r=\"17\""
                 + "style=\"fill:white\"/>\n"
                 + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"

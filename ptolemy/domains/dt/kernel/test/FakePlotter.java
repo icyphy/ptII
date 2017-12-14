@@ -82,7 +82,7 @@ public class FakePlotter extends TypedAtomicActor {
     /*
      public void initialize() throws IllegalActionException {
      }
-
+    
      public void place(Container container) {
      }*/
 

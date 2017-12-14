@@ -129,8 +129,8 @@ public class SensorHandler extends InputDevice {
 
         // Perform port consistency check if the schedulerExecutionTime
         // parameter of the director is 0.0.
-        Parameter parameter = (Parameter) getDirector().getAttribute(
-                "schedulerExecutionTime");
+        Parameter parameter = (Parameter) getDirector()
+                .getAttribute("schedulerExecutionTime");
         if (parameter != null
                 && ((DoubleToken) parameter.getToken()).doubleValue() != 0.0) {
             boolean flag = false;
@@ -142,8 +142,7 @@ public class SensorHandler extends InputDevice {
                 }
             }
             if (!flag) {
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "A SensorHandler must be connected to a port "
                                 + "on the outside, and that port should not be a network "
                                 + "port (should not have a port with the parameter "

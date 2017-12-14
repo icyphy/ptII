@@ -86,8 +86,8 @@ public class ProcessDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public ProcessDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public ProcessDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -98,8 +98,8 @@ public class ProcessDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public ProcessDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public ProcessDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -248,9 +248,8 @@ public class ProcessDirector extends Director {
                         return;
                     } finally {
                         if (outsideDirector != null) {
-                            ((ProcessDirector) outsideDirector)
-                            .threadUnblocked(Thread.currentThread(),
-                                    null);
+                            ((ProcessDirector) outsideDirector).threadUnblocked(
+                                    Thread.currentThread(), null);
                         }
                     }
                 }
@@ -472,7 +471,6 @@ public class ProcessDirector extends Director {
         _stopRequested = true;
         _stopFireRequested = true;
 
-
         // We used to copy the active thread set because
         // when stop() is called on each thread, the
         // set itself is modified. We could get a
@@ -604,7 +602,8 @@ public class ProcessDirector extends Director {
      *  @see #addThread(Thread)
      */
     public synchronized void threadHasPaused(Thread thread) {
-        if (_activeThreads.contains(thread) && !_pausedThreads.contains(thread)) {
+        if (_activeThreads.contains(thread)
+                && !_pausedThreads.contains(thread)) {
             _pausedThreads.add(thread);
             _blockedThreads.remove(thread);
             notifyAll();

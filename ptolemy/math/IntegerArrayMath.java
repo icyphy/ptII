@@ -228,7 +228,8 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] bitwiseAnd(final int[] array1, final int[] array2) {
+    public static final int[] bitwiseAnd(final int[] array1,
+            final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.bitwiseAnd");
         int[] returnValue = new int[length];
@@ -276,8 +277,10 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] bitwiseOr(final int[] array1, final int[] array2) {
-        int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseOr");
+    public static final int[] bitwiseOr(final int[] array1,
+            final int[] array2) {
+        int length = _commonLength(array1, array2,
+                "IntegerArrayMath.bitwiseOr");
         int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
@@ -308,7 +311,8 @@ public class IntegerArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final int[] bitwiseXor(final int[] array1, final int[] array2) {
+    public static final int[] bitwiseXor(final int[] array1,
+            final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.bitwiseXor");
         int[] returnValue = new int[length];
@@ -496,7 +500,8 @@ public class IntegerArrayMath {
      *  @param newLength The desired length of the returned array.
      *  @return A new array of ints.
      */
-    public static final int[] padMiddle(final int[] array, final int newLength) {
+    public static final int[] padMiddle(final int[] array,
+            final int newLength) {
         int length = array.length;
 
         int entriesNeeded = newLength - length;
@@ -516,8 +521,8 @@ public class IntegerArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue, newLength
-                - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue,
+                newLength - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -557,8 +562,7 @@ public class IntegerArrayMath {
 
         if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx
-                    + "' is greater than equal to the array length '"
+                    + startIdx + "' is greater than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }
@@ -865,7 +869,8 @@ public class IntegerArrayMath {
             throw new IllegalArgumentException("ptolemy.math." + methodName
                     + "() : input arrays must have the same length, "
                     + "but the first array has length " + array1.length
-                    + " and the second array has length " + array2.length + ".");
+                    + " and the second array has length " + array2.length
+                    + ".");
         }
 
         return array1.length;

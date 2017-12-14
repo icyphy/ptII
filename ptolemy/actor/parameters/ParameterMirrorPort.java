@@ -76,8 +76,8 @@ public class ParameterMirrorPort extends ParameterPort {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ParameterMirrorPort result = (ParameterMirrorPort) super
-                .clone(workspace);
+        ParameterMirrorPort result = (ParameterMirrorPort) super.clone(
+                workspace);
         result._associatedPort = null;
         return result;
     }
@@ -121,8 +121,8 @@ public class ParameterMirrorPort extends ParameterPort {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container == null && _associatedPort != null
@@ -133,8 +133,8 @@ public class ParameterMirrorPort extends ParameterPort {
             // change request will be issued because its container
             // is already null.
             MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    _associatedPort.getContainer(), "<deletePort name=\""
-                            + _associatedPort.getName() + "\"/>");
+                    _associatedPort.getContainer(),
+                    "<deletePort name=\"" + _associatedPort.getName() + "\"/>");
             _associatedPort.getContainer().requestChange(request);
         }
     }
@@ -170,11 +170,12 @@ public class ParameterMirrorPort extends ParameterPort {
      *  @exception NameDuplicationException If port with the name already exists.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
 
-        if (_associatedPort != null && !_associatedPort.getName().equals(name)) {
+        if (_associatedPort != null
+                && !_associatedPort.getName().equals(name)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no

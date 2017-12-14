@@ -102,8 +102,8 @@ public class Attribute extends NamedObj {
      *   an attribute already in the container.
      */
     protected Attribute(NamedObj container, String name,
-            boolean incrementWorkspaceVersion) throws IllegalActionException,
-            NameDuplicationException {
+            boolean incrementWorkspaceVersion)
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name, incrementWorkspaceVersion);
         if (incrementWorkspaceVersion) {
             setContainer(container);
@@ -378,8 +378,8 @@ public class Attribute extends NamedObj {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
@@ -460,8 +460,8 @@ public class Attribute extends NamedObj {
      *       attribute with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -519,10 +519,10 @@ public class Attribute extends NamedObj {
         Attribute candidate = container.getAttribute(relativeName);
 
         if (candidate != null && !getClass().isInstance(candidate)) {
-            throw new IllegalActionException(this, "Expected "
-                    + candidate.getFullName() + " to be an instance of "
-                    + getClass().getName() + ", but it is "
-                    + candidate.getClass().getName());
+            throw new IllegalActionException(this,
+                    "Expected " + candidate.getFullName()
+                            + " to be an instance of " + getClass().getName()
+                            + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;
@@ -541,8 +541,8 @@ public class Attribute extends NamedObj {
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {
-            Attribute newObject = (Attribute) super
-                    ._propagateExistence(container);
+            Attribute newObject = (Attribute) super._propagateExistence(
+                    container);
             newObject.setContainer(container);
             return newObject;
         } catch (NameDuplicationException e) {

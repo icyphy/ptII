@@ -15,7 +15,8 @@ public final class ClientHolder implements org.omg.CORBA.portable.Streamable {
     public ClientHolder() {
     }
 
-    public ClientHolder(ptolemy.actor.corba.CoordinatorUtil.Client initialValue) {
+    public ClientHolder(
+            ptolemy.actor.corba.CoordinatorUtil.Client initialValue) {
         value = initialValue;
     }
 

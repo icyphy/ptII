@@ -74,8 +74,8 @@ import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
  @Pt.AcceptedRating Red (cxh)
 
  */
-public class LibraryUsageReporter extends SceneTransformer implements
-HasPhaseOptions {
+public class LibraryUsageReporter extends SceneTransformer
+        implements HasPhaseOptions {
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
      *  properly initialized so that resolved types and other static
@@ -105,15 +105,17 @@ HasPhaseOptions {
         String outFile = PhaseOptions.getString(options, "outFile");
         boolean analyzeAllReachables = PhaseOptions.getBoolean(options,
                 "analyzeAllReachables");
-        System.out.println("LibraryUsageReporter.internalTransform("
-                + phaseName + ", " + options + ")");
+        System.out.println("LibraryUsageReporter.internalTransform(" + phaseName
+                + ", " + options + ")");
         Scene.v().releaseCallGraph();
 
-        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v() /*,true*/);
+        CallGraphBuilder cg = new CallGraphBuilder(
+                DumbPointerAnalysis.v() /*,true*/);
         cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachableMethods = new ReachableMethods(callGraph,
-                new ArrayList<MethodOrMethodContext>(EntryPoints.v().application()));
+                new ArrayList<MethodOrMethodContext>(
+                        EntryPoints.v().application()));
 
         reachableMethods.update();
 
@@ -126,12 +128,12 @@ HasPhaseOptions {
             SootMethod method = (SootMethod) reachables.next();
             //String methodName = method.getSignature();
 
-            if (method.getName().equals("<init>")
-                    && !method.getDeclaringClass().getName().startsWith("java")) {
-                createableClasses
-                .addAll(hierarchy.getSuperclassesOfIncluding(method
-                        .getDeclaringClass()));
-                _addAllInterfaces(createableClasses, method.getDeclaringClass());
+            if (method.getName().equals("<init>") && !method.getDeclaringClass()
+                    .getName().startsWith("java")) {
+                createableClasses.addAll(hierarchy.getSuperclassesOfIncluding(
+                        method.getDeclaringClass()));
+                _addAllInterfaces(createableClasses,
+                        method.getDeclaringClass());
             }
         }
 
@@ -144,14 +146,15 @@ HasPhaseOptions {
             @Override
             public boolean want(Edge e) {
                 SootMethod target = e.tgt();
-                return e.isExplicit()
-                        && (target.isStatic() || createableClasses
-                                .contains(target.getDeclaringClass()));
+                return e.isExplicit() && (target.isStatic() || createableClasses
+                        .contains(target.getDeclaringClass()));
             }
         });
         Set necessaryClasses = new HashSet();
         ReachableMethods RTAReachableMethods = new ReachableMethods(callGraph,
-                new ArrayList<MethodOrMethodContext>(EntryPoints.v().application()).iterator(), filter);
+                new ArrayList<MethodOrMethodContext>(
+                        EntryPoints.v().application()).iterator(),
+                filter);
         RTAReachableMethods.update();
 
         List list = new LinkedList();
@@ -189,9 +192,9 @@ HasPhaseOptions {
                                 if (castClass.isInterface()) {
                                     necessaryClasses.add(castClass);
                                 } else {
-                                    necessaryClasses
-                                    .addAll(hierarchy
-                                            .getSuperclassesOfIncluding(castClass));
+                                    necessaryClasses.addAll(hierarchy
+                                            .getSuperclassesOfIncluding(
+                                                    castClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, castClass);
@@ -205,9 +208,9 @@ HasPhaseOptions {
                                         .getSootClass();
 
                                 if (!checkClass.isInterface()) {
-                                    necessaryClasses
-                                    .addAll(hierarchy
-                                            .getSuperclassesOfIncluding(checkClass));
+                                    necessaryClasses.addAll(hierarchy
+                                            .getSuperclassesOfIncluding(
+                                                    checkClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, checkClass);
@@ -233,8 +236,8 @@ HasPhaseOptions {
             try {
                 writer = new FileWriter(outFile);
 
-                for (Iterator classes = dependedClasses.list().iterator(); classes
-                        .hasNext();) {
+                for (Iterator classes = dependedClasses.list()
+                        .iterator(); classes.hasNext();) {
                     SootClass theClass = (SootClass) classes.next();
 
                     if (analyzeAllReachables) {

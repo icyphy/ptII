@@ -128,8 +128,8 @@ public class HMMExponentialEstimator extends ParameterEstimator {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HMMExponentialEstimator newObject = (HMMExponentialEstimator) super
-                .clone(workspace);
+        HMMExponentialEstimator newObject = (HMMExponentialEstimator) super.clone(
+                workspace);
         newObject._lambda = new double[_nStates];
         newObject._lambda0 = new double[_nStates];
         return newObject;
@@ -140,7 +140,8 @@ public class HMMExponentialEstimator extends ParameterEstimator {
         super.fire();
 
         if ((_nStates != _transitionMatrix.length)
-                || (_nStates != _priors.length) || (_nStates != _lambda.length)) {
+                || (_nStates != _priors.length)
+                || (_nStates != _lambda.length)) {
             throw new IllegalActionException(this,
                     "Parameter guess vectors can not have different lengths.");
         }
@@ -168,7 +169,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
             double m = _lambda[hiddenState];
             return m * Math.exp(-m * y[0]);
         } else {
-            throw new IllegalActionException( this.getClassName()
+            throw new IllegalActionException(this.getClassName()
                     + " supports single dimensional distributions only.");
         }
     }
@@ -188,7 +189,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
                 A_new = _A0; // reset to initial guess
                 prior_new = _priors; // reset to input priors
                 System.out
-                .println("Expectation Maximization failed to converge");
+                        .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 // randomize means

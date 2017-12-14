@@ -66,18 +66,21 @@ public class HSBAdjustFilter extends PointFilter {
         int b = rgb & 0xff;
         Color.RGBtoHSB(r, g, b, hsb);
         hsb[0] += hFactor;
-        while (hsb[0] < 0)
+        while (hsb[0] < 0) {
             hsb[0] += Math.PI * 2;
+        }
         hsb[1] += sFactor;
-        if (hsb[1] < 0)
+        if (hsb[1] < 0) {
             hsb[1] = 0;
-        else if (hsb[1] > 1.0)
+        } else if (hsb[1] > 1.0) {
             hsb[1] = 1.0f;
+        }
         hsb[2] += bFactor;
-        if (hsb[2] < 0)
+        if (hsb[2] < 0) {
             hsb[2] = 0;
-        else if (hsb[2] > 1.0)
+        } else if (hsb[2] > 1.0) {
             hsb[2] = 1.0f;
+        }
         rgb = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
         return a | (rgb & 0xffffff);
     }

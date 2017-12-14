@@ -123,8 +123,8 @@ public class SharedParameter extends Parameter implements Initializable {
      *   a parameter already in the container.
      */
     public SharedParameter(NamedObj container, String name,
-            Class<?> containerClass) throws IllegalActionException,
-            NameDuplicationException {
+            Class<?> containerClass)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, containerClass, "");
     }
 
@@ -148,7 +148,7 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     public SharedParameter(NamedObj container, String name,
             Class<?> containerClass, String defaultValue)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (containerClass == null) {
@@ -194,7 +194,8 @@ public class SharedParameter extends Parameter implements Initializable {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SharedParameter newObject = (SharedParameter) super.clone(workspace);
-        SharedParameterRegistry registry = _getSharedParameterRegistry(workspace);
+        SharedParameterRegistry registry = _getSharedParameterRegistry(
+                workspace);
         registry.register(newObject);
         newObject._sharedParameterSet = null;
         return newObject;
@@ -381,8 +382,8 @@ public class SharedParameter extends Parameter implements Initializable {
      *   an entity with the name of this entity.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container) {
             if (previousContainer instanceof Initializable) {
@@ -403,10 +404,11 @@ public class SharedParameter extends Parameter implements Initializable {
      *       attribute with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name != null && !name.equals(getName())) {
-            SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+            SharedParameterRegistry registry = _getSharedParameterRegistry(
+                    workspace());
             // Unregister under previous name.
             if (getName() != null && !getName().equals("")) {
                 registry.unregister(this);
@@ -441,7 +443,8 @@ public class SharedParameter extends Parameter implements Initializable {
                     try {
                         sharedParameter._suppressingPropagation = true;
 
-                        if (!sharedParameter.getExpression().equals(expression)) {
+                        if (!sharedParameter.getExpression()
+                                .equals(expression)) {
                             sharedParameter.setExpression(expression);
                         }
                     } finally {
@@ -507,14 +510,15 @@ public class SharedParameter extends Parameter implements Initializable {
     public synchronized Collection sharedParameterSet() {
         // If we call clone(), then _sharedParameterSet could be null.
         if (workspace().getVersion() != _sharedParameterSetVersion
-            || _sharedParameterSet == null) {
+                || _sharedParameterSet == null) {
             try {
                 workspace().getReadAccess();
                 _sharedParameterSet = new HashSet<SharedParameter>();
                 _sharedParameterSetVersion = workspace().getVersion();
                 NamedObj root = getRoot();
                 if (root != null) {
-                    SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+                    SharedParameterRegistry registry = _getSharedParameterRegistry(
+                            workspace());
                     for (WeakReference<SharedParameter> reference : registry
                             .getSharedParametersWithName(getName())) {
                         if (reference != null) {
@@ -639,7 +643,8 @@ public class SharedParameter extends Parameter implements Initializable {
                 _sharedParameterVersion = workspace().getVersion();
                 NamedObj root = getRoot();
                 if (root != null) {
-                    SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+                    SharedParameterRegistry registry = _getSharedParameterRegistry(
+                            workspace());
                     for (WeakReference<SharedParameter> reference : registry
                             .getSharedParametersWithName(getName())) {
                         if (reference != null) {

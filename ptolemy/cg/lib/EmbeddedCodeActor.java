@@ -127,9 +127,9 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         code = code + _getWrapupBlock();
         embeddedCode.setExpression(code);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"75\" height=\"30\" "
-                + "style=\"fill:black\"/>\n" + "<text x=\"-29\" y=\"4\""
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                + "width=\"75\" height=\"30\" " + "style=\"fill:black\"/>\n"
+                + "<text x=\"-29\" y=\"4\""
                 + "style=\"font-size:10; fill:white; font-family:SansSerif\">"
                 + "embeddedCode</text>\n" + "</svg>\n");
 
@@ -162,9 +162,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
         Director executiveDirector = getExecutiveDirector();
         Director localDirector = getDirector();
-        if (localDirector == null
-                || !localDirector.getClass().equals(
-                        executiveDirector.getClass())) {
+        if (localDirector == null || !localDirector.getClass()
+                .equals(executiveDirector.getClass())) {
             if (localDirector != null) {
                 try {
                     localDirector.setContainer(null);
@@ -177,8 +176,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
             Class directorClass = getExecutiveDirector().getClass();
             Constructor<?> constructor = null;
             try {
-                constructor = directorClass.getConstructor(new Class[] {
-                        CompositeEntity.class, String.class });
+                constructor = directorClass.getConstructor(
+                        new Class[] { CompositeEntity.class, String.class });
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Cannot create an instance of the enclosing director class: "
@@ -264,8 +263,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
-    protected void setEmbeddedActor() throws IllegalActionException,
-    NameDuplicationException {
+    protected void setEmbeddedActor()
+            throws IllegalActionException, NameDuplicationException {
 
         // This code was separated into its own function so that
         // embeddedJavaFileActor can extend this class without a large

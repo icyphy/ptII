@@ -59,9 +59,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating red (derler)
  @Pt.AcceptedRating red (derler)
  */
-public class PtidesPreemptiveEDFDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+public class PtidesPreemptiveEDFDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
@@ -100,11 +99,13 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(getCodeGenerator().comment("Create a task for each actor."));
+        code.append(
+                getCodeGenerator().comment("Create a task for each actor."));
 
         for (Actor actor : (List<Actor>) ((CompositeActor) getComponent()
                 .getContainer()).deepEntityList()) {
-            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                    actor);
             code.append(adapter.generateFireCode());
         }
 
@@ -125,9 +126,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             if (function.endsWith("_Handler")) {
                 args.add(function);
                 args.add(letter);
-                _templateParser.getCodeStream().append(
-                        _templateParser.getCodeStream().getCodeBlock(
-                                "actuationBlock", args));
+                _templateParser.getCodeStream().append(_templateParser
+                        .getCodeStream().getCodeBlock("actuationBlock", args));
             }
         }
 
@@ -137,8 +137,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         for (int key : _interruptHandlerNames.keySet()) {
             String function = _interruptHandlerNames.get(key);
             if (function.equals("")) {
-                emptyfunctions.append("void EmptyInterruptHandler_" + key
-                        + "() {}\n");
+                emptyfunctions.append(
+                        "void EmptyInterruptHandler_" + key + "() {}\n");
                 function = "EmptyInterruptHandler_" + key;
             }
         }
@@ -175,9 +175,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         args.add(systick1);
         args.add(systick2);
 
-        _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock("InterruptBlock",
-                        args));
+        _templateParser.getCodeStream().append(_templateParser.getCodeStream()
+                .getCodeBlock("InterruptBlock", args));
 
     }
 
@@ -200,9 +199,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             externDeclarations.append("extern void " + function + "(void);\n");
         }
         args.add(externDeclarations.toString());
-        _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock(
-                        "InterruptVectorTable", args));
+        _templateParser.getCodeStream().append(_templateParser.getCodeStream()
+                .getCodeBlock("InterruptVectorTable", args));
 
         return processCode(_templateParser.getCodeStream().toString());
     }
@@ -247,14 +245,12 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             return code.toString();
         }
 
-        code.append(getCodeGenerator()
-                .comment(
-                        "Platform dependent initializatoin code of the PtidesDirector."));
+        code.append(getCodeGenerator().comment(
+                "Platform dependent initializatoin code of the PtidesDirector."));
 
         List args = new ArrayList();
-        _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock("initPDBlock",
-                        args));
+        _templateParser.getCodeStream().append(_templateParser.getCodeStream()
+                .getCodeBlock("initPDBlock", args));
 
         return _templateParser.getCodeStream().toString();
     }
@@ -302,16 +298,16 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             return code.toString();
         }
 
-        code.append(_templateParser.getCodeStream().getCodeBlock(
-                "preinitPDBlock"));
+        code.append(
+                _templateParser.getCodeStream().getCodeBlock("preinitPDBlock"));
 
         List args = new ArrayList();
         StringBuffer initIHs = new StringBuffer();
         for (Actor actuator : actuators.keySet()) {
             Character letter = RenesasUtilities.interruptHandlerLetters
                     .get(actuators.get(actuator));
-            int timerNumber = RenesasUtilities.timerNumbers.get(actuators
-                    .get(actuator));
+            int timerNumber = RenesasUtilities.timerNumbers
+                    .get(actuators.get(actuator));
             initIHs.append("MTU2" + timerNumber + ".TIOR.BIT.IO" + letter
                     + " = 0;\n" + "MTU2" + timerNumber + ".TIER.BIT.TCIE"
                     + letter + " = 1;\n");
@@ -319,16 +315,16 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         for (Actor sensor : sensors.keySet()) {
             Character letter = RenesasUtilities.interruptHandlerLetters
                     .get(sensors.get(sensor));
-            int timerNumber = RenesasUtilities.timerNumbers.get(sensors
-                    .get(sensor));
+            int timerNumber = RenesasUtilities.timerNumbers
+                    .get(sensors.get(sensor));
             initIHs.append("MTU2" + timerNumber + ".TIOR.BIT.IO" + letter
                     + " = 8;\n" + "MTU2" + timerNumber + ".TIER.BIT.TCIE"
                     + letter + " = 1;\n");
         }
 
         args.add(initIHs.toString());
-        code.append(_templateParser.getCodeStream().getCodeBlock(
-                "initPDCodeBlock", args));
+        code.append(_templateParser.getCodeStream()
+                .getCodeBlock("initPDCodeBlock", args));
 
         code.append(_generateInitializeHardwareCode());
 
@@ -366,27 +362,27 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             if (actor instanceof ActuatorSetup) {
                 id = ((IntToken) ((Parameter) ((ActuatorSetup) actor)
                         .getAttribute("InterruptHandlerID")).getToken())
-                        .intValue();
+                                .intValue();
                 actuators.put(actor, id);
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                            + " cannot be used.");
+                                    + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "_Handler");
+                                + "_Handler");
             }
 
             if (actor instanceof SensorHandler) {
                 id = ((IntToken) ((Parameter) ((SensorHandler) actor)
                         .getAttribute("InterruptHandlerID")).getToken())
-                        .intValue();
+                                .intValue();
                 sensors.put(actor, id);
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                            + " cannot be used.");
+                                    + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor));
@@ -421,23 +417,23 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         _templateParser.getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        _templateParser.getCodeStream().append(
-                "#define numActuators " + actuators.size() + _eol);
+        _templateParser.getCodeStream()
+                .append("#define numActuators " + actuators.size() + _eol);
 
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream().getCodeBlock("StructDefBlock"));
 
-        _templateParser.getCodeStream().appendCodeBlocks(
-                "CommonTypeDefinitions");
+        _templateParser.getCodeStream()
+                .appendCodeBlocks("CommonTypeDefinitions");
 
         StringBuffer actuatorPublicVariables = new StringBuffer();
         for (Actor actuator : actuators.keySet()) {
             Character letter = RenesasUtilities.interruptHandlerLetters
                     .get(actuators.get(actuator));
-            actuatorPublicVariables.append("uint32 actS" + letter
-                    + "[10], actNs" + letter + "[10];\n" + "uint32 actRd"
-                    + letter + " = 0, actWr" + letter + " = 0, actSt" + letter
-                    + " = 0;\n");
+            actuatorPublicVariables.append(
+                    "uint32 actS" + letter + "[10], actNs" + letter + "[10];\n"
+                            + "uint32 actRd" + letter + " = 0, actWr" + letter
+                            + " = 0, actSt" + letter + " = 0;\n");
         }
         List<String> args = new ArrayList();
         args.add(actuatorPublicVariables.toString());
@@ -449,12 +445,11 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             if (function.equals("")) {
                 function = "EmptyInterruptHandler_" + id;
             }
-            interruptPragmas.append("#pragma interrupt" + function
-                    + "(resbank)\n");
+            interruptPragmas
+                    .append("#pragma interrupt" + function + "(resbank)\n");
         }
         args.add(interruptPragmas.toString());
-        _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream()
+        _templateParser.getCodeStream().append(_templateParser.getCodeStream()
                 .getCodeBlock("globalVars", args));
 
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
@@ -465,8 +460,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         generateInterruptCode();
 
         if (!_templateParser.getCodeStream().isEmpty()) {
-            sharedCode.add(processCode(_templateParser.getCodeStream()
-                    .toString()));
+            sharedCode.add(
+                    processCode(_templateParser.getCodeStream().toString()));
         }
 
         return sharedCode;
@@ -498,12 +493,14 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
         for (Actor actor : actuators.keySet()) {
-            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(actor))
-                    .generateHardwareInitializationCode());
+            code.append(
+                    ((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(
+                            actor)).generateHardwareInitializationCode());
         }
         for (Actor actor : sensors.keySet()) {
-            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(actor))
-                    .generateHardwareInitializationCode());
+            code.append(
+                    ((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(
+                            actor)).generateHardwareInitializationCode());
         }
 
         code.append("}" + _eol);

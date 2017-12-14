@@ -107,16 +107,16 @@ public class JTreePane extends JSplitPane {
         _selectedTitle = "";
         _defaultPanel = new JPanel();
 
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(new Entry(
-                this, null, name, _defaultPanel));
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(
+                new Entry(this, null, name, _defaultPanel));
         DefaultTreeModel model = new DefaultTreeModel(node);
         _tree = new JTree(model);
 
         TreeNode[] nodePath = node.getPath();
         TreePath path = new TreePath(nodePath);
         _tree.expandPath(path);
-        _tree.getSelectionModel().setSelectionMode(
-                TreeSelectionModel.SINGLE_TREE_SELECTION);
+        _tree.getSelectionModel()
+                .setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         _tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
@@ -262,8 +262,8 @@ public class JTreePane extends JSplitPane {
     protected void refresh() {
         _scrollPane.getSize(_scrollPaneSize);
         _scrollPane.setPreferredSize(_scrollPaneSize);
-        System.out.println("title = " + _selectedTitle + " size = "
-                + _scrollPaneSize);
+        System.out.println(
+                "title = " + _selectedTitle + " size = " + _scrollPaneSize);
 
         Entry entry = _findEntry(_selectedTitle);
 

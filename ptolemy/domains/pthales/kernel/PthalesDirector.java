@@ -301,8 +301,8 @@ public class PthalesDirector extends SDFDirector {
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire "
-                    + "system with no scheduler");
+            throw new IllegalActionException(
+                    "Attempted to fire " + "system with no scheduler");
         }
 
         // This will throw IllegalActionException if this director
@@ -444,7 +444,8 @@ public class PthalesDirector extends SDFDirector {
 
         boolean wasTransferred = false;
 
-        if (((Actor) port.getContainer()).getExecutiveDirector() instanceof PNDirector) {
+        if (((Actor) port.getContainer())
+                .getExecutiveDirector() instanceof PNDirector) {
             for (int i = 0; i < port.getWidth(); i++) {
                 try {
                     if (i < port.getWidthInside()) {
@@ -485,7 +486,8 @@ public class PthalesDirector extends SDFDirector {
                                 List<TypedIOPort> externalPorts = compositeActor
                                         .inputPortList();
                                 for (TypedIOPort externalPort : externalPorts) {
-                                    Receiver recv = externalPort.getReceivers()[0][0];
+                                    Receiver recv = externalPort
+                                            .getReceivers()[0][0];
                                     Token[] buffer = null;
                                     if (recv instanceof SDFReceiver) {
                                         // Buffer acquisition
@@ -511,10 +513,10 @@ public class PthalesDirector extends SDFDirector {
                                                             for (Receiver receiver : receiverss) {
                                                                 if (receiver instanceof PthalesReceiver) {
                                                                     ((PthalesReceiver) receiver)
-                                                                    .setExternalBuffer(
-                                                                            compositeActor,
-                                                                            externalPort,
-                                                                            buffer);
+                                                                            .setExternalBuffer(
+                                                                                    compositeActor,
+                                                                                    externalPort,
+                                                                                    buffer);
                                                                 }
                                                             }
                                                         }
@@ -529,11 +531,8 @@ public class PthalesDirector extends SDFDirector {
 
                             wasTransferred = true;
                         } else {
-                            throw new IllegalActionException(
-                                    this,
-                                    port,
-                                    "Port should consume "
-                                            + rate
+                            throw new IllegalActionException(this, port,
+                                    "Port should consume " + rate
                                             + " tokens, but not enough tokens available.");
                         }
                     } else if (port.isKnown(i)) {
@@ -586,7 +585,8 @@ public class PthalesDirector extends SDFDirector {
 
         boolean wasTransferred = false;
 
-        if (!(((Actor) port.getContainer()).getExecutiveDirector() instanceof PNDirector)) {
+        if (!(((Actor) port.getContainer())
+                .getExecutiveDirector() instanceof PNDirector)) {
             wasTransferred = super.transferOutputs(port);
         } else {
 

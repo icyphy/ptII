@@ -94,8 +94,8 @@ public class DBModelFetcher {
      *          Thrown if there is a problem executing the database task.
      *
      */
-    public static XMLDBModel load(String name) throws DBConnectionException,
-    DBExecutionException {
+    public static XMLDBModel load(String name)
+            throws DBConnectionException, DBExecutionException {
 
         GetModelTask getModelTask = new GetModelTask(name);
         return load(getModelTask);

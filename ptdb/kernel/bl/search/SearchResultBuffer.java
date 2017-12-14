@@ -58,8 +58,8 @@ import ptdb.kernel.database.DBConnection;
  * @Pt.ProposedRating red (wenjiaow)
  * @Pt.AcceptedRating red (wenjiaow)
  */
-public class SearchResultBuffer extends Observable implements ResultHandler,
-Observer {
+public class SearchResultBuffer extends Observable
+        implements ResultHandler, Observer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

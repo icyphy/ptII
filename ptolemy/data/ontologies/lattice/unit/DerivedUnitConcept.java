@@ -80,8 +80,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *  @return The newly created RecordConcept.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public static DerivedUnitConcept createDerivedUnitConcept(
-            Ontology ontology,
+    public static DerivedUnitConcept createDerivedUnitConcept(Ontology ontology,
             DerivedDimensionRepresentativeConcept representative,
             RecordToken unitInfo) throws IllegalActionException {
         try {
@@ -115,7 +114,7 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap,
             ScalarToken newUnitFactor, Ontology unitOntology)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         if (_isDimensionMapEmpty(dimensionMap)) {
             return _getDimensionlessConcept(unitOntology);
@@ -198,8 +197,8 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     protected DerivedUnitConcept(Ontology ontology,
             DerivedDimensionRepresentativeConcept representative,
-            RecordToken unitInfo) throws IllegalActionException,
-            NameDuplicationException {
+            RecordToken unitInfo)
+            throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
         _componentUnits = new HashMap<DimensionRepresentativeConcept, List<UnitConcept>>();
         _componentBaseUnits = null;
@@ -275,13 +274,13 @@ public class DerivedUnitConcept extends UnitConcept {
                     + "information for the " + dimensionName + " dimension.");
         } else {
             if (unitsArrayToken instanceof ArrayToken
-                    && ((ArrayToken) unitsArrayToken).getElementType().equals(
-                            BaseType.STRING)) {
+                    && ((ArrayToken) unitsArrayToken).getElementType()
+                            .equals(BaseType.STRING)) {
                 return ((ArrayToken) unitsArrayToken).arrayValue();
             } else {
-                throw new IllegalActionException(this, "Invalid units array "
-                        + "for the " + dimensionName + " dimension: "
-                        + unitsArrayToken);
+                throw new IllegalActionException(this,
+                        "Invalid units array " + "for the " + dimensionName
+                                + " dimension: " + unitsArrayToken);
             }
         }
     }
@@ -297,7 +296,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private void _setComponentUnitsMap(RecordToken derivedUnitRecord,
             DerivedDimensionRepresentativeConcept unitDimensionRepresentative)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         Map<DimensionRepresentativeConcept, Integer> componentDimensions = unitDimensionRepresentative
                 .getComponentDimensions();
 
@@ -318,22 +317,23 @@ public class DerivedUnitConcept extends UnitConcept {
                 for (Token unitStringToken : unitsStringTokens) {
                     String unitName = ((StringToken) unitStringToken)
                             .stringValue();
-                    Concept unit = getOntology().getConceptByString(
-                            dimensionName + "_" + unitName);
+                    Concept unit = getOntology()
+                            .getConceptByString(dimensionName + "_" + unitName);
                     if (unit instanceof UnitConcept) {
                         unitsList.add((UnitConcept) unit);
                     } else {
-                        throw new IllegalActionException(this, "Invalid "
-                                + "unit concept: " + unit);
+                        throw new IllegalActionException(this,
+                                "Invalid " + "unit concept: " + unit);
                     }
                 }
                 _componentUnits.put(dimension, unitsList);
             } else {
-                throw new IllegalActionException(this, "The component "
-                        + "dimension " + dimension + " has an exponent of "
-                        + dimensionExponent + " so its units array "
-                        + "should have " + dimensionExponentAbsValue
-                        + " elements but it does not.");
+                throw new IllegalActionException(this,
+                        "The component " + "dimension " + dimension
+                                + " has an exponent of " + dimensionExponent
+                                + " so its units array " + "should have "
+                                + dimensionExponentAbsValue
+                                + " elements but it does not.");
             }
         }
 
@@ -359,8 +359,8 @@ public class DerivedUnitConcept extends UnitConcept {
         } else if (unitFactorToken instanceof ScalarToken) {
             _unitFactor = (ScalarToken) unitFactorToken;
         } else {
-            throw new IllegalActionException(this, "Invalid unit conversion "
-                    + "factor: " + unitFactorToken);
+            throw new IllegalActionException(this,
+                    "Invalid unit conversion " + "factor: " + unitFactorToken);
         }
 
         Token unitOffsetToken = derivedUnitRecord
@@ -370,8 +370,8 @@ public class DerivedUnitConcept extends UnitConcept {
         } else if (unitOffsetToken instanceof DoubleToken) {
             _unitOffset = (ScalarToken) unitOffsetToken;
         } else {
-            throw new IllegalActionException(this, "Invalid unit conversion "
-                    + "offset: " + unitOffsetToken);
+            throw new IllegalActionException(this,
+                    "Invalid unit conversion " + "offset: " + unitOffsetToken);
         }
 
         _applyComponentUnitConversionFactors();
@@ -391,7 +391,7 @@ public class DerivedUnitConcept extends UnitConcept {
     private static void _addBaseUnit(
             Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseComponentUnits,
             BaseUnitConcept baseUnit, int exponentValue)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         BaseDimensionRepresentativeConcept baseDimension = (BaseDimensionRepresentativeConcept) baseUnit
                 .getDimension();
@@ -444,10 +444,10 @@ public class DerivedUnitConcept extends UnitConcept {
                 if (arrayOfBaseUnitsLists == null) {
                     arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
                 } else {
-                    arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
-                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
-                    arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
-                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
+                    arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX].addAll(
+                            arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
+                    arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX].addAll(
+                            arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
                 }
                 // If the derived dimension's exponent is negative, then the array of units lists must swap
                 // the positive and negative units lists arrays.
@@ -459,10 +459,10 @@ public class DerivedUnitConcept extends UnitConcept {
                     arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX] = arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX];
                     arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX] = tempList;
                 } else {
-                    arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
-                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
-                    arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
-                            .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
+                    arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX].addAll(
+                            arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
+                    arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX].addAll(
+                            arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
                 }
             } else {
                 throw new IllegalActionException("Dimension exponent value "
@@ -484,9 +484,10 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static boolean _anyUnitHasANonZeroOffset(
             Map<? extends DimensionRepresentativeConcept, ? extends List<? extends UnitConcept>> componentUnitsMap)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
-        for (List<? extends UnitConcept> unitList : componentUnitsMap.values()) {
+        for (List<? extends UnitConcept> unitList : componentUnitsMap
+                .values()) {
             for (UnitConcept unit : unitList) {
                 ScalarToken unitOffset = unit.getUnitOffset();
                 if (!unitOffset.isEqualTo(unitOffset.zero()).booleanValue()) {
@@ -514,7 +515,7 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap,
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>> baseComponentUnits = new HashMap<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>>();
 
@@ -577,7 +578,7 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, List<UnitConcept>> componentUnitsMap,
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionMap)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseComponentUnitsSeparateExponents = new HashMap<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]>();
 
@@ -600,9 +601,11 @@ public class DerivedUnitConcept extends UnitConcept {
                             ((DerivedUnitConcept) unit).getComponentUnits(),
                             unitDimensionMap,
                             DerivedDimensionRepresentativeConcept
-                            .deriveComponentBaseDimensionsMap(unitDimensionMap));
+                                    .deriveComponentBaseDimensionsMap(
+                                            unitDimensionMap));
                     _addDerivedUnit(baseComponentUnitsSeparateExponents,
-                            derivedUnitBaseComponentSeparateExponents, exponent);
+                            derivedUnitBaseComponentSeparateExponents,
+                            exponent);
                 } else {
                     throw new IllegalActionException("A unit concept must be "
                             + "either a BaseUnitConcept "
@@ -626,7 +629,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static List<UnitConcept> _findEquivalentUnitConcepts(
             DimensionRepresentativeConcept dimension, ScalarToken newUnitFactor)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         // Create an epsilon for testing unit factor closeness that is small
         // relative to the value of the unit factor.
@@ -644,16 +647,13 @@ public class DerivedUnitConcept extends UnitConcept {
                     .booleanValue();
             if (unit instanceof DerivedUnitConcept) {
                 DerivedUnitConcept derivedUnit = (DerivedUnitConcept) unit;
-                noUnitOffsets = noUnitOffsets
-                        && !_anyUnitHasANonZeroOffset(derivedUnit
-                                .getComponentUnits());
-                noUnitOffsets = noUnitOffsets
-                        && !_anyUnitHasANonZeroOffset(derivedUnit
-                                .getComponentBaseUnits());
+                noUnitOffsets = noUnitOffsets && !_anyUnitHasANonZeroOffset(
+                        derivedUnit.getComponentUnits());
+                noUnitOffsets = noUnitOffsets && !_anyUnitHasANonZeroOffset(
+                        derivedUnit.getComponentBaseUnits());
             }
-            if (noUnitOffsets
-                    && newUnitFactor.isCloseTo(unitFactor, unitFactorEpsilon)
-                    .booleanValue()) {
+            if (noUnitOffsets && newUnitFactor
+                    .isCloseTo(unitFactor, unitFactorEpsilon).booleanValue()) {
                 matchingUnits.add(unit);
             }
         }
@@ -683,9 +683,8 @@ public class DerivedUnitConcept extends UnitConcept {
             Map<DimensionRepresentativeConcept, Integer> componentDimensions = dimension
                     .getComponentDimensions();
 
-            if (dimensionMap.equals(componentDimensions)
-                    || baseDimensionMap.equals(dimension
-                            .getComponentBaseDimensions())) {
+            if (dimensionMap.equals(componentDimensions) || baseDimensionMap
+                    .equals(dimension.getComponentBaseDimensions())) {
                 foundDimensions.add(dimension);
             }
         }
@@ -739,8 +738,8 @@ public class DerivedUnitConcept extends UnitConcept {
                 throw new IllegalActionException("The ontology " + unitOntology
                         + " has a null concept graph.");
             }
-            return conceptGraph.leastUpperBound(new HashSet<Concept>(
-                    allDimensionlessConcepts));
+            return conceptGraph.leastUpperBound(
+                    new HashSet<Concept>(allDimensionlessConcepts));
         }
     }
 
@@ -757,7 +756,7 @@ public class DerivedUnitConcept extends UnitConcept {
      */
     private static Concept _getSingleUnitConceptInComponentUnitsMap(
             Map<? extends DimensionRepresentativeConcept, ? extends List<? extends UnitConcept>> componentUnitsMap,
-                    ScalarToken newUnitFactor) throws IllegalActionException {
+            ScalarToken newUnitFactor) throws IllegalActionException {
 
         if (componentUnitsMap.values().size() != 1) {
             throw new IllegalActionException("The component units map does "
@@ -765,7 +764,8 @@ public class DerivedUnitConcept extends UnitConcept {
                     + "entries: " + componentUnitsMap.values().size());
         }
 
-        for (List<? extends UnitConcept> unitList : componentUnitsMap.values()) {
+        for (List<? extends UnitConcept> unitList : componentUnitsMap
+                .values()) {
             if (unitList == null || unitList.size() != 1) {
                 throw new IllegalActionException("There is one "
                         + "dimension entry in the dimension map, "
@@ -807,8 +807,8 @@ public class DerivedUnitConcept extends UnitConcept {
             return candidateUnits.get(0);
         } else {
             Ontology unitOntology = candidateUnits.get(0).getOntology();
-            return unitOntology.getConceptGraph().leastUpperBound(
-                    new HashSet<Concept>(candidateUnits));
+            return unitOntology.getConceptGraph()
+                    .leastUpperBound(new HashSet<Concept>(candidateUnits));
         }
     }
 
@@ -860,11 +860,12 @@ public class DerivedUnitConcept extends UnitConcept {
     private static List<BaseUnitConcept> _removeMatchingListElements(
             List<BaseUnitConcept> originalList,
             List<BaseUnitConcept> elementsToBeRemoved)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (originalList == null) {
             throw new IllegalActionException("Original list is null so no "
                     + "elements can be removed from it.");
-        } else if (elementsToBeRemoved == null || elementsToBeRemoved.isEmpty()) {
+        } else if (elementsToBeRemoved == null
+                || elementsToBeRemoved.isEmpty()) {
             return new ArrayList<BaseUnitConcept>(originalList);
         } else if (originalList.size() < elementsToBeRemoved.size()) {
             throw new IllegalActionException("Original list has fewer "

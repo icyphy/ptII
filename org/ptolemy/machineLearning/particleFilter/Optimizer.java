@@ -75,7 +75,6 @@ B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Ro
  */
 public class Optimizer extends TypedAtomicActor {
 
-
     /** Construct an Optimizer in the specified
      *  workspace with no container and an empty string as a name. You
      *  can then change the name with setName(). If the workspace
@@ -120,8 +119,8 @@ public class Optimizer extends TypedAtomicActor {
             }
             _labels[names.length()] = "weight";
             _types[names.length()] = BaseType.DOUBLE;
-            particles.setTypeEquals(new ArrayType(new RecordType(_labels,
-                    _types)));
+            particles.setTypeEquals(
+                    new ArrayType(new RecordType(_labels, _types)));
         } catch (NameDuplicationException e) {
             // should not happen
             System.err.println("Duplicate field in " + this.getName());
@@ -136,8 +135,8 @@ public class Optimizer extends TypedAtomicActor {
         String[] _outputLabels = { "x", "y" };
         Type[] _outputTypes = { BaseType.DOUBLE, BaseType.DOUBLE };
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(new ArrayType(new RecordType(_outputLabels,
-                _outputTypes)));
+        output.setTypeEquals(
+                new ArrayType(new RecordType(_outputLabels, _outputTypes)));
 
         _covariance = 2.0;
 
@@ -270,9 +269,8 @@ public class Optimizer extends TypedAtomicActor {
                 // constraints on u
                 for (int i = 0; i < m; i++) {
                     // u_i < K
-                    con[i] = u_limit
-                            - Math.sqrt(x[i * 2] * x[i * 2] + x[i * 2 + 1]
-                                    * x[i * 2 + 1]);
+                    con[i] = u_limit - Math.sqrt(
+                            x[i * 2] * x[i * 2] + x[i * 2 + 1] * x[i * 2 + 1]);
                 }
 
                 //return -entropy;
@@ -313,9 +311,9 @@ public class Optimizer extends TypedAtomicActor {
                                 + x[2 * j];
                         robotY = ((DoubleToken) robotJ.get("y")).doubleValue()
                                 + x[2 * j + 1];
-                        gaussianMeans[i][j] = Math.sqrt(Math.pow(_px[i]
-                                - robotX, 2)
-                                + Math.pow(_py[i] - robotY, 2));
+                        gaussianMeans[i][j] = Math
+                                .sqrt(Math.pow(_px[i] - robotX, 2)
+                                        + Math.pow(_py[i] - robotY, 2));
                     }
                 }
                 double Hz = 0;
@@ -323,9 +321,8 @@ public class Optimizer extends TypedAtomicActor {
                 for (int k = 0; k < N; k++) {
                     logSum = 0;
                     for (int j = 0; j < N; j++) {
-                        logSum += _weights[j]
-                                * mvnpdf(gaussianMeans[k], gaussianMeans[j],
-                                        Sigma);
+                        logSum += _weights[j] * mvnpdf(gaussianMeans[k],
+                                gaussianMeans[j], Sigma);
                     }
                     Hz += _weights[k] * Math.log(logSum);
                 }
@@ -336,16 +333,14 @@ public class Optimizer extends TypedAtomicActor {
             // compute the multivariate PDF value at x.
             private double mvnpdf(double[] x, double[] mu, double[][] Sigma) {
                 int k = x.length;
-                double multiplier = Math
-                        .sqrt(1.0 / (Math.pow(Math.PI * 2, k) * DoubleMatrixMath
-                                .determinant(Sigma)));
+                double multiplier = Math.sqrt(1.0 / (Math.pow(Math.PI * 2, k)
+                        * DoubleMatrixMath.determinant(Sigma)));
                 double[] x_mu = new double[x.length];
                 for (int i = 0; i < x.length; i++) {
                     x_mu[i] = x[i] - mu[i];
                 }
-                double exponent = DoubleArrayMath.dotProduct(
-                        DoubleMatrixMath.multiply(x_mu,
-                                DoubleMatrixMath.inverse(Sigma)), x_mu);
+                double exponent = DoubleArrayMath.dotProduct(DoubleMatrixMath
+                        .multiply(x_mu, DoubleMatrixMath.inverse(Sigma)), x_mu);
 
                 return multiplier * Math.exp(-0.5 * exponent);
             }

@@ -155,19 +155,33 @@ public class ComputerVision {
             throws IllegalActionException {
 
         switch (filterName) {
-            case "blur" : return _blur.filter(source, null);
-            case "dilate" : return _dilate.filter(source,  null);
-            case "erode" : return _erode.filter(source, null);
-            case "findContours" : return _findContours.filter(source, null);
-            case "findEdges" : return _findEdges.filter(source,  null);
-            case "gaussianBlur" :  return _gaussianBlur.filter(source, null);
-            case "histogram" : return _histogram.filter(source, null);
-            case "makeBGRA" : return _makeBGRA.filter(source,  null);
-            case "makeGray" : return _makeGray.filter(source, null);
-            case "makeHSV" : return _makeHSV.filter(source, null);
-            case "makeYUV" : return _makeYUV.filter(source, null);
-            case "medianBlur" : return _medianBlur.filter(source, null);
-            default: throw new IllegalActionException("ComputerVision: No filter found for " + filterName);
+        case "blur":
+            return _blur.filter(source, null);
+        case "dilate":
+            return _dilate.filter(source, null);
+        case "erode":
+            return _erode.filter(source, null);
+        case "findContours":
+            return _findContours.filter(source, null);
+        case "findEdges":
+            return _findEdges.filter(source, null);
+        case "gaussianBlur":
+            return _gaussianBlur.filter(source, null);
+        case "histogram":
+            return _histogram.filter(source, null);
+        case "makeBGRA":
+            return _makeBGRA.filter(source, null);
+        case "makeGray":
+            return _makeGray.filter(source, null);
+        case "makeHSV":
+            return _makeHSV.filter(source, null);
+        case "makeYUV":
+            return _makeYUV.filter(source, null);
+        case "medianBlur":
+            return _medianBlur.filter(source, null);
+        default:
+            throw new IllegalActionException(
+                    "ComputerVision: No filter found for " + filterName);
         }
     }
 
@@ -180,11 +194,12 @@ public class ComputerVision {
         int w = source.getWidth();
         int h = source.getHeight();
         Mat outputImage = new Mat(h, w, CvType.CV_8UC3);
-        byte [] pixels = null;
+        byte[] pixels = null;
         DataBuffer dataBuffer = source.getRaster().getDataBuffer();
         if (dataBuffer instanceof DataBufferByte) {
             // Most of the time we get bytes.
-            pixels = ((DataBufferByte) source.getRaster().getDataBuffer()).getData();
+            pixels = ((DataBufferByte) source.getRaster().getDataBuffer())
+                    .getData();
         } else {
             // The WebcamDummyDriver will emit a TYPE_INT_RGB which
             // uses a DataBufferInt so we convert the BufferImage to a
@@ -192,13 +207,13 @@ public class ComputerVision {
 
             // See http://stackoverflow.com/questions/33403526/how-to-match-the-color-models-of-bufferedimage-and-mat
             BufferedImage greyImage = new BufferedImage(source.getWidth(),
-                                                        source.getHeight(),
-                                                        BufferedImage.TYPE_3BYTE_BGR);
+                    source.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
             Graphics g = greyImage.getGraphics();
             g.drawImage(source, 0, 0, null);
             g.dispose();
 
-            pixels = ((DataBufferByte) greyImage.getRaster().getDataBuffer()).getData();
+            pixels = ((DataBufferByte) greyImage.getRaster().getDataBuffer())
+                    .getData();
         }
         outputImage.put(0, 0, pixels);
         return outputImage;
@@ -214,17 +229,20 @@ public class ComputerVision {
         int h = matrix.height();
         int w = matrix.width();
 
-        BufferedImage destination = new BufferedImage(w,h,BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage destination = new BufferedImage(w, h,
+                BufferedImage.TYPE_3BYTE_BGR);
 
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
                 double[] color = matrix.get(x, y);
-                if ( color.length  > 1 ) {
-                    int r = (int) color[0]; int g = (int) color[1]; int b = (int) color[2];
-                    destination.setRGB(y, x, new Color(r,g,b).getRGB());
+                if (color.length > 1) {
+                    int r = (int) color[0];
+                    int g = (int) color[1];
+                    int b = (int) color[2];
+                    destination.setRGB(y, x, new Color(r, g, b).getRGB());
                 } else {
                     int c = (int) color[0];
-                    destination.setRGB(y, x, new Color(c,c,c).getRGB());
+                    destination.setRGB(y, x, new Color(c, c, c).getRGB());
                 }
             }
         }
@@ -278,7 +296,6 @@ public class ComputerVision {
         return "ComputerVisionFilter";
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -291,7 +308,8 @@ public class ComputerVision {
          *  @return The blurred image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
@@ -313,14 +331,17 @@ public class ComputerVision {
          *  @return The dilated image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
-            Size erosionSize = new Size(2*_erosionSize+1, 2*_erosionSize+1);
+            Size erosionSize = new Size(2 * _erosionSize + 1,
+                    2 * _erosionSize + 1);
             int erosionType = Imgproc.MORPH_RECT;
-            Mat element = Imgproc.getStructuringElement(erosionType, erosionSize);
+            Mat element = Imgproc.getStructuringElement(erosionType,
+                    erosionSize);
             Mat result = new Mat();
             // Note: Browser version additionally specifies border arguments.
             Imgproc.dilate(converted, result, element, new Point(-1, -1), 1);
@@ -338,17 +359,20 @@ public class ComputerVision {
          *  @return The eroded image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
-            Size erosionSize = new Size(2*_erosionSize+1, 2*_erosionSize+1);
+            Size erosionSize = new Size(2 * _erosionSize + 1,
+                    2 * _erosionSize + 1);
             int erosionType = Imgproc.MORPH_RECT;
-            Mat element = Imgproc.getStructuringElement(erosionType, erosionSize);
+            Mat element = Imgproc.getStructuringElement(erosionType,
+                    erosionSize);
             Mat result = new Mat();
             // Note: Browser version additionally specifies border arguments.
-            Imgproc.erode(converted, result, element, new Point(-1,-1), 1);
+            Imgproc.erode(converted, result, element, new Point(-1, -1), 1);
 
             return mat2BufferedImage(result);
         }
@@ -363,7 +387,8 @@ public class ComputerVision {
          *  @return An image of the contours.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
@@ -373,11 +398,13 @@ public class ComputerVision {
             Mat hierarchy = new Mat();
 
             // Note: Browser implementation also includes border arguments.
-            Imgproc.blur(converted, blurred, new Size(5,5));
-            Imgproc.Canny(blurred, cannied, _cannyThreshold, _cannyThreshold*2, 3, false);
+            Imgproc.blur(converted, blurred, new Size(5, 5));
+            Imgproc.Canny(blurred, cannied, _cannyThreshold,
+                    _cannyThreshold * 2, 3, false);
 
             ArrayList<MatOfPoint> contours = new ArrayList();
-            Imgproc.findContours(cannied, contours, hierarchy, 3, 2, new Point(0,0));
+            Imgproc.findContours(cannied, contours, hierarchy, 3, 2,
+                    new Point(0, 0));
 
             // Note:  This implementation does not draw the convex hull as in
             // the browser version.  The Java version of Impgproc.convexHull
@@ -388,10 +415,11 @@ public class ComputerVision {
             Size size = cannied.size();
             Mat drawing = Mat.zeros(size, CvType.CV_8UC4);
 
-            for (int i = 0; i< contours.size(); i++ )
-            {
-                Scalar color = new Scalar(Math.random()*255, Math.random()*255, Math.random()*255);
-                Imgproc.drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, new Point(0,0));
+            for (int i = 0; i < contours.size(); i++) {
+                Scalar color = new Scalar(Math.random() * 255,
+                        Math.random() * 255, Math.random() * 255);
+                Imgproc.drawContours(drawing, contours, i, color, 2, 8,
+                        hierarchy, 0, new Point(0, 0));
             }
             return mat2BufferedImage(drawing);
         }
@@ -406,7 +434,8 @@ public class ComputerVision {
          *  @return An image of the edges.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
@@ -415,8 +444,9 @@ public class ComputerVision {
             Mat result = new Mat();
 
             // Note: Browser implementation also includes border arguments.
-            Imgproc.blur(converted, blurred, new Size(5,5));
-            Imgproc.Canny(blurred, result, _cannyThreshold, _cannyThreshold*2, 3, false);
+            Imgproc.blur(converted, blurred, new Size(5, 5));
+            Imgproc.Canny(blurred, result, _cannyThreshold, _cannyThreshold * 2,
+                    3, false);
 
             return mat2BufferedImage(result);
         }
@@ -431,13 +461,14 @@ public class ComputerVision {
          *  @return The blurred image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Mat result = new Mat();
-            Size blurSize = new Size(2*_blurSize+1, 2*_blurSize+1);
+            Size blurSize = new Size(2 * _blurSize + 1, 2 * _blurSize + 1);
             // Note : Browser version also includes border argument.
             Imgproc.GaussianBlur(converted, result, blurSize, 0, 0);
 
@@ -454,7 +485,8 @@ public class ComputerVision {
          *  @return A histogram.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
 
             int numBins = 255;
@@ -476,11 +508,14 @@ public class ComputerVision {
 
             planes.push_back(new MatOfInt(0));
 
-            Imgproc.calcHist(rgbPlanes, planes, new Mat(), histr, histSize, ranges, false);
+            Imgproc.calcHist(rgbPlanes, planes, new Mat(), histr, histSize,
+                    ranges, false);
             planes.setTo(new MatOfInt(1));
-            Imgproc.calcHist(rgbPlanes, planes, new Mat(), histg, histSize, ranges, false);
+            Imgproc.calcHist(rgbPlanes, planes, new Mat(), histg, histSize,
+                    ranges, false);
             planes.setTo(new MatOfInt(2));
-            Imgproc.calcHist(rgbPlanes, planes, new Mat(), histb, histSize, ranges, false);
+            Imgproc.calcHist(rgbPlanes, planes, new Mat(), histb, histSize,
+                    ranges, false);
 
             // Normalize.
             Mat noArray = new Mat();
@@ -491,7 +526,7 @@ public class ComputerVision {
             // Draw histogram
             int hist_w = 300;
             int hist_h = 300;
-            int bin_w = hist_w/numBins|0 ;
+            int bin_w = hist_w / numBins | 0;
 
             Mat histImage = Mat.ones(new Size(hist_h, hist_w), CvType.CV_8UC4);
             Point p1, p2;
@@ -502,17 +537,26 @@ public class ComputerVision {
                 row = i / cols;
                 col = i % cols;
 
-                p1 =  new Point(bin_w*(i-1), hist_h - histr.get(row, col - 1)[0]*hist_h);
-                p2 = new Point(bin_w*(i), hist_h - histr.get(row,  col)[0]*hist_h);
-                Imgproc.line(histImage, p1, p2, new Scalar(255, 0, 0), 1, Imgproc.LINE_8, 0);
+                p1 = new Point(bin_w * (i - 1),
+                        hist_h - histr.get(row, col - 1)[0] * hist_h);
+                p2 = new Point(bin_w * (i),
+                        hist_h - histr.get(row, col)[0] * hist_h);
+                Imgproc.line(histImage, p1, p2, new Scalar(255, 0, 0), 1,
+                        Imgproc.LINE_8, 0);
 
-                p1 =  new Point(bin_w*(i-1), hist_h - histg.get(row, col - 1)[0]*hist_h);
-                p2 = new Point(bin_w*(i), hist_h - histg.get(row,  col)[0]*hist_h);
-                Imgproc.line(histImage, p1, p2, new Scalar(0, 255, 0), 1, Imgproc.LINE_8, 0);
+                p1 = new Point(bin_w * (i - 1),
+                        hist_h - histg.get(row, col - 1)[0] * hist_h);
+                p2 = new Point(bin_w * (i),
+                        hist_h - histg.get(row, col)[0] * hist_h);
+                Imgproc.line(histImage, p1, p2, new Scalar(0, 255, 0), 1,
+                        Imgproc.LINE_8, 0);
 
-                p1 =  new Point(bin_w*(i-1), hist_h - histb.get(row, col - 1)[0]*hist_h);
-                p2 = new Point(bin_w*(i), hist_h - histb.get(row,  col)[0]*hist_h);
-                Imgproc.line(histImage, p1, p2, new Scalar(0, 0, 255), 1, Imgproc.LINE_8, 0);
+                p1 = new Point(bin_w * (i - 1),
+                        hist_h - histb.get(row, col - 1)[0] * hist_h);
+                p2 = new Point(bin_w * (i),
+                        hist_h - histb.get(row, col)[0] * hist_h);
+                Imgproc.line(histImage, p1, p2, new Scalar(0, 0, 255), 1,
+                        Imgproc.LINE_8, 0);
             }
             return mat2BufferedImage(histImage);
         }
@@ -528,7 +572,8 @@ public class ComputerVision {
          *  @return The image in BGRA format.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             // bufferedImage2Mat returns BGRA, so just return that.
             Mat sourceMatrix = bufferedImage2Mat(source);
             return mat2BufferedImage(sourceMatrix);
@@ -545,7 +590,8 @@ public class ComputerVision {
          *  @return The grayscale image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat result = new Mat();
             Imgproc.cvtColor(sourceMatrix, result, Imgproc.COLOR_RGB2GRAY);
@@ -564,7 +610,8 @@ public class ComputerVision {
          *  @return The HSV image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat tmp = new Mat();
             Mat result = new Mat();
@@ -585,7 +632,8 @@ public class ComputerVision {
          *  @return The HSV image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat result = new Mat();
             Imgproc.cvtColor(sourceMatrix, result, Imgproc.COLOR_RGB2YUV);
@@ -593,7 +641,6 @@ public class ComputerVision {
             return mat2BufferedImage(result);
         }
     }
-
 
     /** A filter that blurs the image.
      */
@@ -604,13 +651,14 @@ public class ComputerVision {
          *  @return The blurred image.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             Mat sourceMatrix = bufferedImage2Mat(source);
             Mat converted = new Mat();
             Imgproc.cvtColor(sourceMatrix, converted, Imgproc.COLOR_RGB2BGRA);
 
             Mat result = new Mat();
-            Imgproc.medianBlur(converted, result, 2*_blurSize+1);
+            Imgproc.medianBlur(converted, result, 2 * _blurSize + 1);
 
             return mat2BufferedImage(result);
         }

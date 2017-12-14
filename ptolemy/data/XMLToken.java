@@ -86,8 +86,8 @@ public class XMLToken extends Token {
             return (XMLToken) token;
         }
 
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "xmltoken"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "xmltoken"));
     }
 
     /** Return the dom document parsed from the xml string.
@@ -188,14 +188,14 @@ public class XMLToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isCloseTo", this, token));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isCloseTo", this, token));
             }
         } else if (typeInfo == CPO.LOWER) {
             return token.isCloseTo(this, epsilon);
         } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "isCloseTo", this, token));
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("isCloseTo", this, token));
         }
     }
 
@@ -244,8 +244,8 @@ public class XMLToken extends Token {
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         XMLToken convertedArgument = (XMLToken) rightArgument;
-        return BooleanToken.getInstance(toString().compareTo(
-                convertedArgument.toString()) == 0);
+        return BooleanToken.getInstance(
+                toString().compareTo(convertedArgument.toString()) == 0);
     }
 
     ///////////////////////////////////////////////////////////////////

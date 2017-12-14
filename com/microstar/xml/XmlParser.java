@@ -134,7 +134,7 @@ public class XmlParser {
 
     private synchronized void doParse(String systemId, String publicId,
             Reader reader, InputStream stream, String encoding)
-                    throws java.lang.Exception {
+            throws java.lang.Exception {
         basePublicId = publicId;
         baseURI = systemId;
         baseReader = reader;
@@ -687,7 +687,7 @@ public class XmlParser {
 
             break;
 
-            // 16-bit encodings
+        // 16-bit encodings
         case ENCODING_UCS_2_12:
         case ENCODING_UCS_2_21:
 
@@ -699,7 +699,7 @@ public class XmlParser {
 
             break;
 
-            // 32-bit encodings
+        // 32-bit encodings
         case ENCODING_UCS_4_1234:
         case ENCODING_UCS_4_4321:
         case ENCODING_UCS_4_2143:
@@ -1447,7 +1447,8 @@ public class XmlParser {
             } else if (tryRead("IMPLIED")) {
                 valueType = ATTRIBUTE_DEFAULT_IMPLIED;
             } else {
-                error("illegal keyword for attribute default value", null, null);
+                error("illegal keyword for attribute default value", null,
+                        null);
             }
         } else {
             context = CONTEXT_ATTRIBUTEVALUE;
@@ -1510,8 +1511,8 @@ public class XmlParser {
                 }
             }
         } else {
-            error("conditional section must begin with INCLUDE or IGNORE",
-                    null, null);
+            error("conditional section must begin with INCLUDE or IGNORE", null,
+                    null);
         }
     }
 
@@ -1925,7 +1926,7 @@ public class XmlParser {
                 case '%':
 
                     if (context == CONTEXT_DTD
-                    || context == CONTEXT_ENTITYVALUE) {
+                            || context == CONTEXT_ENTITYVALUE) {
                         break loop;
                     } // else fall through...
 
@@ -1969,7 +1970,7 @@ public class XmlParser {
                 case '%':
 
                     if (context == CONTEXT_DTD
-                    || context == CONTEXT_ENTITYVALUE) {
+                            || context == CONTEXT_ENTITYVALUE) {
                         break loop;
                     } // else fall through...
 
@@ -2044,8 +2045,8 @@ public class XmlParser {
                 return s;
 
             default:
-                nameBuffer = (char[]) extendArray(nameBuffer,
-                        nameBuffer.length, nameBufferPos);
+                nameBuffer = (char[]) extendArray(nameBuffer, nameBuffer.length,
+                        nameBufferPos);
                 nameBuffer[nameBufferPos++] = c;
             }
         }
@@ -2085,7 +2086,7 @@ public class XmlParser {
                     c = ' ';
                     break;
 
-                    // References may be allowed
+                // References may be allowed
                 case '&':
 
                     if ((flags & LIT_CHAR_REF) > 0) {
@@ -2680,8 +2681,8 @@ public class XmlParser {
         } else if (attribute[4] == null && attribute[1] != null) {
             try {
                 pushString(null, (char) 0 + (String) attribute[1] + (char) 0);
-                attribute[4] = readLiteral(LIT_NORMALIZE | LIT_CHAR_REF
-                        | LIT_ENTITY_REF);
+                attribute[4] = readLiteral(
+                        LIT_NORMALIZE | LIT_CHAR_REF | LIT_ENTITY_REF);
             } catch (Exception ex) {
                 // We could ignore this and return but instead return here.
                 return (String) attribute[4];
@@ -3341,18 +3342,18 @@ public class XmlParser {
             // UCS-4 must begin with "<!XML"
             // 0x00 0x00 0x00 0x3c: UCS-4, big-endian (1234)
             encoding = ENCODING_UCS_4_1234;
-        } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x00,
-                (byte) 0x00, (byte) 0x00)) {
+        } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x00, (byte) 0x00,
+                (byte) 0x00)) {
             // UCS-4 must begin with "<!XML"
             // 0x3c 0x00 0x00 0x00: UCS-4, little-endian (4321)
             encoding = ENCODING_UCS_4_4321;
-        } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x00,
-                (byte) 0x3c, (byte) 0x00)) {
+        } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x00, (byte) 0x3c,
+                (byte) 0x00)) {
             // UCS-4 must begin with "<!XML"
             // 0x00 0x00 0x3c 0x00: UCS-4, unusual (2143)
             encoding = ENCODING_UCS_4_2143;
-        } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x3c,
-                (byte) 0x00, (byte) 0x00)) {
+        } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x3c, (byte) 0x00,
+                (byte) 0x00)) {
             // UCS-4 must begin with "<!XML"
             // 0x00 0x3c 0x00 0x00: UCS-4, unusual (3421)
             encoding = ENCODING_UCS_4_3412;
@@ -3368,20 +3369,20 @@ public class XmlParser {
             encoding = ENCODING_UCS_2_21;
             is.read();
             is.read();
-        } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x3c,
-                (byte) 0x00, (byte) 0x3f)) {
+        } else if (tryEncoding(signature, (byte) 0x00, (byte) 0x3c, (byte) 0x00,
+                (byte) 0x3f)) {
             // UCS-2 without a BOM must begin with "<?XML"
             // 0x00 0x3c 0x00 0x3f: UCS-2, big-endian, no byte-order mark
             encoding = ENCODING_UCS_2_12;
             error("no byte-order mark for UCS-2 entity", null, null);
-        } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x00,
-                (byte) 0x3f, (byte) 0x00)) {
+        } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x00, (byte) 0x3f,
+                (byte) 0x00)) {
             // UCS-2 without a BOM must begin with "<?XML"
             // 0x3c 0x00 0x3f 0x00: UCS-2, little-endian, no byte-order mark
             encoding = ENCODING_UCS_2_21;
             error("no byte-order mark for UCS-2 entity", null, null);
-        } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x3f,
-                (byte) 0x78, (byte) 0x6d)) {
+        } else if (tryEncoding(signature, (byte) 0x3c, (byte) 0x3f, (byte) 0x78,
+                (byte) 0x6d)) {
             // Some kind of 8-bit encoding with "<?XML"
             // 0x3c 0x3f 0x78 0x6d: UTF-8 or other 8-bit markup (read ENCODING)
             encoding = ENCODING_UTF_8;
@@ -3971,13 +3972,13 @@ public class XmlParser {
                 readBuffer[j++] = (char) b1;
             } else if ((b1 & 0xe0) == 0xc0) {
                 // 2-byte sequence: 00000yyyyyxxxxxx = 110yyyyy 10xxxxxx
-                readBuffer[j++] = (char) ((b1 & 0x1f) << 6 | getNextUtf8Byte(
-                        i++, count));
+                readBuffer[j++] = (char) ((b1 & 0x1f) << 6
+                        | getNextUtf8Byte(i++, count));
             } else if ((b1 & 0xf0) == 0xe0) {
                 // 3-byte sequence: zzzzyyyyyyxxxxxx = 1110zzzz 10yyyyyy 10xxxxxx
                 readBuffer[j++] = (char) ((b1 & 0x0f) << 12
-                        | getNextUtf8Byte(i++, count) << 6 | getNextUtf8Byte(
-                                i++, count));
+                        | getNextUtf8Byte(i++, count) << 6
+                        | getNextUtf8Byte(i++, count));
             } else if ((b1 & 0xf8) == 0xf0) {
                 // 4-byte sequence: 11101110wwwwzzzzyy + 110111yyyyxxxxxx
                 //     = 11110uuu 10uuzzzz 10yyyyyy 10xxxxxx
@@ -4026,8 +4027,8 @@ public class XmlParser {
             val = is.read();
 
             if (val == -1) {
-                encodingError("unfinished multi-byte UTF-8 sequence at EOF",
-                        -1, pos);
+                encodingError("unfinished multi-byte UTF-8 sequence at EOF", -1,
+                        pos);
             }
         }
 
@@ -4089,7 +4090,8 @@ public class XmlParser {
         }
 
         for (int i = 0; i < count; i += 2) {
-            readBuffer[j++] = (char) ((rawReadBuffer[i] & 0xff) << shift1 | (rawReadBuffer[i + 1] & 0xff) << shift2);
+            readBuffer[j++] = (char) ((rawReadBuffer[i] & 0xff) << shift1
+                    | (rawReadBuffer[i + 1] & 0xff) << shift2);
 
             if (readBuffer[j - 1] == '\r') {
                 sawCR = true;
@@ -4142,7 +4144,8 @@ public class XmlParser {
                 readBuffer[j++] = (char) (0xd8 | (value & 0x000ffc00) >> 10);
                 readBuffer[j++] = (char) (0xdc | value & 0x0003ff);
             } else {
-                encodingError("value cannot be represented in UTF-16", value, i);
+                encodingError("value cannot be represented in UTF-16", value,
+                        i);
             }
         }
 

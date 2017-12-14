@@ -45,8 +45,8 @@ import ptdb.common.dto.SearchCriteria;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class CommandSearcher extends AbstractSearcher implements
-AbstractDBSearcher {
+public class CommandSearcher extends AbstractSearcher
+        implements AbstractDBSearcher {
 
     /**
      * Construct the command searcher.
@@ -71,7 +71,8 @@ AbstractDBSearcher {
 
     @Override
     protected boolean _isSearchCriteriaSet() {
-        if (_commandSearchCriteria == null || _commandSearchCriteria.equals("")) {
+        if (_commandSearchCriteria == null
+                || _commandSearchCriteria.equals("")) {
             return false;
         }
         return true;

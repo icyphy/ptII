@@ -79,8 +79,8 @@ public class GDPHelper extends HelperBase {
         super(actor, currentObj);
 
         // The GDP_GCL constructor calls the gdp_init() C function for us.
-        System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");
-
+        System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode
+                + ", " + logdname + "): ");
 
         // If we are running under RHEL, update jna.library.path to include
         // $PTII/lib/gdp-0.7-0.jar!/linux-x86-64-rhel/libgdp.0.7.so'
@@ -102,7 +102,8 @@ public class GDPHelper extends HelperBase {
         if (new File("/etc/redhat-release").exists()) {
             String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
             String gdpLibraryPath = ptII + "/lib/linux-x86-64-rhel/";
-            String jnaLibraryPath = StringUtilities.getProperty("jna.library.path").trim();
+            String jnaLibraryPath = StringUtilities
+                    .getProperty("jna.library.path").trim();
 
             // If gdpLibraryPath is not yet in jna.libraryPath, then add it.
             if (jnaLibraryPath.indexOf(gdpLibraryPath) == -1) {
@@ -112,7 +113,8 @@ public class GDPHelper extends HelperBase {
                     jnaLibraryPath = gdpLibraryPath;
                 }
                 System.setProperty("jna.library.path", jnaLibraryPath);
-                System.out.println("GDPHelper: Updated jna.library.path to " + jnaLibraryPath);
+                System.out.println("GDPHelper: Updated jna.library.path to "
+                        + jnaLibraryPath);
             }
         }
 
@@ -123,19 +125,23 @@ public class GDPHelper extends HelperBase {
                 logdname = InetAddress.getLocalHost().getHostName();
                 swarmGdpRouters = "swarm.gdp.routers=Localhost";
             } catch (Throwable throwable) {
-                throw new GDPException("Could not get the local host name.", throwable);
+                throw new GDPException("Could not get the local host name.",
+                        throwable);
             }
         }
         String userHome = StringUtilities.getProperty("user.home");
         if (userHome.length() == 0) {
-            throw new GDPException("Could not get the user.home JVM property?  This is necessary so that ~/.ep_adm_params/gdp can be created to configure the hostname of the gdp router.");
+            throw new GDPException(
+                    "Could not get the user.home JVM property?  This is necessary so that ~/.ep_adm_params/gdp can be created to configure the hostname of the gdp router.");
         }
         try {
             GDPManager.setGdpConfigurationFile(userHome, swarmGdpRouters);
         } catch (IOException ex) {
-            throw new GDPException("Could not update ~/.ep_adm_params/gdp with the GDP router name(s).");
+            throw new GDPException(
+                    "Could not update ~/.ep_adm_params/gdp with the GDP router name(s).");
         }
-        _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode, new GDP_NAME(logdname));
+        _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode,
+                new GDP_NAME(logdname));
         _logName = logName;
     }
 
@@ -144,7 +150,7 @@ public class GDPHelper extends HelperBase {
      *  @exception GDPException If there is a problem appending the string.
      */
     public void append(String data) throws GDPException {
-        byte [] bytes = data.getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
         System.out.println("GDPHelper.append(" + data + ")");
         _gcl.append(bytes);
     }
@@ -161,9 +167,11 @@ public class GDPHelper extends HelperBase {
      */
     public String getNextData(int timeout) {
         // FIXME: timeout should be a long.
-        HashMap<String, Object> gdp_event = GDP_GCL.get_next_event(_gcl, timeout);
-        System.out.println("GDPHelper.getNextData(" + timeout + "): " + gdp_event);
-        return _datumToData((HashMap<String, Object>)gdp_event.get("datum"));
+        HashMap<String, Object> gdp_event = GDP_GCL.get_next_event(_gcl,
+                timeout);
+        System.out.println(
+                "GDPHelper.getNextData(" + timeout + "): " + gdp_event);
+        return _datumToData((HashMap<String, Object>) gdp_event.get("datum"));
     }
 
     /** Read a record.
@@ -174,7 +182,7 @@ public class GDPHelper extends HelperBase {
      *  @exception GDPException If there is a problem reading the string.
      */
     public String read(long recordNumber) throws GDPException {
-        HashMap<String,Object> datum = _gcl.read(recordNumber);
+        HashMap<String, Object> datum = _gcl.read(recordNumber);
         return _datumToData(datum);
     }
 
@@ -200,31 +208,37 @@ public class GDPHelper extends HelperBase {
      *  @param timeout The timeout in milliseconds.
      *  @exception GDPException If there is a problem subscribing to the log.
      */
-    public void subscribe(int startRecord, int numberOfRecords, int timeout) throws GDPException {
+    public void subscribe(int startRecord, int numberOfRecords, int timeout)
+            throws GDPException {
         // FIXME timeout should be a long.
         EP_TIME_SPEC timeoutSpec = null;
         if (timeout != 0) {
-            timeoutSpec = new EP_TIME_SPEC(timeout/1000,
-                    0, /* nanoseconds */
+            timeoutSpec = new EP_TIME_SPEC(timeout / 1000, 0, /* nanoseconds */
                     0.001f /* accuracy in seconds */);
         }
         // FIXME: We need to cast to a long here because it seems
         // like passing longs from JavaScript does not work for us.
-        _gcl.subscribe((long)startRecord, numberOfRecords, timeoutSpec);
+        _gcl.subscribe(startRecord, numberOfRecords, timeoutSpec);
         Runnable blocking = new Runnable() {
+            @Override
             public void run() {
                 while (_subscribed) {
                     // Last argument is a timeout in ms. When it expires, if there
                     // is no data, then an empty HashMap is returned.
                     // FIXME: Any way to set the timeout to wait forever?
-                    final HashMap<String, Object> gdpEvent = GDP_GCL.get_next_event(_gcl, 10000);
+                    final HashMap<String, Object> gdpEvent = GDP_GCL
+                            .get_next_event(_gcl, 10000);
                     if (gdpEvent != null) {
                         if (gdpEvent.size() > 0) {
                             // Issue the response in the director thread.
                             _issueResponse(() -> {
-                                HashMap<String,Object> result = (HashMap<String,Object>)gdpEvent.get("datum");
-                                System.out.println("GDPHelper.subscribe(): about to call _notifyIncoming " + result.toString());
-                                _currentObj.callMember("_notifyIncoming", _datumToData(result));
+                                HashMap<String, Object> result = (HashMap<String, Object>) gdpEvent
+                                        .get("datum");
+                                System.out.println(
+                                        "GDPHelper.subscribe(): about to call _notifyIncoming "
+                                                + result.toString());
+                                _currentObj.callMember("_notifyIncoming",
+                                        _datumToData(result));
                             });
                         }
                         // FIXME: The code in GDPHelper should
@@ -249,7 +263,8 @@ public class GDPHelper extends HelperBase {
             }
         };
         _subscribed = true;
-        Thread thread = new Thread(blocking, "GDP subscriber thread: " + _logName);
+        Thread thread = new Thread(blocking,
+                "GDP subscriber thread: " + _logName);
         // Start this as a deamon thread so that it doesn't block exiting the process.
         thread.setDaemon(true);
         thread.start();
@@ -272,7 +287,7 @@ public class GDPHelper extends HelperBase {
         if (datum != null) {
             Object data = datum.get("data");
             if (data != null) {
-                if (data instanceof byte []) {
+                if (data instanceof byte[]) {
                     try {
                         return new String((byte[]) data, "UTF-8");
                     } catch (Throwable throwable) {

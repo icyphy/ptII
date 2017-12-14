@@ -113,7 +113,8 @@ public class DebugController extends SingletonConfigurableAttribute {
                 // If the object is not contained by the associated
                 // composite, then find an object above it in the hierarchy
                 // that is.
-                DebugProfile debugProfile = getDebugProfile((Executable) objToHighlight);
+                DebugProfile debugProfile = getDebugProfile(
+                        (Executable) objToHighlight);
                 BasicGraphController graphController = debugProfile
                         .getGraphController();
                 AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) graphController

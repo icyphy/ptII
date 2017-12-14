@@ -206,7 +206,8 @@ public class FractionArrayMath {
      */
     public static final Fraction[] multiply(final Fraction[] array1,
             final Fraction[] array2) {
-        int length = _commonLength(array1, array2, "FractionArrayMath.multiply");
+        int length = _commonLength(array1, array2,
+                "FractionArrayMath.multiply");
         Fraction[] returnValue = new Fraction[length];
 
         for (int i = 0; i < length; i++) {
@@ -256,7 +257,8 @@ public class FractionArrayMath {
      */
     public static final Fraction[] subtract(final Fraction[] array1,
             final Fraction[] array2) {
-        int length = _commonLength(array1, array2, "FractionArrayMath.subtract");
+        int length = _commonLength(array1, array2,
+                "FractionArrayMath.subtract");
         Fraction[] returnValue = new Fraction[length];
 
         for (int i = 0; i < length; i++) {
@@ -355,7 +357,8 @@ public class FractionArrayMath {
             throw new IllegalArgumentException("ptolemy.math." + methodName
                     + "() : input arrays must have the same length, "
                     + "but the first array has length " + array1.length
-                    + " and the second array has length " + array2.length + ".");
+                    + " and the second array has length " + array2.length
+                    + ".");
         }
 
         return array1.length;

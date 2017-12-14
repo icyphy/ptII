@@ -298,17 +298,16 @@ public class CanBus extends AtomicCommunicationAspect {
             LinkedList<Object[]> listToSort = _tokenTree.get(_channelUsed);
 
             for (int i = 0; i < listToSort.size(); i++) {
-                for (int mostRecent = i + 1; mostRecent < listToSort.size(); mostRecent++) {
+                for (int mostRecent = i + 1; mostRecent < listToSort
+                        .size(); mostRecent++) {
 
                     // If a message will be delivered at time t we consider that
                     // the CanBus will be occupied at time t. So , all messages
                     // arriving at time t must be re-emitted => "> 0" condition.
                     if (listToSort.get(i)[0] == listToSort.get(mostRecent)[0]
-                            && this.getDirector()
-                            .getModelTime()
-                            .compareTo(
-                                    ((Time) listToSort.get(mostRecent)[2])
-                                    .add(nextTokenTransmissionTime())) > 0) {
+                            && this.getDirector().getModelTime().compareTo(
+                                    ((Time) listToSort.get(mostRecent)[2]).add(
+                                            nextTokenTransmissionTime())) > 0) {
                         listToSort.remove(i);
                         i--;
                     }
@@ -317,12 +316,14 @@ public class CanBus extends AtomicCommunicationAspect {
         }
 
         // delivers (if required) the intended token to the intended receiver
-        if (_nextTokenFiringTime != null && _nextTokenFiringTime == currentTime) {
+        if (_nextTokenFiringTime != null
+                && _nextTokenFiringTime == currentTime) {
             for (int i = 0; i < _multiCast.get(_channelUsed); i++) {
                 Object[] o = _tokenTree.get(_channelUsed).poll();
                 _sendToReceiver((Receiver) o[0], (Token) o[1]);
                 _tokenCount--;
-                sendCommunicationEvent(this, 0, _tokenCount, EventType.RECEIVED);
+                sendCommunicationEvent(this, 0, _tokenCount,
+                        EventType.RECEIVED);
             }
             _scheduleRefire();
         }
@@ -464,13 +465,13 @@ public class CanBus extends AtomicCommunicationAspect {
                     for (int i = 0; i < entry.getValue().size(); i++) {
                         _debug("Receiver: "
                                 + ((Receiver) entry.getValue().get(i)[0])
-                                .toString()
+                                        .toString()
                                 + " Token: "
                                 + ((Token) entry.getValue().get(i)[1])
-                                .toString()
+                                        .toString()
                                 + " Time: "
                                 + ((Time) entry.getValue().get(i)[2])
-                                .getDoubleValue());
+                                        .getDoubleValue());
                     }
                 }
             }

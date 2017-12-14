@@ -115,10 +115,10 @@ public class ModelPane extends JPanel implements CloseListener {
         if (show != 0) {
             // Add run controls.
             _controlPanel = new JPanel();
-            _controlPanel.setLayout(new BoxLayout(_controlPanel,
-                    BoxLayout.Y_AXIS));
             _controlPanel
-            .setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+                    .setLayout(new BoxLayout(_controlPanel, BoxLayout.Y_AXIS));
+            _controlPanel
+                    .setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
             // Add a listener that requests the focus when we click
             // in the pane. This allows keyboard bindings to work.
@@ -128,13 +128,13 @@ public class ModelPane extends JPanel implements CloseListener {
 
             if ((show & BUTTONS) != 0) {
                 _buttonPanel = new JPanel();
-                _buttonPanel.setLayout(new BoxLayout(_buttonPanel,
-                        BoxLayout.X_AXIS));
+                _buttonPanel.setLayout(
+                        new BoxLayout(_buttonPanel, BoxLayout.X_AXIS));
                 _buttonPanel.addMouseListener(clickListener);
 
                 // Padding top and bottom...
-                _buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0,
-                        10, 0));
+                _buttonPanel.setBorder(
+                        BorderFactory.createEmptyBorder(10, 0, 10, 0));
                 _buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
 
                 _goButton = new JButton("Go");
@@ -328,8 +328,8 @@ public class ModelPane extends JPanel implements CloseListener {
                     _controlPanel.add(_parameterQuery);
 
                     if ((_show & DIRECTOR_PARAMETERS) != 0) {
-                        _controlPanel.add(Box.createRigidArea(new Dimension(0,
-                                15)));
+                        _controlPanel
+                                .add(Box.createRigidArea(new Dimension(0, 15)));
                     }
                 }
             }
@@ -348,8 +348,8 @@ public class ModelPane extends JPanel implements CloseListener {
                         // Use a dark blue for the text color.
                         pTitle.setForeground(new Color(0, 0, 128));
                         _controlPanel.add(pTitle);
-                        _controlPanel.add(Box.createRigidArea(new Dimension(0,
-                                8)));
+                        _controlPanel
+                                .add(Box.createRigidArea(new Dimension(0, 8)));
                         _directorQuery = new Configurer(director);
 
                         if (_layout == HORIZONTAL) {
@@ -678,11 +678,9 @@ public class ModelPane extends JPanel implements CloseListener {
         private boolean _shift = false;
 
         private String _helpString = "Key bindings in button panel:\n"
-                + "  Control-G: Start a run.\n"
-                + "  Control-H: Display help.\n"
+                + "  Control-G: Start a run.\n" + "  Control-H: Display help.\n"
                 + "  Control-M: Export MoML to standard out.\n"
-                + "  Control-P: Pause a run.\n"
-                + "  Control-R: Resume a run.\n" + "  Control-S: Stop a run.\n"
-                + "  Control-?: Display help.\n";
+                + "  Control-P: Pause a run.\n" + "  Control-R: Resume a run.\n"
+                + "  Control-S: Stop a run.\n" + "  Control-?: Display help.\n";
     }
 }

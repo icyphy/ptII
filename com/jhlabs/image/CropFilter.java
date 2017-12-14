@@ -124,19 +124,23 @@ public class CropFilter extends AbstractBufferedImageOp {
         return height;
     }
 
-    public BufferedImage filter( BufferedImage src, BufferedImage dst ) {
-        if ( dst == null ) {
+    @Override
+    public BufferedImage filter(BufferedImage src, BufferedImage dst) {
+        if (dst == null) {
             ColorModel dstCM = src.getColorModel();
-            dst = new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(width, height), dstCM.isAlphaPremultiplied(), null);
+            dst = new BufferedImage(dstCM,
+                    dstCM.createCompatibleWritableRaster(width, height),
+                    dstCM.isAlphaPremultiplied(), null);
         }
 
         Graphics2D g = dst.createGraphics();
-        g.drawRenderedImage( src, AffineTransform.getTranslateInstance(-x, -y) );
+        g.drawRenderedImage(src, AffineTransform.getTranslateInstance(-x, -y));
         g.dispose();
 
         return dst;
     }
 
+    @Override
     public String toString() {
         return "Distort/Crop";
     }

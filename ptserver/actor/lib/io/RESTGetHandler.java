@@ -250,8 +250,8 @@ public class RESTGetHandler extends TypedAtomicActor {
         // Parse the resource string
         // If blank, return the top-level container
         if (resource == null || resource.getExpression() == null) {
-            throw new IllegalActionException(this, "Please specify "
-                    + "a resource.");
+            throw new IllegalActionException(this,
+                    "Please specify " + "a resource.");
         } else {
             String expression = resource.getExpression();
 
@@ -371,10 +371,10 @@ public class RESTGetHandler extends TypedAtomicActor {
         while (objIterator.hasNext()) {
             NamedObj nextObj = (NamedObj) objIterator.next();
             if (!(((BooleanToken) ignoreNamedObjsStartingWithUnderscores
-                    .getToken()).booleanValue() && nextObj.getName()
-                    .startsWith("_"))) {
-                containedResources.add("http:/"
-                        + nextObj.getFullName().replace(".", "/"));
+                    .getToken()).booleanValue()
+                    && nextObj.getName().startsWith("_"))) {
+                containedResources.add(
+                        "http:/" + nextObj.getFullName().replace(".", "/"));
             }
         }
 
@@ -422,10 +422,11 @@ public class RESTGetHandler extends TypedAtomicActor {
             }
         }
         if (hasParameter) {
-            table.insert(0, "<table border=&quot;1&quot;>"
-                    + "<tr><td><b>Parameter</b></td>"
-                    + "<td><b>Expression</b></td>"
-                    + "<td><b>Value</b></td></tr>");
+            table.insert(0,
+                    "<table border=&quot;1&quot;>"
+                            + "<tr><td><b>Parameter</b></td>"
+                            + "<td><b>Expression</b></td>"
+                            + "<td><b>Value</b></td></tr>");
             table.append("</table>");
         } else {
             table.append("Has no parameters.");

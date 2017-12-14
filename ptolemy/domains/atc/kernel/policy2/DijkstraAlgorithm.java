@@ -90,25 +90,31 @@ public class DijkstraAlgorithm {
      *  @param inTransit the map of in transit objects.
      *  @return an array of tokens
      */
-    public Token[] callDijkstra(Map<Integer, ArrayToken> neighbors, ArrayList<Integer> airportsId,
-            int source, int destination, Map<Integer, Token> stormyTracks, Map<Integer, Boolean> inTransit) {
-        int k=0;
+    public Token[] callDijkstra(Map<Integer, ArrayToken> neighbors,
+            ArrayList<Integer> airportsId, int source, int destination,
+            Map<Integer, Token> stormyTracks, Map<Integer, Boolean> inTransit) {
+        int k = 0;
         for (Entry<Integer, ArrayToken> entry : neighbors.entrySet()) {
-            int node=entry.getKey();
-            Vertex location=new Vertex(node);
+            int node = entry.getKey();
+            Vertex location = new Vertex(node);
             _nodes.add(location);
-            ArrayToken nodeNeighbors=entry.getValue();
-            for (int i=0;i<nodeNeighbors.length();i++) {
-                int id=((IntToken)nodeNeighbors.getElement(i)).intValue();
-                if (id!=-1) {
-                    int weight=1;
-                    if (inTransit.containsKey(id))
-                        if (inTransit.get(id)==true)
-                            weight=5;
-                    if (stormyTracks.containsKey(id))
-                        if (((BooleanToken)stormyTracks.get(id)).booleanValue()==true)
-                            weight+=5;
-                    _addLane(k++,node,id,weight);
+            ArrayToken nodeNeighbors = entry.getValue();
+            for (int i = 0; i < nodeNeighbors.length(); i++) {
+                int id = ((IntToken) nodeNeighbors.getElement(i)).intValue();
+                if (id != -1) {
+                    int weight = 1;
+                    if (inTransit.containsKey(id)) {
+                        if (inTransit.get(id) == true) {
+                            weight = 5;
+                        }
+                    }
+                    if (stormyTracks.containsKey(id)) {
+                        if (((BooleanToken) stormyTracks.get(id))
+                                .booleanValue() == true) {
+                            weight += 5;
+                        }
+                    }
+                    _addLane(k++, node, id, weight);
                 }
             }
         }
@@ -120,12 +126,12 @@ public class DijkstraAlgorithm {
 
         execute(new Vertex(source));
         LinkedList<Vertex> path = getPath(new Vertex(destination));
-        if (path==null) {
+        if (path == null) {
             return null;
         } else {
-            Token[] newFlightMap=new Token[path.size()];
-            for (int i=0;i<path.size();i++) {
-                newFlightMap[i]=(Token) new IntToken(path.get(i).getId());
+            Token[] newFlightMap = new Token[path.size()];
+            for (int i = 0; i < path.size(); i++) {
+                newFlightMap[i] = new IntToken(path.get(i).getId());
             }
             // ArrayToken flightMap=new ArrayToken(BaseType.INT, newFlightMap);
             return newFlightMap;
@@ -155,12 +161,13 @@ public class DijkstraAlgorithm {
         return path;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                     private method                        ////
 
-    private void _addLane(int laneId, int sourceLocNo, int destLocNo, int duration) {
-        Edge lane = new Edge(laneId,new Vertex(sourceLocNo), new Vertex(destLocNo), duration);
+    private void _addLane(int laneId, int sourceLocNo, int destLocNo,
+            int duration) {
+        Edge lane = new Edge(laneId, new Vertex(sourceLocNo),
+                new Vertex(destLocNo), duration);
         _edges.add(lane);
     }
 
@@ -194,7 +201,8 @@ public class DijkstraAlgorithm {
             if (minimum == null) {
                 minimum = vertex;
             } else {
-                if (_getShortestDistance(vertex) < _getShortestDistance(minimum)) {
+                if (_getShortestDistance(vertex) < _getShortestDistance(
+                        minimum)) {
                     minimum = vertex;
                 }
             }
@@ -229,8 +237,8 @@ public class DijkstraAlgorithm {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
-    private  List<Vertex> _nodes;
-    private  List<Edge> _edges;
+    private List<Vertex> _nodes;
+    private List<Edge> _edges;
     private Set<Vertex> _settledNodes;
     private Set<Vertex> _unsettledNodes;
     private Map<Vertex, Vertex> _predecessors;

@@ -47,7 +47,8 @@ public class ExtendedMouseFilter extends MouseFilter {
     /** The default selection filter -- accepts button 1 with <i>no</i>
      * modifiers.
      */
-    public static final MouseFilter selectionFilter = new ExtendedMouseFilter(1);
+    public static final MouseFilter selectionFilter = new ExtendedMouseFilter(
+            1);
 
     /** The alternate selection filter -- accepts button 1 with shift.
      */
@@ -161,8 +162,7 @@ public class ExtendedMouseFilter extends MouseFilter {
     public String toString() {
         StringBuffer result = new StringBuffer();
         result.append(getClass().toString() + "; Button " + _button
-                + "; Modifiers "
-                + InputEvent.getModifiersExText(_modifierFlags)
+                + "; Modifiers " + InputEvent.getModifiersExText(_modifierFlags)
                 + "; Modifier mask "
                 + InputEvent.getModifiersExText(_modifierMask)
                 + "; Press Number " + _pressNumber);

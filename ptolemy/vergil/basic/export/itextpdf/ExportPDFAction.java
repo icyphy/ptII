@@ -128,10 +128,10 @@ public class ExportPDFAction extends AbstractAction {
             pageSize = new Rectangle(size.width, size.height);
         } catch (Throwable ex) {
             // This exception will occur if the iText library is not installed.
-            MessageHandler
-            .error("iText library is not installed. See http://itextpdf.com/."
-                    + "  You must have iText.jar in your classpath.  Sometimes, "
-                    + "iText.jar may be found in $PTII/vendors/itext/iText.jar.",
+            MessageHandler.error(
+                    "iText library is not installed. See http://itextpdf.com/."
+                            + "  You must have iText.jar in your classpath.  Sometimes, "
+                            + "iText.jar may be found in $PTII/vendors/itext/iText.jar.",
                     ex);
             return;
         }
@@ -148,23 +148,23 @@ public class ExportPDFAction extends AbstractAction {
 
             LinkedList extensions = new LinkedList();
             extensions.add("pdf");
-            ptFileChooser.addChoosableFileFilter(new ExtensionFilenameFilter(
-                    extensions));
+            ptFileChooser.addChoosableFileFilter(
+                    new ExtensionFilenameFilter(extensions));
 
             BasicGraphFrame basicGraphFrame = null;
             if (_frame instanceof BasicGraphFrame) {
                 basicGraphFrame = (BasicGraphFrame) _frame;
-                ptFileChooser.setCurrentDirectory(basicGraphFrame
-                        .getLastDirectory());
-                ptFileChooser.setSelectedFile(new File(basicGraphFrame
-                        .getModel().getName() + ".pdf"));
+                ptFileChooser.setCurrentDirectory(
+                        basicGraphFrame.getLastDirectory());
+                ptFileChooser.setSelectedFile(new File(
+                        basicGraphFrame.getModel().getName() + ".pdf"));
             }
             int returnVal = ptFileChooser.showDialog(_frame, "Export PDF");
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 if (basicGraphFrame != null) {
-                    basicGraphFrame.setLastDirectory(ptFileChooser
-                            .getCurrentDirectory());
+                    basicGraphFrame.setLastDirectory(
+                            ptFileChooser.getCurrentDirectory());
                 }
                 File pdfFile = ptFileChooser.getSelectedFile()
                         .getCanonicalFile();
@@ -176,8 +176,8 @@ public class ExportPDFAction extends AbstractAction {
 
                 // The Mac OS X FileDialog will ask if we want to save before this point.
                 if (pdfFile.exists() && !PtGUIUtilities.useFileDialog()) {
-                    if (!MessageHandler.yesNoQuestion("Overwrite "
-                            + pdfFile.getName() + "?")) {
+                    if (!MessageHandler.yesNoQuestion(
+                            "Overwrite " + pdfFile.getName() + "?")) {
                         return;
                     }
                 }
@@ -210,8 +210,8 @@ public class ExportPDFAction extends AbstractAction {
                 //_read(pdfFile.toURI().toURL());
                 // Open the image pdfFile.
                 if (basicGraphFrame == null) {
-                    MessageHandler.message("PDF file exported to "
-                            + pdfFile.getName());
+                    MessageHandler.message(
+                            "PDF file exported to " + pdfFile.getName());
                     /* Remove the following. The extra click is annoying...
                     } else {
                         if (MessageHandler.yesNoQuestion("Open \""

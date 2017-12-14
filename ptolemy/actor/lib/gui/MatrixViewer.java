@@ -373,8 +373,8 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @see #getName(NamedObj)
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         if (_tableau != null) {

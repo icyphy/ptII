@@ -83,8 +83,8 @@ public abstract class FMUDriver {
      *  @exception IOException If the native library cannot be found.
      */
     public void invoke(FMIModelDescription fmiModelDescription, String name,
-            Object[] arguments, String message) throws UnsatisfiedLinkError,
-            IOException {
+            Object[] arguments, String message)
+            throws UnsatisfiedLinkError, IOException {
         Function function = fmiModelDescription.getFmiFunction(name);
         invoke(function, arguments, message);
     }

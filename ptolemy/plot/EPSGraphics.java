@@ -218,8 +218,8 @@ public class EPSGraphics extends Graphics {
     }
 
     @Override
-    public void drawRoundRect(int x, int y, int width, int height,
-            int arcWidth, int arcHeight) {
+    public void drawRoundRect(int x, int y, int width, int height, int arcWidth,
+            int arcHeight) {
     }
 
     @Override
@@ -322,8 +322,8 @@ public class EPSGraphics extends Graphics {
     }
 
     @Override
-    public void fillRoundRect(int x, int y, int width, int height,
-            int arcWidth, int arcHeight) {
+    public void fillRoundRect(int x, int y, int width, int height, int arcWidth,
+            int arcHeight) {
     }
 
     @Override
@@ -439,7 +439,8 @@ public class EPSGraphics extends Graphics {
         _buffer.append("showpage\n");
 
         if (_out != null) {
-            PrintWriter output = new PrintWriter(new BufferedOutputStream(_out));
+            PrintWriter output = new PrintWriter(
+                    new BufferedOutputStream(_out));
 
             output.println(_buffer.toString());
             output.flush();
@@ -469,7 +470,8 @@ public class EPSGraphics extends Graphics {
     // Draw a closed polygon defined by arrays of x and y coordinates.
     // Return false if arguments are misformed.
     private boolean _polygon(int[] xPoints, int[] yPoints, int nPoints) {
-        if (nPoints < 3 || xPoints.length < nPoints || yPoints.length < nPoints) {
+        if (nPoints < 3 || xPoints.length < nPoints
+                || yPoints.length < nPoints) {
             return false;
         }
 
@@ -500,10 +502,9 @@ public class EPSGraphics extends Graphics {
         double greenscale = 1.0; // lightest
         double fullscale = Math.sqrt(255.0 * 255.0 * (bluescale * bluescale
                 + redscale * redscale + greenscale * greenscale));
-        double graylevel = Math.sqrt(red * red * redscale * redscale + blue
-                * blue * bluescale * bluescale + green * green * greenscale
-                * greenscale)
-                / fullscale;
+        double graylevel = Math.sqrt(red * red * redscale * redscale
+                + blue * blue * bluescale * bluescale
+                + green * green * greenscale * greenscale) / fullscale;
         _buffer.append("" + graylevel + " setgray\n");
 
         // NOTE -- for debugging, output color spec in comments
@@ -531,8 +532,8 @@ public class EPSGraphics extends Graphics {
     // Default line patterns.
     // FIXME: Need at least 11 of these.
     static private String[] _patterns = { "[]", "[1 1]", "[4 4]", "[4 4 1 4]",
-        "[2 2]", "[4 2 1 2 1 2]", "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]",
-        "[1 2 5 2 1 2 1 2]", "[4 1 2 1]", };
+            "[2 2]", "[4 2 1 2 1 2]", "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]",
+            "[1 2 5 2 1 2 1 2]", "[4 1 2 1]", };
 
     private int _patternIndex = 0;
 }

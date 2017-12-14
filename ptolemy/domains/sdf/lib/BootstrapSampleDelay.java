@@ -72,8 +72,8 @@ public class BootstrapSampleDelay extends SampleDelay {
      *   actor with this name.
      */
     public BootstrapSampleDelay(final CompositeEntity container,
-            final String name) throws IllegalActionException,
-            NameDuplicationException {
+            final String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

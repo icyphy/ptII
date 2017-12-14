@@ -110,8 +110,8 @@ public class Port extends NamedObj {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public Port(Entity container, String name) throws IllegalActionException,
-    NameDuplicationException {
+    public Port(Entity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         _elementName = "port";
         setContainer(container);
@@ -604,8 +604,8 @@ public class Port extends NamedObj {
      *  @see #getContainer()
      *  @see #_checkContainer(Entity)
      */
-    public void setContainer(Entity entity) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
         if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
@@ -696,8 +696,8 @@ public class Port extends NamedObj {
      *   with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -868,8 +868,9 @@ public class Port extends NamedObj {
                             .nextElement();
 
                     if (relation != null) {
-                        result.append(relation._description(detail, indent + 1,
-                                2) + "\n");
+                        result.append(
+                                relation._description(detail, indent + 1, 2)
+                                        + "\n");
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
@@ -906,19 +907,19 @@ public class Port extends NamedObj {
     protected NamedObj _getContainedObject(NamedObj container,
             String relativeName) throws IllegalActionException {
         if (!(container instanceof Entity)) {
-            throw new IllegalActionException(this, "Expected "
-                    + container.getFullName()
-                    + " to be an instance of ptolemy.kernel.Entity,"
-                    + " but it is " + container.getClass().getName());
+            throw new IllegalActionException(this,
+                    "Expected " + container.getFullName()
+                            + " to be an instance of ptolemy.kernel.Entity,"
+                            + " but it is " + container.getClass().getName());
         }
 
         Port candidate = ((Entity) container).getPort(relativeName);
 
         if (candidate != null && !getClass().isInstance(candidate)) {
-            throw new IllegalActionException(this, "Expected "
-                    + candidate.getFullName() + " to be an instance of "
-                    + getClass().getName() + ", but it is "
-                    + candidate.getClass().getName());
+            throw new IllegalActionException(this,
+                    "Expected " + candidate.getFullName()
+                            + " to be an instance of " + getClass().getName()
+                            + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;
@@ -941,8 +942,8 @@ public class Port extends NamedObj {
             // FindBugs warns that the cast of container is
             // unchecked.
             if (!(container instanceof Entity)) {
-                throw new InternalErrorException(container
-                        + " is not a Entity.");
+                throw new InternalErrorException(
+                        container + " is not a Entity.");
             } else {
                 newObject.setContainer((Entity) container);
             }

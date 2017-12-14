@@ -424,8 +424,8 @@ public abstract class AbstractSearcher implements ResultHandler {
      *           if getting the DBConnection from it, which
      *          indicates that the DBConnection cannot be obtained.
      */
-    protected abstract void _search() throws DBExecutionException,
-    DBConnectionException;
+    protected abstract void _search()
+            throws DBExecutionException, DBConnectionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

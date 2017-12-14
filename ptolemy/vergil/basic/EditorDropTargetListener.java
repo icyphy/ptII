@@ -93,7 +93,8 @@ public class EditorDropTargetListener implements DropTargetListener {
             listener.dragEnter(dropEvent);
         }
 
-        if (dropEvent.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+        if (dropEvent
+                .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
             dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
         } else {
             dropEvent.rejectDrag();
@@ -138,8 +139,8 @@ public class EditorDropTargetListener implements DropTargetListener {
             listener.dragOver(dropEvent);
         }
         // See whether there is a container under the point.
-        Point2D originalPoint = SnapConstraint.constrainPoint(dropEvent
-                .getLocation());
+        Point2D originalPoint = SnapConstraint
+                .constrainPoint(dropEvent.getLocation());
         NamedObj over = _getObjectUnder(originalPoint);
 
         if (over != _highlighted) {
@@ -193,8 +194,8 @@ public class EditorDropTargetListener implements DropTargetListener {
         }
 
         // See whether there is a container under the point.
-        Point2D originalPoint = SnapConstraint.constrainPoint(dropEvent
-                .getLocation());
+        Point2D originalPoint = SnapConstraint
+                .constrainPoint(dropEvent.getLocation());
         NamedObj targetContainer = _getObjectUnder(originalPoint);
 
         // Find the root container (the composite entity for the window).
@@ -212,21 +213,22 @@ public class EditorDropTargetListener implements DropTargetListener {
         // Account for the scaling in the pane.
         Point2D transformedPoint = new Point2D.Double();
         pane.getTransformContext().getInverseTransform()
-        .transform(originalPoint, transformedPoint);
+                .transform(originalPoint, transformedPoint);
 
         // Get an iterator over objects to drop.
         Iterator iterator = null;
 
         java.util.List dropObjects = null;
-        if (dropEvent.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+        if (dropEvent
+                .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
             try {
                 dropEvent.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                 dropObjects = (java.util.List) dropEvent.getTransferable()
                         .getTransferData(PtolemyTransferable.namedObjFlavor);
                 iterator = dropObjects.iterator();
             } catch (Exception e) {
-                MessageHandler.error(
-                        "Can't find a supported data flavor for drop in "
+                MessageHandler
+                        .error("Can't find a supported data flavor for drop in "
                                 + dropEvent, e);
                 return;
             }
@@ -317,15 +319,14 @@ public class EditorDropTargetListener implements DropTargetListener {
                             .forName(alternateGetMomlClassName);
                     object = getMomlClass.newInstance();
                     try {
-                        Method getMomlMethod = getMomlClass.getMethod(
-                                "getMoml", new Class[] { NamedObj.class,
-                                        String.class });
+                        Method getMomlMethod = getMomlClass.getMethod("getMoml",
+                                new Class[] { NamedObj.class, String.class });
                         result = (String) getMomlMethod.invoke(object,
                                 new Object[] { dropObj, name });
                         appendGroupAuto = false;
                     } catch (NoSuchMethodException e) {
-                        Method getMomlMethod = getMomlClass.getMethod(
-                                "getMoml", new Class[] { NamedObj.class });
+                        Method getMomlMethod = getMomlClass.getMethod("getMoml",
+                                new Class[] { NamedObj.class });
                         result = (String) getMomlMethod.invoke(object,
                                 new Object[] { dropObj });
                         int int1 = 1;
@@ -353,18 +354,15 @@ public class EditorDropTargetListener implements DropTargetListener {
 
             if (appendGroupAuto) {
                 moml.insert(0, "<group name=\"auto\">\n");
-                moml.append("<" + dropObjElementType + " name=\"" + name
-                        + "\">\n");
+                moml.append(
+                        "<" + dropObjElementType + " name=\"" + name + "\">\n");
                 if (relativeLocation) {
                     moml.append("<property name=\"_location\" "
                             + "class=\"ptolemy.kernel.util.RelativeLocation\" value=\"{"
-                            + RelativeLocation.INITIAL_OFFSET
-                            + ", "
-                            + RelativeLocation.INITIAL_OFFSET
-                            + "}\">"
+                            + RelativeLocation.INITIAL_OFFSET + ", "
+                            + RelativeLocation.INITIAL_OFFSET + "}\">"
                             + "<property name=\"relativeTo\" value=\""
-                            + targetContainer.getName()
-                            + "\"/>\n"
+                            + targetContainer.getName() + "\"/>\n"
                             // Need to identify the targetContainer as an
                             // Entity, Port, Relation, or Attribute.
                             + "<property name=\"relativeToElementName\" value=\""
@@ -446,8 +444,8 @@ public class EditorDropTargetListener implements DropTargetListener {
 
         // Account for the scaling in the pane.
         Point2D transformedPoint = new Point2D.Double();
-        pane.getTransformContext().getInverseTransform()
-        .transform(point, transformedPoint);
+        pane.getTransformContext().getInverseTransform().transform(point,
+                transformedPoint);
 
         return BasicGraphFrame.getFigureUnder(pane, transformedPoint,
                 new Object[] {});

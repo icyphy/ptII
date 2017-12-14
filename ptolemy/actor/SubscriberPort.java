@@ -129,9 +129,10 @@ public class SubscriberPort extends PubSubPort {
                 if (immediateContainer != null) {
                     NamedObj container = immediateContainer.getContainer();
                     if (container instanceof CompositeActor
-                            && !(_channel == null || _channel.trim().equals(""))) {
-                        ((CompositeActor) container).unlinkToPublishedPort(
-                                _channel, this, _global);
+                            && !(_channel == null
+                                    || _channel.trim().equals(""))) {
+                        ((CompositeActor) container)
+                                .unlinkToPublishedPort(_channel, this, _global);
                     }
                 }
                 _channel = newValue;
@@ -144,9 +145,10 @@ public class SubscriberPort extends PubSubPort {
                 if (immediateContainer != null) {
                     NamedObj container = immediateContainer.getContainer();
                     if (container instanceof CompositeActor
-                            && !(_channel == null || _channel.trim().equals(""))) {
-                        ((CompositeActor) container).unlinkToPublishedPort(
-                                _channel, this, _global);
+                            && !(_channel == null
+                                    || _channel.trim().equals(""))) {
+                        ((CompositeActor) container)
+                                .unlinkToPublishedPort(_channel, this, _global);
                     }
                 }
             }
@@ -225,8 +227,8 @@ public class SubscriberPort extends PubSubPort {
                 if (immediateContainer != null) {
                     NamedObj container = immediateContainer.getContainer();
                     if (container instanceof CompositeActor) {
-                        ((CompositeActor) container).unlinkToPublishedPort(
-                                channelValue, this);
+                        ((CompositeActor) container)
+                                .unlinkToPublishedPort(channelValue, this);
                     }
                 }
             }
@@ -323,8 +325,7 @@ public class SubscriberPort extends PubSubPort {
         }
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "SubscriberPorts cannot be used at the top level, use a Subscriber actor instead.");
         }
         if (((InstantiableNamedObj) getContainer()).isWithinClassDefinition()) {

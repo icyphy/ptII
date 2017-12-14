@@ -109,7 +109,8 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @param context The context in which to execute the MoML.
      *  @param request The mutation request in MoML.
      */
-    public MoMLChangeRequest(Object originator, NamedObj context, String request) {
+    public MoMLChangeRequest(Object originator, NamedObj context,
+            String request) {
         this(originator, context, request, null);
     }
 
@@ -184,7 +185,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @return An object that deeply contains this one, or null.
      *  @deprecated No longer needed; just use the specified object as
      *  a context.
-
+    
      */
     @Deprecated
     public static NamedObj getDeferredToParent(NamedObj object) {
@@ -254,8 +255,8 @@ public class MoMLChangeRequest extends ChangeRequest {
             System.out.println(getDescription());
 
             if (_context != null) {
-                System.out.println("------ in context "
-                        + _context.getFullName());
+                System.out
+                        .println("------ in context " + _context.getFullName());
             }
         }
 

@@ -89,8 +89,8 @@ public class UnitsConverter extends Transformer {
 
         unitSystemOntologySolver = new Parameter(this,
                 "unitSystemOntologySolver");
-        unitSystemOntologySolver.setTypeEquals(new ObjectType(
-                OntologySolver.class));
+        unitSystemOntologySolver
+                .setTypeEquals(new ObjectType(OntologySolver.class));
 
         dimensionConcept = new StringAttribute(this, "dimensionConcept");
         inputUnitConcept = new StringAttribute(this, "inputUnitConcept");
@@ -197,8 +197,8 @@ public class UnitsConverter extends Transformer {
                     valueSIUnits = inputFactor.multiply(in.add(inputOffset));
 
                     // Transform the value in SI units to the specified output units.
-                    result = outputFactor.divideReverse(valueSIUnits).subtract(
-                            outputOffset);
+                    result = outputFactor.divideReverse(valueSIUnits)
+                            .subtract(outputOffset);
                 } else {
                     // Scale on the right.  Transform the input value
                     // from its original units to the SI units for
@@ -206,8 +206,8 @@ public class UnitsConverter extends Transformer {
                     valueSIUnits = in.add(inputOffset).multiply(inputFactor);
 
                     // Transform the value in SI units to the specified output units.
-                    result = valueSIUnits.divide(outputFactor).subtract(
-                            outputOffset);
+                    result = valueSIUnits.divide(outputFactor)
+                            .subtract(outputOffset);
                 }
             }
             output.send(0, result);
@@ -251,9 +251,10 @@ public class UnitsConverter extends Transformer {
             if (unitConcept instanceof UnitConcept) {
                 return (UnitConcept) unitConcept;
             } else {
-                throw new IllegalActionException(this, "Could not find unit "
-                        + "named: " + dimensionConceptName + "_" + unitName
-                        + " in the ontology.");
+                throw new IllegalActionException(this,
+                        "Could not find unit " + "named: "
+                                + dimensionConceptName + "_" + unitName
+                                + " in the ontology.");
             }
         } else {
             return null;
@@ -266,7 +267,8 @@ public class UnitsConverter extends Transformer {
      *  @exception IllegalActionException Thrown if there is a problem getting
      *   the ontology solver object from the parameter.
      */
-    public OntologySolver getUnitOntologySolver() throws IllegalActionException {
+    public OntologySolver getUnitOntologySolver()
+            throws IllegalActionException {
         Token unitSolverToken = unitSystemOntologySolver.getToken();
         if (unitSolverToken != null) {
             return (OntologySolver) ((ObjectToken) unitSolverToken).getValue();

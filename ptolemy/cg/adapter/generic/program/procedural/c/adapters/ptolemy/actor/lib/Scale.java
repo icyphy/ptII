@@ -45,9 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class Scale
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
+public class Scale extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
 
     /**
      *  Construct a Scale adapter.
@@ -74,8 +73,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
         if (_needScaleMethods) {
             codestream.appendCodeBlocks("Scale_declareScaleOn.*");
             if (!codestream.isEmpty()) {
-                sharedCode.add(_templateParser.processCode(codestream
-                        .toString()));
+                sharedCode.add(
+                        _templateParser.processCode(codestream.toString()));
             }
         }
         return sharedCode;

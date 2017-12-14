@@ -101,8 +101,8 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create a BasicRectangle with stroked outline
      */
-    public static class BasicRectangleFactory1 implements
-    FigureTest.FigureFactory {
+    public static class BasicRectangleFactory1
+            implements FigureTest.FigureFactory {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -120,8 +120,8 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create a filled BasicRectangle
      */
-    public static class BasicRectangleFactory2 implements
-    FigureTest.FigureFactory {
+    public static class BasicRectangleFactory2
+            implements FigureTest.FigureFactory {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -275,8 +275,8 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create a CompositeFigure with a filled rectangle background
      */
-    public static class CompositeFigureFactory1 implements
-    FigureTest.FigureFactory {
+    public static class CompositeFigureFactory1
+            implements FigureTest.FigureFactory {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
         @Override

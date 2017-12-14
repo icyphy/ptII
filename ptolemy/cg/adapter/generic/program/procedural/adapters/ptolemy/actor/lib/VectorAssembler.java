@@ -82,8 +82,8 @@ public class VectorAssembler extends NamedProgramCodeGeneratorAdapter {
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.toString(i));
-            fireCode.append(getTemplateParser().generateBlockCode("fireBlock",
-                    args));
+            fireCode.append(
+                    getTemplateParser().generateBlockCode("fireBlock", args));
         }
 
         return processCode(fireCode.toString());

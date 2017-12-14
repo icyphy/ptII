@@ -55,7 +55,6 @@ public class TCSReceiver extends DEReceiver {
         super(container);
     }
 
-
     /** Put a token into this receiver and post a trigger event to the director.
      *  The director will be responsible to dequeue the trigger event at
      *  the correct timestamp and microstep and invoke the corresponding actor
@@ -67,14 +66,16 @@ public class TCSReceiver extends DEReceiver {
      *  @exception NoRoomException Not thrown in this class.
      */
     @Override
-    public void put(Token token) throws IllegalActionException, NoRoomException {
+    public void put(Token token)
+            throws IllegalActionException, NoRoomException {
         IOPort port = getContainer();
 
         if (port != null) {
             NamedObj actor = port.getContainer();
             if (actor instanceof Rejecting) {
-                if (((Rejecting)actor).reject(token, port)) {
-                    throw new NoRoomException(actor, "Rejected input on port " + port.getName());
+                if (((Rejecting) actor).reject(token, port)) {
+                    throw new NoRoomException(actor,
+                            "Rejected input on port " + port.getName());
                 }
             }
         }

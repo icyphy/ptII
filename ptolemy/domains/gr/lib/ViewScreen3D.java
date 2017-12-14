@@ -83,8 +83,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (acataldo)
  */
-public class ViewScreen3D extends GRActor3D implements Placeable,
-ViewScreenInterface {
+public class ViewScreen3D extends GRActor3D
+        implements Placeable, ViewScreenInterface {
     // FIXME: Need a reset button to reset the viewpoint to the original.
 
     /** Construct a ViewScreen in the given container with the given name.
@@ -122,8 +122,8 @@ ViewScreenInterface {
         scalable = new Parameter(this, "scalable", new BooleanToken(false));
         scalable.setTypeEquals(BaseType.BOOLEAN);
 
-        translatable = new Parameter(this, "translatable", new BooleanToken(
-                false));
+        translatable = new Parameter(this, "translatable",
+                new BooleanToken(false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
         showAxes = new Parameter(this, "showAxes", new BooleanToken(false));
@@ -384,8 +384,8 @@ ViewScreenInterface {
         // Setup the lights.
         BranchGroup lightRoot = new BranchGroup();
 
-        AmbientLight lightAmbient = new AmbientLight(new Color3f(0.8f, 0.8f,
-                0.8f));
+        AmbientLight lightAmbient = new AmbientLight(
+                new Color3f(0.8f, 0.8f, 0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
 
@@ -555,7 +555,7 @@ ViewScreenInterface {
          //VPT3D.rotX(Math.PI/2.0);
          VPT3D.rotX(Math.PI/2);
          VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
-
+        
          VPTG.setTransform(VPT3D);
          */
     }
@@ -636,7 +636,7 @@ ViewScreenInterface {
             //((BranchGroup) node).detach();
             /* if (_debugging) {
              _debug("Node parent = " + node.getParent());
-
+            
              }*/
             //System.out.println("Node parent = " + node.getParent());
             _addChild(node);
@@ -702,7 +702,7 @@ ViewScreenInterface {
 
             /* FIXME: experimental code for changing xforms
              double[] db = new double[16];
-
+            
              db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
              db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
              db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
@@ -723,7 +723,7 @@ ViewScreenInterface {
         /* FIXME experimental code for changing xforms
          public void transformChanged(Transform3D transform) {
          double[] db = new double[16];
-
+        
          transform.get(db);
          for (int i = 0; i < 16; i++) {
          db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;

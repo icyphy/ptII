@@ -270,9 +270,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  or null if the the bootstrap class loader is to be used.
      */
 
-    public MoMLParser(Workspace workspace, VersionSpecification defaultVersionSpecification, ClassLoader loader) {
-      this(workspace, loader);
-      this._defaultVersionSpecification = defaultVersionSpecification;
+    public MoMLParser(Workspace workspace,
+            VersionSpecification defaultVersionSpecification,
+            ClassLoader loader) {
+        this(workspace, loader);
+        this._defaultVersionSpecification = defaultVersionSpecification;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -480,11 +482,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // The auto namespace is disabled while propagating, since
         // this would otherwise just result in chaotic names for
         // propagated changes.
-        if (_namespace.equals(_AUTO_NAMESPACE)
-                && _current != null
+        if (_namespace.equals(_AUTO_NAMESPACE) && _current != null
                 && (name.equals("name") || name.equals("port")
-                        || name.startsWith("relation") || name.equals("vertex") || name
-                        .equals("pathTo"))) {
+                        || name.startsWith("relation") || name.equals("vertex")
+                        || name.equals("pathTo"))) {
             // See whether the name is in the translation table.
             // Note that the name might be compound, e.g. "Const.output",
             // in which case, we need to parse it and check to see whether
@@ -551,7 +552,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                     .getAttribute(oldValue);
                             searchContainer = searchContainer.getContainer();
                         }
-                        if (!value.equals(oldValue) || masterAttribute != null) {
+                        if (!value.equals(oldValue)
+                                || masterAttribute != null) {
                             // There already is something with that name, so we skip.
                             String currentElement = _xmlParser
                                     .getCurrentElement();
@@ -577,8 +579,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (!_namespace.equals(_DEFAULT_NAMESPACE)
                     && !_namespace.equals(_AUTO_NAMESPACE)
                     && (name.equals("name") || name.equals("port")
-                            || name.equals("relation") || name.equals("vertex") || name
-                            .equals("pathTo"))) {
+                            || name.equals("relation") || name.equals("vertex")
+                            || name.equals("pathTo"))) {
                 value = _namespace + ":" + value;
             }
         }
@@ -865,8 +867,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     param.validate();
 
                     // Also validate derived objects.
-                    Iterator derivedParams = ((NamedObj) param)
-                            .getDerivedList().iterator();
+                    Iterator derivedParams = ((NamedObj) param).getDerivedList()
+                            .iterator();
 
                     while (derivedParams.hasNext()) {
                         Settable derivedParam = (Settable) derivedParams.next();
@@ -875,15 +877,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
 
                     if (param instanceof SharedParameter) {
-                        parametersValidated.addAll(((SharedParameter) param)
-                                .sharedParameterSet());
+                        parametersValidated.addAll(
+                                ((SharedParameter) param).sharedParameterSet());
                     }
                 } catch (Exception ex) {
                     if (_handler != null) {
-                        int reply = _handler.handleError(
-                                "<param name=\"" + param.getName()
-                                + "\" value=\"" + param.getExpression()
-                                + "\"/>", param.getContainer(), ex);
+                        int reply = _handler.handleError("<param name=\""
+                                + param.getName() + "\" value=\""
+                                + param.getExpression() + "\"/>",
+                                param.getContainer(), ex);
 
                         if (reply == ErrorHandler.CONTINUE) {
                             continue;
@@ -919,14 +921,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
-                filter.filterEndElement(_current, elementName,
-                        _currentCharData, _xmlFileName, _filterMoMLParser);
+                filter.filterEndElement(_current, elementName, _currentCharData,
+                        _xmlFileName, _filterMoMLParser);
             }
         }
 
         if (((Integer) _ifElementStack.peek()).intValue() > 1) {
             _ifElementStack
-            .push(((Integer) _ifElementStack.pop()).intValue() - 1);
+                    .push(((Integer) _ifElementStack.pop()).intValue() - 1);
         } else if (_skipElement <= 0) {
             // If we are not skipping an element, then adjust the
             // configuration nesting and doc nesting counts accordingly.
@@ -945,8 +947,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             "Internal Error: _configureNesting is "
                                     + _configureNesting
                                     + " which is <0, which indicates a nesting bug",
-                                    _currentExternalEntity(), _getLineNumber(),
-                                    _getColumnNumber());
+                            _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
                 }
             } else if (elementName.equals("doc")) {
                 // Count doc tags so that they can nest.
@@ -1075,8 +1077,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 if (_undoEnabled) {
-                    _undoContext.appendUndoMoML("<doc name=\""
-                            + _currentDocName + "\">");
+                    _undoContext.appendUndoMoML(
+                            "<doc name=\"" + _currentDocName + "\">");
 
                     if (previous != null) {
                         _undoContext.appendUndoMoML(previousValue);
@@ -1210,8 +1212,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // At the top level. The current _undoContext has the undo
             // that we want to preserve.
             if (_undoDebug) {
-                System.out.println("Reached top level of undo "
-                        + "context stack");
+                System.out.println(
+                        "Reached top level of undo " + "context stack");
             }
         }
         // Push the child's undo MoML on the stack of child
@@ -1303,12 +1305,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // To test this code:
             // $PTII/bin/vergil $PTII/ptolemy/moml/demo/Networked/Networked.xml
-            if (protocol != null
-                    && (protocol.trim().toLowerCase(Locale.getDefault())
-                        .equals("http")
-                        ||
-                        protocol.trim().toLowerCase(Locale.getDefault())
-                        .equals("https"))) {
+            if (protocol != null && (protocol.trim()
+                    .toLowerCase(Locale.getDefault()).equals("http")
+                    || protocol.trim().toLowerCase(Locale.getDefault())
+                            .equals("https"))) {
 
                 SecurityManager security = System.getSecurityManager();
                 boolean withinUntrustedApplet = false;
@@ -1346,13 +1346,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             || !resultBase.startsWith(_base.toString())) {
                         answer = MessageHandler.yesNoCancelQuestion(
                                 "OK to download MoML at "
-                                + result.toExternalForm()
-                                + "?\nAllow all future downloads from "
-                                + host
-                                + "?",
+                                        + result.toExternalForm()
+                                        + "?\nAllow all future downloads from "
+                                        + host + "?",
                                 "Allow this download only",
-                                "Allow all from this host",
-                                "Cancel");
+                                "Allow all from this host", "Cancel");
                     }
 
                     // If we get to here, the the user did not hit cancel,
@@ -1365,14 +1363,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-
             // Get the InputStream and possibly redirected url.
 
             // This method returns an object that contains the
             // InputStream and URL which means we don't need to follow
             // redirects twice.
 
-            StreamAndURL streamAndURL = FileUtilities.openStreamFollowingRedirectsReturningBoth(result);
+            StreamAndURL streamAndURL = FileUtilities
+                    .openStreamFollowingRedirectsReturningBoth(result);
             result = streamAndURL.url();
             input = streamAndURL.stream();
 
@@ -1391,8 +1389,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (result != null) {
                 input = result.openStream();
             } else {
-                errorMessage
-                .append("-- XML file not found relative to classpath.\n");
+                errorMessage.append(
+                        "-- XML file not found relative to classpath.\n");
 
                 // Failed to open relative to the classpath.
                 // Try relative to the current working directory.
@@ -1525,8 +1523,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 } catch (Exception ex) {
                     // Try opening it up as a Jar URL.
                     // vergilPtiny.jnlp needs this.
-                    URL jarURL = ClassUtilities.jarURLEntryResource(input
-                            .toExternalForm());
+                    URL jarURL = ClassUtilities
+                            .jarURLEntryResource(input.toExternalForm());
 
                     if (jarURL != null) {
                         inputStream = jarURL.openStream();
@@ -1574,7 +1572,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     @Deprecated
     public NamedObj parse(URL base, InputStream input) throws Exception {
-        return parse(base, new InputStreamReader(input, java.nio.charset.Charset.defaultCharset()));
+        return parse(base, new InputStreamReader(input,
+                java.nio.charset.Charset.defaultCharset()));
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -1593,7 +1592,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public NamedObj parse(URL base, String systemID, InputStream input)
             throws Exception {
-        return parse(base, systemID, new InputStreamReader(input, java.nio.charset.Charset.defaultCharset()));
+        return parse(base, systemID, new InputStreamReader(input,
+                java.nio.charset.Charset.defaultCharset()));
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -1646,7 +1646,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // resulted in the second model failing to find Ptolemy classes from within Nashorn
         // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSClassLoaderProblem
         if (Thread.currentThread().getContextClassLoader() == null) {
-            Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
+            Thread.currentThread()
+                    .setContextClassLoader(ClassLoader.getSystemClassLoader());
         }
 
         Reader buffered = new BufferedReader(reader);
@@ -1672,7 +1673,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 try {
-                    _xmlParser.parse(FileUtilities.followRedirects(base).toExternalForm(), null, buffered);
+                    _xmlParser.parse(FileUtilities.followRedirects(base)
+                            .toExternalForm(), null, buffered);
                 } finally {
                     if (xmlFileWasNull) {
                         _setXmlFile(null);
@@ -2122,8 +2124,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @param classLoadingStrategy The class loading strategy.
      * @see #getDefaultClassLoadingStrategy()
      */
-    public static void setDefaultClassLoadingStrategy(ClassLoadingStrategy classLoadingStrategy) {
-      _defaultClassLoadingStrategy = classLoadingStrategy;
+    public static void setDefaultClassLoadingStrategy(
+            ClassLoadingStrategy classLoadingStrategy) {
+        _defaultClassLoadingStrategy = classLoadingStrategy;
     }
 
     /** Get the the current static _defaultClassLoadingStrategy instance.
@@ -2132,7 +2135,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @see #setDefaultClassLoadingStrategy(ClassLoadingStrategy)
      */
     public static ClassLoadingStrategy getDefaultClassLoadingStrategy() {
-      return _defaultClassLoadingStrategy;
+        return _defaultClassLoadingStrategy;
     }
 
     /** Set the error handler to handle parsing errors.
@@ -2319,8 +2322,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         try {
             if (((Integer) _ifElementStack.peek()).intValue() > 1) {
-                _ifElementStack.push(((Integer) _ifElementStack.pop())
-                        .intValue() + 1);
+                _ifElementStack
+                        .push(((Integer) _ifElementStack.pop()).intValue() + 1);
             } else if (_skipElement <= 0) {
                 // If we are not skipping an element, then adjust the
                 // configuration nesting and doc nesting counts accordingly.
@@ -2414,17 +2417,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 if (!existedAlready) {
                     String version = (String) _attributes.get("version");
-                    VersionSpecification versionSpec = _buildVersionSpecification(version);
-                    NamedObj candidate = _createEntity(className, versionSpec, entityName, source, true);
+                    VersionSpecification versionSpec = _buildVersionSpecification(
+                            version);
+                    NamedObj candidate = _createEntity(className, versionSpec,
+                            entityName, source, true);
 
                     if (candidate instanceof Entity) {
                         entity = (Entity) candidate;
                     } else {
                         throw new IllegalActionException(_current,
                                 "Attempt to create a class named " + entityName
-                                + " from a class that "
-                                + "is not a subclass of Entity: "
-                                + className);
+                                        + " from a class that "
+                                        + "is not a subclass of Entity: "
+                                        + className);
                     }
                 }
 
@@ -2501,15 +2506,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Handle the undo aspect.
                     if (existedAlready) {
                         if (!converted) {
-                            _undoContext.appendUndoMoML("<class name=\""
-                                    + entityName + "\" >\n");
+                            _undoContext.appendUndoMoML(
+                                    "<class name=\"" + entityName + "\" >\n");
 
                             // Need to continue undoing and use an end tag
                             _undoContext.appendClosingUndoMoML("</class>\n");
                         } else {
                             // Converting from entity to class, so reverse this.
-                            _undoContext.appendUndoMoML("<entity name=\""
-                                    + entityName + "\" >\n");
+                            _undoContext.appendUndoMoML(
+                                    "<entity name=\"" + entityName + "\" >\n");
 
                             // Need to continue undoing and use an end tag
                             _undoContext.appendClosingUndoMoML("</entity>\n");
@@ -2740,7 +2745,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _checkForNull(dirName, "No name for element \"director\"");
                 _checkClass(_current, CompositeActor.class,
                         "Element \"director\" found inside an element that "
-                                + "is not a CompositeActor. It is: " + _current);
+                                + "is not a CompositeActor. It is: "
+                                + _current);
 
                 Object[] arguments = new Object[2];
                 arguments[0] = _current;
@@ -2750,7 +2756,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _pushContext();
 
                 String version = (String) _attributes.get("version");
-                VersionSpecification versionSpec = _buildVersionSpecification(version);
+                VersionSpecification versionSpec = _buildVersionSpecification(
+                        version);
 
                 Class newClass = _loadClass(className, versionSpec);
 
@@ -2803,10 +2810,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Handle the undo aspect if needed
                         if (_undoEnabled) {
                             // Simply create in the undo MoML another display element.
-                            _undoContext.appendUndoMoML("<display name=\""
-                                    + StringUtilities
-                                    .escapeForXML(oldDisplayName)
-                                    + "\"/>\n");
+                            _undoContext.appendUndoMoML(
+                                    "<display name=\"" + StringUtilities
+                                            .escapeForXML(oldDisplayName)
+                                            + "\"/>\n");
 
                             // Do not need to continue generating undo MoML
                             // as rename does not have any child elements
@@ -2851,9 +2858,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
                 } else {
                     String version = (String) _attributes.get("version");
-                    VersionSpecification versionSpec = _buildVersionSpecification(version);
+                    VersionSpecification versionSpec = _buildVersionSpecification(
+                            version);
 
-                    NamedObj candidate = _createEntity(className, versionSpec, entityName, source, false);
+                    NamedObj candidate = _createEntity(className, versionSpec,
+                            entityName, source, false);
 
                     if (candidate instanceof Entity) {
                         entity = (Entity) candidate;
@@ -2920,15 +2929,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Handle the undo aspect.
                     if (existedAlready) {
                         if (!converted) {
-                            _undoContext.appendUndoMoML("<entity name=\""
-                                    + entityName + "\" >\n");
+                            _undoContext.appendUndoMoML(
+                                    "<entity name=\"" + entityName + "\" >\n");
 
                             // Need to continue undoing and use an end tag
                             _undoContext.appendClosingUndoMoML("</entity>\n");
                         } else {
                             // Converted from a class to an entity, so reverse this.
-                            _undoContext.appendUndoMoML("<class name=\""
-                                    + entityName + "\" >\n");
+                            _undoContext.appendUndoMoML(
+                                    "<class name=\"" + entityName + "\" >\n");
 
                             // Need to continue undoing and use an end tag
                             _undoContext.appendClosingUndoMoML("</class>\n");
@@ -3027,8 +3036,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 boolean skip = false;
 
-                if (source
-                        .equals("ptolemy/configs/properties/propertiesAttributeLibrary.xml")) {
+                if (source.equals(
+                        "ptolemy/configs/properties/propertiesAttributeLibrary.xml")) {
                     // Certain models such as the ee149 models like
                     // eecs149/src/reading/io/Models/TimerInterrupt.xml
                     // had a StateLibrary entity that included
@@ -3057,7 +3066,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         if (source.endsWith(inputFileName)) {
                             if (!_printedMacOSSkippingMessage
                                     && inputFileName.equals("backtrack.xml")
-                                    && System.getProperty("os.name").equals("Mac OS X")) {
+                                    && System.getProperty("os.name")
+                                            .equals("Mac OS X")) {
                                 _printedMacOSSkippingMessage = true;
                                 System.out.println("MoMLParser: Skipping"
                                         + source + " under Mac OS X.  "
@@ -3148,9 +3158,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (port != null) {
                     if (newClass != null) {
                         // Previously existing port with the specified name.
-                        _checkClass(port, newClass, "port named \"" + portName
-                                + "\" exists and is not an instance of "
-                                + className);
+                        _checkClass(port, newClass,
+                                "port named \"" + portName
+                                        + "\" exists and is not an instance of "
+                                        + className);
                     }
                 } else {
                     // No previously existing port with this name.
@@ -3165,12 +3176,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         Entity derived = (Entity) derivedObjects.next();
 
                         if (derived.getPort(portName) != null) {
-                            throw new IllegalActionException(
-                                    container,
+                            throw new IllegalActionException(container,
                                     "Cannot create port because a subclass or instance "
                                             + "contains a port with the same name: "
                                             + derived.getPort(portName)
-                                            .getFullName());
+                                                    .getFullName());
                         }
                     }
 
@@ -3211,13 +3221,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (_undoEnabled) {
                     if (alreadyExisted) {
                         // Simply create in the undo MoML the same port
-                        _undoContext.appendUndoMoML("<port name=\"" + portName
-                                + "\" ");
+                        _undoContext.appendUndoMoML(
+                                "<port name=\"" + portName + "\" ");
 
                         // Also add in the class if given
                         if (className != null) {
-                            _undoContext.appendUndoMoML("class=\"" + className
-                                    + "\" ");
+                            _undoContext.appendUndoMoML(
+                                    "class=\"" + className + "\" ");
                         }
 
                         _undoContext.appendUndoMoML(">\n");
@@ -3227,8 +3237,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         _undoContext.setChildrenUndoable(true);
                     } else {
                         // Need to delete the port in the undo MoML
-                        _undoContext.appendUndoMoML("<deletePort name=\""
-                                + portName + "\" />\n");
+                        _undoContext.appendUndoMoML(
+                                "<deletePort name=\"" + portName + "\" />\n");
 
                         // Do not need to continue generating undo MoML
                         // as the deletePort takes care of all
@@ -3257,12 +3267,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                         // If this object is a derived object, then its I/O status
                         // cannot be changed.
-                        if (alreadyExisted
-                                && ioport.getDerivedLevel() < Integer.MAX_VALUE) {
+                        if (alreadyExisted && ioport
+                                .getDerivedLevel() < Integer.MAX_VALUE) {
                             if (ioport.isInput() != isInput
                                     || ioport.isOutput() != isOutput) {
-                                throw new IllegalActionException(
-                                        ioport,
+                                throw new IllegalActionException(ioport,
                                         "Cannot change whether this port is "
                                                 + "an input or output. That property is "
                                                 + "fixed by the class definition.");
@@ -3338,12 +3347,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 .next();
 
                         if (derived.getRelation(relationName) != null) {
-                            throw new IllegalActionException(
-                                    container,
+                            throw new IllegalActionException(container,
                                     "Cannot create relation because a subclass or instance "
                                             + "contains a relation with the same name: "
                                             + derived.getRelation(relationName)
-                                            .getFullName());
+                                                    .getFullName());
                         }
                     }
 
@@ -3384,10 +3392,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 } else {
                     // Previously existing relation with the specified name.
                     if (newClass != null) {
-                        _checkClass(relation, newClass, "relation named \""
-                                + relationName
-                                + "\" exists and is not an instance of "
-                                + className);
+                        _checkClass(relation, newClass,
+                                "relation named \"" + relationName
+                                        + "\" exists and is not an instance of "
+                                        + className);
                     }
 
                     _pushContext();
@@ -3400,13 +3408,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (_undoEnabled) {
                     if (alreadyExisted) {
                         // Simply create in the undo MoML the same relation
-                        _undoContext.appendUndoMoML("<relation name=\""
-                                + relationName + "\" ");
+                        _undoContext.appendUndoMoML(
+                                "<relation name=\"" + relationName + "\" ");
 
                         // Also add in the class if given
                         if (className != null) {
-                            _undoContext.appendUndoMoML("class=\"" + className
-                                    + "\" ");
+                            _undoContext.appendUndoMoML(
+                                    "class=\"" + className + "\" ");
                         }
 
                         _undoContext.appendUndoMoML(">\n");
@@ -3442,10 +3450,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Ensure that derived objects aren't changed.
                     if (!oldName.equals(newName)
                             && _current.getDerivedLevel() < Integer.MAX_VALUE) {
-                        throw new IllegalActionException(
-                                _current,
-                                "Cannot change the name to "
-                                        + newName
+                        throw new IllegalActionException(_current,
+                                "Cannot change the name to " + newName
                                         + ". The name is fixed by the class definition.");
                     }
 
@@ -3482,9 +3488,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 // to be sure that the base class will
                                 // already be in the changedName set if
                                 // its name will change.
-                                if (parent != null
-                                        && (parent == _current || changedName
-                                        .contains(parent))) {
+                                if (parent != null && (parent == _current
+                                        || changedName.contains(parent))) {
                                     String previousClassName = derived
                                             .getClassName();
                                     int last = previousClassName
@@ -3555,8 +3560,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         parentContext.applyRename(newName);
 
                         // Simply create in the undo MoML another rename
-                        _undoContext.appendUndoMoML("<rename name=\"" + oldName
-                                + "\" />\n");
+                        _undoContext.appendUndoMoML(
+                                "<rename name=\"" + oldName + "\" />\n");
 
                         // Do not need to continue generating undo MoML
                         // as rename does not have any child elements
@@ -3587,7 +3592,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                     // absolute or relative.
                                     String replacementName = newName;
 
-                                    if (deferrer.getClassName().startsWith(".")) {
+                                    if (deferrer.getClassName()
+                                            .startsWith(".")) {
                                         replacementName = _current
                                                 .getFullName();
                                     }
@@ -3702,12 +3708,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _namespace = _DEFAULT_NAMESPACE;
 
                 if (_undoEnabled) {
-                    _undoContext.appendUndoMoML("<vertex name=\"" + vertexName
-                            + "\" ");
+                    _undoContext.appendUndoMoML(
+                            "<vertex name=\"" + vertexName + "\" ");
 
                     if (previousValue != null) {
-                        _undoContext.appendUndoMoML("value=\"" + previousValue
-                                + "\" ");
+                        _undoContext.appendUndoMoML(
+                                "value=\"" + previousValue + "\" ");
                     }
 
                     _undoContext.appendUndoMoML(">\n");
@@ -3737,12 +3743,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
                 variable.setExpression(expression);
 
-                Object token = variableClass
-                        .getMethod("getToken", new Class[0]).invoke(variable,
-                                new Object[0]);
+                Object token = variableClass.getMethod("getToken", new Class[0])
+                        .invoke(variable, new Object[0]);
                 Class tokenClass = token.getClass();
-                Boolean value = (Boolean) tokenClass.getMethod("booleanValue",
-                        new Class[0]).invoke(token, new Object[0]);
+                Boolean value = (Boolean) tokenClass
+                        .getMethod("booleanValue", new Class[0])
+                        .invoke(token, new Object[0]);
 
                 ((Attribute) variable).setContainer(null);
 
@@ -3812,8 +3818,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (_toplevel != null) {
                         // Set the top level back to the default
                         // found in startDocument.
-                        _toplevel
-                        .setDeferringChangeRequests(_previousDeferStatus);
+                        _toplevel.setDeferringChangeRequests(
+                                _previousDeferStatus);
                         _toplevel.executeChangeRequests();
                     }
 
@@ -3841,9 +3847,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (ex instanceof XmlException) {
                 throw (XmlException) ex;
             } else {
-                throw new XmlException("XML element \"" + elementName
-                        + "\" triggers exception.", _currentExternalEntity(),
-                        _getLineNumber(), _getColumnNumber(), ex);
+                throw new XmlException(
+                        "XML element \"" + elementName
+                                + "\" triggers exception.",
+                        _currentExternalEntity(), _getLineNumber(),
+                        _getColumnNumber(), ex);
             }
         } finally {
             _attributes.clear();
@@ -3992,21 +4000,23 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param source The source as specified in the XML.
      *  @return The class definition.
      */
-    private ComponentEntity _attemptToFindMoMLClass(String className, VersionSpecification versionSpec,
-            String source) throws Exception {
+    private ComponentEntity _attemptToFindMoMLClass(String className,
+            VersionSpecification versionSpec, String source) throws Exception {
         String classAsFile = null;
         String altClassAsFile = null;
         ComponentEntity reference = null;
         // From Triquetrum : also consider loading actor classes via the pluggable _classLoadingStrategy,
         // to allow OSGi-based dynamic loading strategies.
         try {
-          VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpecification;
-          reference = _defaultClassLoadingStrategy.loadActorOrientedClass(className, _vSpec);
+            VersionSpecification _vSpec = versionSpec != null ? versionSpec
+                    : _defaultVersionSpecification;
+            reference = _defaultClassLoadingStrategy
+                    .loadActorOrientedClass(className, _vSpec);
         } catch (Exception e) {
-          // ignore here, just means we need to look further to find the moml class
+            // ignore here, just means we need to look further to find the moml class
         }
         if (reference != null) {
-          return reference;
+            return reference;
         }
 
         if (source == null) {
@@ -4120,10 +4130,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Unfortunately exception chaining does not work here
                     // since we really want to know what ex2 and ex3
                     // both were.
-                    throw new XmlException("Could not find '" + classAsFile
-                            + "' or '" + altClassAsFile + "' using base '"
-                            + _base + "': ", _currentExternalEntity(),
-                            _getLineNumber(), _getColumnNumber(), ex2);
+                    throw new XmlException(
+                            "Could not find '" + classAsFile + "' or '"
+                                    + altClassAsFile + "' using base '" + _base
+                                    + "': ",
+                            _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber(), ex2);
                 }
             } else {
                 // No alternative. Rethrow exception.
@@ -4134,8 +4146,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (candidateReference instanceof ComponentEntity) {
             reference = (ComponentEntity) candidateReference;
         } else {
-            throw new XmlException("File " + classAsFile
-                    + " does not define a ComponentEntity.",
+            throw new XmlException(
+                    "File " + classAsFile
+                            + " does not define a ComponentEntity.",
                     _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
@@ -4150,9 +4163,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // the reference.  Try to find that.
             if (reference instanceof CompositeEntity) {
                 if (className.startsWith(referenceName + ".")) {
-                    reference = ((CompositeEntity) reference)
-                            .getEntity(className.substring(referenceName
-                                    .length() + 1));
+                    reference = ((CompositeEntity) reference).getEntity(
+                            className.substring(referenceName.length() + 1));
                 } else {
                     reference = null;
                 }
@@ -4160,8 +4172,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 reference = null;
             }
             if (reference == null) {
-                throw new XmlException("File " + classAsFile
-                        + " does not define a class named " + className,
+                throw new XmlException(
+                        "File " + classAsFile
+                                + " does not define a class named " + className,
                         _currentExternalEntity(), _getLineNumber(),
                         _getColumnNumber());
             }
@@ -4196,14 +4209,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @return the parsed version specification
      * @exception XmlException if the version string is not in a supported format
      */
-    private VersionSpecification _buildVersionSpecification(String version) throws XmlException {
-      VersionSpecification versionSpec = null;
-      try {
-        versionSpec = (version != null ? VersionSpecification.parse(version) : null);
-      } catch (Exception e) {
-        throw new XmlException("Invalid version spec " + version, _currentExternalEntity(), _getLineNumber(), _getColumnNumber(), e);
-      }
-      return versionSpec;
+    private VersionSpecification _buildVersionSpecification(String version)
+            throws XmlException {
+        VersionSpecification versionSpec = null;
+        try {
+            versionSpec = (version != null ? VersionSpecification.parse(version)
+                    : null);
+        } catch (Exception e) {
+            throw new XmlException("Invalid version spec " + version,
+                    _currentExternalEntity(), _getLineNumber(),
+                    _getColumnNumber(), e);
+        }
+        return versionSpec;
     }
 
     // If the first argument is not an instance of the second,
@@ -4256,12 +4273,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @return The created NamedObj
      * @exception Exception If anything goes wrong.
      */
-    private NamedObj _createEntity(String className, VersionSpecification versionSpec, String entityName,
-            String source, boolean isClass) throws Exception {
+    private NamedObj _createEntity(String className,
+            VersionSpecification versionSpec, String entityName, String source,
+            boolean isClass) throws Exception {
         if (_current != null && !(_current instanceof CompositeEntity)) {
-            throw new XmlException("Cannot create an entity inside "
-                    + "of another that is not a CompositeEntity "
-                    + "(Container is '" + _current + "').",
+            throw new XmlException(
+                    "Cannot create an entity inside "
+                            + "of another that is not a CompositeEntity "
+                            + "(Container is '" + _current + "').",
                     _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
@@ -4301,7 +4320,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
                     try {
-                        reference = _attemptToFindMoMLClass(className, versionSpec, source);
+                        reference = _attemptToFindMoMLClass(className,
+                                versionSpec, source);
                     } catch (Exception ex2) {
                         // If we are running inside an applet, then
                         // we may end up getting a SecurityException,
@@ -4309,14 +4329,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         _updateMissingClasses(className);
                         throw new IllegalActionException(null, ex2,
                                 "Cannot find class: " + className
-                                + ". In Ptolemy, classes are typically Java .class files. "
-                                + "Entities like actors may instead be defined within a .xml "
-                                + "file.  In any case, the class was not found. "
-                                + "If the class uses a third party package, "
-                                + "then the class would be present only if the third "
-                                + "party package was found at compile time.  It may be "
-                                + "necessary to upgrade Java or install the third party package, "
-                                + "reconfigure and recompile.");
+                                        + ". In Ptolemy, classes are typically Java .class files. "
+                                        + "Entities like actors may instead be defined within a .xml "
+                                        + "file.  In any case, the class was not found. "
+                                        + "If the class uses a third party package, "
+                                        + "then the class would be present only if the third "
+                                        + "party package was found at compile time.  It may be "
+                                        + "necessary to upgrade Java or install the third party package, "
+                                        + "reconfigure and recompile.");
                     }
                 } catch (Error error) {
                     // Java might throw a ClassFormatError, but
@@ -4377,12 +4397,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
                         // It is critical that the error include the
                         // NoClassDefFoundError string -cxh
-                        errorMessage.append(className + ": \n "
-                                + error.toString() + "\n");
+                        errorMessage.append(
+                                className + ": \n " + error.toString() + "\n");
                     }
 
                     try {
-                        reference = _attemptToFindMoMLClass(className, versionSpec, source);
+                        reference = _attemptToFindMoMLClass(className,
+                                versionSpec, source);
                     } catch (XmlException ex2) {
                         _updateMissingClasses(className);
                         throw new Exception("-- " + errorMessage.toString()
@@ -4396,9 +4417,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + ex3.getMessage());
                     } catch (Exception ex4) {
                         _updateMissingClasses(className);
-                        throw new Exception("-- " + errorMessage.toString()
-                                + className + ": Exception:\n"
-                                + ex4.getMessage());
+                        throw new Exception(
+                                "-- " + errorMessage.toString() + className
+                                        + ": Exception:\n" + ex4.getMessage());
                     }
                 }
             }
@@ -4417,8 +4438,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _checkForNull(className, "Cannot create entity without a class name.");
 
         // Next check to see whether the class extends a named entity.
-        if (reference == null || !reference.isClassDefinition()
-                && newClass != null) {
+        if (reference == null
+                || !reference.isClassDefinition() && newClass != null) {
 
             // Not a named entity. Instantiate a Java class.
             if (_current != null) {
@@ -4457,15 +4478,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                     .getContainer();
                         }
                         if (derivedIsNotWithinEntityLibrary) {
-                            throw new IllegalActionException(
-                                    container,
-                                    "Cannot create entity named \""
-                                            + entityName
+                            throw new IllegalActionException(container,
+                                    "Cannot create entity named \"" + entityName
                                             + "\" because a subclass or instance in \""
                                             + container.getFullName()
                                             + "\" contains an entity with the same name \""
                                             + derived.getEntity(entityName)
-                                            .getFullName()
+                                                    .getFullName()
                                             + "\".  Note that this can happen when actor oriented class "
                                             + "definitions are LazyTypedCompositeActors.");
                         }
@@ -4531,12 +4550,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // it was defined to be a class definition.
             if (!reference.isClassDefinition()) {
                 throw new MissingClassException(
-                        "Attempt to extend an entity that "
-                                + "is not a class: " + reference.getFullName()
-                                + " className: " + className + " entityName: "
-                                + entityName + " source: " + source,
-                                reference.getFullName(), _currentExternalEntity(),
-                                _getLineNumber(), _getColumnNumber());
+                        "Attempt to extend an entity that " + "is not a class: "
+                                + reference.getFullName() + " className: "
+                                + className + " entityName: " + entityName
+                                + " source: " + source,
+                        reference.getFullName(), _currentExternalEntity(),
+                        _getLineNumber(), _getColumnNumber());
             }
 
             // First check that there will be no name collision
@@ -4566,15 +4585,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Hence, we have to scroll through the list of entities
                     // lazily, avoiding populating.
                     if (derived.getEntity(entityName) != null) {
-                        throw new IllegalActionException(
-                                container,
-                                "Cannot create entity named \""
-                                        + entityName
+                        throw new IllegalActionException(container,
+                                "Cannot create entity named \"" + entityName
                                         + "\" because a subclass or instance in \""
                                         + container.getFullName()
                                         + "\" contains an entity with the same name \""
                                         + derived.getEntity(entityName)
-                                        .getFullName()
+                                                .getFullName()
                                         + "\".  Note that this can happen when actor oriented class "
                                         + "definitions are LazyTypedCompositeActors.");
                     }
@@ -4614,8 +4631,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // opening the clone but making it look as if it is the
             // original.
             // FIXME: This violates the derivation invariant.
-            URIAttribute modelURI = (URIAttribute) newEntity.getAttribute(
-                    "_uri", URIAttribute.class);
+            URIAttribute modelURI = (URIAttribute) newEntity
+                    .getAttribute("_uri", URIAttribute.class);
 
             if (modelURI != null) {
                 modelURI.setContainer(null);
@@ -4734,10 +4751,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
         }
 
-        throw new XmlException("Cannot find a suitable constructor ("
-                + arguments.length + " args) (" + argumentBuffer + ") for '"
-                + newClass.getName() + "'", _currentExternalEntity(),
-                _getLineNumber(), _getColumnNumber());
+        throw new XmlException(
+                "Cannot find a suitable constructor (" + arguments.length
+                        + " args) (" + argumentBuffer + ") for '"
+                        + newClass.getName() + "'",
+                _currentExternalEntity(), _getLineNumber(), _getColumnNumber());
     }
 
     /** Delete the entity after verifying that it is contained (deeply)
@@ -5371,10 +5389,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private ComponentPort _getPort(String portspec, CompositeEntity context)
             throws XmlException {
         ComponentPort port = (ComponentPort) context.getPort(portspec);
-        _checkForNull(
-                port,
-                "No port named \"" + portspec + "\" in "
-                        + context.getFullName());
+        _checkForNull(port, "No port named \"" + portspec + "\" in "
+                + context.getFullName());
         return port;
     }
 
@@ -5385,8 +5401,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private String _getUndoForDeleteAttribute(Attribute toDelete)
             throws IOException {
         // Set the context to the immediate container.
-        StringBuffer moml = new StringBuffer(UndoContext.moveContextStart(
-                _current, toDelete));
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
 
         int depth = toDelete.depthInHierarchy() - _current.depthInHierarchy();
 
@@ -5424,8 +5440,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private String _getUndoForDeleteEntity(ComponentEntity toDelete)
             throws IOException {
         // Set the context to the immediate container.
-        StringBuffer moml = new StringBuffer(UndoContext.moveContextStart(
-                _current, toDelete));
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
 
         int depth = toDelete.depthInHierarchy() - _current.depthInHierarchy();
 
@@ -5509,8 +5525,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private String _getUndoForDeletePort(Port toDelete) throws IOException {
         // Set the context to the immediate container.
-        StringBuffer moml = new StringBuffer(UndoContext.moveContextStart(
-                _current, toDelete));
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
 
         int depth = toDelete.depthInHierarchy() - _current.depthInHierarchy();
 
@@ -5599,8 +5615,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private String _getUndoForDeleteRelation(ComponentRelation toDelete)
             throws IOException {
         // Set the context to the immediate container.
-        StringBuffer moml = new StringBuffer(UndoContext.moveContextStart(
-                _current, toDelete));
+        StringBuffer moml = new StringBuffer(
+                UndoContext.moveContextStart(_current, toDelete));
 
         // Add in the description.
         // By specifying the depth to be the depth in the hierarchy,
@@ -5702,8 +5718,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null
-                    && value.trim().toLowerCase(Locale.getDefault())
+            if (value != null && value.trim().toLowerCase(Locale.getDefault())
                     .equals("false")) {
                 newValue = false;
             }
@@ -5740,8 +5755,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // Handle undo
             if (_undoEnabled) {
-                _undoContext.appendUndoMoML("<property name=\"" + propertyName
-                        + "\" value=\"");
+                _undoContext.appendUndoMoML(
+                        "<property name=\"" + propertyName + "\" value=\"");
 
                 // Use what was there before.
                 _undoContext.appendUndoMoML(previousValue + "\" >\n");
@@ -5765,8 +5780,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null
-                    && value.trim().toLowerCase(Locale.getDefault())
+            if (value != null && value.trim().toLowerCase(Locale.getDefault())
                     .equals("false")) {
                 newValue = false;
             }
@@ -5804,8 +5818,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // Handle undo
             if (_undoEnabled) {
-                _undoContext.appendUndoMoML("<property name=\"" + propertyName
-                        + "\" value=\"");
+                _undoContext.appendUndoMoML(
+                        "<property name=\"" + propertyName + "\" value=\"");
 
                 // Use what was there before
                 _undoContext.appendUndoMoML(previousValue + "\" >\n");
@@ -5829,8 +5843,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Default for new value is true, unless it is explicitly false.
             boolean newValue = true;
 
-            if (value != null
-                    && value.trim().toLowerCase(Locale.getDefault())
+            if (value != null && value.trim().toLowerCase(Locale.getDefault())
                     .equals("false")) {
                 newValue = false;
             }
@@ -5867,8 +5880,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // Handle undo
             if (_undoEnabled) {
-                _undoContext.appendUndoMoML("<property name=\"" + propertyName
-                        + "\" value=\"");
+                _undoContext.appendUndoMoML(
+                        "<property name=\"" + propertyName + "\" value=\"");
 
                 // Use what was there before
                 _undoContext.appendUndoMoML(previousValue + "\" >\n");
@@ -5892,17 +5905,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 try {
                     newClass = _loadClass(className, null);
                 } catch (ClassNotFoundException ex) {
-                    throw new XmlException("Failed to find class '" + className
-                            + "'", _currentExternalEntity(), _getLineNumber(),
+                    throw new XmlException(
+                            "Failed to find class '" + className + "'",
+                            _currentExternalEntity(), _getLineNumber(),
                             _getColumnNumber(), ex);
                 } catch (NoClassDefFoundError ex) {
-                    throw new XmlException("Failed to find class '" + className
-                            + "'", _currentExternalEntity(), _getLineNumber(),
+                    throw new XmlException(
+                            "Failed to find class '" + className + "'",
+                            _currentExternalEntity(), _getLineNumber(),
                             _getColumnNumber(), ex);
                 } catch (SecurityException ex) {
                     // An applet might throw this.
-                    throw new XmlException("Failed to find class '" + className
-                            + "'", _currentExternalEntity(), _getLineNumber(),
+                    throw new XmlException(
+                            "Failed to find class '" + className + "'",
+                            _currentExternalEntity(), _getLineNumber(),
                             _getColumnNumber(), ex);
                 }
             }
@@ -5933,8 +5949,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-            if (!previouslyExisted || newClass != null
-                    && !newClass.isInstance(property)) {
+            if (!previouslyExisted
+                    || newClass != null && !newClass.isInstance(property)) {
                 // The following will result in a
                 // NameDuplicationException if there is a previous
                 // property and it is not a singleton.
@@ -5976,7 +5992,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             Attribute other = derived
                                     .getAttribute(propertyName);
 
-                            if (other != null && !(other instanceof Singleton)) {
+                            if (other != null
+                                    && !(other instanceof Singleton)) {
                                 // If the derived is within an EntityLibrary,
                                 // then don't throw an exception.  To
                                 // replicate this, create an EntityLibrary
@@ -5990,8 +6007,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                             .getContainer();
                                 }
                                 if (derivedIsNotWithinEntityLibrary) {
-                                    throw new IllegalActionException(
-                                            _current,
+                                    throw new IllegalActionException(_current,
                                             "Cannot create attribute because a subclass or instance "
                                                     + "contains an attribute with the same name: "
                                                     + derived.getAttribute(
@@ -6035,30 +6051,28 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 ((Port) property).setContainer(null);
                             } else if (property instanceof ComponentRelation) {
                                 ((ComponentRelation) property)
-                                .setContainer(null);
+                                        .setContainer(null);
                             }
 
-                            throw new XmlException(
-                                    "Property \""
-                                            + property.getFullName()
-                                            + "\" is not an "
-                                            + "instance of Attribute, it is a \""
-                                            + property.getClass().getName()
-                                            + "\"."
-                                            + (property instanceof Entity ? "The property is an instance "
+                            throw new XmlException("Property \""
+                                    + property.getFullName() + "\" is not an "
+                                    + "instance of Attribute, it is a \""
+                                    + property.getClass().getName() + "\"."
+                                    + (property instanceof Entity
+                                            ? "The property is an instance "
                                                     + "of the Entity class, "
                                                     + "so if you were using "
                                                     + "the GUI, try \"Instantiate"
                                                     + "Entity\" or \"Instantiate"
                                                     + "Component\"."
-                                                    : "")
-                                                    + (isNewClassSetToAttribute ? " The class \""
-                                                            + className
-                                                            + "\" was not found in the "
-                                                            + "classpath."
-                                                            : ""),
-                                                            _currentExternalEntity(), _getLineNumber(),
-                                                            _getColumnNumber());
+                                            : "")
+                                    + (isNewClassSetToAttribute
+                                            ? " The class \"" + className
+                                                    + "\" was not found in the "
+                                                    + "classpath."
+                                            : ""),
+                                    _currentExternalEntity(), _getLineNumber(),
+                                    _getColumnNumber());
                         }
 
                         // Propagate.
@@ -6067,8 +6081,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                     if (value != null) {
                         if (property == null) {
-                            throw new XmlException("Property does not exist: "
-                                    + propertyName + "\n",
+                            throw new XmlException(
+                                    "Property does not exist: " + propertyName
+                                            + "\n",
                                     _currentExternalEntity(), _getLineNumber(),
                                     _getColumnNumber());
                         }
@@ -6079,8 +6094,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                             + property.getFullName()
                                             + " (instance of "
                                             + property.getClass().toString()
-                                            + ")\n", _currentExternalEntity(),
-                                            _getLineNumber(), _getColumnNumber());
+                                            + ")\n",
+                                    _currentExternalEntity(), _getLineNumber(),
+                                    _getColumnNumber());
                         }
 
                         Settable settable = (Settable) property;
@@ -6109,9 +6125,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // exists, then there is nothing to do.
                 if (value != null) {
                     if (!(property instanceof Settable)) {
-                        throw new XmlException("Property is not an "
-                                + "instance of Settable, "
-                                + "so can't set the value.",
+                        throw new XmlException(
+                                "Property is not an " + "instance of Settable, "
+                                        + "so can't set the value.",
                                 _currentExternalEntity(), _getLineNumber(),
                                 _getColumnNumber());
                     }
@@ -6122,7 +6138,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // If we are within a group named "doNotOverwriteOverrides",
                     // then set the expression only if either the parameter did not
                     // previously exist or its value has not been overridden.
-                    if (_overwriteOverrides <= 0 || !previouslyExisted || !property.isOverridden()) {
+                    if (_overwriteOverrides <= 0 || !previouslyExisted
+                            || !property.isOverridden()) {
                         // NOTE: It is not correct to do nothing even
                         // if the value is not changed.  If the value of
                         // of an instance parameter is explicitly set,
@@ -6163,10 +6180,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _undoEnabled = false;
                 } else {
                     // Simply generate the same as was there before.
-                    _undoContext.appendUndoMoML("<property name=\""
-                            + property.getName() + "\" ");
-                    _undoContext.appendUndoMoML("class=\"" + oldClassName
-                            + "\" ");
+                    _undoContext.appendUndoMoML(
+                            "<property name=\"" + property.getName() + "\" ");
+                    _undoContext
+                            .appendUndoMoML("class=\"" + oldClassName + "\" ");
 
                     if (oldValue != null) {
                         // Escape the value for xml so that if
@@ -6226,10 +6243,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // and the link are derived by the same container. If they are
         // both derived, then they are both derived.
         if (port.getContainer() == context) {
-            return portLevel < Integer.MAX_VALUE
-                    && (relation == null || relation.getDerivedLevel() < Integer.MAX_VALUE);
+            return portLevel < Integer.MAX_VALUE && (relation == null
+                    || relation.getDerivedLevel() < Integer.MAX_VALUE);
         }
-        boolean portIsInClass = port.getContainer() == context ? portLevel < Integer.MAX_VALUE
+        boolean portIsInClass = port.getContainer() == context
+                ? portLevel < Integer.MAX_VALUE
                 : portContainerLevel < Integer.MAX_VALUE;
         if (portIsInClass) {
             if (relation == null) {
@@ -6357,10 +6375,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 || elementName.equals("deletePort")
                 || elementName.equals("deleteProperty")
                 || elementName.equals("deleteRelation")
-                || elementName.equals("display")
-                || elementName.equals("entity") || elementName.equals("group")
-                || elementName.equals("link") || elementName.equals("port")
-                || elementName.equals("relation")
+                || elementName.equals("display") || elementName.equals("entity")
+                || elementName.equals("group") || elementName.equals("link")
+                || elementName.equals("port") || elementName.equals("relation")
                 || elementName.equals("rename") || elementName.equals("unlink")
                 || elementName.equals("vertex")) {
             return true;
@@ -6369,21 +6386,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return false;
     }
 
-    private Class _loadClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
-      // If no specific version info was in the model's MOML, and a default version spec was set, we need to use that one.
-      // This is especially important for submodels based on actor-oriented-classes, where we want to maintain some consistency
-      // between a related "group" of MOMLs (the parent models and their submodels).
-      VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpecification;
-      try {
-        return _defaultClassLoadingStrategy.loadJavaClass(className, _vSpec);
-      } catch (ClassNotFoundException e) {
-  //      System.out.println("Did not find "+className+" "+_vSpec + " via " + _defaultClassLoadingStrategy);
-        if (_classLoader!=null) {
-          return _classLoader.loadClass(className);
-        } else {
-          throw e;
+    private Class _loadClass(String className, VersionSpecification versionSpec)
+            throws ClassNotFoundException {
+        // If no specific version info was in the model's MOML, and a default version spec was set, we need to use that one.
+        // This is especially important for submodels based on actor-oriented-classes, where we want to maintain some consistency
+        // between a related "group" of MOMLs (the parent models and their submodels).
+        VersionSpecification _vSpec = versionSpec != null ? versionSpec
+                : _defaultVersionSpecification;
+        try {
+            return _defaultClassLoadingStrategy.loadJavaClass(className,
+                    _vSpec);
+        } catch (ClassNotFoundException e) {
+            //      System.out.println("Did not find "+className+" "+_vSpec + " via " + _defaultClassLoadingStrategy);
+            if (_classLoader != null) {
+                return _classLoader.loadClass(className);
+            } else {
+                throw e;
+            }
         }
-      }
     }
 
     /** If the file with the specified name exists, parse it in
@@ -6400,11 +6420,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private boolean _loadFileInContext(String fileName, NamedObj context)
             throws Exception {
         if (_classLoader == null) {
-            throw new InternalErrorException(
-                    "_classloader is null? "
-                            + "If you are using Eclipse, then perhaps the ptII project is in the boothpath? "
-                            + "Check Run -> Run Configurations... -> Classpath and be sure that the ptII project "
-                            + "is not in the Bootstrap Entries section.");
+            throw new InternalErrorException("_classloader is null? "
+                    + "If you are using Eclipse, then perhaps the ptII project is in the boothpath? "
+                    + "Check Run -> Run Configurations... -> Classpath and be sure that the ptII project "
+                    + "is not in the Bootstrap Entries section.");
         }
         URL xmlFile = _classLoader.getResource(fileName);
 
@@ -6663,7 +6682,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private void _processLink(String portName, String relationName,
             String insertAtSpec, String insertInsideAtSpec)
-                    throws XmlException, IllegalActionException {
+            throws XmlException, IllegalActionException {
         _checkClass(_current, CompositeEntity.class,
                 "Element \"link\" found inside an element that "
                         + "is not a CompositeEntity. It is: " + _current);
@@ -6684,15 +6703,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         if (countArgs == 0) {
-            throw new XmlException("Element link requires at least one of "
-                    + "an insertAt, an insertInsideAt, or a relation.",
+            throw new XmlException(
+                    "Element link requires at least one of "
+                            + "an insertAt, an insertInsideAt, or a relation.",
                     _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
 
         if (insertAtSpec != null && insertInsideAtSpec != null) {
-            throw new XmlException("Element link requires at most one of "
-                    + "insertAt and insertInsideAt, not both.",
+            throw new XmlException(
+                    "Element link requires at most one of "
+                            + "insertAt and insertInsideAt, not both.",
                     _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
@@ -6810,19 +6831,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (insertAt != -1) {
                         if (port.numLinks() != origNumOutsideLinks) {
                             // Enclose in a group to prevent deferral on undo.
-                            _undoContext
-                            .appendUndoMoML("<group><unlink port=\""
-                                    + portName + "\" index=\""
-                                    + insertAtSpec + "\" /></group>\n");
+                            _undoContext.appendUndoMoML("<group><unlink port=\""
+                                    + portName + "\" index=\"" + insertAtSpec
+                                    + "\" /></group>\n");
                         }
                     } else {
                         if (port.numInsideLinks() != origNumInsideLinks) {
                             // Enclose in a group to prevent deferral on undo.
-                            _undoContext
-                            .appendUndoMoML("<group><unlink port=\""
+                            _undoContext.appendUndoMoML("<group><unlink port=\""
                                     + portName + "\" insideIndex=\""
-                                    + insertInsideAtSpec
-                                    + "\" /></group>\n");
+                                    + insertInsideAtSpec + "\" /></group>\n");
                         }
                     }
                 }
@@ -6842,11 +6860,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Enclose in a group to prevent deferral on undo.
                         // Handle deleting links in reverse order so that if
                         // we copy and paste the undo/redo works out
-                        _undoContext
-                        .appendClosingUndoMoML("<group><unlink port=\""
-                                + portName + "\" insideIndex=\""
-                                + insertInsideAt + "\" /></group>"
-                                + "\n");
+                        _undoContext.appendClosingUndoMoML(
+                                "<group><unlink port=\"" + portName
+                                        + "\" insideIndex=\"" + insertInsideAt
+                                        + "\" /></group>" + "\n");
                     } else if (port.numLinks() != origNumOutsideLinks) {
                         if (insertAt == -1) {
                             insertAt = port.numLinks() - 1;
@@ -6855,9 +6872,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Handle deleting links in reverse order so that if
                         // we copy and paste the undo/redo works out
                         _undoContext
-                        .appendClosingUndoMoML("<group><unlink port=\""
-                                + portName + "\" index=\"" + insertAt
-                                + "\" /></group>" + "\n");
+                                .appendClosingUndoMoML("<group><unlink port=\""
+                                        + portName + "\" index=\"" + insertAt
+                                        + "\" /></group>" + "\n");
                     } else {
                         // No change so do not need to generate any undo MoML
                     }
@@ -7002,9 +7019,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // the class definition and should not be recreated in undo.
             if (relation1.getDerivedLevel() == Integer.MAX_VALUE
                     || relation2.getDerivedLevel() == Integer.MAX_VALUE) {
-                _undoContext.appendUndoMoML("<link relation1=\""
-                        + relation1Name + "\" relation2=\"" + relation2Name
-                        + "\" />\n");
+                _undoContext.appendUndoMoML("<link relation1=\"" + relation1Name
+                        + "\" relation2=\"" + relation2Name + "\" />\n");
             }
         }
     }
@@ -7018,8 +7034,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @exception IllegalActionException If the link is part of a class definition.
      */
     private void _processUnlink(String portName, String relationName,
-            String indexSpec, String insideIndexSpec) throws XmlException,
-            IllegalActionException {
+            String indexSpec, String insideIndexSpec)
+            throws XmlException, IllegalActionException {
         _checkClass(_current, CompositeEntity.class,
                 "Element \"unlink\" found inside an element that "
                         + "is not a CompositeEntity. It is: " + _current);
@@ -7040,8 +7056,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         if (countArgs != 1) {
-            throw new XmlException("Element unlink requires exactly one of "
-                    + "an index, an insideIndex, or a relation.",
+            throw new XmlException(
+                    "Element unlink requires exactly one of "
+                            + "an index, an insideIndex, or a relation.",
                     _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
@@ -7070,9 +7087,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Generate a link in the undo only if one or the other relation is
             // not derived. If they are both derived, then the link belongs to
             // the class definition and should not be recreated in undo.
-            if (_undoEnabled
-                    && (port.getDerivedLevel() == Integer.MAX_VALUE || relation
-                    .getDerivedLevel() == Integer.MAX_VALUE)) {
+            if (_undoEnabled && (port.getDerivedLevel() == Integer.MAX_VALUE
+                    || relation.getDerivedLevel() == Integer.MAX_VALUE)) {
                 // Get the relation at the given index
                 List linkedRelations = port.linkedRelationList();
                 int index = linkedRelations.indexOf(tmpRelation);
@@ -7148,8 +7164,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // a relation at that index. Otherwise a null
                     // link is inserted
                     if (r != null) {
-                        _undoContext.appendUndoMoML("relation=\""
-                                + r.getName(context) + "\" ");
+                        _undoContext.appendUndoMoML(
+                                "relation=\"" + r.getName(context) + "\" ");
                     }
                     _undoContext.appendUndoMoML(" />\n");
                 }
@@ -7198,8 +7214,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // a relation at that index. Otherwise a null
                     // link is inserted
                     if (r != null) {
-                        _undoContext.appendUndoMoML("relation=\""
-                                + r.getName(context) + "\" ");
+                        _undoContext.appendUndoMoML(
+                                "relation=\"" + r.getName(context) + "\" ");
                     }
                     _undoContext.appendUndoMoML(" />\n");
                 }
@@ -7272,15 +7288,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             result = _current.getAttribute(name);
         } else {
             // Findbugs suggests checking for null
-            throw new XmlException("The current object in the hierarchy "
-                    + "is null? Could not find property: " + name + " in "
-                    + currentName, _currentExternalEntity(), _getLineNumber(),
+            throw new XmlException(
+                    "The current object in the hierarchy "
+                            + "is null? Could not find property: " + name
+                            + " in " + currentName,
+                    _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
 
         if (result == null) {
-            throw new XmlException("No such property: " + name + " in "
-                    + currentName, _currentExternalEntity(), _getLineNumber(),
+            throw new XmlException(
+                    "No such property: " + name + " in " + currentName,
+                    _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
 
@@ -7495,8 +7514,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         if (result == null) {
-            throw new XmlException("No such port: " + name + " in "
-                    + topLevelName, _currentExternalEntity(), _getLineNumber(),
+            throw new XmlException(
+                    "No such port: " + name + " in " + topLevelName,
+                    _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
 
@@ -7537,8 +7557,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         if (result == null) {
-            throw new XmlException("No such relation: " + name + " in "
-                    + topLevelName, _currentExternalEntity(), _getLineNumber(),
+            throw new XmlException(
+                    "No such relation: " + name + " in " + topLevelName,
+                    _currentExternalEntity(), _getLineNumber(),
                     _getColumnNumber());
         }
 
@@ -7587,7 +7608,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The default class loading strategy that can be adjusted for specific runtime requirements,
     // e.g. it can be modified for OSGi-based runtimes.
-    private static ClassLoadingStrategy _defaultClassLoadingStrategy = new SimpleClassLoadingStrategy(MoMLParser.class.getClassLoader());
+    private static ClassLoadingStrategy _defaultClassLoadingStrategy = new SimpleClassLoadingStrategy(
+            MoMLParser.class.getClassLoader());
 
     // The optional default version specification to be used for loading java & actor-oriented classes,
     // in cases where this concept is supported by the class loading strategy.

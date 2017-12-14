@@ -67,8 +67,8 @@ public class Tester {
             index++;
             lastMarker = thisMarker;
         }
-        assignments[index] = remains
-                .substring(lastMarker + 1, remains.length());
+        assignments[index] = remains.substring(lastMarker + 1,
+                remains.length());
         String[] output = new String[2 * assignments.length + 1];
         output[0] = actor;
         for (int i = 0; i < assignments.length; i++) {

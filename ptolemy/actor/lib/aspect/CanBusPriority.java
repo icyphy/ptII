@@ -72,9 +72,10 @@ public class CanBusPriority extends Transformer {
         value.setTypeEquals(BaseType.INT);
 
         // icon description
-        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                        + "width=\"60\" height=\"20\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

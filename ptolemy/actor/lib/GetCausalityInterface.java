@@ -115,8 +115,8 @@ public class GetCausalityInterface extends Source {
             target = (Actor) ((CompositeEntity) container)
                     .getEntity(targetName);
             if (target == null) {
-                throw new IllegalActionException(this, "No actor named "
-                        + targetName);
+                throw new IllegalActionException(this,
+                        "No actor named " + targetName);
             }
         }
         CausalityInterface causalityInterface = target.getCausalityInterface();

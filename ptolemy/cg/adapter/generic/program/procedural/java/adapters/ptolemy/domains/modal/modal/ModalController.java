@@ -41,15 +41,15 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class ModalController
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
+public class ModalController extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
      *  @param component The associated component.
      */
-    public ModalController(ptolemy.domains.modal.modal.ModalController component) {
+    public ModalController(
+            ptolemy.domains.modal.modal.ModalController component) {
         super(component);
     }
 
@@ -70,8 +70,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
         //name = name.replace('.', '_');
         modalName = modalName.replace('.', '_');
 
-        code.append("public static int " + modalName + "__transitionFlag;"
-                + _eol);
+        code.append(
+                "public static int " + modalName + "__transitionFlag;" + _eol);
         return code.toString();
     }
 }

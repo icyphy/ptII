@@ -97,10 +97,11 @@ public class EventToDate extends Transformer {
             if (input.hasToken(channel)) {
                 input.get(channel);
             }
-            double modelTimeSinceStart = _director.getModelTime().getDoubleValue() -
-                    _director.getModelStartTime().getDoubleValue();
+            double modelTimeSinceStart = _director.getModelTime()
+                    .getDoubleValue()
+                    - _director.getModelStartTime().getDoubleValue();
             if (_manager == null) {
-                    _manager = ((CompositeActor) getContainer()).getManager();
+                _manager = ((CompositeActor) getContainer()).getManager();
             }
             long time = (long) (modelTimeSinceStart * 1000) // The default unit of time is seconds.
                     + _manager.getRealStartTime();

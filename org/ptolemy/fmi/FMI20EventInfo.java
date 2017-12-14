@@ -101,8 +101,8 @@ public class FMI20EventInfo extends Structure {
 
     /** Access the structure by reference.
      */
-    public static class ByReference extends FMI20EventInfo implements
-            Structure.ByReference {
+    public static class ByReference extends FMI20EventInfo
+            implements Structure.ByReference {
         /**  Allocate a new FMI20EventInfo.ByReference struct on the heap.
          */
 
@@ -121,8 +121,8 @@ public class FMI20EventInfo extends Structure {
 
     /** Access the structure by value.
      */
-    public static class ByValue extends FMI20EventInfo implements
-            Structure.ByValue {
+    public static class ByValue extends FMI20EventInfo
+            implements Structure.ByValue {
 
         /** Create an instance that shares its memory with another
          *  FMU20EventInfo instance public ByReference(FMI20EventInfo.

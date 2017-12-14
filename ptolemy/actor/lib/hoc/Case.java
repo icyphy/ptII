@@ -91,8 +91,8 @@ public class Case extends MultiCompositeActor {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public Case(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public Case(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -182,8 +182,8 @@ public class Case extends MultiCompositeActor {
      *  @exception NameDuplicationException If a refinement already
      *  exists with this name.
      */
-    public Refinement newRefinement(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public Refinement newRefinement(String name)
+            throws IllegalActionException, NameDuplicationException {
         return new Refinement(this, name);
     }
 
@@ -225,8 +225,8 @@ public class Case extends MultiCompositeActor {
      *  @exception NameDuplicationException If there is already an
      *  attribute with the name "_director".
      */
-    protected CaseDirector _createDirector() throws IllegalActionException,
-    NameDuplicationException {
+    protected CaseDirector _createDirector()
+            throws IllegalActionException, NameDuplicationException {
         return new CaseDirector(this, "_director");
     }
 
@@ -246,8 +246,8 @@ public class Case extends MultiCompositeActor {
     ////                         private methods                   ////
 
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.Case");
 
         // Create the control port.
@@ -259,7 +259,8 @@ public class Case extends MultiCompositeActor {
         control.setExpression("true");
         ParameterPort port = control.getPort();
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(port,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         // Create the default refinement.

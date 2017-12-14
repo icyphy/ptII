@@ -91,8 +91,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (pjb2e)
  */
-public class TransmitPropertyTransformer extends LifeCycleManager implements
-PropertyTransformer {
+public class TransmitPropertyTransformer extends LifeCycleManager
+        implements PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -127,13 +127,14 @@ PropertyTransformer {
         properties.setVisibility(Settable.EXPERT);
 
         // Create the icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
 
         // To ensure that exported MoML does not represent this as
         // an ordinary TypedCompositeActor.
-        setClassName("ptolemy.domains.wireless.lib.TransmitPropertyTransformer");
+        setClassName(
+                "ptolemy.domains.wireless.lib.TransmitPropertyTransformer");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -175,8 +176,8 @@ PropertyTransformer {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TransmitPropertyTransformer newObject = (TransmitPropertyTransformer) super
-                .clone(workspace);
+        TransmitPropertyTransformer newObject = (TransmitPropertyTransformer) super.clone(
+                workspace);
 
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.input);
@@ -347,7 +348,7 @@ PropertyTransformer {
     @Override
     public RecordToken transformProperties(RecordToken initialProperties,
             WirelessIOPort sender, WirelessIOPort destination)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         double[] p1 = _locationOf(sender);
         double[] p2 = _locationOf(destination);
 
@@ -440,7 +441,7 @@ PropertyTransformer {
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                    + ".");
+                            + ".");
         }
 
         return location.getLocation();

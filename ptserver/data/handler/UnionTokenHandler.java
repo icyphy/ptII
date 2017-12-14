@@ -75,9 +75,9 @@ public class UnionTokenHandler implements TokenHandler<UnionToken> {
      */
     @Override
     public UnionToken convertToToken(DataInputStream inputStream,
-            Class<? extends UnionToken> tokenType) throws IOException,
-            IllegalActionException {
-        return new UnionToken(inputStream.readUTF(), TokenParser.getInstance()
-                .convertToToken(inputStream));
+            Class<? extends UnionToken> tokenType)
+            throws IOException, IllegalActionException {
+        return new UnionToken(inputStream.readUTF(),
+                TokenParser.getInstance().convertToToken(inputStream));
     }
 }

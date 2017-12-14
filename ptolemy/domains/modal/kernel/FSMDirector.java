@@ -186,7 +186,7 @@ import ptolemy.kernel.util.Workspace;
  * @see FSMActor
  */
 public class FSMDirector extends Director implements ExplicitChangeContext,
-QuasiTransparentDirector, SuperdenseTimeDirector {
+        QuasiTransparentDirector, SuperdenseTimeDirector {
     /**
      * Construct a director in the default workspace with an empty
      * string as its name. The director is added to the list of
@@ -195,8 +195,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public FSMDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _createAttribute();
     }
@@ -209,8 +209,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public FSMDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _createAttribute();
     }
@@ -410,8 +410,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
             String name = controllerName.getExpression();
 
             if (name == null) {
-                throw new IllegalActionException(this, "No name for mode "
-                        + "controller is set.");
+                throw new IllegalActionException(this,
+                        "No name for mode " + "controller is set.");
             }
 
             Nameable container = getContainer();
@@ -424,8 +424,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
             Entity entity = cont.getEntity(name);
 
             if (entity == null) {
-                throw new IllegalActionException(this, "No controller found "
-                        + "with name " + name);
+                throw new IllegalActionException(this,
+                        "No controller found " + "with name " + name);
             }
 
             if (!(entity instanceof FSMActor)) {
@@ -464,8 +464,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
             List transitionList = controller.currentState().outgoingPort
                     .linkedRelationList();
             // First check preemptive transitions, then non-preemptive ones.
-            List enabledTransitions = controller.enabledTransitions(
-                    transitionList, true, false);
+            List enabledTransitions = controller
+                    .enabledTransitions(transitionList, true, false);
             if (enabledTransitions.size() > 0) {
                 return getModelTime();
             }
@@ -475,8 +475,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
                 return getModelTime();
             }
             // The result returned below needs to be adjusted by the current offset.
-            Time result = localClock.getLocalTimeForEnvironmentTime(super
-                    .getModelNextIterationTime());
+            Time result = localClock.getLocalTimeForEnvironmentTime(
+                    super.getModelNextIterationTime());
             return result;
         } catch (IllegalActionException e) {
             // Any exception here should have shown up before now.
@@ -572,7 +572,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
     public int getIndex() {
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
-        if (isEmbedded() && executiveDirector instanceof SuperdenseTimeDirector) {
+        if (isEmbedded()
+                && executiveDirector instanceof SuperdenseTimeDirector) {
             return ((SuperdenseTimeDirector) executiveDirector).getIndex()
                     + _indexOffset;
         }
@@ -718,7 +719,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
         // over refinements above.
         List<State> states = getController().entityList();
         for (State state : states) {
-            if (((BooleanToken) state.isInitialState.getToken()).booleanValue()) {
+            if (((BooleanToken) state.isInitialState.getToken())
+                    .booleanValue()) {
                 continue;
             }
             TypedActor[] refinements = state.getRefinement();
@@ -818,8 +820,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
         }
         FSMActor controller = getController();
         result &= controller.postfire();
-        _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
-                .currentState());
+        _currentLocalReceiverMap = (Map) _localReceiverMaps
+                .get(controller.currentState());
 
         // Reset all the receivers on the inside of output ports.
         // NOTE: This only has an effect for FSMReceiver.
@@ -893,8 +895,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
      * collides with a name already in the container.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container != null) {
@@ -925,7 +927,7 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
                 if (destinationDirector != this
                         && destinationDirector instanceof SuperdenseTimeDirector) {
                     ((SuperdenseTimeDirector) destinationDirector)
-                    .setIndex(index);
+                            .setIndex(index);
                 }
             }
         }
@@ -986,14 +988,13 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 insideReceivers[i][j].put(t);
                                 if (_debugging) {
-                                    _debug(getFullName(), "transferring input "
-                                            + t
-                                            + " from "
-                                            + port.getFullName()
-                                            + " to "
-                                            + insideReceivers[i][j]
-                                                    .getContainer()
-                                                    .getFullName());
+                                    _debug(getFullName(),
+                                            "transferring input " + t + " from "
+                                                    + port.getFullName()
+                                                    + " to "
+                                                    + insideReceivers[i][j]
+                                                            .getContainer()
+                                                            .getFullName());
                                 }
                             }
                             transferredToken = true;
@@ -1115,7 +1116,7 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
                                     Transition transition = (Transition) transitions
                                             .next();
                                     stateList
-                                    .add(transition.destinationState());
+                                            .add(transition.destinationState());
                                     _checkActorsForReceiver(
                                             transition.getRefinement(), cont,
                                             receiver, resultsList);
@@ -1147,8 +1148,8 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
             }
 
             _localReceiverMapsVersion = workspace().getVersion();
-            _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
-                    .currentState());
+            _currentLocalReceiverMap = (Map) _localReceiverMaps
+                    .get(controller.currentState());
         } finally {
             workspace().doneReading();
         }
@@ -1410,11 +1411,11 @@ QuasiTransparentDirector, SuperdenseTimeDirector {
         try {
             controllerName = new StringAttribute(this, "controllerName");
         } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(getName() + "Cannot create "
-                    + "controllerName attribute.");
+            throw new InternalErrorException(
+                    getName() + "Cannot create " + "controllerName attribute.");
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(getName() + "Cannot create "
-                    + "controllerName attribute.");
+            throw new InternalErrorException(
+                    getName() + "Cannot create " + "controllerName attribute.");
         }
     }
 

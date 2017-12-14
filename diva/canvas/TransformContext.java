@@ -281,8 +281,8 @@ public class TransformContext {
             _screenTransform = _transform;
         } else {
             CanvasComponent p = _component.getParent();
-            _screenTransform = new AffineTransform(p.getTransformContext()
-                    .getScreenTransform());
+            _screenTransform = new AffineTransform(
+                    p.getTransformContext().getScreenTransform());
             _screenTransform.concatenate(_transform);
         }
 

@@ -184,8 +184,9 @@ public class Accumulator extends Transformer {
         Token lowerBoundValue = lowerBound.getToken();
         if (lowerBoundValue != null) {
             if (lowerBoundValue instanceof ScalarToken) {
-                if (((ScalarToken) lowerBoundValue).isGreaterThan(
-                        (ScalarToken) _latestSum).booleanValue()) {
+                if (((ScalarToken) lowerBoundValue)
+                        .isGreaterThan((ScalarToken) _latestSum)
+                        .booleanValue()) {
                     _latestSum = lowerBoundValue;
                 }
             } else {
@@ -197,8 +198,8 @@ public class Accumulator extends Transformer {
         Token upperBoundValue = upperBound.getToken();
         if (upperBoundValue != null) {
             if (upperBoundValue instanceof ScalarToken) {
-                if (((ScalarToken) upperBoundValue).isLessThan(
-                        (ScalarToken) _latestSum).booleanValue()) {
+                if (((ScalarToken) upperBoundValue)
+                        .isLessThan((ScalarToken) _latestSum).booleanValue()) {
                     _latestSum = upperBoundValue;
                 }
             } else {

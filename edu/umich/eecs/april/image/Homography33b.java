@@ -104,8 +104,9 @@ public class Homography33b {
     }
 
     double[][] compute() {
-        if (H != null) // already computed?
+        if (H != null) {
             return H;
+        }
 
         double normWorldT[][] = normWorld.getTransform();
         double normImageT[][] = normWorld.getTransform();
@@ -118,10 +119,10 @@ public class Homography33b {
             // XXX this is wasteful. We could inline the
             // multiplications, exploit the special form of the
             // matrix.
-            double worldxy[] = LinAlg.matrixAB(normWorldT, new double[] {
-                    corr[0], corr[1], 1 });
-            double imagexy[] = LinAlg.matrixAB(normImageT, new double[] {
-                    corr[2], corr[3], 1 });
+            double worldxy[] = LinAlg.matrixAB(normWorldT,
+                    new double[] { corr[0], corr[1], 1 });
+            double imagexy[] = LinAlg.matrixAB(normImageT,
+                    new double[] { corr[2], corr[3], 1 });
             double worldx = worldxy[0];
             double worldy = worldxy[1];
             double imagex = imagexy[0];
@@ -217,9 +218,11 @@ public class Homography33b {
         }
 
         // make symmetric
-        for (int i = 0; i < A.length; i++)
-            for (int j = i + 1; j < A[0].length; j++)
+        for (int i = 0; i < A.length; i++) {
+            for (int j = i + 1; j < A[0].length; j++) {
                 A[j][i] = A[i][j];
+            }
+        }
 
         H = new double[3][3];
 
@@ -228,9 +231,11 @@ public class Homography33b {
                 new Matrix(A));
 
         Matrix V = svd.getV();
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 H[i][j] = V.get(i * 3 + j, V.getColumnDimension() - 1);
+            }
+        }
 
         H = LinAlg.matrixABC(LinAlg.inverse(normImageT), H, normWorldT);
 

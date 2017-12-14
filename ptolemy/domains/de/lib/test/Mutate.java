@@ -73,8 +73,8 @@ public class Mutate {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(_top, "test2") {
             @Override
-            public void _execute() throws IllegalActionException,
-            NameDuplicationException {
+            public void _execute()
+                    throws IllegalActionException, NameDuplicationException {
                 _clock.output.unlinkAll();
                 _rec.input.unlinkAll();
 

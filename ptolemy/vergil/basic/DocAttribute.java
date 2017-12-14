@@ -161,8 +161,8 @@ public class DocAttribute extends SingletonAttribute {
      *   is none.
      */
     public String getPortDoc(String name) {
-        StringAttribute portAttribute = (StringAttribute) getAttribute(name
-                + " (port)");
+        StringAttribute portAttribute = (StringAttribute) getAttribute(
+                name + " (port)");
         if (portAttribute != null) {
             return portAttribute.getExpression();
         }

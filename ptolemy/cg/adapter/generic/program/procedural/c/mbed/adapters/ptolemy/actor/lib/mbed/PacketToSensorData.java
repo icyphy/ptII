@@ -42,8 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class PacketToSensorData
-extends NamedProgramCodeGeneratorAdapter {
+public class PacketToSensorData extends NamedProgramCodeGeneratorAdapter {
 
     /**
      *  Construct the PacketToSensorData adapter.

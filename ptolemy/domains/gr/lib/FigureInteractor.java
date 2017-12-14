@@ -56,7 +56,8 @@ import diva.canvas.toolbox.BasicFigure;
  @Pt.ProposedRating Yellow (ismael)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FigureInteractor extends AbstractInteractor implements KeyListener {
+public class FigureInteractor extends AbstractInteractor
+        implements KeyListener {
     /** Construct a FigureInteractor for the given figure.
      * @param figure The figure this interactor is to listen and respond to.
      */
@@ -101,14 +102,14 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
             _figure.translate(1, 0);
             break;
 
-            /*
-             * case KeyEvent.VK_A: _figureActions.aPressed();
+        /*
+         * case KeyEvent.VK_A: _figureActions.aPressed();
         break;
-             * case KeyEvent.VK_B: _figureActions.bPressed();
+         * case KeyEvent.VK_B: _figureActions.bPressed();
         break;
-             * case KeyEvent.VK_C: _figureActions.cPressed();
+         * case KeyEvent.VK_C: _figureActions.cPressed();
         break;
-             */
+         */
         }
     }
 

@@ -129,8 +129,8 @@ public class ImportFMUAction extends AbstractAction {
                 throw new InternalErrorException(null, null,
                         "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
             } else if (!basicGraphFrameClass.isInstance(_frame)) {
-                throw new InternalErrorException("Frame " + _frame
-                        + " is not a BasicGraphFrame?");
+                throw new InternalErrorException(
+                        "Frame " + _frame + " is not a BasicGraphFrame?");
             } else {
                 BasicGraphFrame basicGraphFrame = (BasicGraphFrame) _frame;
 
@@ -139,12 +139,10 @@ public class ImportFMUAction extends AbstractAction {
 
                 // Use this file chooser so that we can read URLs or files.
                 query.addFileChooser("location", "Location (URL)",
-                        _lastLocation,
-                        /* URI base */null,
+                        _lastLocation, /* URI base */null,
                         /* File startingDirectory */basicGraphFrame
-                        .getLastDirectory(),
-                        /* allowFiles */true,
-                        /* allowDirectories */false,
+                                .getLastDirectory(),
+                        /* allowFiles */true, /* allowDirectories */false,
                         /* Color background */
                         PtolemyQuery.preferredBackgroundColor(_frame),
                         PtolemyQuery.preferredForegroundColor(_frame));

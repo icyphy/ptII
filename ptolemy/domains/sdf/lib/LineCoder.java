@@ -121,8 +121,8 @@ public class LineCoder extends SDFTransformer {
 
         // set the type constraints
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.table));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.table));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -168,9 +168,9 @@ public class LineCoder extends SDFTransformer {
         int size = (int) Math.pow(2, _wordLength);
 
         if (tableToken.length() < size) {
-            throw new IllegalActionException(this, "Table parameter must "
-                    + "have at least " + size + " entries, but only has "
-                    + tableToken.length());
+            throw new IllegalActionException(this,
+                    "Table parameter must " + "have at least " + size
+                            + " entries, but only has " + tableToken.length());
         }
 
         _table = tableToken.arrayValue();

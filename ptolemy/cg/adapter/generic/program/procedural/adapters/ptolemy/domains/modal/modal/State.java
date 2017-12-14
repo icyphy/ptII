@@ -62,10 +62,10 @@ public class State extends NamedProgramCodeGeneratorAdapter {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
-        code.append(getCodeGenerator().comment(
-                "State: Transfer tokens to the outside"));
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
+        code.append(getCodeGenerator()
+                .comment("State: Transfer tokens to the outside"));
 
         for (int i = 0; i < outputPort.getWidthInside(); i++) {
             if (i < outputPort.getWidth()) {
@@ -102,8 +102,8 @@ public class State extends NamedProgramCodeGeneratorAdapter {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: " + rate
-                    + " is negative.");
+            throw new IllegalActionException(port,
+                    "the rate: " + rate + " is negative.");
         }
 
         NamedProgramCodeGeneratorAdapter portHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()

@@ -120,8 +120,8 @@ public class AnnotationEditorFactory extends EditorFactory {
                 + _fontProperties.getStringValue("fontFamily") + "; fill:"
                 + _fontProperties.getStringValue("fontColor") + "\">" + newText
                 + "</text></svg></configure>";
-        _iconDescription.requestChange(new MoMLChangeRequest(this,
-                _iconDescription, moml));
+        _iconDescription.requestChange(
+                new MoMLChangeRequest(this, _iconDescription, moml));
     }
 
     /** Return a new widget for configuring the container.
@@ -171,8 +171,8 @@ public class AnnotationEditorFactory extends EditorFactory {
                     if (name.equals("text")) {
                         text = child.getPCData();
 
-                        String style = (String) child.getAttributeMap().get(
-                                "style");
+                        String style = (String) child.getAttributeMap()
+                                .get("style");
 
                         if (style != null) {
                             StringTokenizer tokenizer = new StringTokenizer(
@@ -259,8 +259,8 @@ public class AnnotationEditorFactory extends EditorFactory {
             _fontProperties = new Query();
 
             String[] sizes = { "9", "10", "11", "12", "14", "18", "24", "32" };
-            _fontProperties.addChoice("fontSize", "font size", sizes,
-                    _fontSize, true);
+            _fontProperties.addChoice("fontSize", "font size", sizes, _fontSize,
+                    true);
 
             // FIXME: Need a way to specify Italic, Bold (style).
             // Check SVG standard and SVGParser.

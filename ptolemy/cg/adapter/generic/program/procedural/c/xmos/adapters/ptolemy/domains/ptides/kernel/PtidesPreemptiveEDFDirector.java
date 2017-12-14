@@ -58,9 +58,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating red (derler)
  @Pt.AcceptedRating red (derler)
  */
-public class PtidesPreemptiveEDFDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+public class PtidesPreemptiveEDFDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesDirector.
@@ -99,11 +98,13 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(getCodeGenerator().comment("Create a task for each actor."));
+        code.append(
+                getCodeGenerator().comment("Create a task for each actor."));
 
         for (Actor actor : (List<Actor>) ((CompositeActor) getComponent()
                 .getContainer()).deepEntityList()) {
-            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                    actor);
             code.append(adapter.generateFireCode());
         }
 
@@ -151,9 +152,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             return code.toString();
         }
 
-        code.append(getCodeGenerator()
-                .comment(
-                        "Platform dependent initializatoin code of the PtidesDirector."));
+        code.append(getCodeGenerator().comment(
+                "Platform dependent initializatoin code of the PtidesDirector."));
 
         //code.append(_templateParser.getCodeStream().getCodeBlock("initPDBlock"));
 
@@ -203,8 +203,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             return code.toString();
         }
 
-        code.append(_templateParser.getCodeStream().getCodeBlock(
-                "preinitPDBlock"));
+        code.append(
+                _templateParser.getCodeStream().getCodeBlock("preinitPDBlock"));
 
         //        List args = new ArrayList();
         //
@@ -259,11 +259,11 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         _templateParser.getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        _templateParser.getCodeStream().append(
-                "#define numActuators " + actuators.size() + _eol);
+        _templateParser.getCodeStream()
+                .append("#define numActuators " + actuators.size() + _eol);
 
-        _templateParser.getCodeStream().appendCodeBlocks(
-                "CommonTypeDefinitions");
+        _templateParser.getCodeStream()
+                .appendCodeBlocks("CommonTypeDefinitions");
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
         _templateParser.getCodeStream().appendCodeBlocks("SchedulerBlock");
@@ -274,8 +274,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
 
         // prototypes for actuator functions.
-        _templateParser.getCodeStream().append(
-                _generateActuatorActuationFuncArrayCode());
+        _templateParser.getCodeStream()
+                .append(_generateActuatorActuationFuncArrayCode());
 
         StringBuffer actuatorIds = new StringBuffer();
         //        for (Actor actor : (List<Actor>) ((CompositeActor) _director
@@ -322,8 +322,7 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         for (Actor actuator : actuators.keySet()) {
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) actuator);
-            switchstatement
-            .append("case " + _deviceIds.get(actuator) + ":\n"
+            switchstatement.append("case " + _deviceIds.get(actuator) + ":\n"
                     + "    newEvent->fire = " + deviceName + ";\n"
                     + "break;\n");
             if (actuatorIds.length() > 0) {
@@ -335,13 +334,12 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         args.add(actuatorIds.toString());
         args.add(switchstatement.toString());
 
-        _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock("ActuationBlock",
-                        args));
+        _templateParser.getCodeStream().append(_templateParser.getCodeStream()
+                .getCodeBlock("ActuationBlock", args));
 
         if (!_templateParser.getCodeStream().isEmpty()) {
-            sharedCode.add(processCode(_templateParser.getCodeStream()
-                    .toString()));
+            sharedCode.add(
+                    processCode(_templateParser.getCodeStream().toString()));
         }
 
         return sharedCode;
@@ -410,12 +408,14 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
         for (Actor actor : actuators.keySet()) {
-            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(actor))
-                    .generateHardwareInitializationCode());
+            code.append(
+                    ((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(
+                            actor)).generateHardwareInitializationCode());
         }
         for (Actor actor : sensors.keySet()) {
-            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(actor))
-                    .generateHardwareInitializationCode());
+            code.append(
+                    ((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(
+                            actor)).generateHardwareInitializationCode());
         }
 
         code.append("}" + _eol);
@@ -482,12 +482,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             actuatorDefinition.append("on stdcore[1]: out port " + deviceName
                     + " = " + _devicePortIds.get(actuator) + ";\n");
 
-            doActuation
-            .append("void "
-                    + deviceName
-                    + "_Actuation() {\n"
-                    + "timer time;\n uint32 count;\n"
-                    + deviceName
+            doActuation.append("void " + deviceName + "_Actuation() {\n"
+                    + "timer time;\n uint32 count;\n" + deviceName
                     + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
                     + deviceName + " <: 0;\n}\n");
 
@@ -503,9 +499,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         args.add(doActuation.toString());
         args.add(initActuatorString.toString());
 
-        _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock("XCCodeBlock",
-                        args));
+        _templateParser.getCodeStream().append(_templateParser.getCodeStream()
+                .getCodeBlock("XCCodeBlock", args));
 
         return processCode(_templateParser.getCodeStream().toString());
     }

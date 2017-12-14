@@ -68,7 +68,6 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -155,10 +154,12 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         // should run without user interaction, so we set a property
         // when running non-interactive, batch mode code.
         if ((StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                .length() > 0 || StringUtilities.getProperty(
-                        "ptolemy.ptII.batchMode").length() > 0)
-                        && StringUtilities.getProperty(
-                                "ptolemy.ptII.testingMessageHandler").length() == 0) {
+                .length() > 0
+                || StringUtilities.getProperty("ptolemy.ptII.batchMode")
+                        .length() > 0)
+                && StringUtilities
+                        .getProperty("ptolemy.ptII.testingMessageHandler")
+                        .length() == 0) {
             return true;
         }
 
@@ -329,10 +330,10 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      */
     public static boolean yesNoCancelQuestion(String question,
             String trueOption, String falseOption, String exceptionOption)
-                    throws ptolemy.util.CancelException {
+            throws ptolemy.util.CancelException {
         if (!isNonInteractive()) {
-            return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
-                    exceptionOption);
+            return _handler._yesNoCancelQuestion(question, trueOption,
+                    falseOption, exceptionOption);
         } else {
             return true;
         }
@@ -418,8 +419,8 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         System.out.print(question);
         System.out.print(" (yes or no) ");
 
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-                System.in));
+        BufferedReader stdIn = new BufferedReader(
+                new InputStreamReader(System.in));
 
         try {
             String reply = stdIn.readLine();
@@ -449,12 +450,12 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      */
     protected boolean _yesNoCancelQuestion(String question, String trueOption,
             String falseOption, String exceptionOption)
-                    throws ptolemy.util.CancelException {
+            throws ptolemy.util.CancelException {
         System.out.print(question + " (" + trueOption + " or " + falseOption
                 + " or " + exceptionOption + ") ");
 
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-                System.in));
+        BufferedReader stdIn = new BufferedReader(
+                new InputStreamReader(System.in));
 
         try {
             String reply = stdIn.readLine();
@@ -465,12 +466,10 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
                 if (reply.trim().toLowerCase(Locale.getDefault())
                         .equals(trueOption.toLowerCase(Locale.getDefault()))) {
                     return true;
-                } else if (reply
-                        .trim()
-                        .toLowerCase(Locale.getDefault())
-                        .equals(exceptionOption.toLowerCase(Locale.getDefault()))) {
-                    throw new ptolemy.util.CancelException("Cancelled: "
-                            + question);
+                } else if (reply.trim().toLowerCase(Locale.getDefault()).equals(
+                        exceptionOption.toLowerCase(Locale.getDefault()))) {
+                    throw new ptolemy.util.CancelException(
+                            "Cancelled: " + question);
                 }
             }
         } catch (IOException ex) {

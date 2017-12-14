@@ -181,7 +181,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
         int offset = ((IntToken) startingDataset.getToken()).intValue();
 
         // NOTE: We assume the superclass ensures this cast is safe.
-        PlotInterface plot = (PlotInterface)this.plot;
+        PlotInterface plot = (PlotInterface) this.plot;
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 boolean localTime = ((BooleanToken) useLocalTime.getToken())
@@ -195,10 +195,12 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
                 DoubleToken currentToken = (DoubleToken) input.get(i);
                 SmoothToken smoothToken = currentToken instanceof SmoothToken
-                        ? (SmoothToken)currentToken : null;
+                        ? (SmoothToken) currentToken
+                        : null;
                 plot.addPoint(i + offset, currentTimeValue,
                         currentToken.doubleValue(),
-                        smoothToken != null ? smoothToken.derivativeValues() : null,
+                        smoothToken != null ? smoothToken.derivativeValues()
+                                : null,
                         _connected.get(i));
                 if (disconnectOnAbsent) {
                     _connected.set(i, true);

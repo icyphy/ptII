@@ -74,9 +74,9 @@ public class Main extends KernelMain {
         // Generate the makefile files in outputDirectory
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName
-                + " targetPackage:" + _targetPackage
-                + " templateDirectory:" + _templateDirectory
-                + " outputDirectory:" + _outputDirectory);
+                        + " targetPackage:" + _targetPackage
+                        + " templateDirectory:" + _templateDirectory
+                        + " outputDirectory:" + _outputDirectory);
 
         // Create a class for the composite actor of the model
         addTransform(pack, "wjtp.mt", ShallowModelTransformer.v(_toplevel),
@@ -85,7 +85,8 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.ls7",
                 new TransformerAdapter(LocalSplitter.v()));
 
-        addTransform(pack, "wjtp.ta5", new TransformerAdapter(TypeAssigner.v()));
+        addTransform(pack, "wjtp.ta5",
+                new TransformerAdapter(TypeAssigner.v()));
         addTransform(pack, "wjtp.ib3", InvocationBinder.v());
 
         // Run the standard soot optimizations.  We explicitly specify

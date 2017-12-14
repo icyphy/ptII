@@ -78,17 +78,17 @@ public class ObjectTokenSink extends Sink {
             if (token.getValue() instanceof Double) {
                 Double value = (Double) token.getValue();
                 if (value.compareTo(Double.valueOf(42.0)) != 0) {
-                    throw new IllegalActionException("Input was " + value
-                            + ", expected 42.0");
+                    throw new IllegalActionException(
+                            "Input was " + value + ", expected 42.0");
                 }
             } else {
                 // Ignore null ObjectTokens
                 if (token.getValue() != null) {
-                    throw new IllegalActionException("Input was a " + token
-                            + ", which is a " + token.getClass()
-                            + " with a value " + token.getValue()
-                            + ", which was not null"
-                            + ".  A Double was expected.");
+                    throw new IllegalActionException(
+                            "Input was a " + token + ", which is a "
+                                    + token.getClass() + " with a value "
+                                    + token.getValue() + ", which was not null"
+                                    + ".  A Double was expected.");
                 }
             }
         }

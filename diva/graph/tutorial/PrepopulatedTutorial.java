@@ -148,8 +148,8 @@ public class PrepopulatedTutorial {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                RandomLayout random = new RandomLayout(new BasicLayoutTarget(
-                        bgc));
+                RandomLayout random = new RandomLayout(
+                        new BasicLayoutTarget(bgc));
                 random.layout(model.getRoot());
             }
         });
@@ -160,11 +160,14 @@ public class PrepopulatedTutorial {
      * the default constructor (giving it an empty graph),
      * and then set the model once the window is showing.
      */
-    public void setModelPostDisplay(MutableGraphModel model, AppContext context) {
+    public void setModelPostDisplay(MutableGraphModel model,
+            AppContext context) {
         BasicGraphController gc = new BasicGraphController();
-        gc.addGraphViewListener(new IncrementalLayoutListener(
-                new IncrLayoutAdapter(
-                        new LevelLayout(new BasicLayoutTarget(gc))), null));
+        gc.addGraphViewListener(
+                new IncrementalLayoutListener(
+                        new IncrLayoutAdapter(
+                                new LevelLayout(new BasicLayoutTarget(gc))),
+                        null));
         context.getContentPane().add(new JGraph(new GraphPane(gc, model)));
     }
 }

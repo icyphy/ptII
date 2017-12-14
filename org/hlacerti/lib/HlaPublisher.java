@@ -93,7 +93,6 @@ public class HlaPublisher extends TypedAtomicActor {
         classObjectHandle.setExpression("\"myObjectClass\"");
         attributeChanged(classObjectHandle);
 
-
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
         useCertiMessageBuffer.setExpression("false");
@@ -189,22 +188,23 @@ public class HlaPublisher extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
 
-            super.fire();
+        super.fire();
 
-            for (int i = 0 ; i < input.getWidth() ; ++i) {
-                    if (input.hasToken(i)) {
-                            Token in = input.get(i);
-                            _hlaManager.updateHlaAttribute(this, in,input.sourcePortList().get(i).getContainer().getName());
+        for (int i = 0; i < input.getWidth(); ++i) {
+            if (input.hasToken(i)) {
+                Token in = input.get(i);
+                _hlaManager.updateHlaAttribute(this, in,
+                        input.sourcePortList().get(i).getContainer().getName());
 
-                            if (_debugging) {
-                                    _debug(this.getDisplayName()
-                        + " Called fire() - the update value \""
-                        + in.toString() + "\" of the HLA Attribute \""
-                        + this.getName() + "\" has been sent to \""
-                        + _hlaManager.getDisplayName() + "\"");
-                            }
-                    }
+                if (_debugging) {
+                    _debug(this.getDisplayName()
+                            + " Called fire() - the update value \""
+                            + in.toString() + "\" of the HLA Attribute \""
+                            + this.getName() + "\" has been sent to \""
+                            + _hlaManager.getDisplayName() + "\"");
+                }
             }
+        }
     }
 
     /** Indicate if the HLA publisher actor uses the CERTI message
@@ -222,7 +222,6 @@ public class HlaPublisher extends TypedAtomicActor {
 
     /** A reference to the associated {@link HlaManager}. */
     private HlaManager _hlaManager;
-
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;

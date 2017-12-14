@@ -89,23 +89,23 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.toString(i));
             if (getCodeGenerator().isPrimitive(actor.input.getType())) {
-                inputType = getCodeGenerator().codeGenType(
-                        actor.input.getType());
+                inputType = getCodeGenerator()
+                        .codeGenType(actor.input.getType());
             } else if (actor.input.getType().toString().equals("complex")) {
-                inputType = getCodeGenerator().codeGenType(
-                        actor.input.getType());
+                inputType = getCodeGenerator()
+                        .codeGenType(actor.input.getType());
             } else {
                 inputType = "Token";
                 ((ProceduralCodeGenerator) getCodeGenerator())
-                .markFunctionCalled("equals_Token_Token",
-                        (ProceduralTemplateParser) _templateParser);
+                        .markFunctionCalled("equals_Token_Token",
+                                (ProceduralTemplateParser) _templateParser);
                 //((ProceduralCodeGenerator) getCodeGenerator()).markFunctionCalled(
                 //        "isCloseTo_Token_Token",
                 //        (ProceduralTemplateParser) _templateParser);
             }
 
-            codeStream
-            .appendCodeBlock(inputType + "Block" + multiChannel, args);
+            codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
+                    args);
         }
         return processCode(codeStream.toString());
     }

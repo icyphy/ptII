@@ -70,8 +70,8 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
-            LinkedHashMap<String, Integer[]> tilingSpec, List<String> dimensions)
-                    throws IllegalActionException {
+            LinkedHashMap<String, Integer[]> tilingSpec,
+            List<String> dimensions) throws IllegalActionException {
 
         /* FIXME: Checks for validity of array needed here.
          */
@@ -213,7 +213,8 @@ public class PthalesReceiver extends SDFReceiver {
      */
     @Override
     public boolean hasRoom(int numberOfTokens) {
-        return _getAddress(_positionOut + numberOfTokens - 1, false) < _buffer.length;
+        return _getAddress(_positionOut + numberOfTokens - 1,
+                false) < _buffer.length;
     }
 
     /** Return if the buffer contains 1 more token to be read.
@@ -230,7 +231,8 @@ public class PthalesReceiver extends SDFReceiver {
      */
     @Override
     public boolean hasToken(int numberOfTokens) {
-        return _getAddress(_positionIn + numberOfTokens - 1, true) < _buffer.length;
+        return _getAddress(_positionIn + numberOfTokens - 1,
+                true) < _buffer.length;
     }
 
     /** Return true if the receiver is dynamic.
@@ -303,7 +305,7 @@ public class PthalesReceiver extends SDFReceiver {
                         }
                         if (_buffer == null || _buffer.length < finalSize) {
                             _buffer = new Token[finalSize
-                                                * ((IntToken) _header.get(1)).intValue()];
+                                    * ((IntToken) _header.get(1)).intValue()];
                         }
 
                         // Address jump for each dimension, determined by output port only
@@ -383,8 +385,8 @@ public class PthalesReceiver extends SDFReceiver {
      */
     @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
-            Receiver[] receivers) throws NoRoomException,
-            IllegalActionException {
+            Receiver[] receivers)
+            throws NoRoomException, IllegalActionException {
         for (Receiver receiver : receivers) {
 
             for (int i = 0; i < numberOfTokens; i++) {
@@ -483,7 +485,7 @@ public class PthalesReceiver extends SDFReceiver {
         int finalSize = PthalesIOPort.getArraySize(port);
         if (_buffer == null || _buffer.length < finalSize) {
             _buffer = new Token[finalSize
-                                * PthalesIOPort.getNbTokenPerData(port)];
+                    * PthalesIOPort.getNbTokenPerData(port)];
         }
 
         // Computed for output ports only
@@ -636,16 +638,17 @@ public class PthalesReceiver extends SDFReceiver {
         patternOrder = new String[pattern.size()];
         pattern.keySet().toArray(patternOrder);
         if (tiling == null) {
-            throw new NullPointerException("tiling was null?  input: " + input + ", _patternOut: " + _patternOut
-                    + ", _patternIn: " + _patternIn);
+            throw new NullPointerException(
+                    "tiling was null?  input: " + input + ", _patternOut: "
+                            + _patternOut + ", _patternIn: " + _patternIn);
         }
         // tiling order
         String[] tilingOrder = new String[tiling.size()];
         tiling.keySet().toArray(tilingOrder);
 
         // Position computation
-        int rep = (int) Math.floor(position
-                / (double) (patternSize * _nbTokens));
+        int rep = (int) Math
+                .floor(position / (double) (patternSize * _nbTokens));
         int dim = (int) Math.floor(position % (patternSize * _nbTokens))
                 / _nbTokens;
         int numToken = (int) Math.floor(position % _nbTokens);

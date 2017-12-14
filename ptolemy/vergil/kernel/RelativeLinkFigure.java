@@ -100,8 +100,8 @@ public class RelativeLinkFigure extends AbstractFigure {
         NamedObj relativeTo = _relativeLocation.getRelativeToNamedObj();
         if (relativeTo != null) {
             _updateLine(relativeTo);
-            double distance = Math.sqrt(_line.x2 * _line.x2 + _line.y2
-                    * _line.y2);
+            double distance = Math
+                    .sqrt(_line.x2 * _line.x2 + _line.y2 * _line.y2);
             if (distance <= RelativeLocation.BREAK_THRESHOLD) {
                 g.setColor(NORMAL_COLOR);
             } else {
@@ -283,8 +283,8 @@ public class RelativeLinkFigure extends AbstractFigure {
 
     /** The stroke used for drawing the line. */
     private static final Stroke STROKE = new BasicStroke(1.0f,
-            BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {
-            2.0f, 2.0f }, 0.0f);
+            BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
+            new float[] { 2.0f, 2.0f }, 0.0f);
 
     /** The normal color of the line. */
     private static final Color NORMAL_COLOR = new Color(180, 180, 0);

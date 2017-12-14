@@ -57,18 +57,21 @@ public class Tuple3f {
     }
 
     public void clamp(float min, float max) {
-        if (x < min)
+        if (x < min) {
             x = min;
-        else if (x > max)
+        } else if (x > max) {
             x = max;
-        if (y < min)
+        }
+        if (y < min) {
             y = min;
-        else if (y > max)
+        } else if (y > max) {
             y = max;
-        if (z < min)
+        }
+        if (z < min) {
             z = min;
-        else if (z > max)
+        } else if (z > max) {
             z = max;
+        }
     }
 
     public void set(float x, float y, float z) {

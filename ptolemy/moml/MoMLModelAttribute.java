@@ -135,9 +135,10 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
                 try {
                     configure(null, modelURLString, null);
                 } catch (Exception ex) {
-                    throw new IllegalActionException(this, ex, "Could not "
-                            + "configure the model contents of the "
-                            + "MoMLModelAttribute with the given URL.");
+                    throw new IllegalActionException(this, ex,
+                            "Could not "
+                                    + "configure the model contents of the "
+                                    + "MoMLModelAttribute with the given URL.");
                 }
             }
         } else {
@@ -154,8 +155,8 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MoMLModelAttribute newObject = (MoMLModelAttribute) super
-                .clone(workspace);
+        MoMLModelAttribute newObject = (MoMLModelAttribute) super.clone(
+                workspace);
         if (_model != null) {
             newObject._model = (NamedObj) _model.clone(workspace());
         }

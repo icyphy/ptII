@@ -242,11 +242,11 @@ abstract public class GRShadedShape extends GRActor3D {
                             .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
-                        _transparencyAttributes
-                        .setTransparencyMode(TransparencyAttributes.NICEST);
+                        _transparencyAttributes.setTransparencyMode(
+                                TransparencyAttributes.NICEST);
                     } else {
-                        _transparencyAttributes
-                        .setTransparencyMode(TransparencyAttributes.NONE);
+                        _transparencyAttributes.setTransparencyMode(
+                                TransparencyAttributes.NONE);
                     }
 
                     _transparencyAttributes.setTransparency(transparent);
@@ -335,22 +335,23 @@ abstract public class GRShadedShape extends GRActor3D {
         try {
             _createModel();
         } catch (UnsatisfiedLinkError error) {
-            throw new IllegalActionException(this, error, "Could not create the Java 3D model. "
-                    + "Under Mac OS X, perhaps the Jogl shared libraries are not in DYLD_LIBRARY_PATH.\n"
-                    + "To get Jogl, do:\n"
-                    + " cd $PTII/vendors; mkdir jogl; cd jogl\n"
-                    + " wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z\n"
-                    + " 7z x  jogamp-all-platforms.7z\n"
-                    + "If you don't have 7z, get it from http://www.7-zip.org/download.html. Then:\n"
-                    + "export DYLD_LIBRARY_PATH=${PTII}/jogl/jogamp-all-platforms/lib/macosx-universal:${DYLD_LIBRARY_PATH}\n"
-                    + "If the error message is "
-                    + "java.lang.UnsatisfiedLinkError: jogamp.common.jvm.JVMUtil.initialize(Ljava/nio/ByteBuffer;)Z\n\n"
-                    + "Then the problem is likely that you DYLD_LIBRARY_PATH includes Matlab and you are "
-                    + "invoking the Mac .app file.  If, under Mac OS X, Ptolemy was invoked from the shell, then try doing\n"
-                    + " unset DYLD_LIBRARY_PATH"
-                    + "If, under Mac OS X, Ptolemy was invoked by double clicking on an icon, then perhaps "
-                    + "remove the Matlab libraries from DYLD_LIBRARY_PATH"
-                    + "by editing ~/.MacOSX/environment.plist");
+            throw new IllegalActionException(this, error,
+                    "Could not create the Java 3D model. "
+                            + "Under Mac OS X, perhaps the Jogl shared libraries are not in DYLD_LIBRARY_PATH.\n"
+                            + "To get Jogl, do:\n"
+                            + " cd $PTII/vendors; mkdir jogl; cd jogl\n"
+                            + " wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z\n"
+                            + " 7z x  jogamp-all-platforms.7z\n"
+                            + "If you don't have 7z, get it from http://www.7-zip.org/download.html. Then:\n"
+                            + "export DYLD_LIBRARY_PATH=${PTII}/jogl/jogamp-all-platforms/lib/macosx-universal:${DYLD_LIBRARY_PATH}\n"
+                            + "If the error message is "
+                            + "java.lang.UnsatisfiedLinkError: jogamp.common.jvm.JVMUtil.initialize(Ljava/nio/ByteBuffer;)Z\n\n"
+                            + "Then the problem is likely that you DYLD_LIBRARY_PATH includes Matlab and you are "
+                            + "invoking the Mac .app file.  If, under Mac OS X, Ptolemy was invoked from the shell, then try doing\n"
+                            + " unset DYLD_LIBRARY_PATH"
+                            + "If, under Mac OS X, Ptolemy was invoked by double clicking on an icon, then perhaps "
+                            + "remove the Matlab libraries from DYLD_LIBRARY_PATH"
+                            + "by editing ~/.MacOSX/environment.plist");
         }
     }
 
@@ -481,15 +482,15 @@ abstract public class GRShadedShape extends GRActor3D {
         // appropriate capabilities.
         if (allowChanges) {
             _transparencyAttributes
-            .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+                    .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
             _transparencyAttributes
-            .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
+                    .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
             _material.setCapability(Material.ALLOW_COMPONENT_WRITE);
             _coloringAttributes
-            .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
+                    .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
             _appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
             _polygonAttributes
-            .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
+                    .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
         }
 
         _changesAllowedNow = allowChanges;
@@ -541,7 +542,7 @@ abstract public class GRShadedShape extends GRActor3D {
         // attributes even if not needed now.
         if (attributes == null
                 && ((BooleanToken) allowRuntimeChanges.getToken())
-                .booleanValue()) {
+                        .booleanValue()) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
             _appearance.setTextureAttributes(attributes);

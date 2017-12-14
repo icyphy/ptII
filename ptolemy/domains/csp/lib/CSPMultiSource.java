@@ -73,8 +73,8 @@ public class CSPMultiSource extends CSPActor {
      *  @exception NameDuplicationException If the tokenLimit parameter
      *   name coincides with a port already in this actor.
      */
-    public CSPMultiSource() throws IllegalActionException,
-    NameDuplicationException {
+    public CSPMultiSource()
+            throws IllegalActionException, NameDuplicationException {
         super();
         tokenLimit = new Parameter(this, "tokenLimit", new IntToken(-1));
     }
@@ -213,7 +213,7 @@ public class CSPMultiSource extends CSPActor {
             for (int i = 0; i < output.getWidth(); i++) {
                 System.out.println("MultiSource: Branch " + i
                         + " successfully  rendezvoused " + _branchCount[i]
-                                + " times.");
+                        + " times.");
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,

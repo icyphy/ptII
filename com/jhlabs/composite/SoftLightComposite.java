@@ -27,12 +27,14 @@ public final class SoftLightComposite extends RGBComposite {
     }
 
     @Override
-    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
+    public CompositeContext createContext(ColorModel srcColorModel,
+            ColorModel dstColorModel, RenderingHints hints) {
         return new Context(extraAlpha, srcColorModel, dstColorModel);
     }
 
     static class Context extends RGBCompositeContext {
-        public Context(float alpha, ColorModel srcColorModel, ColorModel dstColorModel) {
+        public Context(float alpha, ColorModel srcColorModel,
+                ColorModel dstColorModel) {
             super(alpha, srcColorModel, dstColorModel);
         }
 
@@ -53,11 +55,14 @@ public final class SoftLightComposite extends RGBComposite {
 
                 int d;
                 d = multiply255(sr, dir);
-                dor = d + multiply255(dir, 255 - multiply255(255 - dir, 255 - sr) - d);
+                dor = d + multiply255(dir,
+                        255 - multiply255(255 - dir, 255 - sr) - d);
                 d = multiply255(sg, dig);
-                dog = d + multiply255(dig, 255 - multiply255(255 - dig, 255 - sg) - d);
+                dog = d + multiply255(dig,
+                        255 - multiply255(255 - dig, 255 - sg) - d);
                 d = multiply255(sb, dib);
-                dob = d + multiply255(dib, 255 - multiply255(255 - dib, 255 - sb) - d);
+                dob = d + multiply255(dib,
+                        255 - multiply255(255 - dib, 255 - sb) - d);
 
                 float a = alpha * sa / 255f;
                 float ac = 1 - a;

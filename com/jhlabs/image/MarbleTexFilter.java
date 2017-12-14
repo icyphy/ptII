@@ -99,7 +99,8 @@ public class MarbleTexFilter extends PointFilter {
             //                        float f = Noise.turbulence2(nx, ny, turbulence);
             //                        f = 3*turbulenceFactor*f+ny;
             //                        f = Math.sin(f*Math.PI);
-            float chaos = turbulenceFactor * Noise.turbulence2(nx, ny, turbulence);
+            float chaos = turbulenceFactor
+                    * Noise.turbulence2(nx, ny, turbulence);
             //                        float f = Math.sin(Math.sin(8.*chaos + 7*nx +3.*ny));
             float f = 3 * turbulenceFactor * chaos + ny;
             f = (float) Math.sin(f * Math.PI);
@@ -124,8 +125,10 @@ public class MarbleTexFilter extends PointFilter {
             greenPerturb = .2f * perturb + 0.8f;
             grnPerturb = .15f * perturb + 0.85f;
             grn = 0.5f * (float) Math.pow(Math.abs(brownLayer), 0.3);
-            brownLayer = (float) Math.pow(0.5 * (brownLayer + 1.0), 0.6) * brownPerturb;
-            greenLayer = (float) Math.pow(0.5 * (greenLayer + 1.0), 0.6) * greenPerturb;
+            brownLayer = (float) Math.pow(0.5 * (brownLayer + 1.0), 0.6)
+                    * brownPerturb;
+            greenLayer = (float) Math.pow(0.5 * (greenLayer + 1.0), 0.6)
+                    * greenPerturb;
 
             red = (0.5f * brownLayer + 0.35f * greenLayer) * 2.0f * grn;
             blu = (0.25f * brownLayer + 0.35f * greenLayer) * 2.0f * grn;

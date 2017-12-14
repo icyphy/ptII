@@ -120,9 +120,9 @@ public class HomerMainFrame extends JFrame {
      *  @exception NameDuplicationException If the name coincides with an
      *  attribute already in the container.
      */
-    public void addLabel(TabScenePanel panel, String label,
-            Dimension dimension, Point point) throws IllegalActionException,
-            NameDuplicationException {
+    public void addLabel(TabScenePanel panel, String label, Dimension dimension,
+            Point point)
+            throws IllegalActionException, NameDuplicationException {
 
         Attribute tabsNode = _topLevelActor
                 .getAttribute(HomerConstants.TABS_NODE);
@@ -201,8 +201,8 @@ public class HomerMainFrame extends JFrame {
      *  an item already on the scene.
      */
     public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
-            Dimension dimension, Point point) throws IllegalActionException,
-            NameDuplicationException {
+            Dimension dimension, Point point)
+            throws IllegalActionException, NameDuplicationException {
         if (point == null) {
             throw new IllegalActionException(
                     "Cannot create visual representation without the x, y coordinates.");
@@ -515,10 +515,9 @@ public class HomerMainFrame extends JFrame {
      */
     public static boolean isLabelWidget(NamedObj object) {
         Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);
-        if (object instanceof Attribute
-                && tab instanceof Settable
-                && ((Settable) tab).getExpression().equals(
-                        object.getContainer().getName())) {
+        if (object instanceof Attribute && tab instanceof Settable
+                && ((Settable) tab).getExpression()
+                        .equals(object.getContainer().getName())) {
             return true;
         }
 
@@ -546,12 +545,12 @@ public class HomerMainFrame extends JFrame {
         setContentPane(_contentPane);
 
         _namedObjectTreePanel = new NamedObjectTree();
-        _namedObjectTreePanel.setBorder(new TitledBorder(new EtchedBorder(
-                EtchedBorder.LOWERED, null, null), "Model Elements",
-                TitledBorder.LEADING, TitledBorder.TOP, null,
+        _namedObjectTreePanel.setBorder(new TitledBorder(
+                new EtchedBorder(EtchedBorder.LOWERED, null, null),
+                "Model Elements", TitledBorder.LEADING, TitledBorder.TOP, null,
                 new Color(0, 0, 0)));
-        _namedObjectTreePanel.setPreferredSize(new Dimension(_SIDEBAR_WIDTH,
-                _DUMMY_HEIGHT));
+        _namedObjectTreePanel
+                .setPreferredSize(new Dimension(_SIDEBAR_WIDTH, _DUMMY_HEIGHT));
         _contentPane.add(_namedObjectTreePanel, BorderLayout.WEST);
 
         JPanel pnlEast = new JPanel();
@@ -563,8 +562,8 @@ public class HomerMainFrame extends JFrame {
         _graphPanel.setLayout(new BorderLayout());
         _graphPanel.setBorder(new TitledBorder(null, "Graph Preview",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        _graphPanel.setPreferredSize(new Dimension(_SIDEBAR_WIDTH,
-                _GRAPH_HEIGHT));
+        _graphPanel
+                .setPreferredSize(new Dimension(_SIDEBAR_WIDTH, _GRAPH_HEIGHT));
         pnlEast.add(_graphPanel, BorderLayout.NORTH);
 
         _remoteObjectsPanel = new RemoteObjectList(this);
@@ -599,7 +598,7 @@ public class HomerMainFrame extends JFrame {
         _graphPanel.add(
                 new JCanvasPanner(new JGraph(new BasicGraphPane(controller,
                         new ActorGraphModel(topLevelActor), topLevelActor))),
-                        BorderLayout.CENTER);
+                BorderLayout.CENTER);
         _graphPanel.revalidate();
     }
 

@@ -59,8 +59,7 @@ public class DocAttributeChanges extends MoMLFilterSimple {
             String attributeName, String attributeValue, String xmlFile) {
 
         if (container != null
-                && container.getClass().getName()
-                        .equals(_docAttributeClassName)
+                && container.getClass().getName().equals(_docAttributeClassName)
                 && attributeName.equals("class") && attributeValue != null
                 && attributeValue.equals(_stringParameterClassName)) {
             MoMLParser.setModified(true);

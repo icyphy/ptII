@@ -93,15 +93,18 @@ public class FadeFilter extends PointFilter {
     public int filterRGB(int x, int y, int rgb) {
         float nx = m00 * x + m01 * y;
         float ny = m10 * x + m11 * y;
-        if (sides == 2)
+        if (sides == 2) {
             nx = (float) Math.sqrt(nx * nx + ny * ny);
-        else if (sides == 3)
+        } else if (sides == 3) {
             nx = ImageMath.mod(nx, 16);
-        else if (sides == 4)
+        } else if (sides == 4) {
             nx = symmetry(nx, 16);
-        int alpha = (int) (ImageMath.smoothStep(fadeStart, fadeStart + fadeWidth, nx) * 255);
-        if (invert)
+        }
+        int alpha = (int) (ImageMath.smoothStep(fadeStart,
+                fadeStart + fadeWidth, nx) * 255);
+        if (invert) {
             alpha = 255 - alpha;
+        }
         return (alpha << 24) | (rgb & 0x00ffffff);
     }
 
@@ -114,8 +117,9 @@ public class FadeFilter extends PointFilter {
                         return x;
         */
         x = ImageMath.mod(x, 2 * b);
-        if (x > b)
+        if (x > b) {
             return 2 * b - x;
+        }
         return x;
     }
 

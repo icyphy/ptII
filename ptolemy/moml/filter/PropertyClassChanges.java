@@ -157,17 +157,15 @@ public class PropertyClassChanges extends MoMLFilterSimple {
             if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
                 if (container != null
-                        && !container.getFullName().equals(
-                                _currentActorFullName)
-                                && !container
-                                .getFullName()
-                                .substring(
-                                        0,
+                        && !container.getFullName()
+                                .equals(_currentActorFullName)
+                        && !container.getFullName()
+                                .substring(0,
                                         container.getFullName()
-                                        .lastIndexOf("."))
-                                        .equals(_currentActorFullName)
+                                                .lastIndexOf("."))
+                                .equals(_currentActorFullName)
 
-                        ) {
+                ) {
                     // This is fix for an unusual bug involving
                     // space.Occupant.
                     // See test 1.1 in test/PropertyClassChanges.tcl
@@ -226,8 +224,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                     && !container.getFullName().equals(_currentActorFullName)
                     /*&& !container.getFullName().substring(0,
                       container.getFullName().lastIndexOf(".")).equals(_currentActorFullName)*/
-                    && !container.getFullName().startsWith(
-                            _currentActorFullName)) {
+                    && !container.getFullName()
+                            .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 //                     System.out.println("<---filterAttributeValue: " + container + "\t"
@@ -289,11 +287,11 @@ public class PropertyClassChanges extends MoMLFilterSimple {
      */
     @Override
     public String toString() {
-        StringBuffer results = new StringBuffer(getClass().getName()
-                + ": Update any actor port class names\n"
-                + "that have been renamed.\n"
-                + "Below are the actors that are affected, along "
-                + "with the port name\nand the new classname:");
+        StringBuffer results = new StringBuffer(
+                getClass().getName() + ": Update any actor port class names\n"
+                        + "that have been renamed.\n"
+                        + "Below are the actors that are affected, along "
+                        + "with the port name\nand the new classname:");
         Iterator actors = _actorsWithPropertyClassChanges.keySet().iterator();
 
         while (actors.hasNext()) {
@@ -310,8 +308,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                             .next();
                     String oldProperty = (String) properties.getKey();
                     String newProperty = (String) properties.getValue();
-                    results.append("\t\t" + oldProperty + "\t -> "
-                            + newProperty + "\n");
+                    results.append("\t\t" + oldProperty + "\t -> " + newProperty
+                            + "\n");
                 }
             }
         }
@@ -601,14 +599,14 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         rateParameterChanges.put("tokenConsumptionRate", null);
         rateParameterChanges.put("tokenInitProduction", null);
         rateParameterChanges.put("tokenInitConsumption", null);
-        _actorsWithPropertyClassChanges
-        .put("ptolemy.domains.sdf.lib.Autocorrelation",
-                rateParameterChanges);
-        _actorsWithPropertyClassChanges
-        .put("ptolemy.domains.sdf.lib.ArrayToSequence",
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.Autocorrelation",
                 rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.sdf.lib.BitsToInt", rateParameterChanges);
+                "ptolemy.domains.sdf.lib.ArrayToSequence",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.BitsToInt",
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.Chop",
                 rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
@@ -623,10 +621,10 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.IFFT",
                 rateParameterChanges);
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.sdf.lib.IntToBits", rateParameterChanges);
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.sdf.lib.LineCoder", rateParameterChanges);
+        _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.IntToBits",
+                rateParameterChanges);
+        _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.LineCoder",
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.MatrixToDouble", rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
@@ -636,8 +634,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.SampleDelay", rateParameterChanges);
-        _actorsWithPropertyClassChanges
-        .put("ptolemy.domains.sdf.lib.SequenceToArray",
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.sdf.lib.SequenceToArray",
                 rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.SequenceToMatrix",
@@ -650,8 +648,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         // Transition
         HashMap TransitionClassChanges = new HashMap();
         TransitionClassChanges.put("relationList", null);
-        _actorsWithPropertyClassChanges
-        .put("ptolemy.domains.fsm.kernel.Transition",
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.fsm.kernel.Transition",
                 TransitionClassChanges);
 
         _actorsWithPropertyClassChanges.put(
@@ -662,8 +660,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         HashMap DocAttributeClassChanges = new HashMap();
         DocAttributeClassChanges.put("description",
                 "ptolemy.kernel.util.StringAttribute");
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.vergil.basic.DocAttribute", DocAttributeClassChanges);
+        _actorsWithPropertyClassChanges.put("ptolemy.vergil.basic.DocAttribute",
+                DocAttributeClassChanges);
 
         // Repeat actor
         // Change its numberOfTimes from Parameter to be PortParameter.
@@ -700,8 +698,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 "ptolemy.actor.parameters.PortParameter");
 
         _actorsWithPropertyClassChanges.put(
-                "org.terraswarm.accessor.JSAccessor",
-                jsAccessorClassChanges);
+                "org.terraswarm.accessor.JSAccessor", jsAccessorClassChanges);
 
         // Rhino JavaScript
         HashMap jsJavaScriptClassChanges = new HashMap();
@@ -713,10 +710,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         jsJavaScriptClassChanges.put("script",
                 "ptolemy.actor.parameters.PortParameter");
 
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.actor.lib.jjs.JavaScript",
+        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.jjs.JavaScript",
                 jsJavaScriptClassChanges);
-
 
     }
 }

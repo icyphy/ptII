@@ -123,7 +123,8 @@ public class CrossbarSwitch extends BasicSwitch {
         Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
         // been received; _nextTimeFree could be null.
-        if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
+        if (_nextFireTime != null
+                && currentTime.compareTo(_nextFireTime) == 0) {
 
             // move tokens from input queue to switch fabric
 
@@ -133,17 +134,17 @@ public class CrossbarSwitch extends BasicSwitch {
                 if (event != null) {
                     Object[] output = (Object[]) event.contents;
                     Receiver receiver = (Receiver) output[0];
-                    int actorPort = _ioPortToSwitchInPort.get(receiver
-                            .getContainer());
+                    int actorPort = _ioPortToSwitchInPort
+                            .get(receiver.getContainer());
                     boolean free = true;
                     for (int j = 0; j < _numberOfPorts; j++) {
                         free = free & _crossbarSwitchStates[j][actorPort]
                                 & _crossbarSwitchStates[i][j];
                     }
                     if (free) {
-                        _switchFabricQueue.get(actorPort).add(
-                                new TimedEvent(currentTime
-                                        .add(_switchFabricDelay),
+                        _switchFabricQueue.get(actorPort)
+                                .add(new TimedEvent(
+                                        currentTime.add(_switchFabricDelay),
                                         event.contents));
                         _crossbarSwitchStates[i][actorPort] = false;
                     } else {
@@ -161,8 +162,8 @@ public class CrossbarSwitch extends BasicSwitch {
                             .get(i).get(0);
                     Receiver receiver = (Receiver) output[0];
 
-                    int actorPort = _ioPortToSwitchInPort.get(receiver
-                            .getContainer());
+                    int actorPort = _ioPortToSwitchInPort
+                            .get(receiver.getContainer());
                     Time lastTimeStamp = currentTime;
                     boolean free = true;
                     for (int j = 0; j < _numberOfPorts; j++) {
@@ -170,9 +171,8 @@ public class CrossbarSwitch extends BasicSwitch {
                                 & _crossbarSwitchStates[i][j];
                     }
                     if (free) {
-                        _switchFabricQueue.get(actorPort).add(
-                                new TimedEvent(lastTimeStamp
-                                        .add(_switchFabricDelay), output));
+                        _switchFabricQueue.get(actorPort).add(new TimedEvent(
+                                lastTimeStamp.add(_switchFabricDelay), output));
                         _crossbarSwitchStates[i][actorPort] = false;
                         _waitingOnSwitchFabricQueue.get(i).take();
                     }
@@ -186,11 +186,13 @@ public class CrossbarSwitch extends BasicSwitch {
                 if (event != null) {
                     Time lastTimeStamp = currentTime;
                     if (_switchFabricQueue.get(i).size() > 0) {
-                        lastTimeStamp = _switchFabricQueue.get(i).last().timeStamp;
+                        lastTimeStamp = _switchFabricQueue.get(i)
+                                .last().timeStamp;
                     }
-                    _outputTokens.get(i).add(
-                            new TimedEvent(lastTimeStamp
-                                    .add(_outputBufferDelay), event.contents));
+                    _outputTokens.get(i)
+                            .add(new TimedEvent(
+                                    lastTimeStamp.add(_outputBufferDelay),
+                                    event.contents));
                     _switchFabricQueue.get(i).remove(event);
                     // Reset crossbar state.
                     for (int j = 0; j < _numberOfPorts; j++) {
@@ -256,8 +258,8 @@ public class CrossbarSwitch extends BasicSwitch {
                         .get(0);
                 Receiver receiver = (Receiver) output[0];
 
-                int actorPort = _ioPortToSwitchOutPort.get(receiver
-                        .getContainer());
+                int actorPort = _ioPortToSwitchOutPort
+                        .get(receiver.getContainer());
                 boolean free = true;
                 for (int j = 0; j < _numberOfPorts; j++) {
                     free = free & _crossbarSwitchStates[j][actorPort]
@@ -269,7 +271,8 @@ public class CrossbarSwitch extends BasicSwitch {
             }
         }
         for (int i = 0; i < _numberOfPorts; i++) {
-            _nextFireTime = _getNextFireTime(_nextFireTime, _inputTokens.get(i));
+            _nextFireTime = _getNextFireTime(_nextFireTime,
+                    _inputTokens.get(i));
             _nextFireTime = _getNextFireTime(_nextFireTime,
                     _outputTokens.get(i));
             _nextFireTime = _getNextFireTime(_nextFireTime,

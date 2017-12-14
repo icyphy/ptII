@@ -89,7 +89,7 @@ import ptolemy.vergil.basic.export.web.WebExportParameters;
  */
 public class ExportModel {
     /** Export an image of a model to a file or directory.
-
+    
      *  <p>The image is written to a file or directory with the same name
      *  as the model.  If formatName starts with "HTM" or "htm", then
      *  a directory with the same name as the basename of the model is
@@ -144,8 +144,8 @@ public class ExportModel {
             final boolean whiteBackground) throws Exception {
 
         exportModel(copyJavaScriptFiles, force, formatName, modelFileName, run,
-                openComposites, openResults, outputFileOrDirectory, save,
-                30000, whiteBackground);
+                openComposites, openResults, outputFileOrDirectory, save, 30000,
+                whiteBackground);
     }
 
     /** Export an image of a model to a file or directory.
@@ -197,7 +197,8 @@ public class ExportModel {
             final String modelFileName, final boolean run,
             final boolean openComposites, final boolean openResults,
             final String outputFileOrDirectory, final boolean save,
-            final long timeOut, final boolean whiteBackground) throws Exception {
+            final long timeOut, final boolean whiteBackground)
+            throws Exception {
         // FIXME: Maybe we should pass an ExportParameter here?
 
         // FIXME: this seem wrong:  The inner classes are in different
@@ -240,12 +241,12 @@ public class ExportModel {
         if (isHTM) {
             if (outputFileOrDirectory != null) {
                 temporaryHTMLDirectory = new File(outputFileOrDirectory);
-                temporaryImageFile = new File(outputFileOrDirectory
-                        + File.separator + "index.html");
+                temporaryImageFile = new File(
+                        outputFileOrDirectory + File.separator + "index.html");
             } else {
                 temporaryHTMLDirectory = new File(model[0].getName());
-                temporaryImageFile = new File(model[0].getName()
-                        + File.separator + "index.html");
+                temporaryImageFile = new File(
+                        model[0].getName() + File.separator + "index.html");
 
             }
         } else {
@@ -253,10 +254,10 @@ public class ExportModel {
             if (outputFileOrDirectory != null) {
                 // If the filename does not end in the formatName,
                 // append the format name.
-                if (outputFileOrDirectory.endsWith(formatName
-                        .toLowerCase(Locale.getDefault()))
-                        || outputFileOrDirectory.endsWith(formatName
-                                .toUpperCase(Locale.getDefault()))) {
+                if (outputFileOrDirectory
+                        .endsWith(formatName.toLowerCase(Locale.getDefault()))
+                        || outputFileOrDirectory.endsWith(
+                                formatName.toUpperCase(Locale.getDefault()))) {
                     suffix = "";
                 }
                 temporaryImageFile = new File(outputFileOrDirectory + suffix);
@@ -281,23 +282,21 @@ public class ExportModel {
             if (isHTM) {
                 if (htmlDirectory.exists()
                         && !FileUtilities.deleteDirectory(htmlDirectory)) {
-                    System.err.println("Could not delete \"" + htmlDirectory
-                            + "\".");
+                    System.err.println(
+                            "Could not delete \"" + htmlDirectory + "\".");
                 }
             } else {
                 // A gif/jpg/png file
                 if (imageFile.exists() && !imageFile.delete()) {
-                    System.err.println("Could not delete \"" + imageFile
-                            + "\".");
+                    System.err
+                            .println("Could not delete \"" + imageFile + "\".");
                 }
             }
         }
 
         if (run) {
             if (!_runnable(model[0])) {
-                System.out
-                .println("Model \""
-                        + model[0].getFullName()
+                System.out.println("Model \"" + model[0].getFullName()
                         + "\" contains actors such cannot be run "
                         + " as part of the export process from ExportModel or "
                         + "it has a WebExportParameters value that runBeforeExport set to false. "
@@ -309,34 +308,33 @@ public class ExportModel {
                     public void run() {
                         try {
                             if (!(model[0] instanceof TypedCompositeActor)) {
-                                System.out
-                                .println(model[0].getFullName()
+                                System.out.println(model[0].getFullName()
                                         + " is a "
                                         + model[0].getClass().getName()
                                         + " not a TypedCompositeActor, so it cannot be run.");
                                 return;
                             }
                             TypedCompositeActor composite = (TypedCompositeActor) model[0];
-                            System.out.println("Running "
-                                    + composite.getFullName());
+                            System.out.println(
+                                    "Running " + composite.getFullName());
                             Manager manager = composite.getManager();
                             if (manager == null) {
                                 manager = new Manager(composite.workspace(),
                                         "MyManager");
                                 composite.setManager(manager);
                             }
-                            composite
-                            .setModelErrorHandler(new BasicModelErrorHandler());
+                            composite.setModelErrorHandler(
+                                    new BasicModelErrorHandler());
                             _timer = new Timer(true);
                             final Director finalDirector = composite
                                     .getDirector();
                             TimerTask doTimeToDie = new TimerTask() {
                                 @Override
                                 public void run() {
-                                    System.out
-                                    .println("ExportHTMLTimer went off after "
-                                            + timeOut
-                                            + " ms., calling getDirector().finish and getDirector().stopFire()");
+                                    System.out.println(
+                                            "ExportHTMLTimer went off after "
+                                                    + timeOut
+                                                    + " ms., calling getDirector().finish and getDirector().stopFire()");
 
                                     // NOTE: This used to call stop() on
                                     // the manager, but that's not the
@@ -377,11 +375,10 @@ public class ExportModel {
                             TimerTask doFailSafeTimeToDie = new TimerTask() {
                                 @Override
                                 public void run() {
-                                    System.out
-                                    .println("ExportHTMLTimer went off after "
-                                            + timeOut
-                                            * 2
-                                            + " ms., calling manager.stop().");
+                                    System.out.println(
+                                            "ExportHTMLTimer went off after "
+                                                    + timeOut * 2
+                                                    + " ms., calling manager.stop().");
 
                                     finalManager.stop();
                                 }
@@ -416,8 +413,8 @@ public class ExportModel {
                     try {
                         System.out.println("Saving " + model[0].getFullName());
                         ((PtolemyEffigy) _basicGraphFrame.getTableau()
-                                .getContainer()).writeFile(new File(
-                                        modelFileName));
+                                .getContainer())
+                                        .writeFile(new File(modelFileName));
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new RuntimeException(ex);
@@ -444,17 +441,16 @@ public class ExportModel {
                         for (CompositeEntity composite : composites) {
                             // Don't open class definitions, then tend not to get closed.
                             //if (!composite.isClassDefinition()) {
-                            System.out.println("Opening "
-                                    + composite.getFullName());
+                            System.out.println(
+                                    "Opening " + composite.getFullName());
                             Tableau tableau = configuration
                                     .openInstance(composite);
                             if (whiteBackground) {
                                 JFrame frame = tableau.getFrame();
                                 frame.setBackground(java.awt.Color.WHITE);
                                 ((ptolemy.vergil.basic.BasicGraphFrame) frame)
-                                .getJGraph().getCanvasPane()
-                                .getCanvas()
-                                .setBackground(java.awt.Color.WHITE);
+                                        .getJGraph().getCanvasPane().getCanvas()
+                                        .setBackground(java.awt.Color.WHITE);
                             }
                             //}
                         }
@@ -485,8 +481,8 @@ public class ExportModel {
 
                         while (effigies.hasNext()) {
                             Effigy effigy = (Effigy) effigies.next();
-                            Iterator tableaux = effigy
-                                    .entityList(Tableau.class).iterator();
+                            Iterator tableaux = effigy.entityList(Tableau.class)
+                                    .iterator();
                             //System.out.println("Effigy: " + effigy);
                             while (tableaux.hasNext()) {
                                 Tableau tableau = (Tableau) tableaux.next();
@@ -494,22 +490,19 @@ public class ExportModel {
                                 JFrame frame = tableau.getFrame();
                                 if (frame instanceof TableauFrame) {
                                     // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
-                                    if (!tableau
-                                            .getFullName()
-                                            .equals(".configuration.directory.configuration.graphTableau")
-                                            && !tableau
-                                            .getFullName()
-                                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                                    if (!tableau.getFullName().equals(
+                                            ".configuration.directory.configuration.graphTableau")
+                                            && !tableau.getFullName().equals(
+                                                    ".configuration.directory.UserLibrary.graphTableau")) {
                                         try {
                                             // Set the background to white.
 
-                                            frame.setBackground(java.awt.Color.WHITE);
-                                            ((ptolemy.vergil.basic.BasicGraphFrame) frame)
-                                            .getJGraph()
-                                            .getCanvasPane()
-                                            .getCanvas()
-                                            .setBackground(
+                                            frame.setBackground(
                                                     java.awt.Color.WHITE);
+                                            ((ptolemy.vergil.basic.BasicGraphFrame) frame)
+                                                    .getJGraph().getCanvasPane()
+                                                    .getCanvas().setBackground(
+                                                            java.awt.Color.WHITE);
 
                                             // FIXME: It should be
                                             // possible to use
@@ -530,8 +523,8 @@ public class ExportModel {
                                             //System.out.println("Frame: " + frame);
                                             frame.repaint();
                                         } catch (Exception ex) {
-                                            System.out
-                                            .println("Failed to set the background to white.");
+                                            System.out.println(
+                                                    "Failed to set the background to white.");
                                             ex.printStackTrace();
                                         }
                                     }
@@ -587,8 +580,8 @@ public class ExportModel {
                             // Export the image.
                             _basicGraphFrame.getJGraph().exportImage(out,
                                     formatName);
-                            System.out.println("Exported "
-                                    + imageFile.getCanonicalPath());
+                            System.out.println(
+                                    "Exported " + imageFile.getCanonicalPath());
                         }
                     } finally {
                         if (out != null) {
@@ -617,9 +610,9 @@ public class ExportModel {
                         System.out.println("Opening " + imageFile);
                         Configuration configuration = (Configuration) Configuration
                                 .findEffigy(model[0].toplevel()).toplevel();
-                        URL imageURL = new URL(imageFile.toURI().toURL()
-                                .toString()
-                                + "#in_browser");
+                        URL imageURL = new URL(
+                                imageFile.toURI().toURL().toString()
+                                        + "#in_browser");
                         configuration.openModel(imageURL, imageURL,
                                 imageURL.toExternalForm(),
                                 BrowserEffigy.staticFactory);
@@ -640,7 +633,7 @@ public class ExportModel {
             public void run() {
                 try {
                     ConfigurationApplication
-                    .closeModelWithoutSavingOrExiting(model[0]);
+                            .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     throw new RuntimeException(ex);
@@ -769,48 +762,31 @@ public class ExportModel {
      */
     public static void main(String args[]) {
         String eol = System.getProperty("line.separator");
-        String usage = "Usage:"
-                + eol
-                + "java -classpath $PTII "
+        String usage = "Usage:" + eol + "java -classpath $PTII "
                 + "ptolemy.vergil.basic.export.ExportModel "
                 + "[-help|-h|--help] | [-copyJavaScript] [-force] [-open] [-openComposites] "
                 + "[-run] [-save] [-web] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml"
-                + eol
-                + "Command line arguments are: "
-                + eol
-                + " -help      Print this message."
-                + eol
+                + eol + "Command line arguments are: " + eol
+                + " -help      Print this message." + eol
                 + " -copyJavaScriptFiles  Copy .js files.  Useful only with -web and htm* format."
                 + eol
                 + " -force     Delete the target file or directory before generating the results."
-                + eol
-                + " -open      Open the generated file."
-                + eol
+                + eol + " -open      Open the generated file." + eol
                 + " -openComposites       Open any composites before exporting the model."
                 + eol
                 + " -run       Run the model before exporting. -web and htm*: plots are also generated."
-                + eol
-                + " -save      Save the model before closing."
-                + eol
-                + " -timeOut milliseconds   Timeout in milliseconds."
-                + eol
+                + eol + " -save      Save the model before closing." + eol
+                + " -timeOut milliseconds   Timeout in milliseconds." + eol
                 + " -web  Common web export args. Short for: -force -copyJavaScriptFiles -open -openComposites htm."
                 + eol
                 + " -whiteBackground      Set the background color to white."
-                + eol
-                + " GIF|gif|HTM*|htm*|PNG|png The file format."
-                + eol
-                + " model.xml  The Ptolemy model. (Required)"
-                + eol
+                + eol + " GIF|gif|HTM*|htm*|PNG|png The file format." + eol
+                + " model.xml  The Ptolemy model. (Required)" + eol
                 + "To export html suitable for the Ptolemy website, invoke "
-                + eol
-                + "Java with -Dptolemy.ptII.exportHTML.usePtWebsite=true"
-                + eol
-                + "For example:"
-                + eol
+                + eol + "Java with -Dptolemy.ptII.exportHTML.usePtWebsite=true"
+                + eol + "For example:" + eol
                 + "export JAVAFLAGS=-Dptolemy.ptII.exportHTML.usePtWebsite=true"
-                + eol
-                + "$PTII/bin/ptweb $PTII/ptolemy/moml/demo/modulation.xml"
+                + eol + "$PTII/bin/ptweb $PTII/ptolemy/moml/demo/modulation.xml"
                 + eol + "To include a link to a sanitizedModelName.jnlp file,"
                 + eol + "set -Dptolemy.ptII.exportHTML.linkToJNLP=true";
 
@@ -865,23 +841,22 @@ public class ExportModel {
                     try {
                         timeOut = Long.parseLong(args[i + 1]);
                     } catch (NumberFormatException ex) {
-                        System.err
-                        .println(args[i + 1]
+                        System.err.println(args[i + 1]
                                 + "cannot be parsed to long value for the time out."
                                 + ex);
                     }
                     i++;
-                } else if (args[i].toUpperCase(Locale.getDefault()).equals(
-                        "GIF")
-                        || args[i].toUpperCase(Locale.getDefault()).startsWith(
-                                "HTM")
-                                || args[i].toUpperCase(Locale.getDefault()).equals(
-                                        "PNG")) {
+                } else if (args[i].toUpperCase(Locale.getDefault())
+                        .equals("GIF")
+                        || args[i].toUpperCase(Locale.getDefault())
+                                .startsWith("HTM")
+                        || args[i].toUpperCase(Locale.getDefault())
+                                .equals("PNG")) {
                     // The default is GIF.
                     if (web) {
-                        throw new IllegalArgumentException("Only one of "
-                                + args[i] + " and -web "
-                                + "should be specified.");
+                        throw new IllegalArgumentException(
+                                "Only one of " + args[i] + " and -web "
+                                        + "should be specified.");
                     }
                     formatName = args[i].toUpperCase(Locale.getDefault());
                 } else if (args[i].equals("-web")) {
@@ -918,9 +893,8 @@ public class ExportModel {
         try {
             // FIXME: Should we use ExportParameter here?
             new ExportModel().exportModel(copyJavaScriptFiles, force,
-                    formatName, modelFileName, run, openComposites,
-                    openResults, outputFileOrDirectory, save, timeOut,
-                    whiteBackground);
+                    formatName, modelFileName, run, openComposites, openResults,
+                    outputFileOrDirectory, save, timeOut, whiteBackground);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1009,7 +983,7 @@ public class ExportModel {
         // each time we add a model that has no director, but has
         // LiveLinks.
         if (model instanceof CompositeActor) {
-            Director director = ((CompositeActor)model).getDirector();
+            Director director = ((CompositeActor) model).getDirector();
             if (director == null) {
                 return false;
             }

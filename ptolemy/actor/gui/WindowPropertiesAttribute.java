@@ -65,8 +65,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
-public class WindowPropertiesAttribute extends Parameter implements
-ComponentListener {
+public class WindowPropertiesAttribute extends Parameter
+        implements ComponentListener {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -109,8 +109,8 @@ ComponentListener {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        WindowPropertiesAttribute newObject = (WindowPropertiesAttribute) super
-                .clone(workspace);
+        WindowPropertiesAttribute newObject = (WindowPropertiesAttribute) super.clone(
+                workspace);
         newObject._listeningTo = new WeakReference<Frame>(null);
         return newObject;
     }
@@ -158,16 +158,15 @@ ComponentListener {
             Rectangle bounds = frame.getBounds();
 
             // Determine whether the window is maximized.
-            boolean maximized = (frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+            boolean maximized = (frame.getExtendedState()
+                    & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
 
             // Get the current values.
             RecordToken value = null;
             try {
                 value = (RecordToken) getToken();
             } catch (IllegalActionException ex) {
-                throw new IllegalActionException(
-                        this,
-                        ex,
+                throw new IllegalActionException(this, ex,
                         "Attempting to get the value of the WindowPropertiesAttribute "
                                 + "failed.  This can happen when a model with graphical actors "
                                 + "is run using MoMLSimpleApplication "
@@ -352,8 +351,8 @@ ComponentListener {
                 if (maximized) {
                     // FIXME: Regrettably, this doesn't make the window
                     // actually maximized under Windows, at least.
-                    frame.setExtendedState(frame.getExtendedState()
-                            | Frame.MAXIMIZED_BOTH);
+                    frame.setExtendedState(
+                            frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
                 }
             }
 

@@ -105,8 +105,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.dde.kernel.PrioritizedTimedQueue
  @see ptolemy.domains.dde.kernel.DDEThread
  */
-public class DDEReceiver extends PrioritizedTimedQueue implements
-ProcessReceiver {
+public class DDEReceiver extends PrioritizedTimedQueue
+        implements ProcessReceiver {
     /** Construct an empty receiver with no container.
      */
     public DDEReceiver() {
@@ -364,8 +364,8 @@ ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-    IllegalActionException {
+    public boolean isConnectedToBoundaryInside()
+            throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -380,7 +380,8 @@ ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
+    public boolean isConnectedToBoundaryOutside()
+            throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 

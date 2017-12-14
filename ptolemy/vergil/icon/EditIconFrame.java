@@ -166,10 +166,8 @@ public class EditIconFrame extends BasicGraphFrame {
             if (result == null) {
                 // Create a default library by directly reading the
                 // default XML description.
-                URL source = getClass()
-                        .getClassLoader()
-                        .getResource(
-                                "ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml");
+                URL source = getClass().getClassLoader().getResource(
+                        "ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml");
                 MoMLParser parser = new MoMLParser(workspace);
 
                 try {

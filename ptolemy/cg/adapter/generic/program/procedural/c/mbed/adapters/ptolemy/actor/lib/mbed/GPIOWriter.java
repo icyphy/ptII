@@ -44,8 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class GPIOWriter
-extends NamedProgramCodeGeneratorAdapter {
+public class GPIOWriter extends NamedProgramCodeGeneratorAdapter {
 
     /**
      *  Construct the GPIOWriter adapter.

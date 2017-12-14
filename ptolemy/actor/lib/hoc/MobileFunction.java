@@ -68,8 +68,8 @@ public class MobileFunction extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MobileFunction(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public MobileFunction(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);

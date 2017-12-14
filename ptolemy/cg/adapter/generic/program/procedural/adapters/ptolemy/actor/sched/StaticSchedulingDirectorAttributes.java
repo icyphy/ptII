@@ -57,8 +57,8 @@ public class StaticSchedulingDirectorAttributes extends DecoratorAttributes {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public StaticSchedulingDirectorAttributes(NamedObj target,
-            GenericCodeGenerator decorator) throws IllegalActionException,
-            NameDuplicationException {
+            GenericCodeGenerator decorator)
+            throws IllegalActionException, NameDuplicationException {
         super(target, decorator);
         _init();
     }

@@ -239,8 +239,8 @@ public class DatagramReader extends TypedAtomicActor {
         platformBufferLength.setTypeEquals(BaseType.INT);
         platformBufferLength.setToken(new IntToken(64));
 
-        setPlatformBufferLength = new Parameter(this,
-                "setPlatformBufferLength", new BooleanToken(false));
+        setPlatformBufferLength = new Parameter(this, "setPlatformBufferLength",
+                new BooleanToken(false));
         setPlatformBufferLength.setTypeEquals(BaseType.BOOLEAN);
 
         overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
@@ -458,7 +458,8 @@ public class DatagramReader extends TypedAtomicActor {
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
                 //of the socket is specified larger than 1.
                 if (_defaultReturnAddress.compareTo("224.0.0.1") >= 0
-                        && _defaultReturnAddress.compareTo("239.255.255.255") <= 0) {
+                        && _defaultReturnAddress
+                                .compareTo("239.255.255.255") <= 0) {
                     _multiCast = true;
 
                     try {
@@ -499,8 +500,8 @@ public class DatagramReader extends TypedAtomicActor {
             }
         } else if (attribute == defaultOutput) {
             synchronized (_syncDefaultOutputs) {
-                _defaultOutputToken = output.getType().convert(
-                        defaultOutput.getToken());
+                _defaultOutputToken = output.getType()
+                        .convert(defaultOutput.getToken());
             }
 
             // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
@@ -557,7 +558,8 @@ public class DatagramReader extends TypedAtomicActor {
                 if (_socket != null || _multicastSocket != null) {
                     // Verify presence & health of the thread.
                     if (_socketReadingThread == null) {
-                        throw new IllegalActionException(this, "thread == null");
+                        throw new IllegalActionException(this,
+                                "thread == null");
                     } else if (!_socketReadingThread.isAlive()) {
                         throw new IllegalActionException(this,
                                 "thread is not Alive");
@@ -568,7 +570,7 @@ public class DatagramReader extends TypedAtomicActor {
 
                     if (_multicastSocket != null
                             && newSocketNumber != _multicastSocket
-                            .getLocalPort()) {
+                                    .getLocalPort()) {
                         synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -810,10 +812,10 @@ public class DatagramReader extends TypedAtomicActor {
                 synchronized (_syncDefaultOutputs) {
                     // Ensure that any change to the default output parameters
                     // occurs atomically with respect to its use here.
-                    returnAddress.broadcast(new StringToken(
-                            _defaultReturnAddress));
-                    returnSocketNumber.broadcast(new IntToken(
-                            _defaultReturnSocketNumber));
+                    returnAddress
+                            .broadcast(new StringToken(_defaultReturnAddress));
+                    returnSocketNumber.broadcast(
+                            new IntToken(_defaultReturnSocketNumber));
                     output.broadcast(_defaultOutputToken);
                 }
             }
@@ -882,9 +884,8 @@ public class DatagramReader extends TypedAtomicActor {
             try {
                 _address = InetAddress.getByName(address);
             } catch (UnknownHostException ex) {
-                throw new IllegalActionException(this, ex,
-                        "The default remote "
-                                + "address specifies an unknown host");
+                throw new IllegalActionException(this, ex, "The default remote "
+                        + "address specifies an unknown host");
             }
 
             try {
@@ -1203,12 +1204,13 @@ public class DatagramReader extends TypedAtomicActor {
                             if (((BooleanToken) setPlatformBufferLength
                                     .getToken()).booleanValue()) {
                                 if (_multiCast) {
-                                    _multicastSocket
-                                    .setReceiveBufferSize(((IntToken) platformBufferLength
-                                            .getToken()).intValue());
+                                    _multicastSocket.setReceiveBufferSize(
+                                            ((IntToken) platformBufferLength
+                                                    .getToken()).intValue());
                                 } else {
-                                    _socket.setReceiveBufferSize(((IntToken) platformBufferLength
-                                            .getToken()).intValue());
+                                    _socket.setReceiveBufferSize(
+                                            ((IntToken) platformBufferLength
+                                                    .getToken()).intValue());
                                 }
                             }
 
@@ -1418,8 +1420,9 @@ public class DatagramReader extends TypedAtomicActor {
                     try {
                         getDirector().fireAtCurrentTime(DatagramReader.this);
                     } catch (IllegalActionException ex) {
-                        throw new RuntimeException("fireAtCurrentTime() "
-                                + "threw an exception", ex);
+                        throw new RuntimeException(
+                                "fireAtCurrentTime() " + "threw an exception",
+                                ex);
                     }
                 }
             }

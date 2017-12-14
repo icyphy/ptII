@@ -268,8 +268,8 @@ public class LocalZenoApplet extends PtolemyApplet {
      */
     @Override
     protected void _createView() {
-        getContentPane().setLayout(
-                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane()
+                .setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         // Create control panels.
         super._createView();

@@ -219,8 +219,8 @@ public class DEEvent implements Comparable {
     @Override
     public int hashCode() {
         int primitiveFieldHash = _depth >>> _microstep;
-        int objectFieldHash = (_actor != null ? _actor.hashCode() : 1) >>> (_ioPort != null ? _ioPort
-                .hashCode() : 1);
+        int objectFieldHash = (_actor != null ? _actor.hashCode()
+                : 1) >>> (_ioPort != null ? _ioPort.hashCode() : 1);
         // If the exclusive or of the primitive is 0, then just
         // return the xor of the hashes of the actor and ioport
         if (primitiveFieldHash == 0) {

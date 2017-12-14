@@ -170,8 +170,8 @@ public class RemoveProperties extends MoMLFilterSimple {
      */
     @Override
     public String toString() {
-        StringBuffer results = new StringBuffer(getClass().getName()
-                + ": Remove the properties listed below:");
+        StringBuffer results = new StringBuffer(
+                getClass().getName() + ": Remove the properties listed below:");
         Iterator propertiesToBeRemoved = _propertiesToBeRemoved.keySet()
                 .iterator();
 
@@ -187,8 +187,8 @@ public class RemoveProperties extends MoMLFilterSimple {
                 Map.Entry attributes = (Map.Entry) attributeMapEntries.next();
                 String oldAttribute = (String) attributes.getKey();
                 String newAttribute = (String) attributes.getValue();
-                results.append("\t\t" + oldAttribute + "\t -> " + newAttribute
-                        + "\n");
+                results.append(
+                        "\t\t" + oldAttribute + "\t -> " + newAttribute + "\n");
             }
         }
 
@@ -237,14 +237,14 @@ public class RemoveProperties extends MoMLFilterSimple {
         HashMap removePropertyDirectorClass = new HashMap();
 
         // Key = attribute name, Value = attribute value
-        removePropertyDirectorClass.put(
-                "ptolemy.domains.fsm.kernel.HSDirector", null);
+        removePropertyDirectorClass.put("ptolemy.domains.fsm.kernel.HSDirector",
+                null);
         removePropertyDirectorClass.put("ptolemy.kernel.util.StringAttribute",
                 null);
         removePropertyDirectorClass.put("ptolemy.data.expr.StringParameter",
                 null);
 
-        _propertiesToBeRemoved
-        .put("directorClass", removePropertyDirectorClass);
+        _propertiesToBeRemoved.put("directorClass",
+                removePropertyDirectorClass);
     }
 }

@@ -131,8 +131,8 @@ public class MonotonicityCounterexamples {
             @Override
             public int compare(ConceptPair o1, ConceptPair o2) {
                 if (o1.lesser.toString().equals(o2.lesser.toString())) {
-                    return o1.greater.toString().compareTo(
-                            o2.greater.toString());
+                    return o1.greater.toString()
+                            .compareTo(o2.greater.toString());
                 } else {
                     return o1.lesser.toString().compareTo(o2.lesser.toString());
                 }
@@ -168,7 +168,8 @@ public class MonotonicityCounterexamples {
             return false;
         }
         for (Concept key : _counterexamples.keySet()) {
-            if (!mc._counterexamples.get(key).equals(_counterexamples.get(key))) {
+            if (!mc._counterexamples.get(key)
+                    .equals(_counterexamples.get(key))) {
                 return false;
             }
         }

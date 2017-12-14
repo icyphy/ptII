@@ -150,8 +150,8 @@ public class Director extends Attribute implements Executable {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public Director(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public Director(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _addIcon();
         _initializeParameters();
@@ -554,8 +554,7 @@ public class Director extends Attribute implements Executable {
                 if (!result.equals(environmentTime)) {
                     throw new IllegalActionException(this,
                             "Timing incompatibility error: "
-                                    + director.getName()
-                                    + " is unable to fire "
+                                    + director.getName() + " is unable to fire "
                                     + container.getName()
                                     + " at the requested time: " + time
                                     + ". It responds it will fire it at: "
@@ -1148,15 +1147,15 @@ public class Director extends Attribute implements Executable {
             _debug("Director: Called prefire().");
         }
 
-        Time modifiedTime = _consultTimeRegulators(localClock
-                .getLocalTimeForCurrentEnvironmentTime());
+        Time modifiedTime = _consultTimeRegulators(
+                localClock.getLocalTimeForCurrentEnvironmentTime());
 
         setModelTime(modifiedTime);
         boolean noNewActors = true;
-        List<TimeRegulator> regulators = getContainer().attributeList(
-                TimeRegulator.class);
+        List<TimeRegulator> regulators = getContainer()
+                .attributeList(TimeRegulator.class);
         for (TimeRegulator regulator : regulators) {
-            noNewActors =  noNewActors && regulator.noNewActors();
+            noNewActors = noNewActors && regulator.noNewActors();
         }
         if (_debugging) {
             _debug("-- Setting current time to " + getModelTime());
@@ -1236,8 +1235,8 @@ public class Director extends Attribute implements Executable {
         if (container instanceof CompositeActor) {
             // Populate any LazyTypedComposites.
             // Needed by $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen4.xml
-            Iterator entities = ((CompositeActor) toplevel()).entityList(
-                    LazyComposite.class).iterator();
+            Iterator entities = ((CompositeActor) toplevel())
+                    .entityList(LazyComposite.class).iterator();
             while (entities.hasNext()) {
                 // LazyTypedCompositeActor implements ptolemy.kernel.util.LazyComposite,
                 // which has a populate() method.  We refer to the interface so
@@ -1264,9 +1263,8 @@ public class Director extends Attribute implements Executable {
             // are multiple directors, then the workspace version will always have changed
             // since the last run, since creatingReceivers itself changes it.
             Manager manager = ((Actor) container).getManager();
-            if (manager == null
-                    || manager.getPreinitializeVersion() != workspace()
-                    .getVersion()) {
+            if (manager == null || manager
+                    .getPreinitializeVersion() != workspace().getVersion()) {
                 // This increments the workspace version.
                 _createReceivers();
             }
@@ -1282,8 +1280,8 @@ public class Director extends Attribute implements Executable {
                 ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
                 _executionAspects.add(aspect);
             }
-            _aspectsPresent = ((CompositeActor) getContainer()).entityList(
-                    CommunicationAspect.class).size() > 0;
+            _aspectsPresent = ((CompositeActor) getContainer())
+                    .entityList(CommunicationAspect.class).size() > 0;
         }
 
         if (_debugging) {
@@ -1389,8 +1387,8 @@ public class Director extends Attribute implements Executable {
      *   CompositeActor.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -1404,8 +1402,8 @@ public class Director extends Attribute implements Executable {
                 // use the most recently added one.
                 Director previous = null;
                 CompositeActor castContainer = (CompositeActor) oldContainer;
-                Iterator<?> directors = castContainer.attributeList(
-                        Director.class).iterator();
+                Iterator<?> directors = castContainer
+                        .attributeList(Director.class).iterator();
 
                 while (directors.hasNext()) {
                     Director altDirector = (Director) directors.next();
@@ -1568,7 +1566,8 @@ public class Director extends Attribute implements Executable {
             }
         }
         // Default is just one suggestion.
-        String[] defaultSuggestions = { "ptolemy.domains.modal.kernel.FSMDirector" };
+        String[] defaultSuggestions = {
+                "ptolemy.domains.modal.kernel.FSMDirector" };
         return defaultSuggestions;
     }
 
@@ -1727,12 +1726,14 @@ public class Director extends Attribute implements Executable {
             }
         }
         if (exceptions.size() > 0) {
-            StringBuffer message = new StringBuffer("Exceptions occurred during wrapup:\n");
+            StringBuffer message = new StringBuffer(
+                    "Exceptions occurred during wrapup:\n");
             for (Throwable ex : exceptions) {
                 message.append(ex);
                 message.append("\n");
             }
-            throw new IllegalActionException(this, exceptions.get(0), message.toString());
+            throw new IllegalActionException(this, exceptions.get(0),
+                    message.toString());
         }
     }
 
@@ -1760,8 +1761,8 @@ public class Director extends Attribute implements Executable {
     protected Time _consultTimeRegulators(Time proposedTime)
             throws IllegalActionException {
         Time returnValue = proposedTime;
-        List<TimeRegulator> regulators = getContainer().attributeList(
-                TimeRegulator.class);
+        List<TimeRegulator> regulators = getContainer()
+                .attributeList(TimeRegulator.class);
         for (TimeRegulator regulator : regulators) {
             Time modifiedTime = regulator.proposeTime(returnValue);
             if (modifiedTime.compareTo(returnValue) < 0) {
@@ -2076,9 +2077,10 @@ public class Director extends Attribute implements Executable {
     ////                         private methods                   ////
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-15\" " + "width=\"100\" height=\"30\" "
-                + "style=\"fill:green\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-50\" y=\"-15\" "
+                        + "width=\"100\" height=\"30\" "
+                        + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     /** Create receivers for all contained actors.
@@ -2099,8 +2101,8 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    private void _initializeParameters() throws IllegalActionException,
-    NameDuplicationException {
+    private void _initializeParameters()
+            throws IllegalActionException, NameDuplicationException {
         localClock = new LocalClock(this, "localClock");
 
         startTime = new Parameter(this, "startTime");

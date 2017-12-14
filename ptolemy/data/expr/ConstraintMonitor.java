@@ -170,8 +170,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConstraintMonitor newObject = (ConstraintMonitor) super
-                .clone(workspace);
+        ConstraintMonitor newObject = (ConstraintMonitor) super.clone(
+                workspace);
         newObject._lastValueWarning = null;
         newObject._decoratedObjects = null;
         newObject._decoratedObjectsVersion = -1L;
@@ -202,10 +202,9 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         if (!(container instanceof CompositeEntity)) {
             return null;
         }
-        if (target instanceof Entity
-                && !((Entity) target).isClassDefinition()
-                && (transparents || !(target instanceof CompositeEntity) || ((CompositeEntity) target)
-                        .isOpaque())
+        if (target instanceof Entity && !((Entity) target).isClassDefinition()
+                && (transparents || !(target instanceof CompositeEntity)
+                        || ((CompositeEntity) target).isOpaque())
                 && _deepContains((CompositeEntity) container, (Entity) target,
                         opaques)) {
             try {
@@ -289,13 +288,12 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                 double aggregateValue = ((DoubleToken) result).doubleValue();
                 if (aggregateValue >= thresholdValue) {
                     _lastValueWarning = result;
-                    String message = "WARNING: "
-                            + getName()
+                    String message = "WARNING: " + getName()
                             + " constraint monitor: Aggregate value of "
                             + aggregateValue
                             + ((aggregateValue == thresholdValue) ? " hits "
-                                    : " exceeds ") + "threshold of "
-                            + threshold + ".";
+                                    : " exceeds ")
+                            + "threshold of " + threshold + ".";
                     MessageHandler.message(message);
                 } else {
                     // No warning.
@@ -380,8 +378,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                         || transparents) {
                     result.add(entity);
                 }
-                if (isComposite
-                        && (!((CompositeEntity) entity).isOpaque() || opaques)) {
+                if (isComposite && (!((CompositeEntity) entity).isOpaque()
+                        || opaques)) {
                     _addAllContainedEntities((CompositeEntity) entity, result,
                             transparents, opaques);
                 }
@@ -463,8 +461,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
             implements HierarchyListener {
 
         public ConstraintMonitorAttributes(NamedObj container,
-                ConstraintMonitor decorator) throws IllegalActionException,
-                NameDuplicationException {
+                ConstraintMonitor decorator)
+                throws IllegalActionException, NameDuplicationException {
             super(container, decorator);
             _init();
             value.addValueListener(decorator);
@@ -521,8 +519,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
 
         private ConstraintMonitor _previousDecorator = null;
 
-        private void _init() throws IllegalActionException,
-                NameDuplicationException {
+        private void _init()
+                throws IllegalActionException, NameDuplicationException {
             value = new Parameter(this, "value");
             value.setTypeEquals(BaseType.DOUBLE);
             value.setExpression("0.0");

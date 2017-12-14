@@ -96,8 +96,8 @@ public class SyntacticPort extends ComponentPort {
      *
      */
     public SyntacticPort(SyntacticNode container, Port port, boolean direction,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _representedPort = port;
         _representedChannel = 0;

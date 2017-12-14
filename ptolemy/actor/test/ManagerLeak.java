@@ -54,7 +54,7 @@ public class ManagerLeak {
         top.setName("top");
         top.setManager(manager);
 
-        Parameter iterations = (Parameter)director.getAttribute("iterations");
+        Parameter iterations = (Parameter) director.getAttribute("iterations");
         iterations.setToken(new IntToken(3));
 
         Ramp ramp = new Ramp(top, "ramp");
@@ -81,7 +81,7 @@ public class ManagerLeak {
 
             System.out.println("Sleeping...");
             Thread.sleep(100000L);
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             System.err.println("caught: " + t);
         }
     }

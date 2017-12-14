@@ -73,8 +73,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public RendezvousDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public RendezvousDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -120,8 +120,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RendezvousDirector newObject = (RendezvousDirector) super
-                .clone(workspace);
+        RendezvousDirector newObject = (RendezvousDirector) super.clone(
+                workspace);
         newObject._resultMaps = new HashMap();
         return newObject;
     }
@@ -166,7 +166,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // in the array.
         String[] defaultSuggestions = new String[] {
                 "ptolemy.domains.modal.kernel.FSMDirector",
-        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -236,14 +236,13 @@ public class RendezvousDirector extends CompositeProcessDirector {
             throws IllegalActionException {
         if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
             // Report deadlock.
-            Parameter suppress = (Parameter) getContainer().getAttribute(
-                    "SuppressDeadlockReporting", Parameter.class);
+            Parameter suppress = (Parameter) getContainer()
+                    .getAttribute("SuppressDeadlockReporting", Parameter.class);
 
             if (suppress == null
                     || !(suppress.getToken() instanceof BooleanToken)
                     || !((BooleanToken) suppress.getToken()).booleanValue()) {
-                MessageHandler
-                .message("Model ended with a deadlock "
+                MessageHandler.message("Model ended with a deadlock "
                         + "(this may be normal for this model).\n"
                         + "A parameter with name SuppressDeadlockReporting and "
                         + "value true will suppress this message.");

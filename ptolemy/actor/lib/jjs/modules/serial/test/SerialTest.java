@@ -65,19 +65,21 @@ public class SerialTest {
      * java -classpath $PTII:${PTII}/lib/nrjavaserial-3.11.0.jar ptolemy.actor.lib.jjs.modules.serial.test.SerialTest /dev/tty.usbserial-DA01R74U
      * </pre>
      */
-    public static void main(String [] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
         String port = "/dev/tty.Bluetooth-Incoming-Port";
 
         if (args.length != 1) {
-            System.err.println("Usage: java -classpath $PTII:${PTII}/lib/nrjavaserial-3.11.0.jar ptolemy.actor.lib.io.comm.SerialTest /dev/tty");
+            System.err.println(
+                    "Usage: java -classpath $PTII:${PTII}/lib/nrjavaserial-3.11.0.jar ptolemy.actor.lib.io.comm.SerialTest /dev/tty");
             System.err.println("Below are the ports:");
             // Enumerate the available ports.
             Enumeration ports = CommPortIdentifier.getPortIdentifiers();
             while (ports.hasMoreElements()) {
                 CommPortIdentifier identifier = (CommPortIdentifier) ports
-                    .nextElement();
-                if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                        .nextElement();
+                if (identifier
+                        .getPortType() == CommPortIdentifier.PORT_SERIAL) {
                     System.err.println(identifier.getName());
                 }
             }
@@ -91,10 +93,12 @@ public class SerialTest {
         serialPort.connect();
         System.out.println("Connected to " + serialPort);
 
-        DataInputStream inputStream = new DataInputStream(serialPort.getInputStream());
-        DataOutputStream outputStream = new DataOutputStream(serialPort.getOutputStream());
+        DataInputStream inputStream = new DataInputStream(
+                serialPort.getInputStream());
+        DataOutputStream outputStream = new DataOutputStream(
+                serialPort.getOutputStream());
 
-        byte b = (byte)inputStream.read();
+        byte b = (byte) inputStream.read();
         System.out.println("Read a byte: " + b);
         outputStream.write(b);
         System.out.println("Wrote a byte: " + b);

@@ -51,7 +51,8 @@ public class OntologyResolutionException extends IllegalActionException {
      *  @param solver The OntologySolver, which must not be null.
      *  @param detail The message.
      */
-    public OntologyResolutionException(OntologySolverBase solver, String detail) {
+    public OntologyResolutionException(OntologySolverBase solver,
+            String detail) {
         this(solver, null, null, detail);
     }
 

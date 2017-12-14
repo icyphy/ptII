@@ -151,15 +151,16 @@ public class FSMViewerGraphController extends RunnableGraphController {
             }
         }
 
-        throw new RuntimeException("Node with unknown semantic object: "
-                + object);
+        throw new RuntimeException(
+                "Node with unknown semantic object: " + object);
     }
 
     /** Return the edge controller appropriate for the given node.
      */
     @Override
     public EdgeController getEdgeController(Object edge) {
-        if (((FSMGraphModel) getGraphModel()).getPtolemyModel() instanceof ModalController) {
+        if (((FSMGraphModel) getGraphModel())
+                .getPtolemyModel() instanceof ModalController) {
             return _modalTransitionController;
         } else {
             return _transitionController;

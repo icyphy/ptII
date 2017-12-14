@@ -66,7 +66,8 @@ public class NoSuchItemException extends KernelException {
      *  is not known or nonexistent.
      *  @param detail The message.
      */
-    public NoSuchItemException(Nameable object, Throwable cause, String detail) {
+    public NoSuchItemException(Nameable object, Throwable cause,
+            String detail) {
         super(object, null, cause, detail);
     }
 }

@@ -65,7 +65,7 @@ package edu.umich.eecs.april.jmat;
 public class SingularValueDecomposition {
     /** Octave/MATLAB:
         (M x N) = (M x M) * (M x N) * (N x N)
-
+    
         JAMA:
         (M x N) = (M x N) * (N x N) * (N x N)
         i.e., the left singular vectors are not computed. (The missing singular values are zero).
@@ -341,8 +341,8 @@ public class SingularValueDecomposition {
                     if (k == -1) {
                         break;
                     }
-                    if (Math.abs(e[k]) <= tiny + eps
-                            * (Math.abs(s[k]) + Math.abs(s[k + 1]))) {
+                    if (Math.abs(e[k]) <= tiny
+                            + eps * (Math.abs(s[k]) + Math.abs(s[k + 1]))) {
                         e[k] = 0.0;
                         break;
                     }
@@ -431,12 +431,13 @@ public class SingularValueDecomposition {
 
                     // Calculate the shift.
 
-                    double scale = Math.max(Math.max(
-                            Math.max(
-                                    Math.max(Math.abs(s[p - 1]),
-                                            Math.abs(s[p - 2])),
-                                    Math.abs(e[p - 2])), Math.abs(s[k])), Math
-                            .abs(e[k]));
+                    double scale = Math
+                            .max(Math.max(
+                                    Math.max(
+                                            Math.max(Math.abs(s[p - 1]),
+                                                    Math.abs(s[p - 2])),
+                                            Math.abs(e[p - 2])),
+                                    Math.abs(s[k])), Math.abs(e[k]));
                     double sp = s[p - 1] / scale;
                     double spm1 = s[p - 2] / scale;
                     double epm1 = e[p - 2] / scale;

@@ -79,7 +79,7 @@ public class FileReader extends LimitedFiringSource {
         fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
         fileOrURLPort.setTypeEquals(BaseType.STRING);
         new SingletonParameter(fileOrURLPort, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");
@@ -87,9 +87,8 @@ public class FileReader extends LimitedFiringSource {
         // Show the firingCountLimit parameter last.
         firingCountLimit.moveToLast();
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "</svg>\n");

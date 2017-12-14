@@ -75,7 +75,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will contain the attribute
      *  that is being constructed.
-
+    
      */
     public ChoiceStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.
@@ -132,9 +132,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
         }
 
         String defaultChoice = container.getExpression();
-        query.addChoice(name, container.getDisplayName(), values,
-                defaultChoice, _isEditable,
-                PtolemyQuery.preferredBackgroundColor(container),
+        query.addChoice(name, container.getDisplayName(), values, defaultChoice,
+                _isEditable, PtolemyQuery.preferredBackgroundColor(container),
                 PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }

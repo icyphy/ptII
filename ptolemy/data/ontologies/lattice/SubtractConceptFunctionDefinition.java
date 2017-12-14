@@ -46,8 +46,8 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class SubtractConceptFunctionDefinition extends
-BinaryOperationMonotonicFunctionDefinition {
+public class SubtractConceptFunctionDefinition
+        extends BinaryOperationMonotonicFunctionDefinition {
 
     /** Construct the SubtractConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -59,8 +59,8 @@ BinaryOperationMonotonicFunctionDefinition {
      *   actor with this name.
      */
     public SubtractConceptFunctionDefinition(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         Token[] argNames = new Token[] { new StringToken("subtractor"),

@@ -50,12 +50,16 @@ public abstract class ImageUtils {
         } catch (InterruptedException e) {
             throw new RuntimeException("Image fetch interrupted");
         }
-        if ((pg.status() & ImageObserver.ABORT) != 0)
+        if ((pg.status() & ImageObserver.ABORT) != 0) {
             throw new RuntimeException("Image fetch aborted");
-        if ((pg.status() & ImageObserver.ERROR) != 0)
+        }
+        if ((pg.status() & ImageObserver.ERROR) != 0) {
             throw new RuntimeException("Image fetch error");
-        BufferedImage p = new BufferedImage(pg.getWidth(), pg.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        p.setRGB(0, 0, pg.getWidth(), pg.getHeight(), (int[]) pg.getPixels(), 0, pg.getWidth());
+        }
+        BufferedImage p = new BufferedImage(pg.getWidth(), pg.getHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        p.setRGB(0, 0, pg.getWidth(), pg.getHeight(), (int[]) pg.getPixels(), 0,
+                pg.getWidth());
         return p;
     }
 
@@ -65,9 +69,12 @@ public abstract class ImageUtils {
     * @return the converted image
      */
     public static BufferedImage convertImageToARGB(Image image) {
-        if (image instanceof BufferedImage && ((BufferedImage) image).getType() == BufferedImage.TYPE_INT_ARGB)
+        if (image instanceof BufferedImage && ((BufferedImage) image)
+                .getType() == BufferedImage.TYPE_INT_ARGB) {
             return (BufferedImage) image;
-        BufferedImage p = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        }
+        BufferedImage p = new BufferedImage(image.getWidth(null),
+                image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = p.createGraphics();
         g.drawImage(image, 0, 0, null);
         g.dispose();
@@ -83,10 +90,13 @@ public abstract class ImageUtils {
     * @param h the height
     * @return the subimage
      */
-    public static BufferedImage getSubimage(BufferedImage image, int x, int y, int w, int h) {
-        BufferedImage newImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    public static BufferedImage getSubimage(BufferedImage image, int x, int y,
+            int w, int h) {
+        BufferedImage newImage = new BufferedImage(w, h,
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = newImage.createGraphics();
-        g.drawRenderedImage(image, AffineTransform.getTranslateInstance(-x, -y));
+        g.drawRenderedImage(image,
+                AffineTransform.getTranslateInstance(-x, -y));
         g.dispose();
         return newImage;
     }
@@ -97,7 +107,8 @@ public abstract class ImageUtils {
     * @return the cloned image
      */
     public static BufferedImage cloneImage(BufferedImage image) {
-        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage newImage = new BufferedImage(image.getWidth(),
+                image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = newImage.createGraphics();
         g.drawRenderedImage(image, null);
         g.dispose();
@@ -113,13 +124,16 @@ public abstract class ImageUtils {
     * @param width the width
     * @param height the height
      */
-    public static void paintCheckedBackground(Component c, Graphics g, int x, int y, int width, int height) {
+    public static void paintCheckedBackground(Component c, Graphics g, int x,
+            int y, int width, int height) {
         if (backgroundImage == null) {
-            backgroundImage = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
+            backgroundImage = new BufferedImage(64, 64,
+                    BufferedImage.TYPE_INT_ARGB);
             Graphics bg = backgroundImage.createGraphics();
             for (int by = 0; by < 64; by += 8) {
                 for (int bx = 0; bx < 64; bx += 8) {
-                    bg.setColor(((bx ^ by) & 8) != 0 ? Color.lightGray : Color.white);
+                    bg.setColor(((bx ^ by) & 8) != 0 ? Color.lightGray
+                            : Color.white);
                     bg.fillRect(bx, by, 8, 8);
                 }
             }
@@ -129,8 +143,9 @@ public abstract class ImageUtils {
         if (backgroundImage != null) {
             Shape saveClip = g.getClip();
             Rectangle r = g.getClipBounds();
-            if (r == null)
+            if (r == null) {
                 r = new Rectangle(c.getSize());
+            }
             r = r.intersection(new Rectangle(x, y, width, height));
             g.setClip(r);
             int w = backgroundImage.getWidth();
@@ -140,9 +155,11 @@ public abstract class ImageUtils {
                 int y1 = (r.y / h) * h;
                 int x2 = ((r.x + r.width + w - 1) / w) * w;
                 int y2 = ((r.y + r.height + h - 1) / h) * h;
-                for (y = y1; y < y2; y += h)
-                    for (x = x1; x < x2; x += w)
+                for (y = y1; y < y2; y += h) {
+                    for (x = x1; x < x2; x += w) {
                         g.drawImage(backgroundImage, x, y, c);
+                    }
+                }
             }
             g.setClip(saveClip);
         }
@@ -179,8 +196,9 @@ public abstract class ImageUtils {
                     break;
                 }
             }
-            if (anySelected)
+            if (anySelected) {
                 break;
+            }
         }
         pixels = null;
         for (int y = 0; y < y1; y++) {
@@ -188,8 +206,9 @@ public abstract class ImageUtils {
             for (int x = 0; x < minX; x++) {
                 if ((pixels[x] & 0xff000000) != 0) {
                     minX = x;
-                    if (y < minY)
+                    if (y < minY) {
                         minY = y;
+                    }
                     anySelected = true;
                     break;
                 }
@@ -197,15 +216,17 @@ public abstract class ImageUtils {
             for (int x = width - 1; x >= maxX; x--) {
                 if ((pixels[x] & 0xff000000) != 0) {
                     maxX = x;
-                    if (y < minY)
+                    if (y < minY) {
                         minY = y;
+                    }
                     anySelected = true;
                     break;
                 }
             }
         }
-        if (anySelected)
+        if (anySelected) {
             return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
+        }
         return null;
     }
 
@@ -216,7 +237,8 @@ public abstract class ImageUtils {
     * @param dst the destination raster
     * @param sel the mask raster
      */
-    public static void composeThroughMask(Raster src, WritableRaster dst, Raster sel) {
+    public static void composeThroughMask(Raster src, WritableRaster dst,
+            Raster sel) {
         int x = src.getMinX();
         int y = src.getMinY();
         int w = src.getWidth();
@@ -269,10 +291,14 @@ public abstract class ImageUtils {
     * @return the pixels
     * @see #setRGB
     */
-    public static int[] getRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
+    public static int[] getRGB(BufferedImage image, int x, int y, int width,
+            int height, int[] pixels) {
         int type = image.getType();
-        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
-            return (int[]) image.getRaster().getDataElements(x, y, width, height, pixels);
+        if (type == BufferedImage.TYPE_INT_ARGB
+                || type == BufferedImage.TYPE_INT_RGB) {
+            return (int[]) image.getRaster().getDataElements(x, y, width,
+                    height, pixels);
+        }
         return image.getRGB(x, y, width, height, pixels, 0, width);
     }
 
@@ -287,11 +313,14 @@ public abstract class ImageUtils {
     * @param pixels  the array of pixels to set
     * @see #getRGB
      */
-    public static void setRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
+    public static void setRGB(BufferedImage image, int x, int y, int width,
+            int height, int[] pixels) {
         int type = image.getType();
-        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
+        if (type == BufferedImage.TYPE_INT_ARGB
+                || type == BufferedImage.TYPE_INT_RGB) {
             image.getRaster().setDataElements(x, y, width, height, pixels);
-        else
+        } else {
             image.setRGB(x, y, width, height, pixels, 0, width);
+        }
     }
 }

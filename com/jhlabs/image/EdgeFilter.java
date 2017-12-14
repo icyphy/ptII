@@ -31,7 +31,8 @@ public class EdgeFilter extends WholeImageFilter {
     public final static float[] PREWITT_H = { -1, -1, -1, 0, 0, 0, 1, 1, 1, };
     public final static float[] SOBEL_V = { -1, 0, 1, -2, 0, 2, -1, 0, 1, };
     public static float[] SOBEL_H = { -1, -2, -1, 0, 0, 0, 1, 2, 1, };
-    public final static float[] FREI_CHEN_V = { -1, 0, 1, -R2, 0, R2, -1, 0, 1, };
+    public final static float[] FREI_CHEN_V = { -1, 0, 1, -R2, 0, R2, -1, 0,
+            1, };
     public static float[] FREI_CHEN_H = { -1, -R2, -1, 0, 0, 0, 1, R2, 1, };
 
     protected float[] vEdgeMatrix = SOBEL_V;
@@ -57,7 +58,8 @@ public class EdgeFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int index = 0;
         int[] outPixels = new int[width * height];
 
@@ -71,15 +73,17 @@ public class EdgeFilter extends WholeImageFilter {
                 for (int row = -1; row <= 1; row++) {
                     int iy = y + row;
                     int ioffset;
-                    if (0 <= iy && iy < height)
+                    if (0 <= iy && iy < height) {
                         ioffset = iy * width;
-                    else
+                    } else {
                         ioffset = y * width;
+                    }
                     int moffset = 3 * (row + 1) + 1;
                     for (int col = -1; col <= 1; col++) {
                         int ix = x + col;
-                        if (!(0 <= ix && ix < width))
+                        if (!(0 <= ix && ix < width)) {
                             ix = x;
+                        }
                         int rgb = inPixels[ioffset + ix];
                         float h = hEdgeMatrix[moffset + col];
                         float v = vEdgeMatrix[moffset + col];

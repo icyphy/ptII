@@ -131,7 +131,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
     @SuppressWarnings("unused")
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             Port port, String name, List dependents)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("declaring dependency for rate variable " + name
                     + " in port " + port.getFullName());
@@ -192,8 +192,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         }
                     } else if (bufferSizeObject instanceof String) {
                         String bufferSizeExpression = (String) bufferSizeObject;
-                        DFUtilities.setOrCreate(relation, "bufferSize", "\""
-                                + bufferSizeExpression + "\"");
+                        DFUtilities.setOrCreate(relation, "bufferSize",
+                                "\"" + bufferSizeExpression + "\"");
 
                         if (_debugging) {
                             _debug("Adding bufferSize parameter to "
@@ -202,11 +202,10 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         }
                     } else if (bufferSizeObject == null) {
                     } else {
-                        throw new InternalErrorException(
-                                "Invalid value found "
-                                        + "in buffer size map.\nValue is of type "
-                                        + bufferSizeObject.getClass().getName()
-                                        + ".\nIt should be of type Integer or String.\n");
+                        throw new InternalErrorException("Invalid value found "
+                                + "in buffer size map.\nValue is of type "
+                                + bufferSizeObject.getClass().getName()
+                                + ".\nIt should be of type Integer or String.\n");
                     }
                 }
             }
@@ -255,7 +254,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         rate.intValue());
 
                 if (_debugging && VERBOSE) {
-                    _debug("Setting tokenConsumptionRate to " + rate.intValue());
+                    _debug("Setting tokenConsumptionRate to "
+                            + rate.intValue());
                 }
 
                 // External ports do not any initial consumption tokens
@@ -298,10 +298,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     // If we've already set the rate, then check that the
                     // rate for any other internal port is correct.
                     if (foundOutputPort != null && newRate != inferredRate) {
-                        throw new NotSchedulableException(
-                                port,
-                                "External output port "
-                                        + port
+                        throw new NotSchedulableException(port,
+                                "External output port " + port
                                         + " is connected on the inside to ports "
                                         + "with different initial production: "
                                         + foundOutputPort + " and "

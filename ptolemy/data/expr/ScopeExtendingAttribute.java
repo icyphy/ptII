@@ -57,7 +57,8 @@ import ptolemy.kernel.util.Settable;
  @version $Id$
  @see ptolemy.data.expr.Variable
  */
-public class ScopeExtendingAttribute extends Attribute implements ScopeExtender {
+public class ScopeExtendingAttribute extends Attribute
+        implements ScopeExtender {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -108,8 +109,8 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *   an attribute with the name of this attribute.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         Nameable oldContainer = getContainer();
         super.setContainer(container);
 
@@ -160,8 +161,8 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
 
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
-        Iterator scopeAttributes = object.attributeList(
-                ScopeExtendingAttribute.class).iterator();
+        Iterator scopeAttributes = object
+                .attributeList(ScopeExtendingAttribute.class).iterator();
 
         while (scopeAttributes.hasNext()) {
             ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes

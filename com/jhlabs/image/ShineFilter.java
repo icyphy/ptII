@@ -114,17 +114,20 @@ public class ShineFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         float xOffset = distance * (float) Math.cos(angle);
         float yOffset = -distance * (float) Math.sin(angle);
 
-        BufferedImage matte = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage matte = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
         ErodeAlphaFilter s = new ErodeAlphaFilter(bevel * 10, 0.75f, 0.1f);
         matte = s.filter(src, null);
 
-        BufferedImage shineLayer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage shineLayer = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = shineLayer.createGraphics();
         g.setColor(new Color(shineColor));
         g.fillRect(0, 0, width, height);
@@ -135,7 +138,8 @@ public class ShineFilter extends AbstractBufferedImageOp {
         g.drawRenderedImage(matte, null);
         g.dispose();
         shineLayer = new GaussianFilter(radius).filter(shineLayer, null);
-        shineLayer = new RescaleFilter(3 * brightness).filter(shineLayer, shineLayer);
+        shineLayer = new RescaleFilter(3 * brightness).filter(shineLayer,
+                shineLayer);
 
         g = dst.createGraphics();
         g.drawRenderedImage(src, null);

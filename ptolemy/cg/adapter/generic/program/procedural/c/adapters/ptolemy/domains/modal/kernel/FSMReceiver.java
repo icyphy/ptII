@@ -41,9 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class FSMReceiver
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMReceiver {
+public class FSMReceiver extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMReceiver {
 
     /** Construct the code generator helper associated
      *  with the given FSMReceiver.

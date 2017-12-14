@@ -91,8 +91,8 @@ public class Console extends Tableau {
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
          */
-        public ConsoleFrame(Tableau tableau) throws IllegalActionException,
-        NameDuplicationException {
+        public ConsoleFrame(Tableau tableau)
+                throws IllegalActionException, NameDuplicationException {
             super(tableau.getTitle());
 
             JPanel component = new JPanel();
@@ -111,7 +111,7 @@ public class Console extends Tableau {
             textArea.setEditable(false);
 
             ((DefaultCaret) textArea.getCaret())
-            .setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+                    .setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
             JScrollPane scrollPane = new JScrollPane(textArea);
 
             add(scrollPane);
@@ -122,8 +122,8 @@ public class Console extends Tableau {
          */
         @Override
         protected boolean _close() {
-            System.setOut(new PrintStream(new FileOutputStream(
-                    FileDescriptor.out)));
+            System.setOut(
+                    new PrintStream(new FileOutputStream(FileDescriptor.out)));
             System.out.println("Standard output is back.");
             return super._close();
         }
@@ -135,13 +135,14 @@ public class Console extends Tableau {
          * Customized ByteArrayOutputStream. Refresh the frame whenever new
          * print-outs come in.
          */
-        public static class MyByteArrayOutputStream extends
-        ByteArrayOutputStream {
+        public static class MyByteArrayOutputStream
+                extends ByteArrayOutputStream {
             /** Create an output stream.
              *  @param textArea The textarea that gets updated.
              *  @param tableau The tableau containing the text area.
              */
-            public MyByteArrayOutputStream(JTextArea textArea, Tableau tableau) {
+            public MyByteArrayOutputStream(JTextArea textArea,
+                    Tableau tableau) {
                 super();
                 _textArea = textArea;
                 _tableau = tableau;

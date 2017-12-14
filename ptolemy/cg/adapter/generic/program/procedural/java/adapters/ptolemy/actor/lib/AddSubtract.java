@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class AddSubtract
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.AddSubtract {
+public class AddSubtract extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.AddSubtract {
     /**
      *  Construct a AddSubtract adapter.
      *  @param actor The given ptolemy.actor.lib.AddSubtract actor.

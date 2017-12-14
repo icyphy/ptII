@@ -84,13 +84,16 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         _init();
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute instanceof PortParameter) {
-            sendParameterEvent(DecoratorEvent.CHANGED_PORT_PARAMETER, (Parameter) attribute);
+            sendParameterEvent(DecoratorEvent.CHANGED_PORT_PARAMETER,
+                    (Parameter) attribute);
         }
         if (attribute instanceof Parameter) {
-            sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER, (Parameter) attribute);
+            sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER,
+                    (Parameter) attribute);
         }
         super.attributeChanged(attribute);
     }
@@ -103,8 +106,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MirrorDecorator newObject = (MirrorDecorator) super
-                .clone(workspace);
+        MirrorDecorator newObject = (MirrorDecorator) super.clone(workspace);
         newObject._listeners = new ArrayList<>();
         newObject._addedPortNames = new ArrayList<>();
         newObject._addedParameters = new ArrayList<>();
@@ -117,26 +119,27 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof GaussianMeasurementModel) {
             try {
-                MeasurementModelAttributes ssa = new MeasurementModelAttributes(target, this);
+                MeasurementModelAttributes ssa = new MeasurementModelAttributes(
+                        target, this);
                 registerListener(ssa);
                 return ssa;
             } catch (KernelException ex) {
                 // This should not occur.
                 throw new InternalErrorException(ex);
             }
-        } else
-            if (target instanceof StateSpaceActor) {
-                try {
-                    MirrorDecoratorAttributes ssa = new MirrorDecoratorAttributes(target, this);
-                    registerListener(ssa);
-                    return ssa;
-                } catch (KernelException ex) {
-                    // This should not occur.
-                    throw new InternalErrorException(ex);
-                }
-            } else {
-                return null;
+        } else if (target instanceof StateSpaceActor) {
+            try {
+                MirrorDecoratorAttributes ssa = new MirrorDecoratorAttributes(
+                        target, this);
+                registerListener(ssa);
+                return ssa;
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
             }
+        } else {
+            return null;
+        }
     }
 
     /** Return the decorated objects.
@@ -153,7 +156,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         if (container != null) {
             for (Object object : container.deepEntityList()) {
                 if (object instanceof StateSpaceActor) {
-                    list.add((NamedObj)object);
+                    list.add((NamedObj) object);
                 }
             }
             _decoratedObjects = list;
@@ -185,7 +188,6 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         return _addedParameters;
     }
 
-
     /** Return true to indicate that this decorator should
      *  decorate objects across opaque hierarchy boundaries.
      */
@@ -203,6 +205,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         }
         _listeners.add(monitor);
     }
+
     /** Notify the monitor that an event happened.
      *  @param eventType Type of event.
      *  @param portName Name of port to be added/removed
@@ -219,14 +222,14 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
      *  @param eventType Type of event.
      *  @param parameter Parameter to be added/removed
      */
-    public void sendParameterEvent(DecoratorEvent eventType, Parameter parameter) {
+    public void sendParameterEvent(DecoratorEvent eventType,
+            Parameter parameter) {
         if (_listeners != null) {
             for (MirrorDecoratorListener ssl : _listeners) {
                 ssl.event(this, eventType, parameter);
             }
         }
     }
-
 
     /** Override the base class to first set the container, then establish
      *  a connection with any decorated objects it finds in scope in the new
@@ -247,7 +250,8 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         if (container == null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
             for (NamedObj decoratedObject : decoratedObjects) {
-                MirrorDecoratorAttributes decAttributes = (MirrorDecoratorAttributes) decoratedObject.getDecoratorAttributes(this);
+                MirrorDecoratorAttributes decAttributes = (MirrorDecoratorAttributes) decoratedObject
+                        .getDecoratorAttributes(this);
                 decAttributes.removeDecorationsFromContainer();
             }
         } else {
@@ -264,8 +268,8 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     ////                         protected methods                 ////
 
     @Override
-    protected void _addPort(TypedIOPort port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(TypedIOPort port)
+            throws IllegalActionException, NameDuplicationException {
         super._addPort(port);
         if (port instanceof ParameterPort) {
             _addedPortParameterNames.add(port.getName());
@@ -295,10 +299,12 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         if (attr instanceof ColorAttribute) {
             // do nothing.
         } else if (attr instanceof PortParameter) {
-            sendParameterEvent(DecoratorEvent.ADDED_PORT_PARAMETER, (Parameter)attr);
+            sendParameterEvent(DecoratorEvent.ADDED_PORT_PARAMETER,
+                    (Parameter) attr);
             _addedParameters.add((Parameter) attr);
         } else if (attr instanceof Parameter) {
-            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, (Parameter)attr);
+            sendParameterEvent(DecoratorEvent.ADDED_PARAMETER,
+                    (Parameter) attr);
             _addedParameters.add((Parameter) attr);
         }
     }
@@ -307,22 +313,26 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     protected void _removeAttribute(Attribute attr) {
         super._removeAttribute(attr);
         if (attr instanceof PortParameter) {
-            sendParameterEvent(DecoratorEvent.REMOVED_PORT_PARAMETER, (Parameter)attr);
+            sendParameterEvent(DecoratorEvent.REMOVED_PORT_PARAMETER,
+                    (Parameter) attr);
         } else if (attr instanceof Parameter) {
-            sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER, (Parameter)attr);
+            sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER,
+                    (Parameter) attr);
         }
-        _addedParameters.remove((Parameter) attr);
+        _addedParameters.remove(attr);
     }
 
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         _listeners = new ArrayList<>();
         _addedPortNames = new ArrayList<>();
         _addedPortParameterNames = new ArrayList<>();
         _addedParameters = new ArrayList<>();
         for (NamedObj n : decoratedObjects()) {
-            MirrorDecoratorAttributes attributes = (MirrorDecoratorAttributes) n.getDecoratorAttributes(this);
+            MirrorDecoratorAttributes attributes = (MirrorDecoratorAttributes) n
+                    .getDecoratorAttributes(this);
             if (attributes != null) {
-                registerListener((MirrorDecoratorListener)attributes);
+                registerListener(attributes);
             }
         }
     }

@@ -164,8 +164,8 @@ public class MonitorValue extends Sink implements PortablePlaceable {
         HashSet<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL),
+                    input.getTypeTerm()));
         }
         return result;
     }
@@ -211,8 +211,8 @@ public class MonitorValue extends Sink implements PortablePlaceable {
                         + "so Monitor is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    TextFieldContainerInterface.class);
+            _implementation = PtolemyInjector.getInjector()
+                    .getInstance(TextFieldContainerInterface.class);
         }
 
         try {

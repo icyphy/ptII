@@ -85,7 +85,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
      * representation.
      */
     private static abstract class Intermediate extends BasicPropertyContainer
-    implements SemanticObjectContainer {
+            implements SemanticObjectContainer {
         /**
          * The semantic object of this intermediate.
          */
@@ -200,8 +200,8 @@ public class BasicGraphModel extends BasicModularGraphModel {
     /**
      * A simple composite node implementation.
      */
-    private static class BasicCompositeNode extends BasicNode implements
-    CompositeNode {
+    private static class BasicCompositeNode extends BasicNode
+            implements CompositeNode {
         /**
          * The nodes that this composite node
          * contains.

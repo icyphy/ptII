@@ -61,7 +61,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
      */
     public RecordDisassembler(LatticeOntologySolver solver,
             ptolemy.actor.lib.RecordDisassembler actor)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, actor, false);
     }
 
@@ -88,7 +88,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
         // label names.  This is necessary to ensure that the RecordFromIndividualConcepts
         // concept function is correctly evaluated.
         InequalityTerm[] outputPortTerms = new InequalityTerm[fieldLabels
-                                                              .size()];
+                .size()];
         int counter = 0;
         for (String field : fieldLabels) {
             outputPortTerms[counter++] = getPropertyTerm(actor.getPort(field));
@@ -96,9 +96,11 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
 
         if (interconnectConstraintType == ConstraintType.EQUALS
                 || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK) {
-            setAtLeast(actor.input, new ConceptFunctionInequalityTerm(
-                    new RecordFromIndividualConcepts("recordConcept",
-                            fieldLabels, ontology), outputPortTerms));
+            setAtLeast(actor.input,
+                    new ConceptFunctionInequalityTerm(
+                            new RecordFromIndividualConcepts("recordConcept",
+                                    fieldLabels, ontology),
+                            outputPortTerms));
         }
 
         if (interconnectConstraintType == ConstraintType.EQUALS
@@ -107,7 +109,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
                 setAtLeast(port, new ConceptFunctionInequalityTerm(
                         new ConceptFromRecordField("conceptFromRecord",
                                 ((Port) port).getName(), ontology),
-                                new InequalityTerm[] { getPropertyTerm(actor.input) }));
+                        new InequalityTerm[] { getPropertyTerm(actor.input) }));
             }
         }
 

@@ -103,8 +103,9 @@ public abstract class Vec {
 
     /** Add the vector v to the elements beginning at index idx **/
     public void plusEquals(int idx, double v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             set(idx + i, get(idx + i) + v[i]);
+        }
     }
 
     /** sum of squared elements. **/

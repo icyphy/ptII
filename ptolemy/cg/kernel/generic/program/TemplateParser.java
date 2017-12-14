@@ -110,14 +110,12 @@ public class TemplateParser {
      */
     public void addNewTypesUsed(String typeName) {
         if (typeName.equals("Token")) {
-            new Exception(
-                    "Warning, TemplateParser.addNewTypesUsed() passed \""
-                            + typeName
-                            + "\", which is typically an error. "
-                            + " Typically, this means that the type is resolving to general. "
-                            + " Try toggling the toplevel enableBackwardTypeInference parameter by "
-                            + "right clicking on the background of the model and selecting configure.")
-                    .printStackTrace();
+            new Exception("Warning, TemplateParser.addNewTypesUsed() passed \""
+                    + typeName + "\", which is typically an error. "
+                    + " Typically, this means that the type is resolving to general. "
+                    + " Try toggling the toplevel enableBackwardTypeInference parameter by "
+                    + "right clicking on the background of the model and selecting configure.")
+                            .printStackTrace();
         }
         _codeGenerator._newTypesUsed.add(typeName);
     }
@@ -156,9 +154,8 @@ public class TemplateParser {
         }
 
         if (checkString) {
-            return name.replace("$", "_X_DOLLAR_X_")
-                    .replace("-", "_X_MINUS_X_").replace("*", "_X_STAR_X_")
-                    .replace("[", "_X_LBRACKET_X_")
+            return name.replace("$", "_X_DOLLAR_X_").replace("-", "_X_MINUS_X_")
+                    .replace("*", "_X_STAR_X_").replace("[", "_X_LBRACKET_X_")
                     .replace("]", "_X_RBRACKET_X_").replace("+", "_X_PLUS_X_")
                     .replace("\\", "_X_BACKSLASH_X_")
                     .replace("/", "_X_FORWARDSLASH_X_")
@@ -259,13 +256,13 @@ public class TemplateParser {
 
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                    .getAdapter(source.port.getContainer())).getReference(
-                            sourcePortChannel, true);
+                    .getAdapter(source.port.getContainer()))
+                            .getReference(sourcePortChannel, true);
             if (sourceRef.equals("")) {
                 // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
                 sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                        .getAdapter(source.port.getContainer())).getReference(
-                                sourcePortChannel, false);
+                        .getAdapter(source.port.getContainer()))
+                                .getReference(sourcePortChannel, false);
             }
         } else {
             sourceRef = alternativeSourceRef;
@@ -282,13 +279,13 @@ public class TemplateParser {
             sinkPortChannel = "@" + sinkPortChannel;
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                .getAdapter(sink.port.getContainer())).getReference(
-                        sinkPortChannel, false);
+                .getAdapter(sink.port.getContainer()))
+                        .getReference(sinkPortChannel, false);
         if (sinkRef.equals("")) {
             // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
             sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                    .getAdapter(sink.port.getContainer())).getReference(
-                            sinkPortChannel, true);
+                    .getAdapter(sink.port.getContainer()))
+                            .getReference(sinkPortChannel, true);
         }
 
         // When the sink port is contained by a modal controller, it is
@@ -337,12 +334,10 @@ public class TemplateParser {
                             && elementType != BaseType.GENERAL) {
                         result = "$typeFunc(TYPE_"
                                 + _codeGenerator.codeGenType(sinkType)
-                                + "::convert("
-                                + result
-                                + ", /*CGH*/ TYPE_"
-                                + _codeGenerator
-                                .codeGenType(((ArrayType) sinkType)
-                                        .getElementType()) + "))";
+                                + "::convert(" + result + ", /*CGH*/ TYPE_"
+                                + _codeGenerator.codeGenType(
+                                        ((ArrayType) sinkType).getElementType())
+                                + "))";
                     }
 
                 } else {
@@ -353,7 +348,7 @@ public class TemplateParser {
             }
         }
         return sinkRef + " = " + result + ";"
-        + StringUtilities.getProperty("line.separator");
+                + StringUtilities.getProperty("line.separator");
     }
 
     /** Return the code stream.
@@ -423,9 +418,9 @@ public class TemplateParser {
             offset = tokenizer.nextToken().trim();
 
             if (tokenizer.hasMoreTokens()) {
-                CGException.throwException(_component, name
-                        + " does not have the correct format for"
-                        + " accessing the parameter value.");
+                CGException.throwException(_component,
+                        name + " does not have the correct format for"
+                                + " accessing the parameter value.");
             }
         }
 
@@ -433,8 +428,8 @@ public class TemplateParser {
         StringTokenizer tokenizer2 = new StringTokenizer(attributeName, "()",
                 false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            CGException.throwException(_component, "Invalid cast type: "
-                    + attributeName);
+            CGException.throwException(_component,
+                    "Invalid cast type: " + attributeName);
         }
 
         if (tokenizer2.countTokens() == 2) {
@@ -447,8 +442,8 @@ public class TemplateParser {
         if (attribute == null) {
             attribute = container.getAttribute(attributeName);
             if (attribute == null) {
-                CGException.throwException(container, "No attribute named: "
-                        + name);
+                CGException.throwException(container,
+                        "No attribute named: " + name);
             }
         }
 
@@ -483,23 +478,23 @@ public class TemplateParser {
 
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
-                    return generateTypeConvertMethod(
-                            "\""
-                                    + StringUtilities.escapeString(parseTreeCodeGenerator
-                                            .escapeForTargetLanguage(variable
-                                                    .getExpression())) + "\"",
-                                                    castType, "String");
+                    return generateTypeConvertMethod("\""
+                            + StringUtilities
+                                    .escapeString(parseTreeCodeGenerator
+                                            .escapeForTargetLanguage(
+                                                    variable.getExpression()))
+                            + "\"", castType, "String");
                 }
 
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = null;
                 try {
-                    parseTree = parser.generateParseTree(variable
-                            .getExpression());
+                    parseTree = parser
+                            .generateParseTree(variable.getExpression());
                 } catch (Throwable throwable) {
                     CGException.throwException(variable, throwable,
                             "Failed to generate parse tree for \"" + name
-                            + "\". in \"" + container + "\"");
+                                    + "\". in \"" + container + "\"");
                 }
                 try {
                     parseTreeCodeGenerator.evaluateParseTree(parseTree,
@@ -519,8 +514,8 @@ public class TemplateParser {
 
                 }
 
-                String fireCode = processCode(parseTreeCodeGenerator
-                        .generateFireCode());
+                String fireCode = processCode(
+                        parseTreeCodeGenerator.generateFireCode());
 
                 // Uncomment the next lines for debugging of parse trees.
                 //System.out.println(parseTreeCodeGenerator.traceParseTreeEvaluation(parseTree,
@@ -535,7 +530,7 @@ public class TemplateParser {
                 return generateTypeConvertMethod(fireCode, castType,
                         _getCodeGenerator().codeGenType(variable.getType()));
 
-            } else /* if (attribute instanceof Settable)*/{
+            } else /* if (attribute instanceof Settable)*/ {
                 return ((Settable) attribute).getExpression();
             }
 
@@ -550,8 +545,8 @@ public class TemplateParser {
                 Token token = ((Parameter) attribute).getToken();
 
                 if (token instanceof ArrayToken) {
-                    Token element = ((ArrayToken) token).getElement(Integer
-                            .parseInt(offset));
+                    Token element = ((ArrayToken) token)
+                            .getElement(Integer.parseInt(offset));
 
                     /////////////////////////////////////////////////////
                     ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
@@ -563,24 +558,24 @@ public class TemplateParser {
                     } catch (Throwable throwable) {
                         CGException.throwException(attribute, throwable,
                                 "Failed to generate parse tree for \"" + name
-                                + "\". in \"" + container + "\"");
+                                        + "\". in \"" + container + "\"");
                     }
                     parseTreeCodeGenerator.evaluateParseTree(parseTree,
                             new VariableScope((Parameter) attribute));
 
-                    String elementCode = processCode(parseTreeCodeGenerator
-                            .generateFireCode());
+                    String elementCode = processCode(
+                            parseTreeCodeGenerator.generateFireCode());
                     /////////////////////////////////////////////////////
                     return generateTypeConvertMethod(elementCode, castType,
                             _getCodeGenerator().codeGenType(element.getType()));
                 }
 
-                CGException.throwException(_component, attributeName
-                        + " does not contain an ArrayToken.");
+                CGException.throwException(_component,
+                        attributeName + " does not contain an ArrayToken.");
             }
 
-            CGException.throwException(_component, attributeName
-                    + " is not a parameter.");
+            CGException.throwException(_component,
+                    attributeName + " is not a parameter.");
         }
         return ""; // We never get here
     }
@@ -645,8 +640,8 @@ public class TemplateParser {
             commaIndex = indexOf(",", parameters, previousCommaIndex);
         }
 
-        String item = parameters.substring(previousCommaIndex,
-                parameters.length()).trim();
+        String item = parameters
+                .substring(previousCommaIndex, parameters.length()).trim();
 
         if (item.trim().length() > 0) {
             result.add(item);
@@ -699,8 +694,7 @@ public class TemplateParser {
                 throw new InternalErrorException(
                         "ParseTreeCodeGenerator.generateFireCode() "
                                 + "not implemented in ptolemy.cg.kernel.generic.program.TemplateParser "
-                                + "for "
-                                + _component
+                                + "for " + _component
                                 + ". If this occurs, then the problem is that "
                                 + "this a TemplateParser is being instantiated instead of a JavaTemplateParser "
                                 + "or some other subclass of TemplateParser.");
@@ -752,8 +746,8 @@ public class TemplateParser {
         result.append(code.substring(0, currentPos));
 
         if (debug) {
-            System.out.println("processCode: start " + "\nresult:\n<<<"
-                    + result + "\n>>>");
+            System.out.println("processCode: start " + "\nresult:\n<<<" + result
+                    + "\n>>>");
         }
 
         int closeParenIndex = -1;
@@ -773,8 +767,8 @@ public class TemplateParser {
                     // No "$" in the string
                     result.append(code.substring(previousPos));
                     if (debug) {
-                        System.out.println("processCode: return $nation: "
-                                + result);
+                        System.out.println(
+                                "processCode: return $nation: " + result);
                     }
                     return result.toString();
                 }
@@ -782,8 +776,7 @@ public class TemplateParser {
                 //previousPos = currentPos;
             }
 
-            if (code.charAt(currentPos) == '$'
-                    && currentPos < code.length() - 1
+            if (code.charAt(currentPos) == '$' && currentPos < code.length() - 1
                     && code.charAt(currentPos + 1) == '$') {
                 // Skip $$, which appears in ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
                 nextPos = _getMacroStartIndex(code, currentPos + 2);
@@ -807,15 +800,15 @@ public class TemplateParser {
                         StringParameter variable = new StringParameter(
                                 ((NamedObj) _component).getContainer(),
                                 ((NamedObj) _component).getContainer()
-                                .uniqueName("TemporaryTemplateParser"));
+                                        .uniqueName("TemporaryTemplateParser"));
                         variable.setStringMode(true);
                         variable.setExpression(code);
                         variable.validate();
                         String value = variable.stringValue();
                         variable.setContainer(null);
                         if (debug) {
-                            System.out.println("processCode: return 0: "
-                                    + value);
+                            System.out
+                                    .println("processCode: return 0: " + value);
                         }
                         return value;
                     } catch (Throwable throwable) {
@@ -826,17 +819,17 @@ public class TemplateParser {
                     }
                 }
             }
-            if (openCurlyBracketIndex != -1
-                    && (openParenIndex != -1
-                    && openCurlyBracketIndex < openParenIndex || openParenIndex == -1)) {
+            if (openCurlyBracketIndex != -1 && (openParenIndex != -1
+                    && openCurlyBracketIndex < openParenIndex
+                    || openParenIndex == -1)) {
                 // Houston, we might have ${foo}
                 int closeCurlyBracketIndex = code.indexOf("}", currentPos + 1);
                 if (closeCurlyBracketIndex == -1) {
                     CGException.throwException(_component,
                             "Failed to find '}' in \"" + code + "\".");
                 }
-                String attributeName = code.substring(
-                        openCurlyBracketIndex + 1, closeCurlyBracketIndex);
+                String attributeName = code.substring(openCurlyBracketIndex + 1,
+                        closeCurlyBracketIndex);
                 Attribute attribute = ModelScope.getScopedVariable(null,
                         ((NamedObj) _component).getContainer(), attributeName);
                 Token constant = null;
@@ -849,16 +842,16 @@ public class TemplateParser {
                     if (constant != null) {
                         if (constant instanceof StringToken) {
                             // Get rid or leading and trailing double quotes.
-                            result.append(((StringToken) constant)
-                                    .stringValue());
+                            result.append(
+                                    ((StringToken) constant).stringValue());
                         } else {
                             result.append(constant.toString());
                         }
                     } else {
                         CGException.throwException(_component,
                                 "Failed to find '" + attributeName
-                                + "' variable in scope, "
-                                + "code was \"" + code + "\".");
+                                        + "' variable in scope, "
+                                        + "code was \"" + code + "\".");
                     }
                 }
 
@@ -872,12 +865,12 @@ public class TemplateParser {
                 }
                 //previousPos = nextPos;
                 currentPos = nextPos;
-                result.append(code.substring(closeCurlyBracketIndex + 1,
-                        nextPos));
+                result.append(
+                        code.substring(closeCurlyBracketIndex + 1, nextPos));
             }
-            if (openParenIndex != -1
-                    && (openCurlyBracketIndex != -1
-                    && openParenIndex < openCurlyBracketIndex || openCurlyBracketIndex == -1)) {
+            if (openParenIndex != -1 && (openCurlyBracketIndex != -1
+                    && openParenIndex < openCurlyBracketIndex
+                    || openCurlyBracketIndex == -1)) {
                 closeParenIndex = _findClosedParen(code, openParenIndex);
 
                 if (closeParenIndex < 0) {
@@ -930,12 +923,9 @@ public class TemplateParser {
                                     + " is out of bounds in \n" + code);
                 }
                 if (debug) {
-                    System.out
-                            .println("TemplateParser: name before processCode(): "
-                                    + name
-                                    + " "
-                                    + openParenIndex
-                                    + " "
+                    System.out.println(
+                            "TemplateParser: name before processCode(): " + name
+                                    + " " + openParenIndex + " "
                                     + closeParenIndex);
                 }
                 name = processCode(name.trim());
@@ -945,29 +935,23 @@ public class TemplateParser {
                 try {
                     if (debug) {
                         // This may call processCode() again.
-                        System.out
-                                .println("processCode: about to call _replaceMacro(): "
-                                        + macro
-                                        + " "
-                                        + name
-                                        + "\nresult:\n<<<"
+                        System.out.println(
+                                "processCode: about to call _replaceMacro(): "
+                                        + macro + " " + name + "\nresult:\n<<<"
                                         + result + "\n>>>");
                     }
                     result.append(_replaceMacro(macro, name));
                     if (debug) {
                         System.out
                                 .println("processCode: called _replaceMacro(): "
-                                        + macro
-                                        + " "
-                                        + name
-                                        + "\nresult:\n<<<"
+                                        + macro + " " + name + "\nresult:\n<<<"
                                         + result + "\n>>>");
                     }
                 } catch (Throwable throwable) {
                     CGException.throwException(this, throwable,
                             "Failed to replace the parameter \"" + name
-                            + "\" in the macro \"" + macro
-                            + "\".\nInitial code was:\n" + code);
+                                    + "\" in the macro \"" + macro
+                                    + "\".\nInitial code was:\n" + code);
                 }
 
                 result.append(code.substring(closeParenIndex + 1, nextPos));
@@ -1041,40 +1025,36 @@ public class TemplateParser {
 
         // Syntax checking.
         if (commaIndex == -1) {
-            CGException
-            .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
-                    + "The string \"::\" was not found. "
-                    + "Processed String was:\n:"
-                    + functionString
-                    + "Initial String was:\n:" + initialFunctionString);
+            CGException.throwException(
+                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                            + "The string \"::\" was not found. "
+                            + "Processed String was:\n:" + functionString
+                            + "Initial String was:\n:" + initialFunctionString);
         }
 
         if (openFuncParenIndex == -1) {
-            CGException
-            .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
-                    + "No \"(\" found after \"::\". "
-                    + "Processed String was:\n:"
-                    + functionString
-                    + "Initial String was:\n:" + initialFunctionString);
+            CGException.throwException(
+                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                            + "No \"(\" found after \"::\". "
+                            + "Processed String was:\n:" + functionString
+                            + "Initial String was:\n:" + initialFunctionString);
         }
 
         if (closeFuncParenIndex != functionString.length() - 1) {
-            CGException
-            .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
-                    + "The last \")\" was not last character? "
-                    + "The last \")\" was at "
-                    + closeFuncParenIndex
-                    + "Processed String was:\n:"
-                    + functionString
-                    + "Initial String was:\n:" + initialFunctionString);
+            CGException.throwException(
+                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                            + "The last \")\" was not last character? "
+                            + "The last \")\" was at " + closeFuncParenIndex
+                            + "Processed String was:\n:" + functionString
+                            + "Initial String was:\n:" + initialFunctionString);
         }
 
         String typeOrToken = functionString.substring(0, commaIndex).trim();
-        String functionName = functionString.substring(commaIndex + 2,
-                openFuncParenIndex).trim();
+        String functionName = functionString
+                .substring(commaIndex + 2, openFuncParenIndex).trim();
 
         addFunctionUsed(functionName);
         //System.out.println("TemplateParser: functionName: " + functionName + " " + functionString);
@@ -1101,12 +1081,12 @@ public class TemplateParser {
             //_codeGenerator._typeFuncUsed.add(functionName);
 
             if (argumentList.length() == 0) {
-                CGException
-                .throwException("Static type function requires at least one argument(s).");
+                CGException.throwException(
+                        "Static type function requires at least one argument(s).");
             }
 
             return "functionTable[(int)" + typeOrToken + "][FUNC_"
-            + functionName + "](" + argumentList;
+                    + functionName + "](" + argumentList;
 
         } else {
             // Record the referenced type function in the infoTable.
@@ -1118,7 +1098,7 @@ public class TemplateParser {
             }
 
             return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
-            + functionName + "](" + typeOrToken + argumentList;
+                    + functionName + "](" + typeOrToken + argumentList;
         }
     }
 
@@ -1144,8 +1124,7 @@ public class TemplateParser {
         // Syntax checking.
         if (openFuncParenIndex == -1
                 || closeFuncParenIndex != constructorString.length() - 1) {
-            CGException
-            .throwException("Bad Syntax with the $new() macro. "
+            CGException.throwException("Bad Syntax with the $new() macro. "
                     + "[i.e. -- $new([elementType]Array(8, 8, arg1, arg2, ...))]");
         }
 
@@ -1243,9 +1222,9 @@ public class TemplateParser {
                             return ((NamedProgramCodeGeneratorAdapter) _codeGenerator
                                     .getAdapter(_component)).getReference(name,
                                             true)
-                                            + ".payload."
-                                            + _getCodeGenerator().codeGenType(type)
-                                            + "->size";
+                                    + ".payload."
+                                    + _getCodeGenerator().codeGenType(type)
+                                    + "->size";
                         }
                     }
                 }
@@ -1279,9 +1258,8 @@ public class TemplateParser {
         // ptolemy.util.StringUtilities.escapeForXML() for
         // a possibly faster solution.
         if (name.indexOf("_X_") != -1) {
-            return name.replace("_X_DOLLAR_X_", "$")
-                    .replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*")
-                    .replace("_X_LBRACKET_X_", "[")
+            return name.replace("_X_DOLLAR_X_", "$").replace("_X_MINUS_X_", "-")
+                    .replace("_X_STAR_X_", "*").replace("_X_LBRACKET_X_", "[")
                     .replace("_X_RBRACKET_X_", "]").replace("_X_PLUS_X_", "+")
                     .replace("_X_BACKSLASH_X_", "\\")
                     .replace("_X_FORWARDSLASH_X_", "/")
@@ -1343,7 +1321,7 @@ public class TemplateParser {
         if (macro.equals("get")) {
             return _replaceGetMacro(parameter);
         } else if (macro.equals("getNoPayload")) {
-            return _replaceGetMacro(parameter,false);
+            return _replaceGetMacro(parameter, false);
         } else if (macro.equals("getAndFree")) {
             return _replaceGetAndFree(parameter);
         } else if (macro.equals("put")) {
@@ -1353,9 +1331,9 @@ public class TemplateParser {
         } else if (macro.equals("hasToken")) {
             return _replaceHasTokenMacro(parameter);
         } else if (macro.equals("ref")) {
-            CGException
-            .throwException("$ref is no longer supported as a macro. To reference "
-                    + "input/output ports, use $get() and $put(). For parameters, use $param()");
+            CGException.throwException(
+                    "$ref is no longer supported as a macro. To reference "
+                            + "input/output ports, use $get() and $put(). For parameters, use $param()");
         } else if (macro.equals("param")) {
             return _replaceParameter(parameter);
         } else if (macro.equals("targetType")) {
@@ -1369,8 +1347,8 @@ public class TemplateParser {
             if (variable != null) {
                 return _getCodeGenerator().targetType(variable.getType());
             }
-            CGException.throwException(parameter
-                    + " is not a port. $type macro takes in a port.");
+            CGException.throwException(
+                    parameter + " is not a port. $type macro takes in a port.");
 
         } else if (macro.equals("type") || macro.equals("cgType")) {
 
@@ -1384,11 +1362,13 @@ public class TemplateParser {
 
                 // Change to PortParameter that caused clone problems causes this NPE.
                 if (_getCodeGenerator().codeGenType(port.getType()) == null) {
-                    throw new NullPointerException("_getCodeGenerator().codeGenType()(port.getType()) == null?, port.getType() was "
-                            + port.getType() + " Port was: " + port.getFullName());
+                    throw new NullPointerException(
+                            "_getCodeGenerator().codeGenType()(port.getType()) == null?, port.getType() was "
+                                    + port.getType() + " Port was: "
+                                    + port.getFullName());
                 }
-                if (_getCodeGenerator().codeGenType(port.getType()).contains(
-                        ",")) {
+                if (_getCodeGenerator().codeGenType(port.getType())
+                        .contains(",")) {
                     return "Record";
                 }
                 return type + _getCodeGenerator().codeGenType(port.getType());
@@ -1399,8 +1379,8 @@ public class TemplateParser {
                 return type
                         + _getCodeGenerator().codeGenType(variable.getType());
             }
-            CGException.throwException(parameter
-                    + " is not a port. $type macro takes in a port.");
+            CGException.throwException(
+                    parameter + " is not a port. $type macro takes in a port.");
 
         } else if (macro.equals("val")) {
             return getParameterValue(parameter, (NamedObj) _component);
@@ -1413,10 +1393,8 @@ public class TemplateParser {
                 return _codeGenerator
                         .generateVariableName((NamedObj) _component);
             } else {
-                return _codeGenerator
-                        .generateVariableName((NamedObj) _component)
-                        + "_"
-                        + processCode(parameter);
+                return _codeGenerator.generateVariableName(
+                        (NamedObj) _component) + "_" + processCode(parameter);
             }
         } else if (macro.equals("containerSymbol")) {
             NamedObj container = ((NamedObj) _component).getContainer();
@@ -1425,8 +1403,8 @@ public class TemplateParser {
                         container, container.getName());
             } else {
                 return _codeGenerator.generatePtTypedCompositeActorName(
-                        container, container.getName() + "_"
-                                + processCode(parameter));
+                        container,
+                        container.getName() + "_" + processCode(parameter));
             }
 
         } else if (macro.equals("actorName")) {
@@ -1463,8 +1441,8 @@ public class TemplateParser {
             Method checker = null;
             Class<?> userMacro = null;
             try {
-                userMacro = Class.forName("ptolemy.codegen.kernel.userMacro."
-                        + macro);
+                userMacro = Class
+                        .forName("ptolemy.codegen.kernel.userMacro." + macro);
 
                 handler = userMacro.getMethod("handleMacro",
                         new Class[] { List.class });
@@ -1476,7 +1454,8 @@ public class TemplateParser {
             }
 
             try {
-                checker.invoke(userMacro, new Object[] { parseList(parameter) });
+                checker.invoke(userMacro,
+                        new Object[] { parseList(parameter) });
                 return (String) handler.invoke(userMacro,
                         new Object[] { parseList(parameter) });
             } catch (Throwable throwable) {
@@ -1747,8 +1726,8 @@ public class TemplateParser {
 
         if (port == null) {
             CGException.throwException(parameter
-                    + " is not acceptable by $get() because the getPort("
-                    + "\"" + portChannel[0] + "\") returned null."
+                    + " is not acceptable by $get() because the getPort(" + "\""
+                    + portChannel[0] + "\") returned null."
                     + "The $get macro can accept the following forms: "
                     + "$get(input#channel, offset); or, "
                     + "$get(input, offset); or, " + "$get(input#channel); or, "
@@ -1772,7 +1751,8 @@ public class TemplateParser {
             return processCode(portAdapter.generateGetCode(channel, offset));
         } else {
             // The mbed demos pointed out that we had leaks.
-            return processCode(portAdapter.generateGetCodeWithoutType(channel, offset));
+            return processCode(
+                    portAdapter.generateGetCodeWithoutType(channel, offset));
         }
     }
 
@@ -1798,8 +1778,8 @@ public class TemplateParser {
 
         if (port == null) {
             CGException.throwException(parameter
-                    + " is not acceptable by $get() because the getPort("
-                    + "\"" + portChannel[0] + "\") returned null."
+                    + " is not acceptable by $get() because the getPort(" + "\""
+                    + portChannel[0] + "\") returned null."
                     + "The $get macro can accept the following forms: "
                     + "$get(input#channel, offset); or, "
                     + "$get(input, offset); or, " + "$get(input#channel); or, "
@@ -1818,10 +1798,9 @@ public class TemplateParser {
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
                 .getAdapter(port);
 
-            return processCode(portAdapter.generateGetAndFree(channel, offset));
+        return processCode(portAdapter.generateGetAndFree(channel, offset));
 
     }
-
 
     /** replace the $hasToken() with the corresponding parameter
      *  @param parameter The name and offset of the parameter
@@ -1917,9 +1896,7 @@ public class TemplateParser {
             offset = parameters.get(1);
             dataToken = parameters.get(2);
         } else {
-            CGException
-            .throwException("\""
-                    + parameter
+            CGException.throwException("\"" + parameter
                     + "\" is not acceptable by $put(). "
                     + "$put could be used in the following ways: "
                     + "$put(output#channel, token); or, $put(output, token); or,"
@@ -1935,8 +1912,7 @@ public class TemplateParser {
         channel = portAndChannel[1];
 
         if (port == null) {
-            CGException
-            .throwException("parameter is not acceptable by $put(). "
+            CGException.throwException("parameter is not acceptable by $put(). "
                     + "$put could be used in the following ways: "
                     + "$put(output#channel, token); or, $put(output, token); or,"
                     + "$put(input#channel, offset, token); or, $put(input, offset, token)");
@@ -1949,8 +1925,8 @@ public class TemplateParser {
             return processCode(portAdapter.generatePutLocalInsideCode(channel,
                     offset, dataToken));
         } else {
-            return processCode(portAdapter.generatePutCode(channel, offset,
-                    dataToken));
+            return processCode(
+                    portAdapter.generatePutCode(channel, offset, dataToken));
         }
     }
 
@@ -2088,12 +2064,10 @@ public class TemplateParser {
 
         @Override
         public String toString() {
-            return super.toString()
-                    + " variable: "
-                    + _variable
+            return super.toString() + " variable: " + _variable
                     + " variable.parserScope: "
-                    + (_variable == null ? "N/A, _variable is null" : _variable
-                            .getParserScope());
+                    + (_variable == null ? "N/A, _variable is null"
+                            : _variable.getParserScope());
         }
 
         ///////////////////////////////////////////////////////////////////

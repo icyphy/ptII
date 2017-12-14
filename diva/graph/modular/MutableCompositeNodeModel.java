@@ -34,6 +34,6 @@ package diva.graph.modular;
  * @version $Id$
  * @Pt.AcceptedRating Red
  */
-public interface MutableCompositeNodeModel extends MutableNodeModel,
-CompositeModel {
+public interface MutableCompositeNodeModel
+        extends MutableNodeModel, CompositeModel {
 }

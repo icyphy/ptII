@@ -133,9 +133,9 @@ public class TestIcon extends NameIcon {
         width = Math.floor(stringBounds.getWidth()) + 40;
         height = Math.floor(stringBounds.getHeight()) + 24;
 
-        Polygon2D polygon = new Polygon2D.Double(new double[] { 0.0,
-                height / 2.0, width / 2, 0.0, width, height / 2.0, width / 2.0,
-                height });
+        Polygon2D polygon = new Polygon2D.Double(
+                new double[] { 0.0, height / 2.0, width / 2, 0.0, width,
+                        height / 2.0, width / 2.0, height });
         return new BasicFigure(polygon, _getFill(), _getLineWidth());
     }
 
@@ -207,13 +207,13 @@ public class TestIcon extends NameIcon {
                 if (array.length() == 4) {
                     Color color = new Color(
                             (float) ((ScalarToken) array.getElement(0))
-                            .doubleValue(),
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
-                            .doubleValue(),
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
-                            .doubleValue(),
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(3))
-                            .doubleValue());
+                                    .doubleValue());
                     return color;
                 }
             }

@@ -156,8 +156,8 @@ public class ResizableImageWidget extends Widget {
             if (_paintAsDisabled) {
                 if (_disabledImage == null) {
                     _disabledImage = GrayFilter.createDisabledImage(_image);
-                    MediaTracker tracker = new MediaTracker(getScene()
-                            .getView());
+                    MediaTracker tracker = new MediaTracker(
+                            getScene().getView());
                     tracker.addImage(_disabledImage, 0);
                     try {
                         tracker.waitForAll();
@@ -165,13 +165,13 @@ public class ResizableImageWidget extends Widget {
                         ErrorManager.getDefault().notify(e);
                     }
                 }
-                gr.drawImage(_disabledImage, bounds.x, bounds.y, bounds.x
-                        + bounds.width, bounds.y + bounds.height, 0, 0, _width,
-                        _height, _observer);
+                gr.drawImage(_disabledImage, bounds.x, bounds.y,
+                        bounds.x + bounds.width, bounds.y + bounds.height, 0, 0,
+                        _width, _height, _observer);
             } else {
-                gr.drawImage(_image, bounds.x, bounds.y, bounds.x
-                        + bounds.width, bounds.y + bounds.height, 0, 0, _width,
-                        _height, _observer);
+                gr.drawImage(_image, bounds.x, bounds.y,
+                        bounds.x + bounds.width, bounds.y + bounds.height, 0, 0,
+                        _width, _height, _observer);
             }
         }
     }
@@ -188,7 +188,8 @@ public class ResizableImageWidget extends Widget {
             setImageCore(_image);
             getScene().validate();
 
-            return (infoflags & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0;
+            return (infoflags
+                    & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0;
         }
     };
 

@@ -230,13 +230,15 @@ public class FMIModelDescription {
             if (scalar.type instanceof FMIRealType
                     && ((FMIRealType) scalar.type).indexState > 0) {
                 // Mark this variable as a state.
-                modelVariables.get(((FMIRealType) scalar.type).indexState - 1).isState = true;
+                modelVariables.get(((FMIRealType) scalar.type).indexState
+                        - 1).isState = true;
                 state.name = modelVariables
                         .get(((FMIRealType) scalar.type).indexState - 1).name;
-                state.start = ((FMIRealType) modelVariables
-                        .get(((FMIRealType) scalar.type).indexState - 1).type).start;
+                state.start = ((FMIRealType) modelVariables.get(
+                        ((FMIRealType) scalar.type).indexState - 1).type).start;
                 state.nominal = ((FMIRealType) modelVariables
-                        .get(((FMIRealType) scalar.type).indexState - 1).type).nominal;
+                        .get(((FMIRealType) scalar.type).indexState
+                                - 1).type).nominal;
                 state.dependentScalarVariables = continuousStateDerivatives
                         .get(i).dependentScalarVariables;
                 state.scalarVariable = modelVariables
@@ -272,10 +274,11 @@ public class FMIModelDescription {
         if (_fmuAllocateMemory != null) {
             if (!_printedDisposeMessage) {
                 _printedDisposeMessage = true;
-                System.err.println("org/ptolemy/fmi/FMIModelDescription.java: dispose() is being called, which "
-                        + "releases all instances of Memory and pointers that have been created.  "
-                        + "Instead, it should only release those for this FMU."
-                        + "This message will be printed only once per JVM.");
+                System.err.println(
+                        "org/ptolemy/fmi/FMIModelDescription.java: dispose() is being called, which "
+                                + "releases all instances of Memory and pointers that have been created.  "
+                                + "Instead, it should only release those for this FMU."
+                                + "This message will be printed only once per JVM.");
             }
             // Prevent a memory leak by releasing Memory and Pointer objects to
             // the GC.
@@ -367,23 +370,22 @@ public class FMIModelDescription {
                 boolean isBuildOK = false;
                 try {
                     isBuildOK = builder.build(sharedLibraryFile);
-                    System.out.println("FMU Builder messages:\n"
-                            + builder.buffer);
+                    System.out.println(
+                            "FMU Builder messages:\n" + builder.buffer);
                 } catch (Throwable throwable2) {
                     // Java 1.5 does not support IOException(String, Throwable).
                     // We sometimes compile this with gcj, which is Java 1.5
-                    IOException exception = new IOException(
-                            "Failed to build \"" + sharedLibraryFile
-                                    + "\".\nThe build was:\n" + builder.buffer
-                                    + "\n" + message);
+                    IOException exception = new IOException("Failed to build \""
+                            + sharedLibraryFile + "\".\nThe build was:\n"
+                            + builder.buffer + "\n" + message);
                     exception.initCause(throwable2);
                     throw exception;
 
                 }
                 if (!isBuildOK) {
                     throw new IOException("It was not possible to build \""
-                            + sharedLibraryFile + "\": " + builder.buffer
-                            + "\n" + message);
+                            + sharedLibraryFile + "\": " + builder.buffer + "\n"
+                            + message);
                 }
             }
         }
@@ -485,8 +487,8 @@ public class FMIModelDescription {
         }
         String sharedLibrary = getNativeLibraryPath();
         try {
-            String osName = System.getProperty("os.name").toLowerCase(
-                    Locale.getDefault());
+            String osName = System.getProperty("os.name")
+                    .toLowerCase(Locale.getDefault());
             if (osName.startsWith("linux")) {
                 // Call dlopen() with RTLD_LAZY and not with RTLD_GLOBAL, which is the
                 // default.
@@ -519,8 +521,8 @@ public class FMIModelDescription {
             // Java 1.5
             String osMessage = "";
             String dependencyMessage = "includes the appropriate directories containing the necessary libraries.";
-            String osName = System.getProperty("os.name").toLowerCase(
-                    Locale.getDefault());
+            String osName = System.getProperty("os.name")
+                    .toLowerCase(Locale.getDefault());
             if (osName.startsWith("linux")) {
                 osMessage = "Under Linux, try running \n" + "  ldd "
                         + sharedLibrary
@@ -533,24 +535,20 @@ public class FMIModelDescription {
                         + dependencyMessage;
             } else if (osName.startsWith("windows")) {
                 osMessage = "Under Windows, download the dependenc walker from http://www.dependencywalker.com "
-                        + "and run it on the shared library at "
-                        + sharedLibrary
-                        + ". Then check that your PATH "
-                        + dependencyMessage;
+                        + "and run it on the shared library at " + sharedLibrary
+                        + ". Then check that your PATH " + dependencyMessage;
             }
 
-            IOException exception = new IOException(
-                    "Error loading \""
-                            + sharedLibrary
-                            + "\" shared library.  "
-                            + "To debug loading errors, "
-                            + "Restart Java with \"-Djna.debug_load=true\".  "
-                            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging."
-                            + "On thing to try under any platform, downloading fmuCheck from "
-                            + "https://svn.fmi-standard.org/fmi/branches/public/Test_FMUs/Compliance-Checker/, "
-                            + "then run fmuCheck on the .fmu file.\n"
-                            + "Another thing to try is to unzip the .fmu file and check the shared library dependencies.\n"
-                            + osMessage);
+            IOException exception = new IOException("Error loading \""
+                    + sharedLibrary + "\" shared library.  "
+                    + "To debug loading errors, "
+                    + "Restart Java with \"-Djna.debug_load=true\".  "
+                    + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging."
+                    + "On thing to try under any platform, downloading fmuCheck from "
+                    + "https://svn.fmi-standard.org/fmi/branches/public/Test_FMUs/Compliance-Checker/, "
+                    + "then run fmuCheck on the .fmu file.\n"
+                    + "Another thing to try is to unzip the .fmu file and check the shared library dependencies.\n"
+                    + osMessage);
             exception.initCause(throwable3);
             throw exception;
         }
@@ -574,71 +572,87 @@ public class FMIModelDescription {
     public void parseDependenciese(Node node) {
         NamedNodeMap attributes = node.getAttributes();
         Long valueReference = modelVariables.get(Integer
-                        .parseInt(attributes.getNamedItem("index")
-                .getNodeValue()) - 1).valueReference;
+                .parseInt(attributes.getNamedItem("index").getNodeValue())
+                - 1).valueReference;
         Node dependencyNode = attributes.getNamedItem("dependencies");
         if (dependencyNode != null) {
-                String[] dependencies = null;
-                List <String> inputDependencies = new LinkedList<String>();
-                List <String> inputStateDependencies = new LinkedList<String>();
-                if (dependencyNode.getNodeValue().trim().length() != 0) {
-                        dependencies = dependencyNode.getNodeValue().trim()
-                    .split(" ");
-                        // Create a list which contains dependent variables which are inputs.
-                        for (int j = 0; j < dependencies.length; j++) {
-                                if (modelVariables
-                                        .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input)) {
-                                        inputDependencies.add(dependencies[j]);
-                                }
-                                // Create a list which contains dependent variables which are inputs or states.
-                    if (modelVariables
-                            .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input) ||
-                            modelVariables
-                            .get(Integer.parseInt(dependencies[j]) - 1).isState) {
+            String[] dependencies = null;
+            List<String> inputDependencies = new LinkedList<String>();
+            List<String> inputStateDependencies = new LinkedList<String>();
+            if (dependencyNode.getNodeValue().trim().length() != 0) {
+                dependencies = dependencyNode.getNodeValue().trim().split(" ");
+                // Create a list which contains dependent variables which are inputs.
+                for (int j = 0; j < dependencies.length; j++) {
+                    if (modelVariables.get(
+                            Integer.parseInt(dependencies[j]) - 1).causality
+                                    .equals(Causality.input)) {
+                        inputDependencies.add(dependencies[j]);
+                    }
+                    // Create a list which contains dependent variables which are inputs or states.
+                    if (modelVariables.get(
+                            Integer.parseInt(dependencies[j]) - 1).causality
+                                    .equals(Causality.input)
+                            || modelVariables
+                                    .get(Integer.parseInt(dependencies[j])
+                                            - 1).isState) {
                         inputStateDependencies.add(dependencies[j]);
-                            }
-                        }
+                    }
                 }
-                // Create the list of dependent variables which are just inputs.
+            }
+            // Create the list of dependent variables which are just inputs.
             for (int i = 0; i < modelVariables.size(); i++) {
                 if (modelVariables.get(i).valueReference == valueReference) {
                     modelVariables.get(i).directDependency.clear();
                     for (int j = 0; j < inputDependencies.size(); j++) {
-                                                for (int k = 0; k < modelVariables.size(); k++) {
-                                                        try {
-                                                                if ((modelVariables.get(k).valueReference == modelVariables
-                                                                                .get(Integer.parseInt(inputDependencies.get(j)) - 1).valueReference)
-                                                                                && modelVariables.get(k).causality.equals(Causality.input)) {
-                                                                        modelVariables.get(i).directDependency
-                                                                                        .add(modelVariables.get(k).name);
-                                                                        break;
-                                                                }
-                                                        } catch (NumberFormatException ex) {
-                                                                NumberFormatException nfx = new NumberFormatException(
-                                                                                "Failed to parse \"" + inputDependencies.get(j)
-                                                                                                + "\", which is the " + j
-                                                                                                + " (0-based) dependency.");
-                                                                nfx.initCause(ex);
-                                                                throw nfx;
-                                                        }
-                                                }
-                    }
-
-                 // Create the list of dependent variables which are just inputs and states.
-                    for (int j = 0; j < inputStateDependencies.size(); j++) {
                         for (int k = 0; k < modelVariables.size(); k++) {
                             try {
-                                if ((modelVariables.get(k).valueReference == modelVariables
-                                        .get(Integer.parseInt(inputStateDependencies.get(j)) - 1).valueReference) &&
-                                        (modelVariables.get(k).isState || modelVariables.get(k).causality.equals(Causality.input)))
-                                         {
-                                    modelVariables.get(i).inputStateDependentScalarVariables
-                                            .add(modelVariables.get(k));
+                                if ((modelVariables
+                                        .get(k).valueReference == modelVariables
+                                                .get(Integer.parseInt(
+                                                        inputDependencies
+                                                                .get(j))
+                                                        - 1).valueReference)
+                                        && modelVariables.get(k).causality
+                                                .equals(Causality.input)) {
+                                    modelVariables.get(i).directDependency
+                                            .add(modelVariables.get(k).name);
                                     break;
                                 }
                             } catch (NumberFormatException ex) {
                                 NumberFormatException nfx = new NumberFormatException(
-                                        "Failed to parse \"" + inputStateDependencies.get(j)
+                                        "Failed to parse \""
+                                                + inputDependencies.get(j)
+                                                + "\", which is the " + j
+                                                + " (0-based) dependency.");
+                                nfx.initCause(ex);
+                                throw nfx;
+                            }
+                        }
+                    }
+
+                    // Create the list of dependent variables which are just inputs and states.
+                    for (int j = 0; j < inputStateDependencies.size(); j++) {
+                        for (int k = 0; k < modelVariables.size(); k++) {
+                            try {
+                                if ((modelVariables
+                                        .get(k).valueReference == modelVariables
+                                                .get(Integer.parseInt(
+                                                        inputStateDependencies
+                                                                .get(j))
+                                                        - 1).valueReference)
+                                        && (modelVariables.get(k).isState
+                                                || modelVariables.get(
+                                                        k).causality.equals(
+                                                                Causality.input))) {
+                                    modelVariables.get(
+                                            i).inputStateDependentScalarVariables
+                                                    .add(modelVariables.get(k));
+                                    break;
+                                }
+                            } catch (NumberFormatException ex) {
+                                NumberFormatException nfx = new NumberFormatException(
+                                        "Failed to parse \""
+                                                + inputStateDependencies.get(j)
                                                 + "\", which is the " + j
                                                 + " (0-based) dependency.");
                                 nfx.initCause(ex);
@@ -670,8 +684,8 @@ public class FMIModelDescription {
             if (modelVariables.get(i).causality.equals(Causality.output)
                     && inputVariables != null) {
                 for (int j = 0; j < inputVariables.size(); j++) {
-                    modelVariables.get(i).directDependency.add(inputVariables
-                            .get(j));
+                    modelVariables.get(i).directDependency
+                            .add(inputVariables.get(j));
                 }
             }
         }
@@ -706,7 +720,7 @@ public class FMIModelDescription {
         public TypedIOPort port;
 
         /** The quantum value of the state. */
-                public double quantum;
+        public double quantum;
 
         /** The FMI scalar variable for this state. */
         public FMIScalarVariable scalarVariable;

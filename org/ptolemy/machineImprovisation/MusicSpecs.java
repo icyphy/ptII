@@ -183,8 +183,8 @@ public class MusicSpecs {
                 List<Integer> mixolydianDom = Arrays.asList(0, 2, 4, 7, 9, 10);
                 List<Integer> major = Arrays.asList(0, 2, 4, 7, 9, 11);
                 List<Integer> majorAvoidRoot = Arrays.asList(2, 4, 7, 9, 11);
-                List<Integer> melodicMinor = Arrays
-                        .asList(0, 2, 3, 5, 7, 9, 11);
+                List<Integer> melodicMinor = Arrays.asList(0, 2, 3, 5, 7, 9,
+                        11);
                 List<Integer> mmUpm3 = Arrays.asList(0, 3, 6, 10, 5, 8, 0, 2); //Melodic minor, up minor third
                 List<Integer> mmUpHs = Arrays.asList(1, 3, 4, 6, 8, 10, 0); // Melodic minor, up half step
                 List<Integer> dorian = Arrays.asList(0, 2, 3, 5, 7, 9, 10);
@@ -294,8 +294,8 @@ public class MusicSpecs {
 
             for (int i = 0; i < noteIndices.size(); i++) {
 
-                notesInChord.add(translateKeyToLetterNote(baseInteger
-                        + noteIndices.get(i), false));
+                notesInChord.add(translateKeyToLetterNote(
+                        baseInteger + noteIndices.get(i), false));
             }
         }
         return notesInChord;
@@ -307,7 +307,8 @@ public class MusicSpecs {
      * @param addOctave boolean -- if true indicates that octave information should be output
      * @return letter note representation of note
      */
-    public static String translateKeyToLetterNote(double key, boolean addOctave) {
+    public static String translateKeyToLetterNote(double key,
+            boolean addOctave) {
 
         if (key == TERMINATION_NOTE_KEY) {
             return TERMINATION_NOTE_SYMBOL; //termination

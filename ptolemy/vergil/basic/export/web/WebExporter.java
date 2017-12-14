@@ -58,7 +58,8 @@ public interface WebExporter {
      *  @return True if the specified attribute and value was defined (i.e.,
      *   if there was a previous value, it was overwritten).
      */
-    public boolean defineAttribute(WebAttribute webAttribute, boolean overwrite);
+    public boolean defineAttribute(WebAttribute webAttribute,
+            boolean overwrite);
 
     /** Add the given web content as a new element to the specified position.
      *  The position is expected to be one of "head", "start", or "end",

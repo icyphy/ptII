@@ -99,13 +99,13 @@ public final class TokenParser {
      *  @exception IllegalActionException if the state becomes inconsistent
      */
     public <T extends Token> void convertToBytes(T token,
-            DataOutputStream outputStream) throws IOException,
-            IllegalActionException {
-        HandlerData<T> handlerData = (HandlerData<T>) _handlerMap.get(token
-                .getClass());
+            DataOutputStream outputStream)
+            throws IOException, IllegalActionException {
+        HandlerData<T> handlerData = (HandlerData<T>) _handlerMap
+                .get(token.getClass());
         if (handlerData == null) {
-            throw new NullPointerException("No handler found for type "
-                    + token.getClass());
+            throw new NullPointerException(
+                    "No handler found for type " + token.getClass());
         }
 
         outputStream.writeShort(handlerData._position);
@@ -122,8 +122,8 @@ public final class TokenParser {
      *  @exception IllegalActionException if the state becomes inconsistent
      */
     public <T extends Token> void convertToBytes(T token,
-            OutputStream outputStream) throws IOException,
-            IllegalActionException {
+            OutputStream outputStream)
+            throws IOException, IllegalActionException {
         convertToBytes(token, new DataOutputStream(outputStream));
     }
 
@@ -141,8 +141,8 @@ public final class TokenParser {
         HandlerData<T> data = (HandlerData<T>) getHandlerList().get(position);
 
         if (data == null) {
-            throw new NullPointerException("No handler found for position "
-                    + position);
+            throw new NullPointerException(
+                    "No handler found for position " + position);
         }
 
         return data.getTokenHandler().convertToToken(inputStream,
@@ -160,7 +160,7 @@ public final class TokenParser {
     public <T extends Token> T convertToToken(InputStream inputStream)
             throws IOException, IllegalActionException {
         // The "this" keyword is required here.
-        return this.<T> convertToToken(new DataInputStream(inputStream));
+        return this.<T>convertToToken(new DataInputStream(inputStream));
     }
 
     /** Get the list of token handlers.

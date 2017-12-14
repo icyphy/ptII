@@ -150,8 +150,8 @@ public class DoubleMatrixToken extends MatrixToken {
     public DoubleMatrixToken(double[][] value, int copy)
             throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("DoubleMatrixToken: The "
-                    + "specified matrix is null.");
+            throw new IllegalActionException(
+                    "DoubleMatrixToken: The " + "specified matrix is null.");
         }
 
         _initialize(value);
@@ -194,8 +194,8 @@ public class DoubleMatrixToken extends MatrixToken {
         int elements = rows * columns;
 
         if (tokens == null) {
-            throw new IllegalActionException("DoubleMatrixToken: The specified"
-                    + " array is null.");
+            throw new IllegalActionException(
+                    "DoubleMatrixToken: The specified" + " array is null.");
         }
 
         if (tokens.length != rows * columns) {
@@ -228,9 +228,9 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     @Override
     public final Complex[][] complexMatrix() {
-        return ComplexMatrixMath
-                .toMatrixFromArray(DoubleArrayMath.toComplexArray(_value),
-                        _rowCount, _columnCount);
+        return ComplexMatrixMath.toMatrixFromArray(
+                DoubleArrayMath.toComplexArray(_value), _rowCount,
+                _columnCount);
     }
 
     /** Convert the specified token into an instance of DoubleMatrixToken.
@@ -256,7 +256,8 @@ public class DoubleMatrixToken extends MatrixToken {
 
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(token, "[double]"));
+                    notSupportedIncomparableConversionMessage(token,
+                            "[double]"));
         }
 
         // try double
@@ -278,8 +279,8 @@ public class DoubleMatrixToken extends MatrixToken {
 
         // The argument is below DoubleMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "[double]"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[double]"));
     }
 
     /** Return a new matrix that is a sub-matrix of this matrix.
@@ -292,18 +293,18 @@ public class DoubleMatrixToken extends MatrixToken {
      *   parameters result in out of bounds accesses.
      */
     @Override
-    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
-            throws IllegalActionException {
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan,
+            int colSpan) throws IllegalActionException {
         double[][] value = this.doubleMatrix();
         try {
-            double[][] result = DoubleMatrixMath.crop(value, rowStart,
-                    colStart, rowSpan, colSpan);
+            double[][] result = DoubleMatrixMath.crop(value, rowStart, colStart,
+                    rowSpan, colSpan);
             return new DoubleMatrixToken(result);
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                    + ", colStart = " + colStart + ", rowSpan = "
-                    + rowSpan + ", colSpan = " + colSpan + ").");
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -458,7 +459,8 @@ public class DoubleMatrixToken extends MatrixToken {
     @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
-        if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
+        if (matrices == null || matrices.length == 0
+                || matrices[0].length == 0) {
             throw new IllegalActionException("matrixJoin: No input matrices.");
         }
         // Calculate the size of the result.
@@ -488,8 +490,8 @@ public class DoubleMatrixToken extends MatrixToken {
                 if (column + columnCount > columns) {
                     columnCount = columns - column;
                 }
-                DoubleMatrixMath.matrixCopy(matrices[i][j].doubleMatrix(), 0,
-                        0, tiled, row, column, rowCount, columnCount);
+                DoubleMatrixMath.matrixCopy(matrices[i][j].doubleMatrix(), 0, 0,
+                        tiled, row, column, rowCount, columnCount);
                 // Starting position for the next column.
                 column += matrices[0][j].getColumnCount();
             }
@@ -589,8 +591,8 @@ public class DoubleMatrixToken extends MatrixToken {
                     _rowCount, _columnCount, DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
-            throw new InternalErrorException("DoubleMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
+            throw new InternalErrorException(
+                    "DoubleMatrixToken.zero: " + "Cannot create zero matrix.");
         }
     }
 
@@ -610,8 +612,8 @@ public class DoubleMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
-        double[] result = DoubleArrayMath.add(
-                convertedArgument._getInternalDoubleArray(), _value);
+        double[] result = DoubleArrayMath
+                .add(convertedArgument._getInternalDoubleArray(), _value);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
     }
@@ -632,7 +634,8 @@ public class DoubleMatrixToken extends MatrixToken {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
             if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((DoubleMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -661,7 +664,8 @@ public class DoubleMatrixToken extends MatrixToken {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
             if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((DoubleMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -699,7 +703,8 @@ public class DoubleMatrixToken extends MatrixToken {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
             if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((DoubleMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -768,7 +773,8 @@ public class DoubleMatrixToken extends MatrixToken {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
             if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((DoubleMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -816,7 +822,8 @@ public class DoubleMatrixToken extends MatrixToken {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
             if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((DoubleMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -845,7 +852,8 @@ public class DoubleMatrixToken extends MatrixToken {
         double scalar;
         if (rightArgument instanceof DoubleMatrixToken) {
             if (((DoubleMatrixToken) rightArgument).getRowCount() != 1
-                    || ((DoubleMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((DoubleMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -853,8 +861,8 @@ public class DoubleMatrixToken extends MatrixToken {
         } else {
             scalar = ((DoubleToken) rightArgument).doubleValue();
         }
-        double[] result = DoubleArrayMath.negative(DoubleArrayMath.add(_value,
-                -scalar));
+        double[] result = DoubleArrayMath
+                .negative(DoubleArrayMath.add(_value, -scalar));
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
     }

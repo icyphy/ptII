@@ -46,8 +46,8 @@ import ptserver.data.TokenParser;
  *  @Pt.ProposedRating Red (ishwinde)
  *  @Pt.AcceptedRating Red (ishwinde)
  */
-public class DoubleMatrixTokenHandler implements
-TokenHandler<DoubleMatrixToken> {
+public class DoubleMatrixTokenHandler
+        implements TokenHandler<DoubleMatrixToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -61,8 +61,8 @@ TokenHandler<DoubleMatrixToken> {
      */
     @Override
     public void convertToBytes(DoubleMatrixToken token,
-            DataOutputStream outputStream) throws IOException,
-            IllegalActionException {
+            DataOutputStream outputStream)
+            throws IOException, IllegalActionException {
 
         outputStream.writeInt(token.getRowCount());
         outputStream.writeInt(token.getColumnCount());
@@ -87,8 +87,8 @@ TokenHandler<DoubleMatrixToken> {
      */
     @Override
     public DoubleMatrixToken convertToToken(DataInputStream inputStream,
-            Class<? extends DoubleMatrixToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends DoubleMatrixToken> tokenType)
+            throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();
         int colunmCount = inputStream.readInt();

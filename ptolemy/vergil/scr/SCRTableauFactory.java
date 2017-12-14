@@ -93,9 +93,9 @@ public class SCRTableauFactory extends TableauFactory {
             }
         }
         if (model == null) {
-            throw new InternalErrorException(effigy, null, "The effigy "
-                    + effigy + " was a " + effigy.getClass()
-                    + " not a PtolemyEffigy.");
+            throw new InternalErrorException(effigy, null,
+                    "The effigy " + effigy + " was a " + effigy.getClass()
+                            + " not a PtolemyEffigy.");
         } else {
             FSMActor controller = ((FSMDirector) model.getDirector())
                     .getController();

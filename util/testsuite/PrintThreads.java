@@ -93,13 +93,13 @@ public class PrintThreads {
     public static String allThreadGroups() {
         ThreadGroup rootGroup = rootThreadGroup();
 
-        StringBuffer results = new StringBuffer("ThreadGroups: "
-                + (rootGroup.activeGroupCount() + 1) + "\n");
+        StringBuffer results = new StringBuffer(
+                "ThreadGroups: " + (rootGroup.activeGroupCount() + 1) + "\n");
 
         results.append(rootGroup.toString());
 
         ThreadGroup[] threadGroups = new ThreadGroup[rootGroup
-                                                     .activeGroupCount()];
+                .activeGroupCount()];
         rootGroup.enumerate(threadGroups);
 
         for (ThreadGroup threadGroup : threadGroups) {
@@ -127,14 +127,14 @@ public class PrintThreads {
             rootGroup = Thread.currentThread().getThreadGroup();
         }
 
-        StringBuffer results = new StringBuffer("Threads: "
-                + rootGroup.activeCount() + "\n");
+        StringBuffer results = new StringBuffer(
+                "Threads: " + rootGroup.activeCount() + "\n");
 
         if (indicateEventDispatchThread) {
             results.append("Current Thread (*) "
                     + (SwingUtilities.isEventDispatchThread() ? "_is_"
                             : "_is not_")
-                            + " the Swing Event Dispatch Thread\n");
+                    + " the Swing Event Dispatch Thread\n");
         }
 
         results.append(_getHeader());
@@ -175,18 +175,16 @@ public class PrintThreads {
                 group = thread.getThreadGroup().getName();
             }
 
-            return _stringFormat(name, 35)
-                    + " "
-                    + _stringFormat(group, 20)
+            return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
                     + " "
                     + _stringFormat(Integer.toString(thread.getPriority()), 3)
                     + " "
-                    + _stringFormat(Boolean.valueOf(thread.isDaemon())
-                            .toString(), 6)
-                            + " "
-                            + _stringFormat(Boolean.valueOf(thread.isAlive())
-                                    .toString(), 5)
-                                    + (Thread.currentThread().equals(thread) ? " *" : "  ");
+                    + _stringFormat(
+                            Boolean.valueOf(thread.isDaemon()).toString(), 6)
+                    + " "
+                    + _stringFormat(
+                            Boolean.valueOf(thread.isAlive()).toString(), 5)
+                    + (Thread.currentThread().equals(thread) ? " *" : "  ");
         } catch (Exception e) {
             return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
                     + " " + "PrintThread.toThreadDescription(): Bad State!: "

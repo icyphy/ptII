@@ -93,9 +93,9 @@ public class ShadowHighlighter extends BasicHighlighter {
     @Override
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
-        Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY()
-                + getHalo(), b.getWidth() + getHalo(), b.getHeight()
-                + getHalo());
+        Rectangle2D bounds = new Rectangle2D.Double(b.getX(),
+                b.getY() + getHalo(), b.getWidth() + getHalo(),
+                b.getHeight() + getHalo());
         return bounds;
     }
 
@@ -158,8 +158,7 @@ public class ShadowHighlighter extends BasicHighlighter {
         double w = bounds.getWidth() + getHalo();
         double h = bounds.getHeight() + getHalo();
 
-        getParent().repaint(
-                DamageRegion.createDamageRegion(getTransformContext(), x, y, w,
-                        h));
+        getParent().repaint(DamageRegion
+                .createDamageRegion(getTransformContext(), x, y, w, h));
     }
 }

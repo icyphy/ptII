@@ -60,7 +60,7 @@ public class AWTImageToken extends ImageToken {
      */
     @Override
     public Image asAWTImage() {
-        return ((Image)_value);
+        return ((Image) _value);
     }
 
     @Override
@@ -71,8 +71,9 @@ public class AWTImageToken extends ImageToken {
     /** Return the java.awt.Image object associated with this token.
      *  @return the java.awt.Image object.
      */
+    @Override
     public Image getValue() {
-        return (Image)_value;
+        return (Image) _value;
     }
 
     /** Return a description of the token.
@@ -88,8 +89,9 @@ public class AWTImageToken extends ImageToken {
     @Override
     public String toString() {
         return "{type=\"" + getClass() + "\", width=\""
-                + (_value == null ? -1 : ((Image)_value).getWidth(null))
+                + (_value == null ? -1 : ((Image) _value).getWidth(null))
                 + "\", height=\""
-                + (_value == null ? -1 : ((Image)_value).getHeight(null)) + "\"}";
+                + (_value == null ? -1 : ((Image) _value).getHeight(null))
+                + "\"}";
     }
 }

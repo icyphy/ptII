@@ -115,8 +115,8 @@ public class TimedPNDirector extends PNDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public TimedPNDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public TimedPNDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -132,8 +132,8 @@ public class TimedPNDirector extends PNDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public TimedPNDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public TimedPNDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -206,8 +206,8 @@ public class TimedPNDirector extends PNDirector {
     public synchronized Time fireAt(Actor actor, Time newFiringTime,
             int microstep) throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this, "The process wants to "
-                    + " get fired in the past!");
+            throw new IllegalActionException(this,
+                    "The process wants to " + " get fired in the past!");
         }
 
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
@@ -232,8 +232,8 @@ public class TimedPNDirector extends PNDirector {
     @Override
     public void setModelTime(Time newTime) throws IllegalActionException {
         if (newTime.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this, "Attempt to set the "
-                    + "time to past.");
+            throw new IllegalActionException(this,
+                    "Attempt to set the " + "time to past.");
         } else {
             super.setModelTime(newTime);
         }

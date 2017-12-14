@@ -63,8 +63,8 @@ public class Scale extends LatticeOntologyAdapter {
         super(solver, actor, false);
 
         _multiplyDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
 
         // If a definition for a multiplication concept function cannot be
         // found, just use the default constraints.
@@ -95,16 +95,18 @@ public class Scale extends LatticeOntologyAdapter {
                     || interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
                 // The output of the Scale actor is the product of the input and the factor parameter
                 // So use the MultiplyConceptFunction for the output property.
-                setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                        multiplyFunction, new InequalityTerm[] {
-                                getPropertyTerm(actor.input),
-                                getPropertyTerm(actor.factor) }));
+                setAtLeast(actor.output,
+                        new ConceptFunctionInequalityTerm(multiplyFunction,
+                                new InequalityTerm[] {
+                                        getPropertyTerm(actor.input),
+                                        getPropertyTerm(actor.factor) }));
             }
         }
 
         // Add back in default constraints for the output to input relationship.
         if (!_useDefaultConstraints
-                && (interconnectConstraintType == ConstraintType.EQUALS || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
+                && (interconnectConstraintType == ConstraintType.EQUALS
+                        || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
             setAtLeast(actor.input, actor.output);
             setAtLeast(actor.factor, actor.output);
         }

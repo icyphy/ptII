@@ -183,8 +183,8 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
         @Override
         protected void _help() {
             try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "ptolemy/actor/gui/ptjacl/help.htm");
+                URL doc = getClass().getClassLoader()
+                        .getResource("ptolemy/actor/gui/ptjacl/help.htm");
                 getConfiguration().openModel(null, doc, doc.toExternalForm());
             } catch (Exception ex) {
                 System.out.println("ExecShellTableau._help(): " + ex);
@@ -305,8 +305,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                     throw interrupted;
                 }
             } catch (final IOException io) {
-                stderr("IOException: "
-                        + ptolemy.kernel.util.KernelException
+                stderr("IOException: " + ptolemy.kernel.util.KernelException
                         .stackTraceToString(io));
             }
         } catch (InterruptedException e) {

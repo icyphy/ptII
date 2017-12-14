@@ -81,8 +81,8 @@ public class SCRGraphTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public SCRGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -183,12 +183,12 @@ public class SCRGraphTableau extends Tableau {
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model != null
-                    && model.getContainer() != null
-                    && model.getContainer().getAttribute("openAsSCRActor") != null
+            if (model != null && model.getContainer() != null
+                    && model.getContainer()
+                            .getAttribute("openAsSCRActor") != null
                     && ((BooleanToken) (((Parameter) model.getContainer()
                             .getAttribute("openAsSCRActor")).getToken()))
-                            .booleanValue()) {
+                                    .booleanValue()) {
                 tableau = new SCRGraphTableau((PtolemyEffigy) effigy,
                         "scrGraphTableau");
                 return tableau;

@@ -143,8 +143,8 @@ public class FMICallbackFunctions extends Structure {
      *  <p>For details about how Callbacks work in JNA, see
      *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks</a>.</p>
      */
-    public static class ByValue extends FMICallbackFunctions implements
-            Structure.ByValue {
+    public static class ByValue extends FMICallbackFunctions
+            implements Structure.ByValue {
         /**  Access the structure by reference.
          *
          *  <p>See
@@ -164,7 +164,8 @@ public class FMICallbackFunctions extends Structure {
          */
         public ByValue(FMICallbackLogger logger,
                 FMICallbackAllocateMemory allocateMemory,
-                FMICallbackFreeMemory freeMemory, FMIStepFinished stepFinished) {
+                FMICallbackFreeMemory freeMemory,
+                FMIStepFinished stepFinished) {
             super(logger, allocateMemory, freeMemory, stepFinished);
         }
     };

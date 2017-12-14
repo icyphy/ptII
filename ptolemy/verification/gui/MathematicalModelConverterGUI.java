@@ -97,7 +97,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
     @Deprecated
     public MathematicalModelConverterGUI(
             final MathematicalModelConverter modelConverter, Tableau tableau)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(modelConverter, tableau);
 
         setTitle(modelConverter.getName());
@@ -144,7 +144,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                     // FIXME: Customize to the particular code generator.
                     // Use Thread.currentThread() so that this code will
                     // work under WebStart.
-                    URL infoURL = ClassUtilities.getResource("ptolemy/verification/README.html");
+                    URL infoURL = ClassUtilities
+                            .getResource("ptolemy/verification/README.html");
 
                     if (configuration != null) {
                         configuration.openModel(null, infoURL,
@@ -230,12 +231,12 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                     StringBuffer code = new StringBuffer("");
 
                     try {
-                        code.append(modelConverter.generateFile(file,
-                                modelType, inputTemporalFormula, formulaType,
-                                span, outputType, bufferSize));
+                        code.append(modelConverter.generateFile(file, modelType,
+                                inputTemporalFormula, formulaType, span,
+                                outputType, bufferSize));
                     } catch (Exception e) {
-                        MessageHandler.error("Failed to output result to the "
-                                + "file.", e);
+                        MessageHandler.error(
+                                "Failed to output result to the " + "file.", e);
                         return;
                     }
 

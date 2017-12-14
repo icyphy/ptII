@@ -98,26 +98,27 @@ public class TokenToJSON extends Converter {
      *  @exception IllegalActionException If the Token found on the input cannot
      *  be expressed in JSON format
      */
-    public static String constructJSON(Token input) throws IllegalActionException {
+    public static String constructJSON(Token input)
+            throws IllegalActionException {
         if (input == null || input.isNil()) {
             return "null";
         } else if (input instanceof LongToken) {
             // The 'L' suffix is not supported in JSON.
             String result = input.toString();
             return result.substring(0, result.length() - 1);
-        } else if (input instanceof ScalarToken
-                || input instanceof StringToken
+        } else if (input instanceof ScalarToken || input instanceof StringToken
                 || input instanceof DateToken) {
             return input.toString();
         } else if (input instanceof ArrayToken) {
             return _scanArrayToken((ArrayToken) input);
         } else if (input instanceof MatrixToken) {
-            return _scanArrayToken(((MatrixToken)input).toArray());
+            return _scanArrayToken(((MatrixToken) input).toArray());
         } else if (input instanceof RecordToken) {
             return _scanRecordToken((RecordToken) input);
         } else {
             throw new IllegalActionException(
-                    "Conversion to JSON not supported for: " + input.toString());
+                    "Conversion to JSON not supported for: "
+                            + input.toString());
         }
     }
 
@@ -165,7 +166,8 @@ public class TokenToJSON extends Converter {
      *  @return A JSON representation of the array.
      *  @exception IllegalActionException If an element of the array cannot be expressed in JSON.
      */
-    private static String _scanArrayToken(ArrayToken token) throws IllegalActionException {
+    private static String _scanArrayToken(ArrayToken token)
+            throws IllegalActionException {
         StringBuffer result = new StringBuffer("[");
         boolean first = true;
         for (Token element : token.arrayValue()) {
@@ -187,7 +189,8 @@ public class TokenToJSON extends Converter {
      *  @return A JSON representation of the record.
      *  @exception IllegalActionException If a field of the record cannot be expressed in JSON.
      */
-    private static String _scanRecordToken(RecordToken token) throws IllegalActionException {
+    private static String _scanRecordToken(RecordToken token)
+            throws IllegalActionException {
         StringBuffer result = new StringBuffer("{");
         boolean first = true;
         for (String label : token.labelSet()) {

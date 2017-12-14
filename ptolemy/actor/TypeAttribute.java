@@ -159,8 +159,8 @@ public class TypeAttribute extends Parameter {
      *   of TypeAttribute.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         _checkContainer(container);
         try {
             workspace().getWriteAccess();
@@ -238,9 +238,9 @@ public class TypeAttribute extends Parameter {
                         this,
                         "TypeAttribute can only be contained by instances "
                                 + "of TypedIOPort or org.kepler.moml.PortAttribute.");
-
+    
             }
-
+    
         }
     }
     */

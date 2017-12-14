@@ -101,8 +101,8 @@ public class Previous extends NamedProgramCodeGeneratorAdapter {
             codeStream.appendCodeBlock("absentInitBlock", args);
             return processCode(codeStream.toString());
         } else {
-            throw new IllegalActionException("Token type at previous : " + type
-                    + " not supported yet.");
+            throw new IllegalActionException(
+                    "Token type at previous : " + type + " not supported yet.");
         }
 
         codeStream.appendCodeBlock("initBlock", args);

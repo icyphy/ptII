@@ -74,13 +74,13 @@ public class OMCFMUJUnitTest {
                 .getCanonicalPath();
         String updateString = "To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar"
-                + System.getProperty("path.separator")
-                + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
-                + fmuFileName + " " + endTime + " " + stepSize + " false c "
-                  + knownGoodFileName;
+                + System.getProperty("path.separator") + topDirectory
+                + "\" org.ptolemy.fmi.driver.FMUCoSimulation " + fmuFileName
+                + " " + endTime + " " + stepSize + " false c "
+                + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
-        new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
-                LOGGING, ',', resultsFileName);
+        new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize, LOGGING,
+                ',', resultsFileName);
 
         String results = OMCFMUJUnitTest.readFile(resultsFileName);
         String knownGood = OMCFMUJUnitTest.readFile(knownGoodFileName);
@@ -101,9 +101,11 @@ public class OMCFMUJUnitTest {
      */
     public void cosimulate(String testName, double endTime, double stepSize)
             throws Exception {
-        cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName
-                + ".fmu", endTime, stepSize, topDirectory
-                + "/org/ptolemy/fmi/driver/test/junit/" + testName + ".csv");
+        cosimulate(
+                topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName + ".fmu",
+                endTime, stepSize,
+                topDirectory + "/org/ptolemy/fmi/driver/test/junit/" + testName
+                        + ".csv");
     }
 
     // /** Run the bouncing ball co-simulation functional mock-up unit test.
@@ -133,12 +135,12 @@ public class OMCFMUJUnitTest {
                 .getCanonicalPath();
         String updateString = "To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar"
-                + System.getProperty("path.separator")
-                + topDirectory + "\" org.ptolemy.fmi.driver.FMUModelExchange "
-                + fmuFileName + " 1.0 0.001 false c " + knownGoodFileName;
+                + System.getProperty("path.separator") + topDirectory
+                + "\" org.ptolemy.fmi.driver.FMUModelExchange " + fmuFileName
+                + " 1.0 0.001 false c " + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
-        new FMUModelExchange().simulate(fmuFileName, 1.0, 0.001,
-                LOGGING, ',', resultsFileName);
+        new FMUModelExchange().simulate(fmuFileName, 1.0, 0.001, LOGGING, ',',
+                resultsFileName);
 
         String results = OMCFMUJUnitTest.readFile(resultsFileName);
         String knownGood = OMCFMUJUnitTest.readFile(knownGoodFileName);
@@ -160,10 +162,11 @@ public class OMCFMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public String modelExchange(String testName) throws Exception {
-        return modelExchange(topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/auto/"
-                + testName + ".fmu",
+        return modelExchange(
+                topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/auto/"
+                        + testName + ".fmu",
                 topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/junit/"
-                + testName + ".csv");
+                        + testName + ".csv");
     }
 
     /** Check the csv file against equations.
@@ -175,8 +178,8 @@ public class OMCFMUJUnitTest {
      *  @param checkX2 True if the 3rd argument is x2 and should be checked.
      *  @exception Exception If there is a problem parsing the file.
      */
-    public void modelExchangeCheck(String testName, String csvFile, boolean checkX2)
-    throws Exception {
+    public void modelExchangeCheck(String testName, String csvFile,
+            boolean checkX2) throws Exception {
         // Read in the csv file and check the results
         double x1MaximumError = 0.0;
         double x2MaximumError = 0.0;
@@ -188,12 +191,14 @@ public class OMCFMUJUnitTest {
         String line = null;
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(csvFile), java.nio.charset.Charset.defaultCharset()));
+            bufferedReader = new BufferedReader(new java.io.InputStreamReader(
+                    new java.io.FileInputStream(csvFile),
+                    java.nio.charset.Charset.defaultCharset()));
             while ((line = bufferedReader.readLine()) != null) {
                 String[] fields = line.split(",");
                 row++;
                 // Skip the header.
-                if (row > 1 ) {
+                if (row > 1) {
                     double t = Double.valueOf(fields[0]);
                     double x1 = Double.valueOf(fields[1]);
                     double x1CalculatedValue = 0.0;
@@ -204,26 +209,25 @@ public class OMCFMUJUnitTest {
                         x1CalculatedValue = 1.0 * Math.exp(-0.5 * t);
                         x2 = Double.valueOf(fields[2]);
                         x2CalculatedValue = 2.0 * Math.exp(-1.0 * t);
-                        x2MaximumError = Math.max(x2MaximumError, Math.abs(x2 - x2CalculatedValue));
+                        x2MaximumError = Math.max(x2MaximumError,
+                                Math.abs(x2 - x2CalculatedValue));
                         String message = "Error: While validating the results for "
                                 + testName + " and reading " + csvFile
-                                + " row: " + row
-                                + "\n t: " + t
-                                + "\nx1: " + x1
+                                + " row: " + row + "\n t: " + t + "\nx1: " + x1
                                 + " calculatedValue: " + x1CalculatedValue
-                                + "\nx2: " + x2 + " calculatedValue: " + x2CalculatedValue;
+                                + "\nx2: " + x2 + " calculatedValue: "
+                                + x2CalculatedValue;
                         assertEquals(message, x2, x2CalculatedValue, epsilon);
                     } else {
                         // Test1_check.cpp
                         x1CalculatedValue = 1.0 * Math.exp(-1.0 * t);
                     }
-                    x1MaximumError = Math.max(x1MaximumError, Math.abs(x1 - x1CalculatedValue));
+                    x1MaximumError = Math.max(x1MaximumError,
+                            Math.abs(x1 - x1CalculatedValue));
                     String message2 = "Error: While validating the results for "
-                                + testName + " and reading " + csvFile
-                                + " row: " + row
-                                + "\n t: " + t
-                                + "\nx1: " + x1
-                                + " calculatedValue: " + x1CalculatedValue;
+                            + testName + " and reading " + csvFile + " row: "
+                            + row + "\n t: " + t + "\nx1: " + x1
+                            + " calculatedValue: " + x1CalculatedValue;
                     assertEquals(message2, x1, x1CalculatedValue, epsilon);
                 }
             }
@@ -235,9 +239,13 @@ public class OMCFMUJUnitTest {
         System.out.println(testName + ": x1 maximum error: " + x1MaximumError
                 + (checkX2 ? (", x2 maximum error: " + x2MaximumError) : "")
                 + " (Optional: Compare this against running the tests in sparse_fmi/test)");
-        assertTrue("The error for x1 was " + x1MaximumError + ", which is greater than " + epsilon,
+        assertTrue(
+                "The error for x1 was " + x1MaximumError
+                        + ", which is greater than " + epsilon,
                 x1MaximumError < epsilon);
-        assertTrue("The error for x2 was " + x2MaximumError + ", which is greater than " + epsilon,
+        assertTrue(
+                "The error for x2 was " + x2MaximumError
+                        + ", which is greater than " + epsilon,
                 x2MaximumError < epsilon);
     }
 
@@ -295,8 +303,8 @@ public class OMCFMUJUnitTest {
      *  @param args Not used.
      */
     public static void main(String args[]) {
-        org.junit.runner.JUnitCore
-        .main("ptolemy.actor.lib.fmi.fmus.omc.test.junit.OMCFMUJUnitTest");
+        org.junit.runner.JUnitCore.main(
+                "ptolemy.actor.lib.fmi.fmus.omc.test.junit.OMCFMUJUnitTest");
     }
 
     /** Read in the named file and returns the contents as a string.
@@ -312,8 +320,8 @@ public class OMCFMUJUnitTest {
         try {
             fileInputStream = new FileInputStream(fileName);
             dataInputStream = new DataInputStream(fileInputStream);
-            bufferedReader = new BufferedReader(new InputStreamReader(
-                    dataInputStream));
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(dataInputStream));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 results.append(line + lineSeparator);
@@ -344,7 +352,8 @@ public class OMCFMUJUnitTest {
                     .getParentFile().toString();
         } else if (userDir.endsWith("ptolemy/actor/lib/fmi/fmus/omc/test")) {
             topDirectory = new File(userDir).getParentFile().getParentFile()
-                .getParentFile().getParentFile().getParentFile().getParentFile().getParentFile().toString();
+                    .getParentFile().getParentFile().getParentFile()
+                    .getParentFile().getParentFile().toString();
         } else {
             topDirectory = userDir;
         }

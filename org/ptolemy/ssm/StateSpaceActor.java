@@ -39,5 +39,6 @@ public interface StateSpaceActor extends Actor {
     /** Return true if a valid decorator association exists.
      *  @return true if a valid decorator association exists.
      */
-    public boolean validDecoratorAssociationExists() throws IllegalActionException;
+    public boolean validDecoratorAssociationExists()
+            throws IllegalActionException;
 }

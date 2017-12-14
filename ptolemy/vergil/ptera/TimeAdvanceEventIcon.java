@@ -94,8 +94,9 @@ public class TimeAdvanceEventIcon extends EventIcon {
         figure.add(background);
         figure.add(label);
 
-        background.translate(bounds.getMaxX() - backgroundBounds.getCenterX()
-                - 5, bounds.getMinY() - backgroundBounds.getCenterY());
+        background.translate(
+                bounds.getMaxX() - backgroundBounds.getCenterX() - 5,
+                bounds.getMinY() - backgroundBounds.getCenterY());
         label.translateTo(bounds.getMaxX() - 5, bounds.getMinY());
         return figure;
     }

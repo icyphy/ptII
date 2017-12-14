@@ -101,8 +101,8 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
         diva.gui.GUIUtilities.addToolBarButton(_toolbar, _upAction);
 
-        URL img = getClass().getResource(
-                "/thales/vergil/navigable/img/fullScreen.gif");
+        URL img = getClass()
+                .getResource("/thales/vergil/navigable/img/fullScreen.gif");
 
         if (img != null) {
             ImageIcon icon = new ImageIcon(img);
@@ -175,8 +175,8 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
             // Load the image by using the absolute path to the gif.
             // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-            URL img = getClass().getResource(
-                    "/thales/vergil/navigable/img/Up.gif");
+            URL img = getClass()
+                    .getResource("/thales/vergil/navigable/img/Up.gif");
 
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);

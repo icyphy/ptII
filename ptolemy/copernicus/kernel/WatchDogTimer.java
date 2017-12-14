@@ -101,8 +101,8 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
      */
     @Override
     protected void internalTransform(String phaseName, Map options) {
-        System.out.println("WatchDogTimer.internalTransform(" + phaseName
-                + ", " + options + ")");
+        System.out.println("WatchDogTimer.internalTransform(" + phaseName + ", "
+                + options + ")");
 
         boolean isCancelling = PhaseOptions.getBoolean(options, "cancel");
 

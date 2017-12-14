@@ -134,8 +134,9 @@ public class HomerApplication extends MoMLApplication {
         try {
             configuration = readConfiguration(configurationURL);
         } catch (Exception ex) {
-            throw new Exception("Failed to read configuration '"
-                    + configurationURL + "'", ex);
+            throw new Exception(
+                    "Failed to read configuration '" + configurationURL + "'",
+                    ex);
         }
 
         return configuration;

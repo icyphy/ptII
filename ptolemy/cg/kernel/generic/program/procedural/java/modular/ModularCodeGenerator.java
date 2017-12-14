@@ -86,7 +86,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         super(container, name);
 
         generatorPackageList
-        .setExpression("generic.program.procedural.java.modular");
+                .setExpression("generic.program.procedural.java.modular");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,18 +107,18 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         profileCode.append("import java.util.List;" + _eol);
         profileCode.append("import java.util.LinkedList;" + _eol);
         profileCode.append("import ptolemy.cg.lib.Profile;" + _eol);
-        profileCode.append("import ptolemy.kernel.util.IllegalActionException;"
-                + _eol);
+        profileCode.append(
+                "import ptolemy.kernel.util.IllegalActionException;" + _eol);
 
         profileCode.append(_eol + "public class " + profileClassName
                 + " extends Profile {" + _eol);
-        profileCode.append(INDENT1 + "public " + profileClassName + "() { }"
-                + _eol);
+        profileCode.append(
+                INDENT1 + "public " + profileClassName + "() { }" + _eol);
 
         profileCode.append(createActorGraph());
 
-        profileCode.append(INDENT1 + "public List<Profile.Port> ports() {"
-                + _eol);
+        profileCode
+                .append(INDENT1 + "public List<Profile.Port> ports() {" + _eol);
         profileCode.append(INDENT2
                 + "List<Profile.Port> ports = new LinkedList<Profile.Port>();"
                 + _eol);
@@ -133,35 +133,27 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         profilePort = model
                                 .convertProfilePort((TypedIOPort) port);
                     } else {
-                        throw new InternalErrorException(port, null, "Port "
-                                + port + " is not a TypedIOPort?");
+                        throw new InternalErrorException(port, null,
+                                "Port " + port + " is not a TypedIOPort?");
                     }
                 } catch (Throwable throwable) {
-                    throw new IllegalActionException(
-                            port,
-                            throwable,
-                            "Failed to convert profile port \""
-                                    + port.getName()
+                    throw new IllegalActionException(port, throwable,
+                            "Failed to convert profile port \"" + port.getName()
                                     + "\", perhaps the type of the port needs to "
                                     + "be set from the UI or the backward type inference disabled?");
                 }
-                profileCode.append(INDENT2
-                        + "ports.add(new Profile.Port(\""
-                        + profilePort.name()
-                        + "\", "
-                        + profilePort.publisher()
+                profileCode.append(INDENT2 + "ports.add(new Profile.Port(\""
+                        + profilePort.name() + "\", " + profilePort.publisher()
+                        + ", " + profilePort.subscriber() + ", "
+                        + profilePort.width() + ", "
+                        + (port.isInput()
+                                ? DFUtilities.getTokenConsumptionRate(port)
+                                : DFUtilities.getTokenProductionRate(port))
                         + ", "
-                        + profilePort.subscriber()
-                        + ", "
-                        + profilePort.width()
-                        + ", "
-                        + (port.isInput() ? DFUtilities
-                                .getTokenConsumptionRate(port) : DFUtilities
-                                .getTokenProductionRate(port)) + ", "
-                                + ptTypeToCodegenType(((TypedIOPort) port).getType())
-                                + ", " + port.isInput() + ", " + port.isOutput() + ", "
-                                + profilePort.multiport() + ", \""
-                                + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                        + ptTypeToCodegenType(((TypedIOPort) port).getType())
+                        + ", " + port.isInput() + ", " + port.isOutput() + ", "
+                        + profilePort.multiport() + ", \""
+                        + profilePort.getPubSubChannelName() + "\"));" + _eol);
             }
         }
         profileCode.append(INDENT2 + "return ports;" + _eol);
@@ -214,16 +206,14 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
     public StringBuffer createActorGraph() throws IllegalActionException {
         StringBuffer actorGraph = new StringBuffer();
 
-        actorGraph
-        .append(INDENT1
+        actorGraph.append(INDENT1
                 + "public List<Profile.FiringFunction> firings() throws IllegalActionException {"
                 + _eol);
-        actorGraph
-        .append(INDENT2
+        actorGraph.append(INDENT2
                 + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();"
                 + _eol);
-        actorGraph.append(INDENT2 + "FiringFunction firingFunction;" + _eol
-                + _eol);
+        actorGraph.append(
+                INDENT2 + "FiringFunction firingFunction;" + _eol + _eol);
         int index = 0;
         ModularCodeGenTypedCompositeActor model = (ModularCodeGenTypedCompositeActor) _model;
         for (Object object : model.entityList()) {
@@ -231,9 +221,9 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             Actor actor = (Actor) object;
 
             StringBuffer firingFunction = new StringBuffer();
-            firingFunction.append(INDENT2
-                    + "firingFunction = new Profile.FiringFunction(" + index++
-                    + ");" + _eol);
+            firingFunction.append(
+                    INDENT2 + "firingFunction = new Profile.FiringFunction("
+                            + index++ + ");" + _eol);
             String externalPortName;
 
             // Add ports name and rate
@@ -252,15 +242,11 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
-                    firingFunction
-                    .append(INDENT2
+                    firingFunction.append(INDENT2
                             + "firingFunction.ports.add(new FiringFunctionPort(\""
-                            + inputPort.getName()
-                            + "\",\""
-                            + externalPortName
+                            + inputPort.getName() + "\",\"" + externalPortName
                             + "\","
-                            + DFUtilities
-                            .getTokenConsumptionRate(inputPort)
+                            + DFUtilities.getTokenConsumptionRate(inputPort)
                             + "," + inputPort.isInput() + "));" + _eol);
                 }
             }
@@ -278,15 +264,11 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
 
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
-                    firingFunction
-                    .append(INDENT2
+                    firingFunction.append(INDENT2
                             + "firingFunction.ports.add(new FiringFunctionPort(\""
-                            + outputPort.getName()
-                            + "\",\""
-                            + externalPortName
+                            + outputPort.getName() + "\",\"" + externalPortName
                             + "\","
-                            + DFUtilities
-                            .getTokenProductionRate(outputPort)
+                            + DFUtilities.getTokenProductionRate(outputPort)
                             + "," + outputPort.isInput() + "));" + _eol);
                 }
             }
@@ -347,8 +329,8 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 try {
                     long startTime = new Date().getTime();
                     manager.wrapup();
-                    _printTimeAndMemory(startTime, "CodeGenerator: "
-                            + "wrapup consumed: ");
+                    _printTimeAndMemory(startTime,
+                            "CodeGenerator: " + "wrapup consumed: ");
                 } catch (RuntimeException ex) {
                     // The Exit actor causes Manager.wrapup() to throw this.
                     if (!manager.isExitingAfterWrapup()) {
@@ -380,14 +362,12 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (_isTopLevel()) {
-            mainEntryCode
-            .append(_eol
-                    + _eol
+            mainEntryCode.append(_eol + _eol
                     + "public static void main(String [] args) throws Exception {"
                     + _eol + _sanitizedModelName + " model = new "
-                    + _sanitizedModelName + "();" + _eol
-                    + "model.run();" + _eol + "}" + _eol
-                    + "public void run() throws Exception {" + _eol);
+                    + _sanitizedModelName + "();" + _eol + "model.run();" + _eol
+                    + "}" + _eol + "public void run() throws Exception {"
+                    + _eol);
         } else {
             boolean addComma = false;
 
@@ -397,8 +377,8 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         + "public Object[] fire (boolean export " + _eol);
                 addComma = true;
             } else {
-                mainEntryCode.append(_eol + _eol + "public Object[] fire ("
-                        + _eol);
+                mainEntryCode
+                        .append(_eol + _eol + "public Object[] fire (" + _eol);
             }
 
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
@@ -416,12 +396,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         if (addComma) {
                             mainEntryCode.append(", ");
                         }
-                        if (DFUtilities.getTokenConsumptionRate(inputPort) > 1) {
+                        if (DFUtilities
+                                .getTokenConsumptionRate(inputPort) > 1) {
                             mainEntryCode.append(type + "[] "
                                     + inputPort.getName() + "_" + i);
                         } else {
-                            mainEntryCode.append(type + " "
-                                    + inputPort.getName() + "_" + i);
+                            mainEntryCode.append(
+                                    type + " " + inputPort.getName() + "_" + i);
                         }
                         addComma = true;
                     }
@@ -435,13 +416,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             if (addComma) {
                                 mainEntryCode.append(", ");
                             }
-
+            
                             String type = codeGenType(outputPort.getType());
-
+            
                             if (!type.equals("Token") && !isPrimitive(type)) {
                                 type = "Token";
                             }
-
+            
                             for (int i = 0; i < outputPort.getWidth(); i++) {
                                 if (DFUtilities.getTokenConsumptionRate(outputPort) > 1) {
                                     mainEntryCode.append(type + "[] " + outputPort.getName() + "_" + i);

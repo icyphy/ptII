@@ -66,10 +66,11 @@ public class LogicalNot extends Transformer {
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-15\" y=\"-15\" " + "width=\"30\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-4\" y=\"8\""
-                + "style=\"font-size:24\">!</text>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-15\" y=\"-15\" "
+                        + "width=\"30\" height=\"30\" "
+                        + "style=\"fill:white\"/>\n" + "<text x=\"-4\" y=\"8\""
+                        + "style=\"font-size:24\">!</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

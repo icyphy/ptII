@@ -172,8 +172,8 @@ public class Counter extends AtomicContinuationActor {
 
     ///////////////////////////////////////////////////////////////////
 
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
         _alarm = 0;
         _count = _currentCount = 0;
 

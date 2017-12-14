@@ -129,8 +129,8 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIPNDirector newObject = (MetroIIPNDirector) super
-                .clone(workspace);
+        MetroIIPNDirector newObject = (MetroIIPNDirector) super.clone(
+                workspace);
         newObject._eventLock = Collections
                 .synchronizedList(new ArrayList<Object>());
         newObject._eventNameID = new Hashtable<String, Integer>();
@@ -185,7 +185,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                                    throws CollectionAbortedException {
+                            throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -262,7 +262,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                         while (!_areThreadsDeadlocked()
                                 && !_areAllThreadsStopped()
                                 && _getActiveThreadsCount() != _getMetroIIEventBlockedThreadsCount()
-                                + _getBlockedThreadsCount()) {
+                                        + _getBlockedThreadsCount()) {
                             wait(1);
                         }
 
@@ -272,8 +272,8 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                                     + _proposedMetroIIEventList.size());
                             ArrayList<Event.Builder> tmp_events = new ArrayList<Event.Builder>(
                                     _proposedMetroIIEventList);
-                            System.out.println("tmp_events: "
-                                    + tmp_events.size());
+                            System.out.println(
+                                    "tmp_events: " + tmp_events.size());
                             _proposedMetroIIEventList.clear();
                             resultHandler.handleResult(tmp_events);
                             for (Builder etb : tmp_events) {
@@ -283,8 +283,8 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                                             .get(_eventName2Id(event_name));
                                     synchronized (lock) {
                                         lock.notifyAll();
-                                        System.out.println("notify: "
-                                                + event_name);
+                                        System.out.println(
+                                                "notify: " + event_name);
                                     }
 
                                 } else {
@@ -303,9 +303,8 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                         return;
                     } finally {
                         if (outsideDirector != null) {
-                            ((ProcessDirector) outsideDirector)
-                            .threadUnblocked(Thread.currentThread(),
-                                    null);
+                            ((ProcessDirector) outsideDirector).threadUnblocked(
+                                    Thread.currentThread(), null);
                         }
                     }
                 }

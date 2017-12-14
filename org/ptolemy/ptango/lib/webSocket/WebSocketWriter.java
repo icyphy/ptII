@@ -57,8 +57,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (ltrnc)
  */
 
-public class WebSocketWriter extends TypedAtomicActor implements
-        WebSocketService {
+public class WebSocketWriter extends TypedAtomicActor
+        implements WebSocketService {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -119,7 +119,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
             // Unsubscribe from previous path (if any)
             if (_URIpath != null && !_URIpath.toString().isEmpty()
                     && _endpointManager != null) {
-            // TODO: Shared vs. individual
+                // TODO: Shared vs. individual
                 _endpointManager.unsubscribe(this, _URIpath.toString());
             }
 
@@ -166,7 +166,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
         // Subscribe to this endpoint.  Creates a new endpoint if needed.
         // Do not subscribe local clients.  The WebServer handles these, since
         // it ensures that connections are only opened after it starts.
-        if (! (!WebSocketEndpointManager.isRemoteURI(_URIpath) && isClient())) {
+        if (!(!WebSocketEndpointManager.isRemoteURI(_URIpath) && isClient())) {
             _endpointManager.subscribe(this, _URIpath.toString());
         }
     }
@@ -189,13 +189,13 @@ public class WebSocketWriter extends TypedAtomicActor implements
             // TODO:  Enhance to allow waiting on connection open, buffering,...
             String message = ((StringToken) input.get(0)).stringValue();
             if (_endpoint == null) {
-                throw new IllegalActionException(this, "Cannnot connect to "
-                        + "websocket");
+                throw new IllegalActionException(this,
+                        "Cannnot connect to " + "websocket");
             }
 
             if (!_endpoint.sendMessage(message)) {
-                throw new IllegalActionException(this, "Cannot write to "
-                        + "WebSocket");
+                throw new IllegalActionException(this,
+                        "Cannot write to " + "WebSocket");
             }
         }
     }
@@ -220,7 +220,9 @@ public class WebSocketWriter extends TypedAtomicActor implements
         // Assume client side if no value given
         try {
             isClient = ((BooleanToken) client.getToken()).booleanValue();
-        } catch (IllegalActionException e){};
+        } catch (IllegalActionException e) {
+        }
+        ;
         return isClient;
     }
 

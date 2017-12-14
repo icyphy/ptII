@@ -84,8 +84,8 @@ public class TransitiveClosureAnalysis extends Analysis {
      *  @return True if such a path exists.
      */
     public boolean pathExistence(Node startNode, Node endNode) {
-        return ((TransitiveClosureAnalyzer) analyzer()).pathExistence(
-                startNode, endNode);
+        return ((TransitiveClosureAnalyzer) analyzer()).pathExistence(startNode,
+                endNode);
     }
 
     /** Return a description of the analysis and the associated analyzer.

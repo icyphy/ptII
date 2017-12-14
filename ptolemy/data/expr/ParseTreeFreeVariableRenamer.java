@@ -118,14 +118,15 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
     }
 
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
         String name = node.getName();
-        if (name != null
-                && !_formalParameters.contains(name)
-                && ModelScope.getScopedVariable(null, _dependentVariable, name) == _variableToRename) {
+        if (name != null && !_formalParameters.contains(name)
+                && ModelScope.getScopedVariable(null, _dependentVariable,
+                        name) == _variableToRename) {
             node._name = _name;
         }
     }

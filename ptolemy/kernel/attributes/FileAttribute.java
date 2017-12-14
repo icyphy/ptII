@@ -123,7 +123,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (cxh)
  */
 @Deprecated
-public class FileAttribute extends StringAttribute implements FileOrURLAccessor {
+public class FileAttribute extends StringAttribute
+        implements FileOrURLAccessor {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -222,15 +223,15 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
 
         if (file.isAbsolute()) {
             if (!file.canRead()) {
-                throw new IllegalActionException(this, "Cannot read file: "
-                        + name);
+                throw new IllegalActionException(this,
+                        "Cannot read file: " + name);
             }
 
             try {
                 return file.toURL();
             } catch (MalformedURLException ex) {
-                throw new IllegalActionException(this, "Cannot open file: "
-                        + ex.toString());
+                throw new IllegalActionException(this,
+                        "Cannot open file: " + ex.toString());
             }
         } else {
             // Try relative to the base directory.

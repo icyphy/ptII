@@ -304,8 +304,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public double getX(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             return _coords[index * 2];
@@ -318,8 +318,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public double getY(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             return _coords[index * 2 + 1];
@@ -363,8 +363,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public void setX(int index, double x) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             _coords[index * 2] = (float) x;
@@ -377,8 +377,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public void setY(int index, double y) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             _coords[index * 2 + 1] = (float) y;
@@ -497,8 +497,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public double getX(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             return _coords[index * 2];
@@ -511,8 +511,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public double getY(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             return _coords[index * 2 + 1];
@@ -556,8 +556,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public void setX(int index, double x) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             _coords[index * 2] = x;
@@ -570,8 +570,8 @@ public abstract class Polyline2D implements Shape {
         @Override
         public void setY(int index, double y) {
             if (index < 0 || index >= this.getVertexCount()) {
-                throw new IndexOutOfBoundsException("Index: " + index
-                        + ", Size: " + this.getVertexCount());
+                throw new IndexOutOfBoundsException(
+                        "Index: " + index + ", Size: " + this.getVertexCount());
             }
 
             _coords[index * 2 + 1] = y;

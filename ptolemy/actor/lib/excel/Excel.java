@@ -77,8 +77,8 @@ public class Excel extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Excel(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public Excel(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -219,8 +219,8 @@ public class Excel extends TypedAtomicActor {
             }
 
             // Call to macro
-            Runtime.getRuntime().exec(
-                    "cmd /c start " + macro + " " + destFileName);
+            Runtime.getRuntime()
+                    .exec("cmd /c start " + macro + " " + destFileName);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -267,8 +267,8 @@ public class Excel extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    protected void _initialize() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _initialize()
+            throws IllegalActionException, NameDuplicationException {
         //super._initialize();
 
         // Only has an input port

@@ -80,8 +80,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      */
     @Override
     public MappingConstraintSolver clone() throws CloneNotSupportedException {
-        MappingConstraintSolver newObject = (MappingConstraintSolver) super
-                .clone();
+        MappingConstraintSolver newObject = (MappingConstraintSolver) super.clone();
         // FIXME: I'm not sure if we want to call clone like this.  Typically, we
         // would just instantiate new versions of the fields.
         if (_counter == null) {

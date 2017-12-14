@@ -138,8 +138,8 @@ public class LevinsonDurbin extends TypedAtomicActor {
         autocorrelation = new TypedIOPort(this, "autocorrelation", true, false);
         errorPower = new TypedIOPort(this, "errorPower", false, true);
         linearPredictor = new TypedIOPort(this, "linearPredictor", false, true);
-        reflectionCoefficients = new TypedIOPort(this,
-                "reflectionCoefficients", false, true);
+        reflectionCoefficients = new TypedIOPort(this, "reflectionCoefficients",
+                false, true);
 
         // FIXME: Can the inputs be complex?
         autocorrelation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -203,7 +203,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
         for (int i = 0; i <= order; i++) {
             r[i] = ((DoubleToken) autocorrelationValue
                     .getElement(autocorrelationValueLength - order + i - 1))
-                    .doubleValue();
+                            .doubleValue();
         }
 
         // Output the zeroth order prediction error power, which is

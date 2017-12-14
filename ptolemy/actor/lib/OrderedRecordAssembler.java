@@ -117,6 +117,7 @@ public class OrderedRecordAssembler extends RecordAssembler {
      *  a map with a different ordering.
      *  @return a Map from port names to TypedIOPorts.
      */
+    @Override
     protected Map<String, TypedIOPort> _newPortMap() {
         // RecordToken._initializeStorage() should probably
         // use a similar Collection class.

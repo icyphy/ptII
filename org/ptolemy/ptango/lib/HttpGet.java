@@ -79,7 +79,7 @@ public class HttpGet extends LimitedFiringSource {
         url.setStringMode(true);
         url.setExpression("http://localhost");
         new SingletonParameter(url.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
         StringAttribute cardinal = new StringAttribute(url.getPort(),
                 "_cardinal");
         cardinal.setExpression("SOUTH");
@@ -177,9 +177,9 @@ public class HttpGet extends LimitedFiringSource {
                 }
                 String timeout = timeoutResponse.stringValue();
                 if (timeout.trim().equals("")) {
-                    throw new IllegalActionException(this, "HTTP "
-                            + _request.getMethod() + " "
-                            + response.getResponseMessage());
+                    throw new IllegalActionException(this,
+                            "HTTP " + _request.getMethod() + " "
+                                    + response.getResponseMessage());
                 }
             }
 

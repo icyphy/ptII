@@ -71,9 +71,8 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
  */
-public class SDFDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+public class SDFDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -123,20 +122,16 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                 if (rate > 0) {
 
                     int bufferSize = ports.getBufferSize(port);
-                    code2.append(generatePortName(port)
-                            + " = new "
-                            + targetType(port.getType())
-                            + "["
+                    code2.append(generatePortName(port) + " = new "
+                            + targetType(port.getType()) + "["
                             + java.lang.Math.max(port.getWidth(),
-                                    port.getWidthInside()) + "]" + "["
-                                    + bufferSize + "];" + _eol);
+                                    port.getWidthInside())
+                            + "]" + "[" + bufferSize + "];" + _eol);
                 } else if (port.getWidth() > 1 || port.getWidthInside() > 1) {
-                    code2.append(generatePortName(port)
-                            + " = new "
-                            + targetType(port.getType())
-                            + "["
-                            + java.lang.Math.max(port.getWidth(),
-                                    port.getWidthInside()) + "];" + _eol);
+                    code2.append(generatePortName(port) + " = new "
+                            + targetType(port.getType()) + "[" + java.lang.Math
+                                    .max(port.getWidth(), port.getWidthInside())
+                            + "];" + _eol);
                 }
             }
 
@@ -147,28 +142,23 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                 int rate = DFUtilities.getTokenInitProduction(port);
                 if (rate > 0) {
                     int bufferSize = ports.getBufferSize(port);
-                    code2.append(generatePortName(port)
-                            + " = new "
-                            + targetType(port.getType())
-                            + "["
+                    code2.append(generatePortName(port) + " = new "
+                            + targetType(port.getType()) + "["
                             + java.lang.Math.max(port.getWidth(),
-                                    port.getWidthInside()) + "]" + "["
-                                    + bufferSize + "];" + _eol);
+                                    port.getWidthInside())
+                            + "]" + "[" + bufferSize + "];" + _eol);
                 } else if (port.getWidth() > 1 || port.getWidthInside() > 1) {
-                    code2.append(generatePortName(port)
-                            + " = new "
-                            + targetType(port.getType())
-                            + "["
-                            + java.lang.Math.max(port.getWidth(),
-                                    port.getWidthInside()) + "];" + _eol);
+                    code2.append(generatePortName(port) + " = new "
+                            + targetType(port.getType()) + "[" + java.lang.Math
+                                    .max(port.getWidth(), port.getWidthInside())
+                            + "];" + _eol);
                 }
             }
             if (code2.length() > 0) {
                 code.append(getCodeGenerator()
-                        .comment(
-                                "Java SDFDirector: variablesAsArrays is true, "
-                                        + "added decls for multiports and multirate multiports")
-                                        + code2.toString());
+                        .comment("Java SDFDirector: variablesAsArrays is true, "
+                                + "added decls for multiports and multirate multiports")
+                        + code2.toString());
             }
 
             code.append(getCodeGenerator().comment(
@@ -181,20 +171,20 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                         .getAdapter(actor);
                 if (actor instanceof CompositeActor
                         && ((CompositeActor) actor).isOpaque()
-                        //&& actor.getContainer() == null
-                        ) {
-                    code.append(getCodeGenerator().comment(
-                            "Java SDFDirector: actor is opaque: "
+                //&& actor.getContainer() == null
+                ) {
+                    code.append(getCodeGenerator()
+                            .comment("Java SDFDirector: actor is opaque: "
                                     + actor.getFullName()));
                     //code.append(adapterObject.generateVariableDeclaration());
                 } else {
                     //code.append(getCodeGenerator().comment("Java SDFDirector: actor is not opaque: " + actor.getFullName()));
-                    code.append(_generatePortVariableDeclaration(adapterObject));
+                    code.append(
+                            _generatePortVariableDeclaration(adapterObject));
 
                     if (variablesAsArrays) {
-                        code.append(getCodeGenerator()
-                                .comment(
-                                        "Java SDFDirector: variablesAsArrays is true initialized elements in ports3"));
+                        code.append(getCodeGenerator().comment(
+                                "Java SDFDirector: variablesAsArrays is true initialized elements in ports3"));
                         // Initialize elements in ports3_
                         outputPorts = actor.outputPortList().iterator();
                         while (outputPorts.hasNext()) {
@@ -202,13 +192,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                             int rate = DFUtilities.getTokenInitProduction(port);
                             int bufferSize = ports.getBufferSize(port);
                             if (port.isMultiport() && rate > 0) {
-                                code.append(generatePortName(port)
-                                        + " = new "
-                                        + targetType(port.getType())
-                                        + "["
+                                code.append(generatePortName(port) + " = new "
+                                        + targetType(port.getType()) + "["
                                         + java.lang.Math.max(port.getWidth(),
-                                                port.getWidthInside()) + "]"
-                                                + "[" + bufferSize + "];" + _eol);
+                                                port.getWidthInside())
+                                        + "]" + "[" + bufferSize + "];" + _eol);
                             }
                         }
                     }
@@ -249,8 +237,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
     @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the inside.")));
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
@@ -272,9 +260,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                     .escapePortName(inputPort.getName());
 
             String exceptionMessage = "Failed to generate code "
-                    + "to transfer tokens to for input. "
-                    + "The type of the \"" + portName + "\" output port was "
-                    + type + ", which is not supported. "
+                    + "to transfer tokens to for input. " + "The type of the \""
+                    + portName + "\" output port was " + type
+                    + ", which is not supported. "
                     + "Try setting the type of the \"" + portName
                     + "\" port by right clicking on the actor "
                     + "and selecting Customize -> Ports.";
@@ -308,8 +296,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                         portNameWithChannelNumber = portName + '#' + i;
                     }
                     for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorAdapter.getReference("@"
-                                + portNameWithChannelNumber + "," + k, false));
+                        code.append(compositeActorAdapter.getReference(
+                                "@" + portNameWithChannelNumber + "," + k,
+                                false));
                         /*if (type == PointerToken.POINTER) {
                             code.append(" = (void *) "
                                     + pointerToTokensFromOneChannel + "[" + k
@@ -325,19 +314,21 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         } else {
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
-                    String name = TemplateParser.escapePortName(inputPort
-                            .getName());
+                    String name = TemplateParser
+                            .escapePortName(inputPort.getName());
 
                     if (inputPort.isMultiport()) {
                         name = name + '#' + i;
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorAdapter.getReference("@"
-                                + name + "," + k, false)
-                                + " = "
-                                + compositeActorAdapter.getReference(name + ","
-                                        + k, false) + ";" + _eol);
+                        code.append(
+                                compositeActorAdapter.getReference(
+                                        "@" + name + "," + k, false)
+                                        + " = "
+                                        + compositeActorAdapter.getReference(
+                                                name + "," + k, false)
+                                        + ";" + _eol);
                     }
                 }
             }
@@ -357,10 +348,10 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     @Override
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the outside.")));
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("SDFDirector: " + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
@@ -381,8 +372,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                         + "];" + _eol);
             }
 
-            String portName = TemplateParser.escapePortName(outputPort
-                    .getName());
+            String portName = TemplateParser
+                    .escapePortName(outputPort.getName());
             String tokensToThisPort = "tokensTo" + portName;
 
             // FindBugs wants this instanceof check.
@@ -443,17 +434,16 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                     //}
                 }
             }
-            code.append("tokensToAllOutputPorts ["
-                    + String.valueOf(_portNumber) + "] = " + tokensToThisPort
-                    + ";" + _eol);
+            code.append("tokensToAllOutputPorts [" + String.valueOf(_portNumber)
+                    + "] = " + tokensToThisPort + ";" + _eol);
 
             _portNumber++;
 
         } else {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
-                    String name = TemplateParser.escapePortName(outputPort
-                            .getName());
+                    String name = TemplateParser
+                            .escapePortName(outputPort.getName());
 
                     if (outputPort.isMultiport()) {
                         name = name + '#' + i;
@@ -464,12 +454,13 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                     //   + rate + " " + compositeActorAdapter + " " + compositeActorAdapter.getClass())));
 
                     for (int k = 0; k < rate; k++) {
-                        String result = compositeActorAdapter.getReference(name
-                                + "," + k, false)
+                        String result = compositeActorAdapter
+                                .getReference(name + "," + k, false)
                                 + " = "
-                                + CodeStream.indent(compositeActorAdapter
-                                        .getReference("@" + name + "," + k,
-                                                false)) + ";" + _eol;
+                                + CodeStream.indent(
+                                        compositeActorAdapter.getReference(
+                                                "@" + name + "," + k, false))
+                                + ";" + _eol;
                         code.append(result);
                     }
                 }
@@ -504,22 +495,20 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             // Print period only if it is the containing actor is the top level.
             // FIXME: should this test also be applied to the other code?
             if (director.getContainer().getContainer() == null) {
-                variableDeclarations.append(_eol
-                        + getCodeGenerator().comment(
-                                "Provide the period attribute as constant."));
+                variableDeclarations.append(_eol + getCodeGenerator()
+                        .comment("Provide the period attribute as constant."));
                 variableDeclarations
-                .append("public final static double PERIOD = "
-                        + periodValue + ";" + _eol);
+                        .append("public final static double PERIOD = "
+                                + periodValue + ";" + _eol);
             }
 
         }
 
         if (director.getContainer().getContainer() == null) {
-            variableDeclarations.append(_eol
-                    + getCodeGenerator()
+            variableDeclarations.append(_eol + getCodeGenerator()
                     .comment("Provide the iteration count."));
-            variableDeclarations.append("public static int _iteration = 0;"
-                    + _eol);
+            variableDeclarations
+                    .append("public static int _iteration = 0;" + _eol);
         }
         return variableDeclarations.toString();
     }
@@ -546,7 +535,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
      */
     protected String _generatePortVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // Note that if the variablesAsArrays parameter is true, then
         // the port declarations are generated by
         // JavaCodeGenerator.generateTypeConvertCode() and
@@ -559,20 +548,20 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         String name = CodeGeneratorAdapter.generateName(target.getComponent());
 
         // Generate variable declarations for input ports.
-        String inputVariableDeclaration = _generateInputVariableDeclaration(target);
+        String inputVariableDeclaration = _generateInputVariableDeclaration(
+                target);
         if (inputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s input variable declarations."));
+            code.append(_eol + codeGenerator
+                    .comment(name + "'s input variable declarations."));
             code.append(inputVariableDeclaration);
         }
 
         // Generate variable declarations for output ports.
-        String outputVariableDeclaration = _generateOutputVariableDeclaration(target);
+        String outputVariableDeclaration = _generateOutputVariableDeclaration(
+                target);
         if (outputVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s output variable declarations."));
+            code.append(_eol + codeGenerator
+                    .comment(name + "'s output variable declarations."));
             code.append(outputVariableDeclaration);
         }
         return code.toString();
@@ -588,7 +577,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
     @Override
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -597,18 +586,17 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         // Generate variable declarations for referenced parameters.
         if (((BooleanToken) codeGenerator.variablesAsArrays.getToken())
                 .booleanValue()) {
-            code.append(codeGenerator
-                    .comment("Java SDFDirector: variablesAsArrays is true, skipping "
-                            + "generating "
-                            + name
+            code.append(codeGenerator.comment(
+                    "Java SDFDirector: variablesAsArrays is true, skipping "
+                            + "generating " + name
                             + "'s referenced parameter declarations."));
 
         } else {
-            String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
+            String referencedParameterDeclaration = _generateReferencedParameterDeclaration(
+                    target);
             if (referencedParameterDeclaration.length() > 1) {
-                code.append(_eol
-                        + codeGenerator.comment(name
-                                + "'s referenced parameter declarations."));
+                code.append(_eol + codeGenerator.comment(
+                        name + "'s referenced parameter declarations."));
                 code.append(referencedParameterDeclaration);
             }
 
@@ -616,11 +604,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         }
 
         // Generate type convert variable declarations.
-        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(target);
+        String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration(
+                target);
         if (typeConvertVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s type convert variable declarations."));
+            code.append(_eol + codeGenerator
+                    .comment(name + "'s type convert variable declarations."));
             code.append(typeConvertVariableDeclaration);
         }
 
@@ -640,7 +628,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -667,12 +655,10 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                         .getType()).getElementType();
 
                 //result.append("[" + channelAndOffset[1] + "]");
-                result.insert(
-                        0,
-                        "("
-                                + getCodeGenerator().codeGenType(elementType)
-                                .replace("Array", "Token")
-                                .replace("Matrix", "Token")
+                result.insert(0,
+                        "(" + getCodeGenerator().codeGenType(elementType)
+                                .replace("Array", "Token").replace("Matrix",
+                                        "Token")
                                 + ")(/*JCGH44*/Array_get(");
                 if (getCodeGenerator().isPrimitive(elementType)) {
                     result.insert(0, "(");
@@ -715,7 +701,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         StringBuffer code = new StringBuffer();
         String portType = targetType(port.getType());
         if (portType.equals("Object")
-                && !(getCodeGenerator().getAdapter(port.getContainer()) instanceof AutoAdapter)
+                && !(getCodeGenerator()
+                        .getAdapter(port.getContainer()) instanceof AutoAdapter)
                 && !AutoAdapter.isAutoAdapteredRemotePort(getCodeGenerator(),
                         port)) {
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
@@ -782,8 +769,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             ProgramCodeGeneratorAdapter target) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> inputPorts = ((Actor) target.getComponent())
-                .inputPortList().iterator();
+        Iterator<?> inputPorts = ((Actor) target.getComponent()).inputPortList()
+                .iterator();
 
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
@@ -839,14 +826,13 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
 
             for (Parameter parameter : _referencedParameters.get(target)) {
                 // avoid duplicate declaration.
-                if (!getCodeGenerator().getModifiedVariables().contains(
-                        parameter)) {
-                    code.append("public static "
-                            + targetType(parameter.getType())
-                            + " "
-                            + getCodeGenerator()
-                            .generateVariableName(parameter) + ";"
-                            + _eol);
+                if (!getCodeGenerator().getModifiedVariables()
+                        .contains(parameter)) {
+                    code.append(
+                            "public static " + targetType(parameter.getType())
+                                    + " " + getCodeGenerator()
+                                            .generateVariableName(parameter)
+                                    + ";" + _eol);
                 }
             }
         }
@@ -862,7 +848,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
      */
     private String _generateTypeConvertVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator<?> channels = target.getTypeConvertChannels().iterator();

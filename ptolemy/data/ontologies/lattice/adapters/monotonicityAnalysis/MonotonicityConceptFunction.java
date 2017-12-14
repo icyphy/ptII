@@ -94,8 +94,8 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
         // need to do to remove the Constants that are added here.
         for (Object entity : domainOntology.allAtomicEntityList()) {
             if (entity instanceof Concept) {
-                Constants.add(((Concept) entity).getName(), new ConceptToken(
-                        (Concept) entity));
+                Constants.add(((Concept) entity).getName(),
+                        new ConceptToken((Concept) entity));
             }
         }
     }
@@ -158,8 +158,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
                 .getEntity("NonAntimonotonic");
         if (_nonAntimonotonicRepresentative == null
                 || null == _nonMonotonicRepresentative) {
-            throw new IllegalActionException(
-                    _monotonicityAnalysisOntology,
+            throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Infinite representatives (NonMonotonic and NonAntimonontonic) not found in monotonicityAnalysis ontology.");
         }
     }

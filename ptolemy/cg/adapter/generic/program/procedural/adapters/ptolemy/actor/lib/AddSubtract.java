@@ -80,9 +80,7 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
             plusType = getCodeGenerator().codeGenType(actor.plus.getType());
             minusType = getCodeGenerator().codeGenType(actor.minus.getType());
         } catch (Throwable throwable) {
-            throw new IllegalActionException(
-                    actor,
-                    throwable,
+            throw new IllegalActionException(actor, throwable,
                     "Failed to get the type of a port, perhaps the type needs to be explicitly set from the UI?");
         }
 
@@ -116,8 +114,8 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
                     initArgs.add("0");
                 }
             }
-            codeStream.append(getTemplateParser().generateBlockCode("initSum",
-                    initArgs));
+            codeStream.append(
+                    getTemplateParser().generateBlockCode("initSum", initArgs));
         }
         args.add("");
         args.add(outputType);
@@ -166,9 +164,8 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
 
         if (codeStream.isEmpty()) {
-            codeStream.append(_eol
-                    + getCodeGenerator().comment(
-                            "preinitialize " + getComponent().getName()));
+            codeStream.append(_eol + getCodeGenerator()
+                    .comment("preinitialize " + getComponent().getName()));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

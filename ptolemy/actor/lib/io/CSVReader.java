@@ -157,7 +157,7 @@ public class CSVReader extends LineReader {
         trimSpaces.setExpression("true");
 
         new SingletonParameter(endOfFile, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         // Base class declares the output to be of type string, so we
         // have to first undo that.
@@ -168,9 +168,8 @@ public class CSVReader extends LineReader {
         // to anything above record types is also OK.
         // output.setTypeAtMost(RecordType.EMPTY_RECORD);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "<text x=\"-11\" y=\"4\""
@@ -324,8 +323,8 @@ public class CSVReader extends LineReader {
                     }
 
                     try {
-                        fieldValues[i] = _parseTreeEvaluator.evaluateParseTree(
-                                parseTree, _scope);
+                        fieldValues[i] = _parseTreeEvaluator
+                                .evaluateParseTree(parseTree, _scope);
                     } catch (Exception ex) {
                         // If the field cannot be evaluated, then interpret
                         // the field as a string.

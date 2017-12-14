@@ -96,8 +96,9 @@ public class Gridder<T> {
         if (ix >= 0 && iy >= 0 && ix < width && iy < height) {
 
             // nobody in this bucket!
-            if (cells[iy][ix] == null)
+            if (cells[iy][ix] == null) {
                 return;
+            }
 
             if (cells[iy][ix].o == o) {
                 // The first one is our guy. Just skip over it.
@@ -154,11 +155,13 @@ public class Gridder<T> {
         }
 
         void findNext() {
-            if (c != null)
+            if (c != null) {
                 c = c.next;
+            }
 
-            if (c != null)
+            if (c != null) {
                 return;
+            }
 
             ix++;
             while (true) {
@@ -166,33 +169,40 @@ public class Gridder<T> {
                     iy++;
                     ix = ix0;
                 }
-                if (iy > iy1)
+                if (iy > iy1) {
                     break;
+                }
 
                 c = cells[iy][ix];
-                if (c != null)
+                if (c != null) {
                     break;
+                }
                 ix++;
             }
         }
 
+        @Override
         public boolean hasNext() {
-            if (c == null)
+            if (c == null) {
                 findNext();
+            }
 
             return (c != null);
         }
 
+        @Override
         public T next() {
             Cell thisc = c;
             findNext();
             return (T) thisc.o;
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public Iterator<T> iterator() {
             return this;
         }
@@ -245,8 +255,9 @@ public class Gridder<T> {
                 }
             }
 
-            if (bestDist > searchRange)
+            if (bestDist > searchRange) {
                 continue;
+            }
 
             assert (best == points.get(bestIndex));
         }

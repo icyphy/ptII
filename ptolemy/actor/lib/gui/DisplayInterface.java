@@ -67,8 +67,8 @@ public interface DisplayInterface {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public void init(Display display) throws IllegalActionException,
-    NameDuplicationException;
+    public void init(Display display)
+            throws IllegalActionException, NameDuplicationException;
 
     /** Open the display window if it has not been opened.
      *  @exception IllegalActionException If there is a problem creating

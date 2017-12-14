@@ -186,12 +186,12 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         ScalarToken newUnitFactor = null;
         if (_isMultiply) {
             exponentValue = 1;
-            newUnitFactor = (ScalarToken) unit1.getUnitFactor().multiply(
-                    unit2.getUnitFactor());
+            newUnitFactor = (ScalarToken) unit1.getUnitFactor()
+                    .multiply(unit2.getUnitFactor());
         } else {
             exponentValue = -1;
-            newUnitFactor = (ScalarToken) unit1.getUnitFactor().divide(
-                    unit2.getUnitFactor());
+            newUnitFactor = (ScalarToken) unit1.getUnitFactor()
+                    .divide(unit2.getUnitFactor());
         }
 
         DimensionRepresentativeConcept unit1Dimension = unit1.getDimension();
@@ -260,7 +260,8 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
             throws IllegalActionException {
         Map<DimensionRepresentativeConcept, Integer> inverseDimensionMap = _createNewDimensionMap(
                 unit.getDimension(), -1);
-        Map<DimensionRepresentativeConcept, List<UnitConcept>> inverseComponentUnitsMap = _createNewComponentUnitsMap(unit);
+        Map<DimensionRepresentativeConcept, List<UnitConcept>> inverseComponentUnitsMap = _createNewComponentUnitsMap(
+                unit);
 
         ScalarToken inverseFactor = (ScalarToken) unit.getUnitFactor().one()
                 .divide(unit.getUnitFactor());
@@ -286,11 +287,11 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
         } else {
             ConceptGraph conceptGraph = _unitOntology.getConceptGraph();
             if (conceptGraph == null) {
-                throw new IllegalActionException("The ontology "
-                        + _unitOntology + " has a null concept graph.");
+                throw new IllegalActionException("The ontology " + _unitOntology
+                        + " has a null concept graph.");
             }
-            return conceptGraph.leastUpperBound(new HashSet<Concept>(
-                    allDimensionlessConcepts));
+            return conceptGraph.leastUpperBound(
+                    new HashSet<Concept>(allDimensionlessConcepts));
         }
     }
 

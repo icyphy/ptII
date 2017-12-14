@@ -290,7 +290,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   explicitly.
      */
     @Override
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");
@@ -306,8 +307,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     @Override
     public void put(Token token) {
-        throw new NoRoomException("put(Token) is not used in the "
-                + "DDE domain.");
+        throw new NoRoomException(
+                "put(Token) is not used in the " + "DDE domain.");
     }
 
     /** Put a token on the queue with the specified time stamp and set
@@ -334,9 +335,9 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         } else if (timeValue < 0.0 && timeValue != INACTIVE
                 && timeValue != IGNORE) {
             NamedObj actor = getContainer().getContainer();
-            throw new IllegalArgumentException(actor.getName()
-                    + " - Attempt to set current time to a"
-                    + " a negative value = " + time);
+            throw new IllegalArgumentException(
+                    actor.getName() + " - Attempt to set current time to a"
+                            + " a negative value = " + time);
         }
 
         /*
@@ -347,7 +348,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
          DDEThread ddeThread = (DDEThread)thread;
          invokerName = ((Nameable)ddeThread.getActor()).getName();
          }
-
+        
          if ( containerName.endsWith("2") || invokerName.endsWith("2") ) {
          if ( token instanceof NullToken ) {
          System.out.println(invokerName + " put NullToken into the receiver of "
@@ -386,7 +387,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @exception NoTokenException If the queue is empty.
      */
     public synchronized void removeIgnoredToken() {
-        if (getReceiverTime().getDoubleValue() != PrioritizedTimedQueue.IGNORE) {
+        if (getReceiverTime()
+                .getDoubleValue() != PrioritizedTimedQueue.IGNORE) {
             return;
         }
 
@@ -421,7 +423,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         // Set the receiver time if value is still IGNORE
-        if (getReceiverTime().getDoubleValue() == PrioritizedTimedQueue.IGNORE) {
+        if (getReceiverTime()
+                .getDoubleValue() == PrioritizedTimedQueue.IGNORE) {
             if (thread instanceof DDEThread) {
                 TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
                 _setReceiverTime(timeKeeper.getModelTime());
@@ -516,8 +519,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         double timeValue = time.getDoubleValue();
 
         if (timeValue < 0.0 && timeValue != PrioritizedTimedQueue.ETERNITY) {
-            throw new IllegalArgumentException("Attempt to set "
-                    + "completion time to a negative value.");
+            throw new IllegalArgumentException(
+                    "Attempt to set " + "completion time to a negative value.");
         }
 
         _completionTime = time;

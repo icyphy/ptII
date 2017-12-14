@@ -221,7 +221,8 @@ public class LifeCycleManager extends TypedCompositeActor {
     @Override
     public void requestChange(ChangeRequest change) {
         NamedObj container = getContainer();
-        if (container != null && !_deferChangeRequests && container.isDeferringChangeRequests()) {
+        if (container != null && !_deferChangeRequests
+                && container.isDeferringChangeRequests()) {
             super.requestChange(change);
             return;
         }
@@ -331,7 +332,6 @@ public class LifeCycleManager extends TypedCompositeActor {
             if (_stopRequested) {
                 return COMPLETED;
             }
-
 
             // FIXME: Reset time to zero. How?
             // NOTE: Use the superclass initialize() because this method overrides
@@ -482,8 +482,8 @@ public class LifeCycleManager extends TypedCompositeActor {
 
             // Only write if the port has a connected channel.
             if (port.isOutsideConnected()) {
-                Attribute attribute = _getManagedActor().getAttribute(
-                        port.getName());
+                Attribute attribute = _getManagedActor()
+                        .getAttribute(port.getName());
 
                 // Use the token directly rather than a string if possible.
                 if (attribute instanceof Variable) {
@@ -497,15 +497,12 @@ public class LifeCycleManager extends TypedCompositeActor {
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
                         _debug("** Transferring parameter as string to output: "
-                                + port.getName()
-                                + " ("
+                                + port.getName() + " ("
                                 + ((Settable) attribute).getExpression() + ")");
                     }
 
-                    port.send(
-                            0,
-                            new StringToken(((Settable) attribute)
-                                    .getExpression()));
+                    port.send(0, new StringToken(
+                            ((Settable) attribute).getExpression()));
                 }
             }
         }

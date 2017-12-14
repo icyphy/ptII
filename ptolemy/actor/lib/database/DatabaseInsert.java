@@ -123,8 +123,8 @@ public class DatabaseInsert extends Sink {
 
         if (input.hasToken(0)) {
             String databaseName = databaseManager.stringValue();
-            DatabaseManager database = DatabaseManager.findDatabaseManager(
-                    databaseName, this);
+            DatabaseManager database = DatabaseManager
+                    .findDatabaseManager(databaseName, this);
 
             String prefix = "insert into " + table.stringValue() + " (";
             ArrayToken inputArray = (ArrayToken) input.get(0);
@@ -163,8 +163,8 @@ public class DatabaseInsert extends Sink {
         super.initialize();
         if (((BooleanToken) clear.getToken()).booleanValue()) {
             String databaseName = databaseManager.stringValue();
-            DatabaseManager database = DatabaseManager.findDatabaseManager(
-                    databaseName, this);
+            DatabaseManager database = DatabaseManager
+                    .findDatabaseManager(databaseName, this);
             String query = "delete from " + table.stringValue() + ";";
             if (_debugging) {
                 _debug("Issuing statement:\n" + query);

@@ -443,8 +443,8 @@ public class SendMail extends TypedAtomicActor {
                 ArrayList<Address> replyToAddresses = new ArrayList<Address>();
                 tokenizer = new StringTokenizer(replyToValue, ",");
                 while (tokenizer.hasMoreTokens()) {
-                    replyToAddresses.add(new InternetAddress(tokenizer
-                            .nextToken().trim()));
+                    replyToAddresses.add(
+                            new InternetAddress(tokenizer.nextToken().trim()));
                 }
                 mimeMessage.setReplyTo(replyToAddresses
                         .toArray(new Address[replyToAddresses.size()]));

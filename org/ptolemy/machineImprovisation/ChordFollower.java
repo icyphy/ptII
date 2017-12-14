@@ -168,6 +168,7 @@ public class ChordFollower extends TypedAtomicActor {
      */
     public TypedIOPort startLick;
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // when trigger is received, output the next chord up next
@@ -260,6 +261,7 @@ public class ChordFollower extends TypedAtomicActor {
         }
     }
 
+    @Override
     public void wrapup() {
         _allChords.clear();
         _currentBeatCursor = 0.0;

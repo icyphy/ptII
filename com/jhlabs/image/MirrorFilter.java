@@ -104,8 +104,9 @@ public class MirrorFilter extends AbstractBufferedImageOp {
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         Shape clip;
         int width = src.getWidth();
         int height = src.getHeight();
@@ -121,8 +122,8 @@ public class MirrorFilter extends AbstractBufferedImageOp {
         g.translate(0, 2 * h + d);
         g.scale(1, -1);
         g.drawRenderedImage(src, null);
-        g.setPaint(
-                new GradientPaint(0, 0, new Color(1.0f, 0.0f, 0.0f, 0.0f), 0, h, new Color(0.0f, 1.0f, 0.0f, opacity)));
+        g.setPaint(new GradientPaint(0, 0, new Color(1.0f, 0.0f, 0.0f, 0.0f), 0,
+                h, new Color(0.0f, 1.0f, 0.0f, opacity)));
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
         g.fillRect(0, 0, width, h);
         g.setClip(clip);

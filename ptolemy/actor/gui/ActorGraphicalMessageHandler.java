@@ -116,8 +116,8 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
     protected void _showNameable(Throwable throwable) {
         Nameable nameable1 = _getNameable(throwable);
         if (nameable1 != null) {
-            Effigy effigy = Configuration.findEffigy(((NamedObj) nameable1)
-                    .toplevel());
+            Effigy effigy = Configuration
+                    .findEffigy(((NamedObj) nameable1).toplevel());
             Configuration configuration = (Configuration) effigy.toplevel();
             try {
                 Nameable container = nameable1;

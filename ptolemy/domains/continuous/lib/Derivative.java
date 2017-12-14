@@ -143,11 +143,11 @@ public class Derivative extends TypedAtomicActor {
         cardinality.setExpression("SOUTH");
 
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"0\" "
-                + "style=\"font-size:14\">\n" + "d/dt \n" + "</text>\n"
-                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-25\" y=\"0\" " + "style=\"font-size:14\">\n"
+                + "d/dt \n" + "</text>\n" + "style=\"fill:blue\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -227,19 +227,20 @@ public class Derivative extends TypedAtomicActor {
                             + _previousOutput);
                 }
                 if (_previousInput != currentInput.doubleValue()) {
-                    impulse.send(0, new DoubleToken(currentInput.doubleValue()
-                            - _previousInput));
+                    impulse.send(0, new DoubleToken(
+                            currentInput.doubleValue() - _previousInput));
                     if (_debugging) {
                         _debug("fire: Discontinuity. Sending impulse: "
-                                + (currentInput.doubleValue() - _previousInput));
+                                + (currentInput.doubleValue()
+                                        - _previousInput));
                     }
                 }
             } else {
                 // Time has elapsed.
                 double timeGap = currentTime.subtract(_previousTime)
                         .getDoubleValue();
-                double derivativeValue = (currentInput.doubleValue() - _previousInput)
-                        / timeGap;
+                double derivativeValue = (currentInput.doubleValue()
+                        - _previousInput) / timeGap;
                 derivative.send(0, new DoubleToken(derivativeValue));
                 if (_debugging) {
                     _debug("fire: Time has elapsed. Sending output: "
@@ -296,8 +297,8 @@ public class Derivative extends TypedAtomicActor {
                 // Time has elapsed.
                 double timeGap = currentTime.subtract(_previousTime)
                         .getDoubleValue();
-                double derivativeValue = (currentInput.doubleValue() - _previousInput)
-                        / timeGap;
+                double derivativeValue = (currentInput.doubleValue()
+                        - _previousInput) / timeGap;
                 _previousOutput = new DoubleToken(derivativeValue);
             }
         }

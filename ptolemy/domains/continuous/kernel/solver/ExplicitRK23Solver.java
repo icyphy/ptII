@@ -108,8 +108,8 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
             break;
 
         case 2:
-            outputValue = xn + h
-            * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
+            outputValue = xn
+                    + h * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
             break;
 
         case 3:
@@ -135,9 +135,8 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         double tolerance = _director.getErrorTolerance();
         double h = _director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
-        double error = h
-                * Math.abs(k[0] * _E[0] + k[1] * _E[1] + k[2] * _E[2] + k[3]
-                        * _E[3]);
+        double error = h * Math
+                .abs(k[0] * _E[0] + k[1] * _E[1] + k[2] * _E[2] + k[3] * _E[3]);
 
         integrator.setAuxVariables(_ERROR_INDEX, error);
         if (_isDebugging()) {
@@ -244,11 +243,11 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
 
     /** B coefficients. */
     private static final double[][] _B = { { 0.5 }, { 0, 0.75 },
-        { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 } };
+            { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 } };
 
     /** E coefficients. */
     private static final double[] _E = { -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0,
-        -1.0 / 8.0 };
+            -1.0 / 8.0 };
 
     /** The index of the error stored in the auxiliary variables. */
     private static final int _ERROR_INDEX = _TIME_INCREMENTS.length;

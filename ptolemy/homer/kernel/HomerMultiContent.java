@@ -77,8 +77,8 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      *  the same name. Element names within a workspace must be unique.
      */
     public HomerMultiContent(TabScenePanel contentPrototype,
-            CompositeEntity model) throws IllegalActionException,
-            NameDuplicationException {
+            CompositeEntity model)
+            throws IllegalActionException, NameDuplicationException {
         super(contentPrototype, model);
     }
 
@@ -129,8 +129,8 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      */
     @Override
     public String addTab(ComponentEntity topLevel, String tag, String name,
-            ContentPrototype content) throws IllegalActionException,
-            NameDuplicationException {
+            ContentPrototype content)
+            throws IllegalActionException, NameDuplicationException {
 
         String newTag = super.addTab(topLevel, tag, name, content);
         _nofityAllListeners(new TabEvent(this, ActionEvent.ACTION_PERFORMED,
@@ -146,8 +146,8 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
         super.clear();
 
         _remoteElements.clear();
-        _nofityAllListeners(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                "clear"));
+        _nofityAllListeners(
+                new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "clear"));
     }
 
     /** Determine if the NamedObj already exists.

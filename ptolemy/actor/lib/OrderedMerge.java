@@ -119,9 +119,9 @@ public class OrderedMerge extends TypedAtomicActor {
                 "_cardinal");
         channelCardinal.setExpression("SOUTH");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -242,7 +242,8 @@ public class OrderedMerge extends TypedAtomicActor {
                         }
                     } else {
                         // Not a duplicate.
-                        if (readToken.isLessThan(_recordedToken).booleanValue()) {
+                        if (readToken.isLessThan(_recordedToken)
+                                .booleanValue()) {
                             // Produce the smaller output.
                             output.send(0, readToken);
                             _tentativeLastProduced = readToken;

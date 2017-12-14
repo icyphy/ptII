@@ -115,10 +115,10 @@ public class JSONToToken extends Converter {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        Token token =  parseJSON(((StringToken) input.get(0)).stringValue());
+        Token token = parseJSON(((StringToken) input.get(0)).stringValue());
         if (token == null) {
-                throw new IllegalActionException(this,
-                        "Unable to parse JSON data: " + input);
+            throw new IllegalActionException(this,
+                    "Unable to parse JSON data: " + input);
         }
         output.send(0, token);
     }
@@ -135,7 +135,8 @@ public class JSONToToken extends Converter {
     public static Token parseJSON(String input) throws IllegalActionException {
         try {
             input = input.trim();
-            if (input.length() == 0 || input.equals("nil") || input.equals("null")) {
+            if (input.length() == 0 || input.equals("nil")
+                    || input.equals("null")) {
                 return Token.NIL;
             } else if (input.startsWith("{") && input.endsWith("}")) {
                 return _scanJSONObject(new JSONObject(input));
@@ -144,7 +145,7 @@ public class JSONToToken extends Converter {
             } else if (input.startsWith("\"") && input.endsWith("\"")) {
                 return new StringToken(input.substring(1, input.length() - 1));
             } else if (input.startsWith("date(\"") && input.endsWith("\")")) {
-                return new DateToken(input.substring(6, input.length()-2));
+                return new DateToken(input.substring(6, input.length() - 2));
             } else if (input.equals("true")) {
                 return BooleanToken.TRUE;
             } else if (input.equals("false")) {
@@ -159,12 +160,14 @@ public class JSONToToken extends Converter {
                         double result = Double.parseDouble(input);
                         return new DoubleToken(result);
                     } catch (NumberFormatException e) {
-                        throw new IllegalActionException("Invalid JSON: " + input);
+                        throw new IllegalActionException(
+                                "Invalid JSON: " + input);
                     }
                 }
             }
         } catch (JSONException e) {
-            throw new IllegalActionException("Invalid JSON: " + input + "\n" + e.getMessage());
+            throw new IllegalActionException(
+                    "Invalid JSON: " + input + "\n" + e.getMessage());
         }
     }
 
@@ -203,8 +206,8 @@ public class JSONToToken extends Converter {
      *  @exception IllegalActionException Upon failing to instantiate a new
      *  Token.
      */
-    private static Token _mapValueToToken(Object value) throws IllegalActionException,
-    JSONException {
+    private static Token _mapValueToToken(Object value)
+            throws IllegalActionException, JSONException {
 
         // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
@@ -249,8 +252,8 @@ public class JSONToToken extends Converter {
      *  @exception IllegalActionException Upon failing to instantiate a new
      *  ArrayToken.
      */
-    private static ArrayToken _scanJSONArray(JSONArray array) throws JSONException,
-    IllegalActionException {
+    private static ArrayToken _scanJSONArray(JSONArray array)
+            throws JSONException, IllegalActionException {
         ArrayList<Token> values = new ArrayList<Token>();
 
         Object value;

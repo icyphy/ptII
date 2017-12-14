@@ -79,9 +79,9 @@ public class PolarToCartesian extends TypedAtomicActor {
         y = new TypedIOPort(this, "y", false, true);
         y.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,8 +117,10 @@ public class PolarToCartesian extends TypedAtomicActor {
         double angleValue = ((DoubleToken) angle.get(0)).doubleValue();
 
         // Perform multiplication using Token methods so as to preserve units of length.
-        Token xValue = magnitudeValue.multiply(new DoubleToken(Math.cos(angleValue)));
-        Token yValue = magnitudeValue.multiply(new DoubleToken(Math.sin(angleValue)));
+        Token xValue = magnitudeValue
+                .multiply(new DoubleToken(Math.cos(angleValue)));
+        Token yValue = magnitudeValue
+                .multiply(new DoubleToken(Math.sin(angleValue)));
 
         x.send(0, xValue);
         y.send(0, yValue);

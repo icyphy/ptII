@@ -105,9 +105,8 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
         CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream.append(_eol
-                + getCodeGenerator().comment(
-                        "initialize " + generateSimpleName(getComponent())));
+        codeStream.append(_eol + getCodeGenerator()
+                .comment("initialize " + generateSimpleName(getComponent())));
 
         ArrayList<String> args = new ArrayList<String>();
         args.add("");

@@ -168,13 +168,13 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIPtidesPlatform result = (MetroIIPtidesPlatform) super
-                .clone(workspace);
+        MetroIIPtidesPlatform result = (MetroIIPtidesPlatform) super.clone(
+                workspace);
         try {
             // Remove the old inner PtidesPlatformDirector that is in the wrong workspace.
             String ptidesPlatformDirectorName = null;
-            Iterator ptidesPlatformDirectors = result.attributeList(
-                    PtidesPlatformDirector.class).iterator();
+            Iterator ptidesPlatformDirectors = result
+                    .attributeList(PtidesPlatformDirector.class).iterator();
             while (ptidesPlatformDirectors.hasNext()) {
                 PtidesPlatformDirector oldPtidesPlatformDirector = (PtidesPlatformDirector) ptidesPlatformDirectors
                         .next();
@@ -191,8 +191,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             platformDirector.setContainer(result);
             platformDirector.setName(ptidesPlatformDirectorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone: " + throwable);
         }
         return result;
     }
@@ -226,8 +226,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ////                         protected methods                 ////
 
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         // TODO Auto-generated method stub
         super._addPort(port);
     }
@@ -240,7 +240,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      *                If reading from parameter associated with port fails.
      */
     @Override
-    protected void _transferPortParameterInputs() throws IllegalActionException {
+    protected void _transferPortParameterInputs()
+            throws IllegalActionException {
         // Need to read from port parameters
         // first because in some domains (e.g. SDF)
         // the behavior of the schedule might depend on rate variables
@@ -325,7 +326,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                 destinationDeclared);
                     } else if (sourcePort.getContainer() != this
                             && destinationPort.getContainer() == this
-                            && _isAssociatedWithNetworkTransmitter(destinationPort)) {
+                            && _isAssociatedWithNetworkTransmitter(
+                                    destinationPort)) {
                         // The destination port belongs to me, but not
                         // the source.
 
@@ -404,14 +406,14 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                     if (destinationPort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) destinationPort)
-                            .isSensorPort()) {
+                                    .isSensorPort()) {
                         Inequality ineq = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
                     } else if (destinationPort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) destinationPort)
-                            .isNetworkReceiverPort()) {
+                                    .isNetworkReceiverPort()) {
 
                         sourcePort.setTypeEquals(new PtidesNetworkType());
                         RecordType sourcePortType = (RecordType) sourcePort
@@ -428,12 +430,12 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                     Inequality ineq = null;
                     if (sourcePort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) sourcePort)
-                            .isActuatorPort()) {
+                                    .isActuatorPort()) {
                         ineq = new Inequality(sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                     } else if (sourcePort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) sourcePort)
-                            .isNetworkTransmitterPort()) {
+                                    .isNetworkTransmitterPort()) {
 
                         destinationPort.setTypeEquals(new PtidesNetworkType());
                         RecordType outputType = (RecordType) destinationPort
@@ -454,8 +456,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
     ////                         private methods                   ////
 
     /** Initializes the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         setClassName("ptolemy.domains.ptides.kernel.PtidesPlatform");
 
         // Create the PtidesPlatformDirector in the proper workspace.
@@ -507,11 +509,11 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-            BaseType.UNKNOWN };
+                BaseType.UNKNOWN };
 
         /** The labels of the RecordType fields. */
-        public static String[] LABELS = new String[] { "timestamp",
-            "microstep", "payload" };
+        public static String[] LABELS = new String[] { "timestamp", "microstep",
+                "payload" };
 
         /**
          * Label of the timestamp that is transmitted within the RecordToken.
@@ -539,8 +541,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * corresponding ports will be added or deleted in the container. That
      * addition will result in appropriate connections being made.
      */
-    public static class PtidesPlatformContents extends
-    MetroIIMirrorComposite.MetroIIMirrorCompositeContents {
+    public static class PtidesPlatformContents
+            extends MetroIIMirrorComposite.MetroIIMirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -613,7 +615,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * embedded PtidesDirector. Transferring inputs and outputs is modified in
      * order to deal with building and extracting RecordTokens in NetworkPorts.
      */
-    private class PtidesPlatformDirector extends Director implements GetFirable {
+    private class PtidesPlatformDirector extends Director
+            implements GetFirable {
 
         /**
          * Constructs an PtidesPlatformDirector in the specified workspace with
@@ -760,7 +763,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             boolean result = false;
             MetroIIPtidesDirector director = (MetroIIPtidesDirector) _getEmbeddedPtidesDirector();
 
-            for (int channelIndex = 0; channelIndex < port.getWidth(); channelIndex++) {
+            for (int channelIndex = 0; channelIndex < port
+                    .getWidth(); channelIndex++) {
                 // NOTE: This is not compatible with certain cases
                 // in PN, where we don't want to block on a port
                 // if nothing is connected to the port on the
@@ -779,9 +783,9 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                     .getAssociatedPort();
                             if (associatedPort.isNetworkReceiverPort()) {
                                 if (!(t instanceof RecordToken)
-                                        || ((RecordToken) t).labelSet().size() != 3) {
-                                    throw new IllegalActionException(
-                                            this,
+                                        || ((RecordToken) t).labelSet()
+                                                .size() != 3) {
+                                    throw new IllegalActionException(this,
                                             "The input token is not a RecordToken or "
                                                     + "does not have a size not equal to 3: "
                                                     + "Here we assume the Record is of types: timestamp"
@@ -790,15 +794,14 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                                 RecordToken record = (RecordToken) t;
 
-                                Time recordTimestamp = new Time(
-                                        director,
-                                        ((DoubleToken) record
-                                                .get(PtidesNetworkType.timestamp))
-                                                .doubleValue());
+                                Time recordTimestamp = new Time(director,
+                                        ((DoubleToken) record.get(
+                                                PtidesNetworkType.timestamp))
+                                                        .doubleValue());
 
                                 int recordMicrostep = ((IntToken) record
                                         .get(PtidesNetworkType.microstep))
-                                        .intValue();
+                                                .intValue();
 
                                 Time sourceTimestamp = director.getModelTime();
                                 //                                    new Time(
@@ -811,18 +814,16 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                         .deepGetReceivers();
                                 if (farReceivers.length > 0) {
                                     for (int i = 0; i < farReceivers[channelIndex].length; i++) {
-                                        director.addInputEvent(
-                                                associatedPort,
-                                                new PtidesEvent(
-                                                        associatedPort,
+                                        director.addInputEvent(associatedPort,
+                                                new PtidesEvent(associatedPort,
                                                         channelIndex,
                                                         recordTimestamp,
-                                                        recordMicrostep,
-                                                        -1,
-                                                        record.get(PtidesNetworkType.payload),
+                                                        recordMicrostep, -1,
+                                                        record.get(
+                                                                PtidesNetworkType.payload),
                                                         farReceivers[channelIndex][i],
                                                         sourceTimestamp),
-                                                        MetroIIPtidesDirector
+                                                MetroIIPtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -833,18 +834,14 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                         .deepGetReceivers();
                                 if (farReceivers.length > 0) {
                                     for (int i = 0; i < farReceivers[channelIndex].length; i++) {
-                                        director.addInputEvent(
-                                                associatedPort,
-                                                new PtidesEvent(
-                                                        associatedPort,
+                                        director.addInputEvent(associatedPort,
+                                                new PtidesEvent(associatedPort,
                                                         channelIndex,
                                                         director.getModelTime(),
-                                                        1,
-                                                        -1,
-                                                        t,
+                                                        1, -1, t,
                                                         farReceivers[channelIndex][i],
                                                         director.getModelTime()),
-                                                        MetroIIPtidesDirector
+                                                MetroIIPtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -852,7 +849,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                 }
                             } else {
                                 ((MirrorPort) port).getAssociatedPort()
-                                .sendInside(channelIndex, t);
+                                        .sendInside(channelIndex, t);
                             }
 
                             result = true;
@@ -892,15 +889,15 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                             ((MetroIICompositeActor) ((MirrorPort) port)
                                     .getAssociatedPort().getContainer())
-                                    .getDirector();
+                                            .getDirector();
 
                             Object[] timestamps = ((MetroIIPtidesPort) ((MirrorPort) port)
                                     .getAssociatedPort())
-                                    .getTimeStampForToken(t);
+                                            .getTimeStampForToken(t);
 
                             int microstep = ((MetroIIPtidesPort) ((MirrorPort) port)
                                     .getAssociatedPort())
-                                    .getMicrostepForToken(t);
+                                            .getMicrostepForToken(t);
 
                             Time timestamp = (Time) timestamps[0];
 
@@ -1065,7 +1062,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             if (!(getContainer() instanceof MetroIIPtidesPlatform)
                     || !isOutput()
                     || !((MetroIIPtidesPort) this.insidePortList().get(0))
-                    .isNetworkTransmitterPort()) {
+                            .isNetworkTransmitterPort()) {
                 return super.convert(token);
             }
             if (getType().equals(BaseType.GENERAL)) {

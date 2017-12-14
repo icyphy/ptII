@@ -75,14 +75,14 @@ public class MigrateModelsManager {
      */
     public String migrateModels(String directoryPath,
             boolean migrateFilesInSubDirectories, boolean checkContent)
-                    throws IOException {
+            throws IOException {
 
         //check if the path provided exists.
         File directoryFile = new File(directoryPath);
 
         if (directoryFile.exists() == false) {
-            throw new IOException("Directory: " + directoryPath
-                    + " does not exist.");
+            throw new IOException(
+                    "Directory: " + directoryPath + " does not exist.");
         }
 
         String csvFilePath = directoryPath
@@ -106,8 +106,8 @@ public class MigrateModelsManager {
 
         //write the header for the csv file.
         _csvFileWriter
-        .write("Model Name,File Path,Migration Status,Error Messages"
-                + System.getProperty("line.separator"));
+                .write("Model Name,File Path,Migration Status,Error Messages"
+                        + System.getProperty("line.separator"));
 
         try {
 
@@ -143,7 +143,7 @@ public class MigrateModelsManager {
      */
     private void _readFiles(File directory, File parentDirectory,
             boolean readSubDirectories, boolean checkContent)
-                    throws IOException {
+            throws IOException {
 
         // If the path sent is a file, try to create a model in the database out of it.
         if (directory.isFile()) {
@@ -160,28 +160,27 @@ public class MigrateModelsManager {
                 String fileContent = _getContent(directory);
 
                 if (checkContent == false
-                        || (/*checkContent &&*/_checkFileContent(fileContent))) {
+                        || (/*checkContent &&*/_checkFileContent(
+                                fileContent))) {
 
                     _createDBModel(modelName, fileContent,
                             directory.getAbsolutePath());
 
                 } else {
 
-                    _csvFileWriter.write(modelName + ","
-                            + directory.getAbsolutePath() + ",Failed,"
-                            + "The content of the file"
-                            + " was not a proper Ptolemy model content."
-                            + System.getProperty("line.separator"));
+                    _csvFileWriter
+                            .write(modelName + "," + directory.getAbsolutePath()
+                                    + ",Failed," + "The content of the file"
+                                    + " was not a proper Ptolemy model content."
+                                    + System.getProperty("line.separator"));
 
                 }
             }
 
-        } else if (directory.isDirectory()
-                && readSubDirectories
-                || directory.isDirectory()
-                && !readSubDirectories
-                && directory.getAbsolutePath().equalsIgnoreCase(
-                        parentDirectory.getAbsolutePath())) {
+        } else if (directory.isDirectory() && readSubDirectories
+                || directory.isDirectory() && !readSubDirectories
+                        && directory.getAbsolutePath().equalsIgnoreCase(
+                                parentDirectory.getAbsolutePath())) {
             // If the path is a directory, get the list of files and call
             // this method recursively on each of the files.
 
@@ -210,7 +209,9 @@ public class MigrateModelsManager {
 
         StringBuilder contents = new StringBuilder();
 
-        BufferedReader input = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), java.nio.charset.Charset.defaultCharset()));
+        BufferedReader input = new BufferedReader(
+                new java.io.InputStreamReader(new java.io.FileInputStream(file),
+                        java.nio.charset.Charset.defaultCharset()));
 
         try {
 
@@ -277,8 +278,8 @@ public class MigrateModelsManager {
         boolean isPtolemyModel = false;
 
         if (fileContent.lastIndexOf("</") >= 0) {
-            String lastTag = fileContent.substring(fileContent
-                    .lastIndexOf("</"));
+            String lastTag = fileContent
+                    .substring(fileContent.lastIndexOf("</"));
 
             String lowerCaseLastTag = lastTag.toLowerCase(Locale.getDefault());
             if (lowerCaseLastTag.contains("entity")

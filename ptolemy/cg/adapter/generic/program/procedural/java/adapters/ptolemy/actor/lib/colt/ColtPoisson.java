@@ -102,7 +102,7 @@ public class ColtPoisson extends ColtRandomSource {
     @Override
     protected String _generateRandomNumber() throws IllegalActionException {
         ArrayList<String> args = new ArrayList<String>();
-        return getTemplateParser().generateBlockCode(
-                "poissonDistributionBlock", args);
+        return getTemplateParser().generateBlockCode("poissonDistributionBlock",
+                args);
     }
 }

@@ -214,15 +214,16 @@ public abstract class Rounding implements Cloneable {
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
      */
-    public static Rounding getName(String name) throws IllegalArgumentException {
+    public static Rounding getName(String name)
+            throws IllegalArgumentException {
         Rounding rounding = (Rounding) _nameToRounding.get(name);
 
         if (rounding != null) {
             return rounding;
         }
 
-        throw new IllegalArgumentException("Unknown rounding strategy \""
-                + name + "\".");
+        throw new IllegalArgumentException(
+                "Unknown rounding strategy \"" + name + "\".");
     }
 
     /** Return a hash code value for this object.    */

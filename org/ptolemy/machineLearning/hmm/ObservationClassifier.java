@@ -158,8 +158,8 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ObservationClassifier newObject = (ObservationClassifier) super
-                .clone(workspace);
+        ObservationClassifier newObject = (ObservationClassifier) super.clone(
+                workspace);
         newObject._priors = new double[_nStates];
         newObject._transitionMatrixEstimate = new double[_nStates][_nStates];
         return newObject;
@@ -176,29 +176,31 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
             // Read input ports
             Token observationArray = input.get(0);
             _classificationLength = ((ArrayToken) observationArray).length();
-            if (((ArrayToken)observationArray).getElementType().isCompatible(BaseType.DOUBLE)) {
+            if (((ArrayToken) observationArray).getElementType()
+                    .isCompatible(BaseType.DOUBLE)) {
                 _observations = new double[_classificationLength][1];
                 for (int i = 0; i < _classificationLength; i++) {
                     _observations[i][0] = ((DoubleToken) ((ArrayToken) observationArray)
                             .getElement(i)).doubleValue();
                 }
-            } else if (((ArrayToken)observationArray).getElementType().isCompatible(BaseType.INT)) {
+            } else if (((ArrayToken) observationArray).getElementType()
+                    .isCompatible(BaseType.INT)) {
                 _observations = new double[_classificationLength][1];
                 for (int i = 0; i < _classificationLength; i++) {
                     _observations[i][0] = ((IntToken) ((ArrayToken) observationArray)
                             .getElement(i)).intValue();
                 }
             } else {
-                int obsDim = ((ArrayToken) ((ArrayToken) observationArray).getElement(0)).length();
+                int obsDim = ((ArrayToken) ((ArrayToken) observationArray)
+                        .getElement(0)).length();
                 _observations = new double[_classificationLength][obsDim];
                 for (int i = 0; i < _classificationLength; i++) {
                     for (int j = 0; j < obsDim; j++) {
-                    _observations[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) observationArray)
-                            .getElement(i)).getElement(j)).doubleValue();
+                        _observations[i][j] = ((DoubleToken) ((ArrayToken) ((ArrayToken) observationArray)
+                                .getElement(i)).getElement(j)).doubleValue();
                     }
                 }
             }
-
 
             // Get Observation Values as doubles
             //FIXME: should the observations  allowed to be vectors of doubles, too?
@@ -217,7 +219,8 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * @return An array of assigned labels to observations
      * @exception IllegalActionException If thrown while calculating the emmission probablity
      */
-    protected final int[] classifyHMM(double[][] y, double[] prior, double[][] A) throws IllegalActionException {
+    protected final int[] classifyHMM(double[][] y, double[] prior,
+            double[][] A) throws IllegalActionException {
 
         int nStates = _nStates;
 
@@ -259,8 +262,8 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                         for (int j = 0; j < nStates; j++) {
                             alphasum += alphas[t][j] * A[j][qtp];
                         }
-                        gamma[t][qt] += (alphas[t][qt] * A[qt][qtp] * gamma[t + 1][qtp])
-                                / alphasum;
+                        gamma[t][qt] += (alphas[t][qt] * A[qt][qtp]
+                                * gamma[t + 1][qtp]) / alphasum;
                     }
                 }
             }
@@ -281,7 +284,8 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
         double logLikelihood = 0.0;
         for (int t = 0; t < _observations.length - 1; t++) {
             logLikelihood += emissionProbability(y[t], clusterAssignments[t]);
-            logLikelihood += A[clusterAssignments[t]][clusterAssignments[t + 1]];
+            logLikelihood += A[clusterAssignments[t]][clusterAssignments[t
+                    + 1]];
         }
         // add the emission probability at final time value
         logLikelihood += emissionProbability(y[_observations.length - 1],

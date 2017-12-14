@@ -90,7 +90,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public GRDirector() throws IllegalActionException, NameDuplicationException {
+    public GRDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -103,8 +104,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public GRDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public GRDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -424,8 +425,8 @@ public class GRDirector extends StaticSchedulingDirector {
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to initialize "
-                    + "GR system with no scheduler");
+            throw new IllegalActionException(
+                    "Attempted to initialize " + "GR system with no scheduler");
         }
 
         // force the schedule to be computed.
@@ -464,8 +465,8 @@ public class GRDirector extends StaticSchedulingDirector {
         Scheduler currentScheduler = getScheduler();
 
         if (currentScheduler == null) {
-            throw new IllegalActionException(this, "Attempted to fire "
-                    + "GR system with no scheduler");
+            throw new IllegalActionException(this,
+                    "Attempted to fire " + "GR system with no scheduler");
         }
 
         currentScheduler.getSchedule();
@@ -527,15 +528,15 @@ public class GRDirector extends StaticSchedulingDirector {
         _lastIterationTime = currentTime;
 
         if (container == null) {
-            throw new InvalidStateException(this, getName()
-                    + " fired, but it has no container!");
+            throw new InvalidStateException(this,
+                    getName() + " fired, but it has no container!");
         }
 
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException(this, "Attempted to fire "
-                    + "GR system with no scheduler");
+            throw new IllegalActionException(this,
+                    "Attempted to fire " + "GR system with no scheduler");
         }
 
         Schedule schedule = scheduler.getSchedule();
@@ -575,8 +576,8 @@ public class GRDirector extends StaticSchedulingDirector {
 
             if (flag) {
                 if (_debugging) {
-                    _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_FIRE, 1));
+                    _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_FIRE,
+                            1));
                 }
 
                 actor.fire();
@@ -642,9 +643,7 @@ public class GRDirector extends StaticSchedulingDirector {
             // the class that is reported as missing.
             Class.forName("javax.vecmath.Tuple3f");
         } catch (Exception ex) {
-            throw new InternalErrorException(
-                    this,
-                    ex,
+            throw new InternalErrorException(this, ex,
                     "The GR domain requires that Java 3D be installed.\n"
                             + "Java 3D can be downloaded from\n"
                             + "https://java3d.dev.java.net/"

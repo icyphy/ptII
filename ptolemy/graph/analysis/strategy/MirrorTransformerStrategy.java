@@ -51,8 +51,8 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
  @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
  @version $Id$
  */
-public class MirrorTransformerStrategy extends CachedStrategy implements
-MirrorTransformer {
+public class MirrorTransformerStrategy extends CachedStrategy
+        implements MirrorTransformer {
     /** Construct a transformer for a given graph.
      *  @param graph The given graph.
      */
@@ -213,8 +213,8 @@ MirrorTransformer {
                              be called publicly. The class Method is used
                              here to call public clone(). */
                             Class[] argumentTypes = {};
-                            Method method = oldWeight.getClass().getMethod(
-                                    nameClone, argumentTypes);
+                            Method method = oldWeight.getClass()
+                                    .getMethod(nameClone, argumentTypes);
 
                             // Cast to (Object []) so as to avoid varargs call.
                             mirrorWeight = method.invoke(oldWeight,
@@ -264,8 +264,8 @@ MirrorTransformer {
                              be called publicly. The class Method is used
                              here to call public clone(). */
                             Class[] argumentTypes = {};
-                            Method method = oldWeight.getClass().getMethod(
-                                    nameClone, argumentTypes);
+                            Method method = oldWeight.getClass()
+                                    .getMethod(nameClone, argumentTypes);
 
                             // Cast to (Object []) so as to avoid varargs call.
                             mirrorWeight = method.invoke(oldWeight,

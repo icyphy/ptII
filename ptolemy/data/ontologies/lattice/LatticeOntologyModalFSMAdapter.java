@@ -59,8 +59,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (mankit)
  *  @Pt.AcceptedRating Red (mankit)
  */
-public class LatticeOntologyModalFSMAdapter extends
-LatticeOntologyCompositeAdapter {
+public class LatticeOntologyModalFSMAdapter
+        extends LatticeOntologyCompositeAdapter {
 
     /** Construct an adapter for the given FSMActor. This is the
      *  base adapter class for any FSMActor that does not have a
@@ -107,8 +107,8 @@ LatticeOntologyCompositeAdapter {
 
                         NamedObj namedObj = (NamedObj) propertyable;
                         OutputActionsAttribute outputActions = transition.outputActions;
-                        if (outputActions.getDestinationNameList().contains(
-                                namedObj.getName())) {
+                        if (outputActions.getDestinationNameList()
+                                .contains(namedObj.getName())) {
                             // do not consider multiple assignments to same output from one action since
                             // only the last assignment in the expression is actually effective
                             ASTPtRootNode parseTree = outputActions
@@ -121,8 +121,8 @@ LatticeOntologyCompositeAdapter {
                         }
 
                         CommitActionsAttribute setActions = transition.setActions;
-                        if (setActions.getDestinationNameList().contains(
-                                namedObj.getName())) {
+                        if (setActions.getDestinationNameList()
+                                .contains(namedObj.getName())) {
                             // do not consider multiple assignments to same output from one action since
                             // only the last assignment in the expression is actually effective
                             ASTPtRootNode parseTree = setActions
@@ -271,7 +271,8 @@ LatticeOntologyCompositeAdapter {
      *  @param actions The attribute that contains the list of actions.
      *  @return The parse tree.
      */
-    private List<ASTPtRootNode> _getParseTrees(AbstractActionsAttribute actions) {
+    private List<ASTPtRootNode> _getParseTrees(
+            AbstractActionsAttribute actions) {
         List<ASTPtRootNode> parseTrees = actions.getParseTreeList();
 
         Iterator iterator = parseTrees.iterator();

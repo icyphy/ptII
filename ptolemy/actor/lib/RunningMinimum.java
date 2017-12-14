@@ -172,12 +172,13 @@ public class RunningMinimum extends Transformer {
         /* input <= output */
         result.add(new Inequality(input.getTypeTerm(), output.getTypeTerm()));
         /* input <= Scalar. */
-        result.add(new Inequality(input.getTypeTerm(), new TypeConstant(
-                BaseType.SCALAR)));
+        result.add(new Inequality(input.getTypeTerm(),
+                new TypeConstant(BaseType.SCALAR)));
         /* input >= output if backward type inference is enabled */
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(output.getTypeTerm(), input.getTypeTerm()));
+            result.add(
+                    new Inequality(output.getTypeTerm(), input.getTypeTerm()));
         }
         return result;
     }

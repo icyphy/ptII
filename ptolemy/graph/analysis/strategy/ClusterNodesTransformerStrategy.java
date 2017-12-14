@@ -50,8 +50,8 @@ import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
  @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
  @version $Id$
  */
-public class ClusterNodesTransformerStrategy extends CachedStrategy implements
-ClusterNodesTransformer {
+public class ClusterNodesTransformerStrategy extends CachedStrategy
+        implements ClusterNodesTransformer {
     /** Construct a clusterer for a given graph.
      *  @param graph The given graph.
      *  @param nodeCollection The collection of nodes to be clustered.

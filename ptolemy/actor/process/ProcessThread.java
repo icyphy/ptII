@@ -256,8 +256,8 @@ public class ProcessThread extends PtolemyThread {
                                 + thrownWhenIterate);
                     }
                 } else if (thrownWhenIterate instanceof InterruptedIOException
-                        || thrownWhenIterate != null
-                        && thrownWhenIterate.getCause() instanceof InterruptedIOException) {
+                        || thrownWhenIterate != null && thrownWhenIterate
+                                .getCause() instanceof InterruptedIOException) {
                     // PSDF has problems here when run with JavaScope
                     if (_debugging) {
                         _debug("-- IO was interrupted: " + thrownWhenIterate);
@@ -266,7 +266,8 @@ public class ProcessThread extends PtolemyThread {
                     if (_debugging) {
                         _debug("-- Exception: " + thrownWhenIterate);
                     }
-                    _manager.notifyListenersOfException((IllegalActionException) thrownWhenIterate);
+                    _manager.notifyListenersOfException(
+                            (IllegalActionException) thrownWhenIterate);
                 } else if (thrownWhenIterate != null) {
                     rethrow = true;
                 }
@@ -275,7 +276,8 @@ public class ProcessThread extends PtolemyThread {
                     if (_debugging) {
                         _debug("-- Exception: " + thrownWhenWrapup);
                     }
-                    _manager.notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
+                    _manager.notifyListenersOfException(
+                            (IllegalActionException) thrownWhenWrapup);
                 } else if (thrownWhenWrapup != null) {
                     // Must be a runtime exception.
                     // Call notifyListenerOfThrowable() here so that

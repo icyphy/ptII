@@ -111,8 +111,8 @@ public class PTree extends JTree {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     // A Drag Gesture listener for the tree.
-    private static class PTreeDragGestureListener implements
-    DragGestureListener {
+    private static class PTreeDragGestureListener
+            implements DragGestureListener {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
         @Override
@@ -175,12 +175,14 @@ public class PTree extends JTree {
                 }
 
                 if (object instanceof NamedObj
-                        && !_isPropertySet((NamedObj) object, "_notDraggable")) {
+                        && !_isPropertySet((NamedObj) object,
+                                "_notDraggable")) {
                     PtolemyTransferable transferable = new PtolemyTransferable();
                     transferable.addObject((NamedObj) object);
 
                     //initial cursor, transferable, dsource listener
-                    e.startDrag(DragSource.DefaultCopyNoDrop, transferable, dsl);
+                    e.startDrag(DragSource.DefaultCopyNoDrop, transferable,
+                            dsl);
                 }
             }
         }

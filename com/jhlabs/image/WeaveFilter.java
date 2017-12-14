@@ -30,7 +30,8 @@ public class WeaveFilter extends PointFilter {
     private boolean roundThreads = false;
     private boolean shadeCrossings = true;
 
-    public int[][] matrix = { { 0, 1, 0, 1 }, { 1, 0, 1, 0 }, { 0, 1, 0, 1 }, { 1, 0, 1, 0 }, };
+    public int[][] matrix = { { 0, 1, 0, 1 }, { 1, 0, 1, 0 }, { 0, 1, 0, 1 },
+            { 1, 0, 1, 0 }, };
 
     public WeaveFilter() {
     }
@@ -121,8 +122,10 @@ public class WeaveFilter extends PointFilter {
         }
 
         if (shadeCrossings) {
-            cX = ImageMath.smoothStep(xWidth / 2, xWidth / 2 + xGap, Math.abs(xWidth / 2 - nx));
-            cY = ImageMath.smoothStep(yWidth / 2, yWidth / 2 + yGap, Math.abs(yWidth / 2 - ny));
+            cX = ImageMath.smoothStep(xWidth / 2, xWidth / 2 + xGap,
+                    Math.abs(xWidth / 2 - nx));
+            cY = ImageMath.smoothStep(yWidth / 2, yWidth / 2 + yGap,
+                    Math.abs(yWidth / 2 - ny));
         } else {
             cX = cY = 0;
         }
@@ -144,28 +147,33 @@ public class WeaveFilter extends PointFilter {
             } else {
                 if (shadeCrossings) {
                     if (m != matrix[(iy + 1) % rows][ixc]) {
-                        if (m == 0)
+                        if (m == 0) {
                             cY = 1 - cY;
+                        }
                         cY *= 0.5f;
                         lrgbX = ImageMath.mixColors(cY, lrgbX, 0xff000000);
-                    } else if (m == 0)
+                    } else if (m == 0) {
                         lrgbX = ImageMath.mixColors(0.5f, lrgbX, 0xff000000);
+                    }
                 }
                 v = ImageMath.mixColors(2 * dX, lrgbX, 0xff000000);
             }
         } else if (inY) {
             if (shadeCrossings) {
                 if (m != matrix[iyr][(ix + 1) % cols]) {
-                    if (m == 1)
+                    if (m == 1) {
                         cX = 1 - cX;
+                    }
                     cX *= 0.5f;
                     lrgbY = ImageMath.mixColors(cX, lrgbY, 0xff000000);
-                } else if (m == 1)
+                } else if (m == 1) {
                     lrgbY = ImageMath.mixColors(0.5f, lrgbY, 0xff000000);
+                }
             }
             v = ImageMath.mixColors(2 * dY, lrgbY, 0xff000000);
-        } else
+        } else {
             v = 0x00000000;
+        }
         return v;
     }
 

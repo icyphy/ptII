@@ -66,8 +66,9 @@ public class WarpGrid {
                     y[k] = yGrid[l];
                 }
             }
-            if (row != before - 1)
+            if (row != before - 1) {
                 i += cols;
+            }
             j += cols;
         }
         xGrid = x;
@@ -125,8 +126,9 @@ public class WarpGrid {
                 x[k] = xGrid[l];
                 y[k] = yGrid[l];
             }
-            if (row == r - 1)
+            if (row == r - 1) {
                 i += cols;
+            }
             i += cols;
             j += cols;
         }
@@ -150,8 +152,9 @@ public class WarpGrid {
             for (int col = 0; col < cols; col++) {
                 x[j] = xGrid[i];
                 y[j] = yGrid[i];
-                if (col == r - 1)
+                if (col == r - 1) {
                     i++;
+                }
                 i++;
                 j++;
             }
@@ -161,29 +164,39 @@ public class WarpGrid {
     }
 
     public void lerp(float t, WarpGrid destination, WarpGrid intermediate) {
-        if (rows != destination.rows || cols != destination.cols)
-            throw new IllegalArgumentException("source and destination are different sizes");
-        if (rows != intermediate.rows || cols != intermediate.cols)
-            throw new IllegalArgumentException("source and intermediate are different sizes");
+        if (rows != destination.rows || cols != destination.cols) {
+            throw new IllegalArgumentException(
+                    "source and destination are different sizes");
+        }
+        if (rows != intermediate.rows || cols != intermediate.cols) {
+            throw new IllegalArgumentException(
+                    "source and intermediate are different sizes");
+        }
         int index = 0;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                intermediate.xGrid[index] = ImageMath.lerp(t, xGrid[index], destination.xGrid[index]);
-                intermediate.yGrid[index] = ImageMath.lerp(t, yGrid[index], destination.yGrid[index]);
+                intermediate.xGrid[index] = ImageMath.lerp(t, xGrid[index],
+                        destination.xGrid[index]);
+                intermediate.yGrid[index] = ImageMath.lerp(t, yGrid[index],
+                        destination.yGrid[index]);
                 index++;
             }
         }
     }
 
-    public void warp(int[] inPixels, int cols, int rows, WarpGrid sourceGrid, WarpGrid destGrid, int[] outPixels) {
+    public void warp(int[] inPixels, int cols, int rows, WarpGrid sourceGrid,
+            WarpGrid destGrid, int[] outPixels) {
         try {
             int x, y;
             int u, v;
             int[] intermediate;
             WarpGrid splines;
 
-            if (sourceGrid.rows != destGrid.rows || sourceGrid.cols != destGrid.cols)
-                throw new IllegalArgumentException("source and destination grids are different sizes");
+            if (sourceGrid.rows != destGrid.rows
+                    || sourceGrid.cols != destGrid.cols) {
+                throw new IllegalArgumentException(
+                        "source and destination grids are different sizes");
+            }
 
             int size = Math.max(cols, rows);
             float[] xrow = new float[size];
@@ -205,7 +218,8 @@ public class WarpGrid {
                     i += gridCols;
                 }
 
-                interpolateSpline(yrow, xrow, 0, gridRows, interpolated, 0, rows);
+                interpolateSpline(yrow, xrow, 0, gridRows, interpolated, 0,
+                        rows);
 
                 i = u;
                 for (y = 0; y < rows; y++) {
@@ -223,7 +237,8 @@ public class WarpGrid {
                     i += gridCols;
                 }
 
-                interpolateSpline(yrow, xrow, 0, gridRows, interpolated, 0, rows);
+                interpolateSpline(yrow, xrow, 0, gridRows, interpolated, 0,
+                        rows);
 
                 i = u;
                 for (y = 0; y < rows; y++) {
@@ -238,9 +253,11 @@ public class WarpGrid {
             int offset = 0;
             for (y = 0; y < rows; y++) {
                 /* fit spline to x-intercepts;resample over all cols */
-                interpolateSpline(splines.xGrid, splines.yGrid, offset, gridCols, scale, 0, cols);
+                interpolateSpline(splines.xGrid, splines.yGrid, offset,
+                        gridCols, scale, 0, cols);
                 scale[cols] = cols;
-                ImageMath.resample(inPixels, intermediate, cols, y * cols, 1, scale);
+                ImageMath.resample(inPixels, intermediate, cols, y * cols, 1,
+                        scale);
                 offset += gridCols;
             }
             /* create table of y-intercepts for intermediate mesh's hor splines */
@@ -250,7 +267,8 @@ public class WarpGrid {
             offset = 0;
             int offset2 = 0;
             for (v = 0; v < gridRows; v++) {
-                interpolateSpline(sourceGrid.xGrid, sourceGrid.yGrid, offset, gridCols, splines.xGrid, offset2, cols);
+                interpolateSpline(sourceGrid.xGrid, sourceGrid.yGrid, offset,
+                        gridCols, splines.xGrid, offset2, cols);
                 offset += gridCols;
                 offset2 += cols;
             }
@@ -258,7 +276,8 @@ public class WarpGrid {
             offset = 0;
             offset2 = 0;
             for (v = 0; v < gridRows; v++) {
-                interpolateSpline(destGrid.xGrid, destGrid.yGrid, offset, gridCols, splines.yGrid, offset2, cols);
+                interpolateSpline(destGrid.xGrid, destGrid.yGrid, offset,
+                        gridCols, splines.yGrid, offset2, cols);
                 offset += gridCols;
                 offset2 += cols;
             }
@@ -278,7 +297,8 @@ public class WarpGrid {
 
                 interpolateSpline(xrow, yrow, 0, gridRows, scale, 0, rows);
                 scale[rows] = rows;
-                ImageMath.resample(intermediate, outPixels, rows, x, cols, scale);
+                ImageMath.resample(intermediate, outPixels, rows, x, cols,
+                        scale);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -297,8 +317,8 @@ public class WarpGrid {
     private final static float m22 = 0.5f;
     private final static float m31 = 1.0f;
 
-    protected void interpolateSpline(float[] xKnots, float[] yKnots, int offset, int length, float[] splineY,
-            int splineOffset, int splineLength) {
+    protected void interpolateSpline(float[] xKnots, float[] yKnots, int offset,
+            int length, float[] splineY, int splineOffset, int splineLength) {
         int index = offset;
         int end = offset + length - 1;
         float x0, x1;
@@ -317,12 +337,14 @@ public class WarpGrid {
                 k2 = k3;
                 x0 = xKnots[index];
                 index++;
-                if (index <= end)
+                if (index <= end) {
                     x1 = xKnots[index];
-                if (index < end)
+                }
+                if (index < end) {
                     k3 = yKnots[index + 1];
-                else
+                } else {
                     k3 = k2;
+                }
             }
             float t = (i - x0) / (x1 - x0);
             c3 = m00 * k0 + m01 * k1 + m02 * k2 + m03 * k3;
@@ -334,8 +356,8 @@ public class WarpGrid {
         }
     }
 
-    protected void interpolateSpline2(float[] xKnots, float[] yKnots, int offset, float[] splineY, int splineOffset,
-            int splineLength) {
+    protected void interpolateSpline2(float[] xKnots, float[] yKnots,
+            int offset, float[] splineY, int splineOffset, int splineLength) {
         int index = offset;
         float leftX, rightX;
         float leftY, rightY;

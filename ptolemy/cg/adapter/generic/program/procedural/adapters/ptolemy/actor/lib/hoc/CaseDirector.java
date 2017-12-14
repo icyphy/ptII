@@ -128,12 +128,9 @@ public class CaseDirector extends Director {
                     } else {
                         code.append(INDENT2 + "} else if (!strcmp(");
                     }
-                    code.append(codeGenerator
-                            .generateVariableName(container.control)
-                            + ".payload.String, "
-                            + "\""
-                            + refinementName
-                            + "\")) {" + _eol);
+                    code.append(codeGenerator.generateVariableName(
+                            container.control) + ".payload.String, " + "\""
+                            + refinementName + "\")) {" + _eol);
                 }
             } else {
                 if (useIf) {
@@ -190,8 +187,8 @@ public class CaseDirector extends Director {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     @Override
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
         generateTransferOutputsCode(outputPort, code, true);
     }
 

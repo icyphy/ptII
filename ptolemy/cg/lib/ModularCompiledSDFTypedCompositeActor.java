@@ -157,8 +157,8 @@ will simply result in the expression failing to evaluate.
  @Pt.AcceptedRating Red (rodiers)
  */
 
-public class ModularCompiledSDFTypedCompositeActor extends
-ModularCodeGenLazyTypedCompositeActor {
+public class ModularCompiledSDFTypedCompositeActor
+        extends ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -201,8 +201,8 @@ ModularCodeGenLazyTypedCompositeActor {
      *   actor with this name.
      */
     public ModularCompiledSDFTypedCompositeActor(CompositeEntity container,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
     }
@@ -227,10 +227,11 @@ ModularCodeGenLazyTypedCompositeActor {
             // ModularCodeGenTypedCompositeActors.
             // These will then do the same.
             if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
-                List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
+                List<?> entities = entityList(
+                        ModularCompiledSDFTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCompiledSDFTypedCompositeActor) entity).recompileHierarchy
-                    .setToken(new BooleanToken(true));
+                            .setToken(new BooleanToken(true));
                 }
             }
         } else if (attribute != recompileThisLevel) {
@@ -304,9 +305,9 @@ ModularCodeGenLazyTypedCompositeActor {
                             NamedObj container = getContainer();
                             if (container instanceof CompositeActor) {
                                 ((CompositeActor) container)
-                                .registerPublisherPort(
-                                        port.getPubSubChannelName(),
-                                        newPort);
+                                        .registerPublisherPort(
+                                                port.getPubSubChannelName(),
+                                                newPort);
                             }
                         }
                     }
@@ -320,7 +321,8 @@ ModularCodeGenLazyTypedCompositeActor {
         }
         if (!_USE_PROFILE || profile == null) {
             populate();
-            List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
+            List<?> entities = entityList(
+                    ModularCompiledSDFTypedCompositeActor.class);
             for (Object entity : entities) {
                 ((ModularCompiledSDFTypedCompositeActor) entity).populate();
             }
@@ -353,8 +355,8 @@ ModularCodeGenLazyTypedCompositeActor {
             if (_debugging) {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
-            System.out
-            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+            System.out.println(
+                    "ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -445,14 +447,13 @@ ModularCodeGenLazyTypedCompositeActor {
                 }
             }
             if (_fireMethod == null) {
-                throw new IllegalActionException(this, "Cannot find fire "
-                        + "method in the wrapper class.");
+                throw new IllegalActionException(this,
+                        "Cannot find fire " + "method in the wrapper class.");
             }
 
             if (initializeMethod == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find initialize "
-                                + "method in the wrapper class.");
+                throw new IllegalActionException(this, "Cannot find initialize "
+                        + "method in the wrapper class.");
             }
 
             //initialize the generated object
@@ -509,15 +510,15 @@ ModularCodeGenLazyTypedCompositeActor {
                 if (!isOpaque() && container instanceof CompositeActor) {
                     // Published ports are not propagated if this actor
                     // is opaque.
-                    return ((CompositeActor) container).linkToPublishedPort(
-                            name, subscriberPort);
+                    return ((CompositeActor) container)
+                            .linkToPublishedPort(name, subscriberPort);
                 } else if (!(container instanceof CompositeActor)) {
                     throw new IllegalActionException(subscriberPort,
                             "No matching publisher port");
                 } else {
                     IOPort stubPort;
-                    if (!(_subscriberPorts != null && _subscriberPorts
-                            .containsKey(name))) {
+                    if (!(_subscriberPorts != null
+                            && _subscriberPorts.containsKey(name))) {
                         stubPort = new TypedIOPort(this,
                                 uniqueName("subscriberStubPort"));
                         stubPort.setMultiport(true);
@@ -557,11 +558,12 @@ ModularCodeGenLazyTypedCompositeActor {
                         if (stubPort.getContainer() == null) {
                             // The user deleted the port.
                             stubPort.setContainer(this);
-                            stubPort.liberalLink(_subscriberRelations.get(name));
+                            stubPort.liberalLink(
+                                    _subscriberRelations.get(name));
                         }
                     }
-                    return ((CompositeActor) container).linkToPublishedPort(
-                            name, stubPort);
+                    return ((CompositeActor) container)
+                            .linkToPublishedPort(name, stubPort);
                 }
             }
         } finally {
@@ -637,18 +639,18 @@ ModularCodeGenLazyTypedCompositeActor {
                             for (Object actorPort : ports) {
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
-                                    DFUtilities
-                                    .setRateVariable(
+                                    DFUtilities.setRateVariable(
                                             (IOPort) actorPort,
-                                            port.input() ? "tokenConsumptionRate"
+                                            port.input()
+                                                    ? "tokenConsumptionRate"
                                                     : "tokenProductionRate",
-                                                    port.rate());
+                                            port.rate());
                                     ((TypedIOPort) actorPort)
-                                    .setTypeEquals(JavaCodeGenerator
-                                            .codeGenTypeToPtType(port
-                                                    .type()));
-                                    ((IOPort) actorPort).setDefaultWidth(port
-                                            .width());
+                                            .setTypeEquals(JavaCodeGenerator
+                                                    .codeGenTypeToPtType(
+                                                            port.type()));
+                                    ((IOPort) actorPort)
+                                            .setDefaultWidth(port.width());
                                     break;
                                 }
                             }
@@ -661,15 +663,16 @@ ModularCodeGenLazyTypedCompositeActor {
                                         BooleanToken.TRUE);
                                 newPort.setInput(port.input());
                                 newPort.setOutput(port.output());
-                                DFUtilities.setRateVariable(newPort, port
-                                        .input() ? "tokenConsumptionRate"
-                                                : "tokenProductionRate", port.rate());
+                                DFUtilities.setRateVariable(newPort,
+                                        port.input() ? "tokenConsumptionRate"
+                                                : "tokenProductionRate",
+                                        port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                    .linkToPublishedPort(
-                                            port.getPubSubChannelName(),
-                                            newPort);
+                                            .linkToPublishedPort(
+                                                    port.getPubSubChannelName(),
+                                                    newPort);
                                 }
                             }
                         }
@@ -706,7 +709,8 @@ ModularCodeGenLazyTypedCompositeActor {
             throws NameDuplicationException, IllegalActionException {
         try {
             ++_creatingPubSub;
-            if (_subscriberPorts != null && _subscriberPorts.containsKey(name)) {
+            if (_subscriberPorts != null
+                    && _subscriberPorts.containsKey(name)) {
                 // The model was run with a subscriber without a publisher. This resulted
                 // in a number of stub subscriber ports. These should be cleaned up since
                 // we now have a publisher.
@@ -801,8 +805,8 @@ ModularCodeGenLazyTypedCompositeActor {
                     port.setContainer(null);
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
-                        ((CompositeActor) container).unlinkToPublishedPort(
-                                name, port);
+                        ((CompositeActor) container).unlinkToPublishedPort(name,
+                                port);
                     }
                     _subscriberPorts.remove(name);
                 }
@@ -945,8 +949,8 @@ ModularCodeGenLazyTypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _createCodeGenerator() throws IllegalActionException,
-    NameDuplicationException {
+    private void _createCodeGenerator()
+            throws IllegalActionException, NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularSDFCodeGenerator(this,
                     "ModularSDFCodeGenerator");
@@ -1041,7 +1045,7 @@ ModularCodeGenLazyTypedCompositeActor {
     private boolean _modelChanged() throws IllegalActionException {
         return ((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                .booleanValue();
+                        .booleanValue();
     }
 
     /** Return the name of a Publisher or Subscriber channel name.

@@ -30,14 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.httpServer;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.core.MultiMap;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.HttpServerResponse;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
@@ -45,6 +37,13 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.core.MultiMap;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
@@ -74,17 +73,17 @@ public class HttpServerHelper extends VertxHelperBase {
      *  asynchronously. The server may not be closed when this returns.
      */
     public void closeServer() {
-            // Ask the verticle to perform the close.
-            submit(() -> {
-                if (_server != null) {
-                    _server.close();
-                    _server = null;
-                }
-            });
+        // Ask the verticle to perform the close.
+        submit(() -> {
+            if (_server != null) {
+                _server.close();
+                _server = null;
+            }
+        });
     }
 
     /** Convert a string to an image token.
-     *  If there is a problem then _error() is called.   
+     *  If there is a problem then _error() is called.
      *  @param body The html to be converted.
      *  @return The ImageToken that is created.
      */
@@ -93,7 +92,7 @@ public class HttpServerHelper extends VertxHelperBase {
         int comma = body.indexOf(",");
 
         if (comma > -1) {
-                body = body.substring(comma + 1, body.length());
+            body = body.substring(comma + 1, body.length());
         }
 
         try {
@@ -119,9 +118,10 @@ public class HttpServerHelper extends VertxHelperBase {
         } catch (Throwable throwable) {
             System.out.println("Failed to parse image: " + throwable);
             throwable.printStackTrace();
-            _error(_actor + "Received unparseable image: " + throwable.toString(), throwable);
-                AWTImageToken imageToken = new AWTImageToken(null);
-                return imageToken;
+            _error(_actor + "Received unparseable image: "
+                    + throwable.toString(), throwable);
+            AWTImageToken imageToken = new AWTImageToken(null);
+            return imageToken;
         }
     }
 
@@ -134,24 +134,25 @@ public class HttpServerHelper extends VertxHelperBase {
      *  @param port The port number that the server will use.
      *  @return A new HttpServerHelper instance.
      */
-    public static HttpServerHelper getOrCreateServer(
-            Object actor, ScriptObjectMirror currentObj, String hostInterface, int port) {
+    public static HttpServerHelper getOrCreateServer(Object actor,
+            ScriptObjectMirror currentObj, String hostInterface, int port) {
         // If there already is a server for this actor with matching hostInterface and port, use it.
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
         if (helper instanceof HttpServerHelper) {
-            if (((hostInterface == null && ((HttpServerHelper)helper)._hostInterface == null)
-                    || (hostInterface != null && hostInterface.equals(((HttpServerHelper)helper)._hostInterface)))
-                    && port == ((HttpServerHelper)helper)._port) {
+            if (((hostInterface == null
+                    && ((HttpServerHelper) helper)._hostInterface == null)
+                    || (hostInterface != null && hostInterface.equals(
+                            ((HttpServerHelper) helper)._hostInterface)))
+                    && port == ((HttpServerHelper) helper)._port) {
                 // All the interface match.
                 // May have a new JavaScript object, however.
                 ((HttpServerHelper) helper)._currentObj = currentObj;
-                return (HttpServerHelper)helper;
+                return (HttpServerHelper) helper;
             }
         }
         // If there is some other helper associated with this actor, the following will
         // share the same verticle with that helper.
-        return new HttpServerHelper(
-                actor, currentObj, hostInterface, port);
+        return new HttpServerHelper(actor, currentObj, hostInterface, port);
     }
 
     /** Respond to the request with the specified ID by sending the specified text.
@@ -170,8 +171,9 @@ public class HttpServerHelper extends VertxHelperBase {
 
             response.setStatusCode(responseCode);
             response.headers()
-                .add("Content-Length", String.valueOf(responseText.length()))
-                .add("Content-Type", "text/html");
+                    .add("Content-Length",
+                            String.valueOf(responseText.length()))
+                    .add("Content-Type", "text/html");
             response.write(responseText);
             response.end();
         }
@@ -182,84 +184,93 @@ public class HttpServerHelper extends VertxHelperBase {
      *  of the associated JavaScript HttpServer object.
      */
     public void startServer() {
-            // Ask the verticle to start the server.
-            submit(() -> {
-                _server = _vertx.createHttpServer();
-                _server.requestHandler(new Handler<HttpServerRequest>() {
-                    @Override
-                    public void handle(final HttpServerRequest request) {
+        // Ask the verticle to start the server.
+        submit(() -> {
+            _server = _vertx.createHttpServer();
+            _server.requestHandler(new Handler<HttpServerRequest>() {
+                @Override
+                public void handle(final HttpServerRequest request) {
 
-                            request.exceptionHandler((throwable) -> {
-                            _error("Request failed.", throwable);
-                        });
+                    request.exceptionHandler((throwable) -> {
+                        _error("Request failed.", throwable);
+                    });
 
-                        // Register a body handler.  If a body is present, this handler calls httpServer's _request().
-                        // Otherwise, call httpServer's _request() directly.
-                        request.bodyHandler(new Handler<Buffer>() {
-                            @Override
-                            public void handle(Buffer buffer) {
+                    // Register a body handler.  If a body is present, this handler calls httpServer's _request().
+                    // Otherwise, call httpServer's _request() directly.
+                    request.bodyHandler(new Handler<Buffer>() {
+                        @Override
+                        public void handle(Buffer buffer) {
 
-                                    // Sometimes the body handler is invoked even when there is no body (i.e. buffer length 0).
-                                    // Do not call _request in this situation.  It will be called elsewhere.
-                                    if (buffer.toString().length() > 0) {
-                                    String method = request.method().toString();
-                                    String path = request.path();
+                            // Sometimes the body handler is invoked even when there is no body (i.e. buffer length 0).
+                            // Do not call _request in this situation.  It will be called elsewhere.
+                            if (buffer.toString().length() > 0) {
+                                String method = request.method().toString();
+                                String path = request.path();
 
-                                    MultiMap headers = request.headers();
-                                    MultiMap params = request.params();
+                                MultiMap headers = request.headers();
+                                MultiMap params = request.params();
 
-                                    // Make this callback in the director thread instead of
-                                    // the verticle thread so that all outputs associated with
-                                    // a request are emitted simultaneously.
-                                    _issueResponse(() -> {
-                                        // Set up a timeout handler.
-                                        // FIXME: timeout 10000 needs to be an option given in JS constructor.
-                                        TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
-                                        // FIXME: Only handling string bodies for now.
-                                        _currentObj.callMember(
-                                                "_request", timeoutResponse.getTimeoutID(), method, path, buffer.toString(), headers.entries(), params.entries());
-                                    });
-                                    }
-                            }
-                        });
-
-                        String method = request.method().toString();
-                        String path = request.path();
-
-                        MultiMap headers = request.headers();
-                        MultiMap params = request.params();
-
-                        // Check for a body by checking for a Content-Length header or for chunked encoding.
-                        // Content-Length header is omitted for chunked encoding.
-                        // Handle all not-yet-handled requests (i.e. no body).
-                        if ( (headers.contains("Content-Length") && !headers.get("Content-Length").equalsIgnoreCase("0")) ||
-                             (headers.contains("transfer-encoding") &&
-                                             headers.get("transfer-encoding").equalsIgnoreCase("chunked"))) {
-                                // Do nothing.  Request will have been handled by request.bodyHandler.
-                        } else {
                                 // Make this callback in the director thread instead of
                                 // the verticle thread so that all outputs associated with
                                 // a request are emitted simultaneously.
                                 _issueResponse(() -> {
                                     // Set up a timeout handler.
                                     // FIXME: timeout 10000 needs to be an option given in JS constructor.
-                                    TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
-                                    _currentObj.callMember(
-                                            "_request", timeoutResponse.getTimeoutID(), method, path, null, headers.entries(), params.entries());
-                                    });
+                                    TimeoutResponse timeoutResponse = new TimeoutResponse(
+                                            request, 10000);
+                                    // FIXME: Only handling string bodies for now.
+                                    _currentObj.callMember("_request",
+                                            timeoutResponse.getTimeoutID(),
+                                            method, path, buffer.toString(),
+                                            headers.entries(),
+                                            params.entries());
+                                });
+                            }
                         }
+                    });
+
+                    String method = request.method().toString();
+                    String path = request.path();
+
+                    MultiMap headers = request.headers();
+                    MultiMap params = request.params();
+
+                    // Check for a body by checking for a Content-Length header or for chunked encoding.
+                    // Content-Length header is omitted for chunked encoding.
+                    // Handle all not-yet-handled requests (i.e. no body).
+                    if ((headers.contains("Content-Length") && !headers
+                            .get("Content-Length").equalsIgnoreCase("0"))
+                            || (headers.contains("transfer-encoding")
+                                    && headers.get("transfer-encoding")
+                                            .equalsIgnoreCase("chunked"))) {
+                        // Do nothing.  Request will have been handled by request.bodyHandler.
+                    } else {
+                        // Make this callback in the director thread instead of
+                        // the verticle thread so that all outputs associated with
+                        // a request are emitted simultaneously.
+                        _issueResponse(() -> {
+                            // Set up a timeout handler.
+                            // FIXME: timeout 10000 needs to be an option given in JS constructor.
+                            TimeoutResponse timeoutResponse = new TimeoutResponse(
+                                    request, 10000);
+                            _currentObj.callMember("_request",
+                                    timeoutResponse.getTimeoutID(), method,
+                                    path, null, headers.entries(),
+                                    params.entries());
+                        });
                     }
-                });
-                _server.listen(_port, _hostInterface,
-                        new Handler<AsyncResult<HttpServer>>() {
-                    @Override
-                    public void handle(AsyncResult<HttpServer> result) {
-                        // Do this in the vertx thread, not the director thread, so that the
-                        // listening event is assured of occurring before any requests are
-                        // emitted.
-                        _currentObj.callMember("emit", "listening");
-                    }
-                });
+                }
+            });
+            _server.listen(_port, _hostInterface,
+                    new Handler<AsyncResult<HttpServer>>() {
+                        @Override
+                        public void handle(AsyncResult<HttpServer> result) {
+                            // Do this in the vertx thread, not the director thread, so that the
+                            // listening event is assured of occurring before any requests are
+                            // emitted.
+                            _currentObj.callMember("emit", "listening");
+                        }
+                    });
         });
     }
 
@@ -274,8 +285,8 @@ public class HttpServerHelper extends VertxHelperBase {
      *   the argument is null, then "localhost" will be used.
      *  @param port The port on which to create the server.
      */
-    private HttpServerHelper(
-            Object actor, ScriptObjectMirror currentObj, String hostInterface, int port) {
+    private HttpServerHelper(Object actor, ScriptObjectMirror currentObj,
+            String hostInterface, int port) {
         super(actor, currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
@@ -291,8 +302,7 @@ public class HttpServerHelper extends VertxHelperBase {
     private String _hostInterface;
 
     /** Pending requests to timeout ID map. */
-    private HashMap<Object,HttpServerRequest> _pendingRequests
-            = new HashMap<Object,HttpServerRequest>();
+    private HashMap<Object, HttpServerRequest> _pendingRequests = new HashMap<Object, HttpServerRequest>();
 
     /** The port on which the server listens. */
     private int _port;
@@ -318,9 +328,12 @@ public class HttpServerHelper extends VertxHelperBase {
             }
             _pendingRequests.put(_timeoutID, request);
         }
+
         public Object getTimeoutID() {
             return _timeoutID;
         }
+
+        @Override
         public void run() {
             if (_pendingRequests.get(_timeoutID) != null) {
                 _pendingRequests.remove(_timeoutID);
@@ -333,10 +346,12 @@ public class HttpServerHelper extends VertxHelperBase {
                     + "<p>Server failed to generate a response within its internal "
                     + "timeout period.</p></html>";
             response.headers()
-                .add("Content-Length", String.valueOf(responseText.length()))
-                .add("Content-Type", "text/html");
+                    .add("Content-Length",
+                            String.valueOf(responseText.length()))
+                    .add("Content-Type", "text/html");
             response.end(responseText);
         }
+
         private Object _timeoutID;
         private HttpServerRequest _request;
     }

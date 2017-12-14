@@ -135,9 +135,8 @@ public class Waveform extends DiscreteClock {
         Parameter hide = new SingletonParameter(trigger, "_hide");
         hide.setExpression("true");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
                 + "<line x1=\"-20\" y1=\"-15\" x2=\"-10\" y2=\"15\"/>\n"
                 + "<line x1=\"-10\" y1=\"15\" x2=\"0\" y2=\"-15\"/>\n"
                 + "<line x1=\"0\" y1=\"-15\" x2=\"10\" y2=\"15\"/>\n"
@@ -212,9 +211,8 @@ public class Waveform extends DiscreteClock {
      *  @param tanEnd The tangent of the ending reference point.
      *  @return The Hermite curve interpolation.
      */
-    protected double _hermite(double index, double startTime,
-            double startValue, double tanStart, double endTime,
-            double endValue, double tanEnd) {
+    protected double _hermite(double index, double startTime, double startValue,
+            double tanStart, double endTime, double endValue, double tanEnd) {
         // forming the Hermite matrix M
         double[][] M = new double[4][4];
         double iStartSqr = startTime * startTime;
@@ -254,8 +252,8 @@ public class Waveform extends DiscreteClock {
 
         // compute the interpolated value
         double indexSqr = index * index;
-        return coef[0] * indexSqr * index + coef[1] * indexSqr + coef[2]
-                * index + coef[3];
+        return coef[0] * indexSqr * index + coef[1] * indexSqr + coef[2] * index
+                + coef[3];
     }
 
     /** Return the interpolation result for the current model time.

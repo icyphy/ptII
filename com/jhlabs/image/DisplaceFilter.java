@@ -104,9 +104,11 @@ public class DisplaceFilter extends TransformFilter {
                 int k1 = (x + dw - 1) % dw;
                 int k2 = x;
                 int k3 = (x + 1) % dw;
-                xmap[i] = mapPixels[k1 + j1] + mapPixels[k1 + j2] + mapPixels[k1 + j3] - mapPixels[k3 + j1]
+                xmap[i] = mapPixels[k1 + j1] + mapPixels[k1 + j2]
+                        + mapPixels[k1 + j3] - mapPixels[k3 + j1]
                         - mapPixels[k3 + j2] - mapPixels[k3 + j3];
-                ymap[i] = mapPixels[k1 + j3] + mapPixels[k2 + j3] + mapPixels[k3 + j3] - mapPixels[k1 + j1]
+                ymap[i] = mapPixels[k1 + j3] + mapPixels[k2 + j3]
+                        + mapPixels[k3 + j3] - mapPixels[k1 + j1]
                         - mapPixels[k2 + j1] - mapPixels[k3 + j1];
                 i++;
             }

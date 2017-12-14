@@ -205,8 +205,8 @@ public class Expression extends TypedAtomicActor {
                     Token inputToken = port.get(0);
                     _tokenMap.put(port.getName(), inputToken);
                 } else {
-                    throw new IllegalActionException(this, "Input port "
-                            + port.getName() + " has no data.");
+                    throw new IllegalActionException(this,
+                            "Input port " + port.getName() + " has no data.");
                 }
             }
         }
@@ -219,8 +219,8 @@ public class Expression extends TypedAtomicActor {
                 // cases the expression doesn't change, and the parser
                 // requires a large amount of memory.
                 PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(expression
-                        .getExpression());
+                _parseTree = parser
+                        .generateParseTree(expression.getExpression());
             }
 
             if (_parseTreeEvaluator == null) {
@@ -256,16 +256,14 @@ public class Expression extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (getPort("time") != null) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "This actor has a port named \"time\", "
                             + "which will not be read, instead the "
                             + "reserved system variable \"time\" will be read. "
                             + "Delete the \"time\" port to avoid this message.");
         }
         if (getPort("iteration") != null) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "This actor has a port named \"iteration\", "
                             + "which will not be read, instead the "
                             + "reserved system variable \"iteration\" will be read. "
@@ -346,8 +344,8 @@ public class Expression extends TypedAtomicActor {
         @Override
         public Token get(String name) throws IllegalActionException {
             if (name.equals("time")) {
-                return new DoubleToken(getDirector().getModelTime()
-                        .getDoubleValue());
+                return new DoubleToken(
+                        getDirector().getModelTime().getDoubleValue());
             } else if (name.equals("iteration")) {
                 return new IntToken(_iterationCount);
             }
@@ -475,8 +473,8 @@ public class Expression extends TypedAtomicActor {
                     // cases the expression doesn't change, and the parser
                     // requires a large amount of memory.
                     PtParser parser = new PtParser();
-                    _parseTree = parser.generateParseTree(expression
-                            .getExpression());
+                    _parseTree = parser
+                            .generateParseTree(expression.getExpression());
                 }
 
                 if (_scope == null) {
@@ -506,8 +504,8 @@ public class Expression extends TypedAtomicActor {
             try {
                 if (_parseTree == null) {
                     PtParser parser = new PtParser();
-                    _parseTree = parser.generateParseTree(expression
-                            .getExpression());
+                    _parseTree = parser
+                            .generateParseTree(expression.getExpression());
                 }
 
                 if (_scope == null) {

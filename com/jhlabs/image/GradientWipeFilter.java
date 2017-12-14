@@ -103,10 +103,12 @@ public class GradientWipeFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
-        if (mask == null)
+        }
+        if (mask == null) {
             return dst;
+        }
 
         int maskWidth = mask.getWidth();
         int maskHeight = mask.getHeight();
@@ -129,8 +131,9 @@ public class GradientWipeFilter extends AbstractBufferedImageOp {
                 float f = ImageMath.smoothStep(lower, upper, v);
                 int a = (int) (255 * f);
 
-                if (invert)
+                if (invert) {
                     a = 255 - a;
+                }
                 inPixels[x] = (a << 24) | (inRGB & 0x00ffffff);
             }
 

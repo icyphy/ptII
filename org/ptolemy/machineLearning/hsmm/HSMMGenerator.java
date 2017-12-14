@@ -73,50 +73,51 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
         durationPriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         durationPriors.setExpression("{1.0,0.0}");
         new StringAttribute(durationPriors.getPort(), "_cardinal")
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
         new SingletonParameter(durationPriors.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         statePriors = new PortParameter(this, "statePriors");
         statePriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         statePriors.setExpression("{0.5,0.5}");
         new StringAttribute(statePriors.getPort(), "_cardinal")
-            .setExpression("SOUTH");
+                .setExpression("SOUTH");
         new SingletonParameter(statePriors.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
-        durationProbabilities = new PortParameter(this, "durationProbabilities");
+        durationProbabilities = new PortParameter(this,
+                "durationProbabilities");
         durationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
         durationProbabilities.setExpression("[0,1.0;1.0,0]");
         new StringAttribute(durationProbabilities.getPort(), "_cardinal")
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
         new SingletonParameter(durationProbabilities.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         transitionMatrix = new PortParameter(this, "transitionMatrix");
         transitionMatrix.setTypeEquals(BaseType.DOUBLE_MATRIX);
         transitionMatrix.setExpression("[0.0,1.0;1.0,0.0]");
         new StringAttribute(transitionMatrix.getPort(), "_cardinal")
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
         new SingletonParameter(transitionMatrix.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
         new SingletonParameter(trigger, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         observation = new TypedIOPort(this, "observation", false, true);
         observation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         new SingletonParameter(observation, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         hiddenState = new TypedIOPort(this, "hiddenState", false, true);
         hiddenState.setTypeEquals(new ArrayType(BaseType.INT));
         new SingletonParameter(hiddenState, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
-        windowSize = new Parameter(this,"windowSize");
+        windowSize = new Parameter(this, "windowSize");
         windowSize.setTypeEquals((BaseType.INT));
         windowSize.setExpression("100");
 
@@ -124,7 +125,7 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
         powerUpperBound.setTypeEquals(BaseType.DOUBLE);
         powerUpperBound.setExpression("100.0");
         new SingletonParameter(powerUpperBound.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
     }
 
@@ -158,11 +159,9 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
     /** Power limit on generation window. */
     public PortParameter powerUpperBound;
 
-
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMGenerator newObject = (HSMMGenerator) super
-                .clone(workspace);
+        HSMMGenerator newObject = (HSMMGenerator) super.clone(workspace);
         newObject._durationPriors = null;
         newObject.D_new = null;
         newObject._D0 = null;
@@ -172,6 +171,7 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
 
         return newObject;
     }
+
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

@@ -169,8 +169,8 @@ public class DocBuilder extends Attribute {
                             + javaHome + toolsJarFileBase
                             + "\" doc/doclets/PtDoclet.java";
                 } else {
-                    if (StringUtilities.getProperty("os.name").equals(
-                            "Mac OS X")) {
+                    if (StringUtilities.getProperty("os.name")
+                            .equals("Mac OS X")) {
                         results = "javac -classpath \"" + ptII
                                 + "\" doc/doclets/PtDoclet.java";
                     } else {
@@ -196,8 +196,8 @@ public class DocBuilder extends Attribute {
      */
     private int _executeCommands() throws IllegalActionException {
 
-        File ptII = new File(StringUtilities.getProperty("ptolemy.ptII.dir")
-                + "/doc");
+        File ptII = new File(
+                StringUtilities.getProperty("ptolemy.ptII.dir") + "/doc");
         _executeCommands.setWorkingDirectory(ptII);
 
         List commands = null;
@@ -205,7 +205,8 @@ public class DocBuilder extends Attribute {
         Parameter docApplicationSpecializerParameter = null;
         if (_configuration != null) {
             docApplicationSpecializerParameter = (Parameter) _configuration
-                    .getAttribute("_docApplicationSpecializer", Parameter.class);
+                    .getAttribute("_docApplicationSpecializer",
+                            Parameter.class);
         }
         if (docApplicationSpecializerParameter != null) {
             String docApplicationSpecializerClassName = docApplicationSpecializerParameter
@@ -231,7 +232,8 @@ public class DocBuilder extends Attribute {
 
             try {
                 StringAttribute applicationNameAttribute = (StringAttribute) _configuration
-                        .getAttribute("_applicationName", StringAttribute.class);
+                        .getAttribute("_applicationName",
+                                StringAttribute.class);
 
                 if (applicationNameAttribute != null) {
                     applicationName = applicationNameAttribute.getExpression();
@@ -247,8 +249,8 @@ public class DocBuilder extends Attribute {
                 _executeCommands.updateStatusBar("Deleting the contents of \""
                         + codeDocDirectory + "\".");
                 if (!FileUtilities.deleteDirectory(codeDocDirectory)) {
-                    _executeCommands
-                            .stderr("Warning: Could not delete some of the files in \""
+                    _executeCommands.stderr(
+                            "Warning: Could not delete some of the files in \""
                                     + codeDocDirectory + "\".");
                 }
             }
@@ -256,7 +258,7 @@ public class DocBuilder extends Attribute {
             if (applicationName == null) {
                 File ptIImk = new File(
                         StringUtilities.getProperty("ptolemy.ptII.dir")
-                        + "/mk/ptII.mk");
+                                + "/mk/ptII.mk");
                 // If the user has run configure, then we run make,
                 // otherwise we run the javadoc command.
                 if (ptIImk.exists()) {
@@ -268,8 +270,8 @@ public class DocBuilder extends Attribute {
                     ptII = new File(
                             StringUtilities.getProperty("ptolemy.ptII.dir"));
                     _executeCommands.setWorkingDirectory(ptII);
-                    _executeCommands
-                    .updateStatusBar("When creating docs, warnings are ok.");
+                    _executeCommands.updateStatusBar(
+                            "When creating docs, warnings are ok.");
 
                     commands.add(_compilePtDoclet(ptII));
 
@@ -295,8 +297,7 @@ public class DocBuilder extends Attribute {
                     //                    commands.add("which javadoc");
                     commands.add("javadoc -classpath \""
                             + StringUtilities.getProperty("java.class.path")
-                            + "\" -J-Xmx512m -d doc/codeDoc "
-                            + styleSheetFile
+                            + "\" -J-Xmx512m -d doc/codeDoc " + styleSheetFile
                             + "-doclet doc.doclets.PtDoclet "
                             + "-subpackages com:diva:jni:org:ptolemy:thales "
                             + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
@@ -305,8 +306,7 @@ public class DocBuilder extends Attribute {
                             // Avoid hanging yes/no questions and just automatically
                             // cancel because when this command is run the user
                             // has no way to hit enter.
-                            + "-Dptolemy.ptII.batchMode=true "
-                            + "-classpath \""
+                            + "-Dptolemy.ptII.batchMode=true " + "-classpath \""
                             + StringUtilities.getProperty("java.class.path")
                             + "\" ptolemy.moml.filter.ActorIndex doc/codeDoc/allNamedObjs.txt "
                             + "\"" + ptII
@@ -339,8 +339,8 @@ public class DocBuilder extends Attribute {
             while (allCommands.hasNext()) {
                 errorMessage.append((String) allCommands.next() + "\n");
             }
-            throw new IllegalActionException("Problem executing the "
-                    + "commands:\n" + errorMessage);
+            throw new IllegalActionException(
+                    "Problem executing the " + "commands:\n" + errorMessage);
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }

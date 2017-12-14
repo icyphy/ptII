@@ -129,9 +129,12 @@ public class PlasmaFilter extends WholeImageFilter {
         int r = (rgb >> 16) & 0xff;
         int g = (rgb >> 8) & 0xff;
         int b = rgb & 0xff;
-        r = PixelUtils.clamp(r + (int) (amount * (randomGenerator.nextFloat() - 0.5)));
-        g = PixelUtils.clamp(g + (int) (amount * (randomGenerator.nextFloat() - 0.5)));
-        b = PixelUtils.clamp(b + (int) (amount * (randomGenerator.nextFloat() - 0.5)));
+        r = PixelUtils.clamp(
+                r + (int) (amount * (randomGenerator.nextFloat() - 0.5)));
+        g = PixelUtils.clamp(
+                g + (int) (amount * (randomGenerator.nextFloat() - 0.5)));
+        b = PixelUtils.clamp(
+                b + (int) (amount * (randomGenerator.nextFloat() - 0.5)));
         return 0xff000000 | (r << 16) | (g << 8) | b;
     }
 
@@ -147,7 +150,8 @@ public class PlasmaFilter extends WholeImageFilter {
         pixels[y * stride + x] = rgb;
     }
 
-    private boolean doPixel(int x1, int y1, int x2, int y2, int[] pixels, int stride, int depth, int scale) {
+    private boolean doPixel(int x1, int y1, int x2, int y2, int[] pixels,
+            int stride, int depth, int scale) {
         int mx, my;
 
         if (depth == 0) {
@@ -163,8 +167,9 @@ public class PlasmaFilter extends WholeImageFilter {
             mx = (x1 + x2) / 2;
             my = (y1 + y2) / 2;
 
-            if (mx == x1 && mx == x2 && my == y1 && my == y2)
+            if (mx == x1 && mx == x2 && my == y1 && my == y2) {
                 return true;
+            }
 
             if (mx != x1 || mx != x2) {
                 ml = average(tl, bl);
@@ -200,8 +205,9 @@ public class PlasmaFilter extends WholeImageFilter {
                 putPixel(mx, my, mm, pixels, stride);
             }
 
-            if (x2 - x1 < 3 && y2 - y1 < 3)
+            if (x2 - x1 < 3 && y2 - y1 < 3) {
                 return false;
+            }
             return true;
         }
 
@@ -215,7 +221,8 @@ public class PlasmaFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int[] outPixels = new int[width * height];
 
         randomGenerator.setSeed(seed);
@@ -226,21 +233,25 @@ public class PlasmaFilter extends WholeImageFilter {
         putPixel(w1, 0, randomRGB(inPixels, w1, 0), outPixels, width);
         putPixel(0, h1, randomRGB(inPixels, 0, h1), outPixels, width);
         putPixel(w1, h1, randomRGB(inPixels, w1, h1), outPixels, width);
-        putPixel(w1 / 2, h1 / 2, randomRGB(inPixels, w1 / 2, h1 / 2), outPixels, width);
+        putPixel(w1 / 2, h1 / 2, randomRGB(inPixels, w1 / 2, h1 / 2), outPixels,
+                width);
         putPixel(0, h1 / 2, randomRGB(inPixels, 0, h1 / 2), outPixels, width);
         putPixel(w1, h1 / 2, randomRGB(inPixels, w1, h1 / 2), outPixels, width);
         putPixel(w1 / 2, 0, randomRGB(inPixels, w1 / 2, 0), outPixels, width);
         putPixel(w1 / 2, h1, randomRGB(inPixels, w1 / 2, h1), outPixels, width);
 
         int depth = 1;
-        while (doPixel(0, 0, width - 1, height - 1, outPixels, width, depth, 0))
+        while (doPixel(0, 0, width - 1, height - 1, outPixels, width, depth,
+                0)) {
             depth++;
+        }
 
         if (useColormap && colormap != null) {
             int index = 0;
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
-                    outPixels[index] = colormap.getColor((outPixels[index] & 0xff) / 255.0f);
+                    outPixels[index] = colormap
+                            .getColor((outPixels[index] & 0xff) / 255.0f);
                     index++;
                 }
             }

@@ -193,7 +193,8 @@ public class LongMatrixMath {
     /** Return a new matrix that is the formed by bitwise ANDing z
      *  with each element of the input matrix (matrix[i][j] &amp; z).
      */
-    public static final long[][] bitwiseAnd(final long[][] matrix, final long z) {
+    public static final long[][] bitwiseAnd(final long[][] matrix,
+            final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -252,7 +253,8 @@ public class LongMatrixMath {
     /** Return a new matrix that is the formed by bitwise ORing z with
      *  each element of the input matrix (matrix[i][j] | z).
      */
-    public static final long[][] bitwiseOr(final long[][] matrix, final long z) {
+    public static final long[][] bitwiseOr(final long[][] matrix,
+            final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -293,7 +295,8 @@ public class LongMatrixMath {
     /** Return a new matrix that is the formed by bitwise XORing z
      *  with each element of the input matrix (matrix[i][j] ^ z).
      */
-    public static final long[][] bitwiseXor(final long[][] matrix, final long z) {
+    public static final long[][] bitwiseXor(final long[][] matrix,
+            final long z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -340,9 +343,8 @@ public class LongMatrixMath {
      *  @param rowSpan An int specifying how many rows to copy.
      *  @param colSpan An int specifying how many columns to copy.
      */
-    public static final long[][] crop(final long[][] matrix,
-            final int rowStart, final int colStart, final int rowSpan,
-            final int colSpan) {
+    public static final long[][] crop(final long[][] matrix, final int rowStart,
+            final int colStart, final int rowSpan, final int colSpan) {
         long[][] returnValue = new long[rowSpan][colSpan];
 
         for (int i = 0; i < rowSpan; i++) {

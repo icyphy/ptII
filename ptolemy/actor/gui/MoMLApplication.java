@@ -96,7 +96,7 @@ public class MoMLApplication extends ConfigurationApplication {
      */
     public MoMLApplication(String basePath, String[] args,
             MessageHandler messageHandler, ErrorHandler errorHandler)
-                    throws Exception {
+            throws Exception {
         super(basePath, args, messageHandler, errorHandler);
     }
 
@@ -126,8 +126,8 @@ public class MoMLApplication extends ConfigurationApplication {
                         + " because it causes problems under applets under "
                         + "Java 1.6.0_02 through 1.6.0_13.");
             } else {
-                UIManager.setLookAndFeel(UIManager
-                        .getSystemLookAndFeelClassName());
+                UIManager.setLookAndFeel(
+                        UIManager.getSystemLookAndFeelClassName());
             }
         } catch (Throwable throwable) {
             // Ignore exceptions, which only result in the wrong look and feel.

@@ -74,14 +74,14 @@ public class FloatToken extends ScalarToken {
      */
     public FloatToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(notSupportedNullNilStringMessage(
-                    "FloatToken", init));
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("FloatToken", init));
         }
         try {
             _value = Float.parseFloat(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(null, e, "Failed to parse \""
-                    + init + "\" as a number.");
+            throw new IllegalActionException(null, e,
+                    "Failed to parse \"" + init + "\" as a number.");
         }
     }
 
@@ -105,7 +105,8 @@ public class FloatToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static FloatToken convert(Token token) throws IllegalActionException {
+    public static FloatToken convert(Token token)
+            throws IllegalActionException {
         if (token instanceof FloatToken) {
             return (FloatToken) token;
         }
@@ -124,16 +125,15 @@ public class FloatToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             ShortToken shortToken = ShortToken.convert(token);
             FloatToken result = new FloatToken(shortToken.floatValue());
-            if (shortToken._unitCategoryExponents != null
-                    && !UnitUtilities
+            if (shortToken._unitCategoryExponents != null && !UnitUtilities
                     .isUnitless(shortToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = shortToken
                         ._copyOfCategoryExponents();
             }
             return result;
         } else {
-            throw new IllegalActionException(notSupportedConversionMessage(
-                    token, "float"));
+            throw new IllegalActionException(
+                    notSupportedConversionMessage(token, "float"));
         }
     }
 
@@ -330,8 +330,8 @@ public class FloatToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseAnd", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -340,8 +340,8 @@ public class FloatToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                this, this));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseNot", this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -353,8 +353,8 @@ public class FloatToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseOr", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -366,8 +366,8 @@ public class FloatToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseXor", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -392,7 +392,8 @@ public class FloatToken extends ScalarToken {
      *   to that of the argument.
      */
     @Override
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: Used to compare against epsilon the following expression:
         // Math.abs(floatValue() - ((FloatToken)rightArgument).floatValue()))
         // However, because of quantization errors, this did not work well.

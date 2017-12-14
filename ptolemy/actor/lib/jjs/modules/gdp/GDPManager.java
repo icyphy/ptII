@@ -117,7 +117,8 @@ public class GDPManager extends AbstractInitializableAttribute {
 
         gdpSourceDirectory = new FileParameter(this, "gdpSourceDirectory");
         new Parameter(gdpSourceDirectory, "allowFiles", BooleanToken.FALSE);
-        new Parameter(gdpSourceDirectory, "allowDirectories", BooleanToken.TRUE);
+        new Parameter(gdpSourceDirectory, "allowDirectories",
+                BooleanToken.TRUE);
         gdpSourceDirectory.setExpression("$PTII/vendors/gdp");
 
         isLocalGDP = new Parameter(this, "isLocalGDP");
@@ -192,10 +193,9 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  @exception IllegalActionException If there are problems accessing the parameter.
      *  @exception IOException If there are problems accessing or build the repositories.
      */
-    public static void downloadAndBuild(FileParameter gdpSourceDirectoryParameter,
-            boolean cleanGDP,
-            boolean buildGDP)
-            throws IllegalActionException, IOException {
+    public static void downloadAndBuild(
+            FileParameter gdpSourceDirectoryParameter, boolean cleanGDP,
+            boolean buildGDP) throws IllegalActionException, IOException {
         // This method is static to make it easier to test.
         File gdpSourceDirectory = gdpSourceDirectoryParameter.asFile();
 
@@ -204,7 +204,8 @@ public class GDPManager extends AbstractInitializableAttribute {
             if (gdpSourceDirectory.exists()) {
                 //System.out.println("cleanGDP was true, deleting " + gdpSourceDirectory);
                 //FileUtilities.deleteDirectory(gdpSourceDirectory.toString());
-                System.out.println("cleanGDP was true but we are not deleting " + gdpSourceDirectory);
+                System.out.println("cleanGDP was true but we are not deleting "
+                        + gdpSourceDirectory);
             }
         }
 
@@ -232,8 +233,8 @@ public class GDPManager extends AbstractInitializableAttribute {
                 _lastGDPRepoUpdateTime);
 
         // Clone or pull the gdp_router git repository.
-        _lastGDPRouterRepoUpdateTime = GDPManager._cloneOrPull(gdpSourceDirectory,
-                "gdp_router",
+        _lastGDPRouterRepoUpdateTime = GDPManager._cloneOrPull(
+                gdpSourceDirectory, "gdp_router",
                 // Default to ssh.
                 "repoman@repo.eecs.berkeley.edu:projects/swarmlab/gdp_router.git",
                 //"https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp_router.git",
@@ -244,11 +245,13 @@ public class GDPManager extends AbstractInitializableAttribute {
 
         // Build the gdp.
         if (buildGDP) {
-            System.out.println("Building the gdp typically requires installing some packages. "
-                    + "see " + _gdp + "/README.md");
+            System.out.println(
+                    "Building the gdp typically requires installing some packages. "
+                            + "see " + _gdp + "/README.md");
 
             MessageHandler.status("Building the gdp.");
-            final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+            final StringBufferExec exec = new StringBufferExec(
+                    true /*appendToStderrAndStdout*/);
             exec.setWorkingDirectory(_gdp);
             List execCommands = new LinkedList<String>();
             // Do not require libavahi, which is used for zero-conf support.  libavah is not easy to compile under Darwin with homebrew
@@ -262,11 +265,11 @@ public class GDPManager extends AbstractInitializableAttribute {
             if (returnCode == 0) {
                 MessageHandler.status("Built the gdp.");
             } else {
-                throw new IOException("Failed to build the gdp."
-                        + "cd " + _gdp + "; " + makeCommand + "\n"
-                        + exec.buffer
-                        + "See " + _gdp + "/README.md and run " + _gdp + "/adm/gdp-setup.sh"
-                        + "Also, see " + _gdpRouter + "/README.md.");
+                throw new IOException("Failed to build the gdp." + "cd " + _gdp
+                        + "; " + makeCommand + "\n" + exec.buffer + "See "
+                        + _gdp + "/README.md and run " + _gdp
+                        + "/adm/gdp-setup.sh" + "Also, see " + _gdpRouter
+                        + "/README.md.");
             }
 
             // Copy the gdp jar file to $PTII/lib
@@ -274,7 +277,8 @@ public class GDPManager extends AbstractInitializableAttribute {
 
             File[] files = new File(_gdp, "lang/java").listFiles();
             if (files == null) {
-                throw new IOException("No files found in " + _gdp + "/lang/java?");
+                throw new IOException(
+                        "No files found in " + _gdp + "/lang/java?");
             }
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isFile()) {
@@ -285,25 +289,31 @@ public class GDPManager extends AbstractInitializableAttribute {
                     jarFileName = "";
                 }
             }
-            File jarFile = new File(_gdp + File.separator + "lang/java" + File.separator + jarFileName);
+            File jarFile = new File(_gdp + File.separator + "lang/java"
+                    + File.separator + jarFileName);
             System.out.println("Checking for jar file " + jarFile);
 
             // FIXME: Copying a new jar file is not likely to cause the new class definitions to
             // be loaded in to the current JVM.
             if (jarFile.exists() && jarFile.isFile()) {
-                String destinationFileName = StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib" + File.separator + jarFileName;
+                String destinationFileName = StringUtilities
+                        .getProperty("ptolemy.ptII.dir") + File.separator
+                        + "lib" + File.separator + jarFileName;
                 File destination = new File(destinationFileName);
                 if (!destination.exists()) {
-                    throw new IOException("Building the GDP Java interface created "
-                            + destination + ", which does not exist and therefore is "
-                            + "not in the path.  Thus you may be running an old version "
-                            + "of the GDP Java interface.  To fix this, edit $PTII/configure.in, "
-                            + "then run (cd $PTII; autoconf;./configure; ant) "
-                            + "and then restart Ptolemy.");
+                    throw new IOException(
+                            "Building the GDP Java interface created "
+                                    + destination
+                                    + ", which does not exist and therefore is "
+                                    + "not in the path.  Thus you may be running an old version "
+                                    + "of the GDP Java interface.  To fix this, edit $PTII/configure.in, "
+                                    + "then run (cd $PTII; autoconf;./configure; ant) "
+                                    + "and then restart Ptolemy.");
                 }
                 if (!destination.delete()) {
                     throw new IOException("Could not delete " + destination
-                            + "before renaming " + jarFile + " to that location.");
+                            + "before renaming " + jarFile
+                            + " to that location.");
                 }
                 String message = "Renaming " + jarFile + " to " + destination;
                 MessageHandler.status(message);
@@ -333,14 +343,17 @@ public class GDPManager extends AbstractInitializableAttribute {
                 if (files[i].isFile()) {
                     sharedLibraryFileName = files[i].getName();
                     // Match lib*.dylib* and lib*.so*, but not lib*.a
-                    if (sharedLibraryFileName.matches("lib.*") && !sharedLibraryFileName.matches("lib.*a")) {
+                    if (sharedLibraryFileName.matches("lib.*")
+                            && !sharedLibraryFileName.matches("lib.*a")) {
                         break;
                     }
                     sharedLibraryFileName = "";
                 }
             }
-            File sharedLibraryFile = new File(_gdp + File.separator + "gdp" + File.separator + sharedLibraryFileName);
-            System.out.println("Checking for shared library file " + sharedLibraryFile);
+            File sharedLibraryFile = new File(_gdp + File.separator + "gdp"
+                    + File.separator + sharedLibraryFileName);
+            System.out.println(
+                    "Checking for shared library file " + sharedLibraryFile);
 
             // FIXME: If the shared library has already been loaded by JNA, then updating
             // the shared library is not likely to change much.
@@ -348,7 +361,8 @@ public class GDPManager extends AbstractInitializableAttribute {
                 // Under Linux, JNA wants the name to be libgdp.N.M.so, but the name is libgdp.so.N.M
 
                 String osName = StringUtilities.getProperty("os.name");
-                String version = sharedLibraryFileName.substring("libgdp.so.".length());
+                String version = sharedLibraryFileName
+                        .substring("libgdp.so.".length());
                 String newSharedLibraryFileName = sharedLibraryFileName;
                 if (osName.equals("Linux")) {
                     newSharedLibraryFileName = "libgdp." + version + ".so";
@@ -357,12 +371,16 @@ public class GDPManager extends AbstractInitializableAttribute {
                     newSharedLibraryFileName = "libgdp." + version + ".dylib";
                 }
 
-                File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  newSharedLibraryFileName);
-                String message = "Renaming " + sharedLibraryFile + " to " + destination;
+                File destination = new File(
+                        StringUtilities.getProperty("ptolemy.ptII.dir")
+                                + File.separator + "lib",
+                        newSharedLibraryFileName);
+                String message = "Renaming " + sharedLibraryFile + " to "
+                        + destination;
                 MessageHandler.status(message);
                 if (!sharedLibraryFile.renameTo(destination)) {
-                    throw new IOException("Could not rename " + sharedLibraryFile
-                            + " to " + destination);
+                    throw new IOException("Could not rename "
+                            + sharedLibraryFile + " to " + destination);
                 }
             }
         }
@@ -376,13 +394,14 @@ public class GDPManager extends AbstractInitializableAttribute {
 
         String userHome = StringUtilities.getProperty("user.home");
         if (userHome.length() == 0) {
-            System.err.println("Could not get the value of the user.home Java property.  "
-                    + "This can happen under applets.  This means that the gdp will expect "
-                    + "to be able to write to /var/swarm/gdp/gcls/.");
+            System.err.println(
+                    "Could not get the value of the user.home Java property.  "
+                            + "This can happen under applets.  This means that the gdp will expect "
+                            + "to be able to write to /var/swarm/gdp/gcls/.");
 
             _gclsDirectory = new File("/var/swarm/gdp/gcls");
 
-            if (! _gclsDirectory.isDirectory()) {
+            if (!_gclsDirectory.isDirectory()) {
                 if (!_gclsDirectory.mkdirs()) {
                     System.err.println("/var/swarm/gdp/gcls does not exist.  "
                             + "To create this directory, do: "
@@ -390,7 +409,8 @@ public class GDPManager extends AbstractInitializableAttribute {
                 }
             }
         } else {
-            GDPManager.setGdpConfigurationFile(userHome, "swarm.gdp.routers=localhost");
+            GDPManager.setGdpConfigurationFile(userHome,
+                    "swarm.gdp.routers=localhost");
 
             // Create the directory where the logs are stored.
             _gclsDirectory = new File(gdpSourceDirectory, "gcls");
@@ -401,11 +421,13 @@ public class GDPManager extends AbstractInitializableAttribute {
             }
 
             // Create ~/.ep_adm_params/gdplogd
-            File gdplogdConfigurationFile = new File(_epAdmParamsDirectory, "gdplogd");
+            File gdplogdConfigurationFile = new File(_epAdmParamsDirectory,
+                    "gdplogd");
             BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter(new OutputStreamWriter(
-                                new FileOutputStream(gdplogdConfigurationFile), "utf-8"));
+                        new FileOutputStream(gdplogdConfigurationFile),
+                        "utf-8"));
                 writer.write("swarm.gdplogd.gcl.dir=" + _gclsDirectory);
                 writer.newLine();
             } finally {
@@ -429,29 +451,33 @@ public class GDPManager extends AbstractInitializableAttribute {
         // We could use StringUtilities.addDirectoryToJavaLibraryPath(),
         // but adding to jna.library.path is more likely to work.
         String jnaLibraryPath = StringUtilities.getProperty("jna.library.path");
-        String ptIILib = StringUtilities.getProperty("ptolemy.ptII.dir") + "/lib";
+        String ptIILib = StringUtilities.getProperty("ptolemy.ptII.dir")
+                + "/lib";
         if (jnaLibraryPath.indexOf(ptIILib) == -1) {
             String newPath = ptIILib;
             if (jnaLibraryPath.indexOf(File.pathSeparator) != -1) {
                 newPath = jnaLibraryPath + File.pathSeparator + ptIILib;
             }
             System.setProperty("jna.library.path", newPath);
-            System.out.println("jna.library.path Java property is " + StringUtilities.getProperty("jna.library.path"));
+            System.out.println("jna.library.path Java property is "
+                    + StringUtilities.getProperty("jna.library.path"));
         }
 
         if (!_gdpRouterRunning || !_gdpLogdRunning
-                || ((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()
-                || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
+                || ((BooleanToken) deleteAllGCLsInWrapup.getToken())
+                        .booleanValue()
+                || ((BooleanToken) stopGDPDaemonsInWrapup.getToken())
+                        .booleanValue()) {
             // Start the gdp_router.
-            _gdpRouterExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+            _gdpRouterExec = new StringBufferExec(
+                    true /*appendToStderrAndStdout*/);
             _gdpRouterExec.setWorkingDirectory(_gdpRouter);
             LinkedList<String> gdpRouterCommands = new LinkedList<String>();
 
             // Kill any router processes.
             String userName = StringUtilities.getProperty("user.name");
-            String pkillUserFlag = userName.length() > 0
-                ? "-U " + userName
-                : "";
+            String pkillUserFlag = userName.length() > 0 ? "-U " + userName
+                    : "";
 
             // FIXME: We should use pkill -f 'python ./src/gdp_router.py', but
             // passing arguments with spaces does not work here.
@@ -462,14 +488,16 @@ public class GDPManager extends AbstractInitializableAttribute {
 
             // Start the router process.
             gdpRouterCommands = new LinkedList<String>();
-            String gdpRouterCommand = "src/gdp_router.py -l" + _gdpRouter + File.separator + "routerLog.txt";
+            String gdpRouterCommand = "src/gdp_router.py -l" + _gdpRouter
+                    + File.separator + "routerLog.txt";
             gdpRouterCommands.add("./" + gdpRouterCommand);
-            System.out.println("The command to run the gdp router:\n  "
-                    + " " + _gdpRouter + "/" + gdpRouterCommand);
+            System.out.println("The command to run the gdp router:\n  " + " "
+                    + _gdpRouter + "/" + gdpRouterCommand);
 
             _gdpRouterExec.setCommands(gdpRouterCommands);
-            System.out.println("GDPManager: Using a local copy of the GDP.  To use this copy, do:\n"
-                    + "and then run commands in " + _gdp + "/");
+            System.out.println(
+                    "GDPManager: Using a local copy of the GDP.  To use this copy, do:\n"
+                            + "and then run commands in " + _gdp + "/");
             _gdpRouterExec.setWaitForLastSubprocess(false);
             _gdpRouterExec.start();
             _gdpRouterRunning = true;
@@ -484,12 +512,14 @@ public class GDPManager extends AbstractInitializableAttribute {
             // wrapup() might have removed the gcls log directory.
             if (!_gclsDirectory.exists()) {
                 if (!_gclsDirectory.mkdirs()) {
-                    throw new IllegalActionException(this, "Failed to create " + _gclsDirectory);
+                    throw new IllegalActionException(this,
+                            "Failed to create " + _gclsDirectory);
                 }
             }
 
             // Kill any previously running gdplogd processes
-            _gdpLogdExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+            _gdpLogdExec = new StringBufferExec(
+                    true /*appendToStderrAndStdout*/);
             _gdpLogdExec.setWorkingDirectory(_gdp);
             LinkedList<String> gdpCommands = new LinkedList<String>();
             gdpCommands.add("pkill " + pkillUserFlag + " gdplogd");
@@ -502,14 +532,16 @@ public class GDPManager extends AbstractInitializableAttribute {
             try {
                 _hostName = InetAddress.getLocalHost().getHostName();
             } catch (Throwable throwable) {
-                throw new IllegalActionException(this, throwable, "Could not get the hostname?");
+                throw new IllegalActionException(this, throwable,
+                        "Could not get the hostname?");
             }
             //String debug = "-Dgdp.gdp_chan=39";
             String debug = "-Dgdplogd.physlog=39";
 
-            String gdplogdCommand = "gdplogd/gdplogd -F " + debug + " -N " + _hostName;
-            System.out.println("The command to run gdplogd:\n  "
-                    + " " + _gdp + "/" + gdplogdCommand);
+            String gdplogdCommand = "gdplogd/gdplogd -F " + debug + " -N "
+                    + _hostName;
+            System.out.println("The command to run gdplogd:\n  " + " " + _gdp
+                    + "/" + gdplogdCommand);
             gdpCommands.add("./" + gdplogdCommand);
             _gdpLogdExec.setCommands(gdpCommands);
             _gdpLogdExec.setWaitForLastSubprocess(false);
@@ -534,7 +566,8 @@ public class GDPManager extends AbstractInitializableAttribute {
                         ((BooleanToken) cleanGDP.getToken()).booleanValue(),
                         ((BooleanToken) buildGDP.getToken()).booleanValue());
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to build the gdp.");
+                throw new IllegalActionException(this, ex,
+                        "Failed to build the gdp.");
             }
         }
     }
@@ -546,16 +579,18 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  @exception IOException If the file cannot be created.
      */
     public static void setGdpConfigurationFile(String userHome, String settings)
-        throws IOException {
+            throws IOException {
         // Create ~/.ep_adm_params/
         _epAdmParamsDirectory = new File(userHome, ".ep_adm_params");
         if (!_epAdmParamsDirectory.exists()) {
             if (!_epAdmParamsDirectory.mkdirs()) {
-                throw new IOException("Failed to create " + _epAdmParamsDirectory);
+                throw new IOException(
+                        "Failed to create " + _epAdmParamsDirectory);
             }
         }
 
-        System.out.println("GDPManager: Using configuration files in " + _epAdmParamsDirectory);
+        System.out.println("GDPManager: Using configuration files in "
+                + _epAdmParamsDirectory);
         System.out.println("GDPManager: gdp settings:\n" + settings);
 
         // Create ~/.ep_adm_params/gdp
@@ -563,7 +598,7 @@ public class GDPManager extends AbstractInitializableAttribute {
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new OutputStreamWriter(
-                                new FileOutputStream(gdpConfigurationFile), "utf-8"));
+                    new FileOutputStream(gdpConfigurationFile), "utf-8"));
             writer.write(settings);
             writer.newLine();
         } finally {
@@ -582,7 +617,8 @@ public class GDPManager extends AbstractInitializableAttribute {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()
-                || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
+                || ((BooleanToken) stopGDPDaemonsInWrapup.getToken())
+                        .booleanValue()) {
             MessageHandler.status("Stopping the GDP daemons.");
             try {
                 _gdpRouterExec.cancel();
@@ -596,8 +632,9 @@ public class GDPManager extends AbstractInitializableAttribute {
             }
         }
         if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()) {
-            if (_gclsDirectory.toString(). equals("/var/swarm/gdp/gcls")) {
-                MessageHandler.status("GDPManager: Not removing /var/swarm/gdp/gcls");
+            if (_gclsDirectory.toString().equals("/var/swarm/gdp/gcls")) {
+                MessageHandler
+                        .status("GDPManager: Not removing /var/swarm/gdp/gcls");
             } else {
                 try {
                     Thread.sleep(1000);
@@ -611,7 +648,6 @@ public class GDPManager extends AbstractInitializableAttribute {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -624,17 +660,18 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  @param lastRepoUpdateTime The time of the repo was last cloned or updated.
      *  @exception IOException If there is a problem cloning or updating the repo.
      */
-    private static long _cloneOrPull(File directory, String subdirectory, String repository, long lastRepoUpdateTime)
-    throws IOException {
+    private static long _cloneOrPull(File directory, String subdirectory,
+            String repository, long lastRepoUpdateTime) throws IOException {
         if (directory.isFile()) {
             throw new IOException(directory + _badFileMessage);
         }
-        final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+        final StringBufferExec exec = new StringBufferExec(
+                true /*appendToStderrAndStdout*/);
         List execCommands = new LinkedList<String>();
 
         String commands = "";
-        System.out.println("GDPManager._cloneOrPull(" + directory + ", " + subdirectory
-                + ", " + repository + ", " + lastRepoUpdateTime);
+        System.out.println("GDPManager._cloneOrPull(" + directory + ", "
+                + subdirectory + ", " + repository + ", " + lastRepoUpdateTime);
         File subdirectoryDirectory = new File(directory, subdirectory);
 
         if (!subdirectoryDirectory.exists()) {
@@ -649,8 +686,8 @@ public class GDPManager extends AbstractInitializableAttribute {
             commands = "cd " + directory + "\n" + gitClone;
         } else {
             // Only pull the repo the first time this is run, and every 12 hours after that.
-            if (!(lastRepoUpdateTime < 0
-                            || (System.currentTimeMillis() - lastRepoUpdateTime > 43200000L))) {
+            if (!(lastRepoUpdateTime < 0 || (System.currentTimeMillis()
+                    - lastRepoUpdateTime > 43200000L))) {
                 return lastRepoUpdateTime;
             }
             exec.setWorkingDirectory(subdirectoryDirectory);
@@ -664,23 +701,22 @@ public class GDPManager extends AbstractInitializableAttribute {
         exec.setWaitForLastSubprocess(true);
         exec.start();
         int returnCode = exec.getLastSubprocessReturnCode();
-        String repositoryShortName = repository.substring(repository.lastIndexOf(File.separatorChar) + 1);
+        String repositoryShortName = repository
+                .substring(repository.lastIndexOf(File.separatorChar) + 1);
         lastRepoUpdateTime = System.currentTimeMillis();
 
         if (returnCode == 0) {
             MessageHandler.status("Checked out the " + repositoryShortName);
         } else {
-            MessageHandler.status("Failed to check out the " + repositoryShortName);
-            throw new IOException("Failed to check out the " + repositoryShortName
-                    + commands + "\n"
-                    + exec.buffer);
+            MessageHandler
+                    .status("Failed to check out the " + repositoryShortName);
+            throw new IOException("Failed to check out the "
+                    + repositoryShortName + commands + "\n" + exec.buffer);
         }
         return lastRepoUpdateTime;
     }
 
     private static String _badFileMessage = " is a file, it must either be a directory or not exist.";
-
-    private boolean _calledWrapupOnce = false;
 
     /** The ep_adm_params directory, which is read by the gdplogd process. */
     private static File _epAdmParamsDirectory;
@@ -716,7 +752,4 @@ public class GDPManager extends AbstractInitializableAttribute {
 
     /** Last time of gdp_router repository update. */
     private static long _lastGDPRouterRepoUpdateTime = -1L;
-
-    /** True if the log should be created in initialize. */
-    private boolean _createLog;
 }

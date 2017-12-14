@@ -75,9 +75,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
  */
-public class SDFDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+public class SDFDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -138,7 +137,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                 }
                 result.append(_eol + "struct IOPort* " + sanitizedActorName
                         + "_" + port.getName() + " = (struct IOPort*)"
-                        + sanitizedActorName + "_get_" + port.getName() + "();");
+                        + sanitizedActorName + "_get_" + port.getName()
+                        + "();");
             }
             ports = actor.outputPortList().iterator();
             while (ports.hasNext()) {
@@ -148,7 +148,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                 }
                 result.append(_eol + "struct IOPort* " + sanitizedActorName
                         + "_" + port.getName() + " = (struct IOPort*)"
-                        + sanitizedActorName + "_get_" + port.getName() + "();");
+                        + sanitizedActorName + "_get_" + port.getName()
+                        + "();");
             }
         }
         // Second loop to link the ports and put the depths
@@ -205,16 +206,15 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                         if (foo == farReceiverss.length) {
                             throw new IllegalActionException(container,
                                     "Receiver not found in port : "
-                                            + port.getFullName()
-                                            + "in actor : "
+                                            + port.getFullName() + "in actor : "
                                             + sanitizedActorName);
                         }
 
                         result.append(_eol + "pblListAdd(pblListGet("
                                 + sanitizedActorName + "_" + port.getName()
                                 + "->_farReceivers, " + i + ")"
-                                + ", pblListGet(pblListGet(" + farPortName
-                                + foo + "), " + bar + "));");
+                                + ", pblListGet(pblListGet(" + farPortName + foo
+                                + "), " + bar + "));");
                     }
                 }
             }
@@ -281,16 +281,17 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
 
-        code.append(_eol + "void " + _sanitizedDirectorName
-                + "_Preinitialize();");
+        code.append(
+                _eol + "void " + _sanitizedDirectorName + "_Preinitialize();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize();");
         code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
-        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
+        code.append(
+                _eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
 
-        code.append(_eol + "void " + _sanitizedDirectorName
-                + "_TransferInputs();");
+        code.append(
+                _eol + "void " + _sanitizedDirectorName + "_TransferInputs();");
         code.append(_eol + "void " + _sanitizedDirectorName
                 + "_TransferOutputs();");
 
@@ -323,11 +324,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             // as if they are at the top level even though they have an executive
             // director, so be sure to check _isTopLevel().
             if (executiveDirector instanceof SuperdenseTimeDirector) {
-                code.append(_eol
-                        + _sanitizedDirectorName
-                        + ".currentMicrostep = "
-                        + ((SuperdenseTimeDirector) executiveDirector)
-                        .getIndex() + ";");
+                code.append(
+                        _eol + _sanitizedDirectorName + ".currentMicrostep = "
+                                + ((SuperdenseTimeDirector) executiveDirector)
+                                        .getIndex()
+                                + ";");
             }
         }
 
@@ -354,8 +355,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         code.append(_eol + _sanitizedDirectorName + ".exceedStopTime = false;");
 
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
-        code.append(_eol
-                + codeGenerator
+        code.append(_eol + codeGenerator
                 .comment("End of the Initialization of the director"));
 
         return code.toString();
@@ -414,15 +414,15 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         code.append(generatePreFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append("boolean " + _sanitizedDirectorName + "_Postfire() {"
-                + _eol);
+        code.append(
+                "boolean " + _sanitizedDirectorName + "_Postfire() {" + _eol);
         code.append(generatePostFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
         code.append("void " + _sanitizedDirectorName + "_Fire() {" + _eol);
-        String[] splitFireCode = getCodeGenerator()._splitBody(
-                "_" + CodeGeneratorAdapter.generateName(getComponent())
-                + "_run_", generateFireCode());
+        String[] splitFireCode = getCodeGenerator()._splitBody("_"
+                + CodeGeneratorAdapter.generateName(getComponent()) + "_run_",
+                generateFireCode());
         code.append(splitFireCode[1]);
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
@@ -444,8 +444,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         code.append(generateInitializeFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {"
-                + _eol);
+        code.append(
+                _eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
         code.append(generateWrapupCode());
         code.append(_eol + "}" + _eol);
 
@@ -461,9 +461,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
 
         code.append(_eol + _sanitizedDirectorName + ".iterationsCount++;");
 
-        code.append(_eol + "if (" + _sanitizedDirectorName
-                + ".iterationsCount >= " + _sanitizedDirectorName
-                + ".iterations) {");
+        code.append(
+                _eol + "if (" + _sanitizedDirectorName + ".iterationsCount >= "
+                        + _sanitizedDirectorName + ".iterations) {");
         code.append(_eol + _sanitizedDirectorName + ".iterationsCount = 0;");
         code.append(_eol + "return false;");
         code.append(_eol + "}");
@@ -498,9 +498,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         StringBuffer code = new StringBuffer();
 
         if (_director.isEmbedded()) {
-            code.append(_eol
-                    + _sanitizedDirectorName
-                    + ".currentModelTime = "
+            code.append(_eol + _sanitizedDirectorName + ".currentModelTime = "
                     + _sanitizedDirectorName
                     + ".containerActor->actor.container->director->currentModelTime;");
         }
@@ -537,12 +535,12 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         _doubleFlag = false;
         _booleanFlag = false;
 
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".preinitializeFunction = " + _sanitizedDirectorName
-                + "_Preinitialize;");
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".initializeFunction = " + _sanitizedDirectorName
-                + "_Initialize;");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".preinitializeFunction = "
+                        + _sanitizedDirectorName + "_Preinitialize;");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".initializeFunction = "
+                        + _sanitizedDirectorName + "_Initialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = "
                 + _sanitizedDirectorName + "_Prefire;");
         code.append(_eol + "" + _sanitizedDirectorName + ".postfireFunction = "
@@ -629,8 +627,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
     @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the inside.")));
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
         boolean targetCpp = ((BooleanToken) getCodeGenerator().generateCpp
                 .getToken()).booleanValue();
@@ -653,9 +651,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             String portName = inputPort.getName();
 
             String exceptionMessage = "Failed to generate code "
-                    + "to transfer tokens to for input. "
-                    + "The type of the \"" + portName + "\" output port was "
-                    + type + ", which is not supported. "
+                    + "to transfer tokens to for input. " + "The type of the \""
+                    + portName + "\" output port was " + type
+                    + ", which is not supported. "
                     + "Try setting the type of the \"" + portName
                     + "\" port by right clicking on the actor "
                     + "and selecting Customize -> Ports.";
@@ -667,41 +665,37 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                             + portName + i;
                     String pointerToTokensFromOneChannel = "pointerTo"
                             + tokensFromOneChannel;
-                    code.append("jobject "
-                            + tokensFromOneChannel
-                            + " = "
+                    code.append("jobject " + tokensFromOneChannel + " = "
                             + CCodegenUtilities.jniGetObjectArrayElement(
                                     portName, String.valueOf(i), targetCpp)
-                                    + ";" + _eol);
+                            + ";" + _eol);
 
                     if (type == BaseType.INT) {
-                        code.append("jint * "
-                                + pointerToTokensFromOneChannel
+                        code.append("jint * " + pointerToTokensFromOneChannel
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
-                                        tokensFromOneChannel, targetCpp) + ";"
-                                        + _eol);
+                                        tokensFromOneChannel, targetCpp)
+                                + ";" + _eol);
                     } else if (type == BaseType.DOUBLE) {
-                        code.append("jdouble * "
-                                + pointerToTokensFromOneChannel
+                        code.append("jdouble * " + pointerToTokensFromOneChannel
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements(
                                         "Double", tokensFromOneChannel,
-                                        targetCpp) + ";" + _eol);
+                                        targetCpp)
+                                + ";" + _eol);
                     } else if (type == PointerToken.POINTER) {
-                        code.append("jint * "
-                                + pointerToTokensFromOneChannel
+                        code.append("jint * " + pointerToTokensFromOneChannel
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
-                                        tokensFromOneChannel, targetCpp) + ";"
-                                        + _eol);
+                                        tokensFromOneChannel, targetCpp)
+                                + ";" + _eol);
                     } else if (type == BaseType.BOOLEAN) {
                         code.append("jboolean * "
-                                + pointerToTokensFromOneChannel
-                                + " = "
+                                + pointerToTokensFromOneChannel + " = "
                                 + CCodegenUtilities.jniGetArrayElements(
                                         "Boolean", tokensFromOneChannel,
-                                        targetCpp) + ";" + _eol);
+                                        targetCpp)
+                                + ";" + _eol);
                     } else {
                         // FIXME: need to deal with other types
                         throw new IllegalActionException(inputPort,
@@ -722,13 +716,13 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                         //                        code.append(compositeActorAdapter.getReference("@"
                         //                                + portNameWithChannelNumber + "," + k, false));
                         if (type == PointerToken.POINTER) {
-                            code.append("(void *) "
-                                    + pointerToTokensFromOneChannel + "[" + k
-                                    + "]");
+                            code.append(
+                                    "(void *) " + pointerToTokensFromOneChannel
+                                            + "[" + k + "]");
                         } else if (type == BaseType.INT) {
-                            code.append("$Int_new("
-                                    + pointerToTokensFromOneChannel + "[" + k
-                                    + "]");
+                            code.append(
+                                    "$Int_new(" + pointerToTokensFromOneChannel
+                                            + "[" + k + "]");
                         } else if (type == BaseType.DOUBLE) {
                             code.append("$Double_new("
                                     + pointerToTokensFromOneChannel + "[" + k
@@ -748,23 +742,23 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                     if (type == BaseType.INT) {
                         code.append(CCodegenUtilities.jniReleaseArrayElements(
                                 "Int", tokensFromOneChannel,
-                                pointerToTokensFromOneChannel, targetCpp)
-                                + ";" + _eol);
+                                pointerToTokensFromOneChannel, targetCpp) + ";"
+                                + _eol);
                     } else if (type == BaseType.DOUBLE) {
                         code.append(CCodegenUtilities.jniReleaseArrayElements(
                                 "Double", tokensFromOneChannel,
-                                pointerToTokensFromOneChannel, targetCpp)
-                                + ";" + _eol);
+                                pointerToTokensFromOneChannel, targetCpp) + ";"
+                                + _eol);
                     } else if (type == PointerToken.POINTER) {
                         code.append(CCodegenUtilities.jniReleaseArrayElements(
                                 "Int", tokensFromOneChannel,
-                                pointerToTokensFromOneChannel, targetCpp)
-                                + ";" + _eol);
+                                pointerToTokensFromOneChannel, targetCpp) + ";"
+                                + _eol);
                     } else if (type == BaseType.BOOLEAN) {
                         code.append(CCodegenUtilities.jniReleaseArrayElements(
                                 "Boolean", tokensFromOneChannel,
-                                pointerToTokensFromOneChannel, targetCpp)
-                                + ";" + _eol);
+                                pointerToTokensFromOneChannel, targetCpp) + ";"
+                                + _eol);
                     } else {
                         // FIXME: need to deal with other types
                         throw new IllegalActionException(inputPort,
@@ -783,11 +777,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorAdapter.getReference("@"
-                                + name + "," + k, false));
+                        code.append(compositeActorAdapter
+                                .getReference("@" + name + "," + k, false));
                         code.append(" = " + _eol);
-                        code.append(compositeActorAdapter.getReference(name
-                                + "," + k, false));
+                        code.append(compositeActorAdapter
+                                .getReference(name + "," + k, false));
                         code.append(";" + _eol);
                     }
                 }
@@ -808,10 +802,10 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     @Override
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the outside.")));
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("SDFDirector: " + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
         boolean targetCpp = ((BooleanToken) getCodeGenerator().generateCpp
@@ -832,15 +826,15 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                 // Needed by $PTII/bin/vergil $PTII/ptolemy/cg/lib/demo/Scale/ScaleC.xml to run
                 // EmbeddedCodeActors in simulation mode.
                 code.append("jobjectArray tokensToAllOutputPorts;" + _eol);
-                code.append("jclass "
-                        + _objClass
-                        + " = "
-                        + CCodegenUtilities.jniFindClass("Ljava/lang/Object;",
-                                targetCpp) + ";" + _eol);
-                code.append("tokensToAllOutputPorts = "
-                        + CCodegenUtilities.jniNewObjectArray(
-                                String.valueOf(numberOfOutputPorts),
-                                "objClass", targetCpp) + ";" + _eol);
+                code.append(
+                        "jclass " + _objClass + " = "
+                                + CCodegenUtilities.jniFindClass(
+                                        "Ljava/lang/Object;", targetCpp)
+                                + ";" + _eol);
+                code.append("tokensToAllOutputPorts = " + CCodegenUtilities
+                        .jniNewObjectArray(String.valueOf(numberOfOutputPorts),
+                                "objClass", targetCpp)
+                        + ";" + _eol);
             }
 
             String portName = outputPort.getName();
@@ -875,11 +869,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                             + ";" + _eol);
                     _intFlag = true;
                 }
-                code.append(tokensToThisPort
-                        + " = "
+                code.append(tokensToThisPort + " = "
                         + CCodegenUtilities.jniNewObjectArray(
                                 String.valueOf(numberOfChannels), _objClassI,
-                                targetCpp) + ";" + _eol);
+                                targetCpp)
+                        + ";" + _eol);
             } else if (type == BaseType.DOUBLE) {
                 if (!_doubleFlag) {
                     code.append("jclass " + _objClassD + " = "
@@ -887,11 +881,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                             + ";" + _eol);
                     _doubleFlag = true;
                 }
-                code.append(tokensToThisPort
-                        + " = "
+                code.append(tokensToThisPort + " = "
                         + CCodegenUtilities.jniNewObjectArray(
                                 String.valueOf(numberOfChannels), _objClassD,
-                                targetCpp) + ";" + _eol);
+                                targetCpp)
+                        + ";" + _eol);
             } else if (type == PointerToken.POINTER) {
                 if (!_intFlag) {
                     code.append("jclass " + _objClassI + " = "
@@ -899,11 +893,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                             + ";" + _eol);
                     _intFlag = true;
                 }
-                code.append(tokensToThisPort
-                        + " = "
+                code.append(tokensToThisPort + " = "
                         + CCodegenUtilities.jniNewObjectArray(
                                 String.valueOf(numberOfChannels), _objClassI,
-                                targetCpp) + ";" + _eol);
+                                targetCpp)
+                        + ";" + _eol);
             } else if (type == BaseType.BOOLEAN) {
                 if (!_booleanFlag) {
                     code.append("jclass objClassZ = "
@@ -911,11 +905,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                             + ";" + _eol);
                     _booleanFlag = true;
                 }
-                code.append(tokensToThisPort
-                        + " = "
+                code.append(tokensToThisPort + " = "
                         + CCodegenUtilities.jniNewObjectArray(
                                 String.valueOf(numberOfChannels), "objClassZ",
-                                targetCpp) + ";" + _eol);
+                                targetCpp)
+                        + ";" + _eol);
             } else {
                 // FIXME: need to deal with other types
                 throw new IllegalActionException(outputPort, exceptionMessage);
@@ -933,8 +927,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                                 + "];" + _eol);
 
                     } else if (type == BaseType.DOUBLE) {
-                        code.append("jdouble " + tokensToOneChannel + "["
-                                + rate + "];" + _eol);
+                        code.append("jdouble " + tokensToOneChannel + "[" + rate
+                                + "];" + _eol);
 
                     } else if (type == PointerToken.POINTER) {
                         code.append("jint " + tokensToOneChannel + "[" + rate
@@ -963,8 +957,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                     String hasTokenString = "while (ReceiverHasToken(("
                             + sanitizedContainerName + ".actor).ports[enum_"
                             + sanitizedContainerName + "_"
-                            + outputPort.getName() + "].receivers + " + i
-                            + "))" + _eol;
+                            + outputPort.getName() + "].receivers + " + i + "))"
+                            + _eol;
                     code.append(hasTokenString);
 
                     String getString = "ReceiverGet((" + sanitizedContainerName
@@ -993,52 +987,42 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
                 String tokensToOneChannelArray = "arr" + portName + i;
                 // Create and fill an array of Java objects.
                 if (type == BaseType.INT) {
-                    code.append("jintArray "
-                            + tokensToOneChannelArray
-                            + " = "
+                    code.append("jintArray " + tokensToOneChannelArray + " = "
                             + CCodegenUtilities.jniNewArray("Int",
-                                    String.valueOf(rate), targetCpp) + ";"
-                                    + _eol);
+                                    String.valueOf(rate), targetCpp)
+                            + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
-                            tokensToOneChannel, targetCpp)
-                            + ";" + _eol);
+                            tokensToOneChannel, targetCpp) + ";" + _eol);
 
                 } else if (type == BaseType.DOUBLE) {
-                    code.append("jdoubleArray "
-                            + tokensToOneChannelArray
-                            + " = "
-                            + CCodegenUtilities.jniNewArray("Double",
-                                    String.valueOf(rate), targetCpp) + ";"
-                                    + _eol);
+                    code.append(
+                            "jdoubleArray " + tokensToOneChannelArray + " = "
+                                    + CCodegenUtilities.jniNewArray("Double",
+                                            String.valueOf(rate), targetCpp)
+                                    + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Double",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
-                            tokensToOneChannel, targetCpp)
-                            + ";" + _eol);
+                            tokensToOneChannel, targetCpp) + ";" + _eol);
 
                 } else if (type == PointerToken.POINTER) {
-                    code.append("jintArray "
-                            + tokensToOneChannelArray
-                            + " = "
+                    code.append("jintArray " + tokensToOneChannelArray + " = "
                             + CCodegenUtilities.jniNewArray("Int",
-                                    String.valueOf(rate), targetCpp) + ";"
-                                    + _eol);
+                                    String.valueOf(rate), targetCpp)
+                            + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
-                            tokensToOneChannel, targetCpp)
-                            + ";" + _eol);
+                            tokensToOneChannel, targetCpp) + ";" + _eol);
 
                 } else if (type == BaseType.BOOLEAN) {
-                    code.append("jbooleanArray "
-                            + tokensToOneChannelArray
-                            + " = "
-                            + CCodegenUtilities.jniNewArray("Boolean",
-                                    String.valueOf(rate), targetCpp) + ";"
-                                    + _eol);
+                    code.append(
+                            "jbooleanArray " + tokensToOneChannelArray + " = "
+                                    + CCodegenUtilities.jniNewArray("Boolean",
+                                            String.valueOf(rate), targetCpp)
+                                    + ";" + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Boolean",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
-                            tokensToOneChannel, targetCpp)
-                            + ";" + _eol);
+                            tokensToOneChannel, targetCpp) + ";" + _eol);
                 } else {
                     // FIXME: need to deal with other types
                     throw new IllegalActionException(outputPort,
@@ -1047,16 +1031,14 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
 
                 code.append(CCodegenUtilities.jniSetObjectArrayElement(
                         tokensToThisPort, String.valueOf(i),
-                        tokensToOneChannelArray, targetCpp)
-                        + ";" + _eol);
+                        tokensToOneChannelArray, targetCpp) + ";" + _eol);
                 code.append(CCodegenUtilities.jniDeleteLocalRef(
                         tokensToOneChannelArray, targetCpp) + ";" + _eol);
             }
 
             code.append(CCodegenUtilities.jniSetObjectArrayElement(
                     "tokensToAllOutputPorts", String.valueOf(_portNumber),
-                    tokensToThisPort, targetCpp)
-                    + ";" + _eol);
+                    tokensToThisPort, targetCpp) + ";" + _eol);
             code.append(CCodegenUtilities.jniDeleteLocalRef(tokensToThisPort,
                     targetCpp) + ";" + _eol);
             _portNumber++;
@@ -1106,21 +1088,20 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             // Print period only if it is the containing actor is the top level.
             // FIXME: should this test also be applied to the other code?
             if (director.getContainer().getContainer() == null) {
-                variableDeclarations.append(_eol
-                        + getCodeGenerator().comment(
-                                "Provide the period attribute as constant."));
-                variableDeclarations.append("double " + _sanitizedDirectorName
-                        + "_period;" + _eol);
+                variableDeclarations.append(_eol + getCodeGenerator()
+                        .comment("Provide the period attribute as constant."));
+                variableDeclarations.append(
+                        "double " + _sanitizedDirectorName + "_period;" + _eol);
             }
 
         }
         CompositeActor container = ((CompositeActor) _director.getContainer());
         String sanitizedContainerName = CodeGeneratorAdapter
                 .generateName(container);
-        variableDeclarations.append("#include \"" + sanitizedContainerName
-                + ".h\"" + _eol);
-        variableDeclarations.append(_eol + "Director " + _sanitizedDirectorName
-                + ";");
+        variableDeclarations
+                .append("#include \"" + sanitizedContainerName + ".h\"" + _eol);
+        variableDeclarations
+                .append(_eol + "Director " + _sanitizedDirectorName + ";");
         //
         //        if (director.getContainer().getContainer() == null) {
         //            variableDeclarations.append(_eol
@@ -1175,18 +1156,18 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
     @Override
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
         String name = CodeGeneratorAdapter.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
-        String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
+        String referencedParameterDeclaration = _generateReferencedParameterDeclaration(
+                target);
         if (referencedParameterDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s referenced parameter declarations."));
+            code.append(_eol + codeGenerator
+                    .comment(name + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
 
@@ -1354,14 +1335,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         if (_referencedParameters.containsKey(target)) {
             for (Parameter parameter : _referencedParameters.get(target)) {
                 // avoid duplicate declaration.
-                if (!getCodeGenerator().getModifiedVariables().contains(
-                        parameter)) {
-                    code.append(""
-                            + targetType(parameter.getType())
-                            + " "
-                            + getCodeGenerator()
-                            .generateVariableName(parameter) + ";"
-                            + _eol);
+                if (!getCodeGenerator().getModifiedVariables()
+                        .contains(parameter)) {
+                    code.append("" + targetType(parameter.getType()) + " "
+                            + getCodeGenerator().generateVariableName(parameter)
+                            + ";" + _eol);
                 }
             }
         }

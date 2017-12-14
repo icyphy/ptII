@@ -99,7 +99,8 @@ public class SyntaxTextEditor extends TextEditor {
      *  @param document The document containing text, or null if none.
      *  @param placeable The associated placeable.
      */
-    public SyntaxTextEditor(String title, Document document, Placeable placeable) {
+    public SyntaxTextEditor(String title, Document document,
+            Placeable placeable) {
         // NOTE: Create with no status bar, since we have no use for it now.
         super(title, document, placeable);
     }
@@ -129,19 +130,20 @@ public class SyntaxTextEditor extends TextEditor {
      *  @param title The title to put in the title bar.
      *  @param document The document containing text.
      */
+    @Override
     protected void _init(String title, Document document) {
         setTitle(title);
 
         if (document instanceof RSyntaxDocument) {
-            text = new RSyntaxTextArea((RSyntaxDocument)document);
+            text = new RSyntaxTextArea((RSyntaxDocument) document);
             // The default tab size is odd: 5.
             text.setTabSize(4);
             text.setCaretPosition(0);
             // ((RSyntaxTextArea)text).addHyperlinkListener(this);
             text.requestFocusInWindow();
-            ((RSyntaxTextArea)text).setMarkOccurrences(true);
-            ((RSyntaxTextArea)text).setCodeFoldingEnabled(true);
-            ((RSyntaxTextArea)text).setClearWhitespaceLinesEnabled(false);
+            ((RSyntaxTextArea) text).setMarkOccurrences(true);
+            ((RSyntaxTextArea) text).setCodeFoldingEnabled(true);
+            ((RSyntaxTextArea) text).setClearWhitespaceLinesEnabled(false);
         } else if (document != null) {
             text = new JTextArea(document);
         } else {
@@ -160,7 +162,7 @@ public class SyntaxTextEditor extends TextEditor {
         //        gutter.setBookmarkIcon(new ImageIcon(url));
         // Will need to copy the img/bookmark.png from the rsyntaxtextarea_demo_2.5.1_Source dir.
 
-        ErrorStrip errorStrip = new ErrorStrip((RSyntaxTextArea)text);
+        ErrorStrip errorStrip = new ErrorStrip((RSyntaxTextArea) text);
         getContentPane().add(errorStrip, BorderLayout.LINE_END);
 
         getContentPane().add(_scrollPane, BorderLayout.CENTER);

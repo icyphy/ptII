@@ -423,8 +423,8 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *   port with the specified name.
      */
     @Override
-    public Port newPort(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public Port newPort(String name)
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -611,8 +611,8 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *   in the container with the same name.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -744,9 +744,10 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
             }
 
             if (hasDeferrals) {
-                throw new IllegalActionException(this, "Cannot delete because "
-                        + "there are instances and/or subclasses:\n"
-                        + names.toString());
+                throw new IllegalActionException(this,
+                        "Cannot delete because "
+                                + "there are instances and/or subclasses:\n"
+                                + names.toString());
             }
         }
     }
@@ -777,10 +778,10 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
                 .getEntity(relativeName);
 
         if (candidate != null && !getClass().isInstance(candidate)) {
-            throw new IllegalActionException(this, "Expected "
-                    + candidate.getFullName() + " to be an instance of "
-                    + getClass().getName() + ", but it is "
-                    + candidate.getClass().getName());
+            throw new IllegalActionException(this,
+                    "Expected " + candidate.getFullName()
+                            + " to be an instance of " + getClass().getName()
+                            + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;
@@ -799,13 +800,13 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {
-            ComponentEntity newObject = (ComponentEntity) super
-                    ._propagateExistence(container);
+            ComponentEntity newObject = (ComponentEntity) super._propagateExistence(
+                    container);
             // FindBugs warns that the cast of container is
             // unchecked.
             if (!(container instanceof CompositeEntity)) {
-                throw new InternalErrorException(container
-                        + " is not a CompositeEntity.");
+                throw new InternalErrorException(
+                        container + " is not a CompositeEntity.");
             } else {
                 newObject.setContainer((CompositeEntity) container);
             }

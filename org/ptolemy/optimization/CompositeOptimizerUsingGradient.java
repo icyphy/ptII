@@ -131,7 +131,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
      * @exception IllegalActionException ...
      * @exception NameDuplicationException ...
      */
-    public CompositeOptimizerUsingGradient(CompositeEntity container, String name)
+    public CompositeOptimizerUsingGradient(CompositeEntity container,
+            String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
@@ -190,9 +191,11 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             double rho = ((DoubleToken) rhoEnd.getToken()).doubleValue();
             _rhoend = rho;
         } else if (attribute == reusePreviousResult) {
-            _reusePreviousResult = ((BooleanToken) reusePreviousResult.getToken()).booleanValue();
+            _reusePreviousResult = ((BooleanToken) reusePreviousResult
+                    .getToken()).booleanValue();
         } else if (attribute == useGradient) {
-            _useGradient = ((BooleanToken) useGradient.getToken()).booleanValue();
+            _useGradient = ((BooleanToken) useGradient.getToken())
+                    .booleanValue();
         } else if (attribute == dimensionOfOptimizationSpace) {
             _dimension = ((IntToken) dimensionOfOptimizationSpace.getToken())
                     .intValue();
@@ -216,7 +219,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
-        CompositeOptimizerUsingGradient result = (CompositeOptimizerUsingGradient) super.clone(workspace);
+        CompositeOptimizerUsingGradient result = (CompositeOptimizerUsingGradient) super.clone(
+                workspace);
         result._optInput = null;
         result._firstIteration = true;
         try {
@@ -238,14 +242,14 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             directorNew.setContainer(result);
             directorNew.setName(directorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone: " + throwable);
         }
         return result;
     }
 
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         setClassName("org.ptolemy.optimization.CompositeOptimizer");
         OptimizerDirector director = new OptimizerDirector(workspace());
         director.setContainer(this);
@@ -312,6 +316,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
         _tokenMap = new HashMap<IOPort, Token>();
         _firstIteration = true;
     }
+
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -326,8 +331,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class OptimizerComposite extends
-    ReflectComposite.ReflectCompositeContents {
+    public static class OptimizerComposite
+            extends ReflectComposite.ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -354,7 +359,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
          *  The port is specified by input string.
          * @param portname
          */
-        private void hideMirrorPort(String portname) throws NameDuplicationException, IllegalActionException{
+        private void hideMirrorPort(String portname)
+                throws NameDuplicationException, IllegalActionException {
             IOPort p = (IOPort) (((CompositeActor) getContainer())
                     .getPort(portname));
             if (p != null) {
@@ -369,8 +375,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             }
         }
 
-        private void _init() throws IllegalActionException,
-        NameDuplicationException {
+        private void _init()
+                throws IllegalActionException, NameDuplicationException {
 
             MirrorPort intermediate = new MirrorPort(workspace());
             intermediate.setContainer(this);
@@ -399,7 +405,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             MirrorPort intermediate_dgx = new MirrorPort(workspace());
             intermediate_dgx.setContainer(this);
             intermediate_dgx.setName(GRADIENT_CONSTRAINTS_PORT_NAME);
-            intermediate_dgx.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+            intermediate_dgx
+                    .setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
             intermediate_dgx.setOutput(true);
 
             // hide the mirror ports in top level composite
@@ -436,8 +443,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
         }
 
         /** iterate inner model one step */
-        private double oneStepIteration (double[] x, double[] gx, double[] dfx, double[][] dgx)
-                throws IllegalActionException {
+        private double oneStepIteration(double[] x, double[] gx, double[] dfx,
+                double[][] dgx) throws IllegalActionException {
             DoubleToken[] xTokens = new DoubleToken[x.length];
             for (int i = 0; i < xTokens.length; i++) {
                 xTokens[i] = new DoubleToken(x[i]);
@@ -451,7 +458,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             if (xPort == null) {
                 throw new IllegalActionException(getContainer(),
                         OPTIMIZATION_VARIABLE_NAME
-                        + " port could not be found.");
+                                + " port could not be found.");
             }
             // send x value to the inside port for the new execution
             xPort.sendInside(0, xAsToken);
@@ -477,67 +484,70 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             if (_stopRequested) {
                 return 0;
             } else {
-                Iterator<IOPort> outports = container.outputPortList().iterator();
+                Iterator<IOPort> outports = container.outputPortList()
+                        .iterator();
 
                 double ret_val = 0;
                 while (outports.hasNext()) {
                     IOPort p = outports.next();
                     // these we don't need. will find a way to do this cleanly. perhaps don't even link the ports. which should already be the case really.
 
-                    if (p.getName()
-                            .equals(INTERMEDIATE_VALUE_PORT_NAME)) {
+                    if (p.getName().equals(INTERMEDIATE_VALUE_PORT_NAME)) {
                         if (p.hasTokenInside(0)) {
-                            ret_val = ((DoubleToken)(p.getInside(0))).doubleValue();
+                            ret_val = ((DoubleToken) (p.getInside(0)))
+                                    .doubleValue();
                         } else {
-                            throw new IllegalActionException(
-                                    getContainer(),
+                            throw new IllegalActionException(getContainer(),
                                     "Cannot read token from "
                                             + INTERMEDIATE_VALUE_PORT_NAME
                                             + ". Make sure a token is produced at each output of the inside model in CompositeOptimizer.");
                         }
                     } else if (p.getName().equals(CONSTRAINTS_PORT_NAME)) {
                         if (p.hasTokenInside(0)) {
-                            Token[] gx_token = ((ArrayToken)(p.getInside(0))).arrayValue();
+                            Token[] gx_token = ((ArrayToken) (p.getInside(0)))
+                                    .arrayValue();
                             for (int i = 0; i < gx_token.length; i++) {
-                                gx[i] = ((DoubleToken) gx_token[i]).doubleValue();
+                                gx[i] = ((DoubleToken) gx_token[i])
+                                        .doubleValue();
                             }
                         } else {
-                            throw new IllegalActionException(
-                                    getContainer(),
+                            throw new IllegalActionException(getContainer(),
                                     "Cannot read token from "
                                             + CONSTRAINTS_PORT_NAME
                                             + ". Make sure a token is produced at each output of the inside model in CompositeOptimizer.");
                         }
-                    } else if (p.getName().equals(GRADIENT_CONSTRAINTS_PORT_NAME)) {
+                    } else if (p.getName()
+                            .equals(GRADIENT_CONSTRAINTS_PORT_NAME)) {
                         if (p.hasTokenInside(0)) {
-                            Token[] dgx_token = ((ArrayToken)(p.getInside(0))).arrayValue();
-                            if (dgx!=null) {
+                            Token[] dgx_token = ((ArrayToken) (p.getInside(0)))
+                                    .arrayValue();
+                            if (dgx != null) {
                                 for (int i = 0; i < dgx_token.length; i++) {
-                                    double[][] dgix = ((DoubleMatrixToken)dgx_token[i]).doubleMatrix(); //This matrix should be row matrix (1 X N).
-                                    for (int j=0; j < dgix[0].length; j++) {
+                                    double[][] dgix = ((DoubleMatrixToken) dgx_token[i])
+                                            .doubleMatrix(); //This matrix should be row matrix (1 X N).
+                                    for (int j = 0; j < dgix[0].length; j++) {
                                         dgx[i][j] = dgix[0][j];
                                     }
                                 }
                             }
-                        } else if (dgx!=null) {
-                            throw new IllegalActionException(
-                                    getContainer(),
+                        } else if (dgx != null) {
+                            throw new IllegalActionException(getContainer(),
                                     "Cannot read token from "
                                             + GRADIENT_CONSTRAINTS_PORT_NAME
                                             + ". Make sure a token is produced at each output of the inside model in CompositeOptimizerUsingGradient.");
                         }
                     } else if (p.getName().equals(GRADIENT_VALUE_PORT_NAME)) {
                         if (p.hasTokenInside(0)) {
-                            DoubleMatrixToken dfx_token = ((DoubleMatrixToken)(p.getInside(0)));
+                            DoubleMatrixToken dfx_token = ((DoubleMatrixToken) (p
+                                    .getInside(0)));
                             double[][] dfx_matrix = dfx_token.doubleMatrix(); //This matrix should be row matrix (1 X N).
-                            if (dfx!=null) {
+                            if (dfx != null) {
                                 for (int i = 0; i < dfx_matrix[0].length; i++) {
                                     dfx[i] = dfx_matrix[0][i];
                                 }
                             }
-                        } else if (dfx!=null) {
-                            throw new IllegalActionException(
-                                    getContainer(),
+                        } else if (dfx != null) {
+                            throw new IllegalActionException(getContainer(),
                                     "Cannot read token from "
                                             + GRADIENT_VALUE_PORT_NAME
                                             + ". Make sure a token is produced at each output of the inside model in CompositeOptimizerUsingGradient.");
@@ -547,11 +557,13 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                 return ret_val;
             }
         }
+
         @Override
         public void fire() throws IllegalActionException {
             boolean need_to_initialize = false;
             if (_reusePreviousResult) {
-                if (_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
+                if (_firstStep || (_optInput == null)
+                        || (_optInput.length != _dimension)) {
                     _optInput = new double[_dimension];
                     _firstStep = false; //Keeping the optimized values for next step.
                     need_to_initialize = true; //initialization of objective function class will be called later.
@@ -575,8 +587,9 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                 int nVariables = _dimension;
                 Calcfc calcfc = new Calcfc() {
                     @Override
-                    public double Compute(int n, int m, double[] x, double[] con,
-                            boolean[] terminate) throws IllegalActionException {
+                    public double Compute(int n, int m, double[] x,
+                            double[] con, boolean[] terminate)
+                            throws IllegalActionException {
                         double evalX = oneStepIteration(x, con, null, null);
                         // if stop has been requested, the inside might not have produced tokens. so do not proceed
                         if (_stopRequested) {
@@ -620,26 +633,30 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                 if (need_to_initialize) {
                     //////////////////////////////////////////////////////
                     // Creating objective function Class
-                    _objectiveFunction = new ObjectiveFunction(_dimension, _numConstraints) {
+                    _objectiveFunction = new ObjectiveFunction(_dimension,
+                            _numConstraints) {
                         @Override
                         public boolean calcFunction(double[] x) {
                             try {
-                                f0Result = oneStepIteration(x, fiResults, f0Gradient, fiGradients);
+                                f0Result = oneStepIteration(x, fiResults,
+                                        f0Gradient, fiGradients);
                                 //constraints must be minus value (g(x) < 0) in the BarrierMethod class.
-                                for (int i=0; i<fiResults.length; i++) {
+                                for (int i = 0; i < fiResults.length; i++) {
                                     fiResults[i] = -fiResults[i];
-                                    for (int j=0; j<fiGradients[i].length; j++) {
+                                    for (int j = 0; j < fiGradients[i].length; j++) {
                                         fiGradients[i][j] = -fiGradients[i][j];
                                     }
                                 }
                                 if (_mode == MAXIMIZE) {
-                                   // minimize -f(x) = maximize f(x)
+                                    // minimize -f(x) = maximize f(x)
                                     f0Result = -f0Result;
-                                    for (int i=0; i<f0Gradient.length; i++) {
+                                    for (int i = 0; i < f0Gradient.length; i++) {
                                         f0Gradient[i] = -f0Gradient[i];
                                     }
                                 }
-                                if (_stopRequested) return false;
+                                if (_stopRequested) {
+                                    return false;
+                                }
                             } catch (IllegalActionException iae) {
                                 iae.printStackTrace();
                             }
@@ -649,8 +666,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
 
                     //To estimate Hessian, compute objectiveFunction at several points.
                     double[] searchX = new double[_objectiveFunction.currentX.length];
-                    for (int count=0; count<_optInput.length; count++) {
-                        for (int i=0; i<_optInput.length; i++) { //Set Initial Value
+                    for (int count = 0; count < _optInput.length; count++) {
+                        for (int i = 0; i < _optInput.length; i++) { //Set Initial Value
                             searchX[i] = 0;
                         }
                         searchX[count] = _rhobeg;
@@ -660,19 +677,19 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
 
                 // optimization
                 BarrierMethod opt = new BarrierMethod();
-//                ExteriorPenaltyFunctionMethod opt = new ExteriorPenaltyFunctionMethod();
+                //                ExteriorPenaltyFunctionMethod opt = new ExteriorPenaltyFunctionMethod();
                 opt.setTolerance(_rhoend);
                 opt.setMaxIterationNum(_maxEvaluations);
                 //Set Initial Value
-                for (int i=0; i<_optInput.length; i++) {
+                for (int i = 0; i < _optInput.length; i++) {
                     _objectiveFunction.currentX[i] = _optInput[i];
                 }
                 int returnCode = opt.optimize(_objectiveFunction);
-                for (int i=0; i<_optInput.length; i++) {
+                for (int i = 0; i < _optInput.length; i++) {
                     _optInput[i] = _objectiveFunction.currentX[i];
                 }
             }
-//            System.out.println("itration "+iteration_counter+" steps.");
+            //            System.out.println("itration "+iteration_counter+" steps.");
             //////////////////////////////////////////////////////
 
             _firstIteration = true;
@@ -684,10 +701,12 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             }
             ArrayToken outputArrayToken = new ArrayToken(outTokens);
             ((TypedIOPort) ((CompositeOptimizerUsingGradient) getContainer())
-                    .getPort(OPTIMAL_VALUE_PORT_NAME))
-                    .send(0, outputArrayToken);
+                    .getPort(OPTIMAL_VALUE_PORT_NAME)).send(0,
+                            outputArrayToken);
         }
+
         private ObjectiveFunction _objectiveFunction;
+
         /** Transfer data from an input port of the
          *  container to the ports it is connected to on the inside.
          *  This method reads tokens from the outside port if any, and writes to
@@ -726,7 +745,6 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
 
             return result;
         }
-
 
         /** Transfer data previously read from the outside ports to the inside ports
          *  do not re-read values from outside ports until the firing is complete.

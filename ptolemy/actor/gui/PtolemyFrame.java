@@ -152,17 +152,16 @@ public abstract class PtolemyFrame extends TableauFrame {
     public Effigy getEffigy() {
         Effigy originalEffigy = super.getEffigy();
         if (originalEffigy instanceof PtolemyEffigy) {
-            if (!getTableau().isMaster()
-                    && !originalEffigy.masterEffigy().equals(
-                            originalEffigy.topEffigy())
-                            // GT View can set the Effigy as non-persistent so
-                            // that the model can be run and the user is not
-                            // prompted to save the optimized version.  To
-                            // replicate, run $PTII/bin/vergil
-                            // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
-                            // and then close the optimized model.  You should
-                            // not be prompted for save.
-                            && originalEffigy.isPersistent()) {
+            if (!getTableau().isMaster() && !originalEffigy.masterEffigy()
+                    .equals(originalEffigy.topEffigy())
+            // GT View can set the Effigy as non-persistent so
+            // that the model can be run and the user is not
+            // prompted to save the optimized version.  To
+            // replicate, run $PTII/bin/vergil
+            // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
+            // and then close the optimized model.  You should
+            // not be prompted for save.
+                    && originalEffigy.isPersistent()) {
                 // The tableau is no longer the master, perhaps there
                 // was a deletion.  Hence, the original effigy should
                 // no longer be the associated effigy.
@@ -175,8 +174,8 @@ public abstract class PtolemyFrame extends TableauFrame {
                 try {
                     PtolemyEffigy newEffigy = new PtolemyEffigy(
                             (CompositeEntity) originalEffigy.getContainer(),
-                            originalEffigy.getContainer().uniqueName(
-                                    _model.getName()));
+                            originalEffigy.getContainer()
+                                    .uniqueName(_model.getName()));
                     newEffigy.setModel(_model);
                     newEffigy.setModified(originalEffigy.isModified());
                     getTableau().setContainer(newEffigy);
@@ -393,7 +392,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
      *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsFileDialogComponent()} is used.
-
+    
      *  @return A file dialog for save as.
      */
     @Override
@@ -414,7 +413,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true
      *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsJFileChooserComponent()} is used.
-
+    
      *  @return A file dialog for save as.
      */
     @Override
@@ -427,8 +426,8 @@ public abstract class PtolemyFrame extends TableauFrame {
             // The problem here is that with FileDialog, we can't add the
             // query as an accessory like we can with JFileChooser.  So, we
             // pop up a check box dialog before bringing up the FileDialog.
-            ComponentDialog dialog = new ComponentDialog(this,
-                    "Save Submodel?", _query);
+            ComponentDialog dialog = new ComponentDialog(this, "Save Submodel?",
+                    _query);
             String button = dialog.buttonPressed();
 
             if (button.equals("Cancel")) {

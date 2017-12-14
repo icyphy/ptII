@@ -61,7 +61,7 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtUnaryNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtUnaryNode node)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -87,8 +87,8 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
         if (node.isMinus()) {
             ConceptFunction negateFunction = null;
             ConceptFunctionDefinitionAttribute negateDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                    .getContainedModel().getAttribute(
-                            LatticeOntologySolver.NEGATE_FUNCTION_NAME);
+                    .getContainedModel()
+                    .getAttribute(LatticeOntologySolver.NEGATE_FUNCTION_NAME);
             if (negateDefinition != null) {
                 negateFunction = negateDefinition.createConceptFunction();
                 if (negateFunction != null) {
@@ -99,8 +99,8 @@ public class ASTPtUnaryNode extends LatticeOntologyASTNodeAdapter {
         } else if (node.isNot()) {
             ConceptFunction notFunction = null;
             ConceptFunctionDefinitionAttribute notDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                    .getContainedModel().getAttribute(
-                            LatticeOntologySolver.NOT_FUNCTION_NAME);
+                    .getContainedModel()
+                    .getAttribute(LatticeOntologySolver.NOT_FUNCTION_NAME);
             if (notDefinition != null) {
                 notFunction = notDefinition.createConceptFunction();
                 if (notFunction != null) {

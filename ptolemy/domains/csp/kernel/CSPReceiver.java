@@ -285,8 +285,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-    IllegalActionException {
+    public boolean isConnectedToBoundaryInside()
+            throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -302,7 +302,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
+    public boolean isConnectedToBoundaryOutside()
+            throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
@@ -601,8 +602,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                                         // time this thread completes and the time that
                                         // that the putToAllThread gets around to marking
                                         // itself unblocked.
-                                        director.threadUnblocked(
-                                                putToAllThread,
+                                        director.threadUnblocked(putToAllThread,
                                                 CSPReceiver.this);
                                     }
                                 }
@@ -705,8 +705,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @exception InterruptedException If the actor is
      *   interrupted while waiting(for a rendezvous to complete).
      */
-    protected void _checkFlagsAndWait() throws TerminateProcessException,
-    InterruptedException {
+    protected void _checkFlagsAndWait()
+            throws TerminateProcessException, InterruptedException {
         // Actually you should already have a lock before calling this
         // method. Otherwise you will miss notifies and cause deadlocks.
         Object lock = _getDirector();
@@ -884,8 +884,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private void _checkFlags() throws TerminateProcessException {
         synchronized (_getDirector()) {
             if (_modelFinished) {
-                throw new TerminateProcessException(getContainer().getName()
-                        + ": terminated.");
+                throw new TerminateProcessException(
+                        getContainer().getName() + ": terminated.");
             }
         }
     }

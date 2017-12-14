@@ -45,7 +45,8 @@ import ptolemy.kernel.util.Nameable;
  @Pt.AcceptedRating Red (hyzheng)
  */
 @SuppressWarnings("serial")
-public class MultipleEnabledTransitionsException extends IllegalActionException {
+public class MultipleEnabledTransitionsException
+        extends IllegalActionException {
     /** Construct an exception with a detail message.
      *  @param detail The message.
      */

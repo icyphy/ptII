@@ -171,8 +171,8 @@ public class MoMLViewerApplet extends MoMLApplet {
                         .readConfiguration(specificationURL);
                 report("Opened '" + specificationURL + "': " + _configuration);
             } catch (Exception ex) {
-                throw new RuntimeException("Failed to open '"
-                        + configurationPath + "':", ex);
+                throw new RuntimeException(
+                        "Failed to open '" + configurationPath + "':", ex);
             }
         }
 
@@ -261,9 +261,8 @@ public class MoMLViewerApplet extends MoMLApplet {
         // below the schematic.
         String panelFlag = getParameter("includeRunPanel");
 
-        if (panelFlag != null
-                && panelFlag.trim().toLowerCase(Locale.getDefault())
-                .equals("true")) {
+        if (panelFlag != null && panelFlag.trim()
+                .toLowerCase(Locale.getDefault()).equals("true")) {
             // NOTE: We could create a separator between the schematic
             // and the control panel here.
             super._createView();

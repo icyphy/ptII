@@ -105,7 +105,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
     public void addActor(String name) throws PtalonRuntimeException {
         try {
             if (_currentActorTree == null) {
-                throw new PtalonRuntimeException("Not in an actor declaration.");
+                throw new PtalonRuntimeException(
+                        "Not in an actor declaration.");
             }
 
             String symbol = _currentActorTree.getSymbol();
@@ -148,8 +149,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             if (_getType(symbol).equals("import")) {
                 PtalonActor actor = new PtalonActor(_actor, uniqueName);
                 URL url = _imports.get(symbol);
-                actor.ptalonCodeLocation.setToken(new StringToken(url
-                        .toString()));
+                actor.ptalonCodeLocation
+                        .setToken(new StringToken(url.toString()));
                 actor.setNestedDepth(_actor.getNestedDepth() + 1);
                 _currentActorTree.assignPtalonParameters(actor);
                 _currentActorTree.makeConnections(actor);
@@ -158,8 +159,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 PtalonParameter parameter = (PtalonParameter) _actor
                         .getAttribute(getMappedName(symbol));
                 if (!parameter.hasValue()) {
-                    throw new PtalonRuntimeException("Parameter" + symbol
-                            + "has no value");
+                    throw new PtalonRuntimeException(
+                            "Parameter" + symbol + "has no value");
                 }
                 String expression = parameter.getExpression();
                 String[] parsedExpression;
@@ -176,8 +177,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     // Set ptalonCodeLocation to a path to the .ptln file.
                     // The path will have $CLASSPATH in it so that this works
                     // in WebStart and the installer.
-                    ptalonActor.ptalonCodeLocation.setToken(new StringToken(
-                            _parameterToImport(actor)));
+                    ptalonActor.ptalonCodeLocation.setToken(
+                            new StringToken(_parameterToImport(actor)));
                     ptalonActor.setNestedDepth(_actor.getNestedDepth() + 1);
                     for (int i = 1; i < parsedExpression.length; i = i + 2) {
                         String lhs = parsedExpression[i];
@@ -378,7 +379,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      *  already been added somewhere in the current scope.
      */
     @Override
-    public void addSymbol(String name, String type) throws PtalonScopeException {
+    public void addSymbol(String name, String type)
+            throws PtalonScopeException {
         super.addSymbol(name, type);
         if (type.equals("actorparameter")) {
             _instanceNumbers.put(name, -1);
@@ -424,8 +426,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             }
         }
         if (!exists) {
-            throw new PtalonRuntimeException("Subscope " + name
-                    + " does not exist");
+            throw new PtalonRuntimeException(
+                    "Subscope " + name + " does not exist");
         }
     }
 
@@ -539,7 +541,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      *  @exception PtalonScopeException If not inside the scope of an
      *  actor declaration.
      */
-    public void setActorParameter(String paramName) throws PtalonScopeException {
+    public void setActorParameter(String paramName)
+            throws PtalonScopeException {
         if (_currentActorTree == null) {
             throw new PtalonScopeException(
                     "Not inside the scope of an actor declaration.");
@@ -643,8 +646,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             index++;
             lastMarker = thisMarker;
         }
-        assignments[index] = remains
-                .substring(lastMarker + 1, remains.length());
+        assignments[index] = remains.substring(lastMarker + 1,
+                remains.length());
         String[] output = new String[2 * assignments.length + 1];
         output[0] = actor;
         for (int i = 0; i < assignments.length; i++) {
@@ -668,10 +671,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      */
     private String _uniqueSymbol(String symbol) throws PtalonScopeException {
         String type = _getType(symbol);
-        if (!(type.equals("import") || type.equals("actorparameter") || type
-                .equals("this"))) {
-            throw new PtalonScopeException("Symbol " + symbol
-                    + " not an import or parameter");
+        if (!(type.equals("import") || type.equals("actorparameter")
+                || type.equals("this"))) {
+            throw new PtalonScopeException(
+                    "Symbol " + symbol + " not an import or parameter");
         }
         try {
             Integer number = _instanceNumbers.get(symbol) + 1;
@@ -679,8 +682,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             String output = "_" + symbol + "_" + number;
             return output;
         } catch (Exception ex) {
-            throw new PtalonScopeException("Unable to get unique name for "
-                    + symbol, ex);
+            throw new PtalonScopeException(
+                    "Unable to get unique name for " + symbol, ex);
         }
     }
 
@@ -772,7 +775,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *  @param parameterName The name of the parameter.
          *  @param expression The expression to assign to the parameter.
          */
-        public void addParameterAssign(String parameterName, String expression) {
+        public void addParameterAssign(String parameterName,
+                String expression) {
             _parameters.put(parameterName, expression);
         }
 
@@ -823,8 +827,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         addPortAssign(connectPoint, portName);
                         return;
                     } else {
-                        throw new PtalonScopeException(connectPoint
-                                + " is not a port or relation.");
+                        throw new PtalonScopeException(
+                                connectPoint + " is not a port or relation.");
                     }
                     _transparentLeftHandSides.put(portName, connectPoint);
                     return;
@@ -837,8 +841,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             } else if (_getType(connectPoint).endsWith("port")) {
                 _ports.put(portName, connectPoint);
             } else {
-                throw new PtalonScopeException(connectPoint
-                        + " is not a port or relation.");
+                throw new PtalonScopeException(
+                        connectPoint + " is not a port or relation.");
             }
         }
 
@@ -1021,8 +1025,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         parameter = new PtalonExpressionParameter(actor,
                                 uniqueName);
                     }
-                    Token result = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope);
+                    Token result = _parseTreeEvaluator
+                            .evaluateParseTree(_parseTree, _scope);
                     parameter.setToken(result);
                     // Validate the parameter to ensure that any value
                     // dependents are notified.
@@ -1100,8 +1104,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 buffer.append("(" + child.getExpression() + ")");
             }
             for (String param : _parameters.keySet()) {
-                buffer.append("(" + param + " := " + _parameters.get(param)
-                        + ")");
+                buffer.append(
+                        "(" + param + " := " + _parameters.get(param) + ")");
             }
             String output = buffer.toString();
             return output;
@@ -1124,8 +1128,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          */
         public boolean isReady() throws PtalonRuntimeException {
             for (String portName : _unknownLeftSides.keySet()) {
-                String evaluation = evaluateString(_unknownLeftSides
-                        .get(portName));
+                String evaluation = evaluateString(
+                        _unknownLeftSides.get(portName));
                 if (evaluation == null) {
                     return false;
                 }
@@ -1138,7 +1142,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             continue;
                         }
                         if (portType.equals("transparent")) {
-                            if (!_transparentRelations.containsKey(evaluation)) {
+                            if (!_transparentRelations
+                                    .containsKey(evaluation)) {
                                 return false;
                             }
                         }
@@ -1158,15 +1163,14 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 }
                 String connectType = "";
                 try {
-                    connectType = _getType(_transparentLeftHandSides
-                            .get(transparency));
+                    connectType = _getType(
+                            _transparentLeftHandSides.get(transparency));
                 } catch (PtalonScopeException ex) {
                     continue;
                 }
                 if (connectType.equals("transparent")
-                        && !_transparentRelations
-                                .containsKey(_transparentLeftHandSides
-                                        .get(transparency))) {
+                        && !_transparentRelations.containsKey(
+                                _transparentLeftHandSides.get(transparency))) {
                     return false;
                 }
             }
@@ -1176,10 +1180,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     if (!param.hasValue()) {
                         return false;
                     }
-                } else if (!(_getType(_symbol).equals("import") || _getType(
-                        _symbol).equals("this"))) {
-                    throw new PtalonRuntimeException("Bad type for symbol "
-                            + _symbol);
+                } else if (!(_getType(_symbol).equals("import")
+                        || _getType(_symbol).equals("this"))) {
+                    throw new PtalonRuntimeException(
+                            "Bad type for symbol " + _symbol);
                 }
                 for (ActorTree child : _children) {
                     if (!child.isReady()) {
@@ -1205,8 +1209,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 throws PtalonRuntimeException {
             try {
                 for (String portName : _relations.keySet()) {
-                    String relationName = _actor.getMappedName(_relations
-                            .get(portName));
+                    String relationName = _actor
+                            .getMappedName(_relations.get(portName));
                     TypedIORelation relation = (TypedIORelation) _actor
                             .getRelation(relationName);
                     TypedIOPort port = (TypedIOPort) actor.getPort(portName);
@@ -1255,7 +1259,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                     .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
                                     TypedIOPort testPort = (TypedIOPort) connection;
-                                    if (testPort.getContainer().equals(_actor)) {
+                                    if (testPort.getContainer()
+                                            .equals(_actor)) {
                                         if (testPort.isInput()) {
                                             port.setInput(true);
                                         }
@@ -1289,8 +1294,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 }
                 for (String portName : _ports.keySet()) {
                     TypedIOPort port = (TypedIOPort) actor.getPort(portName);
-                    String containerPortName = _actor.getMappedName(_ports
-                            .get(portName));
+                    String containerPortName = _actor
+                            .getMappedName(_ports.get(portName));
                     TypedIOPort containerPort = (TypedIOPort) _actor
                             .getPort(containerPortName);
                     if (port == null) {
@@ -1311,8 +1316,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     containerPort.link(relation);
                 }
                 for (String portName : _unknownPrefixes.keySet()) {
-                    String suffix = evaluateString(_unknownExpressions
-                            .get(portName));
+                    String suffix = evaluateString(
+                            _unknownExpressions.get(portName));
                     if (suffix == null) {
                         throw new PtalonRuntimeException(
                                 "Not able to evaluate suffix "
@@ -1354,7 +1359,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                     .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
                                     TypedIOPort testPort = (TypedIOPort) connection;
-                                    if (testPort.getContainer().equals(_actor)) {
+                                    if (testPort.getContainer()
+                                            .equals(_actor)) {
                                         if (testPort.isInput()) {
                                             port.setInput(true);
                                         }
@@ -1391,8 +1397,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                         .linkedPortList()) {
                                     if (connection instanceof TypedIOPort) {
                                         TypedIOPort testPort = (TypedIOPort) connection;
-                                        if (testPort.getContainer().equals(
-                                                _actor)) {
+                                        if (testPort.getContainer()
+                                                .equals(_actor)) {
                                             if (testPort.isInput()) {
                                                 port.setInput(true);
                                             }
@@ -1424,8 +1430,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             _transparentRelations.put(name, port);
                         }
                     } else {
-                        throw new PtalonRuntimeException(name
-                                + " not a port or relation");
+                        throw new PtalonRuntimeException(
+                                name + " not a port or relation");
                     }
                 }
                 if (_danglingPortsOkay) {
@@ -1436,8 +1442,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     if (port instanceof TypedIOPort) {
                         TypedIOPort ioport = (TypedIOPort) port;
                         if (ioport.numLinks() == 0) {
-                            String name = container.uniqueName(actor.getName()
-                                    + "_" + ioport.getName());
+                            String name = container.uniqueName(
+                                    actor.getName() + "_" + ioport.getName());
                             TypedIOPort newPort = new TypedIOPort(container,
                                     name);
                             String rel = container.uniqueName("relation");
@@ -1480,8 +1486,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
         public void makeThisConnections() throws PtalonRuntimeException {
             try {
                 for (String portName : _relations.keySet()) {
-                    String relationName = _actor.getMappedName(_relations
-                            .get(portName));
+                    String relationName = _actor
+                            .getMappedName(_relations.get(portName));
                     TypedIORelation relation = (TypedIORelation) _actor
                             .getRelation(relationName);
                     TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
@@ -1489,8 +1495,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         if (_transparentRelations.containsKey(portName)) {
                             port = _transparentRelations.get(portName);
                         } else {
-                            throw new PtalonRuntimeException("No port named "
-                                    + portName);
+                            throw new PtalonRuntimeException(
+                                    "No port named " + portName);
                         }
                     }
                     port.link(relation);
@@ -1517,21 +1523,21 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         connectionPoint.link(rel);
                     } else {
                         if (port == null) {
-                            throw new PtalonRuntimeException("No port named "
-                                    + portName);
+                            throw new PtalonRuntimeException(
+                                    "No port named " + portName);
                         }
                         _transparentRelations.put(shortName, port);
                     }
                 }
                 for (String portName : _ports.keySet()) {
                     TypedIOPort port = (TypedIOPort) _actor.getPort(portName);
-                    String containerPortName = _actor.getMappedName(_ports
-                            .get(portName));
+                    String containerPortName = _actor
+                            .getMappedName(_ports.get(portName));
                     TypedIOPort containerPort = (TypedIOPort) _actor
                             .getPort(containerPortName);
                     if (port == null) {
-                        throw new PtalonRuntimeException("No port named "
-                                + portName);
+                        throw new PtalonRuntimeException(
+                                "No port named " + portName);
                     }
                     String relationName = _actor.uniqueName("relation");
                     TypedIORelation relation = new TypedIORelation(_actor,
@@ -1541,8 +1547,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     containerPort.link(relation);
                 }
                 for (String portName : _unknownPrefixes.keySet()) {
-                    String suffix = evaluateString(_unknownExpressions
-                            .get(portName));
+                    String suffix = evaluateString(
+                            _unknownExpressions.get(portName));
                     if (suffix == null) {
                         throw new PtalonRuntimeException(
                                 "Not able to evaluate suffix "
@@ -1556,8 +1562,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         TypedIOPort containerPort = (TypedIOPort) _actor
                                 .getPort(containerPortName);
                         if (port == null) {
-                            throw new PtalonRuntimeException("No port named "
-                                    + portName);
+                            throw new PtalonRuntimeException(
+                                    "No port named " + portName);
                         }
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation relation = new TypedIORelation(_actor,
@@ -1591,7 +1597,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                     relationName);
                             rel.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                             if (port == null) {
-                                if (_transparentRelations.containsKey(portName)) {
+                                if (_transparentRelations
+                                        .containsKey(portName)) {
                                     port = _transparentRelations.get(portName);
                                 } else {
                                     throw new PtalonRuntimeException(
@@ -1608,8 +1615,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             _transparentRelations.put(name, port);
                         }
                     } else {
-                        throw new PtalonRuntimeException(name
-                                + " not a port or relation");
+                        throw new PtalonRuntimeException(
+                                name + " not a port or relation");
                     }
                 }
             } catch (Throwable throwable) {

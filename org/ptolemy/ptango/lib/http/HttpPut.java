@@ -62,6 +62,7 @@ public class HttpPut extends HttpSink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    @Override
     protected Method getMethod() {
         return Method.PUT;
     }

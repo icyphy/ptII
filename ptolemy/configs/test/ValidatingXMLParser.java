@@ -103,24 +103,27 @@ public class ValidatingXMLParser extends DefaultHandler {
             // show which .xml file is failing.  Validating the
             // accessors required this.
             xmlReader.setErrorHandler(new ErrorHandler() {
-                    @Override
-                    public void fatalError(SAXParseException exception) throws SAXException {
-                        System.err.println("fatalError: " + exception);
-                        throw exception;
-                    }
+                @Override
+                public void fatalError(SAXParseException exception)
+                        throws SAXException {
+                    System.err.println("fatalError: " + exception);
+                    throw exception;
+                }
 
-                    @Override
-                    public void error(SAXParseException exception) throws SAXException {
-                        System.err.println("error: " + exception);
-                        throw exception;
-                    }
+                @Override
+                public void error(SAXParseException exception)
+                        throws SAXException {
+                    System.err.println("error: " + exception);
+                    throw exception;
+                }
 
-                    @Override
-                    public void warning(SAXParseException exception) throws SAXException {
-                        System.err.println("warning: " + exception);
-                        throw exception;
-                    }
-                });
+                @Override
+                public void warning(SAXParseException exception)
+                        throws SAXException {
+                    System.err.println("warning: " + exception);
+                    throw exception;
+                }
+            });
             MoMLEntityResolver resolver = new MoMLEntityResolver();
             xmlReader.setEntityResolver(resolver);
             xmlReader.setContentHandler(handler);
@@ -154,23 +157,28 @@ public class ValidatingXMLParser extends DefaultHandler {
         @Override
         public InputSource resolveEntity(String publicID, String systemID)
                 throws SAXException {
-            if (systemID
-                    .equals("http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd")) {
-                InputSource source = new InputSource(new StringReader(MoMLParser.MoML_DTD_1));
+            if (systemID.equals(
+                    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd")) {
+                InputSource source = new InputSource(
+                        new StringReader(MoMLParser.MoML_DTD_1));
                 source.setPublicId(publicID);
                 source.setSystemId(systemID);
                 return source;
             } else if (publicID.equals("-//TerraSwarm//DTD Accessor 1//EN")
-                       && systemID.equals("https://accessors.org/Accessor_1.dtd")) {
+                    && systemID
+                            .equals("https://accessors.org/Accessor_1.dtd")) {
                 try {
                     // See also org/terraswarm/accessor/JSAccessor.java
-                    String dtd = FileUtilities.getFileAsString("$CLASSPATH/org/terraswarm/accessor/accessors/web/Accessor_1.dtd");
+                    String dtd = FileUtilities.getFileAsString(
+                            "$CLASSPATH/org/terraswarm/accessor/accessors/web/Accessor_1.dtd");
                     InputSource source = new InputSource(new StringReader(dtd));
                     source.setPublicId(publicID);
                     source.setSystemId(systemID);
                     return source;
                 } catch (Exception ex) {
-                    throw new SAXException("Failed to read Accessor_1.dtd from local file system", ex);
+                    throw new SAXException(
+                            "Failed to read Accessor_1.dtd from local file system",
+                            ex);
                 }
             }
             return null;
@@ -201,11 +209,12 @@ public class ValidatingXMLParser extends DefaultHandler {
     @Override
     public void endElement(String namespaceURI, String sName, // simple name
             String qName // qualified name
-            ) throws SAXException {
+    ) throws SAXException {
     }
 
     @Override
-    public void characters(char[] buf, int offset, int len) throws SAXException {
+    public void characters(char[] buf, int offset, int len)
+            throws SAXException {
     }
 
     @Override

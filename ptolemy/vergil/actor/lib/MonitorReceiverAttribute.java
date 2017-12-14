@@ -63,8 +63,8 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  @Pt.AcceptedRating Red (cxh)
  @see MonitorReceiverContents
  */
-public class MonitorReceiverAttribute extends SingletonAttribute implements
-Settable {
+public class MonitorReceiverAttribute extends SingletonAttribute
+        implements Settable {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.

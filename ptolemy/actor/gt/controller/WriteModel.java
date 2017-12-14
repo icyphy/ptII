@@ -108,10 +108,11 @@ public class WriteModel extends GTEvent {
             }
             model.exportMoML(writer, 0, modelName);
             writer.close();
-            _debug(new PteraDebugEvent(this, "Write file " + modelFile.asURL()));
+            _debug(new PteraDebugEvent(this,
+                    "Write file " + modelFile.asURL()));
         } catch (IOException e) {
-            _debug(new PteraErrorEvent(this, "Unable to write file "
-                    + modelFile.asURL()));
+            _debug(new PteraErrorEvent(this,
+                    "Unable to write file " + modelFile.asURL()));
             throw new IllegalActionException(this, e, "Unable to output "
                     + "to file \"" + modelFile.stringValue().trim() + "\".");
         }

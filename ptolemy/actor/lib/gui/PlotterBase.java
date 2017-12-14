@@ -81,8 +81,8 @@ import ptolemy.plot.plotml.PlotMLParser;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (cxh)
  */
-public class PlotterBase extends TypedAtomicActor implements Configurable,
-PortablePlaceable {
+public class PlotterBase extends TypedAtomicActor
+        implements Configurable, PortablePlaceable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -95,8 +95,8 @@ PortablePlaceable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fillOnWrapup = new Parameter(this, "fillOnWrapup", new BooleanToken(
-                true));
+        fillOnWrapup = new Parameter(this, "fillOnWrapup",
+                new BooleanToken(true));
         fillOnWrapup.setTypeEquals(BaseType.BOOLEAN);
 
         automaticRescale = new Parameter(this, "automaticRescale",
@@ -107,15 +107,14 @@ PortablePlaceable {
 
         _getImplementation().initWindowAndSizeProperties();
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-12\" y=\"-12\" "
-                + "width=\"24\" height=\"24\" " + "style=\"fill:white\"/>\n"
-                + "<rect x=\"2\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n" + "<rect x=\"8\" y=\"-18\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
+                + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
                 + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"14\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
+                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
                 + "<polyline points=\"-10,0, -5,-8, 5,8, 10,0\" "
                 + "style=\"stroke:red\"/>\n" + "</svg>\n");
     }
@@ -465,8 +464,8 @@ PortablePlaceable {
      *  @see #getName(NamedObj)
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         _getImplementation().setTableauTitle(name);
@@ -525,8 +524,8 @@ PortablePlaceable {
             // The second (null) argument indicates that PlotML PUBLIC DTD
             // should be referenced.
             plot.writeFormat(print);
-            output.write("</plot>?>\n" + _getIndentPrefix(depth)
-                    + "</configure>\n");
+            output.write(
+                    "</plot>?>\n" + _getIndentPrefix(depth) + "</configure>\n");
         } else if (_configureSources != null) {
             // Configuration has been specified, but not yet evaluated.
             // Save the configuration just as specified.
@@ -585,8 +584,8 @@ PortablePlaceable {
                         + "so PlotterBase is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    PlotterBaseInterface.class);
+            _implementation = PtolemyInjector.getInjector()
+                    .getInstance(PlotterBaseInterface.class);
             _implementation.init(this);
         }
         return _implementation;
@@ -624,9 +623,9 @@ PortablePlaceable {
                 try {
                     configure(base, source, text);
                 } catch (Exception ex) {
-                    System.out.println("Failed to parse? base: \"" + base
-                            + "\": source:\"" + source + "text:\"" + text
-                            + "\"");
+                    System.out.println(
+                            "Failed to parse? base: \"" + base + "\": source:\""
+                                    + source + "text:\"" + text + "\"");
                     getManager().notifyListenersOfException(ex);
                 }
             }

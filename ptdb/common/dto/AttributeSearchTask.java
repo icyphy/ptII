@@ -89,7 +89,8 @@ public class AttributeSearchTask extends Task {
      * @see #getAttributesList
      * @param attributesList List of attributes for search.
      */
-    public void setAttributesList(ArrayList<PTDBGenericAttribute> attributesList) {
+    public void setAttributesList(
+            ArrayList<PTDBGenericAttribute> attributesList) {
         _attributesList = attributesList;
     }
 

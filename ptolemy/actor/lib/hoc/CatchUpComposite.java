@@ -144,8 +144,8 @@ public class CatchUpComposite extends MirrorComposite {
             // Remove the old inner CatchUpDirector(s) that is(are) in the wrong workspace.
             // FIXME: Is this really needed? Following IterateOverArray.
             String catchUpDirectorName = null;
-            Iterator catchUpDirectors = result.attributeList(
-                    CatchUpDirector.class).iterator();
+            Iterator catchUpDirectors = result
+                    .attributeList(CatchUpDirector.class).iterator();
             while (catchUpDirectors.hasNext()) {
                 CatchUpDirector oldCatchUpDirector = (CatchUpDirector) catchUpDirectors
                         .next();
@@ -161,8 +161,8 @@ public class CatchUpComposite extends MirrorComposite {
             catchUpDirector.setContainer(result);
             catchUpDirector.setName(catchUpDirectorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone: " + throwable);
         }
         return result;
     }
@@ -240,14 +240,14 @@ public class CatchUpComposite extends MirrorComposite {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /** Initialize the actor.
      *  @exception IllegalActionException If the container is incompatible
      *   with this actor.
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    private void _init()  throws IllegalActionException, NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.CatchUpComposite");
 
         // Create the CatchUpDirector in the proper workspace.
@@ -256,7 +256,8 @@ public class CatchUpComposite extends MirrorComposite {
         _director.setName("CatchUpDirector");
 
         // Create the composite actor for the contents.
-        _contents = new MirrorComposite.MirrorCompositeContents(this, "Contents");
+        _contents = new MirrorComposite.MirrorCompositeContents(this,
+                "Contents");
 
         // Override the default icon.
         _attachText("_iconDescription", _defaultIcon);
@@ -278,7 +279,8 @@ public class CatchUpComposite extends MirrorComposite {
      *  one more time. On this "caught up" firing, the inside
      *  model is permitted to produce outputs.
      */
-    private class CatchUpDirector extends Director implements SuperdenseTimeDirector {
+    private class CatchUpDirector extends Director
+            implements SuperdenseTimeDirector {
 
         /** Construct an CatchUpDirector in the specified workspace with
          *  no container and an empty string as a name.
@@ -302,7 +304,8 @@ public class CatchUpComposite extends MirrorComposite {
          *  @see #exportMoML(Writer, int, String)
          */
         @Override
-        public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        public Object clone(Workspace workspace)
+                throws CloneNotSupportedException {
             CatchUpDirector result = (CatchUpDirector) super.clone(workspace);
             result._pendingFiringTimes = null;
             return result;
@@ -330,19 +333,24 @@ public class CatchUpComposite extends MirrorComposite {
 
             Director enclosingDirector = container.getExecutiveDirector();
             if (enclosingDirector == null) {
-                throw new IllegalActionException(container, "No enclosing director!");
+                throw new IllegalActionException(container,
+                        "No enclosing director!");
             }
             int microstep = 1;
             if (enclosingDirector instanceof SuperdenseTimeDirector) {
-                microstep = ((SuperdenseTimeDirector)enclosingDirector).getIndex();
+                microstep = ((SuperdenseTimeDirector) enclosingDirector)
+                        .getIndex();
             }
-            SuperdenseTime environmentTime = new SuperdenseTime(getModelTime(), microstep);
+            SuperdenseTime environmentTime = new SuperdenseTime(getModelTime(),
+                    microstep);
 
             // Perform catch up iterations, if necessary.
             if (_pendingFiringTimes != null) {
-                SuperdenseTime firstPendingFiringTime = _pendingFiringTimes.peek();
+                SuperdenseTime firstPendingFiringTime = _pendingFiringTimes
+                        .peek();
                 while (firstPendingFiringTime != null) {
-                    int comparison = firstPendingFiringTime.compareTo(environmentTime);
+                    int comparison = firstPendingFiringTime
+                            .compareTo(environmentTime);
                     if (comparison < 0) {
                         // Catch up iteration is needed.
                         _pendingFiringTimes.poll();
@@ -358,15 +366,16 @@ public class CatchUpComposite extends MirrorComposite {
                             }
                             // If any output port has tokens, this is an error.
                             List<IOPort> ports = outputPortList();
-                            for (IOPort port: ports) {
+                            for (IOPort port : ports) {
                                 for (int i = 0; i < port.getWidth(); i++) {
                                     if (port.hasTokenInside(i)) {
                                         throw new IllegalActionException(port,
                                                 "Illegal output during catch up iteration. "
-                                                + "Composite actor is attempting to produce an output at time "
-                                                + _catchUpTime
-                                                + ", but environment time is past that at "
-                                                + environmentTime.timestamp());
+                                                        + "Composite actor is attempting to produce an output at time "
+                                                        + _catchUpTime
+                                                        + ", but environment time is past that at "
+                                                        + environmentTime
+                                                                .timestamp());
                                     }
                                 }
                             }
@@ -393,8 +402,8 @@ public class CatchUpComposite extends MirrorComposite {
             if (_postfireReturns == true) {
                 _microstep = microstep;
                 // Transfer inputs.
-                for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext() && !_stopRequested;) {
+                for (Iterator<?> inputPorts = inputPortList()
+                        .iterator(); inputPorts.hasNext() && !_stopRequested;) {
                     IOPort p = (IOPort) inputPorts.next();
                     if (p instanceof ParameterPort) {
                         ((ParameterPort) p).getParameter().update();
@@ -415,11 +424,13 @@ public class CatchUpComposite extends MirrorComposite {
                 // If there is a pending request in the future, delegate
                 // a fireAt() request.
                 if (_pendingFiringTimes != null) {
-                    SuperdenseTime firstPendingFiringTime = _pendingFiringTimes.peek();
-                    if (firstPendingFiringTime != null
-                            && firstPendingFiringTime.compareTo(environmentTime) > 0) {
+                    SuperdenseTime firstPendingFiringTime = _pendingFiringTimes
+                            .peek();
+                    if (firstPendingFiringTime != null && firstPendingFiringTime
+                            .compareTo(environmentTime) > 0) {
                         // First argument is ignored, so it can be null.
-                        fireAt(null, firstPendingFiringTime.timestamp(), firstPendingFiringTime.index());
+                        fireAt(null, firstPendingFiringTime.timestamp(),
+                                firstPendingFiringTime.index());
                     }
                 }
             }
@@ -447,7 +458,9 @@ public class CatchUpComposite extends MirrorComposite {
          *   and it throws it. Derived classes may choose to throw this
          *   exception for other reasons.
          */
-        public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        @Override
+        public Time fireAt(Actor actor, Time time)
+                throws IllegalActionException {
             // Unless the actor specifically requests a particular microstep,
             // we assume it knows nothing about microsteps. We use microstep 1
             // as the default, since this is the default for discrete events.
@@ -474,6 +487,7 @@ public class CatchUpComposite extends MirrorComposite {
          *   and it throws it. Derived classes may choose to throw this
          *   exception for other reasons.
          */
+        @Override
         public Time fireAt(Actor actor, Time time, int microstep)
                 throws IllegalActionException {
             if (_debugging) {
@@ -485,8 +499,8 @@ public class CatchUpComposite extends MirrorComposite {
                     .getEnvironmentTimeForLocalTime(time);
             Director director = getExecutiveDirector();
 
-            Time response = director.fireAt(CatchUpComposite.this, environmentTime,
-                    microstep);
+            Time response = director.fireAt(CatchUpComposite.this,
+                    environmentTime, microstep);
 
             int comparison = response.compareTo(time);
             if (comparison == 0) {
@@ -517,6 +531,7 @@ public class CatchUpComposite extends MirrorComposite {
          *  @return The current time.
          *  @see #setModelTime(Time)
          */
+        @Override
         public Time getModelTime() {
             if (_catchUpTime == null) {
                 return super.getModelTime();
@@ -551,11 +566,13 @@ public class CatchUpComposite extends MirrorComposite {
             if (isEmbedded()) {
                 Director executiveDirector = getExecutiveDirector();
                 if (executiveDirector instanceof SuperdenseTimeDirector) {
-                    _microstep = ((SuperdenseTimeDirector) executiveDirector).getIndex();
+                    _microstep = ((SuperdenseTimeDirector) executiveDirector)
+                            .getIndex();
                 }
             }
             super.initialize();
         }
+
         /** Return a new instance of QueueReceiver.
          *  We use a QueueReceiver rather than the base class's MailboxReceiver
          *  so that more than one token can be transferred to the inside
@@ -601,13 +618,15 @@ public class CatchUpComposite extends MirrorComposite {
          */
         private boolean _fireContents() throws IllegalActionException {
             if (_debugging) {
-                _debug(new FiringEvent(this, _contents, FiringEvent.BEFORE_ITERATE, 1));
+                _debug(new FiringEvent(this, _contents,
+                        FiringEvent.BEFORE_ITERATE, 1));
             }
             if (_contents.iterate(1) == Executable.STOP_ITERATING) {
                 _postfireReturns = false;
             }
             if (_debugging) {
-                _debug(new FiringEvent(this, _contents, FiringEvent.AFTER_ITERATE, 1));
+                _debug(new FiringEvent(this, _contents,
+                        FiringEvent.AFTER_ITERATE, 1));
             }
             return _postfireReturns;
         }

@@ -123,8 +123,8 @@ public class IntegerCounter extends SynchronousFixTransformer {
                         "Cannot set the container for the enable port");
             }
         } else if (attribute == width) {
-            _setQuantizationParameters("U" + width.getExpression() + ".0",
-                    null, null);
+            _setQuantizationParameters("U" + width.getExpression() + ".0", null,
+                    null);
         } else {
             super.attributeChanged(attribute);
         }
@@ -149,9 +149,8 @@ public class IntegerCounter extends SynchronousFixTransformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        if (reset.isKnown()
-                && (enable.getContainer() == null || enable.getContainer() != null
-                && enable.isKnown())) {
+        if (reset.isKnown() && (enable.getContainer() == null
+                || enable.getContainer() != null && enable.isKnown())) {
 
             _currentCount = _previousCount;
 

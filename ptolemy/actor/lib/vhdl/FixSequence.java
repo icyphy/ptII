@@ -169,22 +169,23 @@ public class FixSequence extends FixTransformer {
             if (_currentIndex < valuesArray.length()) {
                 Precision precision = new Precision(
                         ((Parameter) getAttribute("outputPrecision"))
-                        .getExpression());
+                                .getExpression());
 
                 Overflow overflow = Overflow
                         .getName(((Parameter) getAttribute("outputOverflow"))
-                                .getExpression().toLowerCase(
-                                        Locale.getDefault()));
+                                .getExpression()
+                                .toLowerCase(Locale.getDefault()));
 
                 Rounding rounding = Rounding
                         .getName(((Parameter) getAttribute("outputRounding"))
-                                .getExpression().toLowerCase(
-                                        Locale.getDefault()));
+                                .getExpression()
+                                .toLowerCase(Locale.getDefault()));
 
                 FixPoint result = new FixPoint(
                         ((ScalarToken) valuesArray.getElement(_currentIndex))
-                        .doubleValue(),
-                        new FixPointQuantization(precision, overflow, rounding));
+                                .doubleValue(),
+                        new FixPointQuantization(precision, overflow,
+                                rounding));
                 sendOutput(output, 0, new FixToken(result));
                 _outputProduced = true;
             }

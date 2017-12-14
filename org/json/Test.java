@@ -110,7 +110,8 @@ public class Test {
             System.out.println(a.toString());
             System.out.println("");
 
-            j = XML.toJSONObject("<![CDATA[This is a collection of test patterns and examples for org.json.]]>  Ignore the stuff past the end.  ");
+            j = XML.toJSONObject(
+                    "<![CDATA[This is a collection of test patterns and examples for org.json.]]>  Ignore the stuff past the end.  ");
             System.out.println(j.toString());
             System.out.println("");
 
@@ -184,8 +185,8 @@ public class Test {
             System.out.println(s);
 
             System.out.println(new JSONStringer().object().key("a").array()
-                    .array().array().value("b").endArray().endArray()
-                    .endArray().endObject().toString());
+                    .array().array().value("b").endArray().endArray().endArray()
+                    .endObject().toString());
 
             jj = new JSONStringer();
             jj.array();
@@ -305,37 +306,44 @@ public class Test {
             System.out.println(JSONML.toString(ja));
             System.out.println("");
 
-            j = XML.toJSONObject("<?xml version=\"1.0\" ?><Book Author=\"Anonymous\"><Title>Sample Book</Title><Chapter id=\"1\">This is chapter 1. It is not very long or interesting.</Chapter><Chapter id=\"2\">This is chapter 2. Although it is longer than chapter 1, it is not any more interesting.</Chapter></Book>");
+            j = XML.toJSONObject(
+                    "<?xml version=\"1.0\" ?><Book Author=\"Anonymous\"><Title>Sample Book</Title><Chapter id=\"1\">This is chapter 1. It is not very long or interesting.</Chapter><Chapter id=\"2\">This is chapter 2. Although it is longer than chapter 1, it is not any more interesting.</Chapter></Book>");
             System.out.println(j.toString(2));
             System.out.println(XML.toString(j));
             System.out.println("");
 
-            j = XML.toJSONObject("<!DOCTYPE bCard 'http://www.cs.caltech.edu/~adam/schemas/bCard'><bCard><?xml default bCard        firstname = ''        lastname  = '' company   = '' email = '' homepage  = ''?><bCard        firstname = 'Rohit'        lastname  = 'Khare'        company   = 'MCI'        email     = 'khare@mci.net'        homepage  = 'http://pest.w3.org/'/><bCard        firstname = 'Adam'        lastname  = 'Rifkin'        company   = 'Caltech Infospheres Project'        email     = 'adam@cs.caltech.edu'        homepage  = 'http://www.cs.caltech.edu/~adam/'/></bCard>");
+            j = XML.toJSONObject(
+                    "<!DOCTYPE bCard 'http://www.cs.caltech.edu/~adam/schemas/bCard'><bCard><?xml default bCard        firstname = ''        lastname  = '' company   = '' email = '' homepage  = ''?><bCard        firstname = 'Rohit'        lastname  = 'Khare'        company   = 'MCI'        email     = 'khare@mci.net'        homepage  = 'http://pest.w3.org/'/><bCard        firstname = 'Adam'        lastname  = 'Rifkin'        company   = 'Caltech Infospheres Project'        email     = 'adam@cs.caltech.edu'        homepage  = 'http://www.cs.caltech.edu/~adam/'/></bCard>");
             System.out.println(j.toString(2));
             System.out.println(XML.toString(j));
             System.out.println("");
 
-            j = XML.toJSONObject("<?xml version=\"1.0\"?><customer>    <firstName>        <text>Fred</text>    </firstName>    <ID>fbs0001</ID>    <lastName> <text>Scerbo</text>    </lastName>    <MI>        <text>B</text>    </MI></customer>");
+            j = XML.toJSONObject(
+                    "<?xml version=\"1.0\"?><customer>    <firstName>        <text>Fred</text>    </firstName>    <ID>fbs0001</ID>    <lastName> <text>Scerbo</text>    </lastName>    <MI>        <text>B</text>    </MI></customer>");
             System.out.println(j.toString(2));
             System.out.println(XML.toString(j));
             System.out.println("");
 
-            j = XML.toJSONObject("<!ENTITY tp-address PUBLIC '-//ABC University::Special Collections Library//TEXT (titlepage: name and address)//EN' 'tpspcoll.sgm'><list type='simple'><head>Repository Address </head><item>Special Collections Library</item><item>ABC University</item><item>Main Library, 40 Circle Drive</item><item>Ourtown, Pennsylvania</item><item>17654 USA</item></list>");
+            j = XML.toJSONObject(
+                    "<!ENTITY tp-address PUBLIC '-//ABC University::Special Collections Library//TEXT (titlepage: name and address)//EN' 'tpspcoll.sgm'><list type='simple'><head>Repository Address </head><item>Special Collections Library</item><item>ABC University</item><item>Main Library, 40 Circle Drive</item><item>Ourtown, Pennsylvania</item><item>17654 USA</item></list>");
             System.out.println(j.toString());
             System.out.println(XML.toString(j));
             System.out.println("");
 
-            j = XML.toJSONObject("<test intertag status=ok><empty/>deluxe<blip sweet=true>&amp;&quot;toot&quot;&toot;&#x41;</blip><x>eks</x><w>bonus</w><w>bonus2</w></test>");
+            j = XML.toJSONObject(
+                    "<test intertag status=ok><empty/>deluxe<blip sweet=true>&amp;&quot;toot&quot;&toot;&#x41;</blip><x>eks</x><w>bonus</w><w>bonus2</w></test>");
             System.out.println(j.toString(2));
             System.out.println(XML.toString(j));
             System.out.println("");
 
-            j = HTTP.toJSONObject("GET / HTTP/1.0\nAccept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms-powerpoint, application/vnd.ms-excel, application/msword, */*\nAccept-Language: en-us\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.5; Windows 98; Win 9x 4.90; T312461; Q312461)\nHost: www.nokko.com\nConnection: keep-alive\nAccept-encoding: gzip, deflate\n");
+            j = HTTP.toJSONObject(
+                    "GET / HTTP/1.0\nAccept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms-powerpoint, application/vnd.ms-excel, application/msword, */*\nAccept-Language: en-us\nUser-Agent: Mozilla/4.0 (compatible; MSIE 5.5; Windows 98; Win 9x 4.90; T312461; Q312461)\nHost: www.nokko.com\nConnection: keep-alive\nAccept-encoding: gzip, deflate\n");
             System.out.println(j.toString(2));
             System.out.println(HTTP.toString(j));
             System.out.println("");
 
-            j = HTTP.toJSONObject("HTTP/1.1 200 Oki Doki\nDate: Sun, 26 May 2002 17:38:52 GMT\nServer: Apache/1.3.23 (Unix) mod_perl/1.26\nKeep-Alive: timeout=15, max=100\nConnection: Keep-Alive\nTransfer-Encoding: chunked\nContent-Type: text/html\n");
+            j = HTTP.toJSONObject(
+                    "HTTP/1.1 200 Oki Doki\nDate: Sun, 26 May 2002 17:38:52 GMT\nServer: Apache/1.3.23 (Unix) mod_perl/1.26\nKeep-Alive: timeout=15, max=100\nConnection: Keep-Alive\nTransfer-Encoding: chunked\nContent-Type: text/html\n");
             System.out.println(j.toString(2));
             System.out.println(HTTP.toString(j));
             System.out.println("");
@@ -350,8 +358,7 @@ public class Test {
             System.out.println("");
 
             j = XML.toJSONObject("<?xml version='1.0' encoding='UTF-8'?>"
-                    + "\n\n"
-                    + "<SOAP-ENV:Envelope"
+                    + "\n\n" + "<SOAP-ENV:Envelope"
                     + " xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\""
                     + " xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\""
                     + " xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\">"
@@ -385,8 +392,8 @@ public class Test {
             System.out.println(CookieList.toString(j));
             System.out.println("");
 
-            j = Cookie
-                    .toJSONObject("f%oo=blah; secure ;expires = April 24, 2002");
+            j = Cookie.toJSONObject(
+                    "f%oo=blah; secure ;expires = April 24, 2002");
             System.out.println(j.toString(2));
             System.out.println(Cookie.toString(j));
             System.out.println("");
@@ -407,7 +414,8 @@ public class Test {
             System.out.println(j.toString());
             System.out.println("");
 
-            a = CDL.toJSONArray("Comma delimited list test, '\"Strip\"Quotes', 'quote, comma', No quotes, 'Single Quotes', \"Double Quotes\"\n1,'2',\"3\"\n,'It is \"good,\"', \"It works.\"\n\n");
+            a = CDL.toJSONArray(
+                    "Comma delimited list test, '\"Strip\"Quotes', 'quote, comma', No quotes, 'Single Quotes', \"Double Quotes\"\n1,'2',\"3\"\n,'It is \"good,\"', \"It works.\"\n\n");
 
             s = CDL.toString(a);
             System.out.println(s);
@@ -439,8 +447,8 @@ public class Test {
             System.out.println(j.toString(4));
 
             System.out.println("");
-            System.out.println(new JSONStringer().array().value(a).value(j)
-                    .endArray());
+            System.out.println(
+                    new JSONStringer().array().value(a).value(j).endArray());
 
             j = new JSONObject(
                     "{string: \"98.6\", long: 2147483648, int: 2147483647, longer: 9223372036854775807, double: 9223372036854775808}");

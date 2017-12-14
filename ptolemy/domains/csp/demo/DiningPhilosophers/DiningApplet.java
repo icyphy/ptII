@@ -70,8 +70,8 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.AcceptedRating Red (cxh)
  */
 @SuppressWarnings("serial")
-public class DiningApplet extends Applet implements Runnable,
-PhilosopherListener {
+public class DiningApplet extends Applet
+        implements Runnable, PhilosopherListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -278,8 +278,8 @@ PhilosopherListener {
                     // get the current time from director.
                     double currentTime = _localDirector.getModelTime()
                             .getDoubleValue();
-                    _currentTimeLabel.setText("Current time = "
-                            + nf.format(currentTime));
+                    _currentTimeLabel.setText(
+                            "Current time = " + nf.format(currentTime));
 
                     try {
                         sleep(100);
@@ -340,8 +340,8 @@ PhilosopherListener {
                 try {
                     spec = Double.valueOf(timespec).doubleValue();
                 } catch (NumberFormatException ex) {
-                    System.err.println("Invalid eating rate: "
-                            + ex.getMessage() + ", defaulting to 1.0");
+                    System.err.println("Invalid eating rate: " + ex.getMessage()
+                            + ", defaulting to 1.0");
                 }
 
                 try {

@@ -220,13 +220,13 @@ public class ReduceWorker extends TypedAtomicActor {
                             newAlgorithm = (MapReduceAlgorithm) _reduceClass
                                     .newInstance();
                         } catch (IllegalAccessException e) {
-                            throw new IllegalActionException(
-                                    classNameForReduce.stringValue()
+                            throw new IllegalActionException(classNameForReduce
+                                    .stringValue()
                                     + " does not have a no argument constructor");
                         } catch (InstantiationException e) {
                             throw new IllegalActionException(
                                     classNameForReduce.stringValue()
-                                    + " is abstract.");
+                                            + " is abstract.");
                         } catch (ClassCastException e) {
                             throw new IllegalActionException(
                                     "Unable to cast instance of "
@@ -351,8 +351,8 @@ public class ReduceWorker extends TypedAtomicActor {
             objectClass = Class.forName("java.lang.Object");
 
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException("No class named " + className
-                    + " could be found.");
+            throw new IllegalActionException(
+                    "No class named " + className + " could be found.");
         }
         Class<?> superClass = reduceClass;
         while (!superClass.equals(objectClass)) {
@@ -368,10 +368,10 @@ public class ReduceWorker extends TypedAtomicActor {
         }
         try {
             /*MapReduceAlgorithm algorithm = (MapReduceAlgorithm) */reduceClass
-            .newInstance();
+                    .newInstance();
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(className
-                    + " does not have a no argument constructor");
+            throw new IllegalActionException(
+                    className + " does not have a no argument constructor");
         } catch (InstantiationException e) {
             throw new IllegalActionException(className + " is abstract.");
         } catch (ClassCastException e) {

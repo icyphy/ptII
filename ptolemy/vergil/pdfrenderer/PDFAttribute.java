@@ -104,7 +104,8 @@ public class PDFAttribute extends VisibleAttribute {
         // Put the sample PDF in the local directory so that it stays with this actor.
         // Use $CLASSSPATH intstead of $PTII so that this class can find sample.pdf
         // under Web Start.
-        source.setExpression("$CLASSPATH/ptolemy/vergil/pdfrenderer/sample.pdf");
+        source.setExpression(
+                "$CLASSPATH/ptolemy/vergil/pdfrenderer/sample.pdf");
 
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
@@ -153,14 +154,11 @@ public class PDFAttribute extends VisibleAttribute {
                     // the URL and create a ByteBuffer, but there are problems with the non-ascii bytes
                     // in the pdf file.  The basic idea was to new BufferedOutputStream(new ByteArrayOutputStream()).
                     try {
-                        jarURL = FileUtilities.nameToURL(
-                                source.getExpression(), null, null);
+                        jarURL = FileUtilities.nameToURL(source.getExpression(),
+                                null, null);
                     } catch (Exception ex2) {
-                        throw new IllegalActionException(
-                                this,
-                                ex,
-                                "Failed to open "
-                                        + source.getExpression()
+                        throw new IllegalActionException(this, ex,
+                                "Failed to open " + source.getExpression()
                                         + ". Tried opening as URL, exception was: "
                                         + ex2);
                     }
@@ -174,13 +172,11 @@ public class PDFAttribute extends VisibleAttribute {
                             byteBuffer = ByteBuffer.wrap(contents);
                         } catch (Exception ex3) {
                             throw new IllegalActionException(this, ex,
-                                    "Failed to open "
-                                            + source.getExpression()
+                                    "Failed to open " + source.getExpression()
                                             + ".  Also, tried to open jar URL "
-                                            + jarURL
-                                            + ", exception was: \n"
+                                            + jarURL + ", exception was: \n"
                                             + KernelException
-                                            .stackTraceToString(ex3));
+                                                    .stackTraceToString(ex3));
                         }
                     }
                 } finally {

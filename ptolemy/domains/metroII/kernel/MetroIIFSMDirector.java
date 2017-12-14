@@ -64,8 +64,8 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    public MetroIIFSMDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public MetroIIFSMDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -103,7 +103,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                                    throws CollectionAbortedException {
+                            throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -122,8 +122,8 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIFSMDirector newObject = (MetroIIFSMDirector) super
-                .clone(workspace);
+        MetroIIFSMDirector newObject = (MetroIIFSMDirector) super.clone(
+                workspace);
         newObject.events = new ArrayList<Event.Builder>();
         return newObject;
     }
@@ -146,8 +146,8 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
         } else {
             State currentState = controller.currentState();
             if (_debugging) {
-                _debug("*** Firing " + getFullName(), " at time "
-                        + getModelTime());
+                _debug("*** Firing " + getFullName(),
+                        " at time " + getModelTime());
                 _debug("Current state is:", currentState.getName());
             }
 

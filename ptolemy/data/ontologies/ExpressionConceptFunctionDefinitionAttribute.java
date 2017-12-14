@@ -55,8 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ExpressionConceptFunctionDefinitionAttribute extends
-ConceptFunctionDefinitionAttribute {
+public class ExpressionConceptFunctionDefinitionAttribute
+        extends ConceptFunctionDefinitionAttribute {
 
     /** Construct the ExpressionConceptFunctionDefinitionAttribute attribute
      *  with the given container and name.
@@ -69,7 +69,7 @@ ConceptFunctionDefinitionAttribute {
      */
     public ExpressionConceptFunctionDefinitionAttribute(
             CompositeEntity container, String name)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // By default the number of arguments for the concept function is fixed.
@@ -143,20 +143,21 @@ ConceptFunctionDefinitionAttribute {
     @Override
     public ExpressionConceptFunction createConceptFunction()
             throws IllegalActionException {
-        if (((BooleanToken) numberOfArgumentsIsFixed.getToken()).booleanValue()) {
-            if (((ArrayToken) argumentDomainOntologies.getToken()).length() != ((ArrayToken) argumentNames
-                    .getToken()).length()) {
-                throw new IllegalActionException(
-                        this,
+        if (((BooleanToken) numberOfArgumentsIsFixed.getToken())
+                .booleanValue()) {
+            if (((ArrayToken) argumentDomainOntologies.getToken())
+                    .length() != ((ArrayToken) argumentNames.getToken())
+                            .length()) {
+                throw new IllegalActionException(this,
                         "The concept function is specified to have a fixed"
                                 + " number of arguments, but the lengths of the arrays"
                                 + " for the argument names ("
                                 + ((ArrayToken) argumentNames.getToken())
-                                .length()
+                                        .length()
                                 + ") and argument domain ontologies("
                                 + ((ArrayToken) argumentDomainOntologies
                                         .getToken()).length()
-                                        + ") are different.");
+                                + ") are different.");
             }
         }
 
@@ -179,8 +180,8 @@ ConceptFunctionDefinitionAttribute {
             if (ontology == null) {
                 throw new IllegalActionException(this,
                         "The specified domain ontology " + ontologyName
-                        + " for a function argument"
-                        + " could not be found in the model.");
+                                + " for a function argument"
+                                + " could not be found in the model.");
             } else {
                 argDomainOntologies.add(ontology);
             }
@@ -195,8 +196,8 @@ ConceptFunctionDefinitionAttribute {
         ExpressionConceptFunction newConceptFunction = new ExpressionConceptFunction(
                 getName(),
                 ((BooleanToken) numberOfArgumentsIsFixed.getToken())
-                .booleanValue(), argDomainOntologies,
-                outputRangeOntology, argNameList,
+                        .booleanValue(),
+                argDomainOntologies, outputRangeOntology, argNameList,
                 conceptFunctionExpression.getExpression(),
                 (OntologySolverModel) getContainer(), null);
 

@@ -121,12 +121,12 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                 } else if (effigy != null) {
                     JFrame firstFrame = effigy.entityList(Tableau.class).get(0)
                             .getFrame();
-                    message = "The first frame of "
-                            + tableauxCount
+                    message = "The first frame of " + tableauxCount
                             + " found by findEffigy() is "
-                            + (firstFrame == null ? "null" : "a \""
-                                    + firstFrame.getClass().getName() + "\"")
-                                    + ", which is not an ActorGraphFrame or FSMGraphFrame.";
+                            + (firstFrame == null ? "null"
+                                    : "a \"" + firstFrame.getClass().getName()
+                                            + "\"")
+                            + ", which is not an ActorGraphFrame or FSMGraphFrame.";
                 }
                 throw new InternalErrorException(model, null,
                         "For now only actor models and modal models are supported by KIELER layout. "
@@ -197,7 +197,8 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
 
             // If there is such an element, check if the old algorithm is to be used
             if (!configAttributes.isEmpty()) {
-                AbstractLayoutConfiguration configuration = configAttributes.get(0);
+                AbstractLayoutConfiguration configuration = configAttributes
+                        .get(0);
 
                 BooleanToken useOldAlgorithm = BooleanToken
                         .convert(configuration.useOldAlgorithm.getToken());

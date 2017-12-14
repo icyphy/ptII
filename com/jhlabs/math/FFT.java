@@ -60,7 +60,8 @@ public class FFT {
         }
     }
 
-    private void butterflies(int n, int logN, int direction, float[] real, float[] imag) {
+    private void butterflies(int n, int logN, int direction, float[] real,
+            float[] imag) {
         int N = 1;
 
         for (int k = 0; k < logN; k++) {
@@ -98,12 +99,14 @@ public class FFT {
         }
     }
 
-    public void transform1D(float[] real, float[] imag, int logN, int n, boolean forward) {
+    public void transform1D(float[] real, float[] imag, int logN, int n,
+            boolean forward) {
         scramble(n, real, imag);
         butterflies(n, logN, forward ? 1 : -1, real, imag);
     }
 
-    public void transform2D(float[] real, float[] imag, int cols, int rows, boolean forward) {
+    public void transform2D(float[] real, float[] imag, int cols, int rows,
+            boolean forward) {
         int log2cols = log2(cols);
         int log2rows = log2(rows);
         int n = Math.max(rows, cols);

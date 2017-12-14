@@ -209,7 +209,8 @@ public class DirectedGraph extends Graph {
      *  weights is not a node weight in this graph.
      */
     public Object[] backwardReachableNodes(Object[] weights) {
-        return weightArray(backwardReachableNodes(nodes(Arrays.asList(weights))));
+        return weightArray(
+                backwardReachableNodes(nodes(Arrays.asList(weights))));
     }
 
     /** Return the nodes that are in cycles. If there are multiple cycles,
@@ -533,7 +534,8 @@ public class DirectedGraph extends Graph {
                     // given two nodes, the two are in the same SCC if they
                     // are mutually reachable
                     if (!addedToAnSCC[j]) {
-                        if (transitiveClosure[i][j] && transitiveClosure[j][i]) {
+                        if (transitiveClosure[i][j]
+                                && transitiveClosure[j][i]) {
                             nodeList.add(node(j));
                             addedToAnSCC[j] = true;
                         }
@@ -701,7 +703,8 @@ public class DirectedGraph extends Graph {
         DirectedAcyclicGraph acyclicGraph;
 
         if (isAcyclic()) {
-            acyclicGraph = (DirectedAcyclicGraph) cloneAs(new DirectedAcyclicGraph());
+            acyclicGraph = (DirectedAcyclicGraph) cloneAs(
+                    new DirectedAcyclicGraph());
         } else {
             throw new GraphTopologyException("This graph is not acyclic."
                     + GraphException.graphDump(this));

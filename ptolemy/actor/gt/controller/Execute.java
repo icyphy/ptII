@@ -153,10 +153,10 @@ public class Execute extends GTEvent {
                     actor.setManager(oldManager);
                 }
             } catch (KernelException e) {
-                _debug(new PteraErrorEvent(this, "Error occurred while "
-                        + "executing model."));
-                throw new IllegalActionException(this, e, "Unable to execute "
-                        + "model.");
+                _debug(new PteraErrorEvent(this,
+                        "Error occurred while " + "executing model."));
+                throw new IllegalActionException(this, e,
+                        "Unable to execute " + "model.");
             } finally {
                 _effigy.setModel(null);
             }

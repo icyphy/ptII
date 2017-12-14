@@ -64,10 +64,12 @@ public class ReportOntologyLatticeStatus {
      *  @param modelGraphController The graph controller for the ontology model.
      */
     public static void showStatusAndHighlightCounterExample(
-            Ontology ontologyModel, OntologyGraphController modelGraphController) {
+            Ontology ontologyModel,
+            OntologyGraphController modelGraphController) {
         modelGraphController.clearAllErrorHighlights();
         boolean isLattice = ontologyModel.isLattice();
-        List<Concept> invalidUnacceptables = _invalidUnacceptableConcepts(ontologyModel);
+        List<Concept> invalidUnacceptables = _invalidUnacceptableConcepts(
+                ontologyModel);
 
         if (!isLattice) {
             NonLatticeCounterExample nonLatticeExample = ontologyModel
@@ -77,36 +79,38 @@ public class ReportOntologyLatticeStatus {
             List<Concept> concepts = nonLatticeExample.getNodeList();
 
             StringBuffer errorMessageBuffer = new StringBuffer();
-            errorMessageBuffer
-            .append("The ontology model graph is not a valid lattice.\n");
+            errorMessageBuffer.append(
+                    "The ontology model graph is not a valid lattice.\n");
 
             switch (exampleType) {
             case LEASTUPPER:
                 errorMessageBuffer
-                .append("These concepts have no least upper bound: ");
+                        .append("These concepts have no least upper bound: ");
                 break;
             case GREATESTLOWER:
-                errorMessageBuffer
-                .append("These concepts have no greatest lower bound: ");
+                errorMessageBuffer.append(
+                        "These concepts have no greatest lower bound: ");
                 break;
             case GRAPHCYCLE:
                 errorMessageBuffer
-                .append("There is a cycle involving the concept: ");
+                        .append("There is a cycle involving the concept: ");
                 break;
             default:
                 errorMessageBuffer
-                .append("unknown lattice counterexample type: "
-                        + exampleType + ": ");
+                        .append("unknown lattice counterexample type: "
+                                + exampleType + ": ");
             }
 
-            _highlightErrors(modelGraphController, errorMessageBuffer, concepts);
+            _highlightErrors(modelGraphController, errorMessageBuffer,
+                    concepts);
         } else if (!invalidUnacceptables.isEmpty()) {
             _highlightErrors(modelGraphController, new StringBuffer(
                     "There following unacceptable concepts are not at the "
-                            + "top of the lattice:\n"), invalidUnacceptables);
+                            + "top of the lattice:\n"),
+                    invalidUnacceptables);
         } else {
             MessageHandler
-            .message("The ontology model graph is a valid lattice.");
+                    .message("The ontology model graph is a valid lattice.");
         }
     }
 
@@ -143,7 +147,8 @@ public class ReportOntologyLatticeStatus {
      *  @return A list of invalid concepts marked as not acceptable, or an
      *   empty list if there are no errors.
      */
-    private static List<Concept> _invalidUnacceptableConcepts(Ontology ontology) {
+    private static List<Concept> _invalidUnacceptableConcepts(
+            Ontology ontology) {
         ConceptGraph cg = ontology.getConceptGraph();
         if (cg instanceof DAGConceptGraph) {
             return ((DAGConceptGraph) cg).checkUnacceptableConcepts();

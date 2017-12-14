@@ -71,8 +71,8 @@ public class Torus3D extends GRShadedShape {
     public Torus3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        angleSpan = new Parameter(this, "angleSpan", new DoubleToken(
-                2 * Math.PI));
+        angleSpan = new Parameter(this, "angleSpan",
+                new DoubleToken(2 * Math.PI));
         slices = new Parameter(this, "slices", new IntToken(28));
         crossSectionRadius = new Parameter(this, "crossSectionRadius",
                 new DoubleToken(0.15));
@@ -148,10 +148,10 @@ public class Torus3D extends GRShadedShape {
             for (j = 0; j < numberOfSlices; j++) {
                 float cosFactor1 = (float) Math.cos(span * j / numberOfSlices);
                 float sinFactor1 = (float) Math.sin(span * j / numberOfSlices);
-                float cosFactor2 = (float) Math.cos(span * (j + 1)
-                        / numberOfSlices);
-                float sinFactor2 = (float) Math.sin(span * (j + 1)
-                        / numberOfSlices);
+                float cosFactor2 = (float) Math
+                        .cos(span * (j + 1) / numberOfSlices);
+                float sinFactor2 = (float) Math
+                        .sin(span * (j + 1) / numberOfSlices);
 
                 polydata[k] = data[m] * cosFactor1;
                 polydata[k + 1] = data[m + 1];

@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Sequence
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Sequence {
+public class Sequence extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Sequence {
     /**
      *  Construct a Sequence adapter.
      *  @param actor The given ptolemy.actor.lib.Sequence actor.

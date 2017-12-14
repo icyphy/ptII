@@ -75,8 +75,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public PthalesGenericActor() throws IllegalActionException,
-    NameDuplicationException {
+    public PthalesGenericActor()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -161,9 +161,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         portNumber = 0;
         // Outputs ports arrays created before elementary task called
         for (IOPort port : portsOut) {
-            realOut[portNumber] = new float[PthalesIOPort
-                                            .getDataProducedSize(port)
-                                            * PthalesIOPort.getNbTokenPerData(port)];
+            realOut[portNumber] = new float[PthalesIOPort.getDataProducedSize(
+                    port) * PthalesIOPort.getNbTokenPerData(port)];
             portNumber++;
         }
 
@@ -178,8 +177,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
             PthalesDirector director = (PthalesDirector) getDirector();
             String libName = director.getLibName();
             if (libName.length() > 0) {
-                Class c = Class.forName("ptolemy.domains.pthales.JNI."
-                        + libName);
+                Class c = Class
+                        .forName("ptolemy.domains.pthales.JNI." + libName);
                 Method[] methods = c.getMethods();
 
                 for (Method method : methods) {
@@ -187,7 +186,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
                         try {
                             // Arguments convertion and format as a list
                             args = _convertArguments(realIn, realOut);
-                            if (method.getParameterTypes().length == args.length) {
+                            if (method
+                                    .getParameterTypes().length == args.length) {
                                 // JNI Function call with arguments
                                 method.invoke(c, args);
 
@@ -250,8 +250,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
     ////                         protected variables               ////
 
     @Override
-    protected void _initialize() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _initialize()
+            throws IllegalActionException, NameDuplicationException {
 
         super._initialize();
 

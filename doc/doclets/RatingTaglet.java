@@ -135,10 +135,10 @@ public class RatingTaglet implements Taglet {
      */
     public static void register(Map tagletMap) {
         try {
-            _register(tagletMap, new RatingTaglet("Pt.AcceptedRating",
-                    "Accepted Rating"));
-            _register(tagletMap, new RatingTaglet("Pt.ProposedRating",
-                    "Proposed Rating"));
+            _register(tagletMap,
+                    new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
+            _register(tagletMap,
+                    new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
         } catch (Throwable throwable) {
             // Print the stack trace so the user has a clue.
             throwable.printStackTrace();
@@ -166,9 +166,9 @@ public class RatingTaglet implements Taglet {
         }
 
         return "<DT><B>" + _tagName + ":</B><DD>"
-        + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
-        + color.toLowerCase() + "\">" + tag.text()
-        + "</td></tr></table></DD>\n";
+                + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
+                + color.toLowerCase() + "\">" + tag.text()
+                + "</td></tr></table></DD>\n";
     }
 
     /**
@@ -194,8 +194,8 @@ public class RatingTaglet implements Taglet {
             color = color.substring(0, spaceIndex);
         }
 
-        StringBuffer result = new StringBuffer("\n<DT><B>" + _tagName
-                + ":</B><DD>");
+        StringBuffer result = new StringBuffer(
+                "\n<DT><B>" + _tagName + ":</B><DD>");
         result.append("<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
                 + color.toLowerCase() + "\">");
 

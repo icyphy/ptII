@@ -160,8 +160,8 @@ public class CompositeBuilder extends AbstractXmlBuilder {
      */
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            System.err
-            .println("java CompositeBuilder <builderDeclsURI> <fileURI>");
+            System.err.println(
+                    "java CompositeBuilder <builderDeclsURI> <fileURI>");
             System.exit(1);
         } else {
             XmlDocument doc = new XmlDocument();

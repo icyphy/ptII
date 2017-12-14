@@ -143,10 +143,10 @@ public class QueueReceiver extends AbstractReceiver {
         try {
             return (Token) _queue.get(offset);
         } catch (NoSuchElementException ex) {
-            throw new NoTokenException(getContainer(), "Offset " + offset
-                    + " out of range with " + _queue.size()
-                    + " tokens in the receiver and " + _queue.historySize()
-                    + " in history.");
+            throw new NoTokenException(getContainer(),
+                    "Offset " + offset + " out of range with " + _queue.size()
+                            + " tokens in the receiver and "
+                            + _queue.historySize() + " in history.");
         }
     }
 
@@ -213,7 +213,8 @@ public class QueueReceiver extends AbstractReceiver {
      *   be explicitly declared by the caller.
      */
     @Override
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
                     "The number of tokens must be greater than 0");

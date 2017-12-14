@@ -136,8 +136,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param endLag An int indicating at which lag to end.
      *  @return A new array of doubles.
      */
-    public static final double[] crossCorrelation(double[] x, double[] y,
-            int N, int startLag, int endLag) {
+    public static final double[] crossCorrelation(double[] x, double[] y, int N,
+            int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] returnValue = new double[outputLength];
 
@@ -638,8 +638,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
     protected static final int _nonZeroLength(final double[] array,
             String methodName) {
         if (array == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName
-                    + "() : input array is null.");
+            throw new IllegalArgumentException(
+                    "ptolemy.math." + methodName + "() : input array is null.");
         }
 
         if (array.length <= 0) {

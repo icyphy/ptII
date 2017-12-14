@@ -81,8 +81,8 @@ public class GradientAdaptiveLattice extends Lattice {
         // The currently adapted reflection coefficients
         adaptedReflectionCoefficients = new TypedIOPort(this,
                 "adaptedReflectionCoefficients", false, true);
-        adaptedReflectionCoefficients.setTypeEquals(new ArrayType(
-                BaseType.DOUBLE));
+        adaptedReflectionCoefficients
+                .setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         output.setTypeAtLeast(input);
     }
@@ -137,8 +137,8 @@ public class GradientAdaptiveLattice extends Lattice {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super
-                .clone(workspace);
+        GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super.clone(
+                workspace);
         newObject.output.setTypeAtLeast(newObject.input);
 
         newObject._estimatedErrorPower = new double[newObject._order + 1];
@@ -221,8 +221,8 @@ public class GradientAdaptiveLattice extends Lattice {
             double fe_ip = _forwardCache[i - 1];
             double be_ip = _backwardCache[i - 1];
 
-            double newError = _estimatedErrorPower[i] * _oneMinusAlpha + _alpha
-                    * (fe_ip * fe_ip + be_ip * be_ip);
+            double newError = _estimatedErrorPower[i] * _oneMinusAlpha
+                    + _alpha * (fe_ip * fe_ip + be_ip * be_ip);
             double newCoefficient = _reflectionCoefficients[i - 1];
 
             if (newError != 0.0) {
@@ -241,8 +241,8 @@ public class GradientAdaptiveLattice extends Lattice {
             _estimatedErrorPowerCache[i] = newError;
         }
 
-        adaptedReflectionCoefficients.send(0, new ArrayToken(BaseType.DOUBLE,
-                outputArray));
+        adaptedReflectionCoefficients.send(0,
+                new ArrayToken(BaseType.DOUBLE, outputArray));
     }
 
     // Reallocate the internal arrays. Extend the base class to

@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class Airport extends TypedAtomicActor{
+public class Airport extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -79,15 +79,15 @@ public class Airport extends TypedAtomicActor{
         output.setTypeEquals(BaseType.RECORD);
         output.setMultiport(true);
 
-        delay= new Parameter(this, "delay");
+        delay = new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1");
 
-        takeOff= new Parameter(this, "takeOff");
+        takeOff = new Parameter(this, "takeOff");
         takeOff.setTypeEquals(BaseType.DOUBLE);
         takeOff.setExpression("1");
 
-        airportId= new Parameter(this, "airportId");
+        airportId = new Parameter(this, "airportId");
         airportId.setTypeEquals(BaseType.INT);
         airportId.setExpression("-1");
 
@@ -115,7 +115,6 @@ public class Airport extends TypedAtomicActor{
     /** A double with the initial default value of 1. */
     public Parameter takeOff;
 
-
     /** Fire the actor.
      *  @exception IllegalActionException If thrown by the baseclass
      *  or if there is a problem accessing the ports or parameters.
@@ -124,72 +123,81 @@ public class Airport extends TypedAtomicActor{
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = _director.getModelTime();
-        if (currentTime.equals(_transitExpires) && _inTransit!=null ) {
+        if (currentTime.equals(_transitExpires) && _inTransit != null) {
             try {
                 //***When airport decides to send out an airplane it must set it's departure time.
                 //For this purpose, we make a new recordtoken
-                double departureTime=currentTime.getDoubleValue()-((DoubleToken)takeOff.getToken()).doubleValue();
-                RecordToken firstAirplane=_airplanes.get(0);
-                Map<String, Token> tempAircraft=new TreeMap<String, Token>();
+                double departureTime = currentTime.getDoubleValue()
+                        - ((DoubleToken) takeOff.getToken()).doubleValue();
+                RecordToken firstAirplane = _airplanes.get(0);
+                Map<String, Token> tempAircraft = new TreeMap<String, Token>();
                 tempAircraft.put("aircraftId", firstAirplane.get("aircraftId"));
-                tempAircraft.put("aircraftSpeed", firstAirplane.get("aircraftSpeed"));
+                tempAircraft.put("aircraftSpeed",
+                        firstAirplane.get("aircraftSpeed"));
                 tempAircraft.put("flightMap", firstAirplane.get("flightMap"));
                 tempAircraft.put("fuel", firstAirplane.get("fuel"));
                 tempAircraft.put("priorTrack", firstAirplane.get("priorTrack"));
-                tempAircraft.put("arrivalTimeToAirport",firstAirplane.get("arrivalTimeToAirport"));
-                tempAircraft.put("dipartureTimeFromAirport", new DoubleToken(departureTime));
+                tempAircraft.put("arrivalTimeToAirport",
+                        firstAirplane.get("arrivalTimeToAirport"));
+                tempAircraft.put("dipartureTimeFromAirport",
+                        new DoubleToken(departureTime));
                 _airplanes.set(0, new RecordToken(tempAircraft));
-                int i=_findDirection(_airplanes.get(0));
+                int i = _findDirection(_airplanes.get(0));
                 output.send(i, _airplanes.get(0));
                 _airplanes.remove(0);
-                _inTransit=null;
+                _inTransit = null;
             } catch (NoRoomException ex) {
-                double additionalDelay = ((DoubleToken)delay.getToken()).doubleValue();
+                double additionalDelay = ((DoubleToken) delay.getToken())
+                        .doubleValue();
                 if (additionalDelay < 0.0) {
-                    throw new IllegalActionException(this, "Unable to handle rejection.");
+                    throw new IllegalActionException(this,
+                            "Unable to handle rejection.");
                 }
                 _transitExpires = _transitExpires.add(additionalDelay);
                 _director.fireAt(this, _transitExpires);
             }
 
-            if (_inTransit==null &&  _airplanes.size()!=0) {
-                _inTransit=_airplanes.get(0);
-                double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
+            if (_inTransit == null && _airplanes.size() != 0) {
+                _inTransit = _airplanes.get(0);
+                double additionalDelay = ((DoubleToken) takeOff.getToken())
+                        .doubleValue();
                 if (additionalDelay < 0.0) {
-                    throw new IllegalActionException(this, "Unable to handle rejection.");
+                    throw new IllegalActionException(this,
+                            "Unable to handle rejection.");
                 }
                 _transitExpires = _transitExpires.add(additionalDelay);
                 _director.fireAt(this, _transitExpires);
             }
         }
 
-        if (input.hasToken(0))
-            {
-                RecordToken airplane=(RecordToken) input.get(0);
-                Map<String, Token> Aircraft=new TreeMap<String, Token>();
-                Aircraft.put("aircraftId", airplane.get("aircraftId"));
-                Aircraft.put("aircraftSpeed", airplane.get("aircraftSpeed"));
-                Aircraft.put("flightMap", airplane.get("flightMap"));
-                Aircraft.put("priorTrack", airportId.getToken());
-                //new added fields to the airplane packet
-                Aircraft.put("fuel", airplane.get("fuel"));
-                double arrivalTime=currentTime.getDoubleValue();
-                Aircraft.put("arrivalTimeToAirport",new DoubleToken(arrivalTime));
-                Aircraft.put("dipartureTimeFromAirport", new DoubleToken(arrivalTime));
-                //end of new added...
-                _airplanes.add(new RecordToken(Aircraft));
+        if (input.hasToken(0)) {
+            RecordToken airplane = (RecordToken) input.get(0);
+            Map<String, Token> Aircraft = new TreeMap<String, Token>();
+            Aircraft.put("aircraftId", airplane.get("aircraftId"));
+            Aircraft.put("aircraftSpeed", airplane.get("aircraftSpeed"));
+            Aircraft.put("flightMap", airplane.get("flightMap"));
+            Aircraft.put("priorTrack", airportId.getToken());
+            //new added fields to the airplane packet
+            Aircraft.put("fuel", airplane.get("fuel"));
+            double arrivalTime = currentTime.getDoubleValue();
+            Aircraft.put("arrivalTimeToAirport", new DoubleToken(arrivalTime));
+            Aircraft.put("dipartureTimeFromAirport",
+                    new DoubleToken(arrivalTime));
+            //end of new added...
+            _airplanes.add(new RecordToken(Aircraft));
 
-                if (_inTransit==null)
-                    {
-                        double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
-                        if (additionalDelay < 0.0) {
-                            throw new IllegalActionException(this, "Delay is negative in airport.");
-                        }
-                        _inTransit=_airplanes.get(0);
-                        _transitExpires = currentTime.add(additionalDelay);
-                        _director.fireAt(this, _transitExpires);
-                    }
+            if (_inTransit == null) {
+                double additionalDelay = ((DoubleToken) takeOff.getToken())
+                        .doubleValue();
+                if (additionalDelay < 0.0) {
+                    throw new IllegalActionException(this,
+                            "Delay is negative in airport.");
+                }
+                _inTransit = _airplanes.get(0);
+                _transitExpires = currentTime.add(additionalDelay);
+                _director.fireAt(this, _transitExpires);
             }
+        }
     }
 
     /** Initialize this actor.  Derived classes override this method
@@ -201,27 +209,30 @@ public class Airport extends TypedAtomicActor{
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _director=getDirector();
-        ((AbstractATCDirector)_director).handleInitializedAirport(this);
-        _inTransit=null;
-        _Tracks=(ArrayToken)connectedTracks.getToken();
-        if (_Tracks.length()==0)
-            throw new IllegalActionException("there is no connected track to the airport in the airport's parameters ");
-        _airplanes=new ArrayList<RecordToken>();
+        _director = getDirector();
+        ((AbstractATCDirector) _director).handleInitializedAirport(this);
+        _inTransit = null;
+        _Tracks = (ArrayToken) connectedTracks.getToken();
+        if (_Tracks.length() == 0) {
+            throw new IllegalActionException(
+                    "there is no connected track to the airport in the airport's parameters ");
+        }
+        _airplanes = new ArrayList<RecordToken>();
 
     }
 
-
-    private int _findDirection(RecordToken airplane) throws IllegalActionException{
-        ArrayToken flightMap=(ArrayToken)airplane.get("flightMap");
-        boolean finded=false;
-        for (int i=0; i<_Tracks.length();i++) {
+    private int _findDirection(RecordToken airplane)
+            throws IllegalActionException {
+        ArrayToken flightMap = (ArrayToken) airplane.get("flightMap");
+        boolean finded = false;
+        for (int i = 0; i < _Tracks.length(); i++) {
             if (flightMap.getElement(0).equals(_Tracks.getElement(i))) {
-                finded=true;
+                finded = true;
                 return i;
             }
         }
-        throw new IllegalActionException("There is no route from the airport to the first track in flightMap");
+        throw new IllegalActionException(
+                "There is no route from the airport to the first track in flightMap");
     }
 
     private Token _inTransit;

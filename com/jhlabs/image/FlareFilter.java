@@ -128,12 +128,14 @@ public class FlareFilter extends PointFilter {
 
         a *= baseAmount;
 
-        if (distance > radius + ringWidth)
-            a = ImageMath.lerp((distance - (radius + ringWidth)) / falloff, a, 0);
+        if (distance > radius + ringWidth) {
+            a = ImageMath.lerp((distance - (radius + ringWidth)) / falloff, a,
+                    0);
+        }
 
-        if (distance < radius - ringWidth || distance > radius + ringWidth)
+        if (distance < radius - ringWidth || distance > radius + ringWidth) {
             ring = 0;
-        else {
+        } else {
             ring = Math.abs(distance - radius) / ringWidth;
             ring = 1 - ring * ring * (3 - 2 * ring);
             ring *= ringAmount;
@@ -142,7 +144,9 @@ public class FlareFilter extends PointFilter {
         a += ring;
 
         float angle = (float) Math.atan2(dx, dy) + ImageMath.PI;
-        angle = (ImageMath.mod(angle / ImageMath.PI * 17 + 1.0f + Noise.noise1(angle * 10), 1.0f) - 0.5f) * 2;
+        angle = (ImageMath.mod(
+                angle / ImageMath.PI * 17 + 1.0f + Noise.noise1(angle * 10),
+                1.0f) - 0.5f) * 2;
         angle = Math.abs(angle);
         angle = (float) Math.pow(angle, 5.0);
 

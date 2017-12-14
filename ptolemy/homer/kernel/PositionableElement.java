@@ -88,8 +88,8 @@ public abstract class PositionableElement {
      *  @see #setLocation(int, int, int, int)
      */
     public HomerLocation getLocation() throws IllegalActionException {
-        HomerLocation location = (HomerLocation) getElement().getAttribute(
-                HomerConstants.POSITION_NODE);
+        HomerLocation location = (HomerLocation) getElement()
+                .getAttribute(HomerConstants.POSITION_NODE);
         // Check whether the location information is valid.
         location.validateLocation();
         return location;
@@ -123,8 +123,8 @@ public abstract class PositionableElement {
      */
     public void setLocation(int x, int y, int width, int height)
             throws IllegalActionException {
-        Attribute attribute = getElement().getAttribute(
-                HomerConstants.POSITION_NODE);
+        Attribute attribute = getElement()
+                .getAttribute(HomerConstants.POSITION_NODE);
         HomerLocation location = null;
         if (attribute instanceof HomerLocation) {
             location = (HomerLocation) attribute;

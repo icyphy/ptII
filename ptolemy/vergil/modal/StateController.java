@@ -128,8 +128,8 @@ public class StateController extends AttributeWithIconController {
                 // For some inexplicable reason, the I key doesn't work here.
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                        .getMenuShortcutKeyMask()));
+                        KeyEvent.VK_L,
+                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             }
         }
 
@@ -137,7 +137,7 @@ public class StateController extends AttributeWithIconController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                .error("Cannot look inside without a configuration.");
+                        .error("Cannot look inside without a configuration.");
                 return;
             }
 
@@ -264,9 +264,9 @@ public class StateController extends AttributeWithIconController {
                     object.requestChange(request);
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException("could not create icon "
-                        + "in " + object + " even "
-                        + "though one did not exist");
+                throw new InternalErrorException(
+                        "could not create icon " + "in " + object + " even "
+                                + "though one did not exist");
             }
 
             Figure figure = icon.createFigure();
@@ -292,21 +292,22 @@ public class StateController extends AttributeWithIconController {
                     if (decoratorAttributes instanceof ExecutionAttributes) {
                         if (decoratorAttributes.getDecorator() != null
                                 && ((ExecutionAttributes) decoratorAttributes)
-                                .enabled()) {
+                                        .enabled()) {
                             try {
-                                if (object
-                                        .getAttribute("_decoratorHighlightColor") == null) {
+                                if (object.getAttribute(
+                                        "_decoratorHighlightColor") == null) {
                                     highlightColor = new ColorAttribute(object,
                                             "_decoratorHighlightColor");
                                     Attribute attribute = ((NamedObj) decorator)
-                                            .getAttribute("decoratorHighlightColor");
+                                            .getAttribute(
+                                                    "decoratorHighlightColor");
                                     String colorExpression = "{0.5, 0.5, 0.5, 0.5}";
                                     if (attribute != null) {
                                         colorExpression = (((ColorAttribute) attribute)
                                                 .getToken()).toString();
                                     }
                                     ((ColorAttribute) highlightColor)
-                                    .setExpression(colorExpression);
+                                            .setExpression(colorExpression);
                                 }
                             } catch (NameDuplicationException e) {
                                 // Not gonna happen.

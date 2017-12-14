@@ -89,8 +89,8 @@ public class DTDValidator {
          *@param e The exception
          */
         private void printInfo(String s, SAXParseException e) {
-            System.err.println(s + fil + ":" + e.getLineNumber() + ": "
-                    + e.getMessage());
+            System.err.println(
+                    s + fil + ":" + e.getLineNumber() + ": " + e.getMessage());
         }
     }
 }

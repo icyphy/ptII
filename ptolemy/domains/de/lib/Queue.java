@@ -160,9 +160,10 @@ public class Queue extends Transformer {
                 }
             } else {
                 if (newCapacity < _queue.size()) {
-                    throw new IllegalActionException(this, "Queue size ("
-                            + _queue.size() + ") exceed requested capacity "
-                            + newCapacity + ").");
+                    throw new IllegalActionException(this,
+                            "Queue size (" + _queue.size()
+                                    + ") exceed requested capacity "
+                                    + newCapacity + ").");
                 }
                 _queue.setCapacity(newCapacity);
             }

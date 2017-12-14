@@ -140,14 +140,14 @@ public class Previous extends DETransformer {
      */
     /*    public Set<Inequality> typeConstraints() {
             Set<Inequality> typeConstraints = super.typeConstraints();
-
+    
             try {
                 if (initialValue.getToken() != null) {
                     Inequality ineq = new Inequality(initialValue.getTypeTerm(),
                             output.getTypeTerm());
                     typeConstraints.add(ineq);
                 }
-
+    
                 Inequality ineq2 = new Inequality(input.getTypeTerm(),
                         output.getTypeTerm());
                 typeConstraints.add(ineq2);
@@ -157,7 +157,7 @@ public class Previous extends DETransformer {
                 // of the base class.
                 throw new InternalErrorException("Bad initialValue value!");
             }
-
+    
             return typeConstraints;
         }
      */
@@ -173,8 +173,8 @@ public class Previous extends DETransformer {
         try {
             // type of initialValue <= type of output
             if (initialValue.getToken() != null) {
-                result.add(new Inequality(initialValue.getTypeTerm(), output
-                        .getTypeTerm()));
+                result.add(new Inequality(initialValue.getTypeTerm(),
+                        output.getTypeTerm()));
             }
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should already

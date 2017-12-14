@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (eal)
  */
 public abstract class AbstractInitializableAttribute extends Attribute
-implements HierarchyListener, Initializable {
+        implements HierarchyListener, Initializable {
 
     /** Construct an instance of the attribute.
      *  @param container The container.
@@ -90,8 +90,8 @@ implements HierarchyListener, Initializable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractInitializableAttribute newObject = (AbstractInitializableAttribute) super
-                .clone(workspace);
+        AbstractInitializableAttribute newObject = (AbstractInitializableAttribute) super.clone(
+                workspace);
         newObject._initializables = null;
         return newObject;
     }
@@ -183,8 +183,8 @@ implements HierarchyListener, Initializable {
      *   an entity with the name of this entity.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         super.setContainer(container);

@@ -99,11 +99,11 @@ public class ParameterizedNodeController extends NamedObjController {
                         .createContextMenuFactory(controller);
             } catch (Exception ex) {
                 //do nothing - will default to ptii right-click menus
-                System.out
-                .println("Unable to use the alternative right-click menu "
-                        + "handler that was specified in the "
-                        + "configuration; defaulting to ptii handler. "
-                        + "Exception was: " + ex);
+                System.out.println(
+                        "Unable to use the alternative right-click menu "
+                                + "handler that was specified in the "
+                                + "configuration; defaulting to ptii handler. "
+                                + "Exception was: " + ex);
             }
 
         }

@@ -97,7 +97,8 @@ public class LongArrayMath {
      *  of array1. This method simply calls
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
-    public static final long[] append(final long[] array1, final long[] array2) {
+    public static final long[] append(final long[] array1,
+            final long[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
@@ -363,7 +364,8 @@ public class LongArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final long dotProduct(final long[] array1, final long[] array2) {
+    public static final long dotProduct(final long[] array1,
+            final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.dotProduct");
 
         long sum = 0L;
@@ -424,7 +426,8 @@ public class LongArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final long[] modulo(final long[] array1, final long[] array2) {
+    public static final long[] modulo(final long[] array1,
+            final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.modulo");
         long[] returnValue = new long[length];
 
@@ -441,7 +444,8 @@ public class LongArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final long[] multiply(final long[] array1, final long[] array2) {
+    public static final long[] multiply(final long[] array1,
+            final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.multiply");
         long[] returnValue = new long[length];
 
@@ -496,7 +500,8 @@ public class LongArrayMath {
      *  @param newLength The desired length of the returned array.
      *  @return A new array of longs.
      */
-    public static final long[] padMiddle(final long[] array, final int newLength) {
+    public static final long[] padMiddle(final long[] array,
+            final int newLength) {
         int length = array.length;
 
         int entriesNeeded = newLength - length;
@@ -516,8 +521,8 @@ public class LongArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue, newLength
-                - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue,
+                newLength - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -557,8 +562,7 @@ public class LongArrayMath {
 
         if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx
-                    + "' is greater than equal to the array length '"
+                    + startIdx + "' is greater than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }
@@ -649,7 +653,8 @@ public class LongArrayMath {
      *  (array1[i] - array2[i]).
      *  If the lengths of both arrays are 0, return a new array of length 0.
      */
-    public static final long[] subtract(final long[] array1, final long[] array2) {
+    public static final long[] subtract(final long[] array1,
+            final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.subtract");
         long[] returnValue = new long[length];
 
@@ -795,8 +800,8 @@ public class LongArrayMath {
      *  @exception IllegalArgumentException If the arrays are not of the same
      *   length.
      */
-    public static final boolean within(final long[] array1,
-            final long[] array2, long maxError) {
+    public static final boolean within(final long[] array1, final long[] array2,
+            long maxError) {
         int length = _commonLength(array1, array2, "LongArrayMath.within");
 
         for (int i = 0; i < length; i++) {
@@ -825,8 +830,8 @@ public class LongArrayMath {
      *  @exception IllegalArgumentException If the arrays are not of the same
      *   length.
      */
-    public static final boolean within(final long[] array1,
-            final long[] array2, long[] maxError) {
+    public static final boolean within(final long[] array1, final long[] array2,
+            long[] maxError) {
         int length = _commonLength(array1, array2, "LongArrayMath.within");
 
         for (int i = 0; i < length; i++) {
@@ -868,7 +873,8 @@ public class LongArrayMath {
             throw new IllegalArgumentException("ptolemy.math." + methodName
                     + "() : input arrays must have the same length, "
                     + "but the first array has length " + array1.length
-                    + " and the second array has length " + array2.length + ".");
+                    + " and the second array has length " + array2.length
+                    + ".");
         }
 
         return array1.length;

@@ -83,9 +83,10 @@ public class Combine extends TypedAtomicActor {
         value.setTypeEquals(BaseType.INT);
 
         // FIXME: add appropriate svg icon here
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"55\" height=\"40\" "
-                + "style=\"fill:red\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                        + "width=\"55\" height=\"40\" "
+                        + "style=\"fill:red\"/>\n" + "</svg>\n");
 
     }
 
@@ -319,8 +320,7 @@ public class Combine extends TypedAtomicActor {
                     _constValue = Integer.parseInt(function.getValueAsString());
                     _function = _CONSTANT;
                 } catch (Exception e) {
-                    throw new IllegalActionException(
-                            this,
+                    throw new IllegalActionException(this,
                             "Unrecognized synchronous signal combine function: "
                                     + functionName
                                     + ". Valid combine functions are 'add', 'mult', 'max', "

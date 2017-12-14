@@ -51,6 +51,7 @@ public final class LIQSS1 extends QSSBase {
     /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
+    @Override
     public final int getStateModelOrder() {
         return (0);
     }
@@ -58,6 +59,7 @@ public final class LIQSS1 extends QSSBase {
     /**
      * Initialize object fields (QSS-specific).
      */
+    @Override
     public final void _initializeWorker() {
 
         // Check internal consistency.
@@ -94,8 +96,9 @@ public final class LIQSS1 extends QSSBase {
      *  @param quantEvtTimeMax The maximum quantization event time.
      *  @return The the predicted quantization-event time for a state (QSS-specific).
      */
-    protected final Time _predictQuantizationEventTimeWorker(
-            final int stateIdx, final Time quantEvtTimeMax) {
+    @Override
+    protected final Time _predictQuantizationEventTimeWorker(final int stateIdx,
+            final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
         // storing the returned result.
@@ -187,6 +190,7 @@ public final class LIQSS1 extends QSSBase {
      *
      *  @param stateIdx The state index.
      */
+    @Override
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -194,7 +198,8 @@ public final class LIQSS1 extends QSSBase {
         // Initialize.
         final ModelPolynomial qStateModel = _qStateModels[stateIdx];
         final ModelPolynomial cStateModel = _cStateModels[stateIdx];
-        final double dtStateModel = _currSimTime.subtractToDouble(cStateModel.tModel);
+        final double dtStateModel = _currSimTime
+                .subtractToDouble(cStateModel.tModel);
 
         final double cState = cStateModel.evaluate(dtStateModel);
         final double cStateDeriv = cStateModel.evaluateDerivative(dtStateModel);
@@ -236,6 +241,7 @@ public final class LIQSS1 extends QSSBase {
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
+    @Override
     protected final void _triggerRateEventWorker() throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
@@ -343,8 +349,8 @@ public final class LIQSS1 extends QSSBase {
             retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
                     _stateVals_xx, _ivVals_xx, tSample, _stateValsSample_xx,
                     _ivValsSample_xx, dtSample, null, null, null, 0.0, null,
-                    null, null, 0.0, null, null, null, 0.0, null,
-                    null, null, 0.0, getStateModelOrder());
+                    null, null, 0.0, null, null, null, 0.0, null, null, null,
+                    0.0, getStateModelOrder());
         }
 
     }
@@ -352,6 +358,7 @@ public final class LIQSS1 extends QSSBase {
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
+    @Override
     protected final void _triggerRateEventWorkerEventDetection()
             throws Exception {
         // Note the superclass takes care of updating status variables and so on.

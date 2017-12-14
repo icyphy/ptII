@@ -78,7 +78,8 @@ public class Display extends NamedProgramCodeGeneratorAdapter {
         if (title.trim().length() > 0) {
             args.add(title);
         } else {
-            args.add(NamedProgramCodeGeneratorAdapter.generateSimpleName(actor));
+            args.add(
+                    NamedProgramCodeGeneratorAdapter.generateSimpleName(actor));
         }
 
         args.add(Integer.valueOf(0));

@@ -28,7 +28,8 @@ public class ReduceNoiseFilter extends WholeImageFilter {
     }
 
     private int smooth(int[] v) {
-        int minindex = 0, maxindex = 0, min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        int minindex = 0, maxindex = 0, min = Integer.MAX_VALUE,
+                max = Integer.MIN_VALUE;
 
         for (int i = 0; i < 9; i++) {
             if (i != 4) {
@@ -42,15 +43,18 @@ public class ReduceNoiseFilter extends WholeImageFilter {
                 }
             }
         }
-        if (v[4] < min)
+        if (v[4] < min) {
             return v[minindex];
-        if (v[4] > max)
+        }
+        if (v[4] > max) {
             return v[maxindex];
+        }
         return v[4];
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int index = 0;
         int[] r = new int[9];
         int[] g = new int[9];
@@ -91,7 +95,8 @@ public class ReduceNoiseFilter extends WholeImageFilter {
                         }
                     }
                 }
-                outPixels[index] = (inPixels[index] & 0xff000000) | (smooth(r) << 16) | (smooth(g) << 8) | smooth(b);
+                outPixels[index] = (inPixels[index] & 0xff000000)
+                        | (smooth(r) << 16) | (smooth(g) << 8) | smooth(b);
                 index++;
             }
         }

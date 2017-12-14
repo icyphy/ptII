@@ -178,8 +178,8 @@ public class ArrowAttribute extends LineAttribute {
         polygon.lineTo(arrowLength + 3.0, arrowWidth);
         polygon.closePath();
 
-        AffineTransform transform = AffineTransform.getRotateInstance(Math
-                .atan2(y, x));
+        AffineTransform transform = AffineTransform
+                .getRotateInstance(Math.atan2(y, x));
         polygon.transform(transform);
         return polygon;
     }

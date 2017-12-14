@@ -90,8 +90,8 @@ public class AttributeController extends IconController {
             Action[] actions = { _getDocumentationAction,
                     new CustomizeDocumentationAction(),
                     new RemoveCustomDocumentationAction() };
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
-                    "Documentation"));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(actions, "Documentation"));
 
             // Note that we also have "Send to Back" and "Bring to Front" in
             // vergil/basic/BasicGraphFrame.java
@@ -99,15 +99,17 @@ public class AttributeController extends IconController {
             Action[] appearanceActions = {
                     new MoveAction(_moveToFirstDescription(),
                             MoveAction.TO_FIRST),
-                            new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
+                    new MoveAction(_moveToLastDescription(),
+                            MoveAction.TO_LAST) };
             _appearanceMenuActionFactory = new MenuActionFactory(
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
 
             _listenToAction = new ListenToAction(
-                    (BasicGraphController) getController(), _getComponentType());
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _listenToAction));
+                    (BasicGraphController) getController(),
+                    _getComponentType());
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(_listenToAction));
             _listenToAction.setConfiguration(_configuration);
 
         }
@@ -155,7 +157,8 @@ public class AttributeController extends IconController {
      *  parameter.
      *  @param figure the Diva figure that is rendered.
      */
-    public static void renderDecoratorHighlight(NamedObj namedObj, Figure figure) {
+    public static void renderDecoratorHighlight(NamedObj namedObj,
+            Figure figure) {
         // New way to specify a highlight color.
         try {
             ColorAttribute highlightAttribute = (ColorAttribute) namedObj

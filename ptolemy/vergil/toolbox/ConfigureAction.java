@@ -72,9 +72,9 @@ public class ConfigureAction extends FigureAction {
         // Call getMenuShortcutKeyMask() instead of Event.CTRL_MASK
         // and avoid problems with shortcut keys on the Macintosh.  See
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3094
-        putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                KeyEvent.VK_E, Toolkit.getDefaultToolkit()
-                .getMenuShortcutKeyMask()));
+        putValue(GUIUtilities.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_E,
+                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -129,7 +129,8 @@ public class ConfigureAction extends FigureAction {
      *  @param event The action event that triggered this, or null if
      *   none.
      */
-    protected void _openDialog(Frame parent, NamedObj target, ActionEvent event) {
+    protected void _openDialog(Frame parent, NamedObj target,
+            ActionEvent event) {
         List<Editable> attributeList = target.attributeList(Editable.class);
         boolean altKeyPressed = false;
         if (event != null) {
@@ -138,10 +139,8 @@ public class ConfigureAction extends FigureAction {
 
         //Use the EditorFactory if the alt key is not pressed and the
         // action command is not "Configure".
-        if (attributeList.size() > 0
-                && !altKeyPressed
-                && (event == null || !event.getActionCommand().equals(
-                        "Configure"))) {
+        if (attributeList.size() > 0 && !altKeyPressed && (event == null
+                || !event.getActionCommand().equals("Configure"))) {
 
             // Use the last editor factory if there is more than one.
             Editable factory = attributeList.get(attributeList.size() - 1);

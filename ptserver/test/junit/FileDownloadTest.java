@@ -78,11 +78,10 @@ public class FileDownloadTest {
         factory.setUser("guest");
         factory.setPassword("guest");
 
-        _servletProxy = (IServerManager) factory.create(
-                IServerManager.class,
+        _servletProxy = (IServerManager) factory.create(IServerManager.class,
                 String.format("http://%s:%s%s", "localhost",
-                        CONFIG.getString("SERVLET_PORT"), "/"
-                                + PtolemyServer.SERVLET_NAME));
+                        CONFIG.getString("SERVLET_PORT"),
+                        "/" + PtolemyServer.SERVLET_NAME));
     }
 
     /** Get the listing of models available on the server.

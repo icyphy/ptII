@@ -80,7 +80,8 @@ public class CircularSweep3D extends GRShadedShape {
 
         polyline = new Parameter(this, "polyline");
         polyline.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        polyline.setExpression("{0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5, 0.25}");
+        polyline.setExpression(
+                "{0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5, 0.25}");
 
         angleSpan = new Parameter(this, "angleSpan");
         angleSpan.setTypeEquals(BaseType.DOUBLE);
@@ -150,10 +151,10 @@ public class CircularSweep3D extends GRShadedShape {
             for (j = 0; j < numberOfSlices; j++) {
                 float cosFactor1 = (float) Math.cos(span * j / numberOfSlices);
                 float sinFactor1 = (float) Math.sin(span * j / numberOfSlices);
-                float cosFactor2 = (float) Math.cos(span * (j + 1)
-                        / numberOfSlices);
-                float sinFactor2 = (float) Math.sin(span * (j + 1)
-                        / numberOfSlices);
+                float cosFactor2 = (float) Math
+                        .cos(span * (j + 1) / numberOfSlices);
+                float sinFactor2 = (float) Math
+                        .sin(span * (j + 1) / numberOfSlices);
 
                 polydata[k] = data[m] * cosFactor1;
                 polydata[k + 1] = data[m + 1];

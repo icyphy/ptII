@@ -104,8 +104,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (cxh)
  */
 @SuppressWarnings("serial")
-public class PlotFrame extends JFrame implements PropertyChangeListener,
-ImageExportable {
+public class PlotFrame extends JFrame
+        implements PropertyChangeListener, ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -163,20 +163,20 @@ ImageExportable {
                 new JMenuItem("Close", KeyEvent.VK_C), };
 
         // Open button = ctrl-o.
-        fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-                Event.CTRL_MASK));
+        fileMenuItems[0].setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 
         // Save button = ctrl-s.
-        fileMenuItems[1].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                Event.CTRL_MASK));
+        fileMenuItems[1].setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 
         // Print button = ctrl-p.
-        fileMenuItems[4].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-                Event.CTRL_MASK));
+        fileMenuItems[4].setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
 
         // Close button = ctrl-w.
-        fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
-                Event.CTRL_MASK));
+        fileMenuItems[5].setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
 
         FileMenuListener fml = new FileMenuListener();
 
@@ -243,16 +243,16 @@ ImageExportable {
             FileFilter filter = ((JFileChooser) source).getFileFilter();
             JFileChooser fileDialog = (JFileChooser) source;
             if (filter instanceof EPSFileFilter) {
-                fileDialog.setSelectedFile(new File(fileDialog
-                        .getCurrentDirectory(), "plot.eps"));
+                fileDialog.setSelectedFile(
+                        new File(fileDialog.getCurrentDirectory(), "plot.eps"));
             } else if (filter instanceof FilterForGIF) {
-                fileDialog.setSelectedFile(new File(fileDialog
-                        .getCurrentDirectory(), "plot.gif"));
+                fileDialog.setSelectedFile(
+                        new File(fileDialog.getCurrentDirectory(), "plot.gif"));
             } else {
                 // FIXME: For some inexplicable reason, the following line does nothing if the
                 // directory already exists!!!!!!!!!!!!! Pretty lame...
-                fileDialog.setSelectedFile(new File(fileDialog
-                        .getCurrentDirectory(), "plot"));
+                fileDialog.setSelectedFile(
+                        new File(fileDialog.getCurrentDirectory(), "plot"));
             }
         }
     }
@@ -328,20 +328,15 @@ ImageExportable {
 
     /** Display a menu that describes the Plotter. */
     protected void _about() {
-        JOptionPane
-        .showMessageDialog(
-                this,
-                "PlotFrame class\n"
-                        + "By: Edward A. Lee "
-                        + "and Christopher Brooks\n"
-                        + "Version "
-                        + PlotBox.PTPLOT_RELEASE
-                        + ", Build: $Id$\n\n"
-                        + "For more information, see\n"
-                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                        + "Copyright (c) 1997-2014, "
-                        + "The Regents of the University of California.",
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "PlotFrame class\n"
+                + "By: Edward A. Lee " + "and Christopher Brooks\n" + "Version "
+                + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                + "Copyright (c) 1997-2014, "
+                + "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Close the window.
@@ -380,8 +375,8 @@ ImageExportable {
             }
         }
 
-        fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                "plot.gif"));
+        fileDialog.setSelectedFile(
+                new File(fileDialog.getCurrentDirectory(), "plot.gif"));
 
         fileDialog.addPropertyChangeListener(
                 JFileChooser.FILE_FILTER_CHANGED_PROPERTY, this);
@@ -428,8 +423,9 @@ ImageExportable {
                     }
                 }
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error exporting plot: "
-                        + ex, "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Error exporting plot: " + ex, "Ptolemy II Error",
+                        JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -441,7 +437,7 @@ ImageExportable {
                 "PlotFrame is a plot in a top-level window.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.",
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a new file and plot its data.
@@ -485,9 +481,9 @@ ImageExportable {
                         "File not found:\n" + ex.toString(),
                         "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error reading input:\n"
-                        + ex.toString(), "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Error reading input:\n" + ex.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             } finally {
                 if (input != null) {
                     try {
@@ -507,8 +503,8 @@ ImageExportable {
         // If you are using $PTII/bin/vergil, under bash, set this property:
         // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
         // and then run $PTII/bin/vergil
-        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals(
-                "CrossPlatform")) {
+        if (StringUtilities.getProperty("ptolemy.ptII.print.platform")
+                .equals("CrossPlatform")) {
             _printCrossPlatform();
         } else {
             _printNative();
@@ -585,8 +581,7 @@ ImageExportable {
 
         job.print(aset);
         if (foundPDFPrinter) {
-            System.out
-            .println("Plot printed from command line. "
+            System.out.println("Plot printed from command line. "
                     + "Under MacOSX, look for "
                     + "~/Desktop/Java Printing.pdf");
         }
@@ -638,9 +633,9 @@ ImageExportable {
                 output = new FileOutputStream(_file);
                 plot.write(output);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error writing file:\n"
-                        + ex.toString(), "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Error writing file:\n" + ex.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             } finally {
                 if (output != null) {
                     try {
@@ -676,8 +671,8 @@ ImageExportable {
             }
         }
 
-        fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                "plot.xml"));
+        fileDialog.setSelectedFile(
+                new File(fileDialog.getCurrentDirectory(), "plot.xml"));
 
         // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
         int returnVal = fileDialog.showSaveDialog(this);
@@ -716,9 +711,9 @@ ImageExportable {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null, "File Menu Exception:\n"
-                        + throwable, "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "File Menu Exception:\n" + throwable,
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta
@@ -739,9 +734,9 @@ ImageExportable {
                 // where there is no stdout visible.
                 System.out.println("Format Exception: " + exception);
                 exception.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Format Exception:\n"
-                        + exception.toString(), "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "Format Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
 
             }
 
@@ -778,9 +773,9 @@ ImageExportable {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null, "Special Menu Exception:\n"
-                        + exception.toString(), "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "Special Menu Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta

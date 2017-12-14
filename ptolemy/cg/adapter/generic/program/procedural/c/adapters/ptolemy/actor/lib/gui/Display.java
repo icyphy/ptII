@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class Display
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
+public class Display extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
 
     /**
      *  Construct the Display adapter.

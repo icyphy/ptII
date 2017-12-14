@@ -59,7 +59,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *   throws it.
      */
     public ASTPtLeafNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
+            ptolemy.data.expr.ASTPtLeafNode node)
+            throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -80,32 +81,29 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             if (nodeToken != null) {
                 if (nodeToken instanceof BooleanToken) {
                     if (((BooleanToken) nodeToken).booleanValue()) {
-                        setAtLeast(
-                                node,
-                                getSolver().getOntology().getEntity(
-                                        "BooleanTrue"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("BooleanTrue"));
                     } else {
-                        setAtLeast(
-                                node,
-                                getSolver().getOntology().getEntity(
-                                        "BooleanFalse"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("BooleanFalse"));
                     }
                 } else if (nodeToken instanceof ScalarToken) {
                     if (((ScalarToken) nodeToken).isEqualTo(nodeToken.zero())
                             .booleanValue()) {
                         setAtLeast(node,
                                 getSolver().getOntology().getEntity("Zero"));
-                    } else if (((ScalarToken) nodeToken).isGreaterThan(
-                            (ScalarToken) nodeToken.zero()).booleanValue()) {
-                        setAtLeast(node,
-                                getSolver().getOntology().getEntity("Positive"));
+                    } else if (((ScalarToken) nodeToken)
+                            .isGreaterThan((ScalarToken) nodeToken.zero())
+                            .booleanValue()) {
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("Positive"));
                     } else {
-                        setAtLeast(node,
-                                getSolver().getOntology().getEntity("Negative"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("Negative"));
                     }
                 } else {
-                    setAtLeast(node,
-                            getSolver().getOntology().getEntity("UnknownConst"));
+                    setAtLeast(node, getSolver().getOntology()
+                            .getEntity("UnknownConst"));
                 }
             } else {
                 setAtLeast(node,

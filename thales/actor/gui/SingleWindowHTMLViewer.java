@@ -73,8 +73,8 @@ import thales.vergil.navigable.NavigationPTree;
  @Pt.AcceptedRating Red (cxh)
  */
 @SuppressWarnings("serial")
-public class SingleWindowHTMLViewer extends HTMLViewer implements
-ChangeListener {
+public class SingleWindowHTMLViewer extends HTMLViewer
+        implements ChangeListener {
     /**
      * Main panel
      */

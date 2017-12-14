@@ -56,15 +56,15 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (wlc)
  @Pt.AcceptedRating Red (wlc)
  */
-public class ModalController
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
+public class ModalController extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
      *  @param component The associated component.
      */
-    public ModalController(ptolemy.domains.modal.modal.ModalController component) {
+    public ModalController(
+            ptolemy.domains.modal.modal.ModalController component) {
         super(component);
     }
 
@@ -97,8 +97,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
         modalName = modalName.replace('.', '_');
 
         // Generate code for preemptive transition.
-        code.append(_eol
-                + getCodeGenerator().comment("1. Preemptive Transition"));
+        code.append(
+                _eol + getCodeGenerator().comment("1. Preemptive Transition"));
 
         controllerHelper.generateTransitionCode(code,
                 new PreemptiveTransitions());
@@ -111,12 +111,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
         // Generate code for refinements.
         if (_generateRefinementCode(code)) {
             // Transfer the outputs from the refinement to modal model
-            code.append(_eol
-                    + "director->directorTransferModalOutputs(director);"
-                    + _eol);
+            code.append(
+                    _eol + "director->directorTransferModalOutputs(director);"
+                            + _eol);
         } else {
-            code.append(_eol
-                    + "PblMap * outputMap = pblMapNewHashMap();" + _eol
+            code.append(_eol + "PblMap * outputMap = pblMapNewHashMap();" + _eol
                     + "director->transferModalOutputs(outputMap);" + _eol
                     + "pblMapFree(outputMap);" + _eol);
         }
@@ -185,9 +184,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
         name = name.replace('.', '_');
         modalName = modalName.replace('.', '_');
         TypedIOPort inputPort, outputPort;
-        code.append(_eol
-                + getCodeGenerator().comment(
-                        "Beginning of create controller variables."));
+        code.append(_eol + getCodeGenerator()
+                .comment("Beginning of create controller variables."));
         for (int i = 0; i < inputPorts.size(); i++) {
 
             inputPort = inputPorts.get(i);
@@ -218,8 +216,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
 
         //code.append("int " + name + "__currentState;" + _eol);
         code.append("int " + modalName + "__transitionFlag;" + _eol);
-        StringBuffer enumStates = new StringBuffer(_eol + "enum " + name
-                + "__currentState {");
+        StringBuffer enumStates = new StringBuffer(
+                _eol + "enum " + name + "__currentState {");
 
         Iterator states = _myController.entityList().iterator();
         boolean first = true;
@@ -251,9 +249,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
             }
         }
 
-        code.append(_eol
-                + getCodeGenerator().comment(
-                        "End of create controller variables"));
+        code.append(_eol + getCodeGenerator()
+                .comment("End of create controller variables"));
         return code.toString();
     }
 
@@ -288,8 +285,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
             depth++;
 
             State state = (State) states.next();
-            code.append("case " + CodeGeneratorAdapter.generateName(state)
-                    + ":" + _eol);
+            code.append("case " + CodeGeneratorAdapter.generateName(state) + ":"
+                    + _eol);
 
             Actor[] actors = state.getRefinement();
 
@@ -322,8 +319,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
     ////                      Inner classes                        ////
 
     /** Retrieve the non-preemptive transitions. */
-    private static class NonPreemptiveTransitions implements
-    TransitionRetriever {
+    private static class NonPreemptiveTransitions
+            implements TransitionRetriever {
         /** Retrieve the non-preemptive transitions.
          *  @param state The state
          *  @return An iterator that refers to the non-preemptive transitions.

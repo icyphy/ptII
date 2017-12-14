@@ -84,7 +84,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
                 if (attributeValue.equals(_addProperty.propertyName)) {
                     _currentlyProcessingActorThatMayNeedUpdating = false;
                     _currentAttributeHasValue = false;
-                } else if (attributeValue.equals(_addProperty.onlyAddIfPresent)) {
+                } else if (attributeValue
+                        .equals(_addProperty.onlyAddIfPresent)) {
                     // We only add _editorFactory to parameters that
                     // have _locations
                     _currentAttributeHasValue = true;
@@ -113,8 +114,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
             } else if (_currentlyProcessingActorThatMayNeedUpdating
                     && container != null
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(
-                            _currentActorFullName)) {
+                    && !container.getFullName()
+                            .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedUpdating = false;
@@ -161,7 +162,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
     @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-                    throws Exception {
+            throws Exception {
         //          System.out.println("AddMissingParameter: filterEndElement: "
         //                  + _currentlyProcessingActorThatMayNeedUpdating
         //                  + " elementName: " + (elementName == null? "null" : elementName)
@@ -172,7 +173,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
             return;
         } else if (_addProperty != null
                 && (_addProperty.onlyAddIfPresent != null
-                && _currentAttributeHasValue || _addProperty.onlyAddIfPresent == null)
+                        && _currentAttributeHasValue
+                        || _addProperty.onlyAddIfPresent == null)
                 && elementName != null && elementName.equals("property")
                 && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
@@ -200,8 +202,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
                 parser.parse(null, moml);
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
-                throw new IllegalActionException(null, ex, "Failed to parse\n"
-                        + moml);
+                throw new IllegalActionException(null, ex,
+                        "Failed to parse\n" + moml);
             }
         }
     }
@@ -211,8 +213,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
      */
     @Override
     public String toString() {
-        StringBuffer results = new StringBuffer(
-                getClass().getName()
+        StringBuffer results = new StringBuffer(getClass().getName()
                 + ": If a NamedObj is missing a property, then add it.\n"
                 + "Optionally, only add the property if another property, "
                 + "such as _location is present.\n"
@@ -221,13 +222,11 @@ public class AddMissingParameter extends MoMLFilterSimple {
                 .entrySet()) {
             String namedObjName = entry.getKey();
             AddProperty addProperty = entry.getValue();
-            results.append(namedObjName
-                    + "\t -> "
-                    + addProperty.propertyName
-                    + "\t"
-                    + (addProperty.onlyAddIfPresent == null ? "null"
-                            : addProperty.onlyAddIfPresent) + "\n\t"
-                            + addProperty.moml + "\n");
+            results.append(
+                    namedObjName + "\t -> " + addProperty.propertyName + "\t"
+                            + (addProperty.onlyAddIfPresent == null ? "null"
+                                    : addProperty.onlyAddIfPresent)
+                            + "\n\t" + addProperty.moml + "\n");
         }
         return results.toString();
     }
@@ -285,7 +284,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
         AddProperty sdfDirectorChanges = new AddProperty("iterations",
                 "<property " + "name=\"iterations\" "
                         + "class=\"ptolemy.data.expr.Parameter\" "
-                        + "value=\"0\"/>", null);
+                        + "value=\"0\"/>",
+                null);
         _namedObjsWithMissingProperties.put(
                 "ptolemy.domains.sdf.kernel.SDFDirector", sdfDirectorChanges);
 
@@ -293,7 +293,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
         AddProperty editorFactoryChanges = new AddProperty("_editorFactory",
                 "<property name=\"_editorFactory\""
                         + " class=\"ptolemy.vergil.toolbox."
-                        + "VisibleParameterEditorFactory\"/>", "_location");
+                        + "VisibleParameterEditorFactory\"/>",
+                "_location");
 
         _namedObjsWithMissingProperties.put("ptolemy.data.expr.Parameter",
                 editorFactoryChanges);

@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.lib;
+
 /** Marker interface for Modular Composites.
  *
  * @author Christopher Brooks

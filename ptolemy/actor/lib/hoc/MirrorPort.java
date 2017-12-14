@@ -145,8 +145,8 @@ public class MirrorPort extends TypedIOPort {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container == null && _associatedPort != null
@@ -157,8 +157,8 @@ public class MirrorPort extends TypedIOPort {
             // change request will be issued because its container
             // is already null.
             MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    _associatedPort.getContainer(), "<deletePort name=\""
-                            + _associatedPort.getName() + "\"/>");
+                    _associatedPort.getContainer(),
+                    "<deletePort name=\"" + _associatedPort.getName() + "\"/>");
             _associatedPort.getContainer().requestChange(request);
         }
     }
@@ -194,7 +194,8 @@ public class MirrorPort extends TypedIOPort {
      *   not permitted.
      */
     @Override
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         super.setMultiport(isMultiport);
 
         if (_associatedPort != null
@@ -230,11 +231,12 @@ public class MirrorPort extends TypedIOPort {
      *  if there is one.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
 
-        if (_associatedPort != null && !_associatedPort.getName().equals(name)) {
+        if (_associatedPort != null
+                && !_associatedPort.getName().equals(name)) {
             // Use a MoML change request to ensure propagation.
             // Note that when that change request is executed,
             // this port will be the associated port, but no

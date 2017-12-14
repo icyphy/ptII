@@ -209,7 +209,7 @@ public class GraphTransformer extends ChangeRequest {
      */
     public static void transform(TransformationRule transformationRule,
             List<MatchResult> matchResults, TransformationListener listener)
-                    throws TransformationException {
+            throws TransformationException {
         if (matchResults.isEmpty()) {
             return;
         }
@@ -220,12 +220,11 @@ public class GraphTransformer extends ChangeRequest {
             transformer.addTransformationListener(listener);
         }
         MatchResult matchResult = matchResults.get(0);
-        NamedObj host = (NamedObj) matchResult.get(transformationRule
-                .getPattern());
+        NamedObj host = (NamedObj) matchResult
+                .get(transformationRule.getPattern());
         if (host == null) {
-            throw new TransformationException(
-                    "Match result is invalid because "
-                            + "it does not include the pattern.");
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not include the pattern.");
         }
         host.requestChange(transformer);
     }
@@ -253,18 +252,17 @@ public class GraphTransformer extends ChangeRequest {
      */
     public static void transform(TransformationRule transformationRule,
             MatchResult matchResult, TransformationListener listener)
-                    throws TransformationException {
+            throws TransformationException {
         GraphTransformer transformer = new GraphTransformer(transformationRule,
                 matchResult);
         if (listener != null) {
             transformer.addTransformationListener(listener);
         }
-        NamedObj host = (NamedObj) matchResult.get(transformationRule
-                .getPattern());
+        NamedObj host = (NamedObj) matchResult
+                .get(transformationRule.getPattern());
         if (host == null) {
-            throw new TransformationException(
-                    "Match result is invalid because "
-                            + "it does not include the pattern.");
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not include the pattern.");
         }
         host.requestChange(transformer);
     }
@@ -311,7 +309,8 @@ public class GraphTransformer extends ChangeRequest {
                 // Needs to fix this in ptolemy.actor.lib.Publisher.
                 if (hostLinkedObject != null
                         && !hostLinkdList.contains(hostLinkedObject)) {
-                    Relation relation = hostLinkedObject instanceof Relation ? (Relation) hostLinkedObject
+                    Relation relation = hostLinkedObject instanceof Relation
+                            ? (Relation) hostLinkedObject
                             : (Relation) host;
 
                     NamedObj hostContainer = relation.getContainer();
@@ -347,7 +346,7 @@ public class GraphTransformer extends ChangeRequest {
                         // automatically. There should be a more general solution for this.
                         if (!(hostContainer instanceof MirrorComposite)
                                 && !hostComponentPort.insideRelationList()
-                                .contains(hostRelation)) {
+                                        .contains(hostRelation)) {
                             // There is no link between hostPort and
                             // hostRelation, so create a new link.
                             String moml = _getLinkMoML(host, hostRelation);
@@ -408,7 +407,8 @@ public class GraphTransformer extends ChangeRequest {
             try {
                 GTTools.restoreValues(_pattern, records);
             } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e, "Unable to restore values.");
+                throw new KernelRuntimeException(e,
+                        "Unable to restore values.");
             }
         }
 
@@ -591,7 +591,8 @@ public class GraphTransformer extends ChangeRequest {
             Collection<?> children = GTTools.getChildren(replacement, false,
                     true, true, true);
             children = new CombinedCollection<Object>(
-                    replacement.attributeList(AttributeMatcher.class), children);
+                    replacement.attributeList(AttributeMatcher.class),
+                    children);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (GTTools.isIgnored(child)) {
@@ -638,8 +639,8 @@ public class GraphTransformer extends ChangeRequest {
      */
     private void _addObjectsWithCreationAttributes(NamedObj pattern)
             throws TransformationException {
-        Collection<?> children = GTTools.getChildren(pattern, false, true,
-                true, true);
+        Collection<?> children = GTTools.getChildren(pattern, false, true, true,
+                true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
             if (GTTools.isIgnored(child)) {
@@ -662,8 +663,8 @@ public class GraphTransformer extends ChangeRequest {
                     GTTools.deepRemoveAttributes(hostChild,
                             MatchingAttribute.class);
                 } catch (KernelException e) {
-                    throw new TransformationException("Unable to remove "
-                            + "matching attributes.", e);
+                    throw new TransformationException(
+                            "Unable to remove " + "matching attributes.", e);
                 }
                 _recordMirroredObjects(child, hostChild);
 
@@ -684,7 +685,8 @@ public class GraphTransformer extends ChangeRequest {
      *  @param host A container in the host model.
      */
     private void _addReplacementToHostEntries(NamedObj host) {
-        ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(host);
+        ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
+                host);
         if (attribute != null) {
             String replacementCode = attribute.getExpression();
             NamedObj replacement = GTTools.getObjectFromCode(replacementCode,
@@ -734,7 +736,8 @@ public class GraphTransformer extends ChangeRequest {
      *  @param moml The MoML to be executed.
      *  @return The change request.
      */
-    private MoMLChangeRequest _createChangeRequest(NamedObj context, String moml) {
+    private MoMLChangeRequest _createChangeRequest(NamedObj context,
+            String moml) {
         MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
         if (_undoable) {
             request.setUndoable(true);
@@ -898,8 +901,8 @@ public class GraphTransformer extends ChangeRequest {
                 Relation relation = (Relation) relationObject;
                 List<?> linkedObjects = relation.linkedObjectsList();
                 if (linkedObjects.size() == 1) {
-                    String moml = "<deleteRelation name=\""
-                            + relation.getName() + "\"/>";
+                    String moml = "<deleteRelation name=\"" + relation.getName()
+                            + "\"/>";
                     MoMLChangeRequest request = _createChangeRequest(
                             relation.getContainer(), moml);
                     request.execute();
@@ -908,13 +911,14 @@ public class GraphTransformer extends ChangeRequest {
 
             Token relationHidingAttribute = _getAttribute(host,
                     "RelationHiding", RelationHidingAttribute.class);
-            boolean relationHiding = relationHidingAttribute == null ? RelationHidingAttribute.DEFAULT
+            boolean relationHiding = relationHidingAttribute == null
+                    ? RelationHidingAttribute.DEFAULT
                     : ((BooleanToken) relationHidingAttribute).booleanValue();
 
             // Combine relations if possible.
             if (relationHiding) {
-                relations = new LinkedList<Object>(GTTools.getChildren(host,
-                        false, false, false, true));
+                relations = new LinkedList<Object>(
+                        GTTools.getChildren(host, false, false, false, true));
                 Set<Relation> removed = new HashSet<Relation>();
                 for (Object relationObject : relations) {
                     Relation relation = (Relation) relationObject;
@@ -963,8 +967,8 @@ public class GraphTransformer extends ChangeRequest {
                             }
                         }
                     } else if (linkedObjects.size() > 2) {
-                        double[] location = _getBestLocation(relation
-                                .linkedObjectsList());
+                        double[] location = _getBestLocation(
+                                relation.linkedObjectsList());
                         String moml = "<group name=\"auto\">"
                                 + "<vertex name=\"vertex\" value=\"["
                                 + location[0] + ", " + location[1] + "]\"/>"
@@ -985,7 +989,8 @@ public class GraphTransformer extends ChangeRequest {
                 }
             }
 
-            for (Object compositeChild : host.entityList(CompositeEntity.class)) {
+            for (Object compositeChild : host
+                    .entityList(CompositeEntity.class)) {
                 _hideRelations((CompositeEntity) compositeChild);
             }
         } finally {
@@ -1191,8 +1196,8 @@ public class GraphTransformer extends ChangeRequest {
                 Relation relation = (Relation) child;
                 Relation match = (Relation) _matchResult.get(relation);
                 if (match == null) {
-                    match = ((CompositeEntity) host).getRelation(relation
-                            .getName());
+                    match = ((CompositeEntity) host)
+                            .getRelation(relation.getName());
                 }
                 _recordMirroredObjects(relation, match);
             }
@@ -1218,7 +1223,8 @@ public class GraphTransformer extends ChangeRequest {
                 removed.linkedObjectsList());
         for (Object removedLinkedObject : removedLinkedObjects) {
             if (removedLinkedObject instanceof Port) {
-                if (((Port) removedLinkedObject).linkedRelationList().size() > 1) {
+                if (((Port) removedLinkedObject).linkedRelationList()
+                        .size() > 1) {
                     return false;
                 }
             }
@@ -1226,8 +1232,8 @@ public class GraphTransformer extends ChangeRequest {
 
         // Remove the relation to be removed.
         String moml = "<deleteRelation name=\"" + removed.getName() + "\"/>";
-        MoMLChangeRequest request = _createChangeRequest(
-                removed.getContainer(), moml);
+        MoMLChangeRequest request = _createChangeRequest(removed.getContainer(),
+                moml);
         request.execute();
 
         // Reconnect the objects previously linked to the removed relation to
@@ -1256,8 +1262,8 @@ public class GraphTransformer extends ChangeRequest {
         Set<Pair<Relation, Object>> linksToRemove = new HashSet<Pair<Relation, Object>>();
         try {
             pattern.workspace().getReadAccess();
-            Collection<?> relations = GTTools.getChildren(pattern, false,
-                    false, false, true);
+            Collection<?> relations = GTTools.getChildren(pattern, false, false,
+                    false, true);
             for (Object relationObject : relations) {
                 Relation relation = (Relation) relationObject;
                 Relation replacementRelation = (Relation) _patternToReplacement
@@ -1309,9 +1315,8 @@ public class GraphTransformer extends ChangeRequest {
             }
 
             String name;
-            if (hostObject instanceof Port
-                    && hostRelation.getContainer() != ((Port) hostObject)
-                    .getContainer()) {
+            if (hostObject instanceof Port && hostRelation
+                    .getContainer() != ((Port) hostObject).getContainer()) {
                 Port port = (Port) hostObject;
                 name = port.getContainer().getName() + "." + port.getName();
             } else {
@@ -1377,8 +1382,8 @@ public class GraphTransformer extends ChangeRequest {
                 // Remove the composite entity here because when the objects
                 // are added back, their names will not conflict with the name
                 // of this composite entity.
-                MoMLChangeRequest request = GTTools.getDeletionChangeRequest(
-                        this, object);
+                MoMLChangeRequest request = GTTools
+                        .getDeletionChangeRequest(this, object);
                 if (_undoable) {
                     request.setUndoable(true);
                     if (_mergeWithPrevious) {
@@ -1427,9 +1432,10 @@ public class GraphTransformer extends ChangeRequest {
                                 width = thisWidth;
                             }
                         } catch (IllegalActionException e) {
-                            throw new TransformationException("Cannot get "
-                                    + "width of relation " + relation.getName()
-                                    + ".", e);
+                            throw new TransformationException(
+                                    "Cannot get " + "width of relation "
+                                            + relation.getName() + ".",
+                                    e);
                         }
                     }
                 }
@@ -1455,7 +1461,7 @@ public class GraphTransformer extends ChangeRequest {
                 NamedObj newObject = entry.getValue();
                 if (originalObject instanceof Relation
                         || originalObject instanceof Port
-                        && newObject instanceof Relation) {
+                                && newObject instanceof Relation) {
                     List<?> linkedObjectList;
                     if (originalObject instanceof Relation) {
                         linkedObjectList = ((Relation) originalObject)
@@ -1480,8 +1486,8 @@ public class GraphTransformer extends ChangeRequest {
                             Entity linkedEntity = (Entity) entityMap
                                     .get(originalPort.getContainer());
                             if (linkedEntity != null) {
-                                Port port1 = linkedEntity.getPort(originalPort
-                                        .getName());
+                                Port port1 = linkedEntity
+                                        .getPort(originalPort.getName());
                                 String moml = _getLinkMoML(port1, relation2);
                                 MoMLChangeRequest request = _createChangeRequest(
                                         container, moml);
@@ -1522,8 +1528,8 @@ public class GraphTransformer extends ChangeRequest {
             Map<NamedObj, Boolean> childrenToRemove = new HashMap<NamedObj, Boolean>();
             Set<NamedObj> newChildren = new HashSet<NamedObj>();
             host.workspace().getReadAccess();
-            Collection<?> children = GTTools.getChildren(host, true, true,
-                    true, true);
+            Collection<?> children = GTTools.getChildren(host, true, true, true,
+                    true);
             while (!children.isEmpty()) {
                 childrenToRemove.clear();
                 for (Object childObject : children) {
@@ -1538,13 +1544,15 @@ public class GraphTransformer extends ChangeRequest {
                             .getKey(child);
                     if (replacementChild == null && patternChild != null
                             && !GTTools.isCreated(patternChild)) {
-                        Boolean shallowRemoval = patternChild instanceof CompositeEntity ? Boolean.TRUE
+                        Boolean shallowRemoval = patternChild instanceof CompositeEntity
+                                ? Boolean.TRUE
                                 : Boolean.FALSE;
                         childrenToRemove.put(child, shallowRemoval);
                     } else if (replacementChild != null
                             && replacementChild.getContainer() != replacement
                             && replacementChild != patternChild) {
-                        Boolean shallowRemoval = replacementChild instanceof CompositeEntity ? Boolean.TRUE
+                        Boolean shallowRemoval = replacementChild instanceof CompositeEntity
+                                ? Boolean.TRUE
                                 : Boolean.FALSE;
                         childrenToRemove.put(child, shallowRemoval);
                     }
@@ -1562,7 +1570,8 @@ public class GraphTransformer extends ChangeRequest {
                 children = newChildren;
             }
 
-            for (Object compositeChild : host.entityList(CompositeEntity.class)) {
+            for (Object compositeChild : host
+                    .entityList(CompositeEntity.class)) {
                 _removeObjects((CompositeEntity) compositeChild);
             }
         } finally {
@@ -1577,7 +1586,8 @@ public class GraphTransformer extends ChangeRequest {
      *   removed.
      */
     private void _removeReplacementObjectAttributes(NamedObj object) {
-        ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(object);
+        ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
+                object);
         if (attribute != null) {
             try {
                 attribute.setContainer(null);
@@ -1607,7 +1617,8 @@ public class GraphTransformer extends ChangeRequest {
      *  @param host A container in the host model.
      */
     private void _removeReplacementToHostEntries(NamedObj host) {
-        ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(host);
+        ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
+                host);
         if (attribute != null) {
             String replacementCode = attribute.getExpression();
             NamedObj replacement = GTTools.getObjectFromCode(replacementCode,
@@ -1634,7 +1645,8 @@ public class GraphTransformer extends ChangeRequest {
      *  @param oldHost The old host object.
      *  @param newHost The new host object.
      */
-    private void _replaceMatchResultEntries(NamedObj oldHost, NamedObj newHost) {
+    private void _replaceMatchResultEntries(NamedObj oldHost,
+            NamedObj newHost) {
         NamedObj pattern = (NamedObj) _matchResult.getKey(oldHost);
         if (pattern != null) {
             _matchResult.put(pattern, newHost);
@@ -1668,15 +1680,16 @@ public class GraphTransformer extends ChangeRequest {
     private void _setReplacementObjectAttribute(NamedObj object,
             String replacementObjectCode) throws TransformationException {
         try {
-            ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(object);
+            ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
+                    object);
             if (attribute == null) {
                 attribute = new ReplacementObjectAttribute(object,
                         "replacementObject");
             }
             attribute.setExpression(replacementObjectCode);
         } catch (KernelException e) {
-            throw new TransformationException("Cannot set replacementObject "
-                    + "attributes", e);
+            throw new TransformationException(
+                    "Cannot set replacementObject " + "attributes", e);
         }
     }
 
@@ -1734,7 +1747,7 @@ public class GraphTransformer extends ChangeRequest {
     /**
      The change request to create objects in the host model and record those
      objects in the tables.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -1814,7 +1827,7 @@ public class GraphTransformer extends ChangeRequest {
     /**
      A temporary attribute to record the corresponding object in the replacement
      for any object in the pattern.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

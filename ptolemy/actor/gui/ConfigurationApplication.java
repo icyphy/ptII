@@ -227,7 +227,7 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args,
             MessageHandler messageHandler, ErrorHandler errorHandler)
-                    throws Exception {
+            throws Exception {
         this();
 
         _initializeApplication();
@@ -282,10 +282,10 @@ public class ConfigurationApplication implements ExecutionListener {
                 while (models.hasNext()) {
                     NamedObj model = (NamedObj) models.next();
                     if (model instanceof CompositeEntity) {
-                        System.out.println("Statistics for "
-                                + model.getFullName());
-                        System.out.println(((CompositeEntity) model)
-                                .statistics(null));
+                        System.out.println(
+                                "Statistics for " + model.getFullName());
+                        System.out.println(
+                                ((CompositeEntity) model).statistics(null));
                     }
                 }
                 if (_exit) {
@@ -298,9 +298,10 @@ public class ConfigurationApplication implements ExecutionListener {
                 if (_printPDF) {
                     // Need to set background
                     PtolemyPreferences preferences = PtolemyPreferences
-                            .getPtolemyPreferencesWithinConfiguration(_configuration);
+                            .getPtolemyPreferencesWithinConfiguration(
+                                    _configuration);
                     preferences.backgroundColor
-                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
 
                 }
                 if (_run20x) {
@@ -401,7 +402,7 @@ public class ConfigurationApplication implements ExecutionListener {
             // could use make Configuration._configuration a WeakLinkedList.
             // Or, perhaps effigy.closeTableaux() should do this.
             Configuration configuration = (Configuration) Configuration
-                .findEffigy(model.toplevel()).toplevel();
+                    .findEffigy(model.toplevel()).toplevel();
             configuration.removeConfiguration(configuration);
 
             model.setContainer(null);
@@ -418,13 +419,14 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception IOException If the basePath cannot be found.
      *  @exception URISyntaxException If the URI of the basePath is incorrect.
      */
-    public static File[] configurationDirectories(String basePath) throws IOException, URISyntaxException {
-        URI configurationURI = new URI(specToURL(basePath)
-                                       .toExternalForm().replaceAll(" ", "%20"));
+    public static File[] configurationDirectories(String basePath)
+            throws IOException, URISyntaxException {
+        URI configurationURI = new URI(
+                specToURL(basePath).toExternalForm().replaceAll(" ", "%20"));
         File configurationDirectory = new File(configurationURI);
         ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
         File[] configurationDirectories = configurationDirectory
-            .listFiles(filter);
+                .listFiles(filter);
         return configurationDirectories;
     }
 
@@ -434,15 +436,19 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception IOException If the basePath cannot be found.
      *  @exception URISyntaxException If the URI of the basePath is incorrect.
      */
-    public static File configurationDirectoryFullOrFirst() throws IOException, URISyntaxException {
-        File[] configurationDirectories = configurationDirectories("ptolemy/configs");
+    public static File configurationDirectoryFullOrFirst()
+            throws IOException, URISyntaxException {
+        File[] configurationDirectories = configurationDirectories(
+                "ptolemy/configs");
         if (configurationDirectories.length < 1) {
-            throw new IOException("Could not find any configurations in ptolemy/configs");
+            throw new IOException(
+                    "Could not find any configurations in ptolemy/configs");
         }
         File configurationDirectory = configurationDirectories[0];
         int i;
         for (i = 0; i < configurationDirectories.length; i++) {
-            if (configurationDirectories[i].toString().endsWith("configs/full")) {
+            if (configurationDirectories[i].toString()
+                    .endsWith("configs/full")) {
                 configurationDirectory = configurationDirectories[i];
             }
         }
@@ -456,7 +462,8 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @param throwable The throwable being reported.
      */
     @Override
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
         _activeCount--;
 
         if (_activeCount == 0) {
@@ -651,8 +658,8 @@ public class ConfigurationApplication implements ExecutionListener {
             File canonicalModelFile = FileUtilities.nameToFile(modelFileName,
                     null);
             if (canonicalModelFile == null) {
-                throw new IOException("Could not find \"" + modelFileName
-                        + "\".");
+                throw new IOException(
+                        "Could not find \"" + modelFileName + "\".");
             }
             String canonicalModelFileName = canonicalModelFile
                     .getCanonicalPath();
@@ -670,7 +677,8 @@ public class ConfigurationApplication implements ExecutionListener {
                     new String[] {
                             // Need to display a frame or Kieler fails.
                             //"ptolemy/actor/gui/test/testConfiguration.xml",
-                            configurationDirectory.getCanonicalPath() + "/configuration.xml",
+                            configurationDirectory.getCanonicalPath()
+                                    + "/configuration.xml",
                             canonicalModelFileName });
 
             // Find the first CompositeEntity whos name matches
@@ -786,10 +794,12 @@ public class ConfigurationApplication implements ExecutionListener {
                         .forName(applicationInitializerClassName);
                 applicationInitializer.newInstance();
             } catch (Throwable throwable) {
-                throw new Exception("Failed to call application initializer "
-                        + "class \"" + applicationInitializerClassName
-                        + "\".  Perhaps the configuration file \""
-                        + specificationURL + "\" has a problem?", throwable);
+                throw new Exception(
+                        "Failed to call application initializer " + "class \""
+                                + applicationInitializerClassName
+                                + "\".  Perhaps the configuration file \""
+                                + specificationURL + "\" has a problem?",
+                        throwable);
             }
         }
 
@@ -852,13 +862,13 @@ public class ConfigurationApplication implements ExecutionListener {
 
                 try {
                     if (!absoluteFile.exists()) {
-                        throw new IOException("File '" + absoluteFile
-                                + "' does not exist.");
+                        throw new IOException(
+                                "File '" + absoluteFile + "' does not exist.");
                     }
                 } catch (java.security.AccessControlException accessControl) {
                     IOException exception = new IOException(
-                            "AccessControlException while "
-                                    + "trying to read '" + absoluteFile + "'");
+                            "AccessControlException while " + "trying to read '"
+                                    + absoluteFile + "'");
 
                     // IOException does not have a cause argument constructor.
                     exception.initCause(accessControl);
@@ -905,8 +915,8 @@ public class ConfigurationApplication implements ExecutionListener {
                             // Start cache is in a directory that has
                             // spaces in the path, which is the default
                             // under Windows.
-                            specURL = JNLPUtilities.canonicalizeJarURL(new URL(
-                                    spec));
+                            specURL = JNLPUtilities
+                                    .canonicalizeJarURL(new URL(spec));
                             if (specURL == null) {
                                 throw new Exception(
                                         "JNLPUtilities.canonicalizeJarURL(new URL(\""
@@ -961,8 +971,9 @@ public class ConfigurationApplication implements ExecutionListener {
 
         // Make sure we throw an exception if one is caught.
         // If we don't, then running vergil -foo will just exit.
-        throw new Exception("Failed to parse \"" + argsStringBuffer.toString()
-                + "\"", cause);
+        throw new Exception(
+                "Failed to parse \"" + argsStringBuffer.toString() + "\"",
+                cause);
     }
 
     /** Wait for all executing runs to finish, then return.
@@ -1035,7 +1046,8 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String [][])
      */
     protected String _configurationUsage(String commandTemplate,
-            String[][] commandOptions, String[][] commandFlagsWithDescriptions) {
+            String[][] commandOptions,
+            String[][] commandFlagsWithDescriptions) {
         StringBuffer result = new StringBuffer("Usage: " + commandTemplate
                 + "\n\n" + "Options that take values:\n");
         int i;
@@ -1067,7 +1079,8 @@ public class ConfigurationApplication implements ExecutionListener {
             // Look for configuration directories in _basePath
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
-            File[] configurationDirectories = configurationDirectories(_basePath);
+            File[] configurationDirectories = configurationDirectories(
+                    _basePath);
 
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
@@ -1095,12 +1108,13 @@ public class ConfigurationApplication implements ExecutionListener {
                         // FIXME: Skip jxta, since it starts up the jxta config
                         // tools.
                         if (!configurationName.equals("jxta")) {
-                            URL specificationURL = specToURL(configurationFileName);
+                            URL specificationURL = specToURL(
+                                    configurationFileName);
                             Configuration configuration;
                             // URL.equals() is very expensive so we convert to a URI first  See:
                             //http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
-                            if (specificationURL.toURI().equals(
-                                    _initialSpecificationURI)) {
+                            if (specificationURL.toURI()
+                                    .equals(_initialSpecificationURI)) {
                                 // Avoid rereading the configuration, which will result
                                 // in the old configuration being removed, which exits the app.
                                 configuration = _configuration;
@@ -1112,16 +1126,19 @@ public class ConfigurationApplication implements ExecutionListener {
                                 // error, ignore the error, but don't print
                                 // usage for that configuration
                                 try {
-                                    MoMLParser
-                                    .setErrorHandler(new IgnoreErrorHandler());
-                                    configuration = readConfiguration(specificationURL);
+                                    MoMLParser.setErrorHandler(
+                                            new IgnoreErrorHandler());
+                                    configuration = readConfiguration(
+                                            specificationURL);
                                 } finally {
                                     MoMLParser.setErrorHandler(errorHandler);
                                 }
 
                                 if (configuration != null
-                                        && configuration.getAttribute("_doc") != null
-                                        && configuration.getAttribute("_doc") instanceof Documentation) {
+                                        && configuration
+                                                .getAttribute("_doc") != null
+                                        && configuration.getAttribute(
+                                                "_doc") instanceof Documentation) {
                                     Documentation doc = (Documentation) configuration
                                             .getAttribute("_doc");
                                     result.append("\t\t"
@@ -1137,8 +1154,8 @@ public class ConfigurationApplication implements ExecutionListener {
                     }
 
                     if (printDefaultConfigurationMessage) {
-                        result.append("\t\tuses " + configurationFileName
-                                + "\n");
+                        result.append(
+                                "\t\tuses " + configurationFileName + "\n");
                     }
                 }
             }
@@ -1267,8 +1284,7 @@ public class ConfigurationApplication implements ExecutionListener {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out
-            .println("Version "
+            System.out.println("Version "
                     + VersionAttribute.CURRENT_VERSION.getExpression()
                     + ", Build $Id$");
 
@@ -1393,7 +1409,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
                         try {
                             /*NamedObj toplevel = _parser.parse(base, inURL);
-
+                            
                             if (toplevel instanceof Configuration) {
                                 _configuration = (Configuration) toplevel;
                             }*/
@@ -1417,7 +1433,8 @@ public class ConfigurationApplication implements ExecutionListener {
 
                             try {
                                 if (inURL.toString().indexOf("!/") != -1
-                                        && inURL.toString().indexOf("%20") != -1) {
+                                        && inURL.toString()
+                                                .indexOf("%20") != -1) {
                                     detailMessage = " The URL contains "
                                             + "'!/', so it may be a jar "
                                             + "URL, and jar URLs cannot contain "
@@ -1461,9 +1478,9 @@ public class ConfigurationApplication implements ExecutionListener {
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
                     if (i >= args.length - 1) {
-                        throw new IllegalActionException("Cannot set "
-                                + "parameter " + arg + " when no value is "
-                                + "given.");
+                        throw new IllegalActionException(
+                                "Cannot set " + "parameter " + arg
+                                        + " when no value is " + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -1472,8 +1489,8 @@ public class ConfigurationApplication implements ExecutionListener {
                     i++;
                 } else {
                     // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
+                    throw new IllegalActionException(
+                            "Unrecognized option: " + arg);
                 }
             }
         }
@@ -1513,8 +1530,8 @@ public class ConfigurationApplication implements ExecutionListener {
 
                         // Use a MoMLChangeRequest so that visual rendition (if
                         // any) is updated and listeners are notified.
-                        String moml = "<property name=\"" + name
-                                + "\" value=\"" + value + "\"/>";
+                        String moml = "<property name=\"" + name + "\" value=\""
+                                + value + "\"/>";
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
                                 model, moml);
                         model.requestChange(request);
@@ -1603,34 +1620,34 @@ public class ConfigurationApplication implements ExecutionListener {
                 JFrame frame = tableau.getFrame();
                 if (frame instanceof TableauFrame) {
                     // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
-                    if (!tableau
-                            .getFullName()
-                            .equals(".configuration.directory.configuration.graphTableau")
-                            && !tableau
-                            .getFullName()
-                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                    if (!tableau.getFullName().equals(
+                            ".configuration.directory.configuration.graphTableau")
+                            && !tableau.getFullName().equals(
+                                    ".configuration.directory.UserLibrary.graphTableau")) {
                         try {
                             // Set the background to white
 
                             //frame.setBackground(java.awt.Color.WHITE);
                             //((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
                             PtolemyPreferences preferences = PtolemyPreferences
-                                    .getPtolemyPreferencesWithinConfiguration(_configuration);
+                                    .getPtolemyPreferencesWithinConfiguration(
+                                            _configuration);
                             // Coverity Scan suggests avoiding a NPE here.
                             if (preferences == null) {
-                                throw new InternalErrorException(_configuration, null,
+                                throw new InternalErrorException(_configuration,
+                                        null,
                                         "Could not get PtolemyPreferences?"
-                                        + "  Perhaps \""
-                                        + PtolemyPreferences.PREFERENCES_WITHIN_CONFIGURATION
-                                        + "\" could not be read in the configuration?");
+                                                + "  Perhaps \""
+                                                + PtolemyPreferences.PREFERENCES_WITHIN_CONFIGURATION
+                                                + "\" could not be read in the configuration?");
                             } else {
                                 preferences.backgroundColor
-                                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                                        .setExpression("{1.0, 1.0, 1.0, 1.0}");
                                 frame.repaint();
                             }
                         } catch (Exception ex) {
-                            System.out
-                            .println("Failed to set the background to white.");
+                            System.out.println(
+                                    "Failed to set the background to white.");
                             ex.printStackTrace();
                         }
                         ((TableauFrame) frame).printPDF();
@@ -1682,15 +1699,14 @@ public class ConfigurationApplication implements ExecutionListener {
             { "-run", "Run the models" },
             { "-run20x", "Run the models 20 times, then exit" },
             { "-runThenExit",
-            "Run the models, then exit after the models finish." },
+                    "Run the models, then exit after the models finish." },
             { "-statistics", "Open the model, print statistics and exit." },
             { "-test", "Exit after two seconds." },
             { "-version", "Print version information." } };
 
     /** The command-line options that take arguments. */
-    protected static String[][] _commandOptions = {
-        { "-class", "<classname>" },
-        { "-<parameter name>", "<parameter value>" }, };
+    protected static String[][] _commandOptions = { { "-class", "<classname>" },
+            { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";
@@ -1811,8 +1827,8 @@ public class ConfigurationApplication implements ExecutionListener {
 
                 if (_statistics) {
                     System.out.println("Statistics for " + model.getFullName());
-                    System.out.println(((CompositeEntity) model)
-                            .statistics(null));
+                    System.out.println(
+                            ((CompositeEntity) model).statistics(null));
                 }
 
                 // Create a manager if necessary.

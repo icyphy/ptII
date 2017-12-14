@@ -55,7 +55,7 @@ public class SerialPortLockTest {
      * @param args Ignored
      * @exception Exception Not thrown
      */
-    public static void main(String [] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         try {
             System.out.println("Opening Port 1");
             CommPort port1 = SerialPortLockTest.openPort();
@@ -78,21 +78,26 @@ public class SerialPortLockTest {
      *  @exception Throwable If looking up a port failed.
      */
     public static CommPort openPort() throws Throwable {
-        System.out.println("Calling gnu.io.CommPortIdentifier.getPortIdentifiers()");
+        System.out.println(
+                "Calling gnu.io.CommPortIdentifier.getPortIdentifiers()");
         Enumeration ports = CommPortIdentifier.getPortIdentifiers();
-        System.out.println("Done calling gnu.io.CommPortIdentifier.getPortIdentifiers()");
+        System.out.println(
+                "Done calling gnu.io.CommPortIdentifier.getPortIdentifiers()");
         while (ports.hasMoreElements()) {
             CommPortIdentifier identifier = (CommPortIdentifier) ports
-                .nextElement();
+                    .nextElement();
             if (identifier.getName().indexOf("/dev/cu.") != -1
-                || identifier.getName().indexOf("Bluetooth") != -1) {
+                    || identifier.getName().indexOf("Bluetooth") != -1) {
                 System.out.println("Skipping " + identifier.getName());
             } else {
-                CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(identifier.getName());
-                CommPort port = portID.open("SerialPortLockTest", 1000 /* timeout for opening */);
+                CommPortIdentifier portID = CommPortIdentifier
+                        .getPortIdentifier(identifier.getName());
+                CommPort port = portID.open("SerialPortLockTest",
+                        1000 /* timeout for opening */);
                 return port;
             }
         }
-        throw new RuntimeException("Could not find any non-Bluetooth, non tty serial ports.");
+        throw new RuntimeException(
+                "Could not find any non-Bluetooth, non tty serial ports.");
     }
 }

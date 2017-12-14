@@ -97,23 +97,23 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         // compileCommand is only used if useMake is false.
         if (compileCommand.getExpression().equals(_compileCommandDefault)) {
-            compileCommand
-            .setExpression("javac -classpath \"@PTCGLibraries@\" -J-Xmx1500M @modelName@.java");
+            compileCommand.setExpression(
+                    "javac -classpath \"@PTCGLibraries@\" -J-Xmx1500M @modelName@.java");
         }
 
         // runCommand is only used if useMake is false.
         if (runCommand.getExpression().equals(_runCommandDefault)) {
-            runCommand
-            .setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @MODELCLASS@");
+            runCommand.setExpression(
+                    "java -classpath \"@PTCGLibraries@\" -Xmx1500M @MODELCLASS@");
         }
 
         generatorPackageList.setExpression("generic.program.procedural.java");
         // A list of the primitive types supported by the code generator.
         // FIXME: we should not have to set these each time, but
         // JavaCodeGenerator uses Integer, and CCodeGenerator uses Int
-        _primitiveTypes = Arrays.asList(new String[] { "Integer", "Double",
-                "String", "Long", "Boolean", "UnsignedByte",
-                /*"Complex",*/"Pointer", "Object" });
+        _primitiveTypes = Arrays.asList(
+                new String[] { "Integer", "Double", "String", "Long", "Boolean",
+                        "UnsignedByte", /*"Complex",*/"Pointer", "Object" });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,13 +133,18 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         : type == BaseType.STRING ? "String"
                                 : type == BaseType.DOUBLE ? "Double"
                                         : type == BaseType.BOOLEAN ? "Boolean"
-                                                : type == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-                                                        : type == PointerToken.POINTER ? "Pointer"
-                                                                : type == BaseType.COMPLEX ? "Complex"
+                                                : type == BaseType.UNSIGNED_BYTE
+                                                        ? "UnsignedByte"
+                                                        : type == PointerToken.POINTER
+                                                                ? "Pointer"
+                                                                : type == BaseType.COMPLEX
+                                                                        ? "Complex"
                                                                         // FIXME: Why do we have to use equals with BaseType.OBJECT?
-                                                                        : type.equals(BaseType.OBJECT) ? "Object"
-                                                                                //: type == BaseType.OBJECT ? "Object"
-                                                                                : null;
+                                                                        : type.equals(
+                                                                                BaseType.OBJECT)
+                                                                                        ? "Object"
+                                                                                        //: type == BaseType.OBJECT ? "Object"
+                                                                                        : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -170,16 +175,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             // It is not an error to resolve to general.  See
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml
-            System.out
-            .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
-                    + type
-                    + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
+            System.out.println(
+                    "JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
+                            + type
+                            + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
         }
         if (result == null) {
             return null;
         }
-        return result.replace("Int", "Integer")
-                .replace("Integerger", "Integer");
+        return result.replace("Int", "Integer").replace("Integerger",
+                "Integer");
         //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
@@ -198,13 +203,18 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         : type == BaseType.STRING ? "String"
                                 : type == BaseType.DOUBLE ? "double"
                                         : type == BaseType.BOOLEAN ? "boolean"
-                                                : type == BaseType.UNSIGNED_BYTE ? "unsigned byte"
-                                                        : type == PointerToken.POINTER ? "Pointer"
-                                                                : type == BaseType.COMPLEX ? "Complex"
+                                                : type == BaseType.UNSIGNED_BYTE
+                                                        ? "unsigned byte"
+                                                        : type == PointerToken.POINTER
+                                                                ? "Pointer"
+                                                                : type == BaseType.COMPLEX
+                                                                        ? "Complex"
                                                                         // FIXME: Why do we have to use equals with Object
-                                                                        : type.equals(BaseType.OBJECT) ? "Object"
-                                                                                //: type == BaseType.OBJECT ? "Object"
-                                                                                : null;
+                                                                        : type.equals(
+                                                                                BaseType.OBJECT)
+                                                                                        ? "Object"
+                                                                                        //: type == BaseType.OBJECT ? "Object"
+                                                                                        : null;
 
         if (result == null) {
             if (type instanceof ArrayType) {
@@ -215,9 +225,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
         if (result == null || result.length() == 0) {
-            System.out
-            .println("JavaCodeGenerator.codeGenType2: Cannot resolve codegen type from Ptolemy type: "
-                    + type);
+            System.out.println(
+                    "JavaCodeGenerator.codeGenType2: Cannot resolve codegen type from Ptolemy type: "
+                            + type);
         }
         if (result == null) {
             return null;
@@ -306,7 +316,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         case 7:
             returnType = PointerToken.POINTER;
             break;
-            // FIXME: case 8 is Matrix
+        // FIXME: case 8 is Matrix
         case 9:
             returnType = BaseType.COMPLEX;
             break;
@@ -335,13 +345,18 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         : type == BaseType.STRING ? 0
                                 : type == BaseType.DOUBLE ? 4
                                         : type == BaseType.BOOLEAN ? 5
-                                                : type == BaseType.UNSIGNED_BYTE ? 6
-                                                        : type == PointerToken.POINTER ? 7
-                                                                : type == BaseType.COMPLEX ? 9
+                                                : type == BaseType.UNSIGNED_BYTE
+                                                        ? 6
+                                                        : type == PointerToken.POINTER
+                                                                ? 7
+                                                                : type == BaseType.COMPLEX
+                                                                        ? 9
                                                                         // FIXME: Why do we have to use equals with BaseType.OBJECT?
-                                                                        : type.equals(BaseType.OBJECT) ? 10
-                                                                                //: type == BaseType.OBJECT ? 10
-                                                                                : -10;
+                                                                        : type.equals(
+                                                                                BaseType.OBJECT)
+                                                                                        ? 10
+                                                                                        //: type == BaseType.OBJECT ? 10
+                                                                                        : -10;
 
         if (result == -10) {
             if (type instanceof ArrayType) {
@@ -372,7 +387,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             String value) {
         // Maybe we should keep track of these in a Set?
         return "static final " + type + " " + constant + " = " + value + ";"
-        + _eol;
+                + _eol;
     }
 
     /** Generate the closing code for a group of fire functions common
@@ -485,8 +500,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         int secondDot = fullName.indexOf('.', firstDot + 1);
         if (firstDot == -1) {
             results[0] = "";
-            results[1] = _javaKeywordSanitize(CodeGeneratorAdapter
-                    .generateName(namedObj));
+            results[1] = _javaKeywordSanitize(
+                    CodeGeneratorAdapter.generateName(namedObj));
             results[1] = TemplateParser.escapeName(results[1]);
             return results;
         }
@@ -495,9 +510,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             results[0] = _javaKeywordSanitize(StringUtilities
                     .sanitizeName(fullName.substring(0, firstDot)));
-            results[1] = _javaKeywordSanitize(StringUtilities
-                    .sanitizeName(fullName.substring(firstDot + 1,
-                            fullName.length())));
+            results[1] = _javaKeywordSanitize(StringUtilities.sanitizeName(
+                    fullName.substring(firstDot + 1, fullName.length())));
             if (namedObj instanceof ptolemy.actor.TypedCompositeActor) {
                 // A Hack for inline code generation.  The problem is
                 // that when we generate inline code, we want the top
@@ -513,13 +527,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 results[0] += "_" + results[1];
             }
         } else {
-            results[0] = StringUtilities.sanitizeName(fullName.substring(0,
-                    firstDot)
-                    + "_"
-                    + fullName.substring(firstDot + 1, secondDot));
-            results[1] = _javaKeywordSanitize(StringUtilities
-                    .sanitizeName(fullName.substring(secondDot + 1,
-                            fullName.length())));
+            results[0] = StringUtilities
+                    .sanitizeName(fullName.substring(0, firstDot) + "_"
+                            + fullName.substring(firstDot + 1, secondDot));
+            results[1] = _javaKeywordSanitize(StringUtilities.sanitizeName(
+                    fullName.substring(secondDot + 1, fullName.length())));
         }
 
         //System.out.println("JCG: genVarAndMethName: " + firstDot + " " + secondDot + " " + fullName + " variableName: " + results[0] + " methodName: " + results[1]);
@@ -558,9 +570,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             List<GenericCodeGenerator> codeGenerators = container
                     .attributeList(GenericCodeGenerator.class);
             if (codeGenerators.size() > 0) {
-                String[] results = generateFireFunctionVariableAndMethodName(namedObj);
+                String[] results = generateFireFunctionVariableAndMethodName(
+                        namedObj);
                 return results[0] + " _inner" + results[0] + " = new "
-                + results[0] + "();" + _eol;
+                        + results[0] + "();" + _eol;
             }
             container = container.getContainer();
         }
@@ -591,8 +604,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 for (int j = 0; j < functions.length; j++) {
                     if (functions[j].equals("isCloseTo")
                             && (types[i].equals("Boolean")
-                                    || types[i].equals("String") || types[i]
-                                            .equals("Object"))) {
+                                    || types[i].equals("String")
+                                    || types[i].equals("Object"))) {
                         // Boolean_isCloseTo and String_isCloseTo
                         // are the same as their corresponding *_equals
                         code.append(types[i] + "_equals");
@@ -719,22 +732,18 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 recordStartTimeCode = _recordStartTime();
                 printExecutionTimeCode = _printExecutionTime();
             }
-            mainEntryCode
-            .append(_eol
-                    + _eol
+            mainEntryCode.append(_eol + _eol
                     + "public static void main(String [] args) throws Exception {"
                     + _eol + _sanitizedModelName + " model = new "
-                    + _sanitizedModelName + "();" + _eol
-                    + recordStartTimeCode + _eol
-                    + "model.preinitialize();" + _eol
-                    + "model.initialize();" + _eol + "model.execute();"
-                    + _eol + "model.doWrapup();" + _eol
-                    + printExecutionTimeCode + _eol + "System.exit(0);"
-                    + _eol + "}" + _eol);
+                    + _sanitizedModelName + "();" + _eol + recordStartTimeCode
+                    + _eol + "model.preinitialize();" + _eol
+                    + "model.initialize();" + _eol + "model.execute();" + _eol
+                    + "model.doWrapup();" + _eol + printExecutionTimeCode + _eol
+                    + "System.exit(0);" + _eol + "}" + _eol);
 
         } else {
-            mainEntryCode.append(_eol + _eol + "public Object[] " + _eol
-                    + "fire (" + _eol);
+            mainEntryCode.append(
+                    _eol + _eol + "public Object[] " + _eol + "fire (" + _eol);
 
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -815,7 +824,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     @Override
-    public String generatePostfireProcedureName() throws IllegalActionException {
+    public String generatePostfireProcedureName()
+            throws IllegalActionException {
 
         return INDENT1 + "postfire();" + _eol;
     }
@@ -841,9 +851,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol
-                + comment("Generate type resolution code for "
-                        + getContainer().getFullName()));
+        code.append(_eol + comment("Generate type resolution code for "
+                + getContainer().getFullName()));
 
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
@@ -869,7 +878,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // Open the .j file for each type.
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/"
-                            + typesArray[i] + ".j", this);
+                            + typesArray[i] + ".j",
+                    this);
 
             //FIXME: temporarily statically assign types, is there any better way to do that?
             //            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
@@ -927,11 +937,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             sharedStream.clear();
             StringBuffer declareTokenBlock = new StringBuffer();
             if (_generateInSubdirectory) {
-                declareTokenBlock.append("package " + _sanitizedModelName + ";"
-                        + _eol);
+                declareTokenBlock
+                        .append("package " + _sanitizedModelName + ";" + _eol);
             }
-            declareTokenBlock.append(sharedStream
-                    .getCodeBlock("tokenDeclareBlock"));
+            declareTokenBlock
+                    .append(sharedStream.getCodeBlock("tokenDeclareBlock"));
 
             if (defineEmptyToken) {
                 sharedStream.append("public static Token emptyToken; "
@@ -962,8 +972,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     defineScalarDeleteMethod = true;
                 }
                 if (functionsArray[j].equals("isCloseTo")
-                        && (typesArray[i].equals("Boolean") || typesArray[i]
-                                .equals("String"))) {
+                        && (typesArray[i].equals("Boolean")
+                                || typesArray[i].equals("String"))) {
                     boolean foundEquals = false;
                     for (String element : functionsArray) {
                         if (element.equals("equals")) {
@@ -1035,8 +1045,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // Boolean_equals and String_equals.
                     if (element.equals("isCloseTo")
                             && (typesArray[i].equals("Boolean")
-                                    || typesArray[i].equals("String") || typesArray[i]
-                                            .equals("Object"))) {
+                                    || typesArray[i].equals("String")
+                                    || typesArray[i].equals("Object"))) {
 
                         if (!functions.contains("equals")) {
                             //typeStreams[i].appendCodeBlock(typesArray[i]
@@ -1048,7 +1058,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                         if (!_unsupportedTypeFunctions.contains(functionName)
                                 && !_overloadedFunctionSet
-                                .contains(functionName)) {
+                                        .contains(functionName)) {
 
                             //typeStreams[i].appendCodeBlock(typesArray[i] + "_"
                             //+ functionsArray[j]);
@@ -1095,8 +1105,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             while (namedObjs.hasNext()) {
                 NamedObj namedObj = (NamedObj) namedObjs.next();
                 if (namedObj instanceof Actor) {
-                    variableDeclarations
-                    .add(generateFireFunctionVariableDeclaration(namedObj));
+                    variableDeclarations.add(
+                            generateFireFunctionVariableDeclaration(namedObj));
                 }
             }
 
@@ -1106,9 +1116,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 variables.append(variableDeclaration);
             }
             if (variables.length() > 0) {
-                variables
-                .insert(0,
-                        comment("inline: true, Variables that refer to inner classes."));
+                variables.insert(0, comment(
+                        "inline: true, Variables that refer to inner classes."));
             }
             code.append(variables);
 
@@ -1198,8 +1207,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
-                        .getContainer());
+                NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                        variable.getContainer());
                 if (!_variablesAsArrays) {
                     code.append("public static "
                             + adapter.targetType(variable.getType()) + " "
@@ -1244,24 +1253,23 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 Variable variable = (Variable) modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
-                NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(container);
+                NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                        container);
                 //String parameterValue = "";
                 try {
                     /*parameterValue = */containerAdapter.getParameterValue(
                             variable.getName(), variable.getContainer());
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(container, throwable,
-                            "Failed to get the value of \""
-                                    + variable.getName()
+                            "Failed to get the value of \"" + variable.getName()
                                     + "\", the container Adapter was: "
                                     + containerAdapter + " which is a "
                                     + containerAdapter.getClass().getName());
                 }
-                code.append(generateVariableName(variable)
-                        + " = "
-                        + containerAdapter.getParameterValue(
-                                variable.getName(), variable.getContainer())
-                                + ";" + _eol);
+                code.append(generateVariableName(variable) + " = "
+                        + containerAdapter.getParameterValue(variable.getName(),
+                                variable.getContainer())
+                        + ";" + _eol);
             }
         }
         return code.toString();
@@ -1300,8 +1308,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // Get the type.
         NamedProgramCodeGeneratorAdapter adapter = null;
         try {
-            adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
-                    .getContainer());
+            adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                    variable.getContainer());
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(variable, ex,
                     "Failed to get the adapter of " + variable);
@@ -1328,7 +1336,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         return "variables_" + StringUtilities.sanitizeName(typeName) + "["
-        + variableIndex + "]";
+                + variableIndex + "]";
 
     }
 
@@ -1391,22 +1399,22 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public void markFunctionCalled(String name,
             JavaTemplateParser javaTemplateParser)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         try {
             if (_overloadedFunctions == null) {
-                throw new NullPointerException(
-                        "Call _analyzeTypeConversions() "
-                                + "by calling _generateCode() or generateCode() "
-                                + "before calling markFunctionCalled().  Otherwise the "
-                                + "CodeStream of overloaded functions will not be initialized");
+                throw new NullPointerException("Call _analyzeTypeConversions() "
+                        + "by calling _generateCode() or generateCode() "
+                        + "before calling markFunctionCalled().  Otherwise the "
+                        + "CodeStream of overloaded functions will not be initialized");
             }
             String functionCode = _overloadedFunctions.getCodeBlock(name);
 
             if (!_overloadedFunctionSet.contains(name)) {
                 _overloadedFunctionSet.add(name);
 
-                String code = javaTemplateParser == null ? _processCode(functionCode)
+                String code = javaTemplateParser == null
+                        ? _processCode(functionCode)
                         : javaTemplateParser.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
@@ -1443,8 +1451,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IOException If thrown while reading the code.
      */
     @Override
-    public String[] splitLongBody(int linesPerMethod, String prefix, String code)
-            throws IOException {
+    public String[] splitLongBody(int linesPerMethod, String prefix,
+            String code) throws IOException {
         BufferedReader bufferedReader = null;
         StringBuffer bodies = new StringBuffer("class " + prefix + " {" + _eol);
         // One method calls all the other methods, thus reducing the
@@ -1454,8 +1462,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 + callAllBodyMethodName + "() throws Exception {" + _eol
                 + prefix + " " + prefix + " = new " + prefix + "();" + _eol);
 
-        StringBuffer masterBody = new StringBuffer(prefix + " " + prefix
-                + " = new " + prefix + "();" + _eol);
+        StringBuffer masterBody = new StringBuffer(
+                prefix + " " + prefix + " = new " + prefix + "();" + _eol);
 
         try {
             bufferedReader = new BufferedReader(new StringReader(code));
@@ -1526,7 +1534,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 // or the if, {}, comment or try/catch block ends.
                 for (int i = 0; i + 1 < linesPerMethod && line != null
                         || ifCount > 0 || openBracketCount > 0
-                        || commentCount > 0 || tryCount > 0 || switchCount > 0; i++) {
+                        || commentCount > 0 || tryCount > 0
+                        || switchCount > 0; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " b:" + line);
@@ -1541,9 +1550,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                         + " openBracketCount: "
                                         + openBracketCount + " commentCount: "
                                         + commentCount + " switchCount: "
-                                        + switchCount + " tryCount: "
-                                        + tryCount + " line:\n" + line
-                                        + " code:\n" + code);
+                                        + switchCount + " tryCount: " + tryCount
+                                        + " line:\n" + line + " code:\n"
+                                        + code);
                     }
                     if (line != null) {
                         body.append(line + _eol);
@@ -1599,8 +1608,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 //                         + "}" + _eol);
 
                 bodies.append("class " + methodName + " {" + _eol + methodName
-                        + "() throws Exception {" + _eol + body.toString()
-                        + "}" + _eol + "}" + _eol);
+                        + "() throws Exception {" + _eol + body.toString() + "}"
+                        + _eol + "}" + _eol);
             }
             if (lineNumber <= linesPerMethod) {
                 // We must have less than linesPerMethod lines in the body
@@ -1679,8 +1688,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             if (_generateInSubdirectory) {
                 topPackageName = _sanitizedModelName + ".";
             }
-            _typeDeclarations = new StringBuffer("import " + topPackageName
-                    + "Token;" + _eol);
+            _typeDeclarations = new StringBuffer(
+                    "import " + topPackageName + "Token;" + _eol);
             HashSet<String> functions = _getReferencedFunctions();
 
             HashSet<String> types = _getReferencedTypes(functions);
@@ -1700,7 +1709,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 } catch (IllegalActionException ex) {
                     IOException exception = new IOException(
                             "Failed to get the declare block for " + element
-                            + " from " + typesTemplate);
+                                    + " from " + typesTemplate);
                     exception.initCause(ex);
                     throw exception;
                 }
@@ -1731,10 +1740,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     className = _sanitizedModelName + "." + className;
                 }
                 declarations
-                .append("import static " + className + ".*;" + _eol);
+                        .append("import static " + className + ".*;" + _eol);
 
-                String shortClassName = className.substring(className
-                        .lastIndexOf('.') + 1);
+                String shortClassName = className
+                        .substring(className.lastIndexOf('.') + 1);
                 body.insert(0, "package " + packageName + ";" + _eol
                         + _typeDeclarations.toString() + _eol + "public class "
                         + shortClassName + " { " + _eol);
@@ -1776,7 +1785,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "byte"
+                                                : ptType == BaseType.UNSIGNED_BYTE
+                                                        ? "byte"
                                                         // FIXME: Why do we have to use equals with BaseType.OBJECT?
                                                         // Object and Complex types are not primitive types.
                                                         // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
@@ -1817,7 +1827,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     @Override
     protected void _addActorLibraries() throws IllegalActionException {
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
 
         Set actorLibraryDirectories = adapter.getLibraryDirectories();
         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
@@ -1934,8 +1945,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // Note that foo does not have a value.
         // Nested ifdefs are not supported.
 
-        StringTokenizer tokenizer = new StringTokenizer(code.toString(), _eol
-                + "\n");
+        StringTokenizer tokenizer = new StringTokenizer(code.toString(),
+                _eol + "\n");
 
         code = new StringBuffer();
 
@@ -1996,7 +2007,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        NamedProgramCodeGeneratorAdapter compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         Set<String> includingFiles = compositeActorAdapter.getHeaderFiles();
 
         for (String file : includingFiles) {
@@ -2116,7 +2128,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If illegal macro names are found.
      */
     protected String _processCode(String code) throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         return adapter.processCode(code);
     }
 
@@ -2188,7 +2201,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  sanitized version of the model name, and a ".mk" extension.
      *  Thus, for a model named "Foo", we might generate a makefile in
      *  "$HOME/codegen/Foo.mk".
-
+    
      *  <p>Under Java under Windows, your <code>$HOME</code> variable
      *  is set to the value of the <code>user.home</code>System property,
      *  which is usually something like
@@ -2288,8 +2301,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         if (variableDeclarations.size() == 2) {
             if (variableDeclarations.get(0).length() > 0) {
-                throw new IllegalActionException(
-                        getComponent(),
+                throw new IllegalActionException(getComponent(),
                         "_writeVariableDeclarations called "
                                 + "with a list of two elements but the first element is "
                                 + "non-empty.");
@@ -2350,8 +2362,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 i = -1;
                                 importLine = importReader.readLine();
                             } catch (IOException ex) {
-                                throw new IllegalActionException(
-                                        getComponent(), ex,
+                                throw new IllegalActionException(getComponent(),
+                                        ex,
                                         "Failed to read line after \"import ..."
                                                 + typeName + ";\""
                                                 + "from the imports in\n"
@@ -2365,8 +2377,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (importLine == null) {
                         throw new InternalErrorException(
                                 "Last import line was null? Read " + i
-                                + " lines of " + typesArray.length
-                                + " lines.");
+                                        + " lines of " + typesArray.length
+                                        + " lines.");
                     }
 
                     // Get rid of the ".*;".
@@ -2377,9 +2389,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     String shortImportLine = importLine.substring(0,
                             importLine.lastIndexOf(".*;"));
                     // Find the last space, then get the text up to the last char.
-                    String filepath = shortImportLine.substring(
-                            shortImportLine.lastIndexOf(' ') + 1,
-                            shortImportLine.length()).replace('.', '/');
+                    String filepath = shortImportLine
+                            .substring(shortImportLine.lastIndexOf(' ') + 1,
+                                    shortImportLine.length())
+                            .replace('.', '/');
                     // Create the directory, if necessary.
                     directoryName = filepath.replace('.', '/').substring(0,
                             filepath.lastIndexOf('/'));
@@ -2390,8 +2403,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             directoryName = directoryName
                                     .substring(directoryName.indexOf('/'));
                         } else {
-                            System.out
-                                    .println("Warning: JavaCodeGenerator: directoryName \""
+                            System.out.println(
+                                    "Warning: JavaCodeGenerator: directoryName \""
                                             + directoryName
                                             + "\" has no slashes?");
                         }
@@ -2405,42 +2418,42 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         }
                     }
 
-                    File file = new File(directory, filepath.substring(filepath
-                            .lastIndexOf("/") + 1) + ".java");
+                    File file = new File(directory,
+                            filepath.substring(filepath.lastIndexOf("/") + 1)
+                                    + ".java");
 
                     FileWriter writer = null;
                     try {
                         try {
                             writer = new FileWriter(file);
                         } catch (IOException ex) {
-                            throw new IllegalActionException(getComponent(),
-                                    ex, "Failed to open \"" + file + "\"");
+                            throw new IllegalActionException(getComponent(), ex,
+                                    "Failed to open \"" + file + "\"");
                         }
                         try {
                             writer.write(block);
-                            if (block
-                                    .indexOf(StaticSchedulingDirector.CURRENTTIME_DECLARATION) != -1) {
+                            if (block.indexOf(
+                                    StaticSchedulingDirector.CURRENTTIME_DECLARATION) != -1) {
 
                                 // Output the currentTime declaration, which is
                                 // not static because _currentTime might? vary
                                 // between directors?
-                                result.append(StaticSchedulingDirector.CURRENTTIME_DECLARATION
-                                        + _eol);
+                                result.append(
+                                        StaticSchedulingDirector.CURRENTTIME_DECLARATION
+                                                + _eol);
                             }
                         } catch (IOException ex) {
-                            throw new IllegalActionException(getComponent(),
-                                    ex, "Failed to write " + "block "
-                                            + blockNumber + " to \"" + file
-                                            + "\"");
+                            throw new IllegalActionException(getComponent(), ex,
+                                    "Failed to write " + "block " + blockNumber
+                                            + " to \"" + file + "\"");
                         }
                     } finally {
                         if (writer != null) {
                             try {
                                 writer.close();
                             } catch (IOException ex) {
-                                throw new IllegalActionException(
-                                        getComponent(), ex,
-                                        "Failed to close \"" + file + "\"");
+                                throw new IllegalActionException(getComponent(),
+                                        ex, "Failed to close \"" + file + "\"");
                             }
                         }
                     }
@@ -2456,7 +2469,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             //            typeStreams = new CodeStream[typesAndToken.size()];
         }
 
-        if (!((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+        if (!((BooleanToken) generateInSubdirectory.getToken())
+                .booleanValue()) {
             Object[] typesAndTokenArray = typesAndToken.toArray();
             for (int i = 0; i < typesAndTokenArray.length; i++) {
                 // Create Array, Matrix or Token.java in the variable directory.
@@ -2467,16 +2481,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // Array or Matrix
                     codeStream = new CodeStream(
                             "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/"
-                                    + typesAndTokenArray[i] + ".j", this);
-                    declareTypeOrTokenBlock.append(codeStream
-                            .getCodeBlock("declareBlock"));
+                                    + typesAndTokenArray[i] + ".j",
+                            this);
+                    declareTypeOrTokenBlock
+                            .append(codeStream.getCodeBlock("declareBlock"));
                 } else {
                     // Token
                     codeStream = new CodeStream(
                             "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/SharedCode.j",
                             this);
-                    declareTypeOrTokenBlock.append(codeStream
-                            .getCodeBlock("tokenDeclareBlock"));
+                    declareTypeOrTokenBlock.append(
+                            codeStream.getCodeBlock("tokenDeclareBlock"));
                     // FIXME: what about empty tokens
                     //if (defineEmptyToken) {
                     //declareTypeOrTokenBlock.append("public static Token emptyToken; "
@@ -2484,27 +2499,28 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     //}
                 }
                 if (declareTypeOrTokenBlock.length() > 0) {
-                    declareTypeOrTokenBlock.insert(0, "package "
-                            + directoryName + ";" + _eol);
+                    declareTypeOrTokenBlock.insert(0,
+                            "package " + directoryName + ";" + _eol);
                     String typeName = typesAndTokenArray[i].toString();
                     typeName = _typeNameCG(typeName);
                     _writeCodeFileName(declareTypeOrTokenBlock,
                             codeDirectoryFile.toString() + "/" + directoryName
-                            + "/" + typeName + ".java", false, true);
+                                    + "/" + typeName + ".java",
+                            false, true);
                     // FIXME: we should not be deleting the .java and .class file
                     // in the top level, instead, we should be writing our code
                     // into a subdirectory.
-                    File topTokenFile = new File(codeDirectoryFile, typeName
-                            + ".java");
+                    File topTokenFile = new File(codeDirectoryFile,
+                            typeName + ".java");
                     if (!topTokenFile.delete()) {
-                        throw new IllegalActionException("Failed to delete "
-                                + topTokenFile);
+                        throw new IllegalActionException(
+                                "Failed to delete " + topTokenFile);
                     }
-                    File topTokenClass = new File(codeDirectoryFile, typeName
-                            + ".class");
+                    File topTokenClass = new File(codeDirectoryFile,
+                            typeName + ".class");
                     if (!topTokenClass.delete()) {
-                        System.out.println("Warning: Failed to delete "
-                                + topTokenClass);
+                        System.out.println(
+                                "Warning: Failed to delete " + topTokenClass);
                     }
                 }
             }
@@ -2552,8 +2568,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo")
-                && _newTypesUsed.contains("Integer")
+        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Integer")
                 && !_newTypesUsed.contains("Double")) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");

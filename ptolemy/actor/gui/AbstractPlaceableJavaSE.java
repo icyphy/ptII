@@ -64,8 +64,8 @@ public abstract class AbstractPlaceableJavaSE {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public void init(TypedAtomicActor actor) throws IllegalActionException,
-    NameDuplicationException {
+    public void init(TypedAtomicActor actor)
+            throws IllegalActionException, NameDuplicationException {
         // An actor may already have _windowProperties set.
         _windowProperties = (WindowPropertiesAttribute) actor.getAttribute(
                 "_windowProperties", WindowPropertiesAttribute.class);
@@ -138,7 +138,8 @@ public abstract class AbstractPlaceableJavaSE {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(
-            /*TypedAtomicActor actor, */Writer output, int depth) throws IOException {
+            /*TypedAtomicActor actor, */Writer output, int depth)
+            throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {

@@ -72,8 +72,8 @@ public class ServletTest {
         // or create a proper initializer for it
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
-        modules.add(new PtolemyModule(ResourceBundle
-                .getBundle("ptserver.util.PTServerModule")));
+        modules.add(new PtolemyModule(
+                ResourceBundle.getBundle("ptserver.util.PTServerModule")));
         PtolemyInjector.createInjector(modules);
     }
     ///////////////////////////////////////////////////////////////////
@@ -98,11 +98,10 @@ public class ServletTest {
         factory.setUser("guest");
         factory.setPassword("guest");
 
-        _servletProxy = (IServerManager) factory.create(
-                IServerManager.class,
+        _servletProxy = (IServerManager) factory.create(IServerManager.class,
                 String.format("http://%s:%s%s", "localhost",
-                        CONFIG.getString("SERVLET_PORT"), "/"
-                                + PtolemyServer.SERVLET_NAME));
+                        CONFIG.getString("SERVLET_PORT"),
+                        "/" + PtolemyServer.SERVLET_NAME));
     }
 
     /** Test the ability to create a new simulation request and to ensure that
@@ -115,8 +114,8 @@ public class ServletTest {
     @Test
     public void openSimulation() throws Exception {
         int simulations = _ptolemyServer.numberOfSimulations();
-        System.out.println("ServletTest.openSimulation(): simulations: "
-                + simulations);
+        System.out.println(
+                "ServletTest.openSimulation(): simulations: " + simulations);
         _response = _openRemoteModel();
 
         assertNotNull(_response);
@@ -232,8 +231,8 @@ public class ServletTest {
         assertEquals(simulations - 1, _ptolemyServer.numberOfSimulations());
 
         // Try to start the ticket again. This should result in an exception.
-        assertEquals(null, PtolemyServer.getInstance()
-                .getSimulationTask(ticket));
+        assertEquals(null,
+                PtolemyServer.getInstance().getSimulationTask(ticket));
     }
 
     /** Call the shutdown() method on the singleton and destroy all
@@ -260,8 +259,8 @@ public class ServletTest {
      *  @return Ticket The ticket reference to the simulation request.
      */
     private ProxyModelResponse _openRemoteModel() throws Exception {
-        String unitModel = getJUnitModel(PtolemyServer.getInstance()
-                .getModelListing());
+        String unitModel = getJUnitModel(
+                PtolemyServer.getInstance().getModelListing());
         URL modelUrl = null;
         try {
             modelUrl = new URL(unitModel);
@@ -271,13 +270,13 @@ public class ServletTest {
             exception.initCause(ex);
             throw exception;
         }
-        URL layoutUrl = new URL(getJUnitModelLayout(PtolemyServer.getInstance()
-                .getLayoutListing(unitModel)));
-        ProxyModelResponse response = _servletProxy.open(
-                modelUrl.toExternalForm(), layoutUrl.toExternalForm());
+        URL layoutUrl = new URL(getJUnitModelLayout(
+                PtolemyServer.getInstance().getLayoutListing(unitModel)));
+        ProxyModelResponse response = _servletProxy
+                .open(modelUrl.toExternalForm(), layoutUrl.toExternalForm());
         // Just to keep the test output clean.
-        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
-                response.getTicket());
+        SimulationTask task = PtolemyServer.getInstance()
+                .getSimulationTask(response.getTicket());
         SysOutActor actor2 = (SysOutActor) task.getProxyModelInfrastructure()
                 .getTopLevelActor().getEntity("Display2");
         actor2.setDelegator(new TokenDelegator() {

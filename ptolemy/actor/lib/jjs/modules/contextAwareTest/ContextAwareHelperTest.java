@@ -67,7 +67,7 @@ public class ContextAwareHelperTest {
      *  to the user.
      *  @return an array of iot REST service names that are available.
      */
-    public  String[] availableServices() {
+    public String[] availableServices() {
         return iotServiceList;
     }
 
@@ -75,12 +75,9 @@ public class ContextAwareHelperTest {
      *  @param sensors The names of the sensors.
      */
     public void chooseSensor(String[] sensors) {
-        _sensorService = (String)JOptionPane.showInputDialog(null,
-                "Choose sensor to retreive data from:\n",
-                "Sensor Selection",
-                JOptionPane.PLAIN_MESSAGE,
-                null, sensors,
-                "1");
+        _sensorService = (String) JOptionPane.showInputDialog(null,
+                "Choose sensor to retreive data from:\n", "Sensor Selection",
+                JOptionPane.PLAIN_MESSAGE, null, sensors, "1");
     }
 
     /** Convert an XML data format to JSON data format using the XML
@@ -89,15 +86,15 @@ public class ContextAwareHelperTest {
      * @param response is the input in xml format
      * @return the json formatted data in an array
      */
-    public ArrayList  convertXMLtoJSON(String response) {
+    public ArrayList convertXMLtoJSON(String response) {
         try {
             JSONObject xmlJson = XML.toJSONObject(response);
             String prettyString = xmlJson.toString(4);
             System.out.println(prettyString);
             Iterator x = xmlJson.keys();
-            ArrayList jsonArray=new ArrayList();
+            ArrayList jsonArray = new ArrayList();
             while (x.hasNext()) {
-                String key=(String)x.next();
+                String key = (String) x.next();
                 jsonArray.add(xmlJson.get(key));
             }
             return jsonArray;
@@ -111,15 +108,14 @@ public class ContextAwareHelperTest {
      * @return The selected service.
      */
     public String discoverServices() {
-         // FIXME: need to implement a discovery process that takes
-         //into account user's preferences and locations  currently,
-         //just present the set of known services to users and return
-         //the selected service
+        // FIXME: need to implement a discovery process that takes
+        //into account user's preferences and locations  currently,
+        //just present the set of known services to users and return
+        //the selected service
 
         this.setSelectedService(iotServiceList);
         return _selectedServiceParam;
     }
-
 
     /** Return the list of output choices of GSN service. Currently,
      * the list of choices is hard coded. Eventually, this list should
@@ -171,8 +167,10 @@ public class ContextAwareHelperTest {
     public String getSelectedServiceParameter(String selectedService) {
         //return GUI.textFields.get(index).getText();
         if (selectedService.equals("GSN")) {
-            return "pluto.cs.txstate.edu";}
-        else return "";
+            return "pluto.cs.txstate.edu";
+        } else {
+            return "";
+        }
     }
 
     /** Get the name of a particular sensor in a service.
@@ -181,7 +179,6 @@ public class ContextAwareHelperTest {
     public String getService() {
         return _sensorService;
     }
-
 
     /** Initializes the list of available iot REST services and
      *  creates a GUI for a user to make the selection. Not used
@@ -207,8 +204,7 @@ public class ContextAwareHelperTest {
                 _GUI.labels.get(i).setText(parameters[i]);
                 _GUI.labels.get(i).setVisible(true);
                 _GUI.textFields.get(i).setVisible(true);
-            }
-            else {
+            } else {
                 _GUI.labels.get(i).setVisible(false);
                 _GUI.textFields.get(i).setVisible(false);
             }
@@ -216,24 +212,25 @@ public class ContextAwareHelperTest {
         }
     }
 
-
     /** The search button. */
     public JButton searchButton;
 
     /** The default parameters. */
-    public String[] defaultParamList =  {"username", "password","ipAddress", "port"};
+    public String[] defaultParamList = { "username", "password", "ipAddress",
+            "port" };
 
     /** The output choices of the FireBase service. */
-    public String[] firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
+    public String[] firebaseOutputPort = { "microwave", "microwaveStatus",
+            "pastValues" };
 
     /** The output choices of the GSN service. */
-    public String[] gsnOutputPort = {"sound", "sensorName"};
+    public String[] gsnOutputPort = { "sound", "sensorName" };
 
     /** The choices of the IoT service. */
-    public String[] iotServiceList = {"GSN", "Paraimpu", "Firebase"};
+    public String[] iotServiceList = { "GSN", "Paraimpu", "Firebase" };
 
     /** The output choices of the Paraimpu service. */
-    public String[] paraimpuOutputPort = {"payload","producer", "thingId"};
+    public String[] paraimpuOutputPort = { "payload", "producer", "thingId" };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -256,37 +253,36 @@ public class ContextAwareHelperTest {
         // FIXME: use a complete sentence below.
         //when button is pressed, call getSensors from accessor
         _GUI.searchButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        System.out.println("getService()");
-                        //((Invocable)_engine).invokeFunction("getSensors");
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    System.out.println("getService()");
+                    //((Invocable)_engine).invokeFunction("getSensors");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
+            }
 
-            });
+        });
         // FIXME: use a complete sentence below.
         //when ever the type of REST service changes, get the parameters required
         _GUI.servicesList.addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent e) {
-                    _selectedServiceParam = _GUI.servicesList.getSelectedValue();
-                    try {
-                        System.out.println("getParameters" + _selectedServiceParam);
-                        setParameters(defaultParamList);
-                        for (int i = 0; i< defaultParamList.length; i++) {
-                            System.out.println( _GUI.textFields.get(i).getText());
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                _selectedServiceParam = _GUI.servicesList.getSelectedValue();
+                try {
+                    System.out.println("getParameters" + _selectedServiceParam);
+                    setParameters(defaultParamList);
+                    for (int i = 0; i < defaultParamList.length; i++) {
+                        System.out.println(_GUI.textFields.get(i).getText());
 
-                        }
-                        // ((Invocable)_engine).invokeFunction("getParameters", MW);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
                     }
-
-
+                    // ((Invocable)_engine).invokeFunction("getParameters", MW);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
-            });
+
+            }
+        });
     }
 }

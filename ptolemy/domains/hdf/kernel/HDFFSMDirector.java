@@ -138,7 +138,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         if (_sendRequest) {
             _sendRequest = false;
 
-            ChangeRequest request = new ChangeRequest(this, "make a transition") {
+            ChangeRequest request = new ChangeRequest(this,
+                    "make a transition") {
                 @Override
                 protected void _execute() throws KernelException {
                     _sendRequest = true;

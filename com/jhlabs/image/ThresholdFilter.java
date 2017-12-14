@@ -140,7 +140,8 @@ public class ThresholdFilter extends PointFilter {
     public int filterRGB(int x, int y, int rgb) {
         int v = PixelUtils.brightness(rgb);
         float f = ImageMath.smoothStep(lowerThreshold, upperThreshold, v);
-        return (rgb & 0xff000000) | (ImageMath.mixColors(f, black, white) & 0xffffff);
+        return (rgb & 0xff000000)
+                | (ImageMath.mixColors(f, black, white) & 0xffffff);
     }
 
     @Override

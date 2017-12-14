@@ -66,10 +66,11 @@ public class MathUtil {
     static public double mod2pi(double vin) {
         double v;
 
-        if (vin < 0)
+        if (vin < 0) {
             v = -mod2pi_pos(-vin);
-        else
+        } else {
             v = mod2pi_pos(vin);
+        }
 
         // Validation test:
         //        if (v < -Math.PI || v > Math.PI)
@@ -93,18 +94,22 @@ public class MathUtil {
     }
 
     static public int clamp(int v, int min, int max) {
-        if (v < min)
+        if (v < min) {
             v = min;
-        if (v > max)
+        }
+        if (v > max) {
             v = max;
+        }
         return v;
     }
 
     static public double clamp(double v, double min, double max) {
-        if (v < min)
+        if (v < min) {
             v = min;
-        if (v > max)
+        }
+        if (v > max) {
             v = max;
+        }
         return v;
     }
 
@@ -113,26 +118,28 @@ public class MathUtil {
     }
 
     public static final int sign(double v) {
-        if (v >= 0)
+        if (v >= 0) {
             return 1;
+        }
         return -1;
     }
 
     /** Quickly compute e^x for all x.
-
+    
         Accuracy for x&gt;0:
         x&lt;0.5, absolute error &gt; .0099
         x&lt;0.5, relative error 0.36%
-
+    
         For x&lt;0, we internally compute the reciprocal form; error is
         magnified.
-
+    
         This approximation is also monotonic.
-
+    
      **/
     public static final double exp(double xin) {
-        if (xin >= 0)
+        if (xin >= 0) {
             return exp_pos(xin);
+        }
 
         return 1 / (exp_pos(-xin));
     }
@@ -148,8 +155,9 @@ public class MathUtil {
 
         // prevent deep recursion that would just return INF anyway...
         // e^709 > Double.MAX_VALUE;
-        if (xin > 709)
+        if (xin > 709) {
             return Double.MAX_VALUE;
+        }
 
         if (xin > 43) // recursively handle values which would otherwise blow up.
         {
@@ -179,8 +187,9 @@ public class MathUtil {
         double atn = atan(y / x);
 
         if (y >= 0) {
-            if (x >= 0)
+            if (x >= 0) {
                 return atn;
+            }
             return Math.PI + atn;
         }
         if (x >= 0) {
@@ -193,12 +202,14 @@ public class MathUtil {
         accurate within 0.014 degrees
      **/
     public static final double atan(double x) {
-        if (Math.abs(x) <= 1)
+        if (Math.abs(x) <= 1) {
             return atan_mag1(x);
-        if (x < 0)
+        }
+        if (x < 0) {
             return -Math.PI / 2 - atan_mag1(1 / x);
-        else
+        } else {
             return Math.PI / 2 - atan_mag1(1 / x);
+        }
     }
 
     // returns reasonable answers for |x|<=1.
@@ -207,8 +218,9 @@ public class MathUtil {
         //        return x/(1+0.28087207802773*x*x);
 
         if (true) {
-            if (Math.abs(x) > 1)
+            if (Math.abs(x) > 1) {
                 System.out.printf("ATAN_MAG1: %15f\n", x);
+            }
 
             final double p0 = -0.000158023363661;
             final double p1 = 1.003839939589617;
@@ -221,15 +233,18 @@ public class MathUtil {
 
             double y = p0 + p1 * a + p2 * a2 + p3 * (a2 * a) + p4 * (a2 * a2);
 
-            if (x < 0)
+            if (x < 0) {
                 return -y;
+            }
             return y;
         } else {
             double xx = x * x;
 
             // accuracy = 0.10550 degrees (according to matlab)
-            return (0.00182789418543 + 0.97687229491851 * x + 0.00087659977713 * xx)
-                    / (0.99499024627366 + 0.00228262896304 * x + 0.25288677429562 * xx);
+            return (0.00182789418543 + 0.97687229491851 * x
+                    + 0.00087659977713 * xx)
+                    / (0.99499024627366 + 0.00228262896304 * x
+                            + 0.25288677429562 * xx);
         }
     }
 
@@ -247,20 +262,23 @@ public class MathUtil {
             double x = M * r.nextDouble() - M / 2;
             double y = M * r.nextDouble() - M / 2;
 
-            if (r.nextInt(100) == 0)
+            if (r.nextInt(100) == 0) {
                 x = 0;
-            else if (r.nextInt(100) == 0)
+            } else if (r.nextInt(100) == 0) {
                 y = 0;
+            }
 
             double v1 = Math.atan2(y, x);
             double v2 = atan2(y, x);
 
             //                System.out.println(x+" "+y);
             double thiserr = Math.abs(v1 - v2);
-            if (thiserr > .1)
+            if (thiserr > .1) {
                 System.out.println(x + "\t" + y + "\t" + v1 + "\t" + v2);
-            if (thiserr > err)
+            }
+            if (thiserr > err) {
                 err = thiserr;
+            }
         }
         System.out.println("err: " + err);
         System.out.println("err deg: " + Math.toDegrees(err));
@@ -276,8 +294,9 @@ public class MathUtil {
             double abserr = Math.abs(v1 - v2);
             double relerr = Math.abs((v2 - v1) / v1);
 
-            if ((x < .5 && abserr > 0.01) || (x > .5 && relerr > 0.004))
+            if ((x < .5 && abserr > 0.01) || (x > .5 && relerr > 0.004)) {
                 System.out.println(x + "\t" + v1 + "\t" + v2);
+            }
         }
 
         System.out.println("Benchmarking exp");
@@ -322,16 +341,18 @@ public class MathUtil {
         double elapsedTime;
         int iter = 100000000;
         startTime = System.currentTimeMillis();
-        for (int i = 0; i < iter; i++)
+        for (int i = 0; i < iter; i++) {
             Math.exp(r.nextDouble() * 30);
+        }
         endTime = System.currentTimeMillis();
         elapsedTime = (endTime - startTime) / 1000f;
         System.out.println("Native: " + iter / elapsedTime);
         double nativeSpeed = iter / elapsedTime;
 
         startTime = System.currentTimeMillis();
-        for (int i = 0; i < iter; i++)
+        for (int i = 0; i < iter; i++) {
             exp(r.nextDouble() * 30);
+        }
         endTime = System.currentTimeMillis();
         elapsedTime = (endTime - startTime) / 1000f;
         System.out.println("Fast: " + iter / elapsedTime);
@@ -347,16 +368,18 @@ public class MathUtil {
         double elapsedTime;
         int iter = 100000000;
         startTime = System.currentTimeMillis();
-        for (int i = 0; i < iter; i++)
+        for (int i = 0; i < iter; i++) {
             Math.atan2(r.nextDouble() * 30, r.nextDouble() * 30);
+        }
         endTime = System.currentTimeMillis();
         elapsedTime = (endTime - startTime) / 1000f;
         System.out.println("Native: " + iter / elapsedTime);
         double nativeSpeed = iter / elapsedTime;
 
         startTime = System.currentTimeMillis();
-        for (int i = 0; i < iter; i++)
+        for (int i = 0; i < iter; i++) {
             atan2(r.nextDouble() * 30, r.nextDouble() * 30);
+        }
         endTime = System.currentTimeMillis();
         elapsedTime = (endTime - startTime) / 1000f;
         System.out.println("Fast: " + iter / elapsedTime);
@@ -381,8 +404,8 @@ public class MathUtil {
         double d = A.get(1, 0), e = A.get(1, 1), f = A.get(1, 2);
         double g = A.get(2, 0), h = A.get(2, 1), i = A.get(2, 2);
 
-        double det = 1 / (a * e * i - a * f * h - d * b * i + d * c * h + g * b
-                * f - g * c * e);
+        double det = 1 / (a * e * i - a * f * h - d * b * i + d * c * h
+                + g * b * f - g * c * e);
 
         A.set(0, 0, det * (e * i - f * h));
         A.set(0, 1, det * (-b * i + c * h));

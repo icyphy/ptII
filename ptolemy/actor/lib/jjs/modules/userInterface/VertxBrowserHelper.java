@@ -60,6 +60,7 @@ import ptolemy.actor.lib.jjs.HelperBase;
    @Pt.ProposedRating Yellow (pd)
    @Pt.AcceptedRating Red (pd)
  */
+@Deprecated
 public class VertxBrowserHelper extends HelperBase {
 
     /** Create the system default camera.
@@ -69,7 +70,8 @@ public class VertxBrowserHelper extends HelperBase {
      *  @param actor The actor associated with this camera.
      *  @param currentObj The JavaScript object that this is helping.
      */
-    public VertxBrowserHelper(Object actor, ScriptObjectMirror currentObj) throws IOException {
+    public VertxBrowserHelper(Object actor, ScriptObjectMirror currentObj)
+            throws IOException {
         super(actor, currentObj);
     }
 
@@ -107,7 +109,8 @@ public class VertxBrowserHelper extends HelperBase {
                 // This assumes the accessors repo is
                 // installed locally at $PTII/org/terraswarm/accessor
                 _router = Router.router(_vertx);
-                _router.get("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
+                _router.get("/accessors/*").handler(StaticHandler
+                        .create("org/terraswarm/accessor/accessors/web"));
 
                 // new Exception("Start of Server(" + port + ")").printStackTrace();
 
@@ -129,7 +132,8 @@ public class VertxBrowserHelper extends HelperBase {
                         // The body has now been fully read, so retrieve the form attributes
                         MultiMap formAttributes = request.formAttributes();
                         JsonObject json = new JsonObject();
-                        for (Map.Entry<String, String> entry : formAttributes.entries()) {
+                        for (Map.Entry<String, String> entry : formAttributes
+                                .entries()) {
                             json.put(entry.getKey(), entry.getValue());
                         }
                         _currentObj.callMember("post", path, json);
@@ -145,7 +149,8 @@ public class VertxBrowserHelper extends HelperBase {
                     Buffer buffer = _resourceData.get(path);
                     if (buffer != null) {
                         // Path matches a resource that has been added using addResource().
-                        response.putHeader("content-type", _resourceContentType.get(path));
+                        response.putHeader("content-type",
+                                _resourceContentType.get(path));
                         response.setChunked(true);
                         response.write(buffer);
                         response.end();
@@ -170,12 +175,13 @@ public class VertxBrowserHelper extends HelperBase {
                 firstStart = false;
                 _server.listen(port, "127.0.0.1",
                         new Handler<AsyncResult<HttpServer>>() {
-                            public void handle(AsyncResult<HttpServer> asyncResult) {
+                            @Override
+                            public void handle(
+                                    AsyncResult<HttpServer> asyncResult) {
                                 if (!asyncResult.succeeded()) {
                                     System.err.println("Server(" + port
                                             + ").handle(<AsyncResult>) failed. "
-                                            + " Cause: "
-                                            + asyncResult.cause());
+                                            + " Cause: " + asyncResult.cause());
                                 }
                                 // FIXME: Called when the server actually starts listening.
                                 // Probably need to have a callback back to JavaScript here.
@@ -189,7 +195,8 @@ public class VertxBrowserHelper extends HelperBase {
          *  @param resource The resource to serve upon a request for this path.
          *  @param contentType The content type.
          */
-        public void addResource(final String path, Object resource, String contentType) {
+        public void addResource(final String path, Object resource,
+                String contentType) {
             Buffer buffer = Buffer.buffer();
             // FIXME: byte content is fixed here to IMAGEs in JPEG format.
             // Need to convert the contentType into a DATA_TYPE and image type (null below

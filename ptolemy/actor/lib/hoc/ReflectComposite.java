@@ -69,8 +69,8 @@ import ptolemy.moml.HandlesInternalLinks;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)
  */
-public class ReflectComposite extends TypedCompositeActor implements
-        HandlesInternalLinks {
+public class ReflectComposite extends TypedCompositeActor
+        implements HandlesInternalLinks {
 
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
@@ -122,8 +122,8 @@ public class ReflectComposite extends TypedCompositeActor implements
      *   an actor already in the container.
      */
     public ReflectComposite(CompositeEntity container, String name,
-            boolean mirrorParameterPorts) throws IllegalActionException,
-            NameDuplicationException {
+            boolean mirrorParameterPorts)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init(mirrorParameterPorts);
     }
@@ -159,8 +159,8 @@ public class ReflectComposite extends TypedCompositeActor implements
                     ((MirrorPort) port)
                             .setAssociatedPort((MirrorPort) insidePort);
                 } else if (insidePort instanceof ParameterMirrorPort) {
-                    ((ParameterMirrorPort) port)
-                            .setAssociatedPort((ParameterMirrorPort) insidePort);
+                    ((ParameterMirrorPort) port).setAssociatedPort(
+                            (ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -331,7 +331,8 @@ public class ReflectComposite extends TypedCompositeActor implements
                                     .connectedPortList();
 
                             if (!connectedPorts.contains(newPort)) {
-                                ComponentRelation relation = newRelation(uniqueName("relation"));
+                                ComponentRelation relation = newRelation(
+                                        uniqueName("relation"));
                                 newPort.link(relation);
                                 insidePort.link(relation);
                             }
@@ -357,12 +358,13 @@ public class ReflectComposite extends TypedCompositeActor implements
      *   name already in the actor.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
 
         super._addPort(port);
 
-        if ((port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
+        if ((port instanceof MirrorPort
+                || port instanceof ParameterMirrorPort)) {
             // Create and connect a matching inside port on contained entities.
             // Do this as a change request to ensure that the action of
             // creating the port passed in as an argument is complete by
@@ -419,31 +421,31 @@ public class ReflectComposite extends TypedCompositeActor implements
 
                                     if (insidePort instanceof IOPort) {
                                         IOPort castInsidePort = (IOPort) insidePort;
-                                        castInsidePort.setInput(castPort
-                                                .isInput());
-                                        castInsidePort.setOutput(castPort
-                                                .isOutput());
-                                        castInsidePort.setMultiport(castPort
-                                                .isMultiport());
+                                        castInsidePort
+                                                .setInput(castPort.isInput());
+                                        castInsidePort
+                                                .setOutput(castPort.isOutput());
+                                        castInsidePort.setMultiport(
+                                                castPort.isMultiport());
                                     }
                                 }
 
                                 if (insidePort == null) {
                                     // FindBugs was reporting that insidePort could still be null.
                                     throw new InternalErrorException(
-                                            ReflectComposite.this,
-                                            null,
+                                            ReflectComposite.this, null,
                                             "insidePort is null? castPort "
                                                     + castPort
                                                     + " is neither a MirrorPort nor a ParameterMirrorPort?");
                                 }
 
                                 if (insidePort instanceof MirrorPort) {
-                                    ((MirrorPort) castPort)
-                                    .setAssociatedPort((MirrorPort) insidePort);
+                                    ((MirrorPort) castPort).setAssociatedPort(
+                                            (MirrorPort) insidePort);
                                 } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                     ((ParameterMirrorPort) castPort)
-                                    .setAssociatedPort((ParameterMirrorPort) insidePort);
+                                            .setAssociatedPort(
+                                                    (ParameterMirrorPort) insidePort);
                                 }
 
                                 // Create a link only if it doesn't already exist.
@@ -468,7 +470,8 @@ public class ReflectComposite extends TypedCompositeActor implements
                                 }
                                 if (!alreadyConnected) {
                                     // There is no connection. Create one.
-                                    ComponentRelation newRelation = newRelation(uniqueName("relation"));
+                                    ComponentRelation newRelation = newRelation(
+                                            uniqueName("relation"));
                                     insidePort.link(newRelation);
                                     castPort.link(newRelation);
                                 }
@@ -639,10 +642,11 @@ public class ReflectComposite extends TypedCompositeActor implements
      */
     private void _init(boolean mirrorParameterPorts) {
         setClassName("ptolemy.actor.lib.hoc.ReflectComposite");
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
-                + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                        + "width=\"60\" height=\"40\" "
+                        + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
+                        + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
         _mirrorParameterPorts = mirrorParameterPorts;
     }
 
@@ -703,12 +707,13 @@ public class ReflectComposite extends TypedCompositeActor implements
          *  collides with a name already in the actor.
          */
         @Override
-        protected void _addPort(final Port port) throws IllegalActionException,
-                NameDuplicationException {
+        protected void _addPort(final Port port)
+                throws IllegalActionException, NameDuplicationException {
 
             super._addPort(port);
 
-            if ((port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
+            if ((port instanceof MirrorPort
+                    || port instanceof ParameterMirrorPort)) {
 
                 final ReflectComposite container = (ReflectComposite) getContainer();
 
@@ -752,10 +757,10 @@ public class ReflectComposite extends TypedCompositeActor implements
 
                                 if (port instanceof IOPort) {
                                     newPort.setInput(((IOPort) port).isInput());
-                                    newPort.setOutput(((IOPort) port)
-                                            .isOutput());
-                                    newPort.setMultiport(((IOPort) port)
-                                            .isMultiport());
+                                    newPort.setOutput(
+                                            ((IOPort) port).isOutput());
+                                    newPort.setMultiport(
+                                            ((IOPort) port).isMultiport());
                                 }
                             }
                         } finally {

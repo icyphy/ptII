@@ -125,8 +125,8 @@ public class AttributesListPanel extends JPanel {
         _bottomPanel.setAlignmentY(TOP_ALIGNMENT);
 
         _topPanel.setLayout(new BoxLayout(_topPanel, BoxLayout.Y_AXIS));
-        _modelNamePanel.setLayout(new BoxLayout(_modelNamePanel,
-                BoxLayout.X_AXIS));
+        _modelNamePanel
+                .setLayout(new BoxLayout(_modelNamePanel, BoxLayout.X_AXIS));
         _innerPanel.setLayout(new BoxLayout(_innerPanel, BoxLayout.Y_AXIS));
         _attListPanel.setLayout(new BoxLayout(_attListPanel, BoxLayout.Y_AXIS));
         _scrollPane.setLayout(new ScrollPaneLayout());
@@ -222,8 +222,8 @@ public class AttributesListPanel extends JPanel {
     public void addAttribute(StringParameter stringParameter) {
 
         JPanel modelDeletePanel = new JPanel();
-        modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
-                BoxLayout.X_AXIS));
+        modelDeletePanel
+                .setLayout(new BoxLayout(modelDeletePanel, BoxLayout.X_AXIS));
         modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
         modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
 
@@ -258,7 +258,8 @@ public class AttributesListPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent event) {
 
-                _attListPanel.remove((JPanel) _AttDelete.get(event.getSource()));
+                _attListPanel
+                        .remove((JPanel) _AttDelete.get(event.getSource()));
                 _AttDelete.remove(event.getSource());
                 _attListPanel.remove((JButton) event.getSource());
 
@@ -307,15 +308,15 @@ public class AttributesListPanel extends JPanel {
                         try {
                             stringParameter = new StringParameter(_model,
                                     ((ModelAttributePanel) element2)
-                                    .getAttributeName());
+                                            .getAttributeName());
                         } catch (NameDuplicationException e) {
                             stringParameter = (StringParameter) _model
-                                    .getAttribute(((ModelAttributePanel) element2)
-                                            .getAttributeName());
+                                    .getAttribute(
+                                            ((ModelAttributePanel) element2)
+                                                    .getAttributeName());
                         }
-                        stringParameter
-                        .setExpression(((ModelAttributePanel) element2)
-                                .getValue());
+                        stringParameter.setExpression(
+                                ((ModelAttributePanel) element2).getValue());
                         returnList.add(stringParameter);
 
                     }
@@ -484,8 +485,8 @@ public class AttributesListPanel extends JPanel {
 
                     if (element2 instanceof ModelAttributePanel) {
 
-                        if (((ModelAttributePanel) element2).getValue().equals(
-                                "")) {
+                        if (((ModelAttributePanel) element2).getValue()
+                                .equals("")) {
 
                             return false;
 
@@ -550,8 +551,7 @@ public class AttributesListPanel extends JPanel {
 
                     if (element2 instanceof ModelAttributePanel) {
 
-                        if (panelsModified
-                                || ((ModelAttributePanel) element2)
+                        if (panelsModified || ((ModelAttributePanel) element2)
                                 .isModified()) {
                             panelsModified = true;
                         }
@@ -604,7 +604,7 @@ public class AttributesListPanel extends JPanel {
                     } else if (element2 instanceof GenericAttributePanel) {
 
                         orderedListGeneric
-                        .add((GenericAttributePanel) element2);
+                                .add((GenericAttributePanel) element2);
 
                     }
 
@@ -622,11 +622,8 @@ public class AttributesListPanel extends JPanel {
 
             for (int i = 0; i < n - pass; i++) {
 
-                if (orderedList
-                        .get(i)
-                        .getAttributeName()
-                        .compareToIgnoreCase(
-                                orderedList.get(i + 1).getAttributeName()) > 0) {
+                if (orderedList.get(i).getAttributeName().compareToIgnoreCase(
+                        orderedList.get(i + 1).getAttributeName()) > 0) {
 
                     changeRequired = true;
                     ModelAttributePanel temp = orderedList.get(i);
@@ -644,11 +641,8 @@ public class AttributesListPanel extends JPanel {
 
             for (int i = 0; i < m - pass; i++) {
 
-                if (orderedListGeneric
-                        .get(i)
-                        .getAttributeName()
-                        .compareToIgnoreCase(
-                                orderedListGeneric.get(i + 1)
+                if (orderedListGeneric.get(i).getAttributeName()
+                        .compareToIgnoreCase(orderedListGeneric.get(i + 1)
                                 .getAttributeName()) > 0) {
 
                     changeRequiredGeneric = true;
@@ -673,8 +667,8 @@ public class AttributesListPanel extends JPanel {
             for (int i = 0; i < orderedList.size(); i++) {
 
                 modelDeletePanel = new JPanel();
-                modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
-                        BoxLayout.X_AXIS));
+                modelDeletePanel.setLayout(
+                        new BoxLayout(modelDeletePanel, BoxLayout.X_AXIS));
                 modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
                 modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
 
@@ -695,8 +689,8 @@ public class AttributesListPanel extends JPanel {
                     @Override
                     public void actionPerformed(ActionEvent event) {
 
-                        _attListPanel.remove((JPanel) _AttDelete.get(event
-                                .getSource()));
+                        _attListPanel.remove(
+                                (JPanel) _AttDelete.get(event.getSource()));
                         _AttDelete.remove(event.getSource());
                         _attListPanel.remove((JButton) event.getSource());
 
@@ -717,8 +711,8 @@ public class AttributesListPanel extends JPanel {
             for (int i = 0; i < orderedListGeneric.size(); i++) {
 
                 modelDeletePanel = new JPanel();
-                modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
-                        BoxLayout.X_AXIS));
+                modelDeletePanel.setLayout(
+                        new BoxLayout(modelDeletePanel, BoxLayout.X_AXIS));
                 modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
                 modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
 
@@ -739,8 +733,8 @@ public class AttributesListPanel extends JPanel {
                     @Override
                     public void actionPerformed(ActionEvent event) {
 
-                        _attListPanel.remove((JPanel) _AttDelete.get(event
-                                .getSource()));
+                        _attListPanel.remove(
+                                (JPanel) _AttDelete.get(event.getSource()));
                         _AttDelete.remove(event.getSource());
                         _attListPanel.remove((JButton) event.getSource());
 

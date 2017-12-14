@@ -137,8 +137,9 @@ public class TwirlFilter extends TransformFilter {
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
         icentreX = src.getWidth() * centreX;
         icentreY = src.getHeight() * centreY;
-        if (radius == 0)
+        if (radius == 0) {
             radius = Math.min(icentreX, icentreY);
+        }
         radius2 = radius * radius;
         return super.filter(src, dst);
     }
@@ -153,7 +154,8 @@ public class TwirlFilter extends TransformFilter {
             out[1] = y;
         } else {
             distance = (float) Math.sqrt(distance);
-            float a = (float) Math.atan2(dy, dx) + angle * (radius - distance) / radius;
+            float a = (float) Math.atan2(dy, dx)
+                    + angle * (radius - distance) / radius;
             out[0] = icentreX + distance * (float) Math.cos(a);
             out[1] = icentreY + distance * (float) Math.sin(a);
         }

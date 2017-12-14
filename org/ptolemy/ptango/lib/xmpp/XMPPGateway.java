@@ -92,8 +92,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (marten)
  *  @Pt.AcceptedRating Red (marten)
  */
-public class XMPPGateway extends AbstractInitializableAttribute implements
-Executable {
+public class XMPPGateway extends AbstractInitializableAttribute
+        implements Executable {
 
     /** Construct an instance of the XMPPGateway attribute.
      *  @param container The container.
@@ -311,7 +311,8 @@ Executable {
     public boolean prefire() throws IllegalActionException {
         if (_connection == null) {
             initialize();
-        } else if (!_connection.isConnected() || !_connection.isAuthenticated()) {
+        } else if (!_connection.isConnected()
+                || !_connection.isAuthenticated()) {
             _connectAndLogin();
         }
         return true;
@@ -431,7 +432,8 @@ Executable {
         if (_connection == null) {
             ConnectionConfiguration config = new ConnectionConfiguration(
                     _serverName, _portNumber);
-            config.setSecurityMode(ConnectionConfiguration.SecurityMode.enabled);
+            config.setSecurityMode(
+                    ConnectionConfiguration.SecurityMode.enabled);
             config.setCompressionEnabled(true);
             config.setSASLAuthenticationEnabled(true);
             _connection = new XMPPConnection(config);
@@ -474,8 +476,7 @@ Executable {
                                     reader.close();
                                 } catch (IOException ex) {
                                     throw new IllegalActionException(this, ex,
-                                            "Failed to close "
-                                                    + passwordFile
+                                            "Failed to close " + passwordFile
                                                     .stringValue());
                                 }
                             }

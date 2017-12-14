@@ -66,9 +66,9 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ ptolemy.util.test.junit.TclTests.class,
-    ptolemy.util.test.junit.AutoKnownFailedTests.class,
-    ptolemy.util.test.junit.AutoNameArchTests.class,
-    ptolemy.util.test.junit.AutoTests.class
+        ptolemy.util.test.junit.AutoKnownFailedTests.class,
+        ptolemy.util.test.junit.AutoNameArchTests.class,
+        ptolemy.util.test.junit.AutoTests.class
 
 })
 public class JUnitTclTestBase {

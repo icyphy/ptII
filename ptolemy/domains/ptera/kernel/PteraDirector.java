@@ -231,8 +231,8 @@ public class PteraDirector extends Director implements ValueListener {
             if (!timedEvent.canceled
                     // FindBugs: GC: Suspicious calls to generic collection methods
                     && timedEvent instanceof TypedActor
-                    && (timedEvent.contents == event || refinementSet
-                    .contains(timedEvent.contents))) {
+                    && (timedEvent.contents == event
+                            || refinementSet.contains(timedEvent.contents))) {
                 return timedEvent;
             }
         }
@@ -306,8 +306,8 @@ public class PteraDirector extends Director implements ValueListener {
             while (entryIterator.hasNext()) {
                 Map.Entry<Port, Set<TimedEvent>> entry = entryIterator.next();
                 Port port = entry.getKey();
-                BooleanToken token = (BooleanToken) scope.get(port.getName()
-                        + "_isPresent");
+                BooleanToken token = (BooleanToken) scope
+                        .get(port.getName() + "_isPresent");
                 if (token != null && token.booleanValue()) {
                     timedEvents.addAll(entry.getValue());
                     entryIterator.remove();
@@ -406,7 +406,7 @@ public class PteraDirector extends Director implements ValueListener {
      */
     public void fireAt(Event event, Time time, Token arguments,
             List<NamedObj> triggers, boolean reset)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         fireAt(new TimedEvent(event, time, arguments, null, reset), triggers);
     }
 
@@ -459,8 +459,8 @@ public class PteraDirector extends Director implements ValueListener {
             }
         }
 
-        if (_delegateFireAt
-                && (topTime == null || topTime.compareTo(timedEvent.timeStamp) > 0)) {
+        if (_delegateFireAt && (topTime == null
+                || topTime.compareTo(timedEvent.timeStamp) > 0)) {
             _requestFiring();
         }
     }
@@ -819,7 +819,7 @@ public class PteraDirector extends Director implements ValueListener {
     /**
      The class to encapsulate information to be stored in an entry in the event
      queue.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -916,8 +916,8 @@ public class PteraDirector extends Director implements ValueListener {
             Collections.sort(initialEvents, new Comparator<Event>() {
                 @Override
                 public int compare(Event event1, Event event2) {
-                    int eventCompare = event1.getName().compareTo(
-                            event2.getName());
+                    int eventCompare = event1.getName()
+                            .compareTo(event2.getName());
                     // FIXME: FindBugs: "RV: Negating the result of
                     // compareTo()/compare()
                     // (RV_NEGATING_RESULT_OF_COMPARETO)
@@ -1025,8 +1025,8 @@ public class PteraDirector extends Director implements ValueListener {
                     iterator.previous();
                     iterator.add(event);
 
-                    _notifyEventQueueDebugListeners(true, false, position,
-                            time, contents, event.arguments);
+                    _notifyEventQueueDebugListeners(true, false, position, time,
+                            contents, event.arguments);
 
                     break;
                 }
@@ -1114,9 +1114,9 @@ public class PteraDirector extends Director implements ValueListener {
                 data = event.refire(timedEvent.arguments, timedEvent.data);
             }
             if (data != null) {
-                TimedEvent timedEvent2 = new TimedEvent(event, getModelTime()
-                        .add(data.getTimeAdvance()), timedEvent.arguments,
-                        data,
+                TimedEvent timedEvent2 = new TimedEvent(event,
+                        getModelTime().add(data.getTimeAdvance()),
+                        timedEvent.arguments, data,
                         // If it is a refiring, do not reinitialize the
                         // refinement.
                         false);
@@ -1209,8 +1209,8 @@ public class PteraDirector extends Director implements ValueListener {
                         .getRefinedState();
                 if (event != null) {
                     PteraController controller = getController();
-                    controller.event(new EventDebugEvent(controller, event,
-                            true));
+                    controller.event(
+                            new EventDebugEvent(controller, event, true));
 
                     if (!postfire && event.isFinalEvent()) {
                         for (TimedEvent eventToCancel : _eventQueue) {
@@ -1267,7 +1267,8 @@ public class PteraDirector extends Director implements ValueListener {
      *   initialized or fired.
      */
     private synchronized void _initializeAndFireRefinement(
-            TypedActor refinement, boolean reset) throws IllegalActionException {
+            TypedActor refinement, boolean reset)
+            throws IllegalActionException {
         _fireAtReceived = false;
         if (reset || !_initializedRefinements.contains(refinement)) {
             refinement.initialize();

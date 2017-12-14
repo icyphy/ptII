@@ -183,8 +183,8 @@ public class ImageSequence extends Source {
                 // Load the frame from the file.
                 if (_fullRead(source, _frameBytes) != _imageRows
                         * _imageColumns) {
-                    throw new IllegalActionException("Error reading "
-                            + "image file!");
+                    throw new IllegalActionException(
+                            "Error reading " + "image file!");
                 }
 
                 // This is necessary to convert from bytes to ints

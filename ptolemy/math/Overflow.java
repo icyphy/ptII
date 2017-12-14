@@ -176,15 +176,16 @@ public abstract class Overflow implements Cloneable {
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
      */
-    public static Overflow getName(String name) throws IllegalArgumentException {
+    public static Overflow getName(String name)
+            throws IllegalArgumentException {
         Overflow overflow = (Overflow) _nameToOverflow.get(name);
 
         if (overflow != null) {
             return overflow;
         }
 
-        throw new IllegalArgumentException("Unknown overflow strategy \""
-                + name + "\".");
+        throw new IllegalArgumentException(
+                "Unknown overflow strategy \"" + name + "\".");
     }
 
     /** Return a hash code value for this object.
@@ -365,8 +366,8 @@ public abstract class Overflow implements Cloneable {
             // If the precision is unsigned, the BigInteger will
             // be positive and the "modulo" value is the
             // remainder of "integerValue divided by # of levels".
-            moduloInteger = integerValue.remainder(precision
-                    .getNumberOfLevels());
+            moduloInteger = integerValue
+                    .remainder(precision.getNumberOfLevels());
         } else {
             // If the precision is signed, we need to perform a
             // twos complement modulo.

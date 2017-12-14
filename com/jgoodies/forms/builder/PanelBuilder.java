@@ -235,8 +235,8 @@ public class PanelBuilder extends AbstractFormBuilder {
      */
     public final JLabel addLabel(String textWithMnemonic,
             String encodedConstraints) {
-        return addLabel(textWithMnemonic, new CellConstraints(
-                encodedConstraints));
+        return addLabel(textWithMnemonic,
+                new CellConstraints(encodedConstraints));
     }
 
     // Adding Label with related Component ************************************
@@ -459,8 +459,8 @@ public class PanelBuilder extends AbstractFormBuilder {
      */
     public final JLabel addTitle(String textWithMnemonic,
             String encodedConstraints) {
-        return addTitle(textWithMnemonic, new CellConstraints(
-                encodedConstraints));
+        return addTitle(textWithMnemonic,
+                new CellConstraints(encodedConstraints));
     }
 
     // Adding Separators ------------------------------------------------------
@@ -502,8 +502,8 @@ public class PanelBuilder extends AbstractFormBuilder {
             CellConstraints constraints) {
         int titleAlignment = isLeftToRight() ? SwingConstants.LEFT
                 : SwingConstants.RIGHT;
-        JComponent titledSeparator = getComponentFactory().createSeparator(
-                textWithMnemonic, titleAlignment);
+        JComponent titledSeparator = getComponentFactory()
+                .createSeparator(textWithMnemonic, titleAlignment);
         add(titledSeparator, constraints);
         return titledSeparator;
     }
@@ -525,8 +525,8 @@ public class PanelBuilder extends AbstractFormBuilder {
      */
     public final JComponent addSeparator(String textWithMnemonic,
             String encodedConstraints) {
-        return addSeparator(textWithMnemonic, new CellConstraints(
-                encodedConstraints));
+        return addSeparator(textWithMnemonic,
+                new CellConstraints(encodedConstraints));
     }
 
     /**
@@ -544,7 +544,8 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @param columnSpan        the number of columns the separator spans
      * @return the added separator
      */
-    public final JComponent addSeparator(String textWithMnemonic, int columnSpan) {
+    public final JComponent addSeparator(String textWithMnemonic,
+            int columnSpan) {
         return addSeparator(textWithMnemonic,
                 createLeftAdjustedConstraints(columnSpan));
     }

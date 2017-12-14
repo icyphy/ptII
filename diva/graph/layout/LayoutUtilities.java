@@ -74,8 +74,8 @@ public final class LayoutUtilities {
     public static final void placeNoReroute(LayoutTarget target, Object node,
             double x, double y) {
         Rectangle2D bounds = target.getBounds(node);
-        target.translate(node, x - bounds.getWidth() / 2 - bounds.getX(), y
-                - bounds.getHeight() / 2 - bounds.getY());
+        target.translate(node, x - bounds.getWidth() / 2 - bounds.getX(),
+                y - bounds.getHeight() / 2 - bounds.getY());
     }
 
     /**
@@ -108,14 +108,15 @@ public final class LayoutUtilities {
      * A common layout consistency check shared by checkConsistency()
      * and checkContainment().
      */
-    private static final boolean checkCommon(Object composite, GraphModel model) {
+    private static final boolean checkCommon(Object composite,
+            GraphModel model) {
         /*
          for (Iterator i = g.nodes(); i.hasNext(); ) {
          Node n = (Node)i.next();
          if (target.getLayoutNode(n) == null) {
          return false;
          }
-
+        
          for (Iterator j = n.outEdges(); j.hasNext(); ) {
          Edge e = (Edge)j.next();
          if ((target.getLayoutEdge(e) == null) ||

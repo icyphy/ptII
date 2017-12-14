@@ -255,9 +255,9 @@ public class TCPPacketTransmitter extends OutputDevice {
                as its timestamp*/
             String[] labels = new String[] { timestamp, microstep, payload };
             Token[] values = new Token[] {
-                    new DoubleToken(ptidesDirector.getModelTime()
-                            .getDoubleValue()),
-                            new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
+                    new DoubleToken(
+                            ptidesDirector.getModelTime().getDoubleValue()),
+                    new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
             RecordToken record = new RecordToken(labels, values);
 
             // add the token into packet values List
@@ -324,8 +324,7 @@ public class TCPPacketTransmitter extends OutputDevice {
             }
         }
         if (!flag) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "A NetworkTransmitter must be connected to a port "
                             + "on the outside, and that port should be a network port "
                             + "(a port with the parameter networkPort).");
@@ -352,7 +351,8 @@ public class TCPPacketTransmitter extends OutputDevice {
             String[] fullTCPlabels = new String[] { TCPlabel, tokens };
             Token[] fullTCPvalues = new Token[] { TCPHeader, _completePayload };
 
-            RecordToken TCPFrame = new RecordToken(fullTCPlabels, fullTCPvalues);
+            RecordToken TCPFrame = new RecordToken(fullTCPlabels,
+                    fullTCPvalues);
             // create packet to be sent;
             output.send(0, TCPFrame);
             _packetLength = 0;

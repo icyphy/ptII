@@ -83,7 +83,7 @@ public class ModelUtilities {
      */
     public static synchronized RecordToken executeModel(URL url,
             RecordToken args, String[] resultLabels)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (url != null) {
             MoMLParser parser = new MoMLParser();
             NamedObj model;
@@ -91,8 +91,8 @@ public class ModelUtilities {
             try {
                 model = parser.parse(null, url);
             } catch (Exception ex) {
-                throw new IllegalActionException(ex
-                        + "Failed to pass the model URL." + url.toString());
+                throw new IllegalActionException(
+                        ex + "Failed to pass the model URL." + url.toString());
             }
 
             if (model instanceof CompositeActor) {
@@ -123,7 +123,7 @@ public class ModelUtilities {
      */
     public static synchronized RecordToken executeModel(CompositeActor model,
             RecordToken args, String[] resultLabels)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         Manager manager = model.getManager();
 
         if (manager == null) {

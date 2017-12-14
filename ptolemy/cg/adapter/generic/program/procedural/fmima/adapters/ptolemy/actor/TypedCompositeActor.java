@@ -46,7 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 
@@ -83,15 +82,13 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         //    return "fmima: TypedCompositeActor: top level";
         //}
         //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent());
 
-        code.append(getCodeGenerator()
-                .comment(
-                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java start"
-                                + _eol
-                                + "   "
-                                + adapter.getComponent().getName()
-                                + " contains: "));
+        code.append(getCodeGenerator().comment(
+                "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java start"
+                        + _eol + "   " + adapter.getComponent().getName()
+                        + " contains: "));
         // Extending ProceduralCodeGenerator end.
 
         // Extending GenericCodeGenerator start.
@@ -112,15 +109,15 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                     // Extending GenericCodeGenerator start.
                     // /*adapter.*/getComponent(),
                     // Extending GenericCodeGenerator end
-                    ex, "Failed to cast " + director + " of class "
+                    ex,
+                    "Failed to cast " + director + " of class "
                             + director.getClass().getName() + " to "
                             + Director.class.getName() + ".");
         }
         code.append(directorAdapter.generateFMIMA());
 
-        code.append(getCodeGenerator()
-                .comment(
-                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java end"));
+        code.append(getCodeGenerator().comment(
+                "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java end"));
         return /*processCode(code.toString())*/code.toString();
     }
 
@@ -154,8 +151,8 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
                     .next();
 
-            codeStream.append("#define " + actor.getName() + " " + fmuCount++
-                    + "\n");
+            codeStream.append(
+                    "#define " + actor.getName() + " " + fmuCount++ + "\n");
         }
 
         actors = actorList.iterator();
@@ -164,12 +161,12 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                     .next();
 
             for (TypedIOPort input : actor.inputPortList()) {
-                    List<TypedIOPort> connected_ports = input.connectedPortList();
-                    for (TypedIOPort output : connected_ports) {
-                            if (output.isOutput()) {
-                                    connectionsCount++;
-                            }
+                List<TypedIOPort> connected_ports = input.connectedPortList();
+                for (TypedIOPort output : connected_ports) {
+                    if (output.isOutput()) {
+                        connectionsCount++;
                     }
+                }
             }
         }
 
@@ -184,79 +181,106 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
                     .next();
             codeStream.append("\"" + actor.getName() + "\"");
-            if (actors.hasNext())
+            if (actors.hasNext()) {
                 codeStream.append(",");
+            }
         }
         codeStream.append("};\n" + _eol);
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
-        actors =  topActor.deepEntityList().iterator();
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent());
+        actors = topActor.deepEntityList().iterator();
         codeStream.append("int static i = 0;\n");
-                codeStream.append("static void setupParameters(FMU *fmu) {\n");
+        codeStream.append("static void setupParameters(FMU *fmu) {\n");
 
-                codeStream.append("fmi2Status fmi2Flag = fmu->enterInitializationMode(fmu->component);\n");
-                codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
-                codeStream.append("error(\"could not initialize model; failed FMI enter initialization mode\");\n");
-                codeStream.append("}\n");
-                codeStream.append("printf(\"initialization mode entered\\n\");\n");
+        codeStream.append(
+                "fmi2Status fmi2Flag = fmu->enterInitializationMode(fmu->component);\n");
+        codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
+        codeStream.append(
+                "error(\"could not initialize model; failed FMI enter initialization mode\");\n");
+        codeStream.append("}\n");
+        codeStream.append("printf(\"initialization mode entered\\n\");\n");
 
-                codeStream.append("switch(i) {\n");
-                int i = 0;
-                while (actors.hasNext()) {
-                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                                        .next();
+        codeStream.append("switch(i) {\n");
+        int i = 0;
+        while (actors.hasNext()) {
+            ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
+                    .next();
 
-                        codeStream.append("case(" + i + "): {\n");
-                        int j = 0;
-                        for ( FMIScalarVariable scalar : actor.getScalarVariables()) {
+            codeStream.append("case(" + i + "): {\n");
+            int j = 0;
+            for (FMIScalarVariable scalar : actor.getScalarVariables()) {
 
-                                if (scalar.causality.equals(Causality.parameter)) {
-                                        String sanitizedName = StringUtilities
-                                .sanitizeName(scalar.name);
-                        Parameter parameter = (Parameter) actor.getAttribute(sanitizedName,
-                                Parameter.class);
+                if (scalar.causality.equals(Causality.parameter)) {
+                    String sanitizedName = StringUtilities
+                            .sanitizeName(scalar.name);
+                    Parameter parameter = (Parameter) actor
+                            .getAttribute(sanitizedName, Parameter.class);
 
-                        // Coverity Scan indicates that getAttribute could return null, so we check.
-                        if (parameter == null) {
-                            throw new InternalErrorException(actor, null, "Could not find parameter \""
-                                    + sanitizedName + "\" in " + actor.getFullName());
-                        }
+                    // Coverity Scan indicates that getAttribute could return null, so we check.
+                    if (parameter == null) {
+                        throw new InternalErrorException(actor, null,
+                                "Could not find parameter \"" + sanitizedName
+                                        + "\" in " + actor.getFullName());
+                    }
 
-                        if (scalar.type instanceof FMIBooleanType) {
-                                codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmi2Boolean tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("fmu->setBoolean(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                        } else if (scalar.type instanceof FMIIntegerType) {
-                                        codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmi2Integer tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("fmu->setInteger(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                        } else if (scalar.type instanceof FMIRealType) {
-                                        codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmi2Real tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("fmu->setReal(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                        } else if (scalar.type instanceof FMIStringType) {
-                                        codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmi2String tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("fmu->setString(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                        }
-                                }
-                                j++;
-
-                        }
-                        i++;
-                        codeStream.append("break;\n}\n");
+                    if (scalar.type instanceof FMIBooleanType) {
+                        codeStream.append("const fmi2ValueReference _vr" + i
+                                + "_" + j + " = " + scalar.valueReference
+                                + ";\n");
+                        codeStream.append("fmi2Boolean tmp_" + i + "_" + j
+                                + " = " + parameter.getToken() + ";\n");
+                        codeStream.append("fmu->setBoolean(fmu->component, &_vr"
+                                + i + "_" + j + ", 1, &tmp_" + i + "_" + j
+                                + ");" + _eol);
+                    } else if (scalar.type instanceof FMIIntegerType) {
+                        codeStream.append("const fmi2ValueReference _vr" + i
+                                + "_" + j + " = " + scalar.valueReference
+                                + ";\n");
+                        codeStream.append("fmi2Integer tmp_" + i + "_" + j
+                                + " = " + parameter.getToken() + ";\n");
+                        codeStream.append("fmu->setInteger(fmu->component, &_vr"
+                                + i + "_" + j + ", 1, &tmp_" + i + "_" + j
+                                + ");" + _eol);
+                    } else if (scalar.type instanceof FMIRealType) {
+                        codeStream.append("const fmi2ValueReference _vr" + i
+                                + "_" + j + " = " + scalar.valueReference
+                                + ";\n");
+                        codeStream.append("fmi2Real tmp_" + i + "_" + j + " = "
+                                + parameter.getToken() + ";\n");
+                        codeStream.append("fmu->setReal(fmu->component, &_vr"
+                                + i + "_" + j + ", 1, &tmp_" + i + "_" + j
+                                + ");" + _eol);
+                    } else if (scalar.type instanceof FMIStringType) {
+                        codeStream.append("const fmi2ValueReference _vr" + i
+                                + "_" + j + " = " + scalar.valueReference
+                                + ";\n");
+                        codeStream.append("fmi2String tmp_" + i + "_" + j
+                                + " = " + parameter.getToken() + ";\n");
+                        codeStream.append("fmu->setString(fmu->component, &_vr"
+                                + i + "_" + j + ", 1, &tmp_" + i + "_" + j
+                                + ");" + _eol);
+                    }
                 }
+                j++;
 
-                codeStream.append("}\n");
-                codeStream.append("i++;\n");
+            }
+            i++;
+            codeStream.append("break;\n}\n");
+        }
 
-                codeStream.append("fmi2Flag = fmu->exitInitializationMode(fmu->component);\n");
-                codeStream.append("printf(\"successfully initialized.\\n\");\n");
-                codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
-                codeStream.append("error(\"could not initialize model; failed FMI exit initialization mode\");\n");
-                codeStream.append("}\n");
+        codeStream.append("}\n");
+        codeStream.append("i++;\n");
 
-                codeStream.append("}\n");
+        codeStream.append(
+                "fmi2Flag = fmu->exitInitializationMode(fmu->component);\n");
+        codeStream.append("printf(\"successfully initialized.\\n\");\n");
+        codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
+        codeStream.append(
+                "error(\"could not initialize model; failed FMI exit initialization mode\");\n");
+        codeStream.append("}\n");
+
+        codeStream.append("}\n");
 
         codeStream.appendCodeBlock("staticDeclareBlock");
 

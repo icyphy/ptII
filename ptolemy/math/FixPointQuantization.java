@@ -201,7 +201,8 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setPrecision(Precision precision) {
-        return new FixPointQuantization(precision, getOverflow(), getRounding());
+        return new FixPointQuantization(precision, getOverflow(),
+                getRounding());
     }
 
     /** Return a FixPointQuantization with a changed rounding strategy.
@@ -224,9 +225,9 @@ public class FixPointQuantization extends Quantization {
     public String toString() {
         // TODO: check for null precision
         return "(" + _precision.getIntegerBitLength() + "."
-        + _precision.getFractionBitLength() + ","
-        + getOverflow().toString() + "," + getRounding().toString()
-        + ")";
+                + _precision.getFractionBitLength() + ","
+                + getOverflow().toString() + "," + getRounding().toString()
+                + ")";
     }
 
     ///////////////////////////////////////////////////////////////////

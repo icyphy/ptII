@@ -81,7 +81,8 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
 
         ArrayType type = new ArrayType(BaseType.DOUBLE);
         vertices.setTypeEquals(type);
-        vertices.setExpression("{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
+        vertices.setExpression(
+                "{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,8 +106,8 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == vertices || attribute == width || attribute == height
-                && !_inAttributeChanged) {
+        if (attribute == vertices || attribute == width
+                || attribute == height && !_inAttributeChanged) {
             // Check that the length of the array is even.
             ArrayToken verticesValue = (ArrayToken) vertices.getToken();
             int length = verticesValue.length();
@@ -149,8 +150,8 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ResizablePolygonAttribute newObject = (ResizablePolygonAttribute) super
-                .clone(workspace);
+        ResizablePolygonAttribute newObject = (ResizablePolygonAttribute) super.clone(
+                workspace);
 
         // The cloned icon ends up referring to the clonee's shape.
         // We need to fix that here. Do not use the _newShape() method

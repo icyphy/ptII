@@ -74,8 +74,8 @@ public class ProcessDirector extends SequencedModelDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public ProcessDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public ProcessDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -90,8 +90,8 @@ public class ProcessDirector extends SequencedModelDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public ProcessDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public ProcessDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -183,8 +183,8 @@ public class ProcessDirector extends SequencedModelDirector {
             fireSchedule(seqSchedule);
 
             // Add all the unexecuted actors to the list after the process' full schedule has been executed.
-            unexecutedSequenceNumbersList.addAll(seqSchedule
-                    .getUnexecutedList());
+            unexecutedSequenceNumbersList
+                    .addAll(seqSchedule.getUnexecutedList());
         }
 
         // If the fireUnexectedActors parameter is true,
@@ -194,8 +194,8 @@ public class ProcessDirector extends SequencedModelDirector {
             SequenceSchedule unexecutedSchedule = null;
 
             while (!unexecutedSequenceNumbersList.isEmpty()) {
-                unexecutedSchedule = _scheduler.getSchedule(
-                        unexecutedSequenceNumbersList, false);
+                unexecutedSchedule = _scheduler
+                        .getSchedule(unexecutedSequenceNumbersList, false);
 
                 fireSchedule(unexecutedSchedule);
                 unexecutedSequenceNumbersList = (ArrayList<SequenceAttribute>) unexecutedSchedule
@@ -243,18 +243,20 @@ public class ProcessDirector extends SequencedModelDirector {
         // then check the default process execution array parameter.
         // If that is not set, then set the process execution array to just
         // be an ordered list of all processes.
-        if (_processExecutionArray == null || _usingDefaultProcessArray == true) {
+        if (_processExecutionArray == null
+                || _usingDefaultProcessArray == true) {
             _usingDefaultProcessArray = true;
             if (_getDefaultProcessExecutionArray().length > 0) {
                 _processExecutionArray = _getDefaultProcessExecutionArray();
             } else {
                 ArrayList<String> processes = new ArrayList<String>();
-                for (String processName : (Set<String>) _processSeqMap.keySet()) {
+                for (String processName : (Set<String>) _processSeqMap
+                        .keySet()) {
                     processes.add(processName);
                 }
                 Collections.sort(processes);
-                _processExecutionArray = processes.toArray(new String[processes
-                                                                      .size()]);
+                _processExecutionArray = processes
+                        .toArray(new String[processes.size()]);
             }
         }
 
@@ -269,7 +271,7 @@ public class ProcessDirector extends SequencedModelDirector {
 
             /*
             System.out.println("Sorted process attributes:");
-
+            
             // Print out the sorted processAttributes
             Iterator i = processAttributes.iterator();
             while (i.hasNext())
@@ -306,15 +308,15 @@ public class ProcessDirector extends SequencedModelDirector {
             // This could be changed in the future to have an option to allow unreachable actors
             //System.out.println("There are unreachable upstream actors in the model: ");
             StringBuffer unreachableActors = new StringBuffer("");
-
+        
             for (Actor a : _scheduler.unreachableActorList())
             {
                 //System.out.println("Unreachable: " + a.getFullName());
                 unreachableActors.append(a.getFullName() + ", ");
             }
-
+        
             // System.out.println("Unreachable actors: " + unreachableActors);
-
+        
             // Remove the last two characters ", "
             // Throw exception
             throw new IllegalActionException("There are unreachable upstream actors in the model: " + unreachableActors.substring(0, unreachableActors.length() - 2));
@@ -348,14 +350,14 @@ public class ProcessDirector extends SequencedModelDirector {
      *   the director's parameters.
      */
     @Override
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
         super._init();
 
         defaultProcessExecutionArray = new Parameter(this,
                 "Default Process Execution Array");
-        defaultProcessExecutionArray.setTypeEquals(new ArrayType(
-                BaseType.STRING));
+        defaultProcessExecutionArray
+                .setTypeEquals(new ArrayType(BaseType.STRING));
 
         _processExecutionArray = null;
         _usingDefaultProcessArray = false;

@@ -165,7 +165,8 @@ public class DocManager extends HandlerBase {
             // Populate fields from the attribute.
             //String descriptionValue = instanceDoc.description.stringValue();
             String descriptionValue = instanceDoc.description.getExpression();
-            if (descriptionValue != null && !descriptionValue.trim().equals("")) {
+            if (descriptionValue != null
+                    && !descriptionValue.trim().equals("")) {
                 _isInstanceDoc = true;
                 _description = descriptionValue;
             }
@@ -205,9 +206,10 @@ public class DocManager extends HandlerBase {
             while (attributes.hasNext()) {
                 NamedObj attribute = (NamedObj) attributes.next();
                 if (((Settable) attribute).getVisibility() != Settable.NONE) {
-                    String attributeDoc = instanceDoc.getParameterDoc(attribute
-                            .getName());
-                    if (attributeDoc != null && !attributeDoc.trim().equals("")) {
+                    String attributeDoc = instanceDoc
+                            .getParameterDoc(attribute.getName());
+                    if (attributeDoc != null
+                            && !attributeDoc.trim().equals("")) {
                         _isInstanceDoc = true;
                         _properties.put(attribute.getName(), attributeDoc);
                     }
@@ -349,7 +351,8 @@ public class DocManager extends HandlerBase {
             // docClassNameToURL().
 
             Parameter docApplicationSpecializerParameter = (Parameter) configuration
-                    .getAttribute("_docApplicationSpecializer", Parameter.class);
+                    .getAttribute("_docApplicationSpecializer",
+                            Parameter.class);
             if (docApplicationSpecializerParameter != null) {
                 String docApplicationSpecializerClassName = docApplicationSpecializerParameter
                         .getExpression();
@@ -378,7 +381,8 @@ public class DocManager extends HandlerBase {
             // only the docs for the app we are running.
             try {
                 StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                        .getAttribute("_applicationName", StringAttribute.class);
+                        .getAttribute("_applicationName",
+                                StringAttribute.class);
 
                 if (applicationNameAttribute != null) {
                     applicationName = applicationNameAttribute.getExpression();
@@ -396,31 +400,32 @@ public class DocManager extends HandlerBase {
                     "doc/codeDoc"
                             + (applicationName.equals("") ? "/"
                                     : applicationName + "/doc/codeDoc/")
-                                    + className.replace('.', '/') + ".xml",
+                            + className.replace('.', '/') + ".xml",
 
-                                    "doc/codeDoc/" + className.replace('.', '/') + ".xml",
+                    "doc/codeDoc/" + className.replace('.', '/') + ".xml",
 
-                                    "doc/codeDoc"
-                                            + (applicationName.equals("") ? "/"
-                                                    : applicationName + "/doc/codeDoc/")
-                                                    + className.replace('.', '/') + ".html",
+                    "doc/codeDoc"
+                            + (applicationName.equals("") ? "/"
+                                    : applicationName + "/doc/codeDoc/")
+                            + className.replace('.', '/') + ".html",
 
-                                                    "doc/codeDoc/" + className.replace('.', '/') + ".html",
+                    "doc/codeDoc/" + className.replace('.', '/') + ".html",
 
-                                                    className.replace('.', '/') + ".java",
+                    className.replace('.', '/') + ".java",
 
-                                                    "doc/codeDoc"
-                                                            + (applicationName.equals("") ? "/"
-                                                                    : applicationName + "/doc/codeDoc/")
+                    "doc/codeDoc"
+                            + (applicationName.equals("") ? "/"
+                                    : applicationName + "/doc/codeDoc/")
 
-                                                                    + className.replace('.', '/') + "Idx.htm" };
+                            + className.replace('.', '/') + "Idx.htm" };
 
             // List of docNames we use if we don't find anything locally.
             List docNameList = new LinkedList();
 
             // We look for the documentation relative to this classLoader.n
-            ClassLoader referenceClassLoader = Class.forName(
-                    "ptolemy.vergil.actor.DocManager").getClassLoader();
+            ClassLoader referenceClassLoader = Class
+                    .forName("ptolemy.vergil.actor.DocManager")
+                    .getClassLoader();
 
             // Rather than using a deeply nested set of if/else's, we
             // just keep checking toRead == null.p
@@ -483,19 +488,18 @@ public class DocManager extends HandlerBase {
                 // Look for the list of demos
                 if (!className.equals("org.terraswarm.accessor.JSAccessor")) {
                     docNameList.add(docNames[5]);
-                // } else {
-                //     // Get the script parameter and look for an adjacent *Idx.htm file.
-                //     try {
-                //         Parameter accessorSourceParameter = (Parameter) _target.getProperty("accessorSource");
-                //         if (accessorSourceParameter != null) {
-                //             String acccessorSource = accessorSourceParameter.getExpression();
-                //             docNameList.add(accessorSource.substring(0, accessorSource.length() - 3 + "Idx.html"));
-                //         }
-                //     } catch (Throwable throwable) {
-                //         docNameList.add(docNames[5]);
-                //     }
+                    // } else {
+                    //     // Get the script parameter and look for an adjacent *Idx.htm file.
+                    //     try {
+                    //         Parameter accessorSourceParameter = (Parameter) _target.getProperty("accessorSource");
+                    //         if (accessorSourceParameter != null) {
+                    //             String acccessorSource = accessorSourceParameter.getExpression();
+                    //             docNameList.add(accessorSource.substring(0, accessorSource.length() - 3 + "Idx.html"));
+                    //         }
+                    //     } catch (Throwable throwable) {
+                    //         docNameList.add(docNames[5]);
+                    //     }
                 }
-
 
                 toRead = referenceClassLoader.getResource(docNames[5]);
             }
@@ -508,7 +512,8 @@ public class DocManager extends HandlerBase {
                 while (docNameIterator.hasNext()) {
                     String docName = (String) docNameIterator.next();
                     // Handle redirects for http -> https
-                    toRead = FileUtilities.followRedirects(new URL(_remoteDocumentationURLBase + docName));
+                    toRead = FileUtilities.followRedirects(
+                            new URL(_remoteDocumentationURLBase + docName));
 
                     if (toRead != null) {
                         InputStream toReadStream = null;
@@ -836,8 +841,9 @@ public class DocManager extends HandlerBase {
             if (_target instanceof Instantiable
                     && ((Instantiable) _target).getParent() != null
                     && ((NamedObj) ((Instantiable) _target).getParent())
-                    .attributeList(DocAttribute.class).size() > 0) {
-                result.append("<li><a href=\"#parentClass\">Class documentation</a></li>");
+                            .attributeList(DocAttribute.class).size() > 0) {
+                result.append(
+                        "<li><a href=\"#parentClass\">Class documentation</a></li>");
             }
             // Get either the PtDoc, javadoc, or source.
             URL toRead = docClassNameToURL(_configuration, className, true,
@@ -864,19 +870,19 @@ public class DocManager extends HandlerBase {
             URL docURL = null;
             try {
                 // Get the javadoc
-                URL toRead = docClassNameToURL(_configuration, className,
-                        false, true, false, false);
+                URL toRead = docClassNameToURL(_configuration, className, false,
+                        true, false, false);
 
                 if (toRead != null) {
                     docURL = toRead;
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                            // Sadly, Javadoc from Java 1.7 cannot be
-                            // displayed using a JEditorPane, so we open
-                            // javadoc in an external browser.  To test this
-                            // out, see
-                            // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
-                            // and modify the example so that it tries to view
-                            // the Javadoc for Object.
+                    // Sadly, Javadoc from Java 1.7 cannot be
+                    // displayed using a JEditorPane, so we open
+                    // javadoc in an external browser.  To test this
+                    // out, see
+                    // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
+                    // and modify the example so that it tries to view
+                    // the Javadoc for Object.
                             + "#in_browser\">Javadoc Documentation</a></li>");
                 } else {
                     // FIXME: Make this a hyperlink to a doc on how
@@ -901,7 +907,8 @@ public class DocManager extends HandlerBase {
                 if (lastDot >= 0) {
                     baseClassName = baseClassName.substring(lastDot + 1);
                 }
-                if (toRead != null && toRead.toExternalForm().endsWith(".xml")) {
+                if (toRead != null
+                        && toRead.toExternalForm().endsWith(".xml")) {
                     result.append("<li><a href=\"" + toRead.toExternalForm()
                             + "\">Base class (" + baseClassName + ")</a></li>");
                 } else if (toRead != null
@@ -922,13 +929,14 @@ public class DocManager extends HandlerBase {
 
             // Link to the source code, if present.
             try {
-                URL toRead = docClassNameToURL(_configuration, className,
-                        false, false, true, false);
+                URL toRead = docClassNameToURL(_configuration, className, false,
+                        false, true, false);
                 if (toRead != null) {
                     String modificationMessage = "";
                     try {
                         if (toRead.toExternalForm().startsWith("file:/")
-                                && docURL.toExternalForm().startsWith("file:/")) {
+                                && docURL.toExternalForm()
+                                        .startsWith("file:/")) {
                             // Check the mod times and print a message if the doc file
                             // it out of date.
                             File sourceFile = new File(toRead.getFile());
@@ -939,10 +947,10 @@ public class DocManager extends HandlerBase {
                                         + "may be out of date when compared to source.</font> "
                                         + "<br/>The source was last modified on <br/>"
                                         + new Date(sourceFile.lastModified())
-                                + ",<br/> documentation was last modified on <br/>"
-                                + new Date(docFile.lastModified())
-                                + ".<br/> To rebuild the documentation use the "
-                                + "Build menu choice.";
+                                        + ",<br/> documentation was last modified on <br/>"
+                                        + new Date(docFile.lastModified())
+                                        + ".<br/> To rebuild the documentation use the "
+                                        + "Build menu choice.";
                             }
                         }
                     } catch (Exception ex) {
@@ -963,7 +971,9 @@ public class DocManager extends HandlerBase {
         try {
             URL toRead = docClassNameToURL(_configuration, className, false,
                     false, false, true);
-            System.out.println("DocManager: Trying to find demos for " + className + ", _target: " + _target + " _targetClass: " + _targetClass + ": toRead: " + toRead );
+            System.out.println("DocManager: Trying to find demos for "
+                    + className + ", _target: " + _target + " _targetClass: "
+                    + _targetClass + ": toRead: " + toRead);
             if (toRead != null) {
                 result.append("<li><a href=\"" + toRead.toExternalForm()
                         + "\">Demo Usage</a></li>");
@@ -1076,7 +1086,8 @@ public class DocManager extends HandlerBase {
      *  @exception Exception If the parser fails.
      */
     public void parse(URL base, InputStream input) throws Exception {
-        parse(base, new InputStreamReader(input, java.nio.charset.Charset.defaultCharset()));
+        parse(base, new InputStreamReader(input,
+                java.nio.charset.Charset.defaultCharset()));
     }
 
     /** Parse the given stream as a DocML file.
@@ -1140,7 +1151,8 @@ public class DocManager extends HandlerBase {
      */
     public static void setRemoteDocumentationURLBase(
             String remoteDocumentationURLBase) {
-        System.out.println("DocManager.setRemoteDocumentationURLBase: " + remoteDocumentationURLBase);
+        System.out.println("DocManager.setRemoteDocumentationURLBase: "
+                + remoteDocumentationURLBase);
         _remoteDocumentationURLBase = remoteDocumentationURLBase;
     }
 
@@ -1295,9 +1307,9 @@ public class DocManager extends HandlerBase {
     }
 
     /** Initialize fields.  We assume _target was set by the caller
-
+    
      private void _init() {
-
+    
      _isInstanceDoc = false;
      }
     */

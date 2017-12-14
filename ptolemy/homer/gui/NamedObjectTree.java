@@ -100,7 +100,8 @@ public class NamedObjectTree extends JPanel {
             public void keyReleased(KeyEvent e) {
                 AttributeTreeModel treeModel = (AttributeTreeModel) _tree
                         .getModel();
-                if (_search.getText() != null && _search.getText().length() > 0) {
+                if (_search.getText() != null
+                        && _search.getText().length() > 0) {
                     treeModel.applyFilter(_search.getText());
 
                     for (int i = 0; i < _tree.getRowCount(); i++) {
@@ -131,13 +132,12 @@ public class NamedObjectTree extends JPanel {
                 setText(((Nameable) value).getName());
 
                 // If filter is applied & no children exist.
-                if (_search.getText() != null && _search.getText().length() > 0) {
-                    if (!((Nameable) value)
-                            .getFullName()
+                if (_search.getText() != null
+                        && _search.getText().length() > 0) {
+                    if (!((Nameable) value).getFullName()
                             .toLowerCase(Locale.getDefault())
-                            .contains(
-                                    _search.getText().toLowerCase(
-                                            Locale.getDefault()))) {
+                            .contains(_search.getText()
+                                    .toLowerCase(Locale.getDefault()))) {
                         setEnabled(false);
                     }
                 }

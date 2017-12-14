@@ -87,8 +87,9 @@ public class FloatImage {
         this.width = width;
         this.height = height;
         this.d = new float[width * height];
-        for (int i = 0; i < d.length; i++)
+        for (int i = 0; i < d.length; i++) {
             this.d[i] = (d[i] & 0xff) / (float) 255.0;
+        }
     }
 
     public FloatImage(BufferedImage im) {
@@ -103,8 +104,9 @@ public class FloatImage {
 
     public FloatImage copy() {
         float r[] = new float[d.length];
-        for (int i = 0; i < d.length; i++)
+        for (int i = 0; i < d.length; i++) {
             r[i] = d[i];
+        }
         return new FloatImage(width, height, r);
     }
 
@@ -112,8 +114,9 @@ public class FloatImage {
      **/
     public final byte[] getByteData() {
         byte r[] = new byte[d.length];
-        for (int i = 0; i < d.length; i++)
+        for (int i = 0; i < d.length; i++) {
             r[i] = (byte) (255 * d[i]);
+        }
         return r;
     }
 
@@ -140,15 +143,16 @@ public class FloatImage {
      **/
     public FloatImage filterFactoredCentered(float fhoriz[], float fvert[],
             float r[]) {
-        if (r == null)
+        if (r == null) {
             r = new float[d.length];
-        else
+        } else {
             assert (r.length == d.length);
+        }
 
         // do horizontal
         for (int y = 0; y < height; y++) {
-            SigProc.convolveSymmetricCentered(d, y * width, width, fhoriz, r, y
-                    * width);
+            SigProc.convolveSymmetricCentered(d, y * width, width, fhoriz, r,
+                    y * width);
         }
 
         // do vertical
@@ -158,13 +162,15 @@ public class FloatImage {
         for (int x = 0; x < width; x++) {
 
             // copy the column out for locality.
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++) {
                 tmp[y] = r[y * width + x];
+            }
 
             SigProc.convolveSymmetricCentered(tmp, 0, height, fvert, tmp2, 0);
 
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++) {
                 r[y * width + x] = tmp2[y];
+            }
         }
 
         return new FloatImage(width, height, r);
@@ -179,8 +185,8 @@ public class FloatImage {
         float r[] = new float[d.length];
 
         for (int y = 0; y < height; y++) {
-            SigProc.convolveSymmetricCenteredMax(d, y * width, width, fhoriz,
-                    r, y * width);
+            SigProc.convolveSymmetricCenteredMax(d, y * width, width, fhoriz, r,
+                    y * width);
         }
 
         // do vertical
@@ -190,13 +196,16 @@ public class FloatImage {
         for (int x = 0; x < width; x++) {
 
             // copy the column out for locality.
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++) {
                 tmp[y] = r[y * width + x];
+            }
 
-            SigProc.convolveSymmetricCenteredMax(tmp, 0, height, fvert, tmp2, 0);
+            SigProc.convolveSymmetricCenteredMax(tmp, 0, height, fvert, tmp2,
+                    0);
 
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++) {
                 r[y * width + x] = tmp2[y];
+            }
         }
 
         return new FloatImage(width, height, r);
@@ -206,8 +215,8 @@ public class FloatImage {
         float r[] = new float[d.length];
 
         for (int y = 0; y < height; y++) {
-            SigProc.convolveSymmetricCentered(d, y * width, width, f, r, y
-                    * width);
+            SigProc.convolveSymmetricCentered(d, y * width, width, f, r,
+                    y * width);
         }
 
         return new FloatImage(width, height, r);
@@ -223,13 +232,15 @@ public class FloatImage {
         for (int x = 0; x < width; x++) {
 
             // copy the column out for locality.
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++) {
                 tmp[y] = d[y * width + x];
+            }
 
             SigProc.convolveSymmetricCentered(tmp, 0, height, f, tmp2, 0);
 
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++) {
                 r[y * width + x] = tmp2[y];
+            }
         }
 
         return new FloatImage(width, height, r);
@@ -248,10 +259,12 @@ public class FloatImage {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 float v = d[y * width + x];
-                if (v < minv)
+                if (v < minv) {
                     v = minv;
-                if (v > maxv)
+                }
+                if (v > maxv) {
                     v = maxv;
+                }
                 r[y * width + x] = v;
             }
         }
@@ -265,17 +278,21 @@ public class FloatImage {
         float max = LinAlg.max(d);
         float min = LinAlg.min(d);
 
-        for (int y = 0; y < height; y++)
-            for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 r[y * width + x] = (d[y * width + x] - min) / (max - min);
+            }
+        }
 
         return new FloatImage(width, height, r);
     }
 
     public void addNoise(double stddev) {
-        for (int y = 0; y < height; y++)
-            for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 d[y * width + x] += r.nextDouble() * stddev;
+            }
+        }
     }
 
     public FloatImage scale(double s) {
@@ -296,9 +313,11 @@ public class FloatImage {
 
         float r[] = new float[nwidth * nheight];
 
-        for (int y = 0; y < nheight; y++)
-            for (int x = 0; x < nwidth; x++)
+        for (int y = 0; y < nheight; y++) {
+            for (int x = 0; x < nwidth; x++) {
                 r[y * nwidth + x] = d[(2 * y) * width + (2 * x)];
+            }
+        }
 
         return new FloatImage(nwidth, nheight, r);
     }
@@ -309,13 +328,15 @@ public class FloatImage {
 
         float r[] = new float[nwidth * nheight];
 
-        for (int y = 0; y < nheight; y++)
-            for (int x = 0; x < nwidth; x++)
-                r[y * nwidth + x] = 0.25f * (d[(2 * y + 0) * width
-                        + (2 * x + 0)]
-                        + d[(2 * y + 0) * width + (2 * x + 1)]
-                        + d[(2 * y + 1) * width + (2 * x + 0)] + d[(2 * y + 1)
-                        * width + (2 * x + 1)]);
+        for (int y = 0; y < nheight; y++) {
+            for (int x = 0; x < nwidth; x++) {
+                r[y * nwidth + x] = 0.25f
+                        * (d[(2 * y + 0) * width + (2 * x + 0)]
+                                + d[(2 * y + 0) * width + (2 * x + 1)]
+                                + d[(2 * y + 1) * width + (2 * x + 0)]
+                                + d[(2 * y + 1) * width + (2 * x + 1)]);
+            }
+        }
 
         return new FloatImage(nwidth, nheight, r);
     }
@@ -380,13 +401,15 @@ public class FloatImage {
     public FloatImage subtract(FloatImage fim, float r[]) {
         assert (width == fim.width && height == fim.height);
 
-        if (r == null)
+        if (r == null) {
             r = new float[d.length];
-        else
+        } else {
             assert (r.length == d.length);
+        }
 
-        for (int i = 0; i < d.length; i++)
+        for (int i = 0; i < d.length; i++) {
             r[i] = d[i] - fim.d[i];
+        }
 
         return new FloatImage(width, height, r);
     }
@@ -474,10 +497,11 @@ public class FloatImage {
     public static float[] imageToFloats(BufferedImage im, int rightshift,
             float f[]) {
         int width = im.getWidth(), height = im.getHeight();
-        if (f == null)
+        if (f == null) {
             f = new float[width * height];
-        else
+        } else {
             assert (f.length == width * height);
+        }
 
         int type = im.getType();
 
@@ -485,8 +509,9 @@ public class FloatImage {
         case BufferedImage.TYPE_INT_RGB: {
             int rgb[] = ((DataBufferInt) (im.getRaster().getDataBuffer()))
                     .getData();
-            for (int i = 0; i < rgb.length; i++)
+            for (int i = 0; i < rgb.length; i++) {
                 f[i] = ((rgb[i] >> rightshift) & 0xff) * (1.0f / 255.0f);
+            }
 
             break;
         }
@@ -494,8 +519,9 @@ public class FloatImage {
         case BufferedImage.TYPE_BYTE_GRAY: {
             byte b[] = ((DataBufferByte) (im.getRaster().getDataBuffer()))
                     .getData();
-            for (int i = 0; i < b.length; i++)
+            for (int i = 0; i < b.length; i++) {
                 f[i] = (b[i] & 0xff) * (1.0f / 255.0f);
+            }
 
             break;
         }
@@ -534,22 +560,30 @@ public class FloatImage {
             for (int x = 1; x + 1 < width; x++) {
                 float c = d[y * width + x];
 
-                if (d[(y - 1) * width + x - 1] >= c)
+                if (d[(y - 1) * width + x - 1] >= c) {
                     continue;
-                if (d[(y - 1) * width + x + 0] >= c)
+                }
+                if (d[(y - 1) * width + x + 0] >= c) {
                     continue;
-                if (d[(y - 1) * width + x + 1] >= c)
+                }
+                if (d[(y - 1) * width + x + 1] >= c) {
                     continue;
-                if (d[(y + 0) * width + x - 1] >= c)
+                }
+                if (d[(y + 0) * width + x - 1] >= c) {
                     continue;
-                if (d[(y + 0) * width + x + 1] >= c)
+                }
+                if (d[(y + 0) * width + x + 1] >= c) {
                     continue;
-                if (d[(y + 1) * width + x - 1] >= c)
+                }
+                if (d[(y + 1) * width + x - 1] >= c) {
                     continue;
-                if (d[(y + 1) * width + x + 0] >= c)
+                }
+                if (d[(y + 1) * width + x + 0] >= c) {
                     continue;
-                if (d[(y + 1) * width + x + 1] >= c)
+                }
+                if (d[(y + 1) * width + x + 1] >= c) {
                     continue;
+                }
 
                 maxima.add(new float[] { x, y, c });
             }
@@ -564,22 +598,30 @@ public class FloatImage {
             for (int x = 1; x + 1 < width; x++) {
                 float c = d[y * width + x];
 
-                if (d[(y - 1) * width + x - 1] <= c)
+                if (d[(y - 1) * width + x - 1] <= c) {
                     continue;
-                if (d[(y - 1) * width + x + 0] <= c)
+                }
+                if (d[(y - 1) * width + x + 0] <= c) {
                     continue;
-                if (d[(y - 1) * width + x + 1] <= c)
+                }
+                if (d[(y - 1) * width + x + 1] <= c) {
                     continue;
-                if (d[(y + 0) * width + x - 1] <= c)
+                }
+                if (d[(y + 0) * width + x - 1] <= c) {
                     continue;
-                if (d[(y + 0) * width + x + 1] <= c)
+                }
+                if (d[(y + 0) * width + x + 1] <= c) {
                     continue;
-                if (d[(y + 1) * width + x - 1] <= c)
+                }
+                if (d[(y + 1) * width + x - 1] <= c) {
                     continue;
-                if (d[(y + 1) * width + x + 0] <= c)
+                }
+                if (d[(y + 1) * width + x + 0] <= c) {
                     continue;
-                if (d[(y + 1) * width + x + 1] <= c)
+                }
+                if (d[(y + 1) * width + x + 1] <= c) {
                     continue;
+                }
 
                 maxima.add(new float[] { x, y, c });
             }

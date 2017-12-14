@@ -94,8 +94,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Yellow (eal)
  */
-public class NamedProgramCodeGeneratorAdapter extends
-ProgramCodeGeneratorAdapter {
+public class NamedProgramCodeGeneratorAdapter
+        extends ProgramCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
@@ -173,7 +173,8 @@ ProgramCodeGeneratorAdapter {
                     if (!sourcePort.getType().equals(sinkPort.getType())) {
                         _markTypeConvert(
                                 new ProgramCodeGeneratorAdapter.Channel(
-                                        sourcePort, j), sink);
+                                        sourcePort, j),
+                                sink);
                     }
                 }
             }
@@ -203,8 +204,8 @@ ProgramCodeGeneratorAdapter {
      *  <i>codeDirectory</i> parameter.
      */
     public static long copyFilesToCodeDirectory(NamedObj namedObj,
-            ProgramCodeGenerator codeGenerator) throws IOException,
-            IllegalActionException {
+            ProgramCodeGenerator codeGenerator)
+            throws IOException, IllegalActionException {
 
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
@@ -240,8 +241,8 @@ ProgramCodeGeneratorAdapter {
                     if (necessaryFileName.indexOf("/") == -1
                             || necessaryFileName.indexOf("\\") == -1) {
                         try {
-                            necessaryURL = FileUtilities.nameToURL("file:./"
-                                    + necessaryFileName, null, null);
+                            necessaryURL = FileUtilities.nameToURL(
+                                    "file:./" + necessaryFileName, null, null);
                         } catch (IOException ex2) {
                             // Throw the original exception
                             throw ex;
@@ -262,20 +263,21 @@ ProgramCodeGeneratorAdapter {
                         necessaryFileShortName);
                 File necessaryFileSource = new File(necessaryFileName);
                 if (!necessaryFileDestination.exists()
-                        || necessaryFileSource.exists()
-                        && necessaryFileSource.lastModified() > necessaryFileDestination
-                        .lastModified()) {
+                        || necessaryFileSource.exists() && necessaryFileSource
+                                .lastModified() > necessaryFileDestination
+                                        .lastModified()) {
                     // If the dest file does not exist or is older than the
                     // source file, we do the copy
-                    System.out.println("Copying " + necessaryFileSource
-                            + " to " + necessaryFileDestination);
+                    System.out.println("Copying " + necessaryFileSource + " to "
+                            + necessaryFileDestination);
 
                     try {
                         FileUtilities.binaryCopyURLToFile(necessaryURL,
                                 necessaryFileDestination);
                     } catch (IOException ex) {
                         String directory = "unknown";
-                        if (!StringUtilities.getProperty("user.dir").equals("")) {
+                        if (!StringUtilities.getProperty("user.dir")
+                                .equals("")) {
                             directory = "\""
                                     + StringUtilities.getProperty("user.dir")
                                     + "\"";
@@ -399,15 +401,12 @@ ProgramCodeGeneratorAdapter {
         // on each actor.
         StringBuffer code = new StringBuffer();
 
-        String composite = getComponent() instanceof CompositeActor ? "Composite Actor: "
+        String composite = getComponent() instanceof CompositeActor
+                ? "Composite Actor: "
                 : "";
 
-        code.append(_eol
-                + getCodeGenerator().comment(
-                        "Fire "
-                                + composite
-                                + CodeGeneratorAdapter
-                                .generateName(getComponent())));
+        code.append(_eol + getCodeGenerator().comment("Fire " + composite
+                + CodeGeneratorAdapter.generateName(getComponent())));
 
         if (getCodeGenerator().inline.getToken() == BooleanToken.TRUE) {
             code.append(_generateFireCode());
@@ -442,10 +441,9 @@ ProgramCodeGeneratorAdapter {
         // Append _fireFunction_ to the class names so as to
         // differentiate from the inner classes that are generated for
         // the first few Composites when inline is false.
-        String[] splitFireCode = getCodeGenerator()._splitBody(
-                "_fireFunction_"
-                        + CodeGeneratorAdapter.generateName(getComponent())
-                        + "_", fireCode);
+        String[] splitFireCode = getCodeGenerator()._splitBody("_fireFunction_"
+                + CodeGeneratorAdapter.generateName(getComponent()) + "_",
+                fireCode);
         code.append(splitFireCode[0]);
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
         code.append(_eol + "void "
@@ -596,8 +594,8 @@ ProgramCodeGeneratorAdapter {
         while (channels.hasNext()) {
             ProgramCodeGeneratorAdapter.Channel source = channels.next();
 
-            if (!forComposite && source.port.isOutput() || forComposite
-                    && source.port.isInput()) {
+            if (!forComposite && source.port.isOutput()
+                    || forComposite && source.port.isInput()) {
 
                 Iterator<ProgramCodeGeneratorAdapter.Channel> sinkChannels = getTypeConvertSinkChannels(
                         source).iterator();
@@ -714,8 +712,8 @@ ProgramCodeGeneratorAdapter {
                 }
             }
         } else {
-            NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getAdapter(port
-                    .getContainer());
+            NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                    port.getContainer());
             bufferSize = actorHelper.getBufferSize(port);
         }
 
@@ -1147,7 +1145,7 @@ ProgramCodeGeneratorAdapter {
     protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         return _templateParser.generateTypeConvertStatement(source, sink,
                 offset, null);
     }
@@ -1208,7 +1206,7 @@ ProgramCodeGeneratorAdapter {
                 // referenced by the name anywhere it is used.
                 if (getCodeGenerator() != null
                         && getCodeGenerator()._modifiedVariables
-                        .contains(result)) { // figure out how to get the containers code generator that may help
+                                .contains(result)) { // figure out how to get the containers code generator that may help
                     return new ObjectToken(getCodeGenerator()//_codeGenerator
                             .generateVariableName(result));
                 } else {
@@ -1289,12 +1287,10 @@ ProgramCodeGeneratorAdapter {
 
         @Override
         public String toString() {
-            return super.toString()
-                    + " variable: "
-                    + _variable
+            return super.toString() + " variable: " + _variable
                     + " variable.parserScope: "
-                    + (_variable == null ? "N/A, _variable is null" : _variable
-                            .getParserScope());
+                    + (_variable == null ? "N/A, _variable is null"
+                            : _variable.getParserScope());
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -1321,9 +1317,8 @@ ProgramCodeGeneratorAdapter {
      */
     private String _generateFireInvocation(NamedObj component)
             throws IllegalActionException {
-        return getCodeGenerator().generateFireFunctionMethodInvocation(
-                component)
-                + "()";
+        return getCodeGenerator()
+                .generateFireFunctionMethodInvocation(component) + "()";
     }
 
     /**
@@ -1339,16 +1334,17 @@ ProgramCodeGeneratorAdapter {
     private String _generateTypeConvertStatements(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         StringBuffer statements = new StringBuffer();
 
         int rate = Math.max(DFUtilities.getTokenProductionRate(source.port),
                 DFUtilities.getTokenConsumptionRate(source.port));
 
-        for (int offset = 0; offset < rate || offset == 0 && rate == 0; offset++) {
-            statements.append(_generateTypeConvertStatement(source, sink,
-                    offset));
+        for (int offset = 0; offset < rate
+                || offset == 0 && rate == 0; offset++) {
+            statements.append(
+                    _generateTypeConvertStatement(source, sink, offset));
         }
         return processCode(statements.toString());
     }

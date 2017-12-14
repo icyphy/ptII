@@ -147,12 +147,12 @@ public class ImageReader extends Source {
         try {
             _image = ImageIO.read(FileUtilities.followRedirects(_url));
         } catch (IOException e) {
-            throw new IllegalActionException(this, e,
-                    "Failed to read image.");
+            throw new IllegalActionException(this, e, "Failed to read image.");
         }
 
         // Coverity Scan: ImageIO.read() can return null.
-        if (_image != null && _image.getWidth(null) == -1 && _image.getHeight(null) == -1) {
+        if (_image != null && _image.getWidth(null) == -1
+                && _image.getHeight(null) == -1) {
             throw new IllegalActionException(this,
                     "Image size is -1 x -1.  Failed to open '" + _url + "'");
         }

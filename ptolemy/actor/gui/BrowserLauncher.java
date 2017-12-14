@@ -30,10 +30,6 @@ package ptolemy.actor.gui;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
 
@@ -200,8 +196,8 @@ public class BrowserLauncher {
             try {
                 uri = new URI(url);
             } catch (Throwable throwable) {
-                IOException exception = new IOException("Failed to convert url \"" + url
-                                                        + "\" to a uri.");
+                IOException exception = new IOException(
+                        "Failed to convert url \"" + url + "\" to a uri.");
                 exception.initCause(throwable);
                 throw exception;
             }
@@ -212,7 +208,8 @@ public class BrowserLauncher {
             } catch (IOException ex) {
                 invokeByHand = true;
             } catch (UnsupportedOperationException ex2) {
-                System.out.println("BrowserLauncher: UnsupportedOperation: " + uri + ": " + ex2);
+                System.out.println("BrowserLauncher: UnsupportedOperation: "
+                        + uri + ": " + ex2);
 
                 invokeByHand = true;
             }
@@ -233,44 +230,38 @@ public class BrowserLauncher {
                     String osName = System.getProperty("os.name");
                     if (osName.startsWith("Windows")) {
                         browser = "cmd.exe";
-                        args = new String[] {
-                            browser,
-                            "/c",
-                            "start",
-                            "\"\"",
-                            '"' + url + '"'
-                        };
+                        args = new String[] { browser, "/c", "start", "\"\"",
+                                '"' + url + '"' };
                         Process process = Runtime.getRuntime().exec(args);
-                        errorMessage = "Command was: " + args[0] + " " + args[1] + " "
-                            + args[2] + " " + args[3] + " " + args[4] + ". "
-                            + "Under Windows check that the file named by " + url
-                            + " is executable.";
+                        errorMessage = "Command was: " + args[0] + " " + args[1]
+                                + " " + args[2] + " " + args[3] + " " + args[4]
+                                + ". "
+                                + "Under Windows check that the file named by "
+                                + url + " is executable.";
                         int exitCode = 0;
                         try {
                             exitCode = process.waitFor();
                             process.exitValue();
                         } catch (InterruptedException ie) {
                             throw new IOException("InterruptedException while "
-                                                  + "launching " + browser + ": " + ie);
+                                    + "launching " + browser + ": " + ie);
                         }
 
                         if (exitCode != 0) {
-                            throw new IOException("Process exec'd by BrowserLauncher returned "
-                                                  + exitCode + ". \nUrl was: " + url
-                                                  + "\nBrowser was: " + errorMessage);
+                            throw new IOException(
+                                    "Process exec'd by BrowserLauncher returned "
+                                            + exitCode + ". \nUrl was: " + url
+                                            + "\nBrowser was: " + errorMessage);
                         }
 
                     } else {
                         browser = "firefox";
-                        args = new String[] {
-                            browser,
-                            "-remote",
-                            "'openURL(" + url + ")'"
-                        };
+                        args = new String[] { browser, "-remote",
+                                "'openURL(" + url + ")'" };
                         Process process = Runtime.getRuntime().exec(args);
 
-                        errorMessage = "Command was: " + args[0] + " " + args[1] + " "
-                            + args[2];
+                        errorMessage = "Command was: " + args[0] + " " + args[1]
+                                + " " + args[2];
 
                         try {
                             // If Firefox is not open then try invoking the browser.
@@ -279,25 +270,27 @@ public class BrowserLauncher {
                                     browser = "safari";
                                 }
 
-                                Runtime.getRuntime().exec(new String[] { browser, url });
+                                Runtime.getRuntime()
+                                        .exec(new String[] { browser, url });
                             }
                         } catch (InterruptedException ie) {
                             throw new IOException("InterruptedException while "
-                                                  + "launching " + browser + ": " + ie);
+                                    + "launching " + browser + ": " + ie);
                         }
                         return;
                     }
                 } catch (Throwable throwable) {
-                    IOException exception = new IOException("Failed to open \"" + uri
-                                                        + "\".  " + errorMessage);
+                    IOException exception = new IOException(
+                            "Failed to open \"" + uri + "\".  " + errorMessage);
                     exception.initCause(throwable);
                     throw exception;
                 }
 
             }
         } else {
-            throw new IOException("java.awt.Desktop is not supported on this platform, so we can't open \""
-                                  + url + "\"");
+            throw new IOException(
+                    "java.awt.Desktop is not supported on this platform, so we can't open \""
+                            + url + "\"");
         }
 
     }

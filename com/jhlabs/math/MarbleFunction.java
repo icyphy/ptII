@@ -28,7 +28,8 @@ public class MarbleFunction extends CompoundFunction2D {
 
     @Override
     public float evaluate(float x, float y) {
-        return (float) Math.pow(0.5 * (Math.sin(8. * basis.evaluate(x, y)) + 1), 0.77);
+        return (float) Math.pow(0.5 * (Math.sin(8. * basis.evaluate(x, y)) + 1),
+                0.77);
     }
 
 }

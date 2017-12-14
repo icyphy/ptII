@@ -26,16 +26,12 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
 
-
 package org.ptolemy.qss.util;
-
 
 import ptolemy.actor.util.Time;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ModelPolynomial
-
 
 /** Model of a variable that changes with time, using a polynomial.
  *
@@ -110,7 +106,6 @@ import ptolemy.actor.util.Time;
  */
 public final class ModelPolynomial {
 
-
     /**
      * Construct a <code>ModelPolynomial</code>.
      *
@@ -119,17 +114,16 @@ public final class ModelPolynomial {
     public ModelPolynomial(final int maxOrder) {
 
         // Check inputs.
-        assert( maxOrder >= 0 );
+        assert (maxOrder >= 0);
 
         // Initialize.
         _maxCoeffIdx = maxOrder;
-        coeffs = new double[_maxCoeffIdx+1];
+        coeffs = new double[_maxCoeffIdx + 1];
 
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
-
 
     /**
      * Claim write access.
@@ -137,7 +131,7 @@ public final class ModelPolynomial {
      * @return Count of all unique claims of write access (including caller).
      */
     public final int claimWriteAccess() {
-        return(++_writerCt);
+        return (++_writerCt);
     }
 
     /**
@@ -147,9 +141,7 @@ public final class ModelPolynomial {
      * @return The model evaluated at a simulation time.
      */
     public final double evaluate(final Time simTime) {
-        return(
-            this.evaluate(simTime.subtractToDouble(tModel))
-            );
+        return (this.evaluate(simTime.subtractToDouble(tModel)));
     }
 
     /**
@@ -170,39 +162,39 @@ public final class ModelPolynomial {
         // TODO: Consider adding a short-circuit test for dt==0.
 
         // Evaluate.
-        switch( _maxCoeffIdx ) {
+        switch (_maxCoeffIdx) {
 
         case 0:
             val = coeffs[0];
             break;
 
         case 1:
-            val = coeffs[0] + dt*coeffs[1];
+            val = coeffs[0] + dt * coeffs[1];
             break;
 
         case 2:
-            val = coeffs[0] + dt*(coeffs[1] + dt*coeffs[2]);
+            val = coeffs[0] + dt * (coeffs[1] + dt * coeffs[2]);
             break;
 
         default:
             // Evaluate contributions from cubic terms.
-            val = coeffs[0] + dt*(coeffs[1] + dt*(coeffs[2] + dt*coeffs[3]));
+            val = coeffs[0]
+                    + dt * (coeffs[1] + dt * (coeffs[2] + dt * coeffs[3]));
             // Add contributions from higher-order terms.
-            if (_maxCoeffIdx > 3 ) {
+            if (_maxCoeffIdx > 3) {
                 double valHot = coeffs[_maxCoeffIdx];
-                for ( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
-                    valHot = coeffs[ii] + dt*valHot;
+                for (int ii = _maxCoeffIdx - 1; ii > 3; --ii) {
+                    valHot = coeffs[ii] + dt * valHot;
                 }
-                val += valHot*dt*dt*dt*dt;
+                val += valHot * dt * dt * dt * dt;
             }
             break;
 
         }
 
-        return( val );
+        return (val);
 
     }
-
 
     /**
      * Evaluate d{model}/d{t} at a simulation time.
@@ -211,11 +203,8 @@ public final class ModelPolynomial {
      * @return The model derivative evaluated at a simulation time.
      */
     public final double evaluateDerivative(final Time simTime) {
-        return(
-            this.evaluateDerivative(simTime.subtractToDouble(tModel))
-            );
+        return (this.evaluateDerivative(simTime.subtractToDouble(tModel)));
     }
-
 
     /**
      * Evaluate d{model}/d{t} at a delta-time.
@@ -234,7 +223,7 @@ public final class ModelPolynomial {
         // d{xModel}/d{t} = c1 + dt*(2*c2 + dt*(3*c3 + ...))
 
         // Evaluate.
-        switch( _maxCoeffIdx ) {
+        switch (_maxCoeffIdx) {
 
         case 0:
             deriv = 0.0;
@@ -245,28 +234,27 @@ public final class ModelPolynomial {
             break;
 
         case 2:
-            deriv = coeffs[1] + dt*2*coeffs[2];
+            deriv = coeffs[1] + dt * 2 * coeffs[2];
             break;
 
         default:
             // Evaluate contributions from cubic terms.
-            deriv = coeffs[1] + dt*(2*coeffs[2] + dt*3*coeffs[3]);
+            deriv = coeffs[1] + dt * (2 * coeffs[2] + dt * 3 * coeffs[3]);
             // Add contributions from higher-order terms.
-            if (_maxCoeffIdx > 3 ) {
-                double derivHot = _maxCoeffIdx*coeffs[_maxCoeffIdx];
-                for ( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
-                    derivHot = ii*coeffs[ii] + dt*derivHot;
+            if (_maxCoeffIdx > 3) {
+                double derivHot = _maxCoeffIdx * coeffs[_maxCoeffIdx];
+                for (int ii = _maxCoeffIdx - 1; ii > 3; --ii) {
+                    derivHot = ii * coeffs[ii] + dt * derivHot;
                 }
-                deriv += derivHot*dt*dt*dt;
+                deriv += derivHot * dt * dt * dt;
             }
             break;
 
         }
 
-        return( deriv );
+        return (deriv);
 
     }
-
 
     /**
      * Evaluate d^2{model}/d{t}^2 at a simulation time.
@@ -275,11 +263,8 @@ public final class ModelPolynomial {
      * @return The model second derivative evaluated at a simulation time.
      */
     public final double evaluateDerivative2(final Time simTime) {
-        return(
-            this.evaluateDerivative2(simTime.subtractToDouble(tModel))
-            );
+        return (this.evaluateDerivative2(simTime.subtractToDouble(tModel)));
     }
-
 
     /**
      * Evaluate d^2{model}/d{t}^2 at a delta-time.
@@ -299,7 +284,7 @@ public final class ModelPolynomial {
         // d^2{xModel}/d{t}^2 = 2*c2 + dt*(6*c3 + dt*(12*c4 + ...))
 
         // Evaluate.
-        switch( _maxCoeffIdx ) {
+        switch (_maxCoeffIdx) {
 
         case 0:
             deriv2 = 0.0;
@@ -310,25 +295,26 @@ public final class ModelPolynomial {
             break;
 
         case 2:
-            deriv2 = 2*coeffs[2];
+            deriv2 = 2 * coeffs[2];
             break;
 
         default:
             // Evaluate contributions from cubic terms.
-            deriv2 = 2*coeffs[2] + dt*6*coeffs[3];
+            deriv2 = 2 * coeffs[2] + dt * 6 * coeffs[3];
             // Add contributions from higher-order terms.
-            if (_maxCoeffIdx > 3 ) {
-                double deriv2Hot = _maxCoeffIdx*(_maxCoeffIdx-1)*coeffs[_maxCoeffIdx];
-                for ( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
-                    deriv2Hot = ii*(ii-1)*coeffs[ii] + dt*deriv2Hot;
+            if (_maxCoeffIdx > 3) {
+                double deriv2Hot = _maxCoeffIdx * (_maxCoeffIdx - 1)
+                        * coeffs[_maxCoeffIdx];
+                for (int ii = _maxCoeffIdx - 1; ii > 3; --ii) {
+                    deriv2Hot = ii * (ii - 1) * coeffs[ii] + dt * deriv2Hot;
                 }
-                deriv2 += deriv2Hot*dt*dt;
+                deriv2 += deriv2Hot * dt * dt;
             }
             break;
 
         }
 
-        return( deriv2 );
+        return (deriv2);
 
     }
 
@@ -338,7 +324,7 @@ public final class ModelPolynomial {
      * @return The maximum order of the polynomial.
      */
     public final int getMaximumOrder() {
-        return(_maxCoeffIdx);
+        return (_maxCoeffIdx);
     }
 
     /**
@@ -347,22 +333,22 @@ public final class ModelPolynomial {
      * @return The number of objects that claim write access.
      */
     public final int getWriterCount() {
-        return(_writerCt);
+        return (_writerCt);
     }
 
     /** Release claim of write access.
      * @return Count of all remaining claims of write access.
      */
     public final int releaseWriteAccess() {
-        return(--_writerCt);
+        return (--_writerCt);
     }
-
 
     /**
      * Return a string representation of the model.
      *
      * @return The string representation of the model.
      */
+    @Override
     public final String toString() {
 
         // Model:
@@ -373,29 +359,29 @@ public final class ModelPolynomial {
         // Initialize string builder with c0.
         res_sb.append(res);
 
-        if (_maxCoeffIdx > 0 ) {
+        if (_maxCoeffIdx > 0) {
 
             // Form string "(t-tModel)".
             String dtStr;
             final double tModelDbl = tModel.getDoubleValue();
-            if (tModelDbl > 0 ) {
+            if (tModelDbl > 0) {
                 dtStr = String.format("(t-%.4g)", tModelDbl);
-            } else if (tModelDbl < 0 ) {
+            } else if (tModelDbl < 0) {
                 dtStr = String.format("(t+%.4g)", Math.abs(tModelDbl));
             } else {
                 dtStr = "t";
             }
 
             // Add c1*dt.
-            if (coeffs[1] != 0 ) {
+            if (coeffs[1] != 0) {
                 //res += String.format(" %+.4g*%s", coeffs[1], dtStr);
                 res = String.format(" %+.4g*%s", coeffs[1], dtStr);
                 res_sb.append(res);
             }
 
             // Add higher-order terms.
-            for ( int ii=2; ii<=_maxCoeffIdx; ++ii ) {
-                if (coeffs[ii] != 0 ) {
+            for (int ii = 2; ii <= _maxCoeffIdx; ++ii) {
+                if (coeffs[ii] != 0) {
                     //res += String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
                     res = String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
                     res_sb.append(res);
@@ -404,14 +390,12 @@ public final class ModelPolynomial {
 
         }
 
-        return( res_sb.toString() );
+        return (res_sb.toString());
 
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables
-
 
     /** Simulation time at which model was formed, such that xModel{tModel} = c0. */
     public Time tModel;
@@ -434,7 +418,6 @@ public final class ModelPolynomial {
     // time by removing the indirection through the array, although this is
     // not likely a big deal.
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
@@ -443,6 +426,5 @@ public final class ModelPolynomial {
 
     // Count how many objects claim write access.
     private int _writerCt;
-
 
 }

@@ -105,8 +105,8 @@ public class FMULogUtilities {
             } else {
                 int end = messageString.indexOf('#', i + 1);
                 if (end == -1) {
-                    results.append("(Unmatched '#' in \"" + messageString
-                            + "\".)");
+                    results.append(
+                            "(Unmatched '#' in \"" + messageString + "\".)");
                     results.append('#');
                     break;
                 }
@@ -154,7 +154,8 @@ public class FMULogUtilities {
                             for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
                                 if (scalarVariable.valueReference == variableReference
                                         && scalarVariable.type.getClass()
-                                                .isAssignableFrom(fmiTypeClass)) {
+                                                .isAssignableFrom(
+                                                        fmiTypeClass)) {
                                     foundIt = true;
                                     results.append(scalarVariable.name);
                                     break;
@@ -171,8 +172,8 @@ public class FMULogUtilities {
                             c = message[i];
                         } catch (NumberFormatException ex) {
                             results.append("(NumberFormatException: \""
-                                    + integerString + "\" in \""
-                                    + messageString + "\")");
+                                    + integerString + "\" in \"" + messageString
+                                    + "\")");
                             results.append('#');
                             break;
                         }

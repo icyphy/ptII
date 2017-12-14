@@ -82,7 +82,6 @@ public class StateSpaceModel extends MirrorDecorator {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
     /** An expression for the prior distribution from which the
      * samples are drawn.
      */
@@ -123,16 +122,18 @@ public class StateSpaceModel extends MirrorDecorator {
      *   <i>stateVariableNamest</i> cannot be evaluated or cannot be
      *   converted to the output type, or if the superclass throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
         if (attribute == stateVariableNames) {
 
-            sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER, stateVariableNames);
+            sendParameterEvent(DecoratorEvent.CHANGED_PARAMETER,
+                    stateVariableNames);
             // create a hidden parameter that corresponds to the specified state variable, if not already present
             ArrayToken names = (ArrayToken) stateVariableNames.getToken();
             String stateName = ((StringToken) names.getElement(0))
-                .stringValue();
+                    .stringValue();
             List<String> temp = new ArrayList<>();
 
             if (stateName.length() > 0) {
@@ -141,39 +142,47 @@ public class StateSpaceModel extends MirrorDecorator {
                     // create missing parameters for the newly added state variables.
                     for (int i = 0; i < names.length(); i++) {
                         stateName = ((StringToken) names.getElement(i))
-                            .stringValue();
+                                .stringValue();
                         temp.add(stateName);
                         // check if this state name already existed before
                         if (!_cachedStateVariableNames.contains(stateName)) {
-                            Parameter y = (Parameter) this.getAttribute(stateName);
-                            if ( y == null
-                                    && stateName.length() != 0) {
+                            Parameter y = (Parameter) this
+                                    .getAttribute(stateName);
+                            if (y == null && stateName.length() != 0) {
                                 y = new Parameter(this, stateName);
                                 y.setExpression("0.0");
-                                sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, y);
+                                sendParameterEvent(
+                                        DecoratorEvent.ADDED_PARAMETER, y);
                             }
                             // FindBugs: Possible null pointer dereference of y.
                             if (y != null) {
                                 y.setVisibility(Settable.NONE);
                             }
-                            if (this.getAttribute(stateName+"_update") == null) {
-                                Parameter yUpdate = new Parameter(this, stateName+"_update");
+                            if (this.getAttribute(
+                                    stateName + "_update") == null) {
+                                Parameter yUpdate = new Parameter(this,
+                                        stateName + "_update");
                                 yUpdate.setExpression(stateName);
-                                sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, yUpdate);
+                                sendParameterEvent(
+                                        DecoratorEvent.ADDED_PARAMETER,
+                                        yUpdate);
                             }
                             _cachedStateVariableNames.add(stateName);
                         }
                     }
                     // remove parameters corresponding to obsolete state variables.
                     for (String old : _cachedStateVariableNames) {
-                        if (! temp.contains(old)) {
-                            Parameter yUpdate = (Parameter) this.getAttribute(old+"_update");
-                            sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER,yUpdate);
+                        if (!temp.contains(old)) {
+                            Parameter yUpdate = (Parameter) this
+                                    .getAttribute(old + "_update");
+                            sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER,
+                                    yUpdate);
                             if (yUpdate != null) {
                                 yUpdate.setContainer(null);
                             }
                             Parameter y = (Parameter) this.getAttribute(old);
-                            sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER,y);
+                            sendParameterEvent(DecoratorEvent.REMOVED_PARAMETER,
+                                    y);
                             if (y != null) {
                                 y.setContainer(null);
                             }
@@ -182,7 +191,8 @@ public class StateSpaceModel extends MirrorDecorator {
                     }
                 } catch (NameDuplicationException e) {
                     // should not happen
-                    throw new InternalErrorException("Duplicate field in " + this.getName());
+                    throw new InternalErrorException(
+                            "Duplicate field in " + this.getName());
                 }
             }
         } else {
@@ -192,7 +202,6 @@ public class StateSpaceModel extends MirrorDecorator {
         }
     }
 
-
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -201,24 +210,23 @@ public class StateSpaceModel extends MirrorDecorator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StateSpaceModel newObject = (StateSpaceModel) super
-            .clone(workspace);
+        StateSpaceModel newObject = (StateSpaceModel) super.clone(workspace);
         newObject._cachedStateVariableNames = new ArrayList<>();
         return newObject;
     }
 
-
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         //create parameters for the initial state variable names here.
-        String[] names = {"x", "y"};
-        for (int i=0; i < names.length; i++) {
+        String[] names = { "x", "y" };
+        for (int i = 0; i < names.length; i++) {
             String stateName = names[i];
             Parameter y = new Parameter(this, stateName);
             y.setExpression("0.0");
-            Parameter yUpdate = new Parameter(this, stateName.concat("_update"));
+            Parameter yUpdate = new Parameter(this,
+                    stateName.concat("_update"));
             yUpdate.setExpression(stateName);
         }
 
@@ -231,8 +239,8 @@ public class StateSpaceModel extends MirrorDecorator {
         prior.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         processNoise = new Parameter(this, "processNoise");
-        processNoise.setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
-
+        processNoise.setExpression(
+                "multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
 
         t = new Parameter(this, "t");
         t.setTypeEquals(BaseType.DOUBLE);
@@ -242,7 +250,6 @@ public class StateSpaceModel extends MirrorDecorator {
         ColorAttribute color = new ColorAttribute(this,
                 "decoratorHighlightColor");
         color.setExpression("{1.0,0.4,0.0,1.0}");
-
 
         _cachedStateVariableNames = new ArrayList<>();
     }

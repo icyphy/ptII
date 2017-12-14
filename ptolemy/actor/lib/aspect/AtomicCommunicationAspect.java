@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public abstract class AtomicCommunicationAspect extends TypedAtomicActor
-implements CommunicationAspect, Decorator {
+        implements CommunicationAspect, Decorator {
 
     /** Construct an AtomicQuantityManager in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -171,8 +171,8 @@ implements CommunicationAspect, Decorator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AtomicCommunicationAspect newObject = (AtomicCommunicationAspect) super
-                .clone(workspace);
+        AtomicCommunicationAspect newObject = (AtomicCommunicationAspect) super.clone(
+                workspace);
         newObject._listeners = null;
         newObject._parameters = null;
 
@@ -229,8 +229,9 @@ implements CommunicationAspect, Decorator {
             Iterator listeners = _listeners.iterator();
             while (listeners.hasNext()) {
                 ((CommunicationAspectListener) listeners.next()).event(this,
-                        source, messageId, messageCnt, getDirector()
-                        .getModelTime().getDoubleValue(), eventType);
+                        source, messageId, messageCnt,
+                        getDirector().getModelTime().getDoubleValue(),
+                        eventType);
             }
         }
     }

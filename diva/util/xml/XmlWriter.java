@@ -202,15 +202,15 @@ public class XmlWriter extends LoggableOp {
                 value = makeLiteral(_parser.getEntityValue(ename));
                 break;
 
-                // External binary entity
+            // External binary entity
             case XmlParser.ENTITY_NDATA:
                 value = makeExternalIdentifiers(
                         _parser.getEntityPublicId(ename),
-                        _parser.getEntitySystemId(ename))
-                        + "NDATA " + _parser.getEntityNotationName(ename);
+                        _parser.getEntitySystemId(ename)) + "NDATA "
+                        + _parser.getEntityNotationName(ename);
                 break;
 
-                // External text entity
+            // External text entity
             case XmlParser.ENTITY_TEXT:
                 value = makeExternalIdentifiers(
                         _parser.getEntityPublicId(ename),
@@ -358,9 +358,8 @@ public class XmlWriter extends LoggableOp {
             return "#REQUIRED";
 
         case XmlParser.ATTRIBUTE_DEFAULT_FIXED:
-            return "#FIXED "
-            + makeLiteral(_parser.getAttributeDefaultValue(elname,
-                    aname));
+            return "#FIXED " + makeLiteral(
+                    _parser.getAttributeDefaultValue(elname, aname));
         }
 
         return null;

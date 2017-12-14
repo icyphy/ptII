@@ -360,10 +360,9 @@ public class ComponentDialog extends JDialog {
 
             // PropertyChange is an extremely non-selective listener,
             // so we have to filter...
-            if (isVisible()
-                    && e.getSource() == _optionPane
-                    && (prop.equals(JOptionPane.VALUE_PROPERTY) || prop
-                            .equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
+            if (isVisible() && e.getSource() == _optionPane
+                    && (prop.equals(JOptionPane.VALUE_PROPERTY)
+                            || prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
                 Object value = _optionPane.getValue();
 
                 // Reset should be ignored.

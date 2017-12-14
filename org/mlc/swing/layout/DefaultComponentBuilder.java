@@ -91,8 +91,9 @@ public class DefaultComponentBuilder implements ComponentBuilder {
                     throw new RuntimeException("Could not find property '"
                             + propertyName + "' in class " + clazz.getName());
                 } else {
-                    this.properties.add(new BeanProperty(propertyDescriptor
-                            .getName(), propertyDescriptor.getPropertyType()));
+                    this.properties
+                            .add(new BeanProperty(propertyDescriptor.getName(),
+                                    propertyDescriptor.getPropertyType()));
                     nameToDescriptor.put(propertyDescriptor.getName(),
                             propertyDescriptor);
                 }
@@ -101,10 +102,11 @@ public class DefaultComponentBuilder implements ComponentBuilder {
     }
 
     @Override
-    public String getDeclaration(String name, Map<String, Object> beanProperties) {
+    public String getDeclaration(String name,
+            Map<String, Object> beanProperties) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(clazz.getName() + " " + name + " = new "
-                + clazz.getName() + "(");
+        buffer.append(clazz.getName() + " " + name + " = new " + clazz.getName()
+                + "(");
 
         if (beanProperties.containsKey("text")) {
             buffer.append("\"" + (String) beanProperties.get("text") + "\"");
@@ -142,8 +144,8 @@ public class DefaultComponentBuilder implements ComponentBuilder {
     @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> objectProperties)
-                    throws InstantiationException, IllegalAccessException,
-                    InvocationTargetException {
+            throws InstantiationException, IllegalAccessException,
+            InvocationTargetException {
         Object instance = clazz.newInstance();
 
         for (Object element : objectProperties.keySet()) {

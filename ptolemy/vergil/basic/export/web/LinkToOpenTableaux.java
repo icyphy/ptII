@@ -164,10 +164,10 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // htm -run -openComposites -whiteBackground
                     // ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
                     // $PTII/ptolemy/actor/gt/demo/ModelExecution/ModelExecution
-                    System.out
-                    .println("Warning: LinkToOpenTableaux._provideEachAttribute() "
-                            + object.getFullName()
-                            + ", an open effigy was null?");
+                    System.out.println(
+                            "Warning: LinkToOpenTableaux._provideEachAttribute() "
+                                    + object.getFullName()
+                                    + ", an open effigy was null?");
                 } else {
                     NamedObj container = component.getContainer();
                     while (container != null) {
@@ -247,8 +247,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                             // need to add the hyperlink.
                             webAttribute = WebAttribute.createWebAttribute(
                                     object, "hrefWebAttribute", "href");
-                            webAttribute.setExpression(parent.getName()
-                                    + "/index.html");
+                            webAttribute.setExpression(
+                                    parent.getName() + "/index.html");
                             exporter.defineAttribute(webAttribute, true);
                         } else {
                             // Have not exported the class definition. Do so now.
@@ -320,8 +320,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      */
     private void _linkTo(WebExporter exporter, PtolemyEffigy effigy,
             NamedObj sourceObject, NamedObj destinationObject,
-            ExportParameters parameters) throws IOException, PrinterException,
-            IllegalActionException {
+            ExportParameters parameters)
+            throws IOException, PrinterException, IllegalActionException {
         File gifFile;
         WebAttribute webAttribute;
         WebElement webElement;
@@ -346,8 +346,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         if (tableaux.size() > 0) {
             // The ddf IfThenElse model has a composite called +1/-1 Gain,
             // which is not a legal file name, so we sanitize it.
-            String name = StringUtilities.sanitizeName(destinationObject
-                    .getName());
+            String name = StringUtilities
+                    .sanitizeName(destinationObject.getName());
             Frame frame = tableaux.get(0).getFrame();
             // If it's a composite actor, export HTML.
             if (frame instanceof HTMLExportable) {
@@ -358,14 +358,14 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                         // Move file out of the way.
                         File backupFile = new File(directory, name + ".bak");
                         if (!subDirectory.renameTo(backupFile)) {
-                            throw new IOException("Failed to rename \""
-                                    + subDirectory + "\" to \"" + backupFile
-                                    + "\"");
+                            throw new IOException(
+                                    "Failed to rename \"" + subDirectory
+                                            + "\" to \"" + backupFile + "\"");
                         }
                     }
                 } else if (!subDirectory.mkdir()) {
-                    throw new IOException("Unable to create directory "
-                            + subDirectory);
+                    throw new IOException(
+                            "Unable to create directory " + subDirectory);
                 }
                 ExportParameters newParameters = new ExportParameters(
                         subDirectory, parameters);
@@ -391,14 +391,14 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     }
                     webElement = WebElement.createWebElement(destinationObject,
                             "tocContents", "tocContents");
-                    webElement.setExpression(" <li><a href=\"" + name
-                            + "/index.html" + "\">" + destinationTitle
-                            + "</a></li>");
+                    webElement.setExpression(
+                            " <li><a href=\"" + name + "/index.html" + "\">"
+                                    + destinationTitle + "</a></li>");
                     exporter.defineElement(webElement, false);
                 }
             } else if (frame instanceof ImageExportable) {
-                gifFile = new File(parameters.directoryToExportTo, name
-                        + ".gif");
+                gifFile = new File(parameters.directoryToExportTo,
+                        name + ".gif");
                 if (parameters.deleteFilesOnExit) {
                     gifFile.deleteOnExit();
                 }

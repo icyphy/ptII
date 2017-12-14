@@ -135,8 +135,8 @@ public class Documentation extends StringAttribute {
                     + "</doc>\n");
         } else {
             // Name is not the default name.
-            output.write(_getIndentPrefix(depth) + "<doc name=\"" + name
-                    + "\">" + StringUtilities.escapeForXML(getExpression())
+            output.write(_getIndentPrefix(depth) + "<doc name=\"" + name + "\">"
+                    + StringUtilities.escapeForXML(getExpression())
                     + "</doc>\n");
         }
     }

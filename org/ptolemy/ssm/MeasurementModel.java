@@ -42,6 +42,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+
 /**
 An abstract decorator that defines a measurement model.
 
@@ -52,7 +53,7 @@ An abstract decorator that defines a measurement model.
 @Pt.AcceptedRating
  */
 public abstract class MeasurementModel extends MirrorDecorator
-implements StateSpaceActor {
+        implements StateSpaceActor {
     /**
      * Constructs a MeasurementModel object.
      *
@@ -77,14 +78,12 @@ implements StateSpaceActor {
      */
     public Parameter zParameter;
 
-
-
-
     @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof InferenceActor) {
             try {
-                MeasurementModelAttributes ssa = new MeasurementModelAttributes(target, this);
+                MeasurementModelAttributes ssa = new MeasurementModelAttributes(
+                        target, this);
                 registerListener(ssa);
                 return ssa;
             } catch (KernelException ex) {
@@ -107,7 +106,7 @@ implements StateSpaceActor {
         if (container != null) {
             for (Object object : container.deepEntityList()) {
                 if (object instanceof InferenceActor) {
-                    objectList.add((NamedObj)object);
+                    objectList.add((NamedObj) object);
                 }
             }
             _decoratedObjects = objectList;
@@ -115,20 +114,23 @@ implements StateSpaceActor {
         return objectList;
 
     }
+
     @Override
     public boolean validDecoratorAssociationExists()
             throws IllegalActionException {
         boolean found = false;
         for (Decorator d : this.decorators()) {
             if (d instanceof StateSpaceModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
                     if (!found) {
                         found = true;
                     } else {
-                        throw new IllegalActionException(this, "A StateSpaceActor "
-                                + "can be associated with exactly one StateSpaceModel "
-                                + "at a time.");
+                        throw new IllegalActionException(this,
+                                "A StateSpaceActor "
+                                        + "can be associated with exactly one StateSpaceModel "
+                                        + "at a time.");
                     }
                 }
             }
@@ -145,11 +147,12 @@ implements StateSpaceActor {
         return MEASUREMENT_PARAMETER_POSTFIX;
     }
 
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         z = new TypedIOPort(this, "z", false, true);
 
-        zParameter = new Parameter(this,"zParameter");
+        zParameter = new Parameter(this, "zParameter");
         zParameter.setDisplayName("z");
         zParameter.setExpression("");
 

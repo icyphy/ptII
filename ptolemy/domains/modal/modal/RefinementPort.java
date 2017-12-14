@@ -89,8 +89,8 @@ public class RefinementPort extends ModalBasePort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public RefinementPort(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public RefinementPort(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _checkWhetherMirrorIsInput();
         _init();
@@ -104,8 +104,8 @@ public class RefinementPort extends ModalBasePort {
         if (attribute == defaultValue) {
             IOPort mirrorPort = _getMirrorPort();
             if (mirrorPort != null) {
-                mirrorPort.defaultValue.setExpression(defaultValue
-                        .getExpression());
+                mirrorPort.defaultValue
+                        .setExpression(defaultValue.getExpression());
             }
         }
         super.attributeChanged(attribute);
@@ -430,8 +430,8 @@ public class RefinementPort extends ModalBasePort {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
@@ -501,7 +501,8 @@ public class RefinementPort extends ModalBasePort {
         try {
             _workspace.getWriteAccess();
 
-            if (_mirrorDisable || getContainer() == null || _automaticallyInput) {
+            if (_mirrorDisable || getContainer() == null
+                    || _automaticallyInput) {
                 // Do not mirror.
                 super.setInput(isInput);
             } else {
@@ -555,7 +556,8 @@ public class RefinementPort extends ModalBasePort {
      *   not permitted.
      */
     @Override
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -602,8 +604,8 @@ public class RefinementPort extends ModalBasePort {
      *   with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -799,7 +801,8 @@ public class RefinementPort extends ModalBasePort {
             Nameable modal = container.getContainer();
 
             if (modal instanceof ModalModel) {
-                if (((ModalModel) modal).getPort(getName()) instanceof ModalPort) {
+                if (((ModalModel) modal)
+                        .getPort(getName()) instanceof ModalPort) {
                     return (ModalPort) ((ModalModel) modal).getPort(getName());
                 }
             }
@@ -807,8 +810,8 @@ public class RefinementPort extends ModalBasePort {
         return null;
     }
 
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         // Need to check whether there is a containing ModalModel,
         // and whether its mirror port is also an input.
         Nameable container = getContainer();
@@ -820,8 +823,8 @@ public class RefinementPort extends ModalBasePort {
                 Port port = ((ModalModel) modal).getPort(getName());
 
                 if (port instanceof ModalPort) {
-                    defaultValue.setExpression(((ModalPort) port).defaultValue
-                            .getExpression());
+                    defaultValue.setExpression(
+                            ((ModalPort) port).defaultValue.getExpression());
                 }
             }
         }

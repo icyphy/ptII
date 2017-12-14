@@ -303,11 +303,12 @@ abstract public class CipherActor extends CryptographyActor {
                 }
 
                 if (_provider.equalsIgnoreCase("SystemDefault")) {
-                    _cipher = Cipher.getInstance(_algorithm + modeArgument
-                            + paddingArgument);
+                    _cipher = Cipher.getInstance(
+                            _algorithm + modeArgument + paddingArgument);
                 } else {
-                    _cipher = Cipher.getInstance(_algorithm + modeArgument
-                            + paddingArgument, _provider);
+                    _cipher = Cipher.getInstance(
+                            _algorithm + modeArgument + paddingArgument,
+                            _provider);
                 }
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,

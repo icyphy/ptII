@@ -100,8 +100,8 @@ public class OntologySolverGraphController extends WithIconGraphController {
             }
         }
 
-        throw new RuntimeException("Node with unknown semantic object: "
-                + object);
+        throw new RuntimeException(
+                "Node with unknown semantic object: " + object);
     }
 
     /** Set the configuration.  This is used by some of the controllers

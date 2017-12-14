@@ -73,8 +73,8 @@ import ptolemy.vergil.gt.TransformEventController.Factory;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Transform extends GTEvent implements ConfigurableEntity,
-TransformationListener {
+public class Transform extends GTEvent
+        implements ConfigurableEntity, TransformationListener {
 
     /** Construct an event with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -131,8 +131,8 @@ TransformationListener {
                 initializable.preinitialize();
                 initializable.initialize();
             } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e, "Unable to initialize "
-                        + "initializables.");
+                throw new KernelRuntimeException(e,
+                        "Unable to initialize " + "initializables.");
             }
         }
     }
@@ -229,7 +229,7 @@ TransformationListener {
             }
             isMatched = mode.transform(mode.getWorkingCopy(_transformation),
                     model, initializeObjects ? this : null,
-                            ((BooleanToken) defer.getToken()).booleanValue());
+                    ((BooleanToken) defer.getToken()).booleanValue());
             if (isMatched) {
                 _debug(new PteraDebugEvent(this, "Match found."));
             } else {
@@ -248,8 +248,8 @@ TransformationListener {
             _debug(new PteraDebugEvent(this, "Finish transformation ("
                     + (double) elapsed / 1000 + " sec)."));
         } else {
-            _debug(new PteraDebugEvent(this, "Request refire ("
-                    + (double) elapsed / 1000 + " sec)."));
+            _debug(new PteraDebugEvent(this,
+                    "Request refire (" + (double) elapsed / 1000 + " sec)."));
         }
 
         return data;
@@ -319,7 +319,7 @@ TransformationListener {
 
     /**
      The configurer to be embedded in the transform event.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -383,8 +383,8 @@ TransformationListener {
             sourceSpec = " source=\"" + _configureSource + "\"";
         }
 
-        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
-                + ">\n");
+        output.write(
+                _getIndentPrefix(depth) + "<configure" + sourceSpec + ">\n");
         _transformation.exportMoML(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }

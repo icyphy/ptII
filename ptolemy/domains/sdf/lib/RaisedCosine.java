@@ -129,7 +129,8 @@ public class RaisedCosine extends FIR {
         interpolation.setToken(new IntToken(16));
         excessBW = new Parameter(this, "excessBW", new DoubleToken(1.0));
         root = new Parameter(this, "root", new BooleanToken(false));
-        symbolInterval = new Parameter(this, "symbolInterval", new IntToken(16));
+        symbolInterval = new Parameter(this, "symbolInterval",
+                new IntToken(16));
 
         // Hide taps from UI.
         taps.setVisibility(Settable.NONE);
@@ -191,9 +192,9 @@ public class RaisedCosine extends FIR {
         boolean sqrt = ((BooleanToken) root.getToken()).booleanValue();
 
         if (excessBWValue < 0.0) {
-            throw new IllegalActionException(this, "Excess bandwidth was "
-                    + excessBWValue
-                    + " which is not greater than or equal to zero.");
+            throw new IllegalActionException(this,
+                    "Excess bandwidth was " + excessBWValue
+                            + " which is not greater than or equal to zero.");
         }
 
         if (lengthValue <= 0) {
@@ -203,19 +204,20 @@ public class RaisedCosine extends FIR {
 
         double center = lengthValue * 0.5;
 
-        DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ? (DoubleUnaryOperation) new SignalProcessing.SqrtRaisedCosineSampleGenerator(
-                symbolIntervalValue, excessBWValue)
-        : (DoubleUnaryOperation) new SignalProcessing.RaisedCosineSampleGenerator(
-                symbolIntervalValue, excessBWValue);
+        DoubleUnaryOperation raisedCosineSampleGenerator = sqrt
+                ? (DoubleUnaryOperation) new SignalProcessing.SqrtRaisedCosineSampleGenerator(
+                        symbolIntervalValue, excessBWValue)
+                : (DoubleUnaryOperation) new SignalProcessing.RaisedCosineSampleGenerator(
+                        symbolIntervalValue, excessBWValue);
 
-                double[] tapsArray = SignalProcessing.sampleWave(lengthValue, -center,
-                        1.0, raisedCosineSampleGenerator);
-                DoubleToken[] tapsArrayToken = new DoubleToken[tapsArray.length];
+        double[] tapsArray = SignalProcessing.sampleWave(lengthValue, -center,
+                1.0, raisedCosineSampleGenerator);
+        DoubleToken[] tapsArrayToken = new DoubleToken[tapsArray.length];
 
-                for (int i = 0; i < tapsArray.length; i++) {
-                    tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
-                }
+        for (int i = 0; i < tapsArray.length; i++) {
+            tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
+        }
 
-                taps.setToken(new ArrayToken(BaseType.DOUBLE, tapsArrayToken));
+        taps.setToken(new ArrayToken(BaseType.DOUBLE, tapsArrayToken));
     }
 }

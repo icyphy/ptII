@@ -36,60 +36,61 @@ import java.util.LinkedList;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 
-
 /**
  * Utility class for storing all we need to know about a given class.
  * It is used in the HlaManager in a HashMap.
  * @author David Come
  */
 public class StructuralInformation {
-        ///////////////////////////////////////////////////////////////////
-        ////                         Constructor                       ////
-        public StructuralInformation() {
-                freeActors = new LinkedList<ComponentEntity>();
-                _relations = new HashMap<String,HashSet<IOPort>>();
-        }
-        ///////////////////////////////////////////////////////////////////
-        ////                         Public variables                  ////
-        /**
-         * current free actors for that class (ie instance of that class
+    ///////////////////////////////////////////////////////////////////
+    ////                         Constructor                       ////
+    public StructuralInformation() {
+        freeActors = new LinkedList<ComponentEntity>();
+        _relations = new HashMap<String, HashSet<IOPort>>();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         Public variables                  ////
+    /**
+     * current free actors for that class (ie instance of that class
     that have not been binded to an object instance from the federation).
-         */
-        public LinkedList<ComponentEntity> freeActors;
+     */
+    public LinkedList<ComponentEntity> freeActors;
 
-        /**
-         * The class to instantiate.
-         */
-        public ComponentEntity classToInstantiate;
+    /**
+     * The class to instantiate.
+     */
+    public ComponentEntity classToInstantiate;
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         Public functions                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         Public functions                  ////
 
-        /**
-         * Retrieve all receiving port for the output port whose name is given.
-         * @param name  The name of the port.
-         * @return a HashSet object.
-         */
-        public HashSet<IOPort> getPortReceiver(String name) {
-                return _relations.get(name);
+    /**
+     * Retrieve all receiving port for the output port whose name is given.
+     * @param name  The name of the port.
+     * @return a HashSet object.
+     */
+    public HashSet<IOPort> getPortReceiver(String name) {
+        return _relations.get(name);
+    }
+
+    /**
+     * Add for the given all its receiving ports.
+     * @param port  an IOPort object.
+     */
+    public void addPortSinks(IOPort port) {
+        if (!_relations.containsKey(port.getName())) {
+            _relations.put(port.getName(), new HashSet<IOPort>());
         }
+        _relations.get(port.getName()).addAll(port.sinkPortList());
+    }
 
-        /**
-         * Add for the given all its receiving ports.
-         * @param port  an IOPort object.
-         */
-        public void addPortSinks(IOPort port) {
-                if (!_relations.containsKey(port.getName())) {
-                        _relations.put(port.getName(), new HashSet<IOPort>());
-                }
-                _relations.get(port.getName()).addAll(port.sinkPortList());
-        }
-        ///////////////////////////////////////////////////////////////////
-        ////                         private methods                   ////
-        /*
-         * For a given output port, all the inputs ports
-         * that will receive a token from it. The key is the
-         * output port's name.
-         */
-        private HashMap<String,HashSet<IOPort>> _relations;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    /*
+     * For a given output port, all the inputs ports
+     * that will receive a token from it. The key is the
+     * output port's name.
+     */
+    private HashMap<String, HashSet<IOPort>> _relations;
 }

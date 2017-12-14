@@ -135,8 +135,8 @@ public class CustomizeDocumentationAction extends FigureAction {
 
                     if (docAttributeList.size() == 0) {
                         docApplicationSpecializer
-                        .handleDocumentationAttributeDoesNotExist(
-                                getFrame(), target);
+                                .handleDocumentationAttributeDoesNotExist(
+                                        getFrame(), target);
 
                     } else { //edit the existing attribute
                         final Attribute docAttribute = (Attribute) docAttributeList
@@ -153,13 +153,13 @@ public class CustomizeDocumentationAction extends FigureAction {
                         target.requestChange(request);
                     }
                 } catch (Throwable throwable) {
-                    System.out
-                    .println("Failed to call doc application specializer "
-                            + "class \""
-                            + docApplicationSpecializerClassName
-                            + "\" on class \""
-                            + docApplicationSpecializerClassName
-                            + "\".");
+                    System.out.println(
+                            "Failed to call doc application specializer "
+                                    + "class \""
+                                    + docApplicationSpecializerClassName
+                                    + "\" on class \""
+                                    + docApplicationSpecializerClassName
+                                    + "\".");
                 }
                 done = true;
             }
@@ -170,8 +170,7 @@ public class CustomizeDocumentationAction extends FigureAction {
                 docAttributeList = target.attributeList(DocAttribute.class);
                 if (docAttributeList.size() == 0) {
                     // Create a doc attribute, then edit its parameters.
-                    String moml = "<property name=\""
-                            + "DocAttribute"
+                    String moml = "<property name=\"" + "DocAttribute"
                             + "\" class=\"ptolemy.vergil.basic.DocAttribute\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             target, moml) {
@@ -231,7 +230,7 @@ public class CustomizeDocumentationAction extends FigureAction {
      */
     private void _editDocAttribute(Frame owner, DocAttribute attribute,
             NamedObj target) {
-        new EditParametersDialog(owner, attribute, "Edit Documentation for "
-                + target.getName());
+        new EditParametersDialog(owner, attribute,
+                "Edit Documentation for " + target.getName());
     }
 }

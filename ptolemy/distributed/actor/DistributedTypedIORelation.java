@@ -121,12 +121,12 @@ public class DistributedTypedIORelation extends TypedIORelation {
      */
     public void setServicesReceiversListMap(HashMap servicesReceiversListMap) {
         if (VERBOSE) {
-            System.out.println("> DistributedTypedIORelation."
-                    + "setRemoteReceivers()");
+            System.out.println(
+                    "> DistributedTypedIORelation." + "setRemoteReceivers()");
         }
 
         ((DistributedReceiver) intermediateReceiver[0][0])
-        .setServicesReceiversListMap(servicesReceiversListMap);
+                .setServicesReceiversListMap(servicesReceiversListMap);
     }
 
     ///////////////////////////////////////////////////////////////////

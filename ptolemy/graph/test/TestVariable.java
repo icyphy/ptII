@@ -117,8 +117,8 @@ public class TestVariable implements InequalityTerm {
         if (isSettable()) {
             _value = (String) e;
         } else {
-            throw new GraphActionException("TestVariable.initialize: "
-                    + "This term is not settable.");
+            throw new GraphActionException(
+                    "TestVariable.initialize: " + "This term is not settable.");
         }
     }
 
@@ -162,8 +162,8 @@ public class TestVariable implements InequalityTerm {
         if (isSettable()) {
             _value = (String) e;
         } else {
-            throw new GraphActionException("TestVariable.isSettable: "
-                    + "value is not settable.");
+            throw new GraphActionException(
+                    "TestVariable.isSettable: " + "value is not settable.");
         }
     }
 

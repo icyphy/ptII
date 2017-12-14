@@ -72,8 +72,8 @@ public class FMI20ContinuousStateDerivative {
         try {
             index = Integer.parseInt(indexAttr);
         } catch (NumberFormatException ex) {
-            throw new NumberFormatException("Failed to parse derivative index "
-                    + indexAttr);
+            throw new NumberFormatException(
+                    "Failed to parse derivative index " + indexAttr);
         }
 
         // Get the scalar variable representing the state derivative.

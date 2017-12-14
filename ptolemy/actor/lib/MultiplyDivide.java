@@ -94,9 +94,8 @@ public class MultiplyDivide extends TypedAtomicActor {
         divide = new TypedIOPort(this, "divide", true, false);
         divide.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<line x1=\"-15\" y1=\"-15\" x2=\"-5\" y2=\"-5\"/>"
                 + "<line x1=\"-15\" y1=\"-5\" x2=\"-5\" y2=\"-15\"/>"
                 + "<line x1=\"-15\" y1=\"10\" x2=\"-5\" y2=\"10\"/>"
@@ -181,7 +180,8 @@ public class MultiplyDivide extends TypedAtomicActor {
                 numerator = numerator.divide(denominator);
             }
         } catch (Exception e) {
-            throw new IllegalActionException(this, e.getCause(), e.getMessage());
+            throw new IllegalActionException(this, e.getCause(),
+                    e.getMessage());
         }
 
         output.send(0, numerator);

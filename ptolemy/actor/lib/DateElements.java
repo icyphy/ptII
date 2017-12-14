@@ -193,8 +193,10 @@ public class DateElements extends TypedAtomicActor {
                 nanosecond.send(0, new IntToken(dateToken.getNanosecond()));
                 SimpleDateFormat sdf = new SimpleDateFormat("ZZZZZ");
                 sdf.setTimeZone(dateToken.getTimeZone());
-                timeZoneOffset.send(0, new IntToken(Integer.parseInt(sdf.format(dateToken.getCalendarInstance().getTime()))));
-                timeInMillis.send(0, new LongToken(dateToken.getCalendarInstance().getTimeInMillis()));
+                timeZoneOffset.send(0, new IntToken(Integer.parseInt(sdf
+                        .format(dateToken.getCalendarInstance().getTime()))));
+                timeInMillis.send(0, new LongToken(
+                        dateToken.getCalendarInstance().getTimeInMillis()));
             }
         }
     }

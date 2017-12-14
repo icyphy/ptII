@@ -74,14 +74,16 @@ public class LUDecomposition {
 
         pivsign = 1;
         piv = new int[m];
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             piv[i] = i;
+        }
 
         // Outer loop.
         for (int j = 0; j < n; j++) {
 
-            if (n > 1000)
+            if (n > 1000) {
                 System.out.printf("%d / %d\r", j, n);
+            }
 
             // Make a copy of the j-th column to localize references.
             Vec LUcolj = LU.getColumn(j);
@@ -132,18 +134,18 @@ public class LUDecomposition {
       {
       LU = A.copy();
       int m = LU.m, n = LU.n;
-
+    
       pivsign = 1;
       piv = new int[m];
       for (int i = 0; i < m; i++)
       piv[i] = i;
-
+    
       // Main loop.
       for (int k = 0; k < n; k++) {
-
+    
       if (n > 1000)
       System.out.printf("%d / %d\r", k, n);
-
+    
       // Find pivot.
       int p = k;
       if (autoPivot) {
@@ -153,7 +155,7 @@ public class LUDecomposition {
       }
       }
       }
-
+    
       // Exchange if necessary.
       if (p != k) {
       // swap rows p and k.
@@ -161,20 +163,20 @@ public class LUDecomposition {
       int t = piv[p]; piv[p] = piv[k]; piv[k] = t;
       pivsign = -pivsign;
       }
-
+    
       // Compute multipliers and eliminate k-th column.
       if (k<n && LU.get(k,k) != 0.0) {
-
+    
       double scale = 1.0 / LU.get(k,k);
-
+    
       Vec Lrowk = LU.getRow(k);
-
+    
       for (int i = k+1; i < m; i++) {
       Vec Lrowi = LU.getRow(i);
       Lrowi.set(k, Lrowi.get(k) * scale);
-
+    
       double Lik = Lrowi.get(k);
-
+    
       Lrowk.addTo(Lrowi, -Lik, k+1, n-1);
       }
       }
@@ -222,19 +224,22 @@ public class LUDecomposition {
     }
 
     public double det() {
-        if (LU.m != LU.n)
+        if (LU.m != LU.n) {
             throw new IllegalArgumentException("Matrix must be square.");
+        }
 
         double d = pivsign;
-        for (int j = 0; j < LU.n; j++)
+        for (int j = 0; j < LU.n; j++) {
             d *= LU.get(j, j);
+        }
 
         return d;
     }
 
     public double logDet() {
-        if (LU.m != LU.n)
+        if (LU.m != LU.n) {
             throw new IllegalArgumentException("Matrix must be square.");
+        }
 
         double sign = pivsign;
         double logD = 0;
@@ -244,8 +249,9 @@ public class LUDecomposition {
             logD += Math.log(Math.abs(v));
         }
 
-        if (sign <= 0)
+        if (sign <= 0) {
             throw new IllegalArgumentException("logDet of a negative matrix.");
+        }
 
         return logD;
     }
@@ -253,8 +259,9 @@ public class LUDecomposition {
     public boolean isSingular() {
         int n = LU.n;
         for (int j = 0; j < n; j++) {
-            if (LU.get(j, j) == 0)
+            if (LU.get(j, j) == 0) {
                 return true;
+            }
         }
 
         return false;
@@ -262,12 +269,14 @@ public class LUDecomposition {
 
     public Matrix solve(Matrix B) {
         int m = LU.m, n = LU.n;
-        if (B.m != m)
+        if (B.m != m) {
             throw new IllegalArgumentException(
                     "Matrix row dimensions must agree.");
+        }
 
-        if (isSingular())
+        if (isSingular()) {
             throw new RuntimeException("Matrix is singular");
+        }
 
         // Copy right hand side with pivoting
         Matrix X = B.copy();

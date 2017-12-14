@@ -145,8 +145,8 @@ public class CSP extends AbstractDDI {
             return;
         } else if (actions.length == 1) {
             inputProfile = computeRemainingTokens(actions, dataSoFar);
-            mergeData(dataSoFar, new CSPTokenReader(inputProfile, _ioPorts,
-                    _cbc).getAll());
+            mergeData(dataSoFar,
+                    new CSPTokenReader(inputProfile, _ioPorts, _cbc).getAll());
             fireAction(actions[0], dataSoFar);
         } else {
             inputProfile = computeRemainingTokens(actions, dataSoFar);
@@ -206,8 +206,8 @@ public class CSP extends AbstractDDI {
                     l[j] = new ArrayList();
                 }
 
-                int repeatVal = _context.intValue(new ExprEvaluator(_context,
-                        env).evaluate(repeatExpr));
+                int repeatVal = _context.intValue(
+                        new ExprEvaluator(_context, env).evaluate(repeatExpr));
 
                 for (int j = 0; j < repeatVal; j++) {
                     for (int k = 0; k < vars.length; k++) {
@@ -315,16 +315,17 @@ public class CSP extends AbstractDDI {
             for (InputPattern inputPattern : inputPatterns) {
                 numNeeded = numTokensNeeded(inputPattern);
 
-                List data = (List) dataSoFar.get(new ChannelID(inputPattern
-                        .getPortname(), 0));
+                List data = (List) dataSoFar
+                        .get(new ChannelID(inputPattern.getPortname(), 0));
 
                 if (data != null) {
                     numNeeded = numNeeded - data.size();
                 }
 
                 if (numNeeded > 0) {
-                    inputProfile.put(new ChannelID(inputPattern.getPortname(),
-                            0), Integer.valueOf(numNeeded));
+                    inputProfile.put(
+                            new ChannelID(inputPattern.getPortname(), 0),
+                            Integer.valueOf(numNeeded));
                 }
             }
 
@@ -352,8 +353,8 @@ public class CSP extends AbstractDDI {
                 } else {
                     numNeeded = Math.min(numNeeded, numTokensNeeded(ip));
 
-                    List data = (List) dataSoFar.get(new ChannelID(inputPattern
-                            .getPortname(), 0));
+                    List data = (List) dataSoFar
+                            .get(new ChannelID(inputPattern.getPortname(), 0));
 
                     if (data != null) {
                         numNeeded = numNeeded - data.size();
@@ -481,8 +482,8 @@ public class CSP extends AbstractDDI {
                 if (needSoFar == null) {
                     profile.put(chID, Integer.valueOf(numNeeded - numHave));
                 } else {
-                    profile.put(chID, Integer.valueOf(Math.max(numNeeded
-                            - numHave, needSoFar.intValue())));
+                    profile.put(chID, Integer.valueOf(Math
+                            .max(numNeeded - numHave, needSoFar.intValue())));
                 }
             }
         }
@@ -491,7 +492,8 @@ public class CSP extends AbstractDDI {
     }
 
     // for the last "burst" of reads, we can only read at most one token from each channel.
-    private boolean isRemainingProfileValid(Map inputProfile, Action[] actions) {
+    private boolean isRemainingProfileValid(Map inputProfile,
+            Action[] actions) {
         for (Action action : actions) {
             InputPattern[] inputPatterns = action.getInputPatterns();
             boolean encountered = false;
@@ -522,7 +524,8 @@ public class CSP extends AbstractDDI {
             return;
         }
 
-        CSPTokenReader reader = new CSPTokenReader(inputProfile, _ioPorts, _cbc);
+        CSPTokenReader reader = new CSPTokenReader(inputProfile, _ioPorts,
+                _cbc);
         CSPTokenReader.DataChannelID dchID = reader.getOne();
         ChannelID chID = dchID.getChannelID();
         Object newData = dchID.getData();
@@ -582,8 +585,8 @@ public class CSP extends AbstractDDI {
 
         for (InputPattern inputPattern : inputPatterns) {
             int numNeeded = numTokensNeeded(inputPattern);
-            List data = (List) dataSoFar.get(new ChannelID(inputPattern
-                    .getPortname(), 0));
+            List data = (List) dataSoFar
+                    .get(new ChannelID(inputPattern.getPortname(), 0));
             int numHave = data == null ? 0 : data.size();
 
             if (numNeeded > numHave) {
@@ -841,7 +844,8 @@ class CSPTokenWriter {
     }
 
     private void updateState(Map data) {
-        for (Iterator iterator = data.keySet().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = data.keySet().iterator(); iterator
+                .hasNext();) {
             ChannelID channelID = (ChannelID) iterator.next();
             List l = (List) data.get(channelID);
 
@@ -859,7 +863,8 @@ class CSPTokenWriter {
 
         int i = 0;
 
-        for (Iterator iterator = data.keySet().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = data.keySet().iterator(); iterator
+                .hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
             _indexToChannelID[i] = chID;
             _channelIDToIndex.put(chID, Integer.valueOf(i));

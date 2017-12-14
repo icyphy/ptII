@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.tcs.kernel;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -92,13 +91,12 @@ public class TCSDirector extends DEDirector {
      */
     @Override
     public void initialize() throws IllegalActionException {
-        _brokenTracks=new TreeMap<>();
-        _brokenStations=new TreeMap<>();
-        _lineColor=new HashMap<String,ArrayToken>();
-        _trainsColor=new HashMap<>();
+        _brokenTracks = new TreeMap<>();
+        _brokenStations = new TreeMap<>();
+        _lineColor = new HashMap<String, ArrayToken>();
+        _trainsColor = new HashMap<>();
         super.initialize();
     }
-
 
     /** Return the color of the line.
      *  @param symbol symbol of the line.
@@ -116,7 +114,8 @@ public class TCSDirector extends DEDirector {
      *  This base class returns 1.0.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public double handleRejectionWithDelay(AbstractTrack track) throws IllegalActionException {
+    public double handleRejectionWithDelay(AbstractTrack track)
+            throws IllegalActionException {
         // FIXME: what value should be returned here?
         return 1.0;
     }
@@ -127,7 +126,8 @@ public class TCSDirector extends DEDirector {
      *  This base class returns 1.0.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public double handleRejectionWithDelayStation(AbstractStation station) throws IllegalActionException{
+    public double handleRejectionWithDelayStation(AbstractStation station)
+            throws IllegalActionException {
         // TODO Auto-generated method stub
         return 1.0;
     }
@@ -136,24 +136,29 @@ public class TCSDirector extends DEDirector {
      *  @param track The track
      *  @exception IllegalActionException If thrown while putting the entry into _brokenTracks.
      */
-    public void handleInitializedTrack(AbstractTrack track) throws IllegalActionException{
-        int id = ((IntToken)track.trackId.getToken()).intValue();
+    public void handleInitializedTrack(AbstractTrack track)
+            throws IllegalActionException {
+        int id = ((IntToken) track.trackId.getToken()).intValue();
         if (id == -1) {
-            throw new IllegalActionException("Id of the track " + id + " is invalid (-1)");
+            throw new IllegalActionException(
+                    "Id of the track " + id + " is invalid (-1)");
         }
-        if (track.lineSymbol.getToken()==null) {
+        if (track.lineSymbol.getToken() == null) {
             throw new IllegalActionException("Fill Symbol of Track " + id);
         }
-        String symbol=((StringToken)(track.lineSymbol.getToken())).stringValue();
+        String symbol = ((StringToken) (track.lineSymbol.getToken()))
+                .stringValue();
         if (symbol.length() > 1 || symbol.length() == 0) {
-            throw new IllegalActionException("Inappropriate symbolLine for track " + id);
+            throw new IllegalActionException(
+                    "Inappropriate symbolLine for track " + id);
         }
-        symbol = symbol  +  id;
+        symbol = symbol + id;
         if (_brokenTracks.containsKey(symbol)) {
-            throw new IllegalActionException("Track with the id " + id + " has been duplicated");
+            throw new IllegalActionException(
+                    "Track with the id " + id + " has been duplicated");
         }
         if (track.broken.getToken() == null) {
-            _brokenTracks.put(symbol, (Token)(new BooleanToken(false)));
+            _brokenTracks.put(symbol, (new BooleanToken(false)));
         } else {
             _brokenTracks.put(symbol, track.broken.getToken());
         }
@@ -163,30 +168,40 @@ public class TCSDirector extends DEDirector {
      *  @param station The station
      *  @exception IllegalActionException If the entry cannot be put in to _brokenStations
      */
-    public void handleInitializedStation(AbstractStation station) throws IllegalActionException {
-        int stationId=((IntToken)station.stationId.getToken()).intValue();
-        if (stationId==-1) {
+    public void handleInitializedStation(AbstractStation station)
+            throws IllegalActionException {
+        int stationId = ((IntToken) station.stationId.getToken()).intValue();
+        if (stationId == -1) {
             throw new IllegalActionException("Invalid id for station (-1)");
         }
-        if (station.lineSymbol.getToken()==null) {
-            throw new IllegalActionException("Fill Symbol of station " + stationId);
+        if (station.lineSymbol.getToken() == null) {
+            throw new IllegalActionException(
+                    "Fill Symbol of station " + stationId);
         }
-        String symbol=((StringToken)(station.lineSymbol.getToken())).stringValue();
+        String symbol = ((StringToken) (station.lineSymbol.getToken()))
+                .stringValue();
         if (symbol.length() > 1 || symbol.length() == 0) {
-            throw new IllegalActionException("Inappropriate symbolLine for station " + stationId);
+            throw new IllegalActionException(
+                    "Inappropriate symbolLine for station " + stationId);
         }
-        symbol = symbol  +  stationId;
+        symbol = symbol + stationId;
         if (_brokenStations.containsKey(symbol)) {
-            throw new IllegalActionException("Station with the id " + stationId + " has been duplicated");
+            throw new IllegalActionException("Station with the id " + stationId
+                    + " has been duplicated");
         }
-        if (station.broken.getToken()==null) {
-            _brokenStations.put(symbol, (Token)(new BooleanToken(false)));
+        if (station.broken.getToken() == null) {
+            _brokenStations.put(symbol, (new BooleanToken(false)));
         } else {
             _brokenStations.put(symbol, station.broken.getToken());
         }
-        if (station.inJunction.getToken()!=null && ((BooleanToken)station.inJunction.getToken()).booleanValue()==true) {
-            if (station.neighbors.getToken()==null || ((ArrayToken)station.neighbors.getToken()).length()==0) {
-                throw new IllegalActionException("Fill the neighbors of the statoin " + symbol);
+        if (station.inJunction.getToken() != null
+                && ((BooleanToken) station.inJunction.getToken())
+                        .booleanValue() == true) {
+            if (station.neighbors.getToken() == null
+                    || ((ArrayToken) station.neighbors.getToken())
+                            .length() == 0) {
+                throw new IllegalActionException(
+                        "Fill the neighbors of the statoin " + symbol);
             }
         }
     }
@@ -197,22 +212,25 @@ public class TCSDirector extends DEDirector {
      *  the entry for the track has not been set in the array of
      *  broken tracks.
      */
-    public void handleTrackAttributeChanged(AbstractTrack track) throws IllegalActionException {
-        int id = ((IntToken)track.trackId.getToken()).intValue();
+    public void handleTrackAttributeChanged(AbstractTrack track)
+            throws IllegalActionException {
+        int id = ((IntToken) track.trackId.getToken()).intValue();
         if (id == -1) {
-            throw new IllegalActionException("Id of the track " + id + " is invalid (-1)");
+            throw new IllegalActionException(
+                    "Id of the track " + id + " is invalid (-1)");
         }
-        String symbol = ((StringToken)(track.lineSymbol.getToken())).stringValue();
-        symbol=symbol + id;
-        if (_brokenTracks.size()!=0) {
+        String symbol = ((StringToken) (track.lineSymbol.getToken()))
+                .stringValue();
+        symbol = symbol + id;
+        if (_brokenTracks.size() != 0) {
             if (_brokenTracks.containsKey(symbol)) {
                 _brokenTracks.put(symbol, track.broken.getToken());
             } else {
-                throw new IllegalActionException("The entry for this track has not been set in brokenTrack array ");
+                throw new IllegalActionException(
+                        "The entry for this track has not been set in brokenTrack array ");
             }
         }
     }
-
 
     /** Update _brokenStations array because of a change in condition of a station.
      *  @param station The station
@@ -220,54 +238,62 @@ public class TCSDirector extends DEDirector {
      *  if the entry for the station has not been set in the array of
      *  broken stations.
      */
-    public void handleStationAttributeChanged(AbstractStation station) throws IllegalActionException {
-        int id = ((IntToken)station.stationId.getToken()).intValue();
+    public void handleStationAttributeChanged(AbstractStation station)
+            throws IllegalActionException {
+        int id = ((IntToken) station.stationId.getToken()).intValue();
         if (id == -1) {
             throw new IllegalActionException("Invalid id for station (-1)");
         }
 
-        String symbol = ((StringToken)(station.lineSymbol.getToken())).stringValue();
+        String symbol = ((StringToken) (station.lineSymbol.getToken()))
+                .stringValue();
         symbol = symbol + id;
-        if (_brokenStations.size()!=0) {
+        if (_brokenStations.size() != 0) {
             if (_brokenStations.containsKey(symbol)) {
                 _brokenStations.put(symbol, station.broken.getToken());
             } else {
-                throw new IllegalActionException("The entry for this station " + symbol + " has not been set in brokenStations array ");
+                throw new IllegalActionException(
+                        "The entry for this station " + symbol
+                                + " has not been set in brokenStations array ");
             }
         }
     }
-
 
     /** Handle initializing of a SourceStation.
      *  @param abstractSourceStation The Abstract Source state
      *  @exception IllegalActionException If the line symbol cannot be obtained or if the stationID is -1.
      */
-    public void handleInitializedSourceStation(AbstractSourceStation abstractSourceStation) throws IllegalActionException{
+    public void handleInitializedSourceStation(
+            AbstractSourceStation abstractSourceStation)
+            throws IllegalActionException {
 
-        int stationId = ((IntToken)abstractSourceStation.stationId.getToken()).intValue();
-        if (abstractSourceStation.lineSymbol.getToken()==null) {
-            throw new IllegalActionException("Fill Symbol of sourceStation " + stationId);
+        int stationId = ((IntToken) abstractSourceStation.stationId.getToken())
+                .intValue();
+        if (abstractSourceStation.lineSymbol.getToken() == null) {
+            throw new IllegalActionException(
+                    "Fill Symbol of sourceStation " + stationId);
         }
-        String symbol = ((StringToken)(abstractSourceStation.lineSymbol.getToken())).stringValue();
+        String symbol = ((StringToken) (abstractSourceStation.lineSymbol
+                .getToken())).stringValue();
         symbol = symbol + stationId;
 
-        if (stationId==-1) {
+        if (stationId == -1) {
             throw new IllegalActionException("Invalid id for source station");
         }
         if (_brokenStations.containsKey(symbol)) {
             throw new IllegalActionException("Duplication in station id");
         }
 
-        _brokenStations.put(symbol,(Token)(new BooleanToken(false)));
+        _brokenStations.put(symbol, (new BooleanToken(false)));
     }
 
-     /** Return color of the train.
-     *  @param id Id of the train.
-     *  @return the color of the train.
-     *  @exception IllegalActionException If thrown while creating an ArrayToken
-     *  from the color specification.
-     */
-    public ArrayToken handleTrainColor(int id) throws IllegalActionException{
+    /** Return color of the train.
+    *  @param id Id of the train.
+    *  @return the color of the train.
+    *  @exception IllegalActionException If thrown while creating an ArrayToken
+    *  from the color specification.
+    */
+    public ArrayToken handleTrainColor(int id) throws IllegalActionException {
         ArrayToken color = _trainsColor.get(id);
 
         while (color == null) {
@@ -277,19 +303,18 @@ public class TCSDirector extends DEDirector {
             colorSpec[2] = new DoubleToken(_random.nextDouble());
             colorSpec[3] = new DoubleToken(1.0);
             color = new ArrayToken(colorSpec);
-            Boolean colorExist=false;
+            Boolean colorExist = false;
             for (Entry<String, ArrayToken> entry : _lineColor.entrySet()) {
-                if (entry.getValue().equals(color))
-                    {
-                    colorExist=true;
-                        break;
-                    }
+                if (entry.getValue().equals(color)) {
+                    colorExist = true;
+                    break;
+                }
             }
-            if (colorExist==false) {
+            if (colorExist == false) {
                 _trainsColor.put(id, color);
                 break;
             }
-            color=null;
+            color = null;
         }
 
         return color;
@@ -299,7 +324,7 @@ public class TCSDirector extends DEDirector {
      *  @exception IllegalActionException If there is a problem
      *  adding the lines to the set of line colors.
      */
-    public void lineColoring() throws IllegalActionException  {
+    public void lineColoring() throws IllegalActionException {
         _lineColor.put("A", new ArrayToken("{1.0,0.6,0.6,1.0}"));
         _lineColor.put("I", new ArrayToken("{0.0,0.4,1.0,1.0}"));
         _lineColor.put("S", new ArrayToken("{0.6,0.8,0.0,1.0}"));
@@ -313,9 +338,10 @@ public class TCSDirector extends DEDirector {
         _lineColor.put("Y", new ArrayToken("{1.0,0.8,0.0,1.0}"));
         _lineColor.put("Z", new ArrayToken("{0.6,0.0,0.6,1.0}"));
         _lineColor.put("N", new ArrayToken("{0.0,1.0,0.8,1.0}"));
-        _lineColor.put("F", new ArrayToken("{0.8235294,0.4117647,0.11764706,0.84705883}"));
+        _lineColor.put("F",
+                new ArrayToken("{0.8235294,0.4117647,0.11764706,0.84705883}"));
 
-        }
+    }
 
     /** Return moving time of a train in a track or station.
      *  @param  inTransit inTransit is the moving train.
@@ -326,7 +352,6 @@ public class TCSDirector extends DEDirector {
         // FIXME: Determine time of traveling based on speed.
         return 1.0;
     }
-
 
     /** Routing a train in a station with more than one output channel
     *   which is in the junction and by using the moving map of the
@@ -339,65 +364,68 @@ public class TCSDirector extends DEDirector {
     *  @return Returns a new train packet and the out channel.
     *  @exception IllegalActionException
     */
-    public Map<String, Token> routing(ArrayToken lines, Token token) throws IllegalActionException {
-        ArrayToken movingMap=(ArrayToken)((RecordToken)token).get("movingMap");
-        int outRout=0;
-        if (movingMap.length()!=0) {
-            Token first=movingMap.getElement(0);
-            if (movingMap.length()==1) {
-                movingMap=new ArrayToken("{}");
+    public Map<String, Token> routing(ArrayToken lines, Token token)
+            throws IllegalActionException {
+        ArrayToken movingMap = (ArrayToken) ((RecordToken) token)
+                .get("movingMap");
+        int outRout = 0;
+        if (movingMap.length() != 0) {
+            Token first = movingMap.getElement(0);
+            if (movingMap.length() == 1) {
+                movingMap = new ArrayToken("{}");
             } else {
-                movingMap=movingMap.subarray(1);
+                movingMap = movingMap.subarray(1);
             }
-            for (int i=0;i<lines.length();i++) {
+            for (int i = 0; i < lines.length(); i++) {
                 if (lines.getElement(i).equals(first)) {
-                    outRout=i;
+                    outRout = i;
                     break;
                 }
             }
         }
 
-      Map<String, Token> newTrain=new TreeMap<String, Token>();
-      newTrain.put("trainId",((RecordToken)token).get("trainId"));
-      newTrain.put("trainSymbol",((RecordToken)token).get("trainSymbol"));
-      newTrain.put("trainSpeed", ((RecordToken)token).get("trainSpeed"));
-      newTrain.put("movingMap", (Token)movingMap);
-      newTrain.put("fuel",((RecordToken)token).get("fuel"));
-      newTrain.put("arrivalTimeToStation", ((RecordToken)token).get("arrivalTimeToStation"));
-      newTrain.put("dipartureTimeFromStation", ((RecordToken)token).get("dipartureTimeFromStation"));
+        Map<String, Token> newTrain = new TreeMap<String, Token>();
+        newTrain.put("trainId", ((RecordToken) token).get("trainId"));
+        newTrain.put("trainSymbol", ((RecordToken) token).get("trainSymbol"));
+        newTrain.put("trainSpeed", ((RecordToken) token).get("trainSpeed"));
+        newTrain.put("movingMap", movingMap);
+        newTrain.put("fuel", ((RecordToken) token).get("fuel"));
+        newTrain.put("arrivalTimeToStation",
+                ((RecordToken) token).get("arrivalTimeToStation"));
+        newTrain.put("dipartureTimeFromStation",
+                ((RecordToken) token).get("dipartureTimeFromStation"));
 
-      Map<String, Token> temp=new TreeMap<>();
-      temp.put("outputChannel", (Token)new IntToken(outRout));
-      temp.put("train",(Token)(new RecordToken(newTrain)));
-      return temp;
+        Map<String, Token> temp = new TreeMap<>();
+        temp.put("outputChannel", new IntToken(outRout));
+        temp.put("train", (new RecordToken(newTrain)));
+        return temp;
 
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Random _random=new Random();
+    private Random _random = new Random();
 
     /**  _brokenTracks stores which track has broken. First element is
      *  in form of "symbolId" in which symbol is symbol of the track
      *  (line) and id is id of the track, and last is a boolean
      *  token.
      */
-    private Map<String, Token> _brokenTracks=new TreeMap<>();
+    private Map<String, Token> _brokenTracks = new TreeMap<>();
 
     /**  _brokenStations stores which station has broken. First
      *  element is in form of "symbolId" in which symbol is symbol of
      *  the station (line) and id is id of the station, and last is a
      *  boolean token.
      */
-    private Map<String, Token> _brokenStations=new TreeMap<>();
+    private Map<String, Token> _brokenStations = new TreeMap<>();
 
     /** _lineColor stors color of the lines. First element is symbol
      * of the line and last is its color.
      */
-    private Map<String,ArrayToken> _lineColor=new HashMap<String,ArrayToken>();
+    private Map<String, ArrayToken> _lineColor = new HashMap<String, ArrayToken>();
 
     /** _trainsColor stores a color for each train. */
-    private Map<Integer,ArrayToken> _trainsColor = new HashMap<Integer,ArrayToken>();
+    private Map<Integer, ArrayToken> _trainsColor = new HashMap<Integer, ArrayToken>();
 }

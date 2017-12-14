@@ -281,7 +281,8 @@ public class ConnectorTutorial {
         });
 
         // The connector selection interactor uses the same selection model
-        SelectionInteractor ci = new SelectionInteractor(si.getSelectionModel());
+        SelectionInteractor ci = new SelectionInteractor(
+                si.getSelectionModel());
         connectorA.setInteractor(ci);
         connectorB.setInteractor(ci);
 

@@ -46,9 +46,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class AddSubtract
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.AddSubtract {
+public class AddSubtract extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.AddSubtract {
     /**
      *  Construct a AddSubtract adapter.
      *  @param actor The given ptolemy.actor.lib.AddSubtract actor.
@@ -78,9 +77,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.AddSubt
             plusType = getCodeGenerator().codeGenType(actor.plus.getType());
             minusType = getCodeGenerator().codeGenType(actor.minus.getType());
         } catch (Throwable throwable) {
-            throw new IllegalActionException(
-                    actor,
-                    throwable,
+            throw new IllegalActionException(actor, throwable,
                     "Failed to get the type of a port, perhaps the type needs to be explicitly set from the UI?");
         }
 

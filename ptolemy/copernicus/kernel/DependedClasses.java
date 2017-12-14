@@ -164,7 +164,8 @@ public class DependedClasses {
 
             // Grab the classes of all referenced fields, invoked
             // methods, and created classes.
-            for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
+            for (Iterator units = body.getUnits().iterator(); units
+                    .hasNext();) {
                 Unit unit = (Unit) units.next();
 
                 for (Iterator boxes = unit.getUseAndDefBoxes().iterator(); boxes

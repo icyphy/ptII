@@ -67,8 +67,9 @@ public class FBM implements Function2D {
         }
 
         remainder = octaves - (int) octaves;
-        if (remainder != 0)
+        if (remainder != 0) {
             value += remainder * basis.evaluate(x, y) * exponents[i];
+        }
 
         return value;
     }

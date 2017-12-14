@@ -44,8 +44,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  *
  */
-public abstract class MapTypeInfiniteConcept<C extends Concept> extends
-InfiniteConcept {
+public abstract class MapTypeInfiniteConcept<C extends Concept>
+        extends InfiniteConcept {
 
     /** Create a new MapTypeInfiniteConcept contained in the given ontology,
      *  with the given default concept.
@@ -199,7 +199,8 @@ InfiniteConcept {
      *  @param otherConcept The other map concept.
      *  @return The combined keys, as a set of Strings.
      */
-    protected Set<String> _combinedKeys(MapTypeInfiniteConcept<C> otherConcept) {
+    protected Set<String> _combinedKeys(
+            MapTypeInfiniteConcept<C> otherConcept) {
         Set<String> allKeys = new java.util.HashSet<String>();
         Set<String> theseKeys = this._keyToConcept.keySet();
         Set<String> otherKeys = otherConcept._keyToConcept.keySet();

@@ -186,8 +186,8 @@ public class HTMLImage extends WebContent {
 
     private void _linkTo(WebExporter exporter, PtolemyEffigy effigy,
             NamedObj sourceObject, NamedObj destinationObject,
-            ExportParameters parameters) throws IOException, PrinterException,
-            IllegalActionException {
+            ExportParameters parameters)
+            throws IOException, PrinterException, IllegalActionException {
         File gifFile;
         WebElement webElement;
         // Look for any open tableaux for the object.
@@ -199,8 +199,8 @@ public class HTMLImage extends WebContent {
             // If it's a composite actor, export HTML.
             if (frame instanceof ImageExportable) {
 
-                gifFile = new File(parameters.directoryToExportTo, name
-                        + ".gif");
+                gifFile = new File(parameters.directoryToExportTo,
+                        name + ".gif");
                 if (parameters.deleteFilesOnExit) {
                     gifFile.deleteOnExit();
                 }

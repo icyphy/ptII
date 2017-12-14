@@ -58,7 +58,7 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
     public ProductLatticeWrapperConceptFunction(String name,
             ProductLatticeOntology inputOutputOntology,
             Ontology originalFunctionOntology, ConceptFunction originalFunction)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(name, originalFunction.getNumberOfArguments(),
                 inputOutputOntology);
 
@@ -95,9 +95,9 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
 
         Concept originalFunctionValue = _originalFunction
                 .evaluateFunction(originalArgs);
-        return ProductLatticeOntologyAdapter
-                .getDerivedConceptForProductLattice(originalFunctionValue,
-                        (ProductLatticeOntology) _outputRangeOntology);
+        return ProductLatticeOntologyAdapter.getDerivedConceptForProductLattice(
+                originalFunctionValue,
+                (ProductLatticeOntology) _outputRangeOntology);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -32,10 +32,11 @@ public class GrayscaleColormap implements Colormap {
     @Override
     public int getColor(float v) {
         int n = (int) (v * 255);
-        if (n < 0)
+        if (n < 0) {
             n = 0;
-        else if (n > 255)
+        } else if (n > 255) {
             n = 255;
+        }
         return 0xff000000 | (n << 16) | (n << 8) | n;
     }
 

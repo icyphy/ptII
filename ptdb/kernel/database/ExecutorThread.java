@@ -146,24 +146,28 @@ public class ExecutorThread implements Runnable {
                  * In case of error, we abort the connection and set the
                  * ExecutionError and stop the execution of this thread
                  */
-                _abortConnection("Database execution error - " + e.getMessage());
+                _abortConnection(
+                        "Database execution error - " + e.getMessage());
                 return;
 
             } catch (InterruptedException e) {
-                _abortConnection("Database execution error - " + e.getMessage());
+                _abortConnection(
+                        "Database execution error - " + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (DBExecutionException e) {
-                _abortConnection("Database execution error - " + e.getMessage());
+                _abortConnection(
+                        "Database execution error - " + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (ModelAlreadyExistException e) {
-                _abortConnection("Database execution error - " + e.getMessage());
+                _abortConnection(
+                        "Database execution error - " + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (CircularDependencyException e) {
-                _abortConnection("Circular dependency error - "
-                        + e.getMessage());
+                _abortConnection(
+                        "Circular dependency error - " + e.getMessage());
                 e.printStackTrace();
                 return;
             }
@@ -217,7 +221,7 @@ public class ExecutorThread implements Runnable {
      * reference.
      */
     private void _executeTask() throws DBExecutionException,
-    ModelAlreadyExistException, CircularDependencyException {
+            ModelAlreadyExistException, CircularDependencyException {
         Task task = _taskQueue.get(_noOfTasksExecuted);
 
         //if the task is of type save model task, then execute the proper method from the connection
@@ -231,7 +235,8 @@ public class ExecutorThread implements Runnable {
         }
 
         else if (task instanceof UpdateParentsToNewVersionTask) {
-            _dbConn.executeUpdateParentsToNewVersion((UpdateParentsToNewVersionTask) task);
+            _dbConn.executeUpdateParentsToNewVersion(
+                    (UpdateParentsToNewVersionTask) task);
         }
     }
 

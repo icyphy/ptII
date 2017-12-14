@@ -84,8 +84,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         //                + _javaParseTreeCodeGenerator.generateFireCode())
         //                + ";" + _eol);
         code.append(processCode("    $put(output, "
-                + _javaParseTreeCodeGenerator.generateFireCode())
-                + ");" + _eol);
+                + _javaParseTreeCodeGenerator.generateFireCode()) + ");"
+                + _eol);
         return code.toString();
     }
 
@@ -101,8 +101,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
-        code.append(processCode(_javaParseTreeCodeGenerator
-                .generateInitializeCode()));
+        code.append(processCode(
+                _javaParseTreeCodeGenerator.generateInitializeCode()));
         return code.toString();
     }
 
@@ -132,8 +132,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
             // cases the expression doesn't change, and the parser
             // requires a large amount of memory.
             PtParser parser = new PtParser();
-            ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
-                    .getExpression());
+            ASTPtRootNode parseTree = parser
+                    .generateParseTree(actor.expression.getExpression());
 
             // Uncomment the next lines to see how parsing works.
             //System.out.println(_javaParseTreeCodeGenerator
@@ -148,8 +148,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
                     + actor.expression.getExpression() + "\" invalid.");
         }
 
-        code.append(processCode(_javaParseTreeCodeGenerator
-                .generatePreinitializeCode()));
+        code.append(processCode(
+                _javaParseTreeCodeGenerator.generatePreinitializeCode()));
         return code.toString();
     }
 
@@ -169,8 +169,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
                 getCodeGenerator());
 
         Set<String> codeBlocks = super.getSharedCode();
-        codeBlocks.add(processCode(_javaParseTreeCodeGenerator
-                .generateSharedCode()));
+        codeBlocks.add(
+                processCode(_javaParseTreeCodeGenerator.generateSharedCode()));
         return codeBlocks;
     }
 
@@ -188,8 +188,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
-        code.append(processCode(_javaParseTreeCodeGenerator
-                .generateWrapupCode()));
+        code.append(
+                processCode(_javaParseTreeCodeGenerator.generateWrapupCode()));
 
         // Free up memory
         _javaParseTreeCodeGenerator = null;
@@ -242,7 +242,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
                 for (int i = 0; i < _actor.inputPortList().size(); i++) {
                     if (generateSimpleName(
                             (IOPort) _actor.inputPortList().get(i))
-                            .equals(name)) {
+                                    .equals(name)) {
                         return new ObjectToken("$get(" + name + ")");
                     }
                 }
@@ -250,8 +250,8 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
                 Attribute attribute = _actor.getAttribute(name);
 
                 if (attribute == null) {
-                    attribute = ModelScope
-                            .getScopedVariable(null, _actor, name);
+                    attribute = ModelScope.getScopedVariable(null, _actor,
+                            name);
                 }
 
                 if (attribute != null) {

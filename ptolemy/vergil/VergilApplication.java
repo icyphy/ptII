@@ -159,7 +159,8 @@ public class VergilApplication extends MoMLApplication {
         } catch (Throwable throwable) {
             new IllegalActionException(null, throwable,
                     "Could not instantiate a Java2d class?"
-                    + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/PDF-renderer").printStackTrace();
+                            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/PDF-renderer")
+                                    .printStackTrace();
         }
     }
 
@@ -246,10 +247,8 @@ public class VergilApplication extends MoMLApplication {
             } catch (SecurityException ex) {
                 if (!_printedSecurityExceptionMessage) {
                     _printedSecurityExceptionMessage = true;
-                    System.out
-                    .println("Warning: Mac OS X: Failed to set the \""
-                            + aboutNameProperty
-                            + "\" property. "
+                    System.out.println("Warning: Mac OS X: Failed to set the \""
+                            + aboutNameProperty + "\" property. "
                             + "(applets and -sandbox always causes this)");
                 }
             }
@@ -340,8 +339,8 @@ public class VergilApplication extends MoMLApplication {
     protected Configuration _createDefaultConfiguration() throws Exception {
         try {
             if (_configurationURL == null) {
-                _configurationURL = specToURL(_basePath
-                        + "/full/configuration.xml");
+                _configurationURL = specToURL(
+                        _basePath + "/full/configuration.xml");
             }
         } catch (IOException ex) {
             try {
@@ -351,8 +350,8 @@ public class VergilApplication extends MoMLApplication {
                 // FIXME: we could do better than this and either
                 // search for configurations or go through a list
                 // of them.
-                _configurationURL = specToURL(_basePath
-                        + "/hyvisual/configuration.xml");
+                _configurationURL = specToURL(
+                        _basePath + "/hyvisual/configuration.xml");
             } catch (IOException ex2) {
                 // Throw the original exception.
                 throw ex;
@@ -365,8 +364,9 @@ public class VergilApplication extends MoMLApplication {
         try {
             configuration = readConfiguration(_configurationURL);
         } catch (Exception ex) {
-            throw new Exception("Failed to read configuration '"
-                    + _configurationURL + "'", ex);
+            throw new Exception(
+                    "Failed to read configuration '" + _configurationURL + "'",
+                    ex);
         }
 
         // Read the user preferences, if any.
@@ -413,7 +413,7 @@ public class VergilApplication extends MoMLApplication {
                         Parameter.class);
         if (applicationBlankPtolemyEffigyAtStartup != null
                 && applicationBlankPtolemyEffigyAtStartup.getExpression()
-                .equals("true")) {
+                        .equals("true")) {
 
             EffigyFactory factory = null;
 
@@ -553,7 +553,7 @@ public class VergilApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = { { "-configuration",
-    "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>" }, };
+            "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>" }, };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -95,8 +95,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                 LayoutHint layoutHint = (LayoutHint) relation
                         .getAttribute("_layoutHint");
                 if (layoutHint != null) {
-                    layoutHintItem = layoutHint.getLayoutHintItem(
-                            link.getHead(), link.getTail());
+                    layoutHintItem = layoutHint
+                            .getLayoutHintItem(link.getHead(), link.getTail());
                     if (layoutHintItem != null) {
                         // Bend points are always considered while a layout operation is
                         // in progress to keep them from being removed. This is not quite
@@ -121,7 +121,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             GeneralPath path = new GeneralPath();
 
             // we need the "real" start and end points, i.e. the anchor points on the sites
-            Point2D[] startEnd = KielerLayoutUtil.getHeadTailPoints(this, bendPointList);
+            Point2D[] startEnd = KielerLayoutUtil.getHeadTailPoints(this,
+                    bendPointList);
             double startX = startEnd[0].getX();
             double startY = startEnd[0].getY();
             double previousX = startX;
@@ -164,10 +165,10 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
 
                 // First make sure that the radius is not
                 // bigger than half one of the arms of the triplets
-                double d0 = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0)
-                        * (y1 - y0));
-                double d1 = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1)
-                        * (y2 - y1));
+                double d0 = Math
+                        .sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+                double d1 = Math
+                        .sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
                 double r = Math.min(_bendRadius, d0);
                 r = Math.min(r, d1);
 
@@ -186,8 +187,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                     // coord to the intermediate coord, and
                     // curve around the corner.
                     path.lineTo((float) intX0, (float) intY0);
-                    path.curveTo((float) x1, (float) y1, (float) x1,
-                            (float) y1, (float) intX1, (float) intY1);
+                    path.curveTo((float) x1, (float) y1, (float) x1, (float) y1,
+                            (float) intX1, (float) intY1);
                     previousX = x2;
                     previousY = y2;
                 }

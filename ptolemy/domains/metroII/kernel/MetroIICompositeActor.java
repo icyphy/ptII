@@ -59,8 +59,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (glp)
  *
  */
-public class MetroIICompositeActor extends TypedCompositeActor implements
-GetFirable {
+public class MetroIICompositeActor extends TypedCompositeActor
+        implements GetFirable {
 
     /**
      * Constructs a MetroIICompositeActor.
@@ -112,7 +112,7 @@ GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                                    throws CollectionAbortedException,
+                            throws CollectionAbortedException,
                             IllegalActionException {
                         getfire(resultHandler);
                     }

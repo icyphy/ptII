@@ -131,8 +131,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CompositeProcessDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public CompositeProcessDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -181,8 +181,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CompositeProcessDirector newObj = (CompositeProcessDirector) super
-                .clone(workspace);
+        CompositeProcessDirector newObj = (CompositeProcessDirector) super.clone(
+                workspace);
         newObj._onFirstIteration = true;
         newObj._inputBranchController = null;
         newObj._outputBranchController = null;
@@ -539,7 +539,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param controller The controller for which registration of a
      *   blocked state will occur.
      */
-    protected synchronized void _controllerBlocked(BranchController controller) {
+    protected synchronized void _controllerBlocked(
+            BranchController controller) {
         if (controller == _inputBranchController) {
             _inputControllerIsBlocked = controller.isBlocked();
         }
@@ -658,16 +659,15 @@ public class CompositeProcessDirector extends ProcessDirector {
 
                             if (execDir == null) {
                                 // This is the top level director - problem!!!
-                                throw new IllegalActionException(
-                                        this,
+                                throw new IllegalActionException(this,
                                         "No executive director exists yet this "
                                                 + "director's composite actor is externally "
                                                 + "deadlocked.");
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
                                 ((CompositeProcessDirector) execDir)
-                                .threadBlocked(Thread.currentThread(),
-                                        null);
+                                        .threadBlocked(Thread.currentThread(),
+                                                null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC
@@ -679,16 +679,15 @@ public class CompositeProcessDirector extends ProcessDirector {
 
                             if (execDir == null) {
                                 // This is the top level director - problem!!!
-                                throw new IllegalActionException(
-                                        this,
+                                throw new IllegalActionException(this,
                                         "No executive director exists yet this "
                                                 + "director's composite actor is externally "
                                                 + "deadlocked.");
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
                                 ((CompositeProcessDirector) execDir)
-                                .threadBlocked(Thread.currentThread(),
-                                        null);
+                                        .threadBlocked(Thread.currentThread(),
+                                                null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC

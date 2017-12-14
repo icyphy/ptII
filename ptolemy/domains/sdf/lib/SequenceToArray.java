@@ -95,9 +95,9 @@ public class SequenceToArray extends SDFTransformer {
         input.setTypeAtLeast(new ArrayElementTypeFunction(output));
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,8 +122,8 @@ public class SequenceToArray extends SDFTransformer {
             int rate = ((IntToken) arrayLength.getToken()).intValue();
 
             if (rate < 0) {
-                throw new IllegalActionException(this, "Invalid arrayLength: "
-                        + rate);
+                throw new IllegalActionException(this,
+                        "Invalid arrayLength: " + rate);
             }
         } else {
             super.attributeChanged(attribute);
@@ -141,10 +141,10 @@ public class SequenceToArray extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequenceToArray newObject = (SequenceToArray) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ActorTypeUtil.arrayOf(
-                    newObject.input, newObject.arrayLength));
-            newObject.input.setTypeAtLeast(new ArrayElementTypeFunction(
-                    newObject.output));
+            newObject.output.setTypeAtLeast(ActorTypeUtil
+                    .arrayOf(newObject.input, newObject.arrayLength));
+            newObject.input.setTypeAtLeast(
+                    new ArrayElementTypeFunction(newObject.output));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

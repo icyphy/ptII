@@ -124,9 +124,7 @@ public class TestEngine {
         System.out.println("\nCreate 1x1 struct r (RecordToken):");
 
         RecordToken tr = new RecordToken(new String[] { "x", "r", "s" },
-                new Token[] {
-                tx,
-                new RecordToken(new String[] { "a" },
+                new Token[] { tx, new RecordToken(new String[] { "a" },
                         new Token[] { new IntToken() }), ts });
         System.out.println("r = " + tr.toString());
         eng.put(engineHandle, "r", tr);
@@ -146,14 +144,14 @@ public class TestEngine {
                 + "an ArrayToken of RecordTokens:");
 
         RecordToken r1 = new RecordToken(new String[] { "a" },
-                new Token[] { new ComplexMatrixToken(new Complex[][] { {
-                    new Complex(1.0, 1.0), new Complex(2.0, 2.0) } }) });
+                new Token[] { new ComplexMatrixToken(new Complex[][] {
+                        { new Complex(1.0, 1.0), new Complex(2.0, 2.0) } }) });
         RecordToken r2 = new RecordToken(new String[] { "a" },
-                new Token[] { new ComplexMatrixToken(new Complex[][] { {
-                    new Complex(3.0, 3.0), new Complex(4.0, 4.0) } }) });
+                new Token[] { new ComplexMatrixToken(new Complex[][] {
+                        { new Complex(3.0, 3.0), new Complex(4.0, 4.0) } }) });
         RecordToken r3 = new RecordToken(new String[] { "a" },
-                new Token[] { new ComplexMatrixToken(new Complex[][] { {
-                    new Complex(5.0, 5.0), new Complex(6.0, 6.0) } }) });
+                new Token[] { new ComplexMatrixToken(new Complex[][] {
+                        { new Complex(5.0, 5.0), new Complex(6.0, 6.0) } }) });
         ta = new ArrayToken(new Token[] { r1, r2, r3 });
         System.out.println("ta = " + ta.toString());
         eng.put(engineHandle, "ta", ta);

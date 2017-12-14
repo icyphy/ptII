@@ -126,8 +126,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
-public class PortParameter extends AbstractInitializableParameter implements
-Initializable {
+public class PortParameter extends AbstractInitializableParameter
+        implements Initializable {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -169,7 +169,8 @@ Initializable {
                 _port = (ParameterPort) existingPort;
                 ((ParameterPort) existingPort)._parameter = this;
             } else {
-                _port = new ParameterPort((ComponentEntity) container, name, this);
+                _port = new ParameterPort((ComponentEntity) container, name,
+                        this);
             }
         }
         _setTypeConstraints();
@@ -190,8 +191,8 @@ Initializable {
      *   a parameter already in the container.
      */
     public PortParameter(NamedObj container, String name,
-            boolean initializeParameterPort) throws IllegalActionException,
-            NameDuplicationException {
+            boolean initializeParameterPort)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // If we get to here, we know the container is a ComponentEntity,
         // so the cast is safe.
@@ -221,8 +222,8 @@ Initializable {
      *   an parameter already in the container.
      */
     public PortParameter(NamedObj container, String name,
-            ptolemy.data.Token token) throws IllegalActionException,
-            NameDuplicationException {
+            ptolemy.data.Token token)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setToken(token);
         if (token != null) {
@@ -321,9 +322,9 @@ Initializable {
             // Attempt to find the port.
             NamedObj container = getContainer();
             if (container instanceof Entity) {
-                Port candidate = ((Entity)container).getPort(getName());
+                Port candidate = ((Entity) container).getPort(getName());
                 if (candidate instanceof ParameterPort) {
-                    _port = (ParameterPort)candidate;
+                    _port = (ParameterPort) candidate;
                     _setTypeConstraints();
                 }
             }
@@ -378,7 +379,7 @@ Initializable {
         if (_port != null && (entity == null || entity instanceof Entity)) {
             try {
                 _settingContainer = true;
-                _port.setContainer((Entity)entity);
+                _port.setContainer((Entity) entity);
             } catch (KernelException ex) {
                 super.setContainer(previousContainer);
                 throw ex;
@@ -536,6 +537,7 @@ Initializable {
     /** Get the persistent expression as a string, to be used to export to MoML.
      *  @return The persistent expression as a string.
      */
+    @Override
     protected String _getCurrentExpression() {
         return _persistentExpression;
     }

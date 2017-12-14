@@ -93,8 +93,8 @@ public class ParentPanel extends JPanel {
         _loadCheck.setMaximumSize(getMinimumSize());
         add(_loadCheck);
 
-        _parentModelLink = new JButton("<html><u>" + _parentModelName
-                + "</html></u>");
+        _parentModelLink = new JButton(
+                "<html><u>" + _parentModelName + "</html></u>");
         _parentModelLink.setForeground(Color.BLUE);
         _parentModelLink.setMaximumSize(getMinimumSize());
         add(_parentModelLink);
@@ -137,8 +137,8 @@ public class ParentPanel extends JPanel {
 
         try {
 
-            imgURL = FileUtilities.nameToURL(path, null, getClass()
-                    .getClassLoader());
+            imgURL = FileUtilities.nameToURL(path, null,
+                    getClass().getClassLoader());
 
         } catch (Exception e) {
 
@@ -202,7 +202,7 @@ public class ParentPanel extends JPanel {
                 JOptionPane.showMessageDialog(this,
                         "The specified model could "
                                 + "not be found in the database.",
-                                "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
+                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 

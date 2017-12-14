@@ -69,8 +69,8 @@ public class QueuedTypedIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public QueuedTypedIOPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
+            boolean isInput, boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
 
         myQueue = new LinkedList<Token>();
@@ -161,8 +161,8 @@ public class QueuedTypedIOPort extends TypedIOPort {
      * @exception IllegalActionException If super class throws it.
      * @exception NoRoomException If super class throws it.
      */
-    public void resend(int channelIndex) throws IllegalActionException,
-    NoRoomException {
+    public void resend(int channelIndex)
+            throws IllegalActionException, NoRoomException {
         if (latency != 0) {
             super.send(channelIndex, _oldToken);
         }

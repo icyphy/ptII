@@ -123,7 +123,8 @@ public class CSPMultiSink extends CSPActor {
                 ConditionalBranch[] branches = new ConditionalBranch[size];
 
                 for (i = 0; i < size; i++) {
-                    branches[i] = new ConditionalReceive(guards[i], input, i, i);
+                    branches[i] = new ConditionalReceive(guards[i], input, i,
+                            i);
                 }
 
                 int successfulBranch = chooseBranch(branches);
@@ -180,7 +181,7 @@ public class CSPMultiSink extends CSPActor {
             for (int i = 0; i < input.getWidth(); i++) {
                 System.out.println("MultiSink: Branch " + i
                         + " successfully  rendezvoused " + _branchCount[i]
-                                + " times.");
+                        + " times.");
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,

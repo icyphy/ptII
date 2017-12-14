@@ -160,7 +160,7 @@ public class SuperdenseDependency extends BooleanDependency {
         // NOTE: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((SuperdenseDependency) dependency)._time < _time
                 || ((SuperdenseDependency) dependency)._time == _time
-                && ((SuperdenseDependency) dependency)._index < _index) {
+                        && ((SuperdenseDependency) dependency)._index < _index) {
             return dependency;
         }
         return this;
@@ -196,8 +196,8 @@ public class SuperdenseDependency extends BooleanDependency {
         if (((SuperdenseDependency) dependency)._time == 0.0) {
             index = _index + ((SuperdenseDependency) dependency)._index;
         }
-        return new SuperdenseDependency(_time
-                + ((SuperdenseDependency) dependency)._time, index);
+        return new SuperdenseDependency(
+                _time + ((SuperdenseDependency) dependency)._time, index);
     }
 
     /** Return the dependency that when multiplied by any other

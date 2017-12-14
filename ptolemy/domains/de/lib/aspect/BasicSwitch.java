@@ -314,7 +314,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
         // been received; _nextTimeFree could be null.
-        if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
+        if (_nextFireTime != null
+                && currentTime.compareTo(_nextFireTime) == 0) {
 
             // move tokens from input queue to switch fabric
 
@@ -327,8 +328,9 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                         if (_switchFabricQueue.size() > 0) {
                             lastTimeStamp = _switchFabricQueue.last().timeStamp;
                         }
-                        _switchFabricQueue.add(new TimedEvent(lastTimeStamp
-                                .add(_switchFabricDelay), event.contents));
+                        _switchFabricQueue.add(new TimedEvent(
+                                lastTimeStamp.add(_switchFabricDelay),
+                                event.contents));
                         _inputTokens.get(i).remove(event);
                     }
                 }
@@ -349,11 +351,13 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                     int outputPortID = _getPortID(receiver, false);
                     Time lastTimeStamp = currentTime;
                     if (_outputTokens.get(outputPortID).size() > 0) {
-                        lastTimeStamp = _outputTokens.get(outputPortID).last().timeStamp;
+                        lastTimeStamp = _outputTokens.get(outputPortID)
+                                .last().timeStamp;
                     }
-                    _outputTokens.get(outputPortID).add(
-                            new TimedEvent(lastTimeStamp
-                                    .add(_outputBufferDelay), event.contents));
+                    _outputTokens.get(outputPortID)
+                            .add(new TimedEvent(
+                                    lastTimeStamp.add(_outputBufferDelay),
+                                    event.contents));
                     _switchFabricQueue.remove(event);
                 }
             }
@@ -420,8 +424,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
         if (_inputTokens.get(inputPortID).size() > 0) {
             lastTimeStamp = _inputTokens.get(inputPortID).last().timeStamp;
         }
-        _inputTokens.get(inputPortID).add(
-                new TimedEvent(lastTimeStamp.add(_inputBufferDelay),
+        _inputTokens.get(inputPortID)
+                .add(new TimedEvent(lastTimeStamp.add(_inputBufferDelay),
                         new Object[] { receiver, token }));
         _tokenCount++;
         sendCommunicationEvent((Actor) source.getContainer().getContainer(), 0,
@@ -458,7 +462,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
                 // already exist, and associate it with this decorator.
                 BasicSwitchAttributes decoratorAttributes = (BasicSwitchAttributes) decoratedObject
                         .getDecoratorAttributes(this);
-                setPortIn((IOPort) decoratedObject, decoratorAttributes._portIn);
+                setPortIn((IOPort) decoratedObject,
+                        decoratorAttributes._portIn);
                 setPortOut((IOPort) decoratedObject,
                         decoratorAttributes._portOut);
             }
@@ -547,7 +552,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
     protected void _scheduleRefire() throws IllegalActionException {
         _nextFireTime = Time.POSITIVE_INFINITY;
         for (int i = 0; i < _numberOfPorts; i++) {
-            _nextFireTime = _getNextFireTime(_nextFireTime, _inputTokens.get(i));
+            _nextFireTime = _getNextFireTime(_nextFireTime,
+                    _inputTokens.get(i));
             _nextFireTime = _getNextFireTime(_nextFireTime,
                     _outputTokens.get(i));
         }
@@ -599,8 +605,8 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  are going out of the switch.
      *  @author Patricia Derler
      */
-    public static class BasicSwitchAttributes extends
-    CommunicationAspectAttributes {
+    public static class BasicSwitchAttributes
+            extends CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.

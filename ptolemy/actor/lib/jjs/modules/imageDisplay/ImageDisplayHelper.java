@@ -33,10 +33,10 @@ import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import ptolemy.data.AWTImageToken;
 import ptolemy.media.Picture;
-
 
 /** Helper for the imageDisplay JavaScript module.
 
@@ -52,11 +52,11 @@ public class ImageDisplayHelper {
     public ImageDisplayHelper() {
         // This has to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
-                @Override
-                public void run() {
-                    _createOrShowWindow();
-                }
-            };
+            @Override
+            public void run() {
+                _createOrShowWindow();
+            }
+        };
 
         SwingUtilities.invokeLater(doDisplay);
     }
@@ -71,11 +71,11 @@ public class ImageDisplayHelper {
     public void displayImage(AWTImageToken imageToken) {
         // Display probably to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
-                @Override
-                public void run() {
-                    _display(imageToken);
-                }
-            };
+            @Override
+            public void run() {
+                _display(imageToken);
+            }
+        };
 
         SwingUtilities.invokeLater(doDisplay);
     }
@@ -83,8 +83,7 @@ public class ImageDisplayHelper {
     private void _createOrShowWindow() {
         if (_frame == null) {
             _frame = new JFrame();
-            _frame.setDefaultCloseOperation
-                (JFrame.DISPOSE_ON_CLOSE);
+            _frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
             if (_picture == null) {
                 // Create the pane.
@@ -133,7 +132,6 @@ public class ImageDisplayHelper {
                     ((JFrame) c).pack();
                 }
             }
-
 
         } else {
             _picture.setImage(image);

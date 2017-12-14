@@ -158,7 +158,7 @@ public class ActorRecursion extends TypedCompositeActor {
             getDirector().initialize();
             _transferOutputs();
             ((DDFDirector) getExecutiveDirector())
-            .merge((DDFDirector) getDirector());
+                    .merge((DDFDirector) getDirector());
 
             try {
                 // get rid of the local director.
@@ -256,11 +256,11 @@ public class ActorRecursion extends TypedCompositeActor {
 
         if (_recursionActor.inputPortList().size() != inputPortList().size()
                 || _recursionActor.outputPortList().size() != outputPortList()
-                .size()) {
-            throw new IllegalActionException(this, "The recursionActor "
-                    + recursionActor.stringValue()
-                    + " must have the same number of input ports and "
-                    + "same number of output ports as this actor.");
+                        .size()) {
+            throw new IllegalActionException(this,
+                    "The recursionActor " + recursionActor.stringValue()
+                            + " must have the same number of input ports and "
+                            + "same number of output ports as this actor.");
         }
 
         Iterator ports = portList().iterator();
@@ -282,38 +282,41 @@ public class ActorRecursion extends TypedCompositeActor {
             TypedIOPort matchingPort = (TypedIOPort) matching;
 
             if (port.getWidth() != matchingPort.getWidth()) {
-                throw new IllegalActionException(this, "The matching ports: "
-                        + port.getFullName() + " and "
-                        + matchingPort.getFullName()
-                        + " must have the same width. Port "
-                        + port.getFullName() + "'s width " + port.getWidth()
-                        + " is not equal to " + matchingPort.getFullName()
-                        + "'s width " + matchingPort.getWidth() + ".");
+                throw new IllegalActionException(this,
+                        "The matching ports: " + port.getFullName() + " and "
+                                + matchingPort.getFullName()
+                                + " must have the same width. Port "
+                                + port.getFullName() + "'s width "
+                                + port.getWidth() + " is not equal to "
+                                + matchingPort.getFullName() + "'s width "
+                                + matchingPort.getWidth() + ".");
             }
 
-            if (port.isInput() && !matchingPort.isInput() || port.isOutput()
-                    && !matchingPort.isOutput()) {
-                throw new IllegalActionException(this, "The matching ports: "
-                        + port.getFullName() + " and "
-                        + matchingPort.getFullName()
-                        + " must be both input ports or output ports.");
+            if (port.isInput() && !matchingPort.isInput()
+                    || port.isOutput() && !matchingPort.isOutput()) {
+                throw new IllegalActionException(this,
+                        "The matching ports: " + port.getFullName() + " and "
+                                + matchingPort.getFullName()
+                                + " must be both input ports or output ports.");
             }
 
             Type portType = port.getType();
             Type matchingPortType = matchingPort.getType();
 
             if (port.isInput() && !matchingPortType.isCompatible(portType)) {
-                throw new IllegalActionException(this, "The type of the port "
-                        + port.getName() + " of the actor " + getName()
-                        + " must be equal to or less than "
-                        + "that of the matching port.");
+                throw new IllegalActionException(this,
+                        "The type of the port " + port.getName()
+                                + " of the actor " + getName()
+                                + " must be equal to or less than "
+                                + "that of the matching port.");
             }
 
             if (port.isOutput() && !portType.isCompatible(matchingPortType)) {
-                throw new IllegalActionException(this, "The type of the port "
-                        + port.getName() + " of the actor " + getName()
-                        + " must be equal to or greater than "
-                        + "that of the matching port.");
+                throw new IllegalActionException(this,
+                        "The type of the port " + port.getName()
+                                + " of the actor " + getName()
+                                + " must be equal to or greater than "
+                                + "that of the matching port.");
             }
         }
 
@@ -330,8 +333,8 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception CloneNotSupportedException If the CompositeActor cannot
      *   be cloned.
      */
-    private void _cloneRecursionActor() throws IllegalActionException,
-    CloneNotSupportedException {
+    private void _cloneRecursionActor()
+            throws IllegalActionException, CloneNotSupportedException {
         try {
             // Clone the composite actor.
             CompositeActor clone = (CompositeActor) _recursionActor
@@ -534,7 +537,7 @@ public class ActorRecursion extends TypedCompositeActor {
             }
 
             IntToken[] productionRateToken = new IntToken[outputPort
-                                                          .getWidthInside()];
+                    .getWidthInside()];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);
@@ -555,8 +558,8 @@ public class ActorRecursion extends TypedCompositeActor {
                 }
             }
 
-            rateVariable.setToken(new ArrayToken(BaseType.INT,
-                    productionRateToken));
+            rateVariable.setToken(
+                    new ArrayToken(BaseType.INT, productionRateToken));
         }
     }
 

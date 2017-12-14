@@ -111,15 +111,13 @@ public class StreamExec implements ExecuteCommands {
             }
         }
 
-        if (path == null
-                || path.indexOf(File.pathSeparatorChar + directoryName
-                        + File.pathSeparatorChar) == -1) {
+        if (path == null || path.indexOf(File.pathSeparatorChar + directoryName
+                + File.pathSeparatorChar) == -1) {
             if (_debug) {
                 stdout("StreamExec.appendToPath() updating\n");
             }
-            _envp = StreamExec.updateEnvironment(keyPath,
-                    File.pathSeparatorChar + directoryName
-                    + File.pathSeparatorChar);
+            _envp = StreamExec.updateEnvironment(keyPath, File.pathSeparatorChar
+                    + directoryName + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging

@@ -87,12 +87,15 @@ public class CryptoHelper extends HelperBase {
      *  @return The hash length for the hash algorithm.
      *  @exception IllegalActionException If the specified hash algorithm is not available.
      */
-    public int getHashLength(String hashAlgorithm) throws IllegalActionException {
+    public int getHashLength(String hashAlgorithm)
+            throws IllegalActionException {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
+            MessageDigest messageDigest = MessageDigest
+                    .getInstance(hashAlgorithm);
             return messageDigest.getDigestLength();
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalActionException(null, e, "Failed to find MessageDigest algorithm.");
+            throw new IllegalActionException(null, e,
+                    "Failed to find MessageDigest algorithm.");
         }
     }
 
@@ -106,7 +109,8 @@ public class CryptoHelper extends HelperBase {
             Mac mac = Mac.getInstance(macAlgorithm);
             return mac.getMacLength();
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalActionException(null, e, "Failed to find MAC algorithm.");
+            throw new IllegalActionException(null, e,
+                    "Failed to find MAC algorithm.");
         }
     }
 
@@ -116,12 +120,15 @@ public class CryptoHelper extends HelperBase {
      *  @return The hash digested for the given input.
      *  @exception IllegalActionException If the specified hash algorithm is not available.
      */
-    public Object hash(Object input, String hashAlgorithm) throws IllegalActionException {
+    public Object hash(Object input, String hashAlgorithm)
+            throws IllegalActionException {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
+            MessageDigest messageDigest = MessageDigest
+                    .getInstance(hashAlgorithm);
             return _toJSArray(messageDigest.digest(_toJavaBytes(input)));
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalActionException(null, e, "Failed to initialize messageDigest.");
+            throw new IllegalActionException(null, e,
+                    "Failed to initialize messageDigest.");
         }
     }
 
@@ -132,14 +139,17 @@ public class CryptoHelper extends HelperBase {
      *  @return The resulting HMAC.
      *  @exception IllegalActionException If the HMAC calculation fails.
      */
-    public Object hmac(Object input, Object key, String hmacAlgorithm) throws IllegalActionException {
+    public Object hmac(Object input, Object key, String hmacAlgorithm)
+            throws IllegalActionException {
         try {
-            SecretKeySpec hmacKey = new SecretKeySpec(_toJavaBytes(key), hmacAlgorithm);
+            SecretKeySpec hmacKey = new SecretKeySpec(_toJavaBytes(key),
+                    hmacAlgorithm);
             Mac hmac = Mac.getInstance(hmacAlgorithm);
             hmac.init(hmacKey);
             return _toJSArray(hmac.doFinal(_toJavaBytes(input)));
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new IllegalActionException(null, e, "Failed to calculate hmac.");
+            throw new IllegalActionException(null, e,
+                    "Failed to calculate hmac.");
         }
     }
 
@@ -148,17 +158,21 @@ public class CryptoHelper extends HelperBase {
      *  @return PrivateKey object loaded from the file.
      *  @exception IllegalActionException If there is a problem with loading the private key.
      */
-    public PrivateKey loadPrivateKey(String filePath) throws IllegalActionException {
+    public PrivateKey loadPrivateKey(String filePath)
+            throws IllegalActionException {
         if (!filePath.endsWith(".der")) {
-            throw new IllegalArgumentException("Private key should be in DER format. " + filePath);
+            throw new IllegalArgumentException(
+                    "Private key should be in DER format. " + filePath);
         }
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(_readBinaryFile(filePath));
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(
+                _readBinaryFile(filePath));
         KeyFactory keyFactory;
         try {
             keyFactory = KeyFactory.getInstance("RSA");
             return keyFactory.generatePrivate(keySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new IllegalArgumentException("Problem loading private key " + filePath, e);
+            throw new IllegalArgumentException(
+                    "Problem loading private key " + filePath, e);
         }
     }
 
@@ -167,22 +181,27 @@ public class CryptoHelper extends HelperBase {
      *  @return PublicKey object loaded from the certificate.
      *  @exception IllegalActionException If there is a problem with loading the public key.
      */
-    public PublicKey loadPublicKey(String filePath) throws IllegalActionException {
+    public PublicKey loadPublicKey(String filePath)
+            throws IllegalActionException {
         FileInputStream inStream = null;
         try {
-            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            CertificateFactory certFactory = CertificateFactory
+                    .getInstance("X.509");
             File file = FileUtilities.nameToFile(filePath, null);
             inStream = new FileInputStream(file);
-            X509Certificate cert = (X509Certificate) certFactory.generateCertificate(inStream);
+            X509Certificate cert = (X509Certificate) certFactory
+                    .generateCertificate(inStream);
             return cert.getPublicKey();
         } catch (CertificateException | FileNotFoundException e) {
-            throw new IllegalArgumentException("Problem loading public key " + filePath, e);
+            throw new IllegalArgumentException(
+                    "Problem loading public key " + filePath, e);
         } finally {
             if (inStream != null) {
                 try {
                     inStream.close();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(null, ex, "Failed to close " + filePath);
+                    throw new IllegalActionException(null, ex,
+                            "Failed to close " + filePath);
                 }
             }
         }
@@ -195,9 +214,10 @@ public class CryptoHelper extends HelperBase {
      *  @return The decrypted result in a JavaScript integer array.
      *  @exception IllegalActionException If the private key decryption fails.
      */
-    public Object privateDecrypt(Object input, PrivateKey privateKey, String cipherAlgorithm)
-            throws IllegalActionException {
-        return _performAsymmetricCrypto(Cipher.DECRYPT_MODE, input, privateKey, cipherAlgorithm);
+    public Object privateDecrypt(Object input, PrivateKey privateKey,
+            String cipherAlgorithm) throws IllegalActionException {
+        return _performAsymmetricCrypto(Cipher.DECRYPT_MODE, input, privateKey,
+                cipherAlgorithm);
     }
 
     /** Encrypt the input with an asymmetric cipher public key and return the encrypted result.
@@ -207,9 +227,10 @@ public class CryptoHelper extends HelperBase {
      *  @return The encrypted result in a JavaScript integer array.
      *  @exception IllegalActionException If the public key encryption fails.
      */
-    public Object publicEncrypt(Object input, PublicKey publicKey, String cipherAlgorithm)
-            throws IllegalActionException {
-        return _performAsymmetricCrypto(Cipher.ENCRYPT_MODE, input, publicKey, cipherAlgorithm);
+    public Object publicEncrypt(Object input, PublicKey publicKey,
+            String cipherAlgorithm) throws IllegalActionException {
+        return _performAsymmetricCrypto(Cipher.ENCRYPT_MODE, input, publicKey,
+                cipherAlgorithm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -231,16 +252,17 @@ public class CryptoHelper extends HelperBase {
      *  @return Signature calculated from the input data.
      *  @exception IllegalActionException
      */
-    public Object signWithPrivateKey(Object input, PrivateKey privateKey, String signAlgorithm)
-            throws IllegalActionException {
+    public Object signWithPrivateKey(Object input, PrivateKey privateKey,
+            String signAlgorithm) throws IllegalActionException {
         try {
             Signature signer = Signature.getInstance(signAlgorithm);
             signer.initSign(privateKey); // cf) initVerify
             signer.update(_toJavaBytes(input));
             return _toJSArray(signer.sign());
-        }
-        catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-            throw new IllegalArgumentException("Problem signing with private key.", e);
+        } catch (NoSuchAlgorithmException | InvalidKeyException
+                | SignatureException e) {
+            throw new IllegalArgumentException(
+                    "Problem signing with private key.", e);
         }
     }
 
@@ -251,9 +273,11 @@ public class CryptoHelper extends HelperBase {
      *  @return The encrypted result in JavaScript byte array.
      *  @exception IllegalActionException If the decryption fails.
      */
-    public Object symmetricDecrypt(Object input, Object key, String cipherAlgorithm) throws IllegalActionException {
+    public Object symmetricDecrypt(Object input, Object key,
+            String cipherAlgorithm) throws IllegalActionException {
         byte[] cipherText = _toJavaBytes(input);
-        Cipher cipher = _getCipher(Cipher.DECRYPT_MODE, cipherAlgorithm, _toJavaBytes(key), cipherText);
+        Cipher cipher = _getCipher(Cipher.DECRYPT_MODE, cipherAlgorithm,
+                _toJavaBytes(key), cipherText);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -262,9 +286,12 @@ public class CryptoHelper extends HelperBase {
             ivSize = cipher.getIV().length;
         }
         try {
-            byteArrayOutputStream.write(cipher.doFinal(cipherText, ivSize, cipherText.length - ivSize));
-        } catch (IllegalBlockSizeException | BadPaddingException | IOException e) {
-            throw new IllegalArgumentException("Problem processing " + input, e);
+            byteArrayOutputStream.write(cipher.doFinal(cipherText, ivSize,
+                    cipherText.length - ivSize));
+        } catch (IllegalBlockSizeException | BadPaddingException
+                | IOException e) {
+            throw new IllegalArgumentException("Problem processing " + input,
+                    e);
         }
         return _toJSArray(byteArrayOutputStream.toByteArray());
     }
@@ -276,8 +303,10 @@ public class CryptoHelper extends HelperBase {
      *  @return The encrypted result in JavaScript byte array.
      *  @exception IllegalActionException If the encryption fails.
      */
-    public Object symmetricEncrypt(Object input, Object key, String cipherAlgorithm) throws IllegalActionException {
-        Cipher cipher = _getCipher(Cipher.ENCRYPT_MODE, cipherAlgorithm, _toJavaBytes(key), null);
+    public Object symmetricEncrypt(Object input, Object key,
+            String cipherAlgorithm) throws IllegalActionException {
+        Cipher cipher = _getCipher(Cipher.ENCRYPT_MODE, cipherAlgorithm,
+                _toJavaBytes(key), null);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
@@ -287,8 +316,10 @@ public class CryptoHelper extends HelperBase {
                 byteArrayOutputStream.write(initVector);
             }
             byteArrayOutputStream.write(cipher.doFinal(_toJavaBytes(input)));
-        } catch (IllegalBlockSizeException | BadPaddingException | IOException e) {
-            throw new IllegalArgumentException("Problem processing " + input, e);
+        } catch (IllegalBlockSizeException | BadPaddingException
+                | IOException e) {
+            throw new IllegalArgumentException("Problem processing " + input,
+                    e);
         }
         return _toJSArray(byteArrayOutputStream.toByteArray());
     }
@@ -301,7 +332,8 @@ public class CryptoHelper extends HelperBase {
      *  @return Whether the signature is valid.
      *  @exception IllegalArgumentException
      */
-    public boolean verifySignature(Object data, Object signature, PublicKey publicKey, String signAlgorithm)
+    public boolean verifySignature(Object data, Object signature,
+            PublicKey publicKey, String signAlgorithm)
             throws IllegalArgumentException {
         Signature verifier;
         try {
@@ -309,8 +341,10 @@ public class CryptoHelper extends HelperBase {
             verifier.initVerify(publicKey);
             verifier.update(_toJavaBytes(data));
             return verifier.verify(_toJavaBytes(signature));
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | IllegalActionException e) {
-            throw new IllegalArgumentException("Problem verifying signature", e);
+        } catch (NoSuchAlgorithmException | InvalidKeyException
+                | SignatureException | IllegalActionException e) {
+            throw new IllegalArgumentException("Problem verifying signature",
+                    e);
         }
     }
 
@@ -327,11 +361,13 @@ public class CryptoHelper extends HelperBase {
      *  @return An initialized Java Cipher object.
      *  @exception IllegalArgumentException If the Java Cipher object cannot be initialized.
      */
-    private Cipher _getCipher(int operationMode, String cipherAlgorithm, byte[] cipherKey, byte[] cipherText)
+    private Cipher _getCipher(int operationMode, String cipherAlgorithm,
+            byte[] cipherKey, byte[] cipherText)
             throws IllegalArgumentException {
         String[] tokens = cipherAlgorithm.split("-");
         if (tokens.length < 1) {
-            throw new IllegalArgumentException("Invalid cipher algorithm: " + cipherAlgorithm);
+            throw new IllegalArgumentException(
+                    "Invalid cipher algorithm: " + cipherAlgorithm);
         }
         int keySize = 0;
         int blockSize = 0;
@@ -344,7 +380,8 @@ public class CryptoHelper extends HelperBase {
             blockSize = 16;
 
             if (tokens.length != 3) {
-                throw new IllegalArgumentException("Invalid cipher algorithm: " + cipherAlgorithm);
+                throw new IllegalArgumentException(
+                        "Invalid cipher algorithm: " + cipherAlgorithm);
             }
 
             if (tokens[1].equals("128")) {
@@ -354,7 +391,8 @@ public class CryptoHelper extends HelperBase {
             } else if (tokens[1].equals("256")) {
                 keySize = 32;
             } else {
-                throw new IllegalArgumentException("Invalid key size: " + cipherAlgorithm);
+                throw new IllegalArgumentException(
+                        "Invalid key size: " + cipherAlgorithm);
             }
 
             if (tokens[2].equals("ECB")) {
@@ -363,7 +401,8 @@ public class CryptoHelper extends HelperBase {
                 cipherMode = tokens[2];
                 ivSize = blockSize;
             } else {
-                throw new IllegalArgumentException("Invalid cipher mode: " + cipherAlgorithm);
+                throw new IllegalArgumentException(
+                        "Invalid cipher mode: " + cipherAlgorithm);
             }
         } else if (tokens[0].equals("DES")) {
             // 8 bytes, each byte with 7bit key and 1 parity -> total 56bits key used
@@ -372,7 +411,8 @@ public class CryptoHelper extends HelperBase {
             blockSize = 8;
 
             if (tokens.length != 2) {
-                throw new IllegalArgumentException("Invalid cipher algorithm: " + cipherAlgorithm);
+                throw new IllegalArgumentException(
+                        "Invalid cipher algorithm: " + cipherAlgorithm);
             }
 
             if (tokens[1].equals("ECB")) {
@@ -381,16 +421,20 @@ public class CryptoHelper extends HelperBase {
                 cipherMode = tokens[1];
                 ivSize = blockSize;
             } else {
-                throw new IllegalArgumentException("Invalid cipher mode: " + cipherAlgorithm);
+                throw new IllegalArgumentException(
+                        "Invalid cipher mode: " + cipherAlgorithm);
             }
         } else {
-            throw new IllegalArgumentException("Invalid cipher: " + cipherAlgorithm);
+            throw new IllegalArgumentException(
+                    "Invalid cipher: " + cipherAlgorithm);
         }
         Cipher cipher;
         try {
-            cipher = Cipher.getInstance(cipherName + "/" + cipherMode + "/PKCS5Padding");
+            cipher = Cipher.getInstance(
+                    cipherName + "/" + cipherMode + "/PKCS5Padding");
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new IllegalArgumentException("Invalid cipher algorithm: " + cipherAlgorithm, e);
+            throw new IllegalArgumentException(
+                    "Invalid cipher algorithm: " + cipherAlgorithm, e);
         }
 
         IvParameterSpec ivSpec = null;
@@ -406,7 +450,8 @@ public class CryptoHelper extends HelperBase {
         }
 
         if (cipherKey.length != keySize) {
-            throw new IllegalArgumentException("Invalid cipher key length: " + cipherAlgorithm);
+            throw new IllegalArgumentException(
+                    "Invalid cipher key length: " + cipherAlgorithm);
         }
 
         SecretKeySpec secretKeySpec = new SecretKeySpec(cipherKey, cipherName);
@@ -418,7 +463,8 @@ public class CryptoHelper extends HelperBase {
                 cipher.init(operationMode, secretKeySpec);
             }
         } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
-            throw new IllegalArgumentException("Invalid cipher algorithm: " + cipherAlgorithm, e);
+            throw new IllegalArgumentException(
+                    "Invalid cipher algorithm: " + cipherAlgorithm, e);
         }
 
         return cipher;
@@ -445,15 +491,16 @@ public class CryptoHelper extends HelperBase {
      *  @return The cryptography operation result
      *  @exception IllegalActionException If the cryptography operation fails.
      */
-    private Object _performAsymmetricCrypto(int operationMode, Object input, Key key, String cipherAlgorithm)
-            throws IllegalActionException {
+    private Object _performAsymmetricCrypto(int operationMode, Object input,
+            Key key, String cipherAlgorithm) throws IllegalActionException {
         Cipher cipher = null;
         try {
             // RSA/NONE/OAEPPadding =? Cipher.RSA_PKCS1_OAEP_PADDING
             //cipher = Cipher.getInstance("RSA/NONE/OAEPPadding");
             cipher = Cipher.getInstance(cipherAlgorithm);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new IllegalArgumentException("Problem getting instance " + input, e);
+            throw new IllegalArgumentException(
+                    "Problem getting instance " + input, e);
         }
 
         try {
@@ -465,8 +512,10 @@ public class CryptoHelper extends HelperBase {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             byteArrayOutputStream.write(cipher.doFinal(_toJavaBytes(input)));
-        } catch (IllegalBlockSizeException | BadPaddingException | IOException e) {
-            throw new IllegalArgumentException("Problem processing crypto " + input, e);
+        } catch (IllegalBlockSizeException | BadPaddingException
+                | IOException e) {
+            throw new IllegalArgumentException(
+                    "Problem processing crypto " + input, e);
         }
         return _toJSArray(byteArrayOutputStream.toByteArray());
     }
@@ -475,7 +524,8 @@ public class CryptoHelper extends HelperBase {
      *  @param filePath The path of the file to be read.
      *  @return A Java byte array with the file contents.
      */
-    private byte[] _readBinaryFile(String filePath) throws IllegalActionException {
+    private byte[] _readBinaryFile(String filePath)
+            throws IllegalActionException {
         File file = FileUtilities.nameToFile(filePath, null);
         DataInputStream dataInStream = null;
         try {
@@ -484,15 +534,15 @@ public class CryptoHelper extends HelperBase {
             dataInStream.readFully(bytes);
             return bytes;
         } catch (IOException ex) {
-            throw new IllegalActionException(null, ex, "Exception while reading "
-                    + filePath);
+            throw new IllegalActionException(null, ex,
+                    "Exception while reading " + filePath);
         } finally {
             if (dataInStream != null) {
                 try {
                     dataInStream.close();
                 } catch (IOException ex2) {
-                    throw new IllegalActionException(null, ex2, "Failed to close "
-                            + filePath);
+                    throw new IllegalActionException(null, ex2,
+                            "Failed to close " + filePath);
                 }
             }
         }

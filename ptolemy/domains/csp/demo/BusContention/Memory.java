@@ -145,8 +145,8 @@ public class Memory extends CSPActor {
 
             // Send Branches
             for (int i = 0; i < _numOutChannels; i++) {
-                branches[i + _numInChannels] = new ConditionalSend(true,
-                        output, i, i + _numInChannels, token);
+                branches[i + _numInChannels] = new ConditionalSend(true, output,
+                        i, i + _numInChannels, token);
             }
 
             int br = chooseBranch(branches);

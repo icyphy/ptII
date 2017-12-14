@@ -77,8 +77,8 @@ public class Butterfly extends TypedCompositeActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Butterfly(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public Butterfly(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         setName("Butterfly");
 

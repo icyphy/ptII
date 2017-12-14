@@ -76,13 +76,13 @@ public class StringSubstring extends Transformer {
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
         new SingletonParameter(start.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         stop = new PortParameter(this, "stop");
         stop.setExpression("0");
         stop.setTypeEquals(BaseType.INT);
         new SingletonParameter(stop.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         input.setTypeEquals(BaseType.STRING);
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
@@ -133,8 +133,8 @@ public class StringSubstring extends Transformer {
             if (stopValue < startValue) {
                 if (value.length() < startValue) {
                     throw new IllegalActionException(this,
-                            "Cannot compute substring of " + "\"" + value
-                                    + "\"" + " starting at " + startValue);
+                            "Cannot compute substring of " + "\"" + value + "\""
+                                    + " starting at " + startValue);
                 }
                 substringValue = value.substring(startValue);
             } else {

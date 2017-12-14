@@ -343,8 +343,8 @@ public class TransformedFigureTutorial {
             _transformContext.push(g);
 
             // Paint the big cloud
-            AlphaComposite c = AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER, 0.3f);
+            AlphaComposite c = AlphaComposite
+                    .getInstance(AlphaComposite.SRC_OVER, 0.3f);
             g.setComposite(c);
             g.setPaint(Color.magenta);
             g.fill(_shape);

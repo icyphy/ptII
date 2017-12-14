@@ -174,7 +174,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      *  of the static public instances of the inner class Visibility.
      *  This is enforced by making it impossible to construct instances
      *  of this inner class outside this interface definition.
-
+    
      *  @param visibility The visibility of this Settable.
      *  @see #getVisibility()
      */

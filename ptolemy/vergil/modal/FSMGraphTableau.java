@@ -79,8 +79,8 @@ public class FSMGraphTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public FSMGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();

@@ -62,8 +62,8 @@ import ptolemy.plot.Plot;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class CommunicationAspectMonitor extends TypedAtomicActor implements
-CommunicationAspectListener {
+public class CommunicationAspectMonitor extends TypedAtomicActor
+        implements CommunicationAspectListener {
 
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -114,8 +114,8 @@ CommunicationAspectListener {
      *  @param event The type of the event. e.g. message received, message sent, ...
      */
     @Override
-    public void event(final CommunicationAspect qm, Actor source,
-            int messageId, int messageCnt, double time, EventType event) {
+    public void event(final CommunicationAspect qm, Actor source, int messageId,
+            int messageCnt, double time, EventType event) {
 
         if (plot == null) {
             return;
@@ -166,8 +166,9 @@ CommunicationAspectListener {
                 plot.addLegend(idx, ((NamedObj) aspect).getName());
                 plot.addPoint(idx, 0.0, /*idx*/0, false);
                 colors[idx] = ((ColorAttribute) ((NamedObj) aspect)
-                        .getAttribute(CommunicationAspect.decoratorHighlightColorName))
-                        .asColor();
+                        .getAttribute(
+                                CommunicationAspect.decoratorHighlightColorName))
+                                        .asColor();
             }
 
             plot.doLayout();
@@ -203,8 +204,8 @@ CommunicationAspectListener {
          *                    the container.
          */
         public CommunicationAspectMonitorEditorFactory(NamedObj container,
-                String name) throws IllegalActionException,
-                NameDuplicationException {
+                String name)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

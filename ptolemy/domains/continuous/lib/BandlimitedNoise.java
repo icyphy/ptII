@@ -145,8 +145,8 @@ public class BandlimitedNoise extends Gaussian {
             // Not the first firing after initialize.
             // Use the quantized version of the interval.
             // Note that this will never be zero.
-            double timeGapBetweenValues = _timeOfValueAtEnd.subtract(
-                    _timeOfValueAtStart).getDoubleValue();
+            double timeGapBetweenValues = _timeOfValueAtEnd
+                    .subtract(_timeOfValueAtStart).getDoubleValue();
             // The time interval, however, may be zero.
             double interval = currentTime.subtract(_timeOfValueAtStart)
                     .getDoubleValue();
@@ -238,8 +238,8 @@ public class BandlimitedNoise extends Gaussian {
         super._generateRandomNumber();
         _valueAtEnd = _current;
 
-        double period = 1.0 / ((DoubleToken) bandwidth.getToken())
-                .doubleValue();
+        double period = 1.0
+                / ((DoubleToken) bandwidth.getToken()).doubleValue();
         _timeOfValueAtEnd = _timeOfValueAtStart.add(period);
     }
 

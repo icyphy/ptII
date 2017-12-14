@@ -108,10 +108,8 @@ public class AttributeChangeToken extends Token {
         int result = 1;
         result = prime * result
                 + (_expression == null ? 0 : _expression.hashCode());
-        result = prime
-                * result
-                + (_targetSettableName == null ? 0 : _targetSettableName
-                        .hashCode());
+        result = prime * result + (_targetSettableName == null ? 0
+                : _targetSettableName.hashCode());
         return result;
     }
 

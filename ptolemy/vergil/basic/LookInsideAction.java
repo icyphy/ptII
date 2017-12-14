@@ -112,8 +112,8 @@ public class LookInsideAction extends FigureAction {
             // Use L, which used to be used for layout.
             // Avoid Control_O, which is open file.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_L,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
     }
 
@@ -193,9 +193,8 @@ public class LookInsideAction extends FigureAction {
                     // We accomplish this by substituting a new effigy.
                     // This technique is borrowed from what is done in
                     // PtolemyFrame.getEffigy().
-                    PtolemyEffigy newEffigy = new PtolemyEffigy(
-                            containerEffigy, containerEffigy.uniqueName(model
-                                    .getName())) {
+                    PtolemyEffigy newEffigy = new PtolemyEffigy(containerEffigy,
+                            containerEffigy.uniqueName(model.getName())) {
                         @Override
                         public Effigy masterEffigy() {
                             return containerEffigy.masterEffigy();

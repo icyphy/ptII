@@ -82,7 +82,8 @@ public class Constraint extends GTParameter {
         variable.setExpression("5");
         variable.setPersistent(false);
 
-        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this,
+                "editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,8 +122,8 @@ public class Constraint extends GTParameter {
      *   an attribute with the name of this attribute.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, false);
@@ -181,7 +182,8 @@ public class Constraint extends GTParameter {
                     MatchResult matchResult, ParserScope superScope) {
                 return new Scope(pattern, matchResult, superScope) {
                     @Override
-                    public Token get(String name) throws IllegalActionException {
+                    public Token get(String name)
+                            throws IllegalActionException {
                         if (name.equals("this")) {
                             NamedObj container = Constraint.this.getContainer();
                             NamedObj match = (NamedObj) _matchResult

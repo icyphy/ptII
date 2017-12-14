@@ -282,8 +282,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-    IllegalActionException {
+    public boolean isConnectedToBoundaryInside()
+            throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -299,7 +299,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
+    public boolean isConnectedToBoundaryOutside()
+            throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
@@ -440,9 +441,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     // initial tokens during initialize()?).
                     if (!super.hasRoom()) {
                         if (container instanceof Actor) {
-                            if (manager.getState().equals(Manager.INITIALIZING)) {
+                            if (manager.getState()
+                                    .equals(Manager.INITIALIZING)) {
                                 try {
-                                    _queue.setCapacity(_queue.getCapacity() + 1);
+                                    _queue.setCapacity(
+                                            _queue.getCapacity() + 1);
                                 } catch (IllegalActionException e) {
                                     throw new NoRoomException(getContainer(),
                                             "Failed to increase queue capacity enough to accommodate initial tokens");

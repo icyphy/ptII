@@ -103,8 +103,8 @@ public class CSPSink extends Sink {
             // but that's the intend.
             while (count < limit || limit < 0) {
                 Token t = input.get(0);
-                System.out.println(getName() + " received Token: "
-                        + t.toString());
+                System.out.println(
+                        getName() + " received Token: " + t.toString());
                 count++;
             }
 

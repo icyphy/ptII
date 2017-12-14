@@ -59,7 +59,8 @@ public class SerialPortReader extends Thread {
         if (OS.indexOf("win") >= 0) {
             // In a windows environment, use the following
             portName = "COM";
-        } else if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("mac") >= 0) {
+        } else if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0
+                || OS.indexOf("mac") >= 0) {
             // In a linux (also, Mac?) environment, use the following
             portName = "/dev/ttyS";
         } else {
@@ -71,7 +72,6 @@ public class SerialPortReader extends Thread {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /**        Initialize the serial port and connect a BufferedInputStream to the serialPort.
      *  @return 1 if the initialization was successfull, -1 otherwise.
@@ -92,7 +92,7 @@ public class SerialPortReader extends Thread {
             // This will wait up to 5000 ms for the port to open before failing.
             // Additionally, since the return value is an interface, we must cast
             // it to be a SerialPort
-            _serialPort = (SerialPort) _communicationID.open("SerialPortReader", 5000);
+            _serialPort = _communicationID.open("SerialPortReader", 5000);
         } catch (PortInUseException exception) {
             // If port is in use when attempting to open,
             // return -1 and print exception
@@ -102,7 +102,8 @@ public class SerialPortReader extends Thread {
 
         try {
             // Obtain the InputStream associated with the serial port
-            _inputStream = new BufferedInputStream(_serialPort.getInputStream());
+            _inputStream = new BufferedInputStream(
+                    _serialPort.getInputStream());
         } catch (IOException exception) {
             exception.printStackTrace();
             return -1;
@@ -110,7 +111,8 @@ public class SerialPortReader extends Thread {
 
         try {
             // Set the baud rate, data bits, stop bits, and parity bits of the port
-            _serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            _serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
         } catch (UnsupportedCommOperationException exception) {
             exception.printStackTrace();
             return -1;

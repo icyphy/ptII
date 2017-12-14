@@ -58,7 +58,6 @@ import io.vertx.core.net.ProxyType;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
@@ -130,9 +129,11 @@ public class HttpClientHelper extends VertxHelperBase {
      *  @param currentObj The JavaScript instance using this helper (a ClientRequest).
      *  @param options The options.
      */
-    public void request(ScriptObjectMirror currentObj, Map<String, Object> options) {
+    public void request(ScriptObjectMirror currentObj,
+            Map<String, Object> options) {
         // System.err.println("****** Initiating request " + _sequenceNumber);
-        StartHttpRequest request = new StartHttpRequest(currentObj, options, _sequenceNumber++);
+        StartHttpRequest request = new StartHttpRequest(currentObj, options,
+                _sequenceNumber++);
         submit(request);
     }
 
@@ -143,7 +144,8 @@ public class HttpClientHelper extends VertxHelperBase {
      *  @param helping JavaScript object this is helping.
      *  @return A new HttpClientHelper instance.
      */
-    public static HttpClientHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
+    public static HttpClientHelper getOrCreateHelper(Object actor,
+            ScriptObjectMirror helping) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
         if (helper instanceof HttpClientHelper) {
             return (HttpClientHelper) helper;
@@ -154,10 +156,12 @@ public class HttpClientHelper extends VertxHelperBase {
     /** Reset this handler. This method discards any pending submitted jobs,
      *  marks the handler not busy, and resets the sequence number to zero.
      */
+    @Override
     public void reset() {
         super.reset();
         // Execute this in the vert.x event thread.
         submit(new Runnable() {
+            @Override
             public void run() {
                 // Ensure that the next execution starts with sequence number 0.
                 _sequenceNumber = 0L;
@@ -175,7 +179,7 @@ public class HttpClientHelper extends VertxHelperBase {
     public static void reset(Object actor) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
         if (helper instanceof HttpClientHelper) {
-            ((HttpClientHelper)helper).reset();
+            ((HttpClientHelper) helper).reset();
         }
     }
 
@@ -214,7 +218,8 @@ public class HttpClientHelper extends VertxHelperBase {
      *  @param helping A JavaScript object that this helps.
      *  @param base The helper base to share a verticle with.
      */
-    protected HttpClientHelper(Object actor, ScriptObjectMirror helping, VertxHelperBase base) {
+    protected HttpClientHelper(Object actor, ScriptObjectMirror helping,
+            VertxHelperBase base) {
         super(actor, helping, base);
     }
 
@@ -240,12 +245,13 @@ public class HttpClientHelper extends VertxHelperBase {
         /** The JavaScript object that this is a helper for. */
         protected ScriptObjectMirror _requestObj;
 
-        public HttpClientExceptionHandler(
-                ScriptObjectMirror requestObj, HttpClient client, long requestNumber) {
+        public HttpClientExceptionHandler(ScriptObjectMirror requestObj,
+                HttpClient client, long requestNumber) {
             _client = client;
             _requestObj = requestObj;
             _requestNumber = requestNumber;
         }
+
         @Override
         public void handle(final Throwable throwable) {
             _pendingRequests--;
@@ -259,19 +265,21 @@ public class HttpClientHelper extends VertxHelperBase {
             // uses a lets encrypt certificate.
             if (throwable instanceof javax.net.ssl.SSLHandshakeException) {
                 message = "HttpClientHelper.java: "
-                + "The exceptions is a SSLHandshakeException, which is "
-                + "probably caused because the certs for the website in question "
-                + "are not in the JVM keystore.  "
-                + "Try updating your JVM or see "
-                + "See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: ";
+                        + "The exceptions is a SSLHandshakeException, which is "
+                        + "probably caused because the certs for the website in question "
+                        + "are not in the JVM keystore.  "
+                        + "Try updating your JVM or see "
+                        + "See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: ";
             }
             final String finalMessage = message;
             // System.err.println("****** Received an error for request " + _requestNumber + ": " + throwable);
             // throwable.printStackTrace();
             // True argument indicates that this request is done.
             _issueOrDeferResponse(_requestNumber, true, new Runnable() {
+                @Override
                 public void run() {
-                    _requestObj.callMember("_errorResponse", null, finalMessage + throwable.getMessage(), throwable);
+                    _requestObj.callMember("_errorResponse", null,
+                            finalMessage + throwable.getMessage(), throwable);
                 }
             });
             if (_client != null) {
@@ -285,8 +293,8 @@ public class HttpClientHelper extends VertxHelperBase {
      *  Notice that this response does not include the body of the retrieved data.
      *  We need to register a handler with the response to handle the body.
      */
-    private class HttpClientResponseHandler implements
-    Handler<HttpClientResponse> {
+    private class HttpClientResponseHandler
+            implements Handler<HttpClientResponse> {
         private List<byte[]> _imageParts;
         private String _boundary;
         private boolean _inSegment;
@@ -299,16 +307,15 @@ public class HttpClientHelper extends VertxHelperBase {
         /** The JavaScript object that this is a helper for. */
         protected ScriptObjectMirror _requestObj;
 
-        public HttpClientResponseHandler(
-                ScriptObjectMirror requestObj,
-                HttpClient client,
-                boolean outputCompleteResponseOnly,
+        public HttpClientResponseHandler(ScriptObjectMirror requestObj,
+                HttpClient client, boolean outputCompleteResponseOnly,
                 long requestNumber) {
             _client = client;
             _outputCompleteResponseOnly = outputCompleteResponseOnly;
             _requestObj = requestObj;
             _requestNumber = requestNumber;
         }
+
         @Override
         public void handle(final HttpClientResponse response) {
             // The response is not yet complete, but we have some information.
@@ -317,15 +324,18 @@ public class HttpClientHelper extends VertxHelperBase {
                 _pendingRequests--;
                 // An error occurred.
                 response.bodyHandler(new Handler<Buffer>() {
+                    @Override
                     public void handle(Buffer body) {
-                      // The entire response body has been received
-                      System.out.println("The total body: " + body.toString());
+                        // The entire response body has been received
+                        System.out
+                                .println("The total body: " + body.toString());
                     }
-                  });
+                });
 
                 // True argument indicates that this request is done.
                 // System.err.println("****** Received an error code for request " + _requestNumber + ", " + status);
                 _issueOrDeferResponse(_requestNumber, true, new Runnable() {
+                    @Override
                     public void run() {
                         // Null argument indicates error.
                         _requestObj.callMember("_errorResponse", response,
@@ -360,8 +370,10 @@ public class HttpClientHelper extends VertxHelperBase {
                 if (newLocation != null) {
                     // True argument indicates that this request is done.
                     _issueOrDeferResponse(_requestNumber, true, new Runnable() {
+                        @Override
                         public void run() {
-                            _requestObj.callMember("_response", response, "<p>HttpClientHelper.java redirect body.</p>");
+                            _requestObj.callMember("_response", response,
+                                    "<p>HttpClientHelper.java redirect body.</p>");
 
                             // Here is the old code that would just emit an error if we had a redirect:
                             // _requestObj.callMember("_errorResponse", response,
@@ -387,8 +399,7 @@ public class HttpClientHelper extends VertxHelperBase {
             if (isMultipart) {
                 int index = contentType.indexOf("=");
                 if (index > 0) {
-                    _boundary = "--"
-                            + contentType.substring(index + 1).trim();
+                    _boundary = "--" + contentType.substring(index + 1).trim();
                 }
             }
 
@@ -402,49 +413,60 @@ public class HttpClientHelper extends VertxHelperBase {
                 // Note that large responses could create a memory problem here.
                 // Could look at the Content-Length header.
                 response.bodyHandler(new Handler<Buffer>() {
+                    @Override
                     public void handle(final Buffer body) {
                         _pendingRequests--;
                         // System.err.println("****** Received complete response for request " + _requestNumber);
                         // True argument indicates that this request is done.
-                        _issueOrDeferResponse(_requestNumber, true, new Runnable() {
-                            public void run() {
-                                if (isText) {
-                                    _requestObj.callMember("_response",
-                                            response, body.toString());
-                                } else if (contentType.startsWith("image")) {
-                                    InputStream stream = new ByteArrayInputStream(
-                                            body.getBytes());
-                                    try {
-                                        Image image = ImageIO.read(stream);
-                                        Token token = new AWTImageToken(image);
-                                        _requestObj.callMember("_response",
-                                                response, token);
-                                    } catch (IOException e) {
-                                        // FIXME: What to do here?
-                                        _requestObj.callMember("_response",
-                                                response, body.getBytes());
+                        _issueOrDeferResponse(_requestNumber, true,
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (isText) {
+                                            _requestObj.callMember("_response",
+                                                    response, body.toString());
+                                        } else if (contentType
+                                                .startsWith("image")) {
+                                            InputStream stream = new ByteArrayInputStream(
+                                                    body.getBytes());
+                                            try {
+                                                Image image = ImageIO
+                                                        .read(stream);
+                                                Token token = new AWTImageToken(
+                                                        image);
+                                                _requestObj.callMember(
+                                                        "_response", response,
+                                                        token);
+                                            } catch (IOException e) {
+                                                // FIXME: What to do here?
+                                                _requestObj.callMember(
+                                                        "_response", response,
+                                                        body.getBytes());
+                                            }
+                                        } else {
+                                            // FIXME: Need to handle other MIME types.
+                                            _requestObj.callMember("_response",
+                                                    response, body.getBytes());
+                                        }
                                     }
-                                } else {
-                                    // FIXME: Need to handle other MIME types.
-                                    _requestObj.callMember("_response",
-                                            response, body.getBytes());
-                                }
-                            }
-                        });
+                                });
                         _client.close();
                         _client = null;
                     }
                 });
             } else {
                 response.endHandler(new Handler<Void>() {
+                    @Override
                     public void handle(Void v) {
                         _pendingRequests--;
                         // System.err.println("****** Received end of response for request " + _requestNumber);
                         // True argument indicates that this request is done.
-                        _issueOrDeferResponse(_requestNumber, true, new Runnable() {
-                            public void run() {
-                            }
-                        });
+                        _issueOrDeferResponse(_requestNumber, true,
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                    }
+                                });
                         _client.close();
                         _client = null;
                     }
@@ -452,23 +474,27 @@ public class HttpClientHelper extends VertxHelperBase {
                 _imageParts = new LinkedList<byte[]>();
                 _inSegment = false;
                 response.handler(new Handler<Buffer>() {
+                    @Override
                     public void handle(Buffer body) {
                         // System.err.println("****** Received body response for request " + _requestNumber);
                         // False argument indicates that this request is NOT done.
-                        _issueOrDeferResponse(_requestNumber, false, new Runnable() {
-                            public void run() {
-                                if (isText) {
-                                    _requestObj.callMember("_response",
-                                            response, body.toString());
-                                } else if (isMultipart) {
-                                    _handleMultipartResponse(response, body);
-                                } else {
-                                    // FIXME: Need to handle other MIME types.
-                                    _requestObj.callMember("_response",
-                                            response, body.getBytes());
-                                }
-                            }
-                        });
+                        _issueOrDeferResponse(_requestNumber, false,
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (isText) {
+                                            _requestObj.callMember("_response",
+                                                    response, body.toString());
+                                        } else if (isMultipart) {
+                                            _handleMultipartResponse(response,
+                                                    body);
+                                        } else {
+                                            // FIXME: Need to handle other MIME types.
+                                            _requestObj.callMember("_response",
+                                                    response, body.getBytes());
+                                        }
+                                    }
+                                });
                         // FIXME: Probably shouldn't close here?
                         // _client.close();
                         // _client = null;
@@ -476,12 +502,12 @@ public class HttpClientHelper extends VertxHelperBase {
                 });
             }
         }
-        private void _handleMultipartResponse(
-                final HttpClientResponse response, Buffer body) {
+
+        private void _handleMultipartResponse(final HttpClientResponse response,
+                Buffer body) {
             byte[] data = body.getBytes();
             String dataAsString = body.toString();
-            int boundaryIndex = dataAsString
-                    .indexOf(_boundary);
+            int boundaryIndex = dataAsString.indexOf(_boundary);
             if (boundaryIndex >= 0) {
                 // The data contains a boundary.  If we are in
                 // a segment, finish it.
@@ -489,9 +515,7 @@ public class HttpClientHelper extends VertxHelperBase {
                     if (boundaryIndex > 1) {
                         // There is additional data in this segment.
                         byte[] prefix = new byte[boundaryIndex];
-                        System.arraycopy(data, 0,
-                                prefix, 0,
-                                boundaryIndex - 1);
+                        System.arraycopy(data, 0, prefix, 0, boundaryIndex - 1);
                         _imageParts.add(prefix);
 
                         // Construct one big byte array.
@@ -502,9 +526,7 @@ public class HttpClientHelper extends VertxHelperBase {
                         byte[] imageBytes = new byte[length];
                         int position = 0;
                         for (byte[] piece : _imageParts) {
-                            System.arraycopy(piece, 0,
-                                    imageBytes,
-                                    position,
+                            System.arraycopy(piece, 0, imageBytes, position,
                                     piece.length);
                             position += piece.length;
                         }
@@ -513,26 +535,18 @@ public class HttpClientHelper extends VertxHelperBase {
                         InputStream stream = new ByteArrayInputStream(
                                 imageBytes);
                         try {
-                            Image image = ImageIO
-                                    .read(stream);
+                            Image image = ImageIO.read(stream);
                             if (image != null) {
-                                Token token = new AWTImageToken(
-                                        image);
-                                _requestObj
-                                .callMember(
-                                        "_response",
-                                        response,
+                                Token token = new AWTImageToken(image);
+                                _requestObj.callMember("_response", response,
                                         token);
-                                System.out
-                                .println("Sent an image.");
+                                System.out.println("Sent an image.");
                             } else {
-                                System.err
-                                .println("Input data is apparently not an image.");
+                                System.err.println(
+                                        "Input data is apparently not an image.");
                             }
                         } catch (IOException e) {
-                            _requestObj.callMember(
-                                    "_errorResponse",
-                                    response,
+                            _requestObj.callMember("_errorResponse", response,
                                     e.toString());
                         }
                     }
@@ -542,17 +556,13 @@ public class HttpClientHelper extends VertxHelperBase {
                 _imageParts.clear();
                 // Skip to character 255, the start of a jpeg image.
                 // (in signed notation, -1).
-                int start = boundaryIndex
-                        + _boundary.length() + 2;
-                while (start < data.length
-                        && data[start] != -1) {
+                int start = boundaryIndex + _boundary.length() + 2;
+                while (start < data.length && data[start] != -1) {
                     start++;
                 }
                 if (start < data.length) {
-                    byte[] segment = new byte[data.length
-                                              - start];
-                    System.arraycopy(data, start,
-                            segment, 0, segment.length);
+                    byte[] segment = new byte[data.length - start];
+                    System.arraycopy(data, start, segment, 0, segment.length);
                     _imageParts.add(segment);
                 }
             } else {
@@ -574,10 +584,8 @@ public class HttpClientHelper extends VertxHelperBase {
         /** The JavaScript object that this is a helper for. */
         protected ScriptObjectMirror _requestObj;
 
-        public StartHttpRequest(
-                ScriptObjectMirror requestObj,
-                Map<String, Object> options,
-                long sequenceNumber) {
+        public StartHttpRequest(ScriptObjectMirror requestObj,
+                Map<String, Object> options, long sequenceNumber) {
             _options = options;
             _requestObj = requestObj;
             _requestNumber = sequenceNumber;
@@ -592,8 +600,10 @@ public class HttpClientHelper extends VertxHelperBase {
                         * PENDING_REQUESTS_DELAY_FACTOR;
                 if (time > 0) {
                     try {
-                        _actor.log("WARNING: More than " + PENDING_REQUESTS_THRESHOLD
-                                + " pending requests. Sleeping " + time + " ms.");
+                        _actor.log("WARNING: More than "
+                                + PENDING_REQUESTS_THRESHOLD
+                                + " pending requests. Sleeping " + time
+                                + " ms.");
                         Thread.sleep(time);
                     } catch (InterruptedException e) {
                         // Ignore and proceed.
@@ -605,7 +615,8 @@ public class HttpClientHelper extends VertxHelperBase {
         @SuppressWarnings("unchecked")
         @Override
         public void run() {
-            Map<String, Object> urlSpec = (Map<String, Object>) _options.get("url");
+            Map<String, Object> urlSpec = (Map<String, Object>) _options
+                    .get("url");
 
             HttpClient client = null;
             boolean useProxy = false;
@@ -615,29 +626,27 @@ public class HttpClientHelper extends VertxHelperBase {
             if (proxyHostObject != null && proxyPortObject != null) {
                 useProxy = true;
                 String proxyHostSpec = proxyHostObject.toString().trim();
-                int proxyPortSpec = (int)proxyPortObject;
-                client = _vertx.createHttpClient(
-                    new HttpClientOptions()
-                    .setKeepAlive((boolean) _options.get("keepAlive"))
-                    // NOTE: We use the timeout parameter both for connect and response.
-                    // Should these be different numbers?
-                    .setConnectTimeout((Integer)_options.get("timeout"))
-                    .setSsl(urlSpec.get("protocol").toString().equalsIgnoreCase("https"))
-                    .setProxyOptions(new ProxyOptions()
-                                     .setType(ProxyType.HTTP)
-                                     .setHost(proxyHostSpec)
-                                     .setPort(proxyPortSpec)));
+                int proxyPortSpec = (int) proxyPortObject;
+                client = _vertx.createHttpClient(new HttpClientOptions()
+                        .setKeepAlive((boolean) _options.get("keepAlive"))
+                        // NOTE: We use the timeout parameter both for connect and response.
+                        // Should these be different numbers?
+                        .setConnectTimeout((Integer) _options.get("timeout"))
+                        .setSsl(urlSpec.get("protocol").toString()
+                                .equalsIgnoreCase("https"))
+                        .setProxyOptions(new ProxyOptions()
+                                .setType(ProxyType.HTTP).setHost(proxyHostSpec)
+                                .setPort(proxyPortSpec)));
             } else {
-                client = _vertx.createHttpClient(
-                    new HttpClientOptions()
-                    .setDefaultHost((String) urlSpec.get("host"))
-                    .setDefaultPort((int) urlSpec.get("port"))
-                    .setKeepAlive((boolean) _options.get("keepAlive"))
-                    // NOTE: We use the timeout parameter both for connect and response.
-                    // Should these be different numbers?
-                    .setConnectTimeout((Integer)_options.get("timeout"))
-                    .setSsl(urlSpec.get("protocol").toString().equalsIgnoreCase("https"))
-                    );
+                client = _vertx.createHttpClient(new HttpClientOptions()
+                        .setDefaultHost((String) urlSpec.get("host"))
+                        .setDefaultPort((int) urlSpec.get("port"))
+                        .setKeepAlive((boolean) _options.get("keepAlive"))
+                        // NOTE: We use the timeout parameter both for connect and response.
+                        // Should these be different numbers?
+                        .setConnectTimeout((Integer) _options.get("timeout"))
+                        .setSsl(urlSpec.get("protocol").toString()
+                                .equalsIgnoreCase("https")));
             }
 
             String query = "";
@@ -659,60 +668,58 @@ public class HttpClientHelper extends VertxHelperBase {
             }
 
             // Set the method (GET, PUT, POST, etc.)
-            HttpMethod httpMethod = HttpMethod.valueOf(((String) _options.get("method")).trim().toUpperCase());
+            HttpMethod httpMethod = HttpMethod.valueOf(
+                    ((String) _options.get("method")).trim().toUpperCase());
 
             HttpClientRequest request = null;
             if (useProxy) {
                 request = client.requestAbs(httpMethod,
-                                            (String) urlSpec.get("protocol") +
-                                            "://" + (String) urlSpec.get("host") + uri,
-                                            new HttpClientResponseHandler(_requestObj,
-                                                                          client,
-                                                                          outputCompleteResponseOnly,
-                                                                          _requestNumber));
+                        (String) urlSpec.get("protocol") + "://"
+                                + (String) urlSpec.get("host") + uri,
+                        new HttpClientResponseHandler(_requestObj, client,
+                                outputCompleteResponseOnly, _requestNumber));
             } else {
                 request = client.request(httpMethod, uri,
-                                         new HttpClientResponseHandler(_requestObj,
-                                                                       client,
-                                                                       outputCompleteResponseOnly,
-                                                                       _requestNumber));
+                        new HttpClientResponseHandler(_requestObj, client,
+                                outputCompleteResponseOnly, _requestNumber));
             }
 
             // NOTE: We use the timeout parameter both for connect and response.
             // Should these be different numbers?
-            request.setTimeout((Integer)_options.get("timeout"));
-            request.exceptionHandler(new HttpClientExceptionHandler(
-                    _requestObj, client, _requestNumber));
+            request.setTimeout((Integer) _options.get("timeout"));
+            request.exceptionHandler(new HttpClientExceptionHandler(_requestObj,
+                    client, _requestNumber));
 
             // Handle the headers.
-            Map<String,Object> headers = (Map<String,Object>) _options.get("headers");
+            Map<String, Object> headers = (Map<String, Object>) _options
+                    .get("headers");
             boolean isImage = false;
             String imageType = "";
             if (!headers.isEmpty()) {
                 for (Entry<String, Object> entry : headers.entrySet()) {
                     String key = entry.getKey();
                     Object value = entry.getValue();
-                    if (key.equalsIgnoreCase("Content-Type") &&
-                            ( (String)value).startsWith("image")) {
+                    if (key.equalsIgnoreCase("Content-Type")
+                            && ((String) value).startsWith("image")) {
                         isImage = true;
                         imageType = ((String) value).substring(6);
 
-                        if ( !imageType.equalsIgnoreCase("gif") &&
-                                 !imageType.equalsIgnoreCase("jpg") &&
-                                 !imageType.equalsIgnoreCase("jpeg") &&
-                                 !imageType.equalsIgnoreCase("png")) {
-                                _error(_requestObj, "Unsupported image type " + imageType + ". Attempting to send as jpg."
-                                                + " Supported types are gif, jpg and png.");
-                                imageType = "jpg";
+                        if (!imageType.equalsIgnoreCase("gif")
+                                && !imageType.equalsIgnoreCase("jpg")
+                                && !imageType.equalsIgnoreCase("jpeg")
+                                && !imageType.equalsIgnoreCase("png")) {
+                            _error(_requestObj, "Unsupported image type "
+                                    + imageType + ". Attempting to send as jpg."
+                                    + " Supported types are gif, jpg and png.");
+                            imageType = "jpg";
                         }
                     }
                     if (value instanceof String) {
-                        request.putHeader((String) key, (String) value);
+                        request.putHeader(key, (String) value);
                     } else if (value instanceof Integer) {
-                        request.putHeader((String) key,
-                                ((Integer) value).toString());
+                        request.putHeader(key, ((Integer) value).toString());
                     } else if (value instanceof Iterable) {
-                        request.putHeader((String) key, (Iterable<String>) value);
+                        request.putHeader(key, (Iterable<String>) value);
                     }
                 }
             }
@@ -727,8 +734,7 @@ public class HttpClientHelper extends VertxHelperBase {
 
                 // If image is not a BufferedImage, create a BufferedImage.  See:
                 // http://stackoverflow.com/questions/13605248/java-converting-image-to-bufferedimage
-                if (image instanceof BufferedImage)
-                {
+                if (image instanceof BufferedImage) {
                     bufferedImage = (BufferedImage) image;
                 } else {
                     // Create a buffered image with transparency
@@ -746,8 +752,8 @@ public class HttpClientHelper extends VertxHelperBase {
                 try {
                     // This is tested by
                     // $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/RESTSendImage.xml
-                    ImageIO.write(bufferedImage, imageType , os);
-                    os.close();  // Important, flushes the output buffer.
+                    ImageIO.write(bufferedImage, imageType, os);
+                    os.close(); // Important, flushes the output buffer.
 
                     // Chunked requests don't use a Content-Length header.
                     byte[] bytes = os.toByteArray();
@@ -759,10 +765,9 @@ public class HttpClientHelper extends VertxHelperBase {
                     // then we get padding character(s) (=) in the output.
                     String encoded = Base64.getEncoder().encodeToString(bytes);
                     for (int i = 0; i < encoded.length(); i = i + 4000) {
-                        int end = i + 4000 < encoded.length()
-                            ? i + 4000
-                            : encoded.length();
-                             request.write(Buffer.buffer(encoded.substring(i, end)));
+                        int end = i + 4000 < encoded.length() ? i + 4000
+                                : encoded.length();
+                        request.write(Buffer.buffer(encoded.substring(i, end)));
                     }
 
                     // for (int i = 0; i < bytes.length; i = i + 4000) {
@@ -770,15 +775,18 @@ public class HttpClientHelper extends VertxHelperBase {
                     // }
 
                 } catch (final IOException ioe) {
-                    _error(_requestObj, "Can't write image to HTTP request.  Unable to convert image to base-64 string.", ioe);
+                    _error(_requestObj,
+                            "Can't write image to HTTP request.  Unable to convert image to base-64 string.",
+                            ioe);
                 }
-            }  else {
+            } else {
                 // Otherwise, send body as string
                 Object bodyObject = _options.get("body");
                 if (bodyObject != null) {
-                    String body =  bodyObject.toString();
+                    String body = bodyObject.toString();
                     if (body != null) {
-                        request.putHeader("Content-Length", Integer.toString(body.length()));
+                        request.putHeader("Content-Length",
+                                Integer.toString(body.length()));
                         request.write(body);
                     }
                 }

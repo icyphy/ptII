@@ -132,8 +132,8 @@ public class WatchDog {
     /** Cancel the currently pending watchdog.
      */
     public void cancel() {
-        System.out.println("ptolemy.util.test.WatchDog.cancel(): canceling "
-                + new Date());
+        System.out.println(
+                "ptolemy.util.test.WatchDog.cancel(): canceling " + new Date());
 
         if (_timer == null) {
             System.out.println("ptolemy.util.test.WatchDog.cancel(): "

@@ -73,7 +73,8 @@ public class SimpleClassLoadingStrategy implements ClassLoadingStrategy {
      */
     @Override
     @SuppressWarnings("rawtypes")
-    public Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+    public Class loadJavaClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException {
         return Class.forName(className, true, _classLoader);
     }
 
@@ -85,8 +86,8 @@ public class SimpleClassLoadingStrategy implements ClassLoadingStrategy {
      * @exception ClassNotFoundException Always thrown in this base class.
      */
     @Override
-    public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec)
-            throws ClassNotFoundException {
+    public CompositeEntity loadActorOrientedClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException {
         throw new ClassNotFoundException();
     }
 

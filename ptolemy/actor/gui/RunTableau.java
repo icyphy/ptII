@@ -97,9 +97,7 @@ public class RunTableau extends Tableau {
             try {
                 actor.setManager(new Manager(actor.workspace(), "manager"));
             } catch (IllegalActionException ex) {
-                throw new IllegalActionException(
-                        this,
-                        ex,
+                throw new IllegalActionException(this, ex,
                         "Failed to set manager.  This can occur if "
                                 + "you try to run a non-toplevel model that "
                                 + "is a component of a toplevel model.  "
@@ -241,9 +239,8 @@ public class RunTableau extends Tableau {
                         }
                     } catch (KernelException ex) {
                         try {
-                            MessageHandler
-                            .warning("Failed to create debug listener: "
-                                    + ex);
+                            MessageHandler.warning(
+                                    "Failed to create debug listener: " + ex);
                         } catch (CancelException exception) {
                         }
                     }

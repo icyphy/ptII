@@ -110,9 +110,10 @@ public final class Borders {
      *
      * @see #TABBED_DIALOG_BORDER
      */
-    public static final Border DIALOG_BORDER = createEmptyBorder(LayoutStyle
-            .getCurrent().getDialogMarginY(), LayoutStyle.getCurrent()
-            .getDialogMarginX(), LayoutStyle.getCurrent().getDialogMarginY(),
+    public static final Border DIALOG_BORDER = createEmptyBorder(
+            LayoutStyle.getCurrent().getDialogMarginY(),
+            LayoutStyle.getCurrent().getDialogMarginX(),
+            LayoutStyle.getCurrent().getDialogMarginY(),
             LayoutStyle.getCurrent().getDialogMarginX());
 
     /**
@@ -122,10 +123,10 @@ public final class Borders {
      * @see #DIALOG_BORDER
      */
     public static final Border TABBED_DIALOG_BORDER = createEmptyBorder(
-            LayoutStyle.getCurrent().getTabbedDialogMarginY(), LayoutStyle
-            .getCurrent().getTabbedDialogMarginX(), LayoutStyle
-            .getCurrent().getTabbedDialogMarginY(), LayoutStyle
-            .getCurrent().getTabbedDialogMarginX());
+            LayoutStyle.getCurrent().getTabbedDialogMarginY(),
+            LayoutStyle.getCurrent().getTabbedDialogMarginX(),
+            LayoutStyle.getCurrent().getTabbedDialogMarginY(),
+            LayoutStyle.getCurrent().getTabbedDialogMarginX());
 
     // Factory Methods ******************************************************
 
@@ -162,7 +163,7 @@ public final class Borders {
         if (tokenCount != 4) {
             throw new IllegalArgumentException(
                     "The border requires 4 sizes, but '" + encodedSizes
-                    + "' has " + tokenCount + ".");
+                            + "' has " + tokenCount + ".");
         }
         ConstantSize top = Sizes.constant(tokenizer.nextToken(), false);
         ConstantSize left = Sizes.constant(tokenizer.nextToken(), true);

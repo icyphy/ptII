@@ -162,12 +162,10 @@ public final class KielerGraphUtil {
     protected static String _toString(KEdge edge) {
         StringBuffer string = new StringBuffer();
         string.append("[E:");
-        string.append("Source:"
-                + (edge.getSource() == null ? "null" : edge.getSource()
-                        .hashCode()));
-        string.append(" Target:"
-                + (edge.getSource() == null ? "null" : edge.getTarget()
-                        .hashCode()) + " Bends:");
+        string.append("Source:" + (edge.getSource() == null ? "null"
+                : edge.getSource().hashCode()));
+        string.append(" Target:" + (edge.getSource() == null ? "null"
+                : edge.getTarget().hashCode()) + " Bends:");
         KEdgeLayout layout = edge.getData(KEdgeLayout.class);
         for (KPoint point : layout.getBendPoints()) {
             string.append(point.getX() + "," + point.getY() + " ");
@@ -233,10 +231,8 @@ public final class KielerGraphUtil {
         ResourceSet resourceSet = new ResourceSetImpl();
 
         // Register the default resource factory -- only needed for stand-alone!
-        resourceSet
-        .getResourceFactoryRegistry()
-        .getExtensionToFactoryMap()
-        .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
+                Resource.Factory.Registry.DEFAULT_EXTENSION,
                 new XMIResourceFactoryImpl());
 
         try {

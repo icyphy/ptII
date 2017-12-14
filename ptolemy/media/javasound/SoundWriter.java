@@ -132,17 +132,17 @@ public class SoundWriter {
         _isAudioWriterActive = true;
 
         if (_debug) {
-            System.out.println("SoundWriter: constructor : fileName = "
-                    + fileName);
+            System.out.println(
+                    "SoundWriter: constructor : fileName = " + fileName);
             System.out.println("SoundWriter: constructor : bitsPerSample = "
                     + bitsPerSample);
-            System.out.println("SoundWriter: constructor : sampleRate = "
-                    + sampleRate);
-            System.out.println("SoundWriter: constructor : channels = "
-                    + channels);
+            System.out.println(
+                    "SoundWriter: constructor : sampleRate = " + sampleRate);
+            System.out.println(
+                    "SoundWriter: constructor : channels = " + channels);
             System.out
-            .println("SoundWriter: constructor : putSamplesArraySize = "
-                    + putSamplesArraySize);
+                    .println("SoundWriter: constructor : putSamplesArraySize = "
+                            + putSamplesArraySize);
         }
     }
 
@@ -270,8 +270,8 @@ public class SoundWriter {
                 audioBytes);
 
         AudioInputStream audioInputStream = new AudioInputStream(
-                byteInputArrayStream, _playToFileFormat, audioBytes.length
-                / _frameSizeInBytes);
+                byteInputArrayStream, _playToFileFormat,
+                audioBytes.length / _frameSizeInBytes);
 
         outFile = new File(_fileName);
 
@@ -280,8 +280,8 @@ public class SoundWriter {
 
             // Do error checking:
             if (st.countTokens() != 2) {
-                throw new IOException("Error: Incorrect "
-                        + "file name format. " + "Format: filename.extension");
+                throw new IOException("Error: Incorrect " + "file name format. "
+                        + "Format: filename.extension");
             }
 
             st.nextToken(); // Advance to the file extension.
@@ -359,7 +359,8 @@ public class SoundWriter {
 
         maxDoubleValuedSample = (maxSample - 2) / maxSample;
 
-        byte[] byteArray = new byte[lengthInSamples * bytesPerSample * channels];
+        byte[] byteArray = new byte[lengthInSamples * bytesPerSample
+                * channels];
         byte[] b = new byte[bytesPerSample];
 
         for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
@@ -387,7 +388,7 @@ public class SoundWriter {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp * bytesPerSample * channels
-                              + bytesPerSample * currChannel + i] = b[i];
+                            + bytesPerSample * currChannel + i] = b[i];
                 }
             }
         }

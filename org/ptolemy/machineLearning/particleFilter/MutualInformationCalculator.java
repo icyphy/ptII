@@ -246,16 +246,16 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 
             if (_optIndex < 0) {
                 for (int j = 0; j < _nRobots; j++) {
-                    gaussianMeans[i][j] = Math.sqrt(Math.pow(
-                            _px[i] - robotX[j], 2)
-                            + Math.pow(_py[i] - robotY[j], 2));
+                    gaussianMeans[i][j] = Math
+                            .sqrt(Math.pow(_px[i] - robotX[j], 2)
+                                    + Math.pow(_py[i] - robotY[j], 2));
                 }
             } else {
                 // optimize over single robot
                 for (int j = 0; j < _nRobots; j++) {
-                    gaussianMeans[i][j] = Math.sqrt(Math.pow(
-                            _px[i] - robotX[j], 2)
-                            + Math.pow(_py[i] - robotY[j], 2));
+                    gaussianMeans[i][j] = Math
+                            .sqrt(Math.pow(_px[i] - robotX[j], 2)
+                                    + Math.pow(_py[i] - robotY[j], 2));
                 }
             }
         }
@@ -264,8 +264,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         // so that Hz will be calculated faster.
         double[][] invSigma = DoubleMatrixMath.inverse(Sigma);
         double detSigma = DoubleMatrixMath.determinant(Sigma);
-        detSigma = Math.sqrt(1.0 / (Math.pow(Math.PI * 2,
-                gaussianMeans[0].length) * detSigma));
+        detSigma = Math.sqrt(1.0
+                / (Math.pow(Math.PI * 2, gaussianMeans[0].length) * detSigma));
         double[] logSums = new double[N];
         for (int k = 0; k < N; k++) {
             logSums[k] = 0;
@@ -286,8 +286,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         return -Hz;
     }
 
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         optIndex = new Parameter(this, "optIndex");
         optIndex.setExpression("-1");
         optIndex.setTypeEquals(BaseType.INT);
@@ -306,7 +306,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         _types = new Type[names.length() + 1];
         for (int i = 0; i < names.length(); i++) {
             stateName = ((StringToken) names.getElement(i)).stringValue();
-            if (this.getAttribute(stateName) == null && stateName.length() != 0) {
+            if (this.getAttribute(stateName) == null
+                    && stateName.length() != 0) {
                 Parameter y = new Parameter(this, stateName);
                 y.setExpression("0.0");
                 y.setVisibility(Settable.EXPERT);
@@ -350,8 +351,8 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         for (int i = 0; i < x.length; i++) {
             x_mu[i] = x[i] - mu[i];
         }
-        double exponent = DoubleArrayMath.dotProduct(
-                DoubleMatrixMath.multiply(x_mu, invSigma), x_mu);
+        double exponent = DoubleArrayMath
+                .dotProduct(DoubleMatrixMath.multiply(x_mu, invSigma), x_mu);
 
         return multiplier * Math.exp(-0.5 * exponent);
 

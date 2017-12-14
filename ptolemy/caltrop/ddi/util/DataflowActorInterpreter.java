@@ -126,8 +126,8 @@ public class DataflowActorInterpreter {
                 for (int j = 0; j < vars.length; j++) {
                     final InputChannel channel = ((InputPort) inputPortMap
                             .get(inputPattern.getPortname())).getChannel(0); // FIXME
-                    local.bind(vars[j], new MultipleTokenReaderThunk(channel,
-                            j, vars.length, repExprThunk, context));
+                    local.bind(vars[j], new MultipleTokenReaderThunk(channel, j,
+                            vars.length, repExprThunk, context));
                 }
             }
         }
@@ -190,11 +190,11 @@ public class DataflowActorInterpreter {
                     return false;
                 }
             } else {
-                int repeatVal = context.intValue(env.get(new EnvironmentKey(
-                        inputPattern.getPortname())));
+                int repeatVal = context.intValue(env
+                        .get(new EnvironmentKey(inputPattern.getPortname())));
 
-                if (!channel.hasAvailable(inputPattern.getVariables().length
-                        * repeatVal)) {
+                if (!channel.hasAvailable(
+                        inputPattern.getVariables().length * repeatVal)) {
                     // System.out.println("Not enough repeated inputs:" + inputPattern.getVariables().length * repeatVal);
                     return false;
                 }
@@ -313,9 +313,9 @@ public class DataflowActorInterpreter {
      final Expression [] expressions =
      outputExpression.getExpressions();
      final Expression repeatExpr = outputExpression.getRepeatExpr();
-
+    
      int repeatValue = 1;
-
+    
      // FIXME: handle multiports
      if (repeatExpr != null) {
      repeatValue = context.intValue(eval.evaluate(repeatExpr));
@@ -411,8 +411,8 @@ public class DataflowActorInterpreter {
      * us to defer the reading operation to the time when the token is
      * actually needed.
      */
-    protected static class SingleTokenReaderThunk implements
-    Environment.VariableContainer {
+    protected static class SingleTokenReaderThunk
+            implements Environment.VariableContainer {
         @Override
         public Object value() {
             if (val == this) {
@@ -453,8 +453,8 @@ public class DataflowActorInterpreter {
         private Object val;
     }
 
-    protected static class MultipleTokenReaderThunk implements
-    Environment.VariableContainer {
+    protected static class MultipleTokenReaderThunk
+            implements Environment.VariableContainer {
         @Override
         public Object value() {
             freeze();

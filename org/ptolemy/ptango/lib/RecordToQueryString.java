@@ -93,8 +93,8 @@ public class RecordToQueryString extends Converter {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RecordToQueryString newObject = (RecordToQueryString) super
-                .clone(workspace);
+        RecordToQueryString newObject = (RecordToQueryString) super.clone(
+                workspace);
         newObject.input.setTypeAtMost(BaseType.RECORD);
         return newObject;
     }

@@ -97,12 +97,14 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  PtidyOSCodeGenerator is not used in a Ptides environment.
      *
      */
-    protected void _generateAdditionalCodeFiles() throws IllegalActionException {
+    protected void _generateAdditionalCodeFiles()
+            throws IllegalActionException {
         PtidesPreemptiveEDFDirector directorAdapter = null;
         Director director = ((TypedCompositeActor) getContainer())
                 .getDirector();
         if (director instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
-            directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
+            directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(
+                    director);
             Map<String, String> map = directorAdapter
                     .generateAdditionalCodeFiles();
             for (String file : map.keySet()) {

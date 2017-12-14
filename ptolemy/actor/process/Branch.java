@@ -94,12 +94,12 @@ public class Branch implements Runnable {
      */
     public Branch(ProcessReceiver producerReceiver,
             ProcessReceiver consumerReceiver, BranchController controller)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         _controller = controller;
 
         if (producerReceiver == null || consumerReceiver == null) {
-            throw new IllegalActionException("The boundary "
-                    + "receivers of this branch are null.");
+            throw new IllegalActionException(
+                    "The boundary " + "receivers of this branch are null.");
         }
 
         if (!producerReceiver.isProducerReceiver()) {

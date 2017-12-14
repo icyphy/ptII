@@ -45,8 +45,8 @@ import ptolemy.kernel.util.ValueListener;
 public class StringAttributeWidget extends TypedAtomicActor {
 
     public StringAttributeWidget(CompositeEntity container, String name,
-            ValueListener listener) throws IllegalActionException,
-            NameDuplicationException {
+            ValueListener listener)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _attribute = new StringAttribute(container, name);
         _attribute.addValueListener(listener);

@@ -66,8 +66,8 @@ import ptolemy.kernel.util.Workspace;
 public class CoroutineDirector extends Director implements Continuation {
 
     ///////////////////////////////////////////////////////////////////
-    public CoroutineDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public CoroutineDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -83,8 +83,8 @@ public class CoroutineDirector extends Director implements Continuation {
         _init();
     }
 
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         initContinuationName = new Parameter(this, "initContinuationName");
         initContinuationName.setStringMode(true);
 
@@ -254,7 +254,8 @@ public class CoroutineDirector extends Director implements Continuation {
     public void buildMapFromParameter() throws IllegalActionException {
         _nextMap = new HashMap();
         Token nextMappingToken = nextMapping.getToken();
-        if (nextMappingToken != null && nextMappingToken instanceof ArrayToken) {
+        if (nextMappingToken != null
+                && nextMappingToken instanceof ArrayToken) {
             ArrayToken nextMappingAr = (ArrayToken) nextMappingToken;
             for (Token mapElT : nextMappingAr.arrayValue()) {
                 String spec[] = _extractMapSpec(mapElT, 4);
@@ -278,9 +279,8 @@ public class CoroutineDirector extends Director implements Continuation {
                 }
 
                 ControlEntryToken conET = ControlEntryToken.EntryToken(spec[3]);
-                if (conET.isLocation()
-                        && !contin.entryLocations().contains(
-                                conET.getLocation())) {
+                if (conET.isLocation() && !contin.entryLocations()
+                        .contains(conET.getLocation())) {
                     continue;
                 }
 
@@ -318,9 +318,8 @@ public class CoroutineDirector extends Director implements Continuation {
                 }
 
                 ControlEntryToken conET = ControlEntryToken.EntryToken(spec[2]);
-                if (conET.isLocation()
-                        && !contin.entryLocations().contains(
-                                conET.getLocation())) {
+                if (conET.isLocation() && !contin.entryLocations()
+                        .contains(conET.getLocation())) {
                     continue;
                 }
 
@@ -334,7 +333,8 @@ public class CoroutineDirector extends Director implements Continuation {
     public void buildExitMapFromParameter() throws IllegalActionException {
         _exitMap = new HashMap();
         Token exitMappingToken = exitMapping.getToken();
-        if (exitMappingToken != null && exitMappingToken instanceof ArrayToken) {
+        if (exitMappingToken != null
+                && exitMappingToken instanceof ArrayToken) {
             ArrayToken exitMappingAr = (ArrayToken) exitMappingToken;
             for (Token mapElT : exitMappingAr.arrayValue()) {
                 String spec[] = _extractMapSpec(mapElT, 3);
@@ -399,7 +399,8 @@ public class CoroutineDirector extends Director implements Continuation {
                     continue;
                 }
 
-                InternalExitLocation inext = new InternalExitLocation(scact, xl);
+                InternalExitLocation inext = new InternalExitLocation(scact,
+                        xl);
                 InternalEntryLocation inent = new InternalEntryLocation(dcact,
                         et);
                 _nextMap.put(inext, inent);
@@ -538,7 +539,7 @@ public class CoroutineDirector extends Director implements Continuation {
     @Override
     public ControlExitToken controlEnterAt(
             ControlEntryToken.EntryLocation location)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -649,7 +650,8 @@ public class CoroutineDirector extends Director implements Continuation {
     }
 
     public class InternalEntryLocation extends EntryLocation {
-        InternalEntryLocation(Continuation continuation, ControlEntryToken entry) {
+        InternalEntryLocation(Continuation continuation,
+                ControlEntryToken entry) {
             super("");
             _continuation = continuation;
             _entry = entry;

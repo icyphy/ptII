@@ -262,8 +262,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *   the data type is incompatible).
      */
     @Override
-    public void put(HashMap data) throws RemoteException,
-    IllegalActionException {
+    public void put(HashMap data)
+            throws RemoteException, IllegalActionException {
         Token token = (Token) data.keySet().iterator().next();
         LinkedList idsList = (LinkedList) data.get(token);
 
@@ -315,16 +315,16 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
     public void setConnections(HashMap connections)
             throws java.rmi.RemoteException {
         if (VERBOSE) {
-            System.out.println("Received Connections: "
-                    + connections.toString());
+            System.out
+                    .println("Received Connections: " + connections.toString());
         }
 
         int number = 0;
         DistributedDirector director = (DistributedDirector) compositeActor
                 .getDirector();
 
-        for (Iterator portsIterator = connections.entrySet().iterator(); portsIterator
-                .hasNext();) {
+        for (Iterator portsIterator = connections.entrySet()
+                .iterator(); portsIterator.hasNext();) {
             Map.Entry entry = (Map.Entry) portsIterator.next();
             String portName = (String) entry.getKey();
             IOPort port = (IOPort) ((ComponentEntity) actor).getPort(portName);
@@ -334,11 +334,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 Integer[][] integerReceivers = (Integer[][]) entry.getValue();
 
                 if (VERBOSE) {
-                    System.out.println("Receivers received for "
-                            + portName
-                            + "\n"
-                            + DistributedUtilities
-                            .integersArrayToString(integerReceivers));
+                    System.out.println("Receivers received for " + portName
+                            + "\n" + DistributedUtilities
+                                    .integersArrayToString(integerReceivers));
                 }
 
                 //for (Integer[] integerReceiver : integerReceivers) {
@@ -372,11 +370,11 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 }
 
                 if (VERBOSE) {
-                    System.out.println("Receivers created for "
-                            + portName
-                            + "\n"
-                            + DistributedUtilities.receiversArrayToString(port
-                                    .getReceivers()));
+                    System.out
+                            .println("Receivers created for " + portName + "\n"
+                                    + DistributedUtilities
+                                            .receiversArrayToString(
+                                                    port.getReceivers()));
                 }
             }
 
@@ -397,8 +395,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                     KernelException.stackTraceToString(e);
                 }
 
-                relation.setServicesReceiversListMap((HashMap) connections
-                        .get(portName));
+                relation.setServicesReceiversListMap(
+                        (HashMap) connections.get(portName));
             }
         }
 
@@ -422,8 +420,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             System.out.println("Received port Types: " + portTypes.toString());
         }
 
-        for (Iterator portsIterator = portTypes.entrySet().iterator(); portsIterator
-                .hasNext();) {
+        for (Iterator portsIterator = portTypes.entrySet()
+                .iterator(); portsIterator.hasNext();) {
             Map.Entry entry = (Map.Entry) portsIterator.next();
             String portName = (String) entry.getKey();
             TypedIOPort port = (TypedIOPort) ((ComponentEntity) actor)

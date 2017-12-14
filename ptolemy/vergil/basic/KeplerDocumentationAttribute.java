@@ -59,8 +59,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class KeplerDocumentationAttribute extends Attribute implements
-Configurable {
+public class KeplerDocumentationAttribute extends Attribute
+        implements Configurable {
 
     /** Construct a Kepler documentation attribute.  */
     public KeplerDocumentationAttribute() {
@@ -102,8 +102,8 @@ Configurable {
             throws NameDuplicationException, Exception {
 
         _portHash.put(name, value);
-        ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
-                + name);
+        ConfigurableAttribute port = new ConfigurableAttribute(this,
+                "port:" + name);
         port.configure(null, null, value);
     }
 
@@ -140,8 +140,8 @@ Configurable {
      */
     public void createEmptyFields(NamedObj target) {
         try {
-            /*ConfigurableAttribute authorAtt =*/new ConfigurableAttribute(
-                    this, "author");
+            /*ConfigurableAttribute authorAtt =*/new ConfigurableAttribute(this,
+                    "author");
             /*ConfigurableAttribute versionAtt =*/new ConfigurableAttribute(
                     this, "version");
             /*ConfigurableAttribute descriptionAtt =*/new ConfigurableAttribute(
@@ -249,31 +249,21 @@ Configurable {
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         createInstanceFromExisting(this);
-        StringBuffer results = new StringBuffer(
-                "<property name=\""
-                        + name
-                        + "\" class=\""
-                        + getClassName()
-                        + "\">\n"
-                        + "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                        + "<configure>"
-                        + StringUtilities.escapeForXML(_description)
-                        + "</configure>"
-                        + "</property>\n"
-                        + "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                        + "<configure>"
-                        + StringUtilities.escapeForXML(_author)
-                        + "</configure>"
-                        + "</property>\n"
-                        + "<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                        + "<configure>"
-                        + StringUtilities.escapeForXML(_version)
-                        + "</configure>"
-                        + "</property>\n"
-                        + "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                        + "<configure>"
-                        + StringUtilities.escapeForXML(_userLevelDocumentation)
-                        + "</configure>" + "</property>\n");
+        StringBuffer results = new StringBuffer("<property name=\"" + name
+                + "\" class=\"" + getClassName() + "\">\n"
+                + "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>" + StringUtilities.escapeForXML(_description)
+                + "</configure>" + "</property>\n"
+                + "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>" + StringUtilities.escapeForXML(_author)
+                + "</configure>" + "</property>\n"
+                + "<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>" + StringUtilities.escapeForXML(_version)
+                + "</configure>" + "</property>\n"
+                + "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>"
+                + StringUtilities.escapeForXML(_userLevelDocumentation)
+                + "</configure>" + "</property>\n");
 
         Enumeration portKeys = _portHash.keys();
         while (portKeys.hasMoreElements()) {
@@ -373,7 +363,7 @@ Configurable {
             documentationAttribute.description = new StringAttribute(
                     documentationAttribute, "description");
             documentationAttribute.description
-            .setExpression(_userLevelDocumentation);
+                    .setExpression(_userLevelDocumentation);
 
             //add ports and params
             Enumeration ports = _portHash.keys();
@@ -500,8 +490,8 @@ Configurable {
      *  ConfigurableAttribute.
      *  @see #addPort(String, String)
      */
-    public String removePort(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public String removePort(String name)
+            throws IllegalActionException, NameDuplicationException {
         String retval = (String) _portHash.remove(name);
         if (retval != null) {
             Attribute attribute = getAttribute("port:" + name);
@@ -519,8 +509,8 @@ Configurable {
      *  ConfigurableAttribute.
      *  @see #addProperty(String, String)
      */
-    public String removeProperty(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public String removeProperty(String name)
+            throws IllegalActionException, NameDuplicationException {
         String retval = (String) _propertyHash.remove(name);
         if (retval != null) {
             Attribute attribute = getAttribute("prop:" + name);
@@ -725,8 +715,8 @@ Configurable {
                                 .get(propertyName);
                         if (newPropDoc != null && _isEmpty(newPropDoc)
                                 && !_isEmpty(propertyDescription)) {
-                            _propertyHash
-                            .put(propertyName, propertyDescription);
+                            _propertyHash.put(propertyName,
+                                    propertyDescription);
                             replaced = true;
                         }
                     }
@@ -735,12 +725,13 @@ Configurable {
                 if (replaced) {
 
                     if (printWhenReplacing) {
-                        System.out.println("WARNING: using old docs for "
-                                + attributeName
-                                + " since the new ones appear empty.");
+                        System.out.println(
+                                "WARNING: using old docs for " + attributeName
+                                        + " since the new ones appear empty.");
                     }
                     // Update the attribute too, creating one if it does not exist.
-                    ConfigurableAttribute myAttribute = (ConfigurableAttribute) getAttribute(attributeName);
+                    ConfigurableAttribute myAttribute = (ConfigurableAttribute) getAttribute(
+                            attributeName);
                     if (myAttribute == null) {
                         myAttribute = new ConfigurableAttribute(this,
                                 attributeName);

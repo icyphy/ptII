@@ -203,8 +203,8 @@ public class RecordType extends AssociativeType implements Cloneable {
     @Override
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
-            throw new IllegalArgumentException(
-                    Token.notSupportedConversionMessage(token, this.toString()));
+            throw new IllegalArgumentException(Token
+                    .notSupportedConversionMessage(token, this.toString()));
         }
 
         RecordToken recordToken = (RecordToken) token;
@@ -394,7 +394,7 @@ public class RecordType extends AssociativeType implements Cloneable {
             // while (fieldNames.hasNext()) {
             //   String label = fieldNames.next();
             //   FieldType fieldType = _fields.get(label);
-            for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+            for (Map.Entry<String, FieldType> fields : _fields.entrySet()) {
                 FieldType fieldType = fields.getValue();
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
@@ -524,14 +524,13 @@ public class RecordType extends AssociativeType implements Cloneable {
             return false;
         }
 
-
         // Loop over all the labels.
         // FindBugs: ptolemy.data.type.RecordType.isSubstitutionInstance(Type) makes inefficient use of keySet iterator instead of entrySet iterator
         // Iterator<String> fieldNames = myLabelSet.iterator();
         // while (fieldNames.hasNext()) {
         //     String label = fieldNames.next();
         //     FieldType fieldType = _fields.get(label);
-        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+        for (Map.Entry<String, FieldType> fields : _fields.entrySet()) {
             FieldType fieldType = fields.getValue();
 
             Type myDeclaredType = fieldType._declaredType;
@@ -635,7 +634,7 @@ public class RecordType extends AssociativeType implements Cloneable {
         // while (fieldNames.hasNext()) {
         //    String label = fieldNames.next();
         //    FieldType fieldType = _fields.get(label);
-        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+        for (Map.Entry<String, FieldType> fields : _fields.entrySet()) {
             FieldType fieldType = fields.getValue();
             if (fieldType.isSettable()) {
                 //Type newFieldType = ((RecordType) newType).get(label);
@@ -741,8 +740,8 @@ public class RecordType extends AssociativeType implements Cloneable {
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice()
+                        .greatestLowerBound(type1, type2);
             }
         }
 

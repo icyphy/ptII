@@ -80,8 +80,8 @@ public class VisibleParameterEditorFactory extends EditorFactory {
      */
     @Override
     public void createEditor(final NamedObj object, Frame parent) {
-        ComponentDialog dialog = new ComponentDialog(parent, "Edit Parameter "
-                + object.getName(), createEditorPane());
+        ComponentDialog dialog = new ComponentDialog(parent,
+                "Edit Parameter " + object.getName(), createEditorPane());
 
         // If we were canceled, then restore the old value.
         if (dialog.buttonPressed().equals("Cancel")) {
@@ -122,8 +122,8 @@ public class VisibleParameterEditorFactory extends EditorFactory {
             query.addStyledEntry(parameter);
             return query;
         } else {
-            return new JLabel(object.getName()
-                    + " is not a settable attribute!");
+            return new JLabel(
+                    object.getName() + " is not a settable attribute!");
         }
     }
 

@@ -88,9 +88,9 @@ public class ArrayToMatrix extends Transformer {
         rowVector.setExpression("true");
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,8 +146,8 @@ public class ArrayToMatrix extends Transformer {
                 for (int i = 0; i < token.length(); i++) {
                     contents[i] = ((IntToken) token.getElement(i)).intValue();
                 }
-                MatrixToken result = new IntMatrixToken(contents, rows,
-                        columns, MatrixToken.DO_NOT_COPY);
+                MatrixToken result = new IntMatrixToken(contents, rows, columns,
+                        MatrixToken.DO_NOT_COPY);
                 output.broadcast(result);
             } else if (arrayElementType.equals(BaseType.DOUBLE)) {
                 double[] contents = new double[size];
@@ -162,8 +162,8 @@ public class ArrayToMatrix extends Transformer {
                 boolean[][] contents = new boolean[rows][columns];
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < columns; j++) {
-                        contents[i][j] = ((BooleanToken) token.getElement(j + i
-                                * columns)).booleanValue();
+                        contents[i][j] = ((BooleanToken) token
+                                .getElement(j + i * columns)).booleanValue();
                     }
                 }
                 MatrixToken result = new BooleanMatrixToken(contents);
@@ -172,8 +172,8 @@ public class ArrayToMatrix extends Transformer {
                 Complex[][] contents = new Complex[rows][columns];
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < columns; j++) {
-                        contents[i][j] = ((ComplexToken) token.getElement(j + i
-                                * columns)).complexValue();
+                        contents[i][j] = ((ComplexToken) token
+                                .getElement(j + i * columns)).complexValue();
                     }
                 }
                 MatrixToken result = new ComplexMatrixToken(contents,
@@ -183,8 +183,8 @@ public class ArrayToMatrix extends Transformer {
                 FixPoint[][] contents = new FixPoint[rows][columns];
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < columns; j++) {
-                        contents[i][j] = ((FixToken) token.getElement(j + i
-                                * columns)).fixValue();
+                        contents[i][j] = ((FixToken) token
+                                .getElement(j + i * columns)).fixValue();
                     }
                 }
                 MatrixToken result = new FixMatrixToken(contents);
@@ -199,8 +199,7 @@ public class ArrayToMatrix extends Transformer {
                 output.broadcast(result);
             } else {
                 // Not a supported type.
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "Received an input array with elements of type "
                                 + arrayElementType
                                 + " for which there is no corresponding matrix type.");

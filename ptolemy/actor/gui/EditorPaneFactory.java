@@ -126,12 +126,15 @@ public class EditorPaneFactory extends Attribute {
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
                     decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
                     decoratorQuery.setTextWidth(DEFAULT_QUERY_WIDTH);
-                    decoratorQuery.addText(
-                            "Decorator providing the parameters below: "
-                                    + decorator.getFullName(), Color.BLACK, 0);
+                    decoratorQuery
+                            .addText(
+                                    "Decorator providing the parameters below: "
+                                            + decorator.getFullName(),
+                                    Color.BLACK, 0);
                     boolean foundDecoratorAttribute = false;
 
-                    for (Object attribute : decoratorAttributes.attributeList()) {
+                    for (Object attribute : decoratorAttributes
+                            .attributeList()) {
                         if (attribute instanceof Settable) {
                             Settable settable = (Settable) attribute;
                             if (Configurer.isVisible(object, settable)) {
@@ -176,7 +179,8 @@ public class EditorPaneFactory extends Attribute {
      *  @return An instance of the PtolemyQuery class that is created
      *  with styles according to the type given in each visible attribute.
      */
-    public static Component createEditorPane(NamedObj object, PtolemyQuery query) {
+    public static Component createEditorPane(NamedObj object,
+            PtolemyQuery query) {
         query.setTextWidth(DEFAULT_QUERY_WIDTH);
         boolean foundOne = false;
         List<Settable> parameters = new LinkedList<Settable>(

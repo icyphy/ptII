@@ -77,8 +77,8 @@ public class GiottoCodeGenerator extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public GiottoCodeGenerator() throws IllegalActionException,
-    NameDuplicationException {
+    public GiottoCodeGenerator()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -128,8 +128,8 @@ public class GiottoCodeGenerator extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
@@ -189,9 +189,9 @@ public class GiottoCodeGenerator extends Attribute {
 
                 manager.preinitializeAndResolveTypes();
 
-                TextEffigy codeEffigy = TextEffigy
-                        .newTextEffigy(configuration.getDirectory(),
-                                generateGiottoCode(model));
+                TextEffigy codeEffigy = TextEffigy.newTextEffigy(
+                        configuration.getDirectory(),
+                        generateGiottoCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
 

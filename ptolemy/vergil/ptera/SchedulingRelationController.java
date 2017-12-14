@@ -94,8 +94,8 @@ public class SchedulingRelationController extends TransitionController {
          */
         @Override
         public Connector render(Object edge, Site tailSite, Site headSite) {
-            ArcConnector connector = (ArcConnector) super.render(edge,
-                    tailSite, headSite);
+            ArcConnector connector = (ArcConnector) super.render(edge, tailSite,
+                    headSite);
             Link link = (Link) edge;
             SchedulingRelation relation = (SchedulingRelation) link
                     .getRelation();
@@ -123,8 +123,8 @@ public class SchedulingRelationController extends TransitionController {
      */
     @Override
     protected void _openInstanceOrModel(Configuration configuration,
-            NamedObj refinement) throws IllegalActionException,
-            NameDuplicationException {
+            NamedObj refinement)
+            throws IllegalActionException, NameDuplicationException {
         configuration.openInstance(refinement);
     }
 }

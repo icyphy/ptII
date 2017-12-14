@@ -127,7 +127,7 @@ public class RecursiveLattice extends Transformer {
 
         // Note that setExpression() will call attributeChanged().
         reflectionCoefficients
-        .setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
+                .setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -279,8 +279,8 @@ public class RecursiveLattice extends Transformer {
             // Backward:  Compute the w's for the next round
             for (int i = 1; i < M; i++) {
                 k = -_reflectionCoefficients[M - 1 - i];
-                _backwardCache[i] = _backwardCache[i + 1] + k
-                        * _forwardCache[i + 1];
+                _backwardCache[i] = _backwardCache[i + 1]
+                        + k * _forwardCache[i + 1];
             }
 
             _backwardCache[M] = _forwardCache[M];
@@ -308,7 +308,8 @@ public class RecursiveLattice extends Transformer {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        System.arraycopy(_backwardCache, 0, _backward, 0, _backwardCache.length);
+        System.arraycopy(_backwardCache, 0, _backward, 0,
+                _backwardCache.length);
         System.arraycopy(_forwardCache, 0, _forward, 0, _forwardCache.length);
         return super.postfire();
     }
@@ -319,7 +320,8 @@ public class RecursiveLattice extends Transformer {
     @Override
     public boolean prefire() throws IllegalActionException {
         // Get a copy of the current filter state that we can modify.
-        System.arraycopy(_backward, 0, _backwardCache, 0, _backwardCache.length);
+        System.arraycopy(_backward, 0, _backwardCache, 0,
+                _backwardCache.length);
         System.arraycopy(_forward, 0, _forwardCache, 0, _forwardCache.length);
         return super.prefire();
     }

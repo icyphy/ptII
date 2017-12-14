@@ -176,8 +176,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                 Manager manager = getManager();
 
                 if (castPort.isOutput() && getDirector() != null
-                        && manager != null
-                        && manager.getState() != Manager.IDLE
+                        && manager != null && manager.getState() != Manager.IDLE
                         && manager.getState() != Manager.INFERING_WIDTHS
                         && manager.getState() != Manager.PREINITIALIZING) {
 
@@ -193,8 +192,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                 }
 
                 if (castPort.isInput() && getExecutiveDirector() != null
-                        && manager != null
-                        && manager.getState() != Manager.IDLE
+                        && manager != null && manager.getState() != Manager.IDLE
                         && manager.getState() != Manager.INFERING_WIDTHS
                         && manager.getState() != Manager.PREINITIALIZING) {
                     try {
@@ -346,11 +344,11 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addIcon() {
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:white\"/>\n"
-                + "<polygon points=\"-20,-10 20,0 -20,10\" "
-                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                        + "height=\"40\" style=\"fill:white\"/>\n"
+                        + "<polygon points=\"-20,-10 20,0 -20,10\" "
+                        + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -393,7 +391,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          */
         public IOMethodPort(ComponentEntity container, String name,
                 boolean isInput, boolean isOutput)
-                        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             this(container, name);
             setInput(isInput);
             setOutput(isOutput);

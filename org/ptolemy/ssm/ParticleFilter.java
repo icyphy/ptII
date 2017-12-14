@@ -55,8 +55,8 @@ and several measurements to be tied with itself via decorators.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */
-public class ParticleFilter extends AbstractParticleFilter implements
-InferenceActor {
+public class ParticleFilter extends AbstractParticleFilter
+        implements InferenceActor {
 
     /** Instantiate a particle filter actor.
      *  @param container The container
@@ -88,7 +88,6 @@ InferenceActor {
         _measurementDecorators = new HashMap<>();
     }
 
-
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
@@ -116,13 +115,10 @@ InferenceActor {
                 // Check state equations.
                 String equation = name + "_update";
                 if (getUserDefinedParameter(equation) == null) {
-                    throw new IllegalActionException(
-                            this,
-                            "Please add a "
-                                    + "parameter with name \""
-                                    + equation
-                                    + "\" that gives the state update expression for state "
-                                    + name + ".");
+                    throw new IllegalActionException(this, "Please add a "
+                            + "parameter with name \"" + equation
+                            + "\" that gives the state update expression for state "
+                            + name + ".");
                 }
             }
         } else {
@@ -142,7 +138,7 @@ InferenceActor {
             throws IllegalActionException {
         boolean found = false;
         boolean mapExists = false;
-        Set<Decorator> decoratorSet =decorators();
+        Set<Decorator> decoratorSet = decorators();
         for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
                 Parameter isEnabled = (Parameter) getDecoratorAttribute(d,
@@ -152,8 +148,7 @@ InferenceActor {
                         found = true;
                         _decorator = (StateSpaceModel) d;
                     } else {
-                        throw new IllegalActionException(
-                                this,
+                        throw new IllegalActionException(this,
                                 "A StateSpaceActor "
                                         + "can be associated with exactly one StateSpaceModel "
                                         + "at a time.");
@@ -223,8 +218,8 @@ InferenceActor {
                         + decoratorName);
             }
         } else {
-            throw new IllegalActionException("Decorator not found: "
-                    + decoratorName);
+            throw new IllegalActionException(
+                    "Decorator not found: " + decoratorName);
         }
     }
 
@@ -256,27 +251,28 @@ InferenceActor {
             if (attr != null) {
                 return ((Parameter) attr);
             } else {
-                throw new IllegalActionException(
-                        "Specified parameter for noise"
-                                + " not found in referred decorator "
-                                + decoratorName);
+                throw new IllegalActionException("Specified parameter for noise"
+                        + " not found in referred decorator " + decoratorName);
             }
         } else {
-            throw new IllegalActionException("Decorator not found: "
-                    + decoratorName);
+            throw new IllegalActionException(
+                    "Decorator not found: " + decoratorName);
         }
     }
 
     private boolean _decoratedByMap() {
         return (_mapDecorator != null);
     }
+
     @Override
     public boolean satisfiesMapConstraints(double[] coordinates) {
         if (this._decoratedByMap()) {
-            return _mapDecorator.withinValidMapArea(coordinates[0], coordinates[1]);
+            return _mapDecorator.withinValidMapArea(coordinates[0],
+                    coordinates[1]);
         } else {
             return true;
         }
     }
+
     private Map _mapDecorator;
 }

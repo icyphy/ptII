@@ -325,12 +325,13 @@ public class Plot extends PlotBox implements PlotInterface {
     @Override
     public synchronized void addPointWithErrorBars(final int dataset,
             final double x, final double y, final double[] derivatives,
-            final double yLowEB,
-            final double yHighEB, final boolean connected) {
+            final double yLowEB, final double yHighEB,
+            final boolean connected) {
         Runnable doAddPoint = new RunnableExceptionCatcher(new Runnable() {
             @Override
             public void run() {
-                _addPoint(dataset, x, y, derivatives, yLowEB, yHighEB, connected, true);
+                _addPoint(dataset, x, y, derivatives, yLowEB, yHighEB,
+                        connected, true);
             }
         });
 
@@ -920,8 +921,8 @@ public class Plot extends PlotBox implements PlotInterface {
         _plotImage = null;
 
         if (numSets < 1) {
-            throw new IllegalArgumentException("Number of data sets ("
-                    + numSets + ") must be greater than 0.");
+            throw new IllegalArgumentException("Number of data sets (" + numSets
+                    + ") must be greater than 0.");
         }
 
         _currentdataset = -1;
@@ -1155,9 +1156,8 @@ public class Plot extends PlotBox implements PlotInterface {
      */
     protected synchronized void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
-            throw new IllegalArgumentException(
-                    "Plot._checkDatasetIndex: Cannot"
-                            + " give a negative number for the data set index.");
+            throw new IllegalArgumentException("Plot._checkDatasetIndex: Cannot"
+                    + " give a negative number for the data set index.");
         }
 
         while (dataset >= _points.size()) {
@@ -1200,8 +1200,8 @@ public class Plot extends PlotBox implements PlotInterface {
 
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
-            int barlx = (int) (xpos - _barWidth * _xscale / 2 + dataset
-                    * _barOffset * _xscale);
+            int barlx = (int) (xpos - _barWidth * _xscale / 2
+                    + dataset * _barOffset * _xscale);
 
             // right x position of bar
             int barrx = (int) (barlx + _barWidth * _xscale);
@@ -1352,9 +1352,10 @@ public class Plot extends PlotBox implements PlotInterface {
 
         if (clip) {
             // Rule out impossible cases.
-            if (!(endx <= _ulx && startx <= _ulx || endx >= _lrx
-                    && startx >= _lrx || endy <= _uly && starty <= _uly || endy >= _lry
-                    && starty >= _lry)) {
+            if (!(endx <= _ulx && startx <= _ulx
+                    || endx >= _lrx && startx >= _lrx
+                    || endy <= _uly && starty <= _uly
+                    || endy >= _lry && starty >= _lry)) {
                 // If the end point is out of x range, adjust
                 // end point to boundary.
                 // The integer arithmetic has to be done with longs so as
@@ -1443,8 +1444,8 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param drawRectangle The Rectangle to draw in.
      */
     @Override
-    protected synchronized void _drawPlot(Graphics graphics,
-            boolean clearfirst, Rectangle drawRectangle) {
+    protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst,
+            Rectangle drawRectangle) {
         // BRDebug System.err.println("_drawPlot(begin)");
         if (_graphics == null) {
             _graphics = graphics;
@@ -1835,8 +1836,8 @@ public class Plot extends PlotBox implements PlotInterface {
                             double yLowEB = Double.parseDouble(yl);
                             double yHighEB = Double.parseDouble(yh);
                             connected = _addLegendIfNecessary(connected);
-                            addPointWithErrorBars(_currentdataset, xpt, ypt, null,
-                                    yLowEB, yHighEB, connected);
+                            addPointWithErrorBars(_currentdataset, xpt, ypt,
+                                    null, yLowEB, yHighEB, connected);
                             return true;
                         } else {
                             // It is unlikely that we have a fieldsplit2 >0
@@ -2150,9 +2151,8 @@ public class Plot extends PlotBox implements PlotInterface {
      * be called via deferIfNecessary().
      */
     private void _addPoint(int dataset, double x, double y,
-            double[] derivatives,
-            double yLowEB,
-            double yHighEB, boolean connected, boolean errorBar) {
+            double[] derivatives, double yLowEB, double yHighEB,
+            boolean connected, boolean errorBar) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
 
@@ -2181,8 +2181,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
             if (errorBar) {
                 if (yLowEB <= 0.0 || yHighEB <= 0.0) {
-                    System.err
-                    .println("Can't plot non-positive Y values "
+                    System.err.println("Can't plot non-positive Y values "
                             + "when the logarithmic Y axis value is specified: "
                             + y);
                     return;
@@ -2204,7 +2203,8 @@ public class Plot extends PlotBox implements PlotInterface {
             while (numToDelete < nbrOfBins) {
                 Bin old = bins.get(numToDelete);
 
-                if (x - points.get(old.firstPointIndex()).originalx <= _xPersistence) {
+                if (x - points.get(
+                        old.firstPointIndex()).originalx <= _xPersistence) {
                     break;
                 }
 
@@ -2294,7 +2294,8 @@ public class Plot extends PlotBox implements PlotInterface {
 
         pt.x = x;
         pt.y = y;
-        pt.derivatives = derivatives != null ? (double[])derivatives.clone() : null;
+        pt.derivatives = derivatives != null ? (double[]) derivatives.clone()
+                : null;
         pt.connected = connected && _isConnected(dataset);
 
         if (errorBar) {
@@ -2425,7 +2426,8 @@ public class Plot extends PlotBox implements PlotInterface {
 
         if (_wrap && Math.abs(x - _wrapHigh) < 0.00001) {
             // Plot a second point at the low end of the range.
-            _addPoint(dataset, _wrapLow, y, derivatives, yLowEB, yHighEB, false, errorBar);
+            _addPoint(dataset, _wrapLow, y, derivatives, yLowEB, yHighEB, false,
+                    errorBar);
         }
     }
 
@@ -2644,7 +2646,8 @@ public class Plot extends PlotBox implements PlotInterface {
                     // The erasing happens by drawing the point again with the same color (EXOR)
 
                     _setColorForDrawing(graphics, dataset, true);
-                    _drawPoint(graphics, dataset, prevxpos, prevypos, true, 2 /*dots*/);
+                    _drawPoint(graphics, dataset, prevxpos, prevypos, true,
+                            2 /*dots*/);
                     _resetColorForDrawing(graphics, true);
                     _setColorForDrawing(graphics, dataset, false);
                 }
@@ -2657,25 +2660,25 @@ public class Plot extends PlotBox implements PlotInterface {
             long prev_xpos = previousBin.xpos;
             long prev_ypos = previousBin.lastYPos();
             if (derivs != null) {
-                final double x0 = (double)(prev_xpos - _ulx) / +_xscale + _xMin;
-                final double y0 = (double)(prev_ypos - _lry) / -_yscale + _yMin;
+                final double x0 = (prev_xpos - _ulx) / +_xscale + _xMin;
+                final double y0 = (prev_ypos - _lry) / -_yscale + _yMin;
                 for (long xpos_k = prev_xpos + 1; xpos_k <= xpos; ++xpos_k) {
-                    final double x = (double)(xpos_k - _ulx) / +_xscale + _xMin;
+                    final double x = (xpos_k - _ulx) / +_xscale + _xMin;
                     double y = 0;
                     for (int i = derivs.length; i >= 0; --i) {
-                        y = y / (i + 1) * (x - x0) + (i > 0 ? derivs[i - 1] : y0);
+                        y = y / (i + 1) * (x - x0)
+                                + (i > 0 ? derivs[i - 1] : y0);
                     }
                     final long ypos_k = _lry - (long) ((y - _yMin) * _yscale);
-                    _drawLine(graphics, dataset, xpos_k, ypos_k,
-                            prev_xpos, prev_ypos, true,
-                            _DEFAULT_WIDTH);
+                    _drawLine(graphics, dataset, xpos_k, ypos_k, prev_xpos,
+                            prev_ypos, true, _DEFAULT_WIDTH);
                     prev_xpos = xpos_k;
                     prev_ypos = ypos_k;
                 }
             }
             if (connectedFlag && bin.needConnectionWithPreviousBin()) {
-                _drawLine(graphics, dataset, xpos, bin.firstYPos(),
-                        prev_xpos, prev_ypos, true, _DEFAULT_WIDTH);
+                _drawLine(graphics, dataset, xpos, bin.firstYPos(), prev_xpos,
+                        prev_ypos, true, _DEFAULT_WIDTH);
             }
         }
 
@@ -2685,8 +2688,8 @@ public class Plot extends PlotBox implements PlotInterface {
                     bin.maxYPos(), true, _DEFAULT_WIDTH);
         }
 
-        if (fmt.impulsesUseDefault && _impulses || !fmt.impulsesUseDefault
-                && fmt.impulses) {
+        if (fmt.impulsesUseDefault && _impulses
+                || !fmt.impulsesUseDefault && fmt.impulses) {
             long prevypos = _prevypos.get(dataset);
             long prevxpos = _prevxpos.get(dataset);
 
@@ -2749,14 +2752,10 @@ public class Plot extends PlotBox implements PlotInterface {
                 if (point.errorBar) {
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                     if (prevypos != ypos || prevxpos != xpos) {
-                        _drawErrorBar(
-                                graphics,
-                                dataset,
-                                xpos,
-                                _lry
+                        _drawErrorBar(graphics, dataset, xpos, _lry
                                 - (long) ((point.yLowEB - _yMin) * _yscale),
-                                _lry
-                                - (long) ((point.yHighEB - _yMin) * _yscale),
+                                _lry - (long) ((point.yHighEB - _yMin)
+                                        * _yscale),
                                 true);
                         prevypos = ypos;
                         prevxpos = xpos;
@@ -2797,208 +2796,208 @@ public class Plot extends PlotBox implements PlotInterface {
         boolean pointinside = ypos <= _lry && ypos >= _uly && xpos <= _lrx
                 && xpos >= _ulx;
 
-                if (!clip || pointinside) {
-                    int xposi = (int) xpos;
-                    int yposi = (int) ypos;
+        if (!clip || pointinside) {
+            int xposi = (int) xpos;
+            int yposi = (int) ypos;
 
-                    // If the point is out of range, and being drawn, then it is
-                    // probably a legend point.  When printing in black and white,
-                    // we want to use a line rather than a point for the legend.
-                    // (So that line patterns are visible). The only exception is
-                    // when the marks style uses distinct marks, or if there is
-                    // no line being drawn.
-                    // NOTE: It is unfortunate to have to test the class of graphics,
-                    // but there is no easy way around this that I can think of.
-                    if (!pointinside && marks != 3 && _isConnected(dataset)
-                            && (graphics instanceof EPSGraphics || !_usecolor)) {
-                        // Use our line styles.
-                        _drawLine(graphics, dataset, xposi - 6, yposi, xposi + 6,
-                                yposi, false, _width);
-                    } else {
-                        // Color display.  Use normal legend.
-                        switch (marks) {
-                        case 0:
+            // If the point is out of range, and being drawn, then it is
+            // probably a legend point.  When printing in black and white,
+            // we want to use a line rather than a point for the legend.
+            // (So that line patterns are visible). The only exception is
+            // when the marks style uses distinct marks, or if there is
+            // no line being drawn.
+            // NOTE: It is unfortunate to have to test the class of graphics,
+            // but there is no easy way around this that I can think of.
+            if (!pointinside && marks != 3 && _isConnected(dataset)
+                    && (graphics instanceof EPSGraphics || !_usecolor)) {
+                // Use our line styles.
+                _drawLine(graphics, dataset, xposi - 6, yposi, xposi + 6, yposi,
+                        false, _width);
+            } else {
+                // Color display.  Use normal legend.
+                switch (marks) {
+                case 0:
 
-                            // If no mark style is given, draw a filled rectangle.
-                            // This is used, for example, to draw the legend.
-                            graphics.fillRect(xposi - 6, yposi - 6, 6, 6);
-                            break;
+                    // If no mark style is given, draw a filled rectangle.
+                    // This is used, for example, to draw the legend.
+                    graphics.fillRect(xposi - 6, yposi - 6, 6, 6);
+                    break;
 
-                        case 1:
+                case 1:
 
-                            // points -- use 3-pixel ovals.
-                            graphics.fillOval(xposi - 1, yposi - 1, 3, 3);
-                            break;
+                    // points -- use 3-pixel ovals.
+                    graphics.fillOval(xposi - 1, yposi - 1, 3, 3);
+                    break;
 
-                        case 2:
+                case 2:
 
-                            // dots
-                            graphics.fillOval(xposi - _radius, yposi - _radius,
-                                    _diameter, _diameter);
-                            break;
+                    // dots
+                    graphics.fillOval(xposi - _radius, yposi - _radius,
+                            _diameter, _diameter);
+                    break;
 
-                        case 3:
+                case 3:
 
-                            // various
-                            int[] xpoints;
+                    // various
+                    int[] xpoints;
 
-                            // various
-                            int[] ypoints;
+                    // various
+                    int[] ypoints;
 
-                            // Points are only distinguished up to _MAX_MARKS data sets.
-                            int mark = dataset % _MAX_MARKS;
+                    // Points are only distinguished up to _MAX_MARKS data sets.
+                    int mark = dataset % _MAX_MARKS;
 
-                            switch (mark) {
-                            case 0:
+                    switch (mark) {
+                    case 0:
 
-                                // filled circle
-                                graphics.fillOval(xposi - _radius, yposi - _radius,
-                                        _diameter, _diameter);
-                                break;
+                        // filled circle
+                        graphics.fillOval(xposi - _radius, yposi - _radius,
+                                _diameter, _diameter);
+                        break;
 
-                            case 1:
+                    case 1:
 
-                                // cross
-                                graphics.drawLine(xposi - _radius, yposi - _radius,
-                                        xposi + _radius, yposi + _radius);
-                                graphics.drawLine(xposi + _radius, yposi - _radius,
-                                        xposi - _radius, yposi + _radius);
-                                break;
+                        // cross
+                        graphics.drawLine(xposi - _radius, yposi - _radius,
+                                xposi + _radius, yposi + _radius);
+                        graphics.drawLine(xposi + _radius, yposi - _radius,
+                                xposi - _radius, yposi + _radius);
+                        break;
 
-                            case 2:
+                    case 2:
 
-                                // square
-                                graphics.drawRect(xposi - _radius, yposi - _radius,
-                                        _diameter, _diameter);
-                                break;
+                        // square
+                        graphics.drawRect(xposi - _radius, yposi - _radius,
+                                _diameter, _diameter);
+                        break;
 
-                            case 3:
+                    case 3:
 
-                                // filled triangle
-                                xpoints = new int[4];
-                                ypoints = new int[4];
-                                xpoints[0] = xposi;
-                                ypoints[0] = yposi - _radius;
-                                xpoints[1] = xposi + _radius;
-                                ypoints[1] = yposi + _radius;
-                                xpoints[2] = xposi - _radius;
-                                ypoints[2] = yposi + _radius;
-                                xpoints[3] = xposi;
-                                ypoints[3] = yposi - _radius;
-                                graphics.fillPolygon(xpoints, ypoints, 4);
-                                break;
+                        // filled triangle
+                        xpoints = new int[4];
+                        ypoints = new int[4];
+                        xpoints[0] = xposi;
+                        ypoints[0] = yposi - _radius;
+                        xpoints[1] = xposi + _radius;
+                        ypoints[1] = yposi + _radius;
+                        xpoints[2] = xposi - _radius;
+                        ypoints[2] = yposi + _radius;
+                        xpoints[3] = xposi;
+                        ypoints[3] = yposi - _radius;
+                        graphics.fillPolygon(xpoints, ypoints, 4);
+                        break;
 
-                            case 4:
+                    case 4:
 
-                                // diamond
-                                xpoints = new int[5];
-                                ypoints = new int[5];
-                                xpoints[0] = xposi;
-                                ypoints[0] = yposi - _radius;
-                                xpoints[1] = xposi + _radius;
-                                ypoints[1] = yposi;
-                                xpoints[2] = xposi;
-                                ypoints[2] = yposi + _radius;
-                                xpoints[3] = xposi - _radius;
-                                ypoints[3] = yposi;
-                                xpoints[4] = xposi;
-                                ypoints[4] = yposi - _radius;
-                                graphics.drawPolygon(xpoints, ypoints, 5);
-                                break;
+                        // diamond
+                        xpoints = new int[5];
+                        ypoints = new int[5];
+                        xpoints[0] = xposi;
+                        ypoints[0] = yposi - _radius;
+                        xpoints[1] = xposi + _radius;
+                        ypoints[1] = yposi;
+                        xpoints[2] = xposi;
+                        ypoints[2] = yposi + _radius;
+                        xpoints[3] = xposi - _radius;
+                        ypoints[3] = yposi;
+                        xpoints[4] = xposi;
+                        ypoints[4] = yposi - _radius;
+                        graphics.drawPolygon(xpoints, ypoints, 5);
+                        break;
 
-                            case 5:
+                    case 5:
 
-                                // circle
-                                graphics.drawOval(xposi - _radius, yposi - _radius,
-                                        _diameter, _diameter);
-                                break;
+                        // circle
+                        graphics.drawOval(xposi - _radius, yposi - _radius,
+                                _diameter, _diameter);
+                        break;
 
-                            case 6:
+                    case 6:
 
-                                // plus sign
-                                graphics.drawLine(xposi, yposi - _radius, xposi, yposi
-                                        + _radius);
-                                graphics.drawLine(xposi - _radius, yposi, xposi
-                                        + _radius, yposi);
-                                break;
+                        // plus sign
+                        graphics.drawLine(xposi, yposi - _radius, xposi,
+                                yposi + _radius);
+                        graphics.drawLine(xposi - _radius, yposi,
+                                xposi + _radius, yposi);
+                        break;
 
-                            case 7:
+                    case 7:
 
-                                // filled square
-                                graphics.fillRect(xposi - _radius, yposi - _radius,
-                                        _diameter, _diameter);
-                                break;
+                        // filled square
+                        graphics.fillRect(xposi - _radius, yposi - _radius,
+                                _diameter, _diameter);
+                        break;
 
-                            case 8:
+                    case 8:
 
-                                // triangle
-                                xpoints = new int[4];
-                                ypoints = new int[4];
-                                xpoints[0] = xposi;
-                                ypoints[0] = yposi - _radius;
-                                xpoints[1] = xposi + _radius;
-                                ypoints[1] = yposi + _radius;
-                                xpoints[2] = xposi - _radius;
-                                ypoints[2] = yposi + _radius;
-                                xpoints[3] = xposi;
-                                ypoints[3] = yposi - _radius;
-                                graphics.drawPolygon(xpoints, ypoints, 4);
-                                break;
+                        // triangle
+                        xpoints = new int[4];
+                        ypoints = new int[4];
+                        xpoints[0] = xposi;
+                        ypoints[0] = yposi - _radius;
+                        xpoints[1] = xposi + _radius;
+                        ypoints[1] = yposi + _radius;
+                        xpoints[2] = xposi - _radius;
+                        ypoints[2] = yposi + _radius;
+                        xpoints[3] = xposi;
+                        ypoints[3] = yposi - _radius;
+                        graphics.drawPolygon(xpoints, ypoints, 4);
+                        break;
 
-                            case 9:
+                    case 9:
 
-                                // filled diamond
-                                xpoints = new int[5];
-                                ypoints = new int[5];
-                                xpoints[0] = xposi;
-                                ypoints[0] = yposi - _radius;
-                                xpoints[1] = xposi + _radius;
-                                ypoints[1] = yposi;
-                                xpoints[2] = xposi;
-                                ypoints[2] = yposi + _radius;
-                                xpoints[3] = xposi - _radius;
-                                ypoints[3] = yposi;
-                                xpoints[4] = xposi;
-                                ypoints[4] = yposi - _radius;
-                                graphics.fillPolygon(xpoints, ypoints, 5);
-                                break;
-                            default:
-                                throw new RuntimeException("Internal Error.  Mark "
-                                        + "style " + mark + " not supported.");
-                            }
-
-                            break;
-
-                        case 4:
-
-                            // bigdots
-                            //graphics.setColor(_marksColor);
-                            if (graphics instanceof Graphics2D) {
-                                Object obj = ((Graphics2D) graphics)
-                                        .getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-                                ((Graphics2D) graphics).setRenderingHint(
-                                        RenderingHints.KEY_ANTIALIASING,
-                                        RenderingHints.VALUE_ANTIALIAS_ON);
-                                graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
-                                ((Graphics2D) graphics).setRenderingHint(
-                                        RenderingHints.KEY_ANTIALIASING, obj);
-                            } else {
-                                graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
-                            }
-                            break;
-
-                        case 5:
-
-                            // If the mark style is pixels, draw a filled rectangle.
-                            graphics.fillRect(xposi, yposi, 1, 1);
-                            break;
-
-                        default:
-                            throw new RuntimeException("Internal Error.  Mark "
-                                    + "style " + marks + " not supported.");
-                        }
+                        // filled diamond
+                        xpoints = new int[5];
+                        ypoints = new int[5];
+                        xpoints[0] = xposi;
+                        ypoints[0] = yposi - _radius;
+                        xpoints[1] = xposi + _radius;
+                        ypoints[1] = yposi;
+                        xpoints[2] = xposi;
+                        ypoints[2] = yposi + _radius;
+                        xpoints[3] = xposi - _radius;
+                        ypoints[3] = yposi;
+                        xpoints[4] = xposi;
+                        ypoints[4] = yposi - _radius;
+                        graphics.fillPolygon(xpoints, ypoints, 5);
+                        break;
+                    default:
+                        throw new RuntimeException("Internal Error.  Mark "
+                                + "style " + mark + " not supported.");
                     }
+
+                    break;
+
+                case 4:
+
+                    // bigdots
+                    //graphics.setColor(_marksColor);
+                    if (graphics instanceof Graphics2D) {
+                        Object obj = ((Graphics2D) graphics).getRenderingHint(
+                                RenderingHints.KEY_ANTIALIASING);
+                        ((Graphics2D) graphics).setRenderingHint(
+                                RenderingHints.KEY_ANTIALIASING,
+                                RenderingHints.VALUE_ANTIALIAS_ON);
+                        graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
+                        ((Graphics2D) graphics).setRenderingHint(
+                                RenderingHints.KEY_ANTIALIASING, obj);
+                    } else {
+                        graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
+                    }
+                    break;
+
+                case 5:
+
+                    // If the mark style is pixels, draw a filled rectangle.
+                    graphics.fillRect(xposi, yposi, 1, 1);
+                    break;
+
+                default:
+                    throw new RuntimeException("Internal Error.  Mark "
+                            + "style " + marks + " not supported.");
                 }
+            }
+        }
     }
 
     /* Erase the points within the first bin in the given dataset.  If
@@ -3039,8 +3038,8 @@ public class Plot extends PlotBox implements PlotInterface {
             boolean connectedFlag = getConnected();
 
             if (connectedFlag && bin.isConnected() && minYPos != maxYPos) {
-                _drawLine(graphics, dataset, xpos, minYPos, xpos, maxYPos,
-                        true, _DEFAULT_WIDTH);
+                _drawLine(graphics, dataset, xpos, minYPos, xpos, maxYPos, true,
+                        _DEFAULT_WIDTH);
             }
 
             // Erase line to the next bin, if appropriate.
@@ -3058,8 +3057,8 @@ public class Plot extends PlotBox implements PlotInterface {
             // Draw decorations that may be specified on a per-dataset basis
             Format fmt = _formats.get(dataset);
 
-            if (fmt.impulsesUseDefault && _impulses || !fmt.impulsesUseDefault
-                    && fmt.impulses) {
+            if (fmt.impulsesUseDefault && _impulses
+                    || !fmt.impulsesUseDefault && fmt.impulses) {
                 long prevypos = _prevErasedypos.get(dataset);
                 long prevxpos = _prevErasedxpos.get(dataset);
                 for (int i = startPosition; i < endPosition; ++i) {
@@ -3104,8 +3103,7 @@ public class Plot extends PlotBox implements PlotInterface {
                 }
             }
 
-            if (_markDisconnections && marks == 0
-                    && endPosition > startPosition
+            if (_markDisconnections && marks == 0 && endPosition > startPosition
                     && endPosition < points.size()) {
                 PlotPoint point = points.get(endPosition - 1);
                 if (connectedFlag && point.connected) {
@@ -3118,7 +3116,8 @@ public class Plot extends PlotBox implements PlotInterface {
                     if (!(connectedFlag && nextPoint.connected)) {
                         long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                         // BRDebug System.out.println("Erasing point:" + xpos + ", " + ypos +  ", position :" + (endPosition-1) + ", previous");
-                        _drawPoint(graphics, dataset, xpos, ypos, true, 2 /*dots*/);
+                        _drawPoint(graphics, dataset, xpos, ypos, true,
+                                2 /*dots*/);
                     }
                 }
             }
@@ -3147,14 +3146,10 @@ public class Plot extends PlotBox implements PlotInterface {
                     if (point.errorBar) {
                         long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                         if (prevypos != ypos || prevxpos != xpos) {
-                            _drawErrorBar(
-                                    graphics,
-                                    dataset,
-                                    xpos,
-                                    _lry
+                            _drawErrorBar(graphics, dataset, xpos, _lry
                                     - (long) ((point.yLowEB - _yMin) * _yscale),
-                                    _lry
-                                    - (long) ((point.yHighEB - _yMin) * _yscale),
+                                    _lry - (long) ((point.yHighEB - _yMin)
+                                            * _yscale),
                                     true);
                             prevypos = ypos;
                             prevxpos = xpos;
@@ -3195,9 +3190,8 @@ public class Plot extends PlotBox implements PlotInterface {
         }
         assert bin.firstPointIndex() >= 0;
 
-        _pointInBinOffset.set(dataset,
-                _pointInBinOffset.get(dataset) + bin.afterLastPointIndex()
-                - bin.firstPointIndex());
+        _pointInBinOffset.set(dataset, _pointInBinOffset.get(dataset)
+                + bin.afterLastPointIndex() - bin.firstPointIndex());
         //FIXME? Warning: Could overflow for scopes with a really large history...
         //  (the points aren't kept in memory, since it is only here where it goes wrong.
         //  We could check for overflow and in this case reset the _pointInBinOffset to
@@ -3341,14 +3335,13 @@ public class Plot extends PlotBox implements PlotInterface {
 
     /** Schedule a bin to be (re)drawn due to the removal of a bin.
      */
-    private void _scheduleBinRedrawRemove(int dataset, int nbrOfElementsToErase) {
+    private void _scheduleBinRedrawRemove(int dataset,
+            int nbrOfElementsToErase) {
         while (_scheduledBinsToErase.size() <= dataset) {
             _scheduledBinsToErase.add(0);
         }
-        _scheduledBinsToErase.set(
-                dataset,
-                Math.max(nbrOfElementsToErase,
-                        _scheduledBinsToErase.get(dataset)));
+        _scheduledBinsToErase.set(dataset, Math.max(nbrOfElementsToErase,
+                _scheduledBinsToErase.get(dataset)));
         _needBinRedraw = true;
     }
 
@@ -3456,7 +3449,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
     /** True if different line styles should be used. */
     private static String[] _LINE_STYLES_ARRAY = { "solid", "dotted", "dashed",
-        "dotdashed", "dotdotdashed" };
+            "dotdashed", "dotdotdashed" };
 
     /** @serial The highest data set used. */
     private int _maxDataset = -1;
@@ -3717,8 +3710,8 @@ public class Plot extends PlotBox implements PlotInterface {
         public void setNotConnectedWithPreviousBin() {
             _needConnectionWithPreviousBin = false;
             _isConnectedWithPreviousBin = false;
-            _points.get(_dataset).get(
-                    _firstPointIndex - _pointInBinOffset.get(_dataset)).connected = false;
+            _points.get(_dataset).get(_firstPointIndex
+                    - _pointInBinOffset.get(_dataset)).connected = false;
         }
 
         public final long xpos;

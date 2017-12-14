@@ -291,7 +291,8 @@ public abstract class AbstractFormBuilder {
      * @param columnSpan   the new column span  (grid width)
      * @param rowSpan      the new row span     (grid height)
      */
-    public final void setBounds(int column, int row, int columnSpan, int rowSpan) {
+    public final void setBounds(int column, int row, int columnSpan,
+            int rowSpan) {
         setColumn(column);
         setRow(row);
         setColumnSpan(columnSpan);
@@ -612,9 +613,10 @@ public abstract class AbstractFormBuilder {
      * @param columnSpan   the column span to be used in the constraints
      * @return CellConstraints adjusted to the left hand side
      */
-    protected final CellConstraints createLeftAdjustedConstraints(int columnSpan) {
-        int firstColumn = isLeftToRight() ? getColumn() : getColumn() + 1
-                - columnSpan;
+    protected final CellConstraints createLeftAdjustedConstraints(
+            int columnSpan) {
+        int firstColumn = isLeftToRight() ? getColumn()
+                : getColumn() + 1 - columnSpan;
         return new CellConstraints(firstColumn, getRow(), columnSpan,
                 cellConstraints().gridHeight);
     }

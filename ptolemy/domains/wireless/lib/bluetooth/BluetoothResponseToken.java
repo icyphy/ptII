@@ -74,7 +74,8 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
      * device constructing this token.
      * @param data The arbitrary data to send.
      */
-    public BluetoothResponseToken(BluetoothResponse response, String deviceIdentifier, String sourceIdentifier, T data) {
+    public BluetoothResponseToken(BluetoothResponse response,
+            String deviceIdentifier, String sourceIdentifier, T data) {
         this._response = response;
         this._deviceIdentifier = deviceIdentifier;
         this._sourceIdentifier = sourceIdentifier;
@@ -116,7 +117,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
 
     @Override
     public String toString() {
-        switch(this._response) {
+        switch (this._response) {
         case COMMAND_DISCONNECT:
             return "DISCONNECT";
         case COMMAND_REQUESTCONNECT:
@@ -138,7 +139,6 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
         }
     }
 
-
     @Override
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
@@ -146,13 +146,12 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
             BluetoothResponseToken right = (BluetoothResponseToken) rightArgument;
             if (this._response == right.getResponse()) {
                 return new BooleanToken(true);
-            }
-            else {
+            } else {
                 return new BooleanToken(false);
             }
-        }
-        else {
-            throw new IllegalActionException("The argument must be of type BluetoothResponseToken");
+        } else {
+            throw new IllegalActionException(
+                    "The argument must be of type BluetoothResponseToken");
         }
     }
 

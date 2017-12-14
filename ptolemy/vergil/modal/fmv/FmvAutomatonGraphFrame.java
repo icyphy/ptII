@@ -192,14 +192,15 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
         public TranslateSmvAction() {
             super("Translate into .SMV file");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
                             { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Translate into .SMV file");
@@ -259,8 +260,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                         // SMVFileFilter filter = new SMVFileFilter();
                         // fileSaveDialog.setFileFilter(filter);
                         fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
-                        fileSaveDialog
-                        .setDialogTitle("Convert Ptolemy model into .smv file");
+                        fileSaveDialog.setDialogTitle(
+                                "Convert Ptolemy model into .smv file");
                         if (_directory != null) {
                             fileSaveDialog.setCurrentDirectory(_directory);
                         } else {
@@ -276,7 +277,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
                             if (cwd != null) {
                                 fileSaveDialog
-                                .setCurrentDirectory(new File(cwd));
+                                        .setCurrentDirectory(new File(cwd));
                             }
                         }
 
@@ -300,8 +301,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                                 if (selected == 0) {
                                     try {
                                         smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(fmvFormat
-                                                .toString());
+                                        smvFileWriter
+                                                .write(fmvFormat.toString());
                                     } finally {
                                         if (smvFileWriter != null) {
                                             smvFileWriter.close();
@@ -318,8 +319,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     MessageHandler.error("IO exception:\n" + ex.getMessage());
                 } catch (IllegalActionException ex) {
                     MessageHandler
-                    .error("Failed to perform the conversion process:\n"
-                            + ex.getMessage());
+                            .error("Failed to perform the conversion process:\n"
+                                    + ex.getMessage());
                 }
 
                 try {
@@ -327,9 +328,9 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                         smvFileWriter.close();
                     }
                 } catch (Exception ex) {
-                    MessageHandler
-                    .error("Failed to perform the file closing process:\n"
-                            + ex.getMessage());
+                    MessageHandler.error(
+                            "Failed to perform the file closing process:\n"
+                                    + ex.getMessage());
                 }
 
             }
@@ -347,14 +348,15 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
         public InvokeNuSMVAction() {
             super("Invoke NuSMV");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
                             { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Invoke NuSMV");
@@ -371,8 +373,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
         public void actionPerformed(ActionEvent e) {
 
             JFileChooser fileDialog = new JFileChooser();
-            fileDialog
-            .setDialogTitle("Select one .smv file to perform verification");
+            fileDialog.setDialogTitle(
+                    "Select one .smv file to perform verification");
             if (_directory != null) {
                 fileDialog.setCurrentDirectory(_directory);
             } else {
@@ -410,16 +412,16 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     }
 
                 } catch (IOException ex) {
-                    MessageHandler.error("Failed to create debug listener: "
-                            + ex);
+                    MessageHandler
+                            .error("Failed to create debug listener: " + ex);
                 } finally {
                     try {
                         if (reader != null) {
                             reader.close();
                         }
                     } catch (IOException ex) {
-                        MessageHandler
-                        .error("Failed to create debug listener: " + ex);
+                        MessageHandler.error(
+                                "Failed to create debug listener: " + ex);
                     }
                 }
 
@@ -445,8 +447,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     ///////////////////////////////////////////////////////////////////
     // // SMVFileFilter
     /** A file filter that accepts files that end with ".smv". */
-    protected static class SMVFileFilter extends
-    javax.swing.filechooser.FileFilter {
+    protected static class SMVFileFilter
+            extends javax.swing.filechooser.FileFilter {
 
         /**
          * Return true if the file name ends with ".smv".
@@ -458,9 +460,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
          */
         @Override
         public boolean accept(File file) {
-            return file.isDirectory()
-                    || file.getName().toLowerCase(Locale.getDefault())
-                    .endsWith(".smv");
+            return file.isDirectory() || file.getName()
+                    .toLowerCase(Locale.getDefault()).endsWith(".smv");
         }
 
         /**

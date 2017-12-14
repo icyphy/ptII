@@ -74,8 +74,8 @@ public class ConceptController extends AttributeInOntologyController {
     public ConceptController(GraphController controller, Access access) {
         super(controller, access);
 
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _toggleAcceptabilityAction));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(_toggleAcceptabilityAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,8 +126,8 @@ public class ConceptController extends AttributeInOntologyController {
         public ToggleAcceptabilityAction() {
             super("Toggle Acceptability");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_A, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_A,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -151,7 +151,8 @@ public class ConceptController extends AttributeInOntologyController {
                     // is executed via hotkey, the model graph is automatically
                     // repainted to reflect the change in the isAcceptable
                     // parameter on the Concept's icon.
-                    String moml = _getToggleAcceptabilityMoML(isAcceptableParameter);
+                    String moml = _getToggleAcceptabilityMoML(
+                            isAcceptableParameter);
                     MoMLChangeRequest toggleAcceptabilityRequest = new MoMLChangeRequest(
                             ConceptController.this, target, moml);
                     toggleAcceptabilityRequest.setUndoable(true);

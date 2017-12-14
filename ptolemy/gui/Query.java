@@ -169,8 +169,8 @@ public class Query extends JPanel {
         _messageArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         _messageScrollPane = new JScrollPane(_messageArea);
-        _messageScrollPane
-        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        _messageScrollPane.setVerticalScrollBarPolicy(
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -202,7 +202,8 @@ public class Query extends JPanel {
      *  @param defaultValue The default value (true for on).
      *  @return The check box.
      */
-    public JCheckBox addCheckBox(String name, String label, boolean defaultValue) {
+    public JCheckBox addCheckBox(String name, String label,
+            boolean defaultValue) {
         JLabel lbl = _constructLabel(label);
 
         JCheckBox checkbox = new JCheckBox();
@@ -325,8 +326,8 @@ public class Query extends JPanel {
      *  @param foreground The foreground color, or null to use defaults.
      *  @return The text area that displays the value.
      */
-    public JTextArea addDisplay(
-            String name, String label, String theValue, Color background, Color foreground) {
+    public JTextArea addDisplay(String name, String label, String theValue,
+            Color background, Color foreground) {
         JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
@@ -405,7 +406,8 @@ public class Query extends JPanel {
      *  @param foreground The foreground color for the text entry box.
      */
     public void addFileChooser(String name, String label, String defaultName,
-            URI base, File startingDirectory, Color background, Color foreground) {
+            URI base, File startingDirectory, Color background,
+            Color foreground) {
         addFileChooser(name, label, defaultName, base, startingDirectory, true,
                 false, false, background, foreground);
     }
@@ -427,9 +429,8 @@ public class Query extends JPanel {
             String defaultName, URI base, File startingDirectory,
             boolean allowFiles, boolean allowDirectories, Color background,
             Color foreground) {
-        return addFileChooser(name, label, defaultName, base,
-                startingDirectory, allowFiles, allowDirectories, false,
-                background, foreground);
+        return addFileChooser(name, label, defaultName, base, startingDirectory,
+                allowFiles, allowDirectories, false, background, foreground);
     }
 
     /** Create a FileChooser.
@@ -450,9 +451,9 @@ public class Query extends JPanel {
             String defaultName, URI base, File startingDirectory,
             boolean allowFiles, boolean allowDirectories, boolean save,
             Color background, Color foreground) {
-        return addFileChooser(name, label, defaultName, base,
-                startingDirectory, allowFiles, allowDirectories, save,
-                background, foreground, null);
+        return addFileChooser(name, label, defaultName, base, startingDirectory,
+                allowFiles, allowDirectories, save, background, foreground,
+                null);
     }
 
     /** Create a FileChooser.
@@ -790,7 +791,7 @@ public class Query extends JPanel {
      */
     public JSlider addSlider(String name, String label, int defaultValue,
             int minimum, int maximum, String minLabelText, String maxLabelText)
-                    throws IllegalArgumentException {
+            throws IllegalArgumentException {
         JLabel lbl = _constructLabel(label);
 
         if (minimum > maximum) {
@@ -998,8 +999,8 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     @Deprecated
-    public boolean booleanValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+    public boolean booleanValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
         return getBooleanValue(name);
     }
 
@@ -1022,7 +1023,7 @@ public class Query extends JPanel {
      */
     @Deprecated
     public double doubleValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         return getDoubleValue(name);
     }
 
@@ -1038,13 +1039,13 @@ public class Query extends JPanel {
      *   checkbox.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
-    public boolean getBooleanValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+    public boolean getBooleanValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + "\" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + "\" in the query box.");
         }
 
         if (result instanceof JToggleButton) {
@@ -1071,13 +1072,13 @@ public class Query extends JPanel {
      *   This is a runtime exception, so it need not be declared explicitly.
      *  @since Ptolemy II 3.1
      */
-    public char[] getCharArrayValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+    public char[] getCharArrayValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + "\" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + "\" in the query box.");
         }
 
         if (result instanceof JPasswordField) {
@@ -1105,12 +1106,12 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public double getDoubleValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         if (result instanceof JPasswordField) {
@@ -1146,12 +1147,12 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public int getIntValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         if (result instanceof JPasswordField) {
@@ -1225,13 +1226,13 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
-    public Object getObjectValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+    public Object getObjectValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         if (result instanceof JTextField) {
@@ -1302,8 +1303,8 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
-    public String getStringValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+    public String getStringValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
         // NOTE: getObjectValue() may return null if the entry
         // is a combo box and no object is selected. In that case,
         // return an empty string.
@@ -1364,7 +1365,7 @@ public class Query extends JPanel {
      */
     @Deprecated
     public int intValue(String name) throws IllegalArgumentException,
-    NoSuchElementException, NumberFormatException {
+            NoSuchElementException, NumberFormatException {
         return getIntValue(name);
     }
 
@@ -1406,13 +1407,13 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the value does not parse
      *   to the appropriate type.
      */
-    public void set(String name, String value) throws NoSuchElementException,
-    IllegalArgumentException {
+    public void set(String name, String value)
+            throws NoSuchElementException, IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         // FIXME: Surely there is a better way to do this...
@@ -1522,8 +1523,8 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + "\" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + "\" in the query box.");
         }
 
         if (result instanceof JToggleButton) {
@@ -1572,8 +1573,8 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         if (result instanceof JTextArea) {
@@ -1598,8 +1599,8 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         if (result instanceof JComponent) {
@@ -1637,8 +1638,8 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         if (result instanceof JTextField) {
@@ -1698,8 +1699,8 @@ public class Query extends JPanel {
         Object result = _entries.get(name);
 
         if (result == null) {
-            throw new NoSuchElementException("No item named \"" + name
-                    + " \" in the query box.");
+            throw new NoSuchElementException(
+                    "No item named \"" + name + " \" in the query box.");
         }
 
         if (result instanceof JSlider) {
@@ -1829,8 +1830,8 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
     @Deprecated
-    public String stringValue(String name) throws NoSuchElementException,
-    IllegalArgumentException {
+    public String stringValue(String name)
+            throws NoSuchElementException, IllegalArgumentException {
         return getStringValue(name);
     }
 
@@ -2089,13 +2090,15 @@ public class Query extends JPanel {
 
     /** Panel containing an entry box and button that opens a color chooser.
      */
-    public static class QueryColorChooser extends Box implements ActionListener {
+    public static class QueryColorChooser extends Box
+            implements ActionListener {
         /** Create a panel containing an entry box and a color chooser.
          *  @param owner The owner query
          *  @param name The name of the query
          *  @param defaultColor  The initial default color of the color chooser.
          */
-        public QueryColorChooser(Query owner, String name, String defaultColor) {
+        public QueryColorChooser(Query owner, String name,
+                String defaultColor) {
             super(BoxLayout.X_AXIS);
             _owner = owner;
             //_defaultColor = defaultColor;
@@ -2190,8 +2193,8 @@ public class Query extends JPanel {
     /** Panel containing an entry box and file chooser.
      *
      */
-    public/*static*/class QueryFileChooser extends Box implements
-    ActionListener {
+    public/*static*/class QueryFileChooser extends Box
+            implements ActionListener {
         // This class cannot be static because the FileDialog needs to be owned
         // by the parent Query.
 
@@ -2368,7 +2371,8 @@ public class Query extends JPanel {
                 // Also, this seems like a poor mechanism, since it sets a property
                 // that affects anything running in this JVM!
                 if (_allowDirectories) {
-                    System.setProperty("apple.awt.fileDialogForDirectories", "true");
+                    System.setProperty("apple.awt.fileDialogForDirectories",
+                            "true");
                 } else {
                     System.setProperty("apple.awt.fileDialogForDirectories",
                             "false");
@@ -2464,8 +2468,8 @@ public class Query extends JPanel {
                     // Sigh.  Under Windows, getPath() returns a leading /
                     file = new File(pathName.replace("%20", " "));
                     try {
-                        _entryBox.setText(file.getCanonicalPath().replace('\\',
-                                '/'));
+                        _entryBox.setText(
+                                file.getCanonicalPath().replace('\\', '/'));
                     } catch (IOException ex) {
                         _entryBox.setText(file.toString());
                     }
@@ -2480,7 +2484,7 @@ public class Query extends JPanel {
          *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
          *  then {@link #actionPerformed(ActionEvent)} uses this method.  Otherwise,
          *  {@link #_actionPerformedFileDialog(ActionEvent)} is used.
-
+        
          *  <p>Under Bash, to test this method, use:</p>
          *  <pre>
          *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=false
@@ -2495,7 +2499,8 @@ public class Query extends JPanel {
                 background = jFileChooserBugFix.saveBackground();
                 // NOTE: If the last argument is null, then choose a
                 // default dir.
-                JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
+                JFileChooser fileChooser = new JFileChooser(
+                        _startingDirectory) {
                     @Override
                     public void approveSelection() {
                         File file = getSelectedFile();
@@ -2525,14 +2530,14 @@ public class Query extends JPanel {
                 fileChooser.setApproveButtonMnemonic('S');
 
                 if (_allowFiles && _allowDirectories) {
-                    fileChooser
-                    .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                    fileChooser.setFileSelectionMode(
+                            JFileChooser.FILES_AND_DIRECTORIES);
                 } else if (_allowFiles && !_allowDirectories) {
                     // This is the default.
                     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 } else if (!_allowFiles && _allowDirectories) {
-                    fileChooser
-                    .setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    fileChooser.setFileSelectionMode(
+                            JFileChooser.DIRECTORIES_ONLY);
                 } else {
                     // Usually, we would use InternalErrorException
                     // here, but if we do, then this package would
@@ -2553,8 +2558,8 @@ public class Query extends JPanel {
                                     .getCanonicalPath());
                         } catch (IOException ex) {
                             // If we can't get a path, then just use the name.
-                            _entryBox.setText(fileChooser.getSelectedFile()
-                                    .getName());
+                            _entryBox.setText(
+                                    fileChooser.getSelectedFile().getName());
                         }
                     } else {
                         // Relative file name.
@@ -2694,8 +2699,8 @@ public class Query extends JPanel {
             textArea = c;
 
             // Set the undo listener
-            textArea.getDocument().addUndoableEditListener(
-                    new UndoListener(textArea));
+            textArea.getDocument()
+                    .addUndoableEditListener(new UndoListener(textArea));
 
         }
 

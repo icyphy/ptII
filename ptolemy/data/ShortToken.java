@@ -82,14 +82,14 @@ public class ShortToken extends ScalarToken {
      */
     public ShortToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(notSupportedNullNilStringMessage(
-                    "ShortToken", init));
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("ShortToken", init));
         }
         try {
             _value = Short.parseShort(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(null, e, "Failed to parse \""
-                    + init + "\" as a number.");
+            throw new IllegalActionException(null, e,
+                    "Failed to parse \"" + init + "\" as a number.");
         }
     }
 
@@ -122,7 +122,8 @@ public class ShortToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static ShortToken convert(Token token) throws IllegalActionException {
+    public static ShortToken convert(Token token)
+            throws IllegalActionException {
         if (token instanceof ShortToken) {
             return (ShortToken) token;
         }
@@ -144,8 +145,8 @@ public class ShortToken extends ScalarToken {
                     .convert(token);
             ShortToken result = new ShortToken(unsignedByteToken.shortValue());
             if (unsignedByteToken._unitCategoryExponents != null
-                    && !UnitUtilities
-                    .isUnitless(unsignedByteToken._unitCategoryExponents)) {
+                    && !UnitUtilities.isUnitless(
+                            unsignedByteToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = unsignedByteToken
                         ._copyOfCategoryExponents();
             }
@@ -154,8 +155,8 @@ public class ShortToken extends ScalarToken {
 
         // The argument is below UnsignedByteToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "short"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "short"));
     }
 
     /** Return the value in the token as a double.
@@ -402,7 +403,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
-        short sum = (short) (_value + ((ShortToken) rightArgument).shortValue());
+        short sum = (short) (_value
+                + ((ShortToken) rightArgument).shortValue());
         return new ShortToken(sum);
     }
 
@@ -414,7 +416,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
-        short sum = (short) (_value & ((ShortToken) rightArgument).shortValue());
+        short sum = (short) (_value
+                & ((ShortToken) rightArgument).shortValue());
         return new ShortToken(sum);
     }
 
@@ -435,7 +438,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
-        short sum = (short) (_value | ((ShortToken) rightArgument).shortValue());
+        short sum = (short) (_value
+                | ((ShortToken) rightArgument).shortValue());
         return new ShortToken(sum);
     }
 
@@ -447,7 +451,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
-        short sum = (short) (_value ^ ((ShortToken) rightArgument).shortValue());
+        short sum = (short) (_value
+                ^ ((ShortToken) rightArgument).shortValue());
         return new ShortToken(sum);
     }
 
@@ -459,8 +464,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _divide(ScalarToken rightArgument) {
-        short quotient = (short) (_value / ((ShortToken) rightArgument)
-                .shortValue());
+        short quotient = (short) (_value
+                / ((ShortToken) rightArgument).shortValue());
         return new ShortToken(quotient);
     }
 
@@ -474,7 +479,8 @@ public class ShortToken extends ScalarToken {
      *   argument is close to the value of this token.
      */
     @Override
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.IntegerMatrixMath.within(); if this
         // implementation changes, also change the corresponding
@@ -512,8 +518,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _modulo(ScalarToken rightArgument) {
-        short remainder = (short) (_value % ((ShortToken) rightArgument)
-                .shortValue());
+        short remainder = (short) (_value
+                % ((ShortToken) rightArgument).shortValue());
         return new ShortToken(remainder);
     }
 
@@ -525,8 +531,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        short product = (short) (_value * ((ShortToken) rightArgument)
-                .shortValue());
+        short product = (short) (_value
+                * ((ShortToken) rightArgument).shortValue());
         return new ShortToken(product);
     }
 
@@ -538,8 +544,8 @@ public class ShortToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        short difference = (short) (_value - ((ShortToken) rightArgument)
-                .shortValue());
+        short difference = (short) (_value
+                - ((ShortToken) rightArgument).shortValue());
         return new ShortToken(difference);
     }
 

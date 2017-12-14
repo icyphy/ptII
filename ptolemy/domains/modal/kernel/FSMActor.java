@@ -265,8 +265,8 @@ import ptolemy.kernel.util.Workspace;
  @see Action
  @see FSMDirector
  */
-public class FSMActor extends CompositeEntity implements TypedActor,
-ExplicitChangeContext {
+public class FSMActor extends CompositeEntity
+        implements TypedActor, ExplicitChangeContext {
     /** Construct an FSMActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
@@ -465,8 +465,8 @@ ExplicitChangeContext {
         newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
 
         if (_initialState != null) {
-            newObject._initialState = (State) newObject.getEntity(_initialState
-                    .getName());
+            newObject._initialState = (State) newObject
+                    .getEntity(_initialState.getName());
         }
 
         newObject._cachedInputPorts = null;
@@ -489,7 +489,7 @@ ExplicitChangeContext {
 
         try {
             newObject.probability
-            .setToken(newObject.new ProbabilityFunctionToken());
+                    .setToken(newObject.new ProbabilityFunctionToken());
             newObject.timeout.setToken(newObject.new TimeoutFunctionToken());
         } catch (IllegalActionException e) {
             // Should not occur, because it didn't occur in the object being cloned.
@@ -559,11 +559,12 @@ ExplicitChangeContext {
                     continue;
                 }
             }
-            if (preemptive && !transition.isPreemptive() || !preemptive
-                    && transition.isPreemptive()) {
+            if (preemptive && !transition.isPreemptive()
+                    || !preemptive && transition.isPreemptive()) {
                 continue;
             }
-            boolean transitionRefersToUnknownInputs = !_referencedInputPortsByGuardKnown(transition);
+            boolean transitionRefersToUnknownInputs = !_referencedInputPortsByGuardKnown(
+                    transition);
             _foundUnknown = _foundUnknown || transitionRefersToUnknownInputs;
             if (transition.isDefault()) {
                 if (_isTransitionEnabled(transition)) {
@@ -638,14 +639,14 @@ ExplicitChangeContext {
             }
             super.exportMoML(output, depth, name);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(this, ex, "Unable to set "
-                    + "attributes for the states.");
+            throw new InternalErrorException(this, ex,
+                    "Unable to set " + "attributes for the states.");
         } finally {
             List<State> stateList = deepEntityList();
             for (State state : stateList) {
                 try {
                     state.saveRefinementsInConfigurer
-                    .setToken(BooleanToken.FALSE);
+                            .setToken(BooleanToken.FALSE);
                 } catch (IllegalActionException e) {
                     // Ignore.
                 }
@@ -740,7 +741,8 @@ ExplicitChangeContext {
                         CompositeActor refinement = (CompositeActor) refinementActor;
                         for (IOPort refinementPort : (List<IOPort>) refinement
                                 .outputPortList()) {
-                            for (int i = 0; i < refinementPort.getWidth(); i++) {
+                            for (int i = 0; i < refinementPort
+                                    .getWidth(); i++) {
                                 if (!refinementPort.isKnown(i)) {
                                     if (_debugging) {
                                         _debug("--- Asserting absent output on "
@@ -750,10 +752,10 @@ ExplicitChangeContext {
                                     refinementPort.sendClear(i);
                                 }
                             }
-                        }// end for all ports
-                    }// end if CompositeActor
-                }// end for all refinements
-            }// end if has refinement
+                        } // end for all ports
+                    } // end if CompositeActor
+                } // end for all refinements
+            } // end if has refinement
         } else {
             // ASSERT: At this point, there are no enabled preemptive transitions.
             // It may be that some preemptive transition guards cannot be evaluated yet.
@@ -766,8 +768,7 @@ ExplicitChangeContext {
                 if (stateRefinements != null) {
                     try {
                         for (int i = 0; i < stateRefinements.length; ++i) {
-                            if (_stopRequested
-                                    || _disabledRefinements
+                            if (_stopRequested || _disabledRefinements
                                     .contains(stateRefinements[i])) {
                                 continue;
                             }
@@ -786,7 +787,7 @@ ExplicitChangeContext {
                                     stateRefinements[i].fire();
                                     if (_modelErrorHandled == null) {
                                         _stateRefinementsToPostfire
-                                        .add(stateRefinements[i]);
+                                                .add(stateRefinements[i]);
                                     }
                                 }
                             }
@@ -862,9 +863,11 @@ ExplicitChangeContext {
                                 // to a final state, then no termination transition can be enabled.
                                 if (!((BooleanToken) refinementController
                                         .currentState().isFinalState.getToken())
-                                        .booleanValue()
-                                        && (destinationState == null || !((BooleanToken) destinationState.isFinalState
-                                                .getToken()).booleanValue())) {
+                                                .booleanValue()
+                                        && (destinationState == null
+                                                || !((BooleanToken) destinationState.isFinalState
+                                                        .getToken())
+                                                                .booleanValue())) {
                                     // No chosen transition, or the destination
                                     // state is not final.
                                     // Cannot take termination transition.
@@ -1140,7 +1143,8 @@ ExplicitChangeContext {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
-                        if (object instanceof Variable && deepContains(object)) {
+                        if (object instanceof Variable
+                                && deepContains(object)) {
                             list.add(object);
                         }
                     }
@@ -1156,7 +1160,8 @@ ExplicitChangeContext {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
-                        if (object instanceof Variable && deepContains(object)) {
+                        if (object instanceof Variable
+                                && deepContains(object)) {
                             list.add(object);
                         }
                     }
@@ -1318,8 +1323,8 @@ ExplicitChangeContext {
                 if (_debugging) {
                     _debug("** Checking non-preemptive transitions to see whether to request a firing at the current time.");
                 }
-                enabledTransitions.addAll(enabledTransitions(transitionList,
-                        false, false));
+                enabledTransitions.addAll(
+                        enabledTransitions(transitionList, false, false));
                 if (enabledTransitions.size() > 0) {
                     if (_debugging) {
                         _debug("A transition from the initial state is enabled. FSMActor requesting refiring by at "
@@ -1574,7 +1579,8 @@ ExplicitChangeContext {
         Time environmentTime = _getEnvironmentTime();
         for (Actor stateRefinement : _stateRefinementsToPostfire) {
             if (_debugging) {
-                _debug("Postfiring state refinment:", stateRefinement.getName());
+                _debug("Postfiring state refinment:",
+                        stateRefinement.getName());
             }
             _setTimeForRefinement(stateRefinement);
             if (!stateRefinement.postfire()) {
@@ -2428,7 +2434,7 @@ ExplicitChangeContext {
      */
     protected boolean _isSafeToClear(IOPort port, int channel, State state,
             boolean immediateOnly, HashSet<State> visitedStates)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Calling _isSafeToClear() on port: " + port.getFullName());
         }
@@ -2599,7 +2605,8 @@ ExplicitChangeContext {
                 int numberOfTokensToRead = DFUtilities
                         .getTokenConsumptionRate(port);
                 int count = 0;
-                while (port.hasNewToken(channel) && count < numberOfTokensToRead) {
+                while (port.hasNewToken(channel)
+                        && count < numberOfTokensToRead) {
                     Token token = port.get(channel);
                     count++;
 
@@ -2844,7 +2851,8 @@ ExplicitChangeContext {
                                 .getPort(port.getName());
                     }
                 }
-                for (int channel = 0; channel < port.getWidthInside(); channel++) {
+                for (int channel = 0; channel < port
+                        .getWidthInside(); channel++) {
                     // If the channel is known, we don't need to do any
                     // further checks.
                     if (!port.isKnownInside(channel)) {
@@ -2860,9 +2868,11 @@ ExplicitChangeContext {
                                 if (refinementPorts[i] != null
                                         && channel < refinementPorts[i]
                                                 .getWidthInside()
-                                                && (!refinementPorts[i]
-                                                        .isKnownInside(channel) || refinementPorts[i]
-                                                                .hasTokenInside(channel))) {
+                                        && (!refinementPorts[i]
+                                                .isKnownInside(channel)
+                                                || refinementPorts[i]
+                                                        .hasTokenInside(
+                                                                channel))) {
                                     // A refinement has either unknown or non-absent
                                     // output. Give up on this channel. It cannot be
                                     // asserted absent.
@@ -2894,7 +2904,8 @@ ExplicitChangeContext {
                                 Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown
                                         .get(controllerPort);
                                 if (channelThatMustBeUnknown == null
-                                        || channelThatMustBeUnknown.intValue() != channel) {
+                                        || channelThatMustBeUnknown
+                                                .intValue() != channel) {
                                     foundAbsentOutputs = true;
                                     controllerPort.send(channel, null);
                                     if (_debugging) {
@@ -2926,7 +2937,8 @@ ExplicitChangeContext {
                         Integer channelThatMustBeUnknown = controller._outputsThatMustBeUnknown
                                 .get(port);
                         if (channelThatMustBeUnknown == null
-                                || channelThatMustBeUnknown.intValue() != channel) {
+                                || channelThatMustBeUnknown
+                                        .intValue() != channel) {
                             // Send absent.
                             port.send(channel, null);
                             foundAbsentOutputs = true;
@@ -3045,8 +3057,8 @@ ExplicitChangeContext {
                 if (ex instanceof KernelException) {
                     Nameable cause = ((KernelException) ex).getNameable1();
                     if (cause != null) {
-                        errorCause.setToken(new ObjectToken(cause, cause
-                                .getClass()));
+                        errorCause.setToken(
+                                new ObjectToken(cause, cause.getClass()));
                     }
                 }
 
@@ -3100,11 +3112,11 @@ ExplicitChangeContext {
     private Transition _chooseTransition(State currentState,
             List transitionList, boolean preemptive, boolean immediateOnly,
             boolean inInitialize, boolean inPreinitialize)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         // Get the transitions enabled from the current state.
-        List<Transition> enabledTransitions = enabledTransitions(
-                transitionList, preemptive, immediateOnly);
+        List<Transition> enabledTransitions = enabledTransitions(transitionList,
+                preemptive, immediateOnly);
         int numberOfEnabledTransitions = enabledTransitions.size();
 
         Transition chosenTransition = null;
@@ -3129,8 +3141,7 @@ ExplicitChangeContext {
                         enabled.append(transition.getName());
                     }
                     enabled.append("}");
-                    throw new MultipleEnabledTransitionsException(
-                            currentState,
+                    throw new MultipleEnabledTransitionsException(currentState,
                             "Nondeterministic FSM error: "
                                     + "Multiple enabled transitions found but not all"
                                     + " of them are nondeterministic. Transition "
@@ -3145,7 +3156,8 @@ ExplicitChangeContext {
             // results for nondeterministic choices.
             if (_transitionsPreviouslyChosenInIteration.size() > 0) {
                 for (Transition previouslyChosenTransition : _transitionsPreviouslyChosenInIteration) {
-                    if (enabledTransitions.contains(previouslyChosenTransition)) {
+                    if (enabledTransitions
+                            .contains(previouslyChosenTransition)) {
                         chosenTransition = previouslyChosenTransition;
                     }
                 }
@@ -3161,8 +3173,8 @@ ExplicitChangeContext {
                     // Since the size of the list of enabled transitions usually (almost
                     // always) is less than the maximum value of integer. We can safely
                     // do the cast from long to int in the following statement.
-                    int randomChoice = (int) Math.floor(Math.random()
-                            * numberOfEnabledTransitions);
+                    int randomChoice = (int) Math
+                            .floor(Math.random() * numberOfEnabledTransitions);
 
                     // There is a tiny chance that randomChoice equals length.
                     // When this happens, we deduct 1 from the randomChoice.
@@ -3207,9 +3219,9 @@ ExplicitChangeContext {
                 // which is not allowed because we can't fire the refinement in initialize.
                 if (inInitialize) {
                     Actor[] stateRefinements = currentState.getRefinement();
-                    if (stateRefinements != null && stateRefinements.length > 0) {
-                        throw new IllegalActionException(
-                                this,
+                    if (stateRefinements != null
+                            && stateRefinements.length > 0) {
+                        throw new IllegalActionException(this,
                                 "Initial state with a refinement and an enabled "
                                         + "immediate transition is not allowed, "
                                         + "because the refinement would have to execute during the initialize phase.");
@@ -3273,8 +3285,7 @@ ExplicitChangeContext {
             Actor[] transitionRefinements = chosenTransition.getRefinement();
             if (transitionRefinements != null) {
                 for (int i = 0; i < transitionRefinements.length; ++i) {
-                    if (_stopRequested
-                            || _disabledRefinements
+                    if (_stopRequested || _disabledRefinements
                             .contains(transitionRefinements[i])) {
                         break;
                     }
@@ -3291,7 +3302,7 @@ ExplicitChangeContext {
                     if (transitionRefinements[i].prefire()) {
                         transitionRefinements[i].fire();
                         _transitionRefinementsToPostfire
-                        .add(transitionRefinements[i]);
+                                .add(transitionRefinements[i]);
                     }
                 }
             }
@@ -3303,12 +3314,13 @@ ExplicitChangeContext {
             // We can't do that here, however, because the outputs
             // from the refinement have not been transferred.
             // This case has to be handled by the fire method.
-            if (_areAllImmediateTransitionsDisabled(chosenTransition
-                    .destinationState())
+            if (_areAllImmediateTransitionsDisabled(
+                    chosenTransition.destinationState())
                     && currentState.getRefinement() == null) {
                 List<IOPort> outputs = outputPortList();
                 for (IOPort port : outputs) {
-                    for (int channel = 0; channel < port.getWidth(); channel++) {
+                    for (int channel = 0; channel < port
+                            .getWidth(); channel++) {
                         if (!port.isKnown(channel)) {
                             port.send(channel, null);
                             if (_debugging) {
@@ -3351,8 +3363,8 @@ ExplicitChangeContext {
             Time environmentTime = ((CompositeActor) aspect.getContainer())
                     .getDirector().getEnvironmentTime();
             time = ExecutionAspectHelper.schedule(aspect, actor,
-                    environmentTime, getDirector()
-                            .getDeadline(actor, timestamp));
+                    environmentTime,
+                    getDirector().getDeadline(actor, timestamp));
             //            if (_nextScheduleTime == null) {
             //                _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
             //            }
@@ -3603,8 +3615,7 @@ ExplicitChangeContext {
                         if (_debugging) {
                             _debug("--- Setting inside of port "
                                     + destinationPort.getFullName()
-                                    + " unknown on channel "
-                                    + channel
+                                    + " unknown on channel " + channel
                                     + ", because a guard cannot be evaluated due to unknown inputs.");
                         }
                         if (destinationPort != null) {
@@ -3642,16 +3653,17 @@ ExplicitChangeContext {
      */
     private void _init() {
         // Create a more reasonable default icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:red\"/>\n"
-                + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
-                + "height=\"36\" style=\"fill:lightgrey\"/>\n"
-                + "<ellipse cx=\"0\" cy=\"0\"" + " rx=\"15\" ry=\"10\"/>\n"
-                + "<circle cx=\"-15\" cy=\"0\""
-                + " r=\"5\" style=\"fill:white\"/>\n"
-                + "<circle cx=\"15\" cy=\"0\""
-                + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                        + "height=\"40\" style=\"fill:red\"/>\n"
+                        + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
+                        + "height=\"36\" style=\"fill:lightgrey\"/>\n"
+                        + "<ellipse cx=\"0\" cy=\"0\""
+                        + " rx=\"15\" ry=\"10\"/>\n"
+                        + "<circle cx=\"-15\" cy=\"0\""
+                        + " r=\"5\" style=\"fill:white\"/>\n"
+                        + "<circle cx=\"15\" cy=\"0\""
+                        + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
 
         try {
             stateDependentCausality = new Parameter(this,
@@ -3827,14 +3839,14 @@ ExplicitChangeContext {
      * useful in the future.
     private boolean _referencedInputPortValuesByGuardPresent(
             Transition transition) throws IllegalActionException {
-
-
+    
+    
         // If the port identifier does
         // not end with "_isPresent", then return false if port
         // identifier with "_isPresent" appended is false. There is no data on
         // the port "in" then the identifier "in" will be undefined, or worse,
         //  will resolve to the port object itself.
-
+    
         String string = transition.getGuardExpression();
         if (string.trim().equals("")) {
             return true;
@@ -3846,7 +3858,7 @@ ExplicitChangeContext {
         // Get a set of free variable names.
         Set<String> nameSet = variableCollector.collectFreeVariables(parseTree,
                 scope);
-
+    
         for (String name : nameSet) {
             Port port = _getPortForIdentifier(name);
             if (port instanceof IOPort) {
@@ -3955,8 +3967,8 @@ ExplicitChangeContext {
                 ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry
                         .getValue();
                 ASTPtRootNode parseTree = node.getExpressionTree();
-                Set<String> nameSet = variableCollector.collectFreeVariables(
-                        parseTree, scope);
+                Set<String> nameSet = variableCollector
+                        .collectFreeVariables(parseTree, scope);
 
                 for (String name : nameSet) {
                     Port port = _getPortForIdentifier(name);
@@ -4005,8 +4017,8 @@ ExplicitChangeContext {
 
             for (int i = 0; i < inPort.getWidth(); i++) {
                 _identifierToPort.put(portName + "_" + i, inPort);
-                _identifierToPort
-                .put(portName + "_" + i + "_isPresent", inPort);
+                _identifierToPort.put(portName + "_" + i + "_isPresent",
+                        inPort);
                 _identifierToPort.put(portName + "_" + i + "Array", inPort);
             }
         }
@@ -4435,17 +4447,19 @@ ExplicitChangeContext {
                 // First, check if the transition has already been evaluated. If so, return the result. If not,
                 // change threshold and evaluate.
 
-                if (_transitionEvaluatedTo.get(_transitionBeingTested) != null) {
+                if (_transitionEvaluatedTo
+                        .get(_transitionBeingTested) != null) {
                     // means we have already evaluated this transition,
                     return _transitionEvaluatedTo.get(_transitionBeingTested);
                 } else {
                     // no record has been found; evaluate.
                     if (_guardProbability + _oldThreshold > 1.0
                             || (_guardProbability > 1.0)) {
-                        System.err.println(
-                                "Probability range exceeds [0.0,1.0]");
+                        System.err
+                                .println("Probability range exceeds [0.0,1.0]");
                     } else if ((_oldThreshold <= _randomValue)
-                            && _randomValue <= (_oldThreshold + _guardProbability)) {
+                            && _randomValue <= (_oldThreshold
+                                    + _guardProbability)) {
                         _oldThreshold += _guardProbability;
                         _transitionEvaluatedTo.put(_transitionBeingTested,
                                 BooleanToken.TRUE);

@@ -65,8 +65,8 @@ public class TDLTransition extends Transition {
      *  @exception NameDuplicationException If the name coincides with
      *   any relation already in the container.
      */
-    public TDLTransition(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public TDLTransition(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -148,7 +148,8 @@ public class TDLTransition extends Transition {
         for (Iterator it = freeVars.iterator(); it.hasNext();) {
             String name = (String) it.next();
             for (Iterator sensorIt = ((TDLModule) this.getContainer()
-                    .getContainer()).portList().iterator(); sensorIt.hasNext();) {
+                    .getContainer()).portList().iterator(); sensorIt
+                            .hasNext();) {
                 IOPort port = (IOPort) sensorIt.next();
                 if (port.getName().equals(name)) {
                     if (port.isInput()) {
@@ -165,8 +166,8 @@ public class TDLTransition extends Transition {
      * @exception IllegalActionException Thrown if frequency parameter cannot be created.
      * @exception NameDuplicationException Thrown if The frequency parameter cannot be created.
      */
-    private void _init() throws NameDuplicationException,
-    IllegalActionException {
+    private void _init()
+            throws NameDuplicationException, IllegalActionException {
         outputActions.setVisibility(Settable.NONE);
         setActions.setVisibility(Settable.NONE);
         history.setVisibility(Settable.NONE);

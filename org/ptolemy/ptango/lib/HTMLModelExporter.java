@@ -242,8 +242,8 @@ public class HTMLModelExporter extends VisualModelReference {
                 // color.
                 if (_defaultColor == null) {
                     // Look for default preferences in the configuration.
-                    Effigy effigy = Configuration.findEffigy(container
-                            .toplevel());
+                    Effigy effigy = Configuration
+                            .findEffigy(container.toplevel());
                     if (effigy == null) {
                         // No effigy. Can't find a configuration.
                         _defaultColor = Color.white;
@@ -252,7 +252,8 @@ public class HTMLModelExporter extends VisualModelReference {
                                 .toplevel();
                         try {
                             PtolemyPreferences preferences = PtolemyPreferences
-                                    .getPtolemyPreferencesWithinConfiguration(configuration);
+                                    .getPtolemyPreferencesWithinConfiguration(
+                                            configuration);
                             if (preferences != null) {
                                 _defaultColor = preferences.backgroundColor
                                         .asColor();
@@ -309,8 +310,8 @@ public class HTMLModelExporter extends VisualModelReference {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HTMLModelExporter newObject = (HTMLModelExporter) super
-                .clone(workspace);
+        HTMLModelExporter newObject = (HTMLModelExporter) super.clone(
+                workspace);
         newObject._defaultColor = null;
         newObject._parameters = new ExportParameters();
         return newObject;

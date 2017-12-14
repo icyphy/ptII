@@ -131,8 +131,8 @@ public class ObjectType extends StructuredType implements Cloneable {
         if (token instanceof ObjectToken) {
             return token;
         }
-        throw new IllegalArgumentException(Token.notSupportedConversionMessage(
-                token, this.toString()));
+        throw new IllegalArgumentException(
+                Token.notSupportedConversionMessage(token, this.toString()));
     }
 
     /** Determine if the argument represents the same type as this object.

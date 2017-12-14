@@ -209,8 +209,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class ContinuousDirector extends FixedPointDirector implements
-ContinuousStatefulDirector, ContinuousStepSizeController {
+public class ContinuousDirector extends FixedPointDirector
+        implements ContinuousStatefulDirector, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -338,8 +338,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ContinuousDirector newObject = (ContinuousDirector) super
-                .clone(workspace);
+        ContinuousDirector newObject = (ContinuousDirector) super.clone(
+                workspace);
         newObject._breakpoints = null;
         newObject._enclosingContinuousDirectorVersion = -1L;
         newObject._ODESolver = null;
@@ -730,7 +730,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
                 // that initialization could create discontinuities.
                 fireContainerAt(currentTime, 1);
             }
-            if (!stopTime.isInfinite() && stopTime.compareTo(currentTime) >= 0) {
+            if (!stopTime.isInfinite()
+                    && stopTime.compareTo(currentTime) >= 0) {
                 fireContainerAt(stopTime);
             }
         }
@@ -899,7 +900,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
     @Override
     public double refinedStepSize() throws IllegalActionException {
         if (_debugging) {
-            _debug("-- Refining the current step size from " + _currentStepSize);
+            _debug("-- Refining the current step size from "
+                    + _currentStepSize);
         }
 
         double timeResolution = getTimeResolution();
@@ -940,8 +942,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
                     .first();
             Time nextBreakpointTime = nextBreakpoint.timestamp();
-            int comparison = nextBreakpointTime.compareTo(_iterationBeginTime
-                    .add(refinedStep));
+            int comparison = nextBreakpointTime
+                    .compareTo(_iterationBeginTime.add(refinedStep));
             if (comparison < 0) {
                 refinedStep = nextBreakpointTime.subtract(_iterationBeginTime)
                         .getDoubleValue();
@@ -1055,8 +1057,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
             if (!_commitIsPending) {
                 throw new IllegalActionException(this,
                         "Attempting to roll back time from " + currentTime
-                        + " to " + newTime
-                        + ", but state has been committed.");
+                                + " to " + newTime
+                                + ", but state has been committed.");
             }
             // We have to re-do the integration
             // with a smaller step size that brings us up to the current
@@ -1138,7 +1140,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
                 if (_debugging) {
                     _debug("---- Step size control actor "
                             + ((NamedObj) actor).getName()
-                            + " suggests next step size = " + suggestedStepSize);
+                            + " suggests next step size = "
+                            + suggestedStepSize);
                 }
                 if (suggestedStep > suggestedStepSize) {
                     if (_debugging) {
@@ -1164,14 +1167,15 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
             double result = breakpointTime.subtract(getModelTime())
                     .getDoubleValue();
             if (result < 0.0) {
-                throw new InternalErrorException("Missed a breakpoint at time "
-                        + breakpointTime + ". Current time is "
-                        + getModelTime());
+                throw new InternalErrorException(
+                        "Missed a breakpoint at time " + breakpointTime
+                                + ". Current time is " + getModelTime());
             }
             if (result < suggestedStep) {
                 suggestedStep = result;
                 if (_debugging) {
-                    _debug("----- The first breakpoint is at " + nextBreakpoint);
+                    _debug("----- The first breakpoint is at "
+                            + nextBreakpoint);
                     _debug("----- Revising suggested step size due to breakpoint to "
                             + suggestedStep);
                 }
@@ -1304,14 +1308,14 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
             Class solver = Class.forName(className);
             newSolver = (ContinuousODESolver) solver.newInstance();
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this, "ODESolver: " + className
-                    + " is not found.");
+            throw new IllegalActionException(this,
+                    "ODESolver: " + className + " is not found.");
         } catch (InstantiationException e) {
-            throw new IllegalActionException(this, "ODESolver: " + className
-                    + " instantiation failed." + e);
+            throw new IllegalActionException(this,
+                    "ODESolver: " + className + " instantiation failed." + e);
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this, "ODESolver: " + className
-                    + " is not accessible.");
+            throw new IllegalActionException(this,
+                    "ODESolver: " + className + " is not accessible.");
         }
 
         newSolver._makeSolverOf(this);
@@ -1506,7 +1510,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
                 throw new IllegalActionException(this,
                         "ContinuousDirector expected to be fired at time "
                                 + breakpointTime
-                                + " but instead is being fired at time " + time);
+                                + " but instead is being fired at time "
+                                + time);
             }
         }
         // NOTE: An alternative would be to discard breakpoints earlier
@@ -1713,7 +1718,7 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
                 // At the top level, we should not have missed a breakpoint.
                 throw new IllegalActionException(this,
                         "Missed a breakpoint time at " + breakpointTime
-                        + ", with index " + nextBreakpoint.index());
+                                + ", with index " + nextBreakpoint.index());
             } else if (comparison == 0 && nextBreakpoint.index() <= _index) {
                 if (_debugging) {
                     _debug("-- The current superdense time is a breakpoint, "
@@ -1758,8 +1763,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
         _currentStepSize = enclosingDirector._currentStepSize;
         // Do not use setCommittedTime on the following line because we
         // are probably speculatively executing into the future.
-        localClock.setLocalTime(localClock
-                .getLocalTimeForCurrentEnvironmentTime());
+        localClock.setLocalTime(
+                localClock.getLocalTimeForCurrentEnvironmentTime());
 
         if (_debugging) {
             _debug("-- Setting current time to " + currentTime
@@ -1767,8 +1772,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
                     + enclosingDirector.getModelTime());
         }
 
-        _iterationBeginTime = localClock
-                .getLocalTimeForEnvironmentTime(enclosingDirector._iterationBeginTime);
+        _iterationBeginTime = localClock.getLocalTimeForEnvironmentTime(
+                enclosingDirector._iterationBeginTime);
 
         // FIXME: Probably shouldn't make the index match that of the environment!
         // There may have been suspensions happening. So what should the index be?
@@ -1834,21 +1839,21 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
 
         // Rollback has to occur if either the local time exceeds the modified time
         // or a time regulator requires a smaller current time than the current time.
-        if (localTimeExceedsOutsideTime > 0 || modifiedTimeExceedsLocalTime < 0) {
+        if (localTimeExceedsOutsideTime > 0
+                || modifiedTimeExceedsLocalTime < 0) {
             ///////////////////////////////////////////////////////////////
             // First case: Local current time exceeds that of the environment.
             if (!_commitIsPending) {
-                throw new IllegalActionException(this, "The model time of "
-                        + container.getFullName()
-                        + " is greater than the environment time. "
-                        + "Environment: " + outTime
-                        + ", the model time (iteration begin time): "
-                        + currentTime);
+                throw new IllegalActionException(this,
+                        "The model time of " + container.getFullName()
+                                + " is greater than the environment time. "
+                                + "Environment: " + outTime
+                                + ", the model time (iteration begin time): "
+                                + currentTime);
             }
             if (modifiedTimeExceedsLocalTime < 0
                     && modifiedTime.compareTo(outTime) < 0) {
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "A TimeRegulator requires time to be set back to "
                                 + modifiedTime
                                 + ", which is less than the last commit time of "
@@ -1928,8 +1933,8 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
 
             // We should set current time to the environment time and set
             // the step size to zero.
-            this.localClock.setLocalTime(localClock
-                    .getLocalTimeForCurrentEnvironmentTime());
+            this.localClock.setLocalTime(
+                    localClock.getLocalTimeForCurrentEnvironmentTime());
 
             if (_debugging) {
                 _debug("-- Setting current time to match enclosing non-ContinuousDirector: "
@@ -1945,13 +1950,13 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
             // make sure the time does not exceed the next iteration
             // time of the environment during this next integration step.
             Time environmentNextIterationTime = localClock
-                    .getLocalTimeForEnvironmentTime(executiveDirector
-                            .getModelNextIterationTime());
+                    .getLocalTimeForEnvironmentTime(
+                            executiveDirector.getModelNextIterationTime());
 
             Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
             if (environmentNextIterationTime.compareTo(localTargetTime) < 0) {
-                _currentStepSize = environmentNextIterationTime.subtract(
-                        currentTime).getDoubleValue();
+                _currentStepSize = environmentNextIterationTime
+                        .subtract(currentTime).getDoubleValue();
                 if (_debugging) {
                     _debug("-- Revising step size due to environment's next iteration time to "
                             + _currentStepSize);

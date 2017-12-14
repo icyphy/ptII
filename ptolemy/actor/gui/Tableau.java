@@ -75,8 +75,8 @@ public class Tableau extends CompositeEntity {
      *  @exception NameDuplicationException If the base class has already
      *   created an attribute with name "size" (should not occur).
      */
-    public Tableau(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public Tableau(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         size = new SizeAttribute(this, "size");

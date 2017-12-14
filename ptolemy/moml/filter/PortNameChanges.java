@@ -89,8 +89,8 @@ public class PortNameChanges extends MoMLFilterSimple {
             // Save the name of the for later use if we see a "class"
             _lastNameSeen = attributeValue;
 
-            if (_currentlyProcessingActorWithPortNameChanges
-                    && _portMap != null && _portMap.containsKey(attributeValue)) {
+            if (_currentlyProcessingActorWithPortNameChanges && _portMap != null
+                    && _portMap.containsKey(attributeValue)) {
                 // We will do the above checks only if we found a
                 // class that had port name changes, but have not
                 // yet found the next class.
@@ -98,8 +98,8 @@ public class PortNameChanges extends MoMLFilterSimple {
                 // to a map for later use.
 
                 // Coverity says that container could be null.
-                String containerName = (container == null ? "" : container
-                        .getFullName());
+                String containerName = (container == null ? ""
+                        : container.getFullName());
 
                 String newPort = (String) _portMap.get(attributeValue);
 
@@ -120,8 +120,8 @@ public class PortNameChanges extends MoMLFilterSimple {
                 _currentlyProcessingActorWithPortNameChanges = true;
                 _doneProcessingActorWithPortNameChanges = false;
                 // Coverity says that container could be null.
-                String containerName = (container == null ? "" : container
-                        .getFullName());
+                String containerName = (container == null ? ""
+                        : container.getFullName());
 
                 _currentActorFullName = containerName + "." + _lastNameSeen;
                 _portMap = (HashMap) _actorsWithPortNameChanges
@@ -129,8 +129,8 @@ public class PortNameChanges extends MoMLFilterSimple {
             } else if (_currentlyProcessingActorWithPortNameChanges
                     && container != null
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(
-                            _currentActorFullName)) {
+                    && !container.getFullName()
+                            .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 // set _doneProcessingActorWithPortNameChanges so we
@@ -140,17 +140,18 @@ public class PortNameChanges extends MoMLFilterSimple {
             }
         } else if (_doneProcessingActorWithPortNameChanges
                 && attributeName.equals("port")
-                && _containerPortMap.containsKey((container == null ? ""
-                        : container.getFullName()) + "." + attributeValue)) {
+                && _containerPortMap.containsKey(
+                        (container == null ? "" : container.getFullName()) + "."
+                                + attributeValue)) {
             // We are processing actors that have port names.
             // Now map the old port to the new port.
 
             // Coverity says that container could be null.
-            String containerName = (container == null ? "" : container
-                    .getFullName());
+            String containerName = (container == null ? ""
+                    : container.getFullName());
 
-            String newPort = (String) _containerPortMap.get(containerName + "."
-                    + attributeValue);
+            String newPort = (String) _containerPortMap
+                    .get(containerName + "." + attributeValue);
 
             // Extreme chaos here because sometimes
             // container.getFullName() will be ".transform_2.transform" and

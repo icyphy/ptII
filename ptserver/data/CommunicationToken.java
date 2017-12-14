@@ -114,8 +114,8 @@ public class CommunicationToken extends Token {
             if (other._portChannelTokenMap == null) {
                 return false;
             }
-            if (!_portChannelTokenMap.keySet().equals(
-                    other._portChannelTokenMap.keySet())) {
+            if (!_portChannelTokenMap.keySet()
+                    .equals(other._portChannelTokenMap.keySet())) {
                 return false;
             }
             for (Entry<String, ArrayList<Token[]>> entry : _portChannelTokenMap
@@ -181,10 +181,8 @@ public class CommunicationToken extends Token {
         final int prime = 31;
         int result = 1;
         //FIXME: check if hashCode works correctly since equals is not using equals method of portChannelTokenMap
-        result = prime
-                * result
-                + (_portChannelTokenMap == null ? 0 : _portChannelTokenMap
-                        .hashCode());
+        result = prime * result + (_portChannelTokenMap == null ? 0
+                : _portChannelTokenMap.hashCode());
         result = prime * result
                 + (_targetActorName == null ? 0 : _targetActorName.hashCode());
         return result;

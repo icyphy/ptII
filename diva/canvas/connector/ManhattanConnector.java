@@ -158,10 +158,10 @@ public class ManhattanConnector extends AbstractConnector {
 
                 //first make sure that the radius is not
                 //bigger than half one of the arms of the triplets
-                double d0 = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0)
-                        * (y1 - y0));
-                double d1 = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1)
-                        * (y2 - y1));
+                double d0 = Math
+                        .sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+                double d1 = Math
+                        .sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
                 double r = Math.min(_bendRadius, d0);
                 r = Math.min(r, d1);
 
@@ -180,8 +180,8 @@ public class ManhattanConnector extends AbstractConnector {
                     //coord to the intermediate coord, and
                     //curve around the corner
                     path.lineTo((float) intX0, (float) intY0);
-                    path.curveTo((float) x1, (float) y1, (float) x1,
-                            (float) y1, (float) intX1, (float) intY1);
+                    path.curveTo((float) x1, (float) y1, (float) x1, (float) y1,
+                            (float) intX1, (float) intY1);
                     prevX = x2;
                     prevY = y2;
                 }

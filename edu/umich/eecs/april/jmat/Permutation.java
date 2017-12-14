@@ -53,7 +53,8 @@ public class Permutation {
         this.perm = perm;
 
         invperm = new int[perm.length];
-        for (int i = 0; i < perm.length; i++)
+        for (int i = 0; i < perm.length; i++) {
             invperm[perm[i]] = i;
+        }
     }
 }

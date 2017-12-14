@@ -53,7 +53,8 @@ public class PerspectiveFilter extends TransformFilter {
     * @param x3 the new position of the bottom left corner
     * @param y3 the new position of the bottom left corner
     */
-    public PerspectiveFilter(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3) {
+    public PerspectiveFilter(float x0, float y0, float x1, float y1, float x2,
+            float y2, float x3, float y3) {
         unitSquareToQuad(x0, y0, x1, y1, x2, y2, x3, y3);
     }
 
@@ -78,7 +79,8 @@ public class PerspectiveFilter extends TransformFilter {
     * @param x3 the new position of the bottom left corner
     * @param y3 the new position of the bottom left corner
     */
-    public void setCorners(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3) {
+    public void setCorners(float x0, float y0, float x1, float y1, float x2,
+            float y2, float x3, float y3) {
         unitSquareToQuad(x0, y0, x1, y1, x2, y2, x3, y3);
         scaled = true;
     }
@@ -95,7 +97,8 @@ public class PerspectiveFilter extends TransformFilter {
      * @param x3 the new position of the bottom left corner
      * @param y3 the new position of the bottom left corner
      */
-    public void unitSquareToQuad(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3) {
+    public void unitSquareToQuad(float x0, float y0, float x1, float y1,
+            float x2, float y2, float x3, float y3) {
         this.x0 = x0;
         this.y0 = y0;
         this.x1 = x1;
@@ -146,7 +149,8 @@ public class PerspectiveFilter extends TransformFilter {
      * @param x3 the old position of the bottom left corner
      * @param y3 the old position of the bottom left corner
      */
-    public void quadToUnitSquare(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3) {
+    public void quadToUnitSquare(float x0, float y0, float x1, float y1,
+            float x2, float y2, float x3, float y3) {
         unitSquareToQuad(x0, y0, x1, y1, x2, y2, x3, y3);
 
         // Invert the transformation
@@ -205,8 +209,10 @@ public class PerspectiveFilter extends TransformFilter {
         if (scaled) {
             rect.x = (int) Math.min(Math.min(x0, x1), Math.min(x2, x3));
             rect.y = (int) Math.min(Math.min(y0, y1), Math.min(y2, y3));
-            rect.width = (int) Math.max(Math.max(x0, x1), Math.max(x2, x3)) - rect.x;
-            rect.height = (int) Math.max(Math.max(y0, y1), Math.max(y2, y3)) - rect.y;
+            rect.width = (int) Math.max(Math.max(x0, x1), Math.max(x2, x3))
+                    - rect.x;
+            rect.height = (int) Math.max(Math.max(y0, y1), Math.max(y2, y3))
+                    - rect.y;
             return;
         }
         if (!clip) {
@@ -238,8 +244,9 @@ public class PerspectiveFilter extends TransformFilter {
 
     @Override
     public Rectangle2D getBounds2D(BufferedImage src) {
-        if (clip)
+        if (clip) {
             return new Rectangle(0, 0, src.getWidth(), src.getHeight());
+        }
         float w = src.getWidth(), h = src.getHeight();
         Rectangle2D r = new Rectangle2D.Float();
         r.add(getPoint2D(new Point2D.Float(0, 0), null));
@@ -251,19 +258,23 @@ public class PerspectiveFilter extends TransformFilter {
 
     @Override
     public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
-        if (dstPt == null)
+        if (dstPt == null) {
             dstPt = new Point2D.Float();
+        }
         float x = (float) srcPt.getX();
         float y = (float) srcPt.getY();
         float f = 1.0f / (x * a13 + y * a23 + a33);
-        dstPt.setLocation((x * a11 + y * a21 + a31) * f, (x * a12 + y * a22 + a32) * f);
+        dstPt.setLocation((x * a11 + y * a21 + a31) * f,
+                (x * a12 + y * a22 + a32) * f);
         return dstPt;
     }
 
     @Override
     protected void transformInverse(int x, int y, float[] out) {
-        out[0] = originalSpace.width * (A * x + B * y + C) / (G * x + H * y + I);
-        out[1] = originalSpace.height * (D * x + E * y + F) / (G * x + H * y + I);
+        out[0] = originalSpace.width * (A * x + B * y + C)
+                / (G * x + H * y + I);
+        out[1] = originalSpace.height * (D * x + E * y + F)
+                / (G * x + H * y + I);
     }
 
     @Override

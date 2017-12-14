@@ -46,7 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
 
-
 /** Helper for the textDisplay JavaScript module.
  *  This causes a window to open that is used to display the text.
  *  The window can be resized and repositioned and the size and position will be remembered.
@@ -73,7 +72,8 @@ public class TextDisplayHelper extends HelperBase {
      *  @param currentObj The JavaScript object that this is helping (a TextDisplay).
      *  @param title A title to associate with the display.
      */
-    public TextDisplayHelper(Object actor, ScriptObjectMirror currentObj, final String title) {
+    public TextDisplayHelper(Object actor, ScriptObjectMirror currentObj,
+            final String title) {
         super(actor, currentObj);
 
         // This has to be done in the Swing event thread.
@@ -144,7 +144,8 @@ public class TextDisplayHelper extends HelperBase {
             // Place the text area in its own frame.
             // Need an effigy and a tableau so that menu ops work properly.
 
-            Effigy containerEffigy = Configuration.findEffigy(_actor.toplevel());
+            Effigy containerEffigy = Configuration
+                    .findEffigy(_actor.toplevel());
 
             try {
                 if (containerEffigy == null) {
@@ -153,8 +154,8 @@ public class TextDisplayHelper extends HelperBase {
                     // does pop up a window.
                     return;
                 }
-                TextEffigy textEffigy = TextEffigy.newTextEffigy(
-                        containerEffigy, "");
+                TextEffigy textEffigy = TextEffigy
+                        .newTextEffigy(containerEffigy, "");
 
                 // The default identifier is "Unnamed", which is no good for
                 // two reasons: Wrong title bar label, and it causes a save-as
@@ -168,13 +169,13 @@ public class TextDisplayHelper extends HelperBase {
                 if (_frame != null) {
                     // Require a vertical scrollbar always so that we don't get a horizontal
                     // scrollbar when it appears.
-                    JScrollPane pane = ((TextEditor) _frame)
-                        .getScrollPane();
+                    JScrollPane pane = _frame.getScrollPane();
                     if (pane != null) {
-                        pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                        pane.setVerticalScrollBarPolicy(
+                                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     }
 
-                    textArea = ((TextEditor) _frame).text;
+                    textArea = _frame.text;
 
                     // FIXME: Any way to get these in as parameters?
                     textArea.setRows(10);
@@ -184,8 +185,8 @@ public class TextDisplayHelper extends HelperBase {
                     _frame.pack();
                 }
             } catch (Exception ex) {
-                MessageHandler.error(
-                        "Error opening window for text display.", ex);
+                MessageHandler.error("Error opening window for text display.",
+                        ex);
             }
         } else {
             // Erase previous text.
@@ -237,8 +238,8 @@ public class TextDisplayHelper extends HelperBase {
          *   attribute already in the container.
          */
         public DisplayWindowTableau(JavaScript actor, TextEffigy container,
-                String title) throws IllegalActionException,
-                NameDuplicationException {
+                String title)
+                throws IllegalActionException, NameDuplicationException {
             super(container, "tableau");
 
             TextEditor editor = new TextEditor(title, null, actor);

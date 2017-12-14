@@ -87,14 +87,13 @@ public class OntologyMoMLHandler extends Attribute {
                     Concept concept = solver.getConcept(propertyable);
                     if (concept != null
                             || ((NamedObj) propertyable)
-                            .getAttribute("_showInfo") != null
-                            && colors
+                                    .getAttribute("_showInfo") != null && colors
                             || ((NamedObj) propertyable)
-                            .getAttribute("_highlightColor") != null
-                            && text) {
+                                    .getAttribute("_highlightColor") != null
+                                    && text) {
                         String request = "<group>";
-                        if (((NamedObj) propertyable).getAttribute("_showInfo") != null
-                                && text) {
+                        if (((NamedObj) propertyable)
+                                .getAttribute("_showInfo") != null && text) {
                             request += "<deleteProperty name=\"_showInfo\"/>";
                         }
                         if (((NamedObj) propertyable)
@@ -111,7 +110,8 @@ public class OntologyMoMLHandler extends Attribute {
             }
 
             // Force a single repaint after all the above requests have been processed.
-            solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
+            solver.requestChange(
+                    new MoMLChangeRequest(this, solver, "<group/>"));
         }
     }
 
@@ -154,7 +154,8 @@ public class OntologyMoMLHandler extends Attribute {
                 }
             }
             // Force a single repaint after all the above requests have been processed.
-            solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
+            solver.requestChange(
+                    new MoMLChangeRequest(this, solver, "<group/>"));
         }
     }
 

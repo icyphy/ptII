@@ -87,7 +87,8 @@ public class RemoveIconAction extends FigureAction {
                 if (!(icon instanceof XMLIcon)) {
                     final String iconName = icon.getName();
                     // FIXME: No undo!
-                    ChangeRequest request = new ChangeRequest(this, "Remove Custom Icon") {
+                    ChangeRequest request = new ChangeRequest(this,
+                            "Remove Custom Icon") {
                         @Override
                         protected void _execute() throws Exception {
                             Attribute attribute = object.getAttribute(iconName);
@@ -99,45 +100,60 @@ public class RemoveIconAction extends FigureAction {
                             Runnable runnable = new Runnable() {
                                 @Override
                                 public void run() {
-                                    IconLoader iconLoader = MoMLParser.getIconLoader();
+                                    IconLoader iconLoader = MoMLParser
+                                            .getIconLoader();
                                     String className = object.getClassName();
                                     if (iconLoader != null) {
                                         try {
-                                            iconLoader.loadIconForClass(className, object);
+                                            iconLoader.loadIconForClass(
+                                                    className, object);
                                         } catch (Exception e) {
                                             // Ignore. Not much we can do here anyway.
                                             System.err.println(
                                                     "WARNING: Failed to load icon for class "
-                                                            + className + ": " + e);
+                                                            + className + ": "
+                                                            + e);
                                         }
                                     } else {
                                         // This is similar to MoMLParser._loadIconForClass, but
                                         // it seems there is no way to reuse that here.
-                                        String fileName = "$CLASSPATH/" + className.replace('.', '/') + "Icon.xml";
-                                        MoMLParser newParser = new MoMLParser(object.workspace());
+                                        String fileName = "$CLASSPATH/"
+                                                + className.replace('.', '/')
+                                                + "Icon.xml";
+                                        MoMLParser newParser = new MoMLParser(
+                                                object.workspace());
                                         newParser.setContext(object);
                                         // Initiate tracking of objects created during the parse.
                                         newParser.clearTopObjectsList();
                                         try {
-                                            URL url = FileUtilities.nameToURL(fileName, null, object.getClass().getClassLoader());
+                                            URL url = FileUtilities.nameToURL(
+                                                    fileName, null,
+                                                    object.getClass()
+                                                            .getClassLoader());
                                             newParser.parse(url, url);
                                             // Have to mark the contents derived objects, so that
                                             // the icon is not exported with the MoML export.
-                                            List<NamedObj> icons = newParser.topObjectsCreated();
+                                            List<NamedObj> icons = newParser
+                                                    .topObjectsCreated();
                                             if (icons != null) {
-                                                Iterator objects = icons.iterator();
+                                                Iterator objects = icons
+                                                        .iterator();
 
                                                 while (objects.hasNext()) {
-                                                    NamedObj newObject = (NamedObj) objects.next();
-                                                    newObject.setDerivedLevel(1);
-                                                    _markContentsDerived(newObject, 1);
+                                                    NamedObj newObject = (NamedObj) objects
+                                                            .next();
+                                                    newObject
+                                                            .setDerivedLevel(1);
+                                                    _markContentsDerived(
+                                                            newObject, 1);
                                                 }
                                             }
                                         } catch (Exception e) {
                                             // Ignore. Not much we can do here anyway.
                                             System.err.println(
                                                     "WARNING: Failed to load icon for class "
-                                                            + className + ": " + e);
+                                                            + className + ": "
+                                                            + e);
                                         }
                                     }
                                 }

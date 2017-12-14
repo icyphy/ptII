@@ -69,7 +69,8 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  which play the role of edge costs.
      *
      */
-    public AllPairShortestPathAnalysis(Graph graph, ToDoubleMapping edgeLength) {
+    public AllPairShortestPathAnalysis(Graph graph,
+            ToDoubleMapping edgeLength) {
         super(new FloydWarshallAllPairShortestPathStrategy(graph, edgeLength));
     }
 
@@ -93,8 +94,8 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  node "startNode" to the node "endNode" in the form of an ordered list.
      */
     public List shortestPath(Node startNode, Node endNode) {
-        return ((AllPairShortestPathAnalyzer) analyzer()).shortestPath(
-                startNode, endNode);
+        return ((AllPairShortestPathAnalyzer) analyzer())
+                .shortestPath(startNode, endNode);
     }
 
     /** Return the length of the shortest path from the node
@@ -106,8 +107,8 @@ public class AllPairShortestPathAnalysis extends Analysis {
      *  "startNode" to the node "endNode".
      */
     public double shortestPathLength(Node startNode, Node endNode) {
-        return ((AllPairShortestPathAnalyzer) analyzer()).shortestPathLength(
-                startNode, endNode);
+        return ((AllPairShortestPathAnalyzer) analyzer())
+                .shortestPathLength(startNode, endNode);
     }
 
     /** Return a matrix representing the result of the all pair shortest path

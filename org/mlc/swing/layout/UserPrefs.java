@@ -67,8 +67,8 @@ public class UserPrefs {
      * instantiation
      */
     private UserPrefs() {
-        prefStore = Preferences
-                .userNodeForPackage(org.mlc.swing.layout.LayoutConstraintsManager.class);
+        prefStore = Preferences.userNodeForPackage(
+                org.mlc.swing.layout.LayoutConstraintsManager.class);
     }
 
     boolean showPreviewBorder() {
@@ -91,9 +91,9 @@ public class UserPrefs {
 
     Rectangle getWinLoc(String winname) {
         Rectangle r = new Rectangle(prefStore.getInt(winname + "_WinX", 0),
-                prefStore.getInt(winname + "_WinY", 0), prefStore.getInt(
-                        winname + "_WinW", 800), prefStore.getInt(winname
-                                + "_WinH", 600));
+                prefStore.getInt(winname + "_WinY", 0),
+                prefStore.getInt(winname + "_WinW", 800),
+                prefStore.getInt(winname + "_WinH", 600));
         return r;
     }
 

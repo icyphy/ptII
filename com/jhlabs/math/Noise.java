@@ -29,7 +29,7 @@ public class Noise implements Function1D, Function2D, Function3D {
      * @param x the x value
      * @return noise value at x in the range -1..1
      */
-   @Override
+    @Override
     public float evaluate(float x) {
         return noise1(x);
     }
@@ -66,8 +66,9 @@ public class Noise implements Function1D, Function2D, Function3D {
     public static float turbulence2(float x, float y, float octaves) {
         float t = 0.0f;
 
-        for (float f = 1.0f; f <= octaves; f *= 2)
+        for (float f = 1.0f; f <= octaves; f *= 2) {
             t += Math.abs(noise2(f * x, f * y)) / f;
+        }
         return t;
     }
 
@@ -82,8 +83,9 @@ public class Noise implements Function1D, Function2D, Function3D {
     public static float turbulence3(float x, float y, float z, float octaves) {
         float t = 0.0f;
 
-        for (float f = 1.0f; f <= octaves; f *= 2)
+        for (float f = 1.0f; f <= octaves; f *= 2) {
             t += Math.abs(noise3(f * x, f * y, f * z)) / f;
+        }
         return t;
     }
 
@@ -289,12 +291,14 @@ public class Noise implements Function1D, Function2D, Function3D {
 
             g1[i] = (float) ((random() % (B + B)) - B) / B;
 
-            for (j = 0; j < 2; j++)
+            for (j = 0; j < 2; j++) {
                 g2[i][j] = (float) ((random() % (B + B)) - B) / B;
+            }
             normalize2(g2[i]);
 
-            for (j = 0; j < 3; j++)
+            for (j = 0; j < 3; j++) {
                 g3[i][j] = (float) ((random() % (B + B)) - B) / B;
+            }
             normalize3(g3[i]);
         }
 
@@ -307,10 +311,12 @@ public class Noise implements Function1D, Function2D, Function3D {
         for (i = 0; i < B + 2; i++) {
             p[B + i] = p[i];
             g1[B + i] = g1[i];
-            for (j = 0; j < 2; j++)
+            for (j = 0; j < 2; j++) {
                 g2[B + i][j] = g2[i][j];
-            for (j = 0; j < 3; j++)
+            }
+            for (j = 0; j < 3; j++) {
                 g3[B + i][j] = g3[i][j];
+            }
         }
     }
 
@@ -323,8 +329,9 @@ public class Noise implements Function1D, Function2D, Function3D {
      * @return The minimum and maximum
      */
     public static float[] findRange(Function1D f, float[] minmax) {
-        if (minmax == null)
+        if (minmax == null) {
             minmax = new float[2];
+        }
         float min = 0, max = 0;
         // Some random numbers here...
         for (float x = -100; x < 100; x += 1.27139) {
@@ -346,8 +353,9 @@ public class Noise implements Function1D, Function2D, Function3D {
      * @return The minimum and maximum
      */
     public static float[] findRange(Function2D f, float[] minmax) {
-        if (minmax == null)
+        if (minmax == null) {
             minmax = new float[2];
+        }
         float min = 0, max = 0;
         // Some random numbers here...
         for (float y = -100; y < 100; y += 10.35173) {

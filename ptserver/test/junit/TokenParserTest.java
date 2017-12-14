@@ -128,15 +128,15 @@ public class TokenParserTest {
     }
 
     @Test
-    public void testUnsignedByteToken() throws IOException,
-    IllegalActionException {
+    public void testUnsignedByteToken()
+            throws IOException, IllegalActionException {
         UnsignedByteToken token = new UnsignedByteToken(220);
         //System.out.println(token.byteValue());
         PipedOutputStream outputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(outputStream);
         TokenParser.getInstance().convertToBytes(token, outputStream);
-        UnsignedByteToken token1 = TokenParser.getInstance().convertToToken(
-                inputStream);
+        UnsignedByteToken token1 = TokenParser.getInstance()
+                .convertToToken(inputStream);
         assertEquals(token, token1);
         //System.out.println(token1.byteValue());
     }
@@ -179,7 +179,8 @@ public class TokenParserTest {
     }
 
     @Test
-    public void testIntMatrixToken() throws IOException, IllegalActionException {
+    public void testIntMatrixToken()
+            throws IOException, IllegalActionException {
         int[][] matrix = new int[3][4];
 
         for (int row = 0; row < 3; row++) {
@@ -198,8 +199,8 @@ public class TokenParserTest {
     }
 
     @Test
-    public void testLongMatrixToken() throws IOException,
-    IllegalActionException {
+    public void testLongMatrixToken()
+            throws IOException, IllegalActionException {
         long[][] matrix = new long[3][4];
 
         for (int row = 0; row < 3; row++) {
@@ -218,8 +219,8 @@ public class TokenParserTest {
     }
 
     @Test
-    public void testDoubleMatrixToken() throws IOException,
-    IllegalActionException {
+    public void testDoubleMatrixToken()
+            throws IOException, IllegalActionException {
         double[][] matrix = new double[3][4];
 
         for (int row = 0; row < 3; row++) {
@@ -238,14 +239,14 @@ public class TokenParserTest {
     }
 
     @Test
-    public void testComplexMatrixToken() throws IOException,
-    IllegalActionException {
+    public void testComplexMatrixToken()
+            throws IOException, IllegalActionException {
         Complex[][] matrix = new Complex[3][4];
 
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 4; column++) {
-                matrix[row][column] = new Complex(row * column * 2.34, row
-                        * column * 12.5234);
+                matrix[row][column] = new Complex(row * column * 2.34,
+                        row * column * 12.5234);
             }
         }
         ComplexMatrixToken token = new ComplexMatrixToken(matrix);
@@ -286,8 +287,8 @@ public class TokenParserTest {
     }
 
     @Test
-    public void testCommunicationToken() throws IOException,
-    IllegalActionException {
+    public void testCommunicationToken()
+            throws IOException, IllegalActionException {
         CommunicationToken token = new CommunicationToken();
         token.setTargetActorName("targetActor");
 
@@ -317,15 +318,15 @@ public class TokenParserTest {
         PipedOutputStream outputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(outputStream);
         TokenParser.getInstance().convertToBytes(token, outputStream);
-        Token convertedToken = TokenParser.getInstance().convertToToken(
-                inputStream);
+        Token convertedToken = TokenParser.getInstance()
+                .convertToToken(inputStream);
         assertEquals(token, convertedToken);
 
     }
 
     @Test
-    public void testCommunicationToken2() throws IOException,
-    IllegalActionException {
+    public void testCommunicationToken2()
+            throws IOException, IllegalActionException {
         CommunicationToken token = new CommunicationToken();
         token.setTargetActorName("targetActor");
         token.addPort("testPort1", 1);
@@ -338,14 +339,16 @@ public class TokenParserTest {
         CommunicationToken convertedToken = TokenParser.getInstance()
                 .convertToToken(inputStream);
         assertEquals(token, convertedToken);
-        assertEquals(token.getPortChannelTokenMap().values().iterator().next()
-                .get(0)[0], convertedToken.getPortChannelTokenMap().values()
-                .iterator().next().get(0)[0]);
+        assertEquals(
+                token.getPortChannelTokenMap().values().iterator().next()
+                        .get(0)[0],
+                convertedToken.getPortChannelTokenMap().values().iterator()
+                        .next().get(0)[0]);
     }
 
     @Test
-    public void testAttributeChangeToken() throws IOException,
-    IllegalActionException {
+    public void testAttributeChangeToken()
+            throws IOException, IllegalActionException {
         AttributeChangeToken token = new AttributeChangeToken();
         token.setTargetSettableName("targetSettable");
         token.setExpression("testing");
@@ -353,8 +356,8 @@ public class TokenParserTest {
         PipedOutputStream outputStream = new PipedOutputStream();
         PipedInputStream inputStream = new PipedInputStream(outputStream);
         TokenParser.getInstance().convertToBytes(token, outputStream);
-        Token convertedToken = TokenParser.getInstance().convertToToken(
-                inputStream);
+        Token convertedToken = TokenParser.getInstance()
+                .convertToToken(inputStream);
         assertEquals(token, convertedToken);
     }
 }

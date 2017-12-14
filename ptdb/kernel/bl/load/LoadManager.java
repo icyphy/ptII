@@ -116,15 +116,11 @@ public class LoadManager {
                     falseReference);
 
             trueReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
-                    + "name=\""
-                    + XMLDBModel.DB_REFERENCE_ATTR
-                    + "\" "
+                    + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" "
                     + "value=\"TRUE\"";
 
             falseReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
-                    + "name=\""
-                    + XMLDBModel.DB_REFERENCE_ATTR
-                    + "\" "
+                    + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" "
                     + "value=\"FALSE\"";
 
             modelContent = modelContent.replaceAll(trueReference,
@@ -145,11 +141,11 @@ public class LoadManager {
 
             } else {
 
-                if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
+                if (returnEntity
+                        .getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                     String referenceTag = "<property name=\""
-                            + XMLDBModel.DB_REFERENCE_ATTR
-                            + "\" "
+                            + XMLDBModel.DB_REFERENCE_ATTR + "\" "
                             + "class=\"ptolemy.data.expr.StringConstantParameter\" "
                             + "value=\"TRUE\"></property>";
 
@@ -163,7 +159,7 @@ public class LoadManager {
 
                     ((StringConstantParameter) returnEntity
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                            .setExpression("TRUE");
+                                    .setExpression("TRUE");
 
                 }
 
@@ -171,11 +167,11 @@ public class LoadManager {
 
         } else {
 
-            if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
+            if (returnEntity
+                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                 String referenceTag = "<property name=\""
-                        + XMLDBModel.DB_REFERENCE_ATTR
-                        + "\" "
+                        + XMLDBModel.DB_REFERENCE_ATTR + "\" "
                         + "class=\"ptolemy.data.expr.StringConstantParameter\" "
                         + "value=\"FALSE\"></property>";
 
@@ -189,7 +185,7 @@ public class LoadManager {
 
                 ((StringConstantParameter) returnEntity
                         .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .setExpression("FALSE");
+                                .setExpression("FALSE");
 
             }
 
@@ -223,8 +219,8 @@ public class LoadManager {
      *          Thrown if a problem occurs creating an effigy from the MoML.
      */
     public static PtolemyEffigy loadModel(String name,
-            Configuration configuration) throws DBConnectionException,
-            DBExecutionException, Exception {
+            Configuration configuration)
+            throws DBConnectionException, DBExecutionException, Exception {
 
         XMLDBModel dbModel = DBModelFetcher.load(name);
 
@@ -253,8 +249,8 @@ public class LoadManager {
      *          Thrown if a problem occurs creating an effigy from the MoML.
      */
     public static PtolemyEffigy loadModelUsingId(String id,
-            Configuration configuration) throws DBConnectionException,
-            DBExecutionException, Exception {
+            Configuration configuration)
+            throws DBConnectionException, DBExecutionException, Exception {
 
         XMLDBModel dbModel = DBModelFetcher.loadUsingId(id);
 
@@ -300,8 +296,8 @@ public class LoadManager {
      * query in the database.
      *
      */
-    public void getAllModelsFromDatabase() throws DBConnectionException,
-    DBExecutionException {
+    public void getAllModelsFromDatabase()
+            throws DBConnectionException, DBExecutionException {
         DBConnection conn = DBConnectorFactory.getSyncConnection(false);
         _allModelsList = conn.executeGetListOfAllModels();
         if (_allModelsList != null) {
@@ -320,8 +316,8 @@ public class LoadManager {
      * @exception DBExecutionException  If thrown while executing the
      * query in the database.
      */
-    public int getTotalNumberOfModels() throws DBConnectionException,
-    DBExecutionException {
+    public int getTotalNumberOfModels()
+            throws DBConnectionException, DBExecutionException {
         if (!_isFetched) {
             getAllModelsFromDatabase();
         }
@@ -337,8 +333,8 @@ public class LoadManager {
      * @exception DBExecutionException  If thrown while executing the
      * query in the database.
      */
-    public int getNoOfPages() throws DBConnectionException,
-    DBExecutionException {
+    public int getNoOfPages()
+            throws DBConnectionException, DBExecutionException {
         if (!_isFetched) {
             getAllModelsFromDatabase();
         }
@@ -383,8 +379,8 @@ public class LoadManager {
      *          modelName.
      */
     private static boolean _circularDependencyExists(String modelName,
-            String containerName) throws DBConnectionException,
-            DBExecutionException {
+            String containerName)
+            throws DBConnectionException, DBExecutionException {
 
         boolean returnValue = false;
 
@@ -404,7 +400,8 @@ public class LoadManager {
                         + "Rebuild the Reference file.");
             }
 
-            if (Utilities.modelReferenceExists(containerName, referenceString)) {
+            if (Utilities.modelReferenceExists(containerName,
+                    referenceString)) {
 
                 returnValue = true;
 
@@ -445,16 +442,16 @@ public class LoadManager {
         // Otherwise, a new PtolemyEffigy is created.
         if (configuration.getDirectory().getEntity(entity.getName()) != null) {
 
-            return (PtolemyEffigy) configuration.getDirectory().getEffigy(
-                    entity.getName());
+            return (PtolemyEffigy) configuration.getDirectory()
+                    .getEffigy(entity.getName());
 
         }
 
         returnEffigy = new PtolemyEffigy(configuration.workspace());
         returnEffigy.setModel(entity);
 
-        returnEffigy.setName(configuration.getDirectory().uniqueName(
-                entity.getName()));
+        returnEffigy.setName(
+                configuration.getDirectory().uniqueName(entity.getName()));
         returnEffigy.setContainer(configuration.getDirectory());
 
         returnEffigy.identifier.setExpression(returnEffigy.getName());

@@ -81,11 +81,11 @@ public final class ConstantSize implements Size, Serializable {
 
     public static final Unit PIXEL = new Unit("Pixel", "px", true);
     public static final Unit POINT = new Unit("Point", "pt", true);
-    public static final Unit DIALOG_UNITS_X = new Unit("Dialog units X",
-            "dluX", true);
+    public static final Unit DIALOG_UNITS_X = new Unit("Dialog units X", "dluX",
+            true);
     public static final Unit DLUX = DIALOG_UNITS_X;
-    public static final Unit DIALOG_UNITS_Y = new Unit("Dialog units Y",
-            "dluY", true);
+    public static final Unit DIALOG_UNITS_Y = new Unit("Dialog units Y", "dluY",
+            true);
     public static final Unit DLUY = DIALOG_UNITS_Y;
     public static final Unit MILLIMETER = new Unit("Millimeter", "mm", false);
     public static final Unit MM = MILLIMETER;
@@ -99,7 +99,7 @@ public final class ConstantSize implements Size, Serializable {
      * deserialized units.
      */
     private static final Unit[] VALUES = { PIXEL, POINT, DIALOG_UNITS_X,
-        DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH };
+            DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH };
 
     // Fields ***************************************************************
 
@@ -142,7 +142,8 @@ public final class ConstantSize implements Size, Serializable {
      * @exception IllegalArgumentException   if the unit requires integer
      *    but the value is not an integer
      */
-    static ConstantSize valueOf(String encodedValueAndUnit, boolean horizontal) {
+    static ConstantSize valueOf(String encodedValueAndUnit,
+            boolean horizontal) {
         String split[] = ConstantSize.splitValueAndUnit(encodedValueAndUnit);
         String encodedValue = split[0];
         String encodedUnit = split[1];
@@ -278,9 +279,9 @@ public final class ConstantSize implements Size, Serializable {
      */
     @Override
     public String toString() {
-        return value == intValue() ? Integer.toString(intValue())
-                + unit.abbreviation() : Double.toString(value)
-                + unit.abbreviation();
+        return value == intValue()
+                ? Integer.toString(intValue()) + unit.abbreviation()
+                : Double.toString(value) + unit.abbreviation();
     }
 
     // Helper Code **********************************************************
@@ -300,9 +301,8 @@ public final class ConstantSize implements Size, Serializable {
         String[] result = new String[2];
         int len = encodedValueAndUnit.length();
         int firstLetterIndex = len;
-        while (firstLetterIndex > 0
-                && Character.isLetter(encodedValueAndUnit
-                        .charAt(firstLetterIndex - 1))) {
+        while (firstLetterIndex > 0 && Character
+                .isLetter(encodedValueAndUnit.charAt(firstLetterIndex - 1))) {
             firstLetterIndex--;
         }
         result[0] = encodedValueAndUnit.substring(0, firstLetterIndex);
@@ -322,7 +322,8 @@ public final class ConstantSize implements Size, Serializable {
         private final transient String abbreviation;
         final transient boolean requiresIntegers;
 
-        private Unit(String name, String abbreviation, boolean requiresIntegers) {
+        private Unit(String name, String abbreviation,
+                boolean requiresIntegers) {
             this.name = name;
             this.abbreviation = abbreviation;
             this.requiresIntegers = requiresIntegers;

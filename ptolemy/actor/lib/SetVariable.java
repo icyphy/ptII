@@ -129,8 +129,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (cxh)
  */
-public class SetVariable extends TypedAtomicActor implements ChangeListener,
-ExplicitChangeContext {
+public class SetVariable extends TypedAtomicActor
+        implements ChangeListener, ExplicitChangeContext {
 
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -197,7 +197,8 @@ ExplicitChangeContext {
      *  @param exception The exception that resulted.
      */
     @Override
-    public void changeFailed(ChangeRequest change, java.lang.Exception exception) {
+    public void changeFailed(ChangeRequest change,
+            java.lang.Exception exception) {
         _setFailed = true;
         MessageHandler.error("Failed to set variable.", exception);
     }
@@ -212,8 +213,8 @@ ExplicitChangeContext {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SetVariable newObject = (SetVariable) super.clone(workspace);
         // Derived classes need this.
-        newObject._attribute = newObject.getAttribute(newObject.variableName
-                .getName());
+        newObject._attribute = newObject
+                .getAttribute(newObject.variableName.getName());
         return newObject;
     }
 
@@ -291,12 +292,13 @@ ExplicitChangeContext {
 
                     // container might be null, so create the variable
                     // in the container of this actor.
-                    _attribute = new Variable(getContainer(), variableNameValue);
+                    _attribute = new Variable(getContainer(),
+                            variableNameValue);
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to create Variable \"" + variableNameValue
-                            + "\" in " + getContainer().getFullName()
-                            + ".");
+                                    + "\" in " + getContainer().getFullName()
+                                    + ".");
                 } catch (NameDuplicationException ex) {
                     throw new InternalErrorException(ex);
                 } finally {

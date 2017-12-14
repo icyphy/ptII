@@ -73,7 +73,8 @@ public class Minimum extends NamedProgramCodeGeneratorAdapter {
 
         args.add(targetType(type));
 
-        code.append(getTemplateParser().generateBlockCode("preinitBlock", args));
+        code.append(
+                getTemplateParser().generateBlockCode("preinitBlock", args));
         return code.toString();
     }
 

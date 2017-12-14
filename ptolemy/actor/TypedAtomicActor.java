@@ -79,8 +79,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.TypedCompositeActor
  @see ptolemy.actor.TypedIOPort
  */
-public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
-TypedActor {
+public class TypedAtomicActor extends AtomicActor<TypedIOPort>
+        implements TypedActor {
     // All the constructors are wrappers of the super class constructors.
 
     /** Construct an actor in the default workspace with an empty string
@@ -351,12 +351,13 @@ TypedActor {
                     continue;
                 }
                 // 2) only set default constraint of none are set already
-                if (inPortConstraints.isEmpty() && outPortConstraints.isEmpty()) {
-                    result.add(new Inequality(input.getTypeTerm(), output
-                            .getTypeTerm()));
+                if (inPortConstraints.isEmpty()
+                        && outPortConstraints.isEmpty()) {
+                    result.add(new Inequality(input.getTypeTerm(),
+                            output.getTypeTerm()));
                     if (isBackwardTypeInferenceEnabled()) {
-                        result.add(new Inequality(output.getTypeTerm(), input
-                                .getTypeTerm()));
+                        result.add(new Inequality(output.getTypeTerm(),
+                                input.getTypeTerm()));
                     }
                 }
             }

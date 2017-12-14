@@ -189,12 +189,12 @@ public class BasicNodeController implements NodeController {
         if (center != null) {
             // place the new figure where the old one was, if there
             // was an old figure.
-            CanvasUtilities
-            .translateTo(newFigure, center.getX(), center.getY());
+            CanvasUtilities.translateTo(newFigure, center.getX(),
+                    center.getY());
         }
 
-        _controller.dispatch(new GraphViewEvent(this,
-                GraphViewEvent.NODE_DRAWN, node));
+        _controller.dispatch(
+                new GraphViewEvent(this, GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -214,8 +214,8 @@ public class BasicNodeController implements NodeController {
         // Now draw the contained nodes, letting them go where they want to.
         _drawChildren(node);
 
-        _controller.dispatch(new GraphViewEvent(this,
-                GraphViewEvent.NODE_DRAWN, node));
+        _controller.dispatch(
+                new GraphViewEvent(this, GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }

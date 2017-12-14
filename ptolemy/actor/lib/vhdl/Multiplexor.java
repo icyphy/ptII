@@ -114,15 +114,16 @@ public class Multiplexor extends SynchronousFixTransformer {
 
             Precision outputPrecision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                    .getExpression());
+                            .getExpression());
 
             FixToken tokenA = null;
             FixToken tokenB = null;
 
             if (A.hasToken(0)) {
                 tokenA = (FixToken) A.get(0);
-                if (tokenA.fixValue().getPrecision().getNumberOfBits() != outputPrecision
-                        .getNumberOfBits()) {
+                if (tokenA.fixValue().getPrecision()
+                        .getNumberOfBits() != outputPrecision
+                                .getNumberOfBits()) {
 
                     throw new IllegalActionException(this,
                             "Input A has different width than the output port");
@@ -130,8 +131,9 @@ public class Multiplexor extends SynchronousFixTransformer {
             }
             if (B.hasToken(0)) {
                 tokenB = (FixToken) B.get(0);
-                if (tokenB.fixValue().getPrecision().getNumberOfBits() != outputPrecision
-                        .getNumberOfBits()) {
+                if (tokenB.fixValue().getPrecision()
+                        .getNumberOfBits() != outputPrecision
+                                .getNumberOfBits()) {
 
                     throw new IllegalActionException(this,
                             "Input B has different width than the output port");

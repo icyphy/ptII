@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (beth)
  */
 public class CatchExceptionAttribute extends AbstractInitializableAttribute
-implements ExceptionHandler, ExecutionListener {
+        implements ExceptionHandler, ExecutionListener {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -185,8 +185,8 @@ implements ExceptionHandler, ExecutionListener {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CatchExceptionAttribute newObject = (CatchExceptionAttribute) super
-                .clone(workspace);
+        CatchExceptionAttribute newObject = (CatchExceptionAttribute) super.clone(
+                workspace);
 
         newObject._subscribers = new ArrayList();
         return newObject;
@@ -290,8 +290,8 @@ implements ExceptionHandler, ExecutionListener {
             }
 
             if (policyValue.equals(CONTINUE)) {
-                _writeMessage("Execution continued at "
-                        + dateFormat.format(date));
+                _writeMessage(
+                        "Execution continued at " + dateFormat.format(date));
 
                 // FIXME:  Is continue possible?  Looks like wrapup() is called
                 // automatically before handleException()
@@ -344,8 +344,9 @@ implements ExceptionHandler, ExecutionListener {
                     _restartDesired = true;
 
                 } else {
-                    _writeMessage("Cannot restart model since there is no model "
-                            + "Manager.  Perhaps the model has no actors?");
+                    _writeMessage(
+                            "Cannot restart model since there is no model "
+                                    + "Manager.  Perhaps the model has no actors?");
                     return false;
                 }
 
@@ -521,8 +522,8 @@ implements ExceptionHandler, ExecutionListener {
                 _previousFilename = null;
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "setWriter(" + writer
-                    + ") failed");
+            throw new IllegalActionException(this, ex,
+                    "setWriter(" + writer + ") failed");
         }
 
         if (writer != null) {

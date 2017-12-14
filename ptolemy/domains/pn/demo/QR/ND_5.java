@@ -129,14 +129,14 @@ public class ND_5 extends TypedAtomicActor {
         for (int j = 1; j <= 1 * N; j += 1) {
             for (int i = 1 * j; i <= 1 * N; i += 1) {
                 if (-i + j == 0) {
-                    r_2.add(Double.valueOf(((DoubleToken) RP_11.get(0))
-                            .doubleValue()));
+                    r_2.add(Double.valueOf(
+                            ((DoubleToken) RP_11.get(0)).doubleValue()));
                     in_0 = ((Double) r_2.elementAt(w_r_2++)).doubleValue();
                 }
 
                 if (i - j - 1 >= 0) {
-                    r_3.add(Double.valueOf(((DoubleToken) RP_12.get(0))
-                            .doubleValue()));
+                    r_3.add(Double.valueOf(
+                            ((DoubleToken) RP_12.get(0)).doubleValue()));
                     in_0 = ((Double) r_3.elementAt(w_r_3++)).doubleValue();
                 }
 

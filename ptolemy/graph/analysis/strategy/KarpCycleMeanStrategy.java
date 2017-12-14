@@ -60,8 +60,8 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @author Shahrooz Shahparnia
  @version $Id$
  */
-public class KarpCycleMeanStrategy extends CachedStrategy implements
-CycleMeanAnalyzer {
+public class KarpCycleMeanStrategy extends CachedStrategy
+        implements CycleMeanAnalyzer {
     /** Construct a maximum cycle mean analyzer for a given graph, using the
      *  Karp's algorithm.
      *
@@ -268,8 +268,8 @@ CycleMeanAnalyzer {
                         .get(node)).doubleValue();
                 double cycleMeanValue = ((Double) cycleMean.get(node))
                         .doubleValue();
-                double testValue = (maximumPathLengthToLevelN - maximumPathLengthToLevelK)
-                        / (n - k);
+                double testValue = (maximumPathLengthToLevelN
+                        - maximumPathLengthToLevelK) / (n - k);
 
                 if (cycleMeanValue > testValue) {
                     cycleMean.put(node, Double.valueOf(testValue));

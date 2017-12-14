@@ -186,8 +186,8 @@ public class ContinuousTimeDelay extends Transformer {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ContinuousTimeDelay newObject = (ContinuousTimeDelay) super
-                .clone(workspace);
+        ContinuousTimeDelay newObject = (ContinuousTimeDelay) super.clone(
+                workspace);
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
@@ -263,7 +263,8 @@ public class ContinuousTimeDelay extends Transformer {
         // by the solver. These are events that have timestamps before
         // the current time less delay.
         while (_inputBuffer.size() > 0) {
-            Time earliestEventTime = ((TimedEvent) _inputBuffer.get()).timeStamp;
+            Time earliestEventTime = ((TimedEvent) _inputBuffer
+                    .get()).timeStamp;
 
             //Expired event
             if (earliestEventTime.compareTo(centerTime) < 0) {
@@ -427,12 +428,12 @@ public class ContinuousTimeDelay extends Transformer {
         Time centerTime = getDirector().getModelTime().subtract(_delay);
 
         //time gap (run) between left and right events
-        Token slope = new DoubleToken(rightEvent.timeStamp.subtract(
-                leftEvent.timeStamp).getDoubleValue());
+        Token slope = new DoubleToken(rightEvent.timeStamp
+                .subtract(leftEvent.timeStamp).getDoubleValue());
 
         //slope = rise / run
-        slope = ((Token) rightEvent.contents).subtract(
-                (Token) leftEvent.contents).divide(slope);
+        slope = ((Token) rightEvent.contents)
+                .subtract((Token) leftEvent.contents).divide(slope);
 
         //leftEvent + estimated rise from leftEvent to centerEvent
         return ((Token) leftEvent.contents).add(slope.multiply(new DoubleToken(

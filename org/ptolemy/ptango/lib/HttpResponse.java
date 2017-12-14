@@ -111,8 +111,8 @@ public class HttpResponse {
         _body = "";
 
         try {
-            reader = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+            reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
         } catch (SocketTimeoutException e1) {
             _body = "";
             _responseCode = 408;
@@ -122,8 +122,8 @@ public class HttpResponse {
             // erroneous requests.  If so, connection.getErrorStream() has body
             // getErrorStream() does not throw exceptions
             if (connection.getErrorStream() != null) {
-                reader = new BufferedReader(new InputStreamReader(
-                        connection.getErrorStream()));
+                reader = new BufferedReader(
+                        new InputStreamReader(connection.getErrorStream()));
             }
         }
 
@@ -209,14 +209,14 @@ public class HttpResponse {
      * @return All status items as a RecordToken
      */
     public RecordToken getStatus() {
-        ArrayList<Token> values = new ArrayList(Arrays.asList(new IntToken(
-                _responseCode), new StringToken(_responseMessage),
-                new BooleanToken(isSuccessful()), new BooleanToken(
-                        isFurtherActionExpected())));
+        ArrayList<Token> values = new ArrayList(Arrays.asList(
+                new IntToken(_responseCode), new StringToken(_responseMessage),
+                new BooleanToken(isSuccessful()),
+                new BooleanToken(isFurtherActionExpected())));
 
         try {
-            return new RecordToken(_labels, values.toArray(new Token[values
-                    .size()]));
+            return new RecordToken(_labels,
+                    values.toArray(new Token[values.size()]));
         } catch (IllegalActionException e) {
             return new RecordToken();
         }
@@ -230,13 +230,13 @@ public class HttpResponse {
     public static Type getStatusType() {
         // Define default values here so that a record token can be instantiated
         // in order to return the Type of that token
-        ArrayList<Token> values = new ArrayList(Arrays.asList(
-                new IntToken(200), new StringToken("OK"),
-                new BooleanToken(true), new BooleanToken(false)));
+        ArrayList<Token> values = new ArrayList(
+                Arrays.asList(new IntToken(200), new StringToken("OK"),
+                        new BooleanToken(true), new BooleanToken(false)));
 
         try {
-            return new RecordToken(_labels, values.toArray(new Token[values
-                    .size()])).getType();
+            return new RecordToken(_labels,
+                    values.toArray(new Token[values.size()])).getType();
         } catch (IllegalActionException e) {
             return new RecordToken().getType();
         }

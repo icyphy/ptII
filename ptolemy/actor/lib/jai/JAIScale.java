@@ -81,10 +81,10 @@ public class JAIScale extends Transformer {
         width = new Parameter(this, "width", new IntToken(800));
         height = new Parameter(this, "height", new IntToken(600));
 
-        xScaleFactor = new Parameter(this, "xScaleFactor", new DoubleToken(
-                "1.0F"));
-        yScaleFactor = new Parameter(this, "yScaleFactor", new DoubleToken(
-                "1.0F"));
+        xScaleFactor = new Parameter(this, "xScaleFactor",
+                new DoubleToken("1.0F"));
+        yScaleFactor = new Parameter(this, "yScaleFactor",
+                new DoubleToken("1.0F"));
 
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");

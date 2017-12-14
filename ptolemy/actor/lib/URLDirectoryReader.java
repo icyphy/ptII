@@ -299,8 +299,8 @@ public class URLDirectoryReader extends URLReader {
                         + "have the file: protocol");
             }
         } catch (Exception ex) {
-            throw new IllegalActionException("Could not open '" + source
-                    + "' :" + ex);
+            throw new IllegalActionException(
+                    "Could not open '" + source + "' :" + ex);
         }
     }
 
@@ -344,8 +344,8 @@ public class URLDirectoryReader extends URLReader {
         BufferedReader in = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(
-                    urlConnection.getInputStream()));
+            in = new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream()));
 
             if (!contentType.startsWith("text/plain")
                     && !urlConnection.getURL().toString().endsWith("/")) {
@@ -406,10 +406,10 @@ public class URLDirectoryReader extends URLReader {
                                             // exists.
                                             if (endsWith == null
                                                     || endsWith.length() == 0
-                                                    || target
-                                                    .endsWith(endsWith)) {
+                                                    || target.endsWith(
+                                                            endsWith)) {
                                                 resultsList
-                                                .add(source + target);
+                                                        .add(source + target);
                                             }
 
                                             sawHREF = false;

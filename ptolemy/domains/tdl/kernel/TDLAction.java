@@ -181,8 +181,8 @@ public class TDLAction {
             } else if (tdlEvent1.actionType != tdlEvent2.actionType) {
                 return tdlEvent1.actionType - tdlEvent2.actionType;
             } else {
-                return tdlEvent1.object.toString().compareTo(
-                        tdlEvent2.object.toString());
+                return tdlEvent1.object.toString()
+                        .compareTo(tdlEvent2.object.toString());
             }
         }
     }

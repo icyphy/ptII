@@ -225,8 +225,8 @@ public class WebServerUtilities {
         // servlet and resource handler mappings.  If not, throw exception
         for (URI servletPath : appInfo.getServletInfo().keySet()) {
             for (WebApplicationInfo application : _applications) {
-                if (application.hasPath(applicationPath
-                        + servletPath.toString())) {
+                if (application
+                        .hasPath(applicationPath + servletPath.toString())) {
                     throw new Exception("Model " + appInfo.getModelName()
                             + " requested a conflicting URL mapping, "
                             + applicationPath + servletPath.toString());
@@ -329,14 +329,13 @@ public class WebServerUtilities {
 
                 // TODO:  Update for WebContextHandler
                 if (handler instanceof ServletContextHandler
-                        && ((ServletContextHandler) handler)
-                        .getContextPath()
-                        .equalsIgnoreCase(
-                                appInfo.getApplicationPath().toString())) {
+                        && ((ServletContextHandler) handler).getContextPath()
+                                .equalsIgnoreCase(appInfo.getApplicationPath()
+                                        .toString())) {
 
                     // Check for matching HTTP request and WebSocket servlets
-                    Set<URI> keySet = new HashSet(appInfo.getServletInfo()
-                            .keySet());
+                    Set<URI> keySet = new HashSet(
+                            appInfo.getServletInfo().keySet());
                     keySet.addAll(appInfo.getWebSocketInfo().keySet());
 
                     for (URI servletPath : keySet) {
@@ -348,8 +347,8 @@ public class WebServerUtilities {
                             // Any matching path means this is the servlet we
                             // want to stop and remove
                             for (String path : mapping.getPathSpecs()) {
-                                if (path.equalsIgnoreCase(servletPath
-                                        .toString())) {
+                                if (path.equalsIgnoreCase(
+                                        servletPath.toString())) {
                                     handler.stop();
                                     handlers.removeHandler(handler);
                                     found = true;
@@ -363,11 +362,9 @@ public class WebServerUtilities {
 
             // Throw an exception if this application was not found
             if (!found) {
-                throw new Exception(
-                        "Application "
-                                + appInfo.getModelName()
-                                + " requested to be unregistered, but it was not found "
-                                + " on the server.");
+                throw new Exception("Application " + appInfo.getModelName()
+                        + " requested to be unregistered, but it was not found "
+                        + " on the server.");
             }
 
             // Close any websockets
@@ -383,12 +380,9 @@ public class WebServerUtilities {
             _applications.remove(appInfo);
 
         } else {
-            throw new Exception(
-                    "Application "
-                            + appInfo.getModelName()
-                            + " attempted to unregister itself, but this application is "
-                            + " not registered with the server on port "
-                            + _portNumber);
+            throw new Exception("Application " + appInfo.getModelName()
+                    + " attempted to unregister itself, but this application is "
+                    + " not registered with the server on port " + _portNumber);
         }
 
         // If no applications are left, stop the server
@@ -436,8 +430,9 @@ public class WebServerUtilities {
 
         // Add handlers for standard HTTP services
         for (URI path : appInfo.getServletInfo().keySet()) {
-            servletHandler.addServlet(new ServletHolder(appInfo
-                    .getServletInfo().get(path)), path.toString());
+            servletHandler.addServlet(
+                    new ServletHolder(appInfo.getServletInfo().get(path)),
+                    path.toString());
         }
 
         // Add handlers for WebSockets
@@ -450,14 +445,14 @@ public class WebServerUtilities {
 
         for (URI path : appInfo.getWebSocketInfo().keySet()) {
             // TODO:  Use endpoint manager here to get endpoint for new websockets
-            PtolemyWebSocketServlet servlet =
-                    _endpointManager.getServlet(path.toString());
+            PtolemyWebSocketServlet servlet = _endpointManager
+                    .getServlet(path.toString());
             servletHandler.addServlet(new ServletHolder(servlet),
                     path.toString());
         }
 
         ((ContextHandlerCollection) _server.getHandler())
-        .addHandler(servletHandler);
+                .addHandler(servletHandler);
 
         // Need to explicitly start the handler since it is added to the
         // server's handler list AFTER the server has already started
@@ -504,8 +499,8 @@ public class WebServerUtilities {
                         ContextHandler handler = (ContextHandler) ((ContextHandlerCollection) _server
                                 .getHandler()).getHandlers()[i];
 
-                        if (handler.getContextPath().equalsIgnoreCase(
-                                path.toString())) {
+                        if (handler.getContextPath()
+                                .equalsIgnoreCase(path.toString())) {
 
                             // Stop this resource handler
                             handler.stop();
@@ -526,12 +521,11 @@ public class WebServerUtilities {
                                     // a Resource, but not sure if it
                                     // creates one...
                                     ArrayList<Resource> newResources = new ArrayList<Resource>(
-                                            Arrays.asList(resources
-                                                    .getResources()));
+                                            Arrays.asList(
+                                                    resources.getResources()));
                                     newResources.add(resource);
-                                    resources.setResources(newResources
-                                            .toArray(new Resource[newResources
-                                                    .size()]));
+                                    resources.setResources(newResources.toArray(
+                                            new Resource[newResources.size()]));
 
                                 }
                             }
@@ -541,19 +535,18 @@ public class WebServerUtilities {
 
                             if (appInfo.getTemporaryFileLocation() != null
                                     && !appInfo.getTemporaryFileLocation()
-                                    .toString().isEmpty()) {
+                                            .toString().isEmpty()) {
                                 FileResource tempResource = new FileResource(
                                         appInfo.getTemporaryFileLocation()
-                                        .asURL());
-                                if (resources != null
-                                        && tempResource.isContainedIn(resources)) {
+                                                .asURL());
+                                if (resources != null && tempResource
+                                        .isContainedIn(resources)) {
                                     ArrayList<Resource> newResources = new ArrayList<Resource>(
-                                            Arrays.asList(resources
-                                                    .getResources()));
+                                            Arrays.asList(
+                                                    resources.getResources()));
                                     newResources.add(tempResource);
-                                    resources.setResources(newResources
-                                            .toArray(new Resource[newResources
-                                                    .size()]));
+                                    resources.setResources(newResources.toArray(
+                                            new Resource[newResources.size()]));
                                 }
                             }
 
@@ -594,8 +587,8 @@ public class WebServerUtilities {
                     if (appInfo.getTemporaryFileLocation() != null
                             && (appInfo.getTemporaryFileLocation()
                                     .getExpression() != null)
-                                    && (!appInfo.getTemporaryFileLocation()
-                                            .getExpression().isEmpty())) {
+                            && (!appInfo.getTemporaryFileLocation()
+                                    .getExpression().isEmpty())) {
 
                         try {
                             resources.add(new FileResource(appInfo
@@ -637,7 +630,7 @@ public class WebServerUtilities {
 
         for (ContextHandler handler : handlers) {
             ((ContextHandlerCollection) _server.getHandler())
-            .addHandler(handler);
+                    .addHandler(handler);
 
             // Need to explicitly start each new handler since they are added to
             // the server's handler list AFTER the server has already started

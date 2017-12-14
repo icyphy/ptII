@@ -15,6 +15,6 @@ public interface Collector<T> {
      * @exception CollectionAbortedException The collection operation was aborted part way through.
      * @exception IllegalActionException
      */
-    void collect(ResultHandler<T> handler) throws CollectionAbortedException,
-            IllegalActionException;
+    void collect(ResultHandler<T> handler)
+            throws CollectionAbortedException, IllegalActionException;
 }

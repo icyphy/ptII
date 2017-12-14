@@ -273,8 +273,7 @@ public class PushConsumer extends Source {
             NameComponent[] path = { namecomp };
             ncRef.rebind(path, _consumer);
         } catch (UserException ex) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     " initialize ORB failed. Please make sure the "
                             + "naming server has already started and the "
                             + "ORBInitProperty parameter is configured correctly. "

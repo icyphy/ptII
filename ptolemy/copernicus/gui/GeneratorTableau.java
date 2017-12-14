@@ -150,9 +150,7 @@ public class GeneratorTableau extends Tableau {
                 // FIXME: This should work, but TableauFrame._saveAs()
                 // calls effigy.setContainer(null), which means
                 // that getEffigy() returns null
-                throw new IllegalActionException(
-                        model,
-                        (Throwable) null,
+                throw new IllegalActionException(model, (Throwable) null,
                         "Could not get the Effigy or read the URL of this "
                                 + "model.  Because of a bug, you may need to try "
                                 + "invoking the code generator again.");
@@ -162,13 +160,14 @@ public class GeneratorTableau extends Tableau {
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
             caveatsPanel
-            .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
+                    .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
                             + "code generator facility, with many "
                             + "limitations.  It is best viewed as "
-                            + "a concept demonstration.", 2, 10);
+                            + "a concept demonstration.",
+                    2, 10);
             messageArea.setEditable(false);
             messageArea.setBorder(BorderFactory.createEtchedBorder());
             messageArea.setLineWrap(true);
@@ -180,8 +179,8 @@ public class GeneratorTableau extends Tableau {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
                     Configuration configuration = getConfiguration();
-                    URL infoURL = getClass().getResource(
-                            "../../../doc/codegen.htm");
+                    URL infoURL = getClass()
+                            .getResource("../../../doc/codegen.htm");
 
                     try {
                         configuration.openModel(null, infoURL,
@@ -206,8 +205,8 @@ public class GeneratorTableau extends Tableau {
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
             parametersButton
-            .setToolTipText("Sanity check the Parameters and then "
-                    + "display a summary.");
+                    .setToolTipText("Sanity check the Parameters and then "
+                            + "display a summary.");
             buttonPanel.add(parametersButton);
 
             JButton goButton = new JButton("Generate");
@@ -309,15 +308,16 @@ public class GeneratorTableau extends Tableau {
                                 .getParameter("ptIIUserDirectory");
 
                         // Check that we will be able to write
-                        File directory = new File(ptIIUserDirectory, targetPath);
+                        File directory = new File(ptIIUserDirectory,
+                                targetPath);
 
                         if (!directory.isDirectory()) {
                             throw new IllegalActionException(model,
                                     "Not a directory: " + ptIIUserDirectory
-                                    + "/" + targetPath
-                                    + "\n.Try hitting the "
-                                    + "Parameters button to "
-                                    + "create the directory.");
+                                            + "/" + targetPath
+                                            + "\n.Try hitting the "
+                                            + "Parameters button to "
+                                            + "create the directory.");
                         }
 
                         if (!directory.canWrite()) {
@@ -413,7 +413,7 @@ public class GeneratorTableau extends Tableau {
     // "applet" or "java" or "shallow".
     private List _generateCodeGeneratorCommands(CompositeEntity model,
             GeneratorAttribute generatorAttribute, String codeGenerator)
-                    throws IllegalArgumentException, InternalErrorException {
+            throws IllegalArgumentException, InternalErrorException {
         List results = new LinkedList();
 
         try {
@@ -430,15 +430,15 @@ public class GeneratorTableau extends Tableau {
                     try {
                         writer.close();
                     } catch (Throwable throwable) {
-                        throw new RuntimeException("Failed to close "
-                                + temporaryFile, throwable);
+                        throw new RuntimeException(
+                                "Failed to close " + temporaryFile, throwable);
                     }
                 }
             }
 
             // Set the temporary modelPath.
-            generatorAttribute.sanityCheckAndUpdateParameters(temporaryFile
-                    .toURI().toString());
+            generatorAttribute.sanityCheckAndUpdateParameters(
+                    temporaryFile.toURI().toString());
 
             // Generate the command to run copernicus.
             results.add(CodeGeneratorUtilities.substitute(
@@ -446,12 +446,12 @@ public class GeneratorTableau extends Tableau {
                     generatorAttribute));
 
             // Replace the original modelPath.
-            generatorAttribute
-            .sanityCheckAndUpdateParameters(((GeneratorFrame) getFrame())
-                    .getEffigy().uri.getURI().toString());
+            generatorAttribute.sanityCheckAndUpdateParameters(
+                    ((GeneratorFrame) getFrame()).getEffigy().uri.getURI()
+                            .toString());
         } catch (Exception ex) {
-            throw new InternalErrorException(model, ex, "Failed to generate "
-                    + "command strings");
+            throw new InternalErrorException(model, ex,
+                    "Failed to generate " + "command strings");
         }
 
         return results;

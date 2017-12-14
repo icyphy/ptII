@@ -114,7 +114,8 @@ public class DocBuilderGUI extends PtolemyFrame {
                 "NOTE: Use this tool to build the Java"
                         + " and Actor Documentation"
                         + (_applicationName != null ? "for " + _applicationName
-                                : "") + ".");
+                                : "")
+                        + ".");
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
@@ -174,8 +175,8 @@ public class DocBuilderGUI extends PtolemyFrame {
         left.add(scrollPane, BorderLayout.CENTER);
 
         // Create a JTextAreaExec without Start and Cancel buttons.
-        final JTextAreaExec exec = new JTextAreaExec("Documentation Builder"
-                + " Commands", false);
+        final JTextAreaExec exec = new JTextAreaExec(
+                "Documentation Builder" + " Commands", false);
 
         exec.setPreferredSize(new Dimension(500, 300));
 
@@ -184,8 +185,8 @@ public class DocBuilderGUI extends PtolemyFrame {
         // If we execute any commands, print the output in the text area.
         docBuilder.setExecuteCommands(exec);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                left, exec);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left,
+                exec);
         splitPane.setOneTouchExpandable(true);
 
         // Adjust the divider so that the control panel does not
@@ -214,8 +215,9 @@ public class DocBuilderGUI extends PtolemyFrame {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     exec.updateStatusBar("// Starting Doc Building"
-                            + (_applicationName != null ? " for "
-                                    + _applicationName : ""));
+                            + (_applicationName != null
+                                    ? " for " + _applicationName
+                                    : ""));
 
                     docBuilder.buildDocs();
 

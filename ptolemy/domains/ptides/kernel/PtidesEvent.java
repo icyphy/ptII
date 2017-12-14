@@ -231,9 +231,9 @@ public class PtidesEvent extends DEEvent {
         int primitiveFieldHash = super.hashCode() >>> _channel;
         int absoluteDeadlineHash = _absoluteDeadline == null ? 0
                 : _absoluteDeadline.hashCode();
-        int objectFieldHash = isPureEvent() ? absoluteDeadlineHash : _token
-                .hashCode() >>> _receiver.hashCode();
-                return primitiveFieldHash >>> objectFieldHash;
+        int objectFieldHash = isPureEvent() ? absoluteDeadlineHash
+                : _token.hashCode() >>> _receiver.hashCode();
+        return primitiveFieldHash >>> objectFieldHash;
     }
 
     /** Compare event timestamp and microstep.
@@ -251,7 +251,7 @@ public class PtidesEvent extends DEEvent {
         //    actor = (Actor) event.ioPort().getContainer();
         // }
         boolean same = _timestamp.compareTo(event.timeStamp()) == 0
-                    && _microstep == event.microstep();
+                && _microstep == event.microstep();
         return same;
     }
 
@@ -306,30 +306,22 @@ public class PtidesEvent extends DEEvent {
         if (_actor != null) {
             name = ((NamedObj) _actor).getFullName();
         }
-        return "PtidesEvent{time = "
-        + _timestamp
-        + ", microstep = "
-        + _microstep
-        + ", depth = "
-        + _depth
-        + ", token = "
-        + _token
-        + ", absoluteDeadline = "
-        + (_absoluteDeadline == null ? "null" : _absoluteDeadline
-                .toString())
-                + ", dest = "
-                + name
-                + "."
-                + (_ioPort == null ? "null" : _ioPort.getName())
-                + "."
-                + _channel
-                + ", receiver = "
-                + (_receiver == null ? "null" : getClass().getName()
-                        + " {"
-                        + (_receiver.getContainer() != null ? _receiver
-                                .getContainer().getFullName() : "")
-                                + ".receiver }") + ", isPureEvent = " + _isPureEvent
-                                + ", sourceTimestamp = " + _sourceTimestamp + "}";
+        return "PtidesEvent{time = " + _timestamp + ", microstep = "
+                + _microstep + ", depth = " + _depth + ", token = " + _token
+                + ", absoluteDeadline = "
+                + (_absoluteDeadline == null ? "null"
+                        : _absoluteDeadline.toString())
+                + ", dest = " + name + "."
+                + (_ioPort == null ? "null" : _ioPort.getName()) + "."
+                + _channel + ", receiver = "
+                + (_receiver == null ? "null"
+                        : getClass().getName() + " {"
+                                + (_receiver.getContainer() != null
+                                        ? _receiver.getContainer().getFullName()
+                                        : "")
+                                + ".receiver }")
+                + ", isPureEvent = " + _isPureEvent + ", sourceTimestamp = "
+                + _sourceTimestamp + "}";
     }
 
     ///////////////////////////////////////////////////////////////////

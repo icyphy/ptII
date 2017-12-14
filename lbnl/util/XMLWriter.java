@@ -117,9 +117,9 @@ public class XMLWriter {
         final InetAddress localHost = InetAddress.getLocalHost();
         final String hosNam = localHost.getHostName();
         final String s = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" + LS
-                + "<BCVTB-client>" + LS + "  <ipc>" + LS
-                + "    <socket port=\"" + porNo + "\" hostname=\"" + hosNam
-                + "\"/>" + LS + "  </ipc>" + LS + "</BCVTB-client>" + LS;
+                + "<BCVTB-client>" + LS + "  <ipc>" + LS + "    <socket port=\""
+                + porNo + "\" hostname=\"" + hosNam + "\"/>" + LS + "  </ipc>"
+                + LS + "</BCVTB-client>" + LS;
 
         // Write string
         final File fil = new File(filDir, filNam);

@@ -122,8 +122,8 @@ public class ConditionsTableModel extends AbstractTableModel {
                 return "----";
             }
         }
-        int contentIndex = SCRTableHelper.getContentIndex(rowIndex,
-                columnIndex, getColumnCount());
+        int contentIndex = SCRTableHelper.getContentIndex(rowIndex, columnIndex,
+                getColumnCount());
         if (contentIndex < 0) {
             return null;
         } else {
@@ -146,8 +146,8 @@ public class ConditionsTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        int contentIndex = SCRTableHelper.getContentIndex(rowIndex,
-                columnIndex, getColumnCount());
+        int contentIndex = SCRTableHelper.getContentIndex(rowIndex, columnIndex,
+                getColumnCount());
         _tableContent.add(contentIndex, aValue);
         _tableContent.remove(contentIndex + 1);
     }
@@ -165,8 +165,8 @@ public class ConditionsTableModel extends AbstractTableModel {
                 //SCRTableHelper.getContentIndex(i, j, getColumnCount());
                 condition = (String) getValueAt(i, j + 1);
                 value = (String) getValueAt(getRowCount() - 1, j + 1);
-                expression = expression.append("(" + condition + " ? " + value
-                        + " : ");
+                expression = expression
+                        .append("(" + condition + " ? " + value + " : ");
             }
             // insert the last value as the dummy
             expression = expression.append(" " + value);
@@ -179,9 +179,9 @@ public class ConditionsTableModel extends AbstractTableModel {
                 if (state.getRefinement() == null) {
                     ((RefinementActor) state.getContainer()).addRefinement(
                             state,
-                            ((CompositeEntity) _model).uniqueName(state
-                                    .getName() + "_refinement"), null,
-                                    Refinement.class.getName(), null);
+                            ((CompositeEntity) _model).uniqueName(
+                                    state.getName() + "_refinement"),
+                            null, Refinement.class.getName(), null);
                 }
                 CompositeEntity entity = (CompositeEntity) state
                         .getRefinement()[0];
@@ -189,8 +189,8 @@ public class ConditionsTableModel extends AbstractTableModel {
                     /* ContinuousDirector director =*/new ContinuousDirector(
                             entity, "Continuous Director");
                 }
-                Object expressionActorObject = entity.getEntity(_port.getName()
-                        + "_out");
+                Object expressionActorObject = entity
+                        .getEntity(_port.getName() + "_out");
                 TypedIORelation relation = null;
                 if (expressionActorObject == null) {
                     expressionActorObject = new Expression(entity,
@@ -219,13 +219,14 @@ public class ConditionsTableModel extends AbstractTableModel {
     private void _initializeTableContent() {
         if (_tableContent == null) {
             _tableContent = new ArrayList();
-            for (int i = 0; i < (getColumnCount() - 1) * (getRowCount() + 1); i++) {
+            for (int i = 0; i < (getColumnCount() - 1)
+                    * (getRowCount() + 1); i++) {
                 _tableContent.add("");
             }
             for (int rowIndex = 0; rowIndex < getRowCount() - 1; rowIndex++) {
 
-                State state = (State) _model.getEntity((String) getValueAt(
-                        rowIndex, 0));
+                State state = (State) _model
+                        .getEntity((String) getValueAt(rowIndex, 0));
                 try {
                     if (state.getRefinement() != null) {
                         CompositeEntity composite = (CompositeEntity) state
@@ -278,11 +279,10 @@ public class ConditionsTableModel extends AbstractTableModel {
                 // condition ? value : (...
 
                 int endOfCondition = expression.indexOf("?");
-                if (expression.contains("(")
-                        && (expression.indexOf("(") < expression.indexOf("?"))) {
-                    endOfCondition = SCRTableHelper
-                            .indexOfMatchingCloseBracket(expression,
-                                    expression.indexOf("("));
+                if (expression.contains("(") && (expression
+                        .indexOf("(") < expression.indexOf("?"))) {
+                    endOfCondition = SCRTableHelper.indexOfMatchingCloseBracket(
+                            expression, expression.indexOf("("));
                 }
                 condition = expression.substring(0, endOfCondition).trim();
 
@@ -294,8 +294,8 @@ public class ConditionsTableModel extends AbstractTableModel {
                 // value : (...
 
                 int endOfValue = expression.indexOf(":");
-                if (expression.contains("(")
-                        && (expression.indexOf("(") < expression.indexOf(":"))) {
+                if (expression.contains("(") && (expression
+                        .indexOf("(") < expression.indexOf(":"))) {
                     endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(
                             expression, expression.indexOf("("));
                 }

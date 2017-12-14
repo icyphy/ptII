@@ -520,9 +520,9 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                 int[] tailPt = getXY(tail);
                 int[] headPt = getXY(head);
 
-                if (Line2D.linesIntersect(inTailPt[0], inTailPt[1],
-                        inHeadPt[0], inHeadPt[1], tailPt[0], tailPt[1],
-                        headPt[0], headPt[1])) {
+                if (Line2D.linesIntersect(inTailPt[0], inTailPt[1], inHeadPt[0],
+                        inHeadPt[1], tailPt[0], tailPt[1], headPt[0],
+                        headPt[1])) {
                     num++;
                 }
             }

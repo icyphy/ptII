@@ -85,7 +85,8 @@ public final class KielerLayoutUtil {
      * @return the anchor points at the start and end of the
      * connection, i.e. a Point2D array of size 2
      */
-    public static Point2D[] getHeadTailPoints(Connector connector, List<Point2D> bendPoints) {
+    public static Point2D[] getHeadTailPoints(Connector connector,
+            List<Point2D> bendPoints) {
         TransformContext currentContext = connector.getTransformContext();
         Point2D headPt, tailPt;
         Site headSite = connector.getHeadSite();

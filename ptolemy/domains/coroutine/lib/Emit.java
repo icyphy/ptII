@@ -75,8 +75,8 @@ public class Emit extends AtomicContinuationActor {
     public ControlExitToken controlEnter(ControlEntryToken entry)
             throws IllegalActionException {
 
-        int insize = _inputs.getWidth(), outsize = _outputs.getWidth(), maxsize = insize < outsize ? insize
-                : outsize;
+        int insize = _inputs.getWidth(), outsize = _outputs.getWidth(),
+                maxsize = insize < outsize ? insize : outsize;
 
         try {
             for (int k = 0; k < maxsize; ++k) {
@@ -97,8 +97,8 @@ public class Emit extends AtomicContinuationActor {
 
     ///////////////////////////////////////////////////////////////////
 
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         addExitLocation(nextExit);
 

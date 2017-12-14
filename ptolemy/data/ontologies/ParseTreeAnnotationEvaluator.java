@@ -90,8 +90,8 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         if (_evaluatedObject instanceof FiniteConcept) {
             _adapter.setEquals(object, (FiniteConcept) _evaluatedObject);
         } else {
-            throw _unsupportedVisitException("Unknown assignment object: "
-                    + _evaluatedObject);
+            throw _unsupportedVisitException(
+                    "Unknown assignment object: " + _evaluatedObject);
         }
     }
 
@@ -115,13 +115,14 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  component in the model
      */
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         _evaluatedObject = _resolveLabel(_getNodeLabel(node),
                 _adapter.getComponent());
 
         if (_evaluatedObject == null) {
-            throw _unsupportedVisitException("Cannot resolve label: "
-                    + node.getName());
+            throw _unsupportedVisitException(
+                    "Cannot resolve label: " + node.getName());
         }
         // FIXME: Not handling AST constraint yet.
     }

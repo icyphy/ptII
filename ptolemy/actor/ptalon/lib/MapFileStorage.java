@@ -170,8 +170,8 @@ public class MapFileStorage extends DEActor {
             int size = ((IntToken) numberOfOutputs.getToken()).intValue();
 
             if (size < 1) {
-                throw new IllegalActionException(this, "The bock size "
-                        + "must be greater than zero.");
+                throw new IllegalActionException(this,
+                        "The bock size " + "must be greater than zero.");
             }
 
         } else {
@@ -209,8 +209,8 @@ public class MapFileStorage extends DEActor {
                 String key = ((StringToken) inputKey.get(0)).stringValue();
                 String value = ((StringToken) inputValue.get(0)).stringValue();
                 int hashCode = key.hashCode();
-                int position = hashCode >= 0 ? hashCode % outputs : -hashCode
-                        % outputs;
+                int position = hashCode >= 0 ? hashCode % outputs
+                        : -hashCode % outputs;
                 _keyBuffers.get(position).add(key);
                 _valueBuffers.get(position).add(value);
             }
@@ -220,8 +220,8 @@ public class MapFileStorage extends DEActor {
             while (!_keyBuffers.get(i).isEmpty()
                     && !_valueBuffers.get(i).isEmpty()) {
                 StringToken key = new StringToken(_keyBuffers.get(i).remove());
-                StringToken value = new StringToken(_valueBuffers.get(i)
-                        .remove());
+                StringToken value = new StringToken(
+                        _valueBuffers.get(i).remove());
                 outputKey.send(i, key);
                 outputValue.send(i, value);
             }

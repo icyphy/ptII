@@ -45,11 +45,12 @@ public class ImageFunction2D implements Function2D {
     }
 
     public ImageFunction2D(BufferedImage image, int edgeAction, boolean alpha) {
-        init(getRGB(image, 0, 0, image.getWidth(), image.getHeight(), null), image.getWidth(), image.getHeight(),
-                edgeAction, alpha);
+        init(getRGB(image, 0, 0, image.getWidth(), image.getHeight(), null),
+                image.getWidth(), image.getHeight(), edgeAction, alpha);
     }
 
-    public ImageFunction2D(int[] pixels, int width, int height, int edgeAction, boolean alpha) {
+    public ImageFunction2D(int[] pixels, int width, int height, int edgeAction,
+            boolean alpha) {
         init(pixels, width, height, edgeAction, alpha);
     }
 
@@ -67,7 +68,8 @@ public class ImageFunction2D implements Function2D {
         if ((pg.status() & ImageObserver.ABORT) != 0) {
             throw new RuntimeException("image fetch aborted");
         }
-        init((int[]) pg.getPixels(), pg.getWidth(), pg.getHeight(), edgeAction, alpha);
+        init((int[]) pg.getPixels(), pg.getWidth(), pg.getHeight(), edgeAction,
+                alpha);
     }
 
     /**
@@ -81,10 +83,14 @@ public class ImageFunction2D implements Function2D {
      * @param pixels The image
      * @return The subimage
      */
-    public int[] getRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
+    public int[] getRGB(BufferedImage image, int x, int y, int width,
+            int height, int[] pixels) {
         int type = image.getType();
-        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
-            return (int[]) image.getRaster().getDataElements(x, y, width, height, pixels);
+        if (type == BufferedImage.TYPE_INT_ARGB
+                || type == BufferedImage.TYPE_INT_RGB) {
+            return (int[]) image.getRaster().getDataElements(x, y, width,
+                    height, pixels);
+        }
         return image.getRGB(x, y, width, height, pixels, 0, width);
     }
 
@@ -95,7 +101,8 @@ public class ImageFunction2D implements Function2D {
      * @param edgeAction The edgeAction, one of ZERO, CLAMP or WRAP.
      * @param alpha The alpha
      */
-    public void init(int[] pixels, int width, int height, int edgeAction, boolean alpha) {
+    public void init(int[] pixels, int width, int height, int edgeAction,
+            boolean alpha) {
         this.pixels = pixels;
         this.width = width;
         this.height = height;
@@ -116,16 +123,19 @@ public class ImageFunction2D implements Function2D {
             ix = ImageMath.mod(ix, width);
             iy = ImageMath.mod(iy, height);
         } else if (ix < 0 || iy < 0 || ix >= width || iy >= height) {
-            if (edgeAction == ZERO)
+            if (edgeAction == ZERO) {
                 return 0;
-            if (ix < 0)
+            }
+            if (ix < 0) {
                 ix = 0;
-            else if (ix >= width)
+            } else if (ix >= width) {
                 ix = width - 1;
-            if (iy < 0)
+            }
+            if (iy < 0) {
                 iy = 0;
-            else if (iy >= height)
+            } else if (iy >= height) {
                 iy = height - 1;
+            }
         }
         return alpha ? ((pixels[iy * width + ix] >> 24) & 0xff) / 255.0f
                 : PixelUtils.brightness(pixels[iy * width + ix]) / 255.0f;

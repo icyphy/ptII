@@ -149,8 +149,8 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating Red (ltrnc)
  *  @see org.ptolemy.ptango.lib.WebServer
  */
-public class HttpRequestHandler extends TypedAtomicActor implements
-        HttpService, ExceptionSubscriber {
+public class HttpRequestHandler extends TypedAtomicActor
+        implements HttpService, ExceptionSubscriber {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -424,8 +424,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HttpRequestHandler newObject = (HttpRequestHandler) super
-                .clone(workspace);
+        HttpRequestHandler newObject = (HttpRequestHandler) super.clone(
+                workspace);
         newObject._initializeModelTime = null;
         newObject._initializeRealTime = 0L;
         newObject._URIpath = null;
@@ -746,8 +746,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
      *  response
      */
     protected void _handleRequest(HttpServletRequest request,
-            HttpServletResponse response, String type) throws ServletException,
-            IOException {
+            HttpServletResponse response, String type)
+            throws ServletException, IOException {
         // The following code block is synchronized on the enclosing
         // actor. This lock _is_ released while waiting for the response,
         // allowing the fire method to execute its own synchronized blocks.
@@ -756,9 +756,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
             // Is this possible?
             // This will simply overwrite it. For now, print a warning to standard error.
             if (_newRequest != null) {
-                System.err
-                        .println(getFullName()
-                                + ": WARNING. Discarding HTTP request that has not yet been handled.");
+                System.err.println(getFullName()
+                        + ": WARNING. Discarding HTTP request that has not yet been handled.");
             }
             _newRequest = new HttpRequestItems();
 
@@ -848,8 +847,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
                     // Wait for notification that a _response has been
                     // constructed.
                     HttpRequestHandler.this.wait(timeoutValue);
-                    if (_response == null
-                            && System.currentTimeMillis() - startTime >= timeoutValue) {
+                    if (_response == null && System.currentTimeMillis()
+                            - startTime >= timeoutValue) {
                         // A timeout has occurred, and there is still no _reponse.
                         // This means that the second firing never occurred, so no
                         // response data have been provided.
@@ -1025,9 +1024,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
             if (valueList.size() == 1) {
                 map.put(name, valueList.get(0));
             } else {
-                map.put(name,
-                        new ArrayToken(valueList
-                                .toArray(new StringToken[valueList.size()])));
+                map.put(name, new ArrayToken(
+                        valueList.toArray(new StringToken[valueList.size()])));
             }
         }
         if (map.isEmpty()) {
@@ -1201,11 +1199,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
 
         String ajax = "";
         if (_pendingRequest.method.equals("GET")) {
-            ajax = "jQuery.get(\""
-                    + _pendingRequest.requestURI
-                    + "\")\n"
-                    + ".done(function(data) { \n "
-                    +
+            ajax = "jQuery.get(\"" + _pendingRequest.requestURI + "\")\n"
+                    + ".done(function(data) { \n " +
                     // Wrap result page with <div> </div> since an HTML page is not
                     // valid xml due to unclosed <!DOCTYPE HTML> tag
                     // jQuery has problems parsing otherwise
@@ -1228,20 +1223,15 @@ public class HttpRequestHandler extends TypedAtomicActor implements
                 if (parameters.length() > 0) {
                     parameters.deleteCharAt(parameters.length() - 1);
                     parameters.append('}');
-                    ajax = "jQuery.post(\""
-                            + _pendingRequest.requestURI
-                            + "\", "
-                            + parameters.toString()
-                            + ")\n"
+                    ajax = "jQuery.post(\"" + _pendingRequest.requestURI
+                            + "\", " + parameters.toString() + ")\n"
                             + ".done(function(data) { \n "
                             + "result = \"<div>\" + data + \"</div>\";"
                             + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
                             + "\n });";
                 } else {
-                    ajax = "jQuery.post(\""
-                            + _pendingRequest.requestURI
-                            + "\")\n"
-                            + ".done(function(data) { \n "
+                    ajax = "jQuery.post(\"" + _pendingRequest.requestURI
+                            + "\")\n" + ".done(function(data) { \n "
                             + "result = \"<div>\" + data + \"</div>\";"
                             + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
                             + "\n });";
@@ -1253,21 +1243,22 @@ public class HttpRequestHandler extends TypedAtomicActor implements
 
         message.append("<!DOCTYPE html>\n<html>\n<head> "
                 + "<meta charset=\"UTF-8\">\n");
-        message.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n");
+        message.append(
+                "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n");
         message.append("<script>\n var count=" + timeoutValue + ";\n");
         message.append("var interval=setInterval(timer,1000);\nvar result;\n");
         message.append("function timer() {\n " + "count=count-1;\n"
                 + "jQuery(\"#countdown\").html(count+1);\n"
                 + "if (count <= 0) {\n" + "clearInterval(interval);\n"
                 + ajax.toString() + "\n}\n}\n");
-        message.append("jQuery(document).ready(function() {\n"
-                + "timer();\n});");
+        message.append(
+                "jQuery(document).ready(function() {\n" + "timer();\n});");
         message.append("</script></head>\n");
         message.append("<body><div id=\"contents\"> \n"
                 + "<h1> Internal Server Error (code "
                 + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + ")</h1>\n");
-        message.append("<div> Retrying in <div id=\"countdown\">"
-                + timeoutValue + "</div></div></div>\n");
+        message.append("<div> Retrying in <div id=\"countdown\">" + timeoutValue
+                + "</div></div></div>\n");
         message.append("</body></html>");
 
         _response.response = message.toString();
@@ -1360,8 +1351,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
          */
         @Override
         protected synchronized void doGet(HttpServletRequest request,
-                HttpServletResponse response) throws ServletException,
-                IOException {
+                HttpServletResponse response)
+                throws ServletException, IOException {
             _handleRequest(request, response, "GET");
         }
 
@@ -1380,8 +1371,8 @@ public class HttpRequestHandler extends TypedAtomicActor implements
          */
         @Override
         protected synchronized void doPost(HttpServletRequest request,
-                HttpServletResponse response) throws ServletException,
-                IOException {
+                HttpServletResponse response)
+                throws ServletException, IOException {
             _handleRequest(request, response, "POST");
         }
     }

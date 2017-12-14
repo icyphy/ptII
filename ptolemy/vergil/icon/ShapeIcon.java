@@ -135,8 +135,8 @@ public class ShapeIcon extends DynamicEditorIcon {
             newFigure = new BasicFigure(_shape);
         } else {
             // Create a white rectangle.
-            newFigure = new BasicFigure(new Rectangle2D.Double(0.0, 0.0, 20.0,
-                    20.0));
+            newFigure = new BasicFigure(
+                    new Rectangle2D.Double(0.0, 0.0, 20.0, 20.0));
         }
 
         // By default, the origin should be the upper left.
@@ -362,7 +362,7 @@ public class ShapeIcon extends DynamicEditorIcon {
                     Iterator figures = _liveFigureIterator();
 
                     while (figures.hasNext()) {
-                        BasicFigure figure = (BasicFigure)figures.next();
+                        BasicFigure figure = (BasicFigure) figures.next();
                         figure.setRotation(angle);
                     }
                 }

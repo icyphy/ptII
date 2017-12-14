@@ -55,8 +55,8 @@ import ptolemy.kernel.util.SingletonAttribute;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class EventQueueDebugger extends SingletonAttribute implements
-EventQueueDebugListener, Initializable {
+public class EventQueueDebugger extends SingletonAttribute
+        implements EventQueueDebugListener, Initializable {
 
     /** Construct an attribute with the given container and name.
      *  If an attribute already exists with the same name as the one
@@ -126,8 +126,8 @@ EventQueueDebugListener, Initializable {
             boolean isActive = ((BooleanToken) active.getToken())
                     .booleanValue();
             if (isActive) {
-                System.out.println("Schedule " + event.getName() + " at "
-                        + time + " at position " + position);
+                System.out.println("Schedule " + event.getName() + " at " + time
+                        + " at position " + position);
             }
         } catch (IllegalActionException e) {
             System.out.println(e.getMessage());
@@ -191,8 +191,8 @@ EventQueueDebugListener, Initializable {
      *   SingletonConfigurableAttribute.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (oldContainer instanceof Initializable) {
             ((Initializable) oldContainer).removeInitializable(this);

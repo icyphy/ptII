@@ -136,8 +136,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -200,8 +200,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
             _unassignedParameters.add(parameter);
@@ -260,8 +260,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -269,7 +269,8 @@ public abstract class AbstractPtalonEvaluator {
         } catch (IllegalActionException ex) {
             throw new PtalonRuntimeException("IllegalActionException", ex);
         } catch (PtalonScopeException ex) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
+            throw new PtalonRuntimeException("Couldn't find symbol " + name,
+                    ex);
         }
     }
 
@@ -320,8 +321,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -329,7 +330,8 @@ public abstract class AbstractPtalonEvaluator {
         } catch (IllegalActionException ex) {
             throw new PtalonRuntimeException("IllegalActionException", ex);
         } catch (PtalonScopeException ex) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
+            throw new PtalonRuntimeException("Couldn't find symbol " + name,
+                    ex);
         }
     }
 
@@ -381,8 +383,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
 
             _currentIfTree.mapName(name, uniqueName);
@@ -446,8 +448,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
             if (_resetParameters || !parameter.hasValue()) {
@@ -507,8 +509,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -516,7 +518,8 @@ public abstract class AbstractPtalonEvaluator {
         } catch (IllegalActionException ex) {
             throw new PtalonRuntimeException("IllegalActionException", ex);
         } catch (PtalonScopeException ex) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
+            throw new PtalonRuntimeException("Couldn't find symbol " + name,
+                    ex);
         }
     }
 
@@ -557,8 +560,8 @@ public abstract class AbstractPtalonEvaluator {
                     _currentIfTree.setEnteredIteration(name, tree.entered);
                 }
             } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
         } catch (NameDuplicationException ex) {
@@ -576,7 +579,8 @@ public abstract class AbstractPtalonEvaluator {
      *  @exception PtalonScopeException If a symbol with this name has
      *  already been added somewhere in the current scope.
      */
-    public void addSymbol(String name, String type) throws PtalonScopeException {
+    public void addSymbol(String name, String type)
+            throws PtalonScopeException {
         List<IfTree> ancestors = _currentIfTree.getAncestors();
         for (IfTree tree : ancestors) {
             for (String symbol : tree.getSymbols()) {
@@ -608,8 +612,8 @@ public abstract class AbstractPtalonEvaluator {
         _currentIfTree.setStatus(name, true);
         if (_inNewWhileIteration()) {
             if (_currentIfTree.isForStatement) {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
+                _currentIfTree.setEnteredIteration(name,
+                        _currentIfTree.entered);
             } else {
                 IfTree tree = _currentIfTree;
                 while (!tree.isForStatement) {
@@ -676,8 +680,8 @@ public abstract class AbstractPtalonEvaluator {
             }
         }
         if (!exists) {
-            throw new PtalonRuntimeException("Subscope " + scope
-                    + " does not exist");
+            throw new PtalonRuntimeException(
+                    "Subscope " + scope + " does not exist");
         }
     }
 
@@ -723,8 +727,8 @@ public abstract class AbstractPtalonEvaluator {
                     _scope);
             return result;
         } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to evaluate expression\n"
-                    + expression, ex);
+            throw new PtalonRuntimeException(
+                    "Unable to evaluate expression\n" + expression, ex);
         }
     }
 
@@ -805,8 +809,8 @@ public abstract class AbstractPtalonEvaluator {
             } catch (PtalonRuntimeException ex) {
             }
         }
-        throw new PtalonRuntimeException("Could not find mapped name for"
-                + symbol);
+        throw new PtalonRuntimeException(
+                "Could not find mapped name for" + symbol);
     }
 
     /** Return whether there are unassigned parameters to be handled with the
@@ -959,8 +963,8 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     public void optionalObject(String name) throws PtalonRuntimeException {
-        throw new PtalonRuntimeException("Optional objects are not "
-                + "implemented.");
+        throw new PtalonRuntimeException(
+                "Optional objects are not " + "implemented.");
     }
 
     /** Pop out of the scope of the current for statement and into its
@@ -1055,8 +1059,8 @@ public abstract class AbstractPtalonEvaluator {
                 _actor.setName(uniqueName);
             }
         } catch (Exception ex) {
-            throw new PtalonScopeException("Unable to access file for "
-                    + symbol, ex);
+            throw new PtalonScopeException(
+                    "Unable to access file for " + symbol, ex);
         }
     }
 
@@ -1127,8 +1131,8 @@ public abstract class AbstractPtalonEvaluator {
                 // sub-scope
             }
         }
-        throw new PtalonScopeException("Symbol " + symbol
-                + " not in current scope.");
+        throw new PtalonScopeException(
+                "Symbol " + symbol + " not in current scope.");
     }
 
     /** Return the type associated with the given symbol in the
@@ -1427,8 +1431,8 @@ public abstract class AbstractPtalonEvaluator {
                 output = _falseNameMappings.get(symbol);
             }
             if (output == null) {
-                throw new PtalonRuntimeException("Symbol " + symbol
-                        + " not found.");
+                throw new PtalonRuntimeException(
+                        "Symbol " + symbol + " not found.");
             }
             return output;
         }
@@ -1547,7 +1551,8 @@ public abstract class AbstractPtalonEvaluator {
                         }
                         try {
                             PtalonParameter param = (PtalonParameter) _actor
-                                    .getAttribute(_trueNameMappings.get(symbol));
+                                    .getAttribute(
+                                            _trueNameMappings.get(symbol));
                             if (!param.hasValue()) {
                                 return false;
                             }
@@ -1566,8 +1571,8 @@ public abstract class AbstractPtalonEvaluator {
                     if (_falseSymbols.get(symbol).endsWith("parameter")) {
                         try {
                             PtalonParameter param = (PtalonParameter) _actor
-                                    .getAttribute(_falseNameMappings
-                                            .get(symbol));
+                                    .getAttribute(
+                                            _falseNameMappings.get(symbol));
                             if (!param.hasValue()) {
                                 return false;
                             }
@@ -1657,8 +1662,8 @@ public abstract class AbstractPtalonEvaluator {
          */
         @Override
         public String toString() {
-            StringBuffer buffer = new StringBuffer("Scope: " + getName()
-                    + ":\n\n");
+            StringBuffer buffer = new StringBuffer(
+                    "Scope: " + getName() + ":\n\n");
             for (String s : getSymbols()) {
                 try {
                     buffer.append(s + "\t" + getType(s) + "\n");
@@ -1796,7 +1801,8 @@ public abstract class AbstractPtalonEvaluator {
                     return _variables.get(name);
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
+                    throw new IllegalActionException(
+                            name + " not a parameter.");
                 }
                 return _getValueOf(name);
             } catch (PtalonScopeException ex) {
@@ -1822,7 +1828,8 @@ public abstract class AbstractPtalonEvaluator {
                     return _variables.get(name).getType();
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
+                    throw new IllegalActionException(
+                            name + " not a parameter.");
                 }
                 return _getTypeOf(name);
             } catch (PtalonScopeException ex) {
@@ -1851,7 +1858,8 @@ public abstract class AbstractPtalonEvaluator {
                     return null;
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
+                    throw new IllegalActionException(
+                            name + " not a parameter.");
                 }
                 return _getTypeTermOf(name);
             } catch (PtalonScopeException ex) {
@@ -1881,8 +1889,8 @@ public abstract class AbstractPtalonEvaluator {
                 return out;
             } catch (PtalonScopeException ex) {
                 ex.printStackTrace();
-                throw new IllegalActionException("Trouble constructing list: "
-                        + ex.getMessage());
+                throw new IllegalActionException(
+                        "Trouble constructing list: " + ex.getMessage());
             }
         }
 
@@ -1940,8 +1948,8 @@ public abstract class AbstractPtalonEvaluator {
                     .getAttribute(uniqueName);
             return att.getType();
         } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, ex);
+            throw new PtalonRuntimeException(
+                    "Unable to access int value for " + param, ex);
         }
     }
 
@@ -1962,8 +1970,8 @@ public abstract class AbstractPtalonEvaluator {
                     .getAttribute(uniqueName);
             return att.getTypeTerm();
         } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, ex);
+            throw new PtalonRuntimeException(
+                    "Unable to access int value for " + param, ex);
         }
     }
 
@@ -1989,8 +1997,8 @@ public abstract class AbstractPtalonEvaluator {
              */
             return att.getToken();
         } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, ex);
+            throw new PtalonRuntimeException(
+                    "Unable to access int value for " + param, ex);
         }
     }
 

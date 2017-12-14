@@ -93,9 +93,9 @@ public class DocViewerFactory extends EditorFactory {
             List docAttributes = container.attributeList(DocAttribute.class);
             // DocAttribute is singleton, so there should be at most one.
             if (docAttributes.size() < 1) {
-                MessageHandler
-                .message("To create documentation, right click on the background "
-                        + "and select 'Documentation->Customize Documentation'");
+                MessageHandler.message(
+                        "To create documentation, right click on the background "
+                                + "and select 'Documentation->Customize Documentation'");
                 return;
             }
             DocAttribute doc = (DocAttribute) docAttributes.get(0);
@@ -105,10 +105,11 @@ public class DocViewerFactory extends EditorFactory {
                 Effigy effigy = ((TableauFrame) parent).getEffigy();
                 try {
                     DocEffigy newEffigy = new DocEffigy(
-                            (CompositeEntity) effigy.getContainer(), effigy
-                            .getContainer().uniqueName("parentClass"));
+                            (CompositeEntity) effigy.getContainer(),
+                            effigy.getContainer().uniqueName("parentClass"));
                     newEffigy.setDocAttribute(doc);
-                    DocTableau tableau = new DocTableau(newEffigy, "docTableau");
+                    DocTableau tableau = new DocTableau(newEffigy,
+                            "docTableau");
                     tableau.show();
                 } catch (KernelException e) {
                     MessageHandler.error("Error opening documentation", e);

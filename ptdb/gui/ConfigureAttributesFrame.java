@@ -106,7 +106,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
             if (JOptionPane.showConfirmDialog(this,
                     "Do you want to save the change of this attribute?",
-                    "Save Attribute", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
+                    "Save Attribute",
+                    JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
                 try {
                     _saveButtonActionPerformed(evt);
 
@@ -167,22 +168,24 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         } else {
 
             // Existing attribute.
-            if (!_attributeNameField.getText().equals(
-                    _currentEditedAttribute.getAttributeName())
+            if (!_attributeNameField.getText()
+                    .equals(_currentEditedAttribute.getAttributeName())
                     || !_attributeTypeField.getSelectedItem().equals(
                             _currentEditedAttribute.getAttributeType())) {
 
                 return true;
             } else {
-                if (_attributeTypeField.getSelectedItem().equals(
-                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+                if (_attributeTypeField.getSelectedItem()
+                        .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
-                    if (_currentEditedAttribute.getAttributeValuesPlain() == null
+                    if (_currentEditedAttribute
+                            .getAttributeValuesPlain() == null
                             && _listItems == null) {
                         return false;
                     }
 
-                    if (_currentEditedAttribute.getAttributeValuesPlain() != null
+                    if (_currentEditedAttribute
+                            .getAttributeValuesPlain() != null
                             && _listItems != null) {
                         if (_currentEditedAttribute.getAttributeValuesPlain()
                                 .equals(_listItems)) {
@@ -217,7 +220,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                 _resetEditPanel();
 
                 ((ArrayModelList) _attributesList.getModel())
-                .removeItem(tempAttribute.getAttributeName());
+                        .removeItem(tempAttribute.getAttributeName());
 
                 _statusMsgLabel.setText("Attribute was deleted successfully.");
 
@@ -303,12 +306,12 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(
                 _mainDialog.getContentPane());
         _mainDialog.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(jDialog1Layout.createParallelGroup(
-                javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 400,
-                        Short.MAX_VALUE));
-        jDialog1Layout.setVerticalGroup(jDialog1Layout.createParallelGroup(
-                javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 300,
-                        Short.MAX_VALUE));
+        jDialog1Layout.setHorizontalGroup(jDialog1Layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 400, Short.MAX_VALUE));
+        jDialog1Layout.setVerticalGroup(jDialog1Layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 300, Short.MAX_VALUE));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -344,8 +347,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (_attributeTypeField.getSelectedItem().equals(
-                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+                if (_attributeTypeField.getSelectedItem()
+                        .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
                     _listEditButton.setEnabled(true);
                 } else {
                     _listEditButton.setEnabled(false);
@@ -376,133 +379,94 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         javax.swing.GroupLayout editPanelLayout = new javax.swing.GroupLayout(
                 _editPanel);
         _editPanel.setLayout(editPanelLayout);
-        editPanelLayout
-        .setHorizontalGroup(editPanelLayout
-                .createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                editPanelLayout
-                                .createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(
-                                        editPanelLayout
-                                        .createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(
-                                                        _typeLabel)
-                                                        .addComponent(
-                                                                _nameLabel))
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                        .addGroup(
-                                                                                editPanelLayout
-                                                                                .createParallelGroup(
-                                                                                        javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                        false)
-                                                                                        .addGroup(
-                                                                                                editPanelLayout
-                                                                                                .createSequentialGroup()
-                                                                                                .addComponent(
-                                                                                                        _attributeTypeField,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                        108,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                        .addPreferredGap(
-                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                .addComponent(
-                                                                                                                        _listEditButton,
-                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                        64,
-                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                                                        .addComponent(
-                                                                                                                                _attributeNameField))
-                                                                                                                                .addContainerGap(
-                                                                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                                        Short.MAX_VALUE))
-                                                                                                                                        .addGroup(
-                                                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                                                                                editPanelLayout
-                                                                                                                                                .createSequentialGroup()
-                                                                                                                                                .addContainerGap(125, Short.MAX_VALUE)
-                                                                                                                                                .addComponent(
-                                                                                                                                                        _deleteButton,
-                                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                        49,
-                                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                        .addPreferredGap(
-                                                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                                .addComponent(
-                                                                                                                                                                        _addButton,
-                                                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                                        51,
-                                                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                                        .addGap(34, 34, 34))
-                                                                                                                                                                        .addGroup(
-                                                                                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                                                                                                                editPanelLayout.createSequentialGroup()
-                                                                                                                                                                                .addContainerGap(100, Short.MAX_VALUE)
-                                                                                                                                                                                .addComponent(_saveButton)
-                                                                                                                                                                                .addGap(60, 60, 60)));
+        editPanelLayout.setHorizontalGroup(editPanelLayout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(editPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(editPanelLayout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(_typeLabel)
+                                .addComponent(_nameLabel))
+                        .addPreferredGap(
+                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(editPanelLayout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.LEADING,
+                                false)
+                                .addGroup(editPanelLayout
+                                        .createSequentialGroup()
+                                        .addComponent(_attributeTypeField,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                108,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(
+                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(_listEditButton,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                64,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(_attributeNameField))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                        editPanelLayout.createSequentialGroup()
+                                .addContainerGap(125, Short.MAX_VALUE)
+                                .addComponent(_deleteButton,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        49,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(
+                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(_addButton,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        51,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                        editPanelLayout.createSequentialGroup()
+                                .addContainerGap(100, Short.MAX_VALUE)
+                                .addComponent(_saveButton).addGap(60, 60, 60)));
 
         editPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL,
                 new java.awt.Component[] { _addButton, _deleteButton });
 
-        editPanelLayout
-        .setVerticalGroup(editPanelLayout
-                .createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                editPanelLayout
-                                .createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(
-                                        editPanelLayout
-                                        .createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(
-                                                        _deleteButton)
-                                                        .addComponent(
-                                                                _addButton,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                32,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGap(60, 60, 60)
-                                                                .addGroup(
-                                                                        editPanelLayout
-                                                                        .createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                .addComponent(
-                                                                                        _nameLabel)
-                                                                                        .addComponent(
-                                                                                                _attributeNameField))
-                                                                                                .addGap(44, 44, 44)
-                                                                                                .addGroup(
-                                                                                                        editPanelLayout
-                                                                                                        .createParallelGroup(
-                                                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                                                .addComponent(
-                                                                                                                        _listEditButton)
-                                                                                                                        .addComponent(
-                                                                                                                                _typeLabel)
-                                                                                                                                .addComponent(
-                                                                                                                                        _attributeTypeField))
-                                                                                                                                        .addGap(58, 58, 58)
-                                                                                                                                        .addComponent(_saveButton)
-                                                                                                                                        .addGap(26, 26, 26)));
+        editPanelLayout.setVerticalGroup(editPanelLayout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(editPanelLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(editPanelLayout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(_deleteButton)
+                                .addComponent(_addButton,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        32,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(60, 60, 60)
+                        .addGroup(editPanelLayout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(_nameLabel)
+                                .addComponent(_attributeNameField))
+                        .addGap(44, 44, 44)
+                        .addGroup(editPanelLayout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(_listEditButton)
+                                .addComponent(_typeLabel)
+                                .addComponent(_attributeTypeField))
+                        .addGap(58, 58, 58).addComponent(_saveButton)
+                        .addGap(26, 26, 26)));
 
         editPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL,
                 new java.awt.Component[] { _addButton, _deleteButton });
 
-        _nameLabel.getAccessibleContext().setAccessibleName(
-                "_attributeNameLabel");
-        _typeLabel.getAccessibleContext().setAccessibleName(
-                "attributeTypeLabel");
-        _deleteButton.getAccessibleContext().setAccessibleName(
-                "deleteAttributeButton");
+        _nameLabel.getAccessibleContext()
+                .setAccessibleName("_attributeNameLabel");
+        _typeLabel.getAccessibleContext()
+                .setAccessibleName("attributeTypeLabel");
+        _deleteButton.getAccessibleContext()
+                .setAccessibleName("deleteAttributeButton");
         _deleteButton.setEnabled(false);
 
-        _attributeNameField.getAccessibleContext().setAccessibleName(
-                "_attributeNameField");
+        _attributeNameField.getAccessibleContext()
+                .setAccessibleName("_attributeNameField");
 
         _attributeNameField.addKeyListener(new KeyListener() {
 
@@ -525,8 +489,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
             }
         });
 
-        _attributeTypeField.getAccessibleContext().setAccessibleName(
-                "_attributeTypeField");
+        _attributeTypeField.getAccessibleContext()
+                .setAccessibleName("_attributeTypeField");
 
         // Set the save button.
         _saveButton.getAccessibleContext().setAccessibleName("saveButton");
@@ -545,8 +509,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
             }
         });
 
-        _listEditButton.getAccessibleContext().setAccessibleName(
-                "_listEditButton");
+        _listEditButton.getAccessibleContext()
+                .setAccessibleName("_listEditButton");
 
         _listEditButton.setEnabled(false);
 
@@ -564,15 +528,15 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                         _attributeNameField.getText());
 
                 _containedFramesManager
-                .addContainedFrame(attributeListEditFrame);
+                        .addContainedFrame(attributeListEditFrame);
 
                 attributeListEditFrame.setVisible(true);
 
             }
         });
 
-        _attributesPanel.setBorder(javax.swing.BorderFactory
-                .createEtchedBorder());
+        _attributesPanel
+                .setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         // Get the existing attributes to set in the List.
 
@@ -590,8 +554,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
             _attributesList.setModel(initialListModel);
 
             _jScrollPane1.setViewportView(_attributesList);
-            _attributesList.getAccessibleContext().setAccessibleName(
-                    "_attributesList");
+            _attributesList.getAccessibleContext()
+                    .setAccessibleName("_attributesList");
 
         } catch (DBExecutionException e) {
             MessageHandler.error("Cannot retrive existing attributes.", e);
@@ -633,11 +597,11 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                     boolean canChange = true;
 
                     if (_checkChanged()) {
-                        if (JOptionPane
-                                .showConfirmDialog(
-                                        ConfigureAttributesFrame.this,
-                                        "Do you want to save the change you have made to this attribute?",
-                                        "Save Change", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
+                        if (JOptionPane.showConfirmDialog(
+                                ConfigureAttributesFrame.this,
+                                "Do you want to save the change you have made to this attribute?",
+                                "Save Change",
+                                JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
 
                             try {
                                 _saveButtonActionPerformed(null);
@@ -655,10 +619,10 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
                                 _currentEditedAttribute = attribute;
 
-                                _attributeNameField.setText(attribute
-                                        .getAttributeName());
-                                _attributeTypeField.setSelectedItem(attribute
-                                        .getAttributeType());
+                                _attributeNameField
+                                        .setText(attribute.getAttributeName());
+                                _attributeTypeField.setSelectedItem(
+                                        attribute.getAttributeType());
 
                                 if (attribute.getAttributeType().equals(
                                         XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
@@ -669,7 +633,7 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                                 }
 
                                 _deleteButton
-                                .setEnabled(_canEnableDeleteButton());
+                                        .setEnabled(_canEnableDeleteButton());
 
                                 _saveButton.setEnabled(_canEnableSaveButton());
 
@@ -759,57 +723,39 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         javax.swing.GroupLayout attributesPanelLayout = new javax.swing.GroupLayout(
                 _attributesPanel);
         _attributesPanel.setLayout(attributesPanelLayout);
-        attributesPanelLayout
-        .setHorizontalGroup(attributesPanelLayout
-                .createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                attributesPanelLayout
-                                .createSequentialGroup()
-                                .addGroup(
-                                        attributesPanelLayout
-                                        .createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(
-                                                        _attributeNameLabel,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        211,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGroup(
-                                                                attributesPanelLayout
-                                                                .createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(
-                                                                        _jScrollPane1,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        209,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                                        .addContainerGap(
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)));
-        attributesPanelLayout
-        .setVerticalGroup(attributesPanelLayout
-                .createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                attributesPanelLayout
-                                .createSequentialGroup()
-                                .addComponent(
-                                        _attributeNameLabel,
+        attributesPanelLayout.setHorizontalGroup(attributesPanelLayout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(attributesPanelLayout.createSequentialGroup()
+                        .addGroup(attributesPanelLayout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(_attributeNameLabel,
                                         javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        36,
+                                        211,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(
-                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(
-                                                        _jScrollPane1,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        269,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addContainerGap(10, Short.MAX_VALUE)));
+                                .addGroup(attributesPanelLayout
+                                        .createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(_jScrollPane1,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                209,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE)));
+        attributesPanelLayout.setVerticalGroup(attributesPanelLayout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(attributesPanelLayout.createSequentialGroup()
+                        .addComponent(_attributeNameLabel,
+                                javax.swing.GroupLayout.PREFERRED_SIZE, 36,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(
+                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(_jScrollPane1,
+                                javax.swing.GroupLayout.PREFERRED_SIZE, 269,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(10, Short.MAX_VALUE)));
 
-        _attributeNameLabel.getAccessibleContext().setAccessibleName(
-                "_attributeNameLabel");
+        _attributeNameLabel.getAccessibleContext()
+                .setAccessibleName("_attributeNameLabel");
 
         _closeButton.setText("Close");
 
@@ -818,122 +764,91 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(layout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(
-                        layout.createSequentialGroup()
-                        .addGroup(
-                                layout.createParallelGroup(
-                                        javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(
-                                                layout.createSequentialGroup()
-                                                .addGap(40, 40,
-                                                        40)
-                                                        .addComponent(
-                                                                _attributesPanel,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                        .addComponent(
-                                                                                _editPanel,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                260,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                //                                                                        .addGap(
-                                                                                //                                                                                397,
-                                                                                //                                                                                397,
-                                                                                //                                                                                397)
-                                                                                //                                                                        .addComponent(
-                                                                                //                                                                                _jTabbedPane1,
-                                                                                //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                //                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                .addGroup(
-                                                                                        layout.createSequentialGroup()
-                                                                                        .addGap(51, 51,
-                                                                                                51)
-                                                                                                .addComponent(
-                                                                                                        _statusLabel)
-                                                                                                        .addPreferredGap(
-                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                .addComponent(
-                                                                                                                        _statusMsgLabel,
-                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                        263,
-                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                        .addGap(37, 37,
-                                                                                                                                37)
-                                                                                                                                .addComponent(
-                                                                                                                                        _closeButton)))
-                                                                                                                                        .addContainerGap(
-                                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                                                Short.MAX_VALUE)));
+                .addGroup(layout.createSequentialGroup().addGroup(layout
+                        .createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(_attributesPanel,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(
+                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(_editPanel,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        260,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                        //                                                                        .addGap(
+                        //                                                                                397,
+                        //                                                                                397,
+                        //                                                                                397)
+                        //                                                                        .addComponent(
+                        //                                                                                _jTabbedPane1,
+                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                        //                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(51, 51, 51).addComponent(_statusLabel)
+                                .addPreferredGap(
+                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(_statusMsgLabel,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        263,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37).addComponent(_closeButton)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE)));
         layout.setVerticalGroup(layout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(
-                        layout.createSequentialGroup()
-                        .addGroup(
-                                layout.createParallelGroup(
-                                        javax.swing.GroupLayout.Alignment.LEADING)
-                                        //                                                        .addGroup(
-                                        //                                                                layout
-                                        //                                                                        .createSequentialGroup()
-                                        //                                                                        .addGap(
-                                        //                                                                                176,
-                                        //                                                                                176,
-                                        //                                                                                176)
-                                        //                                                                        .addComponent(
-                                        //                                                                                _jTabbedPane1,
-                                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        //                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(
-                                                layout.createSequentialGroup()
-                                                .addGap(40, 40,
-                                                        40)
-                                                        .addGroup(
-                                                                layout.createParallelGroup(
-                                                                        javax.swing.GroupLayout.Alignment.LEADING,
-                                                                        false)
-                                                                        .addComponent(
-                                                                                _editPanel,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)
-                                                                                .addComponent(
-                                                                                        _attributesPanel,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        327,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                                                                        .addGroup(
-                                                                                                layout.createParallelGroup(
-                                                                                                        javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                                        .addGroup(
-                                                                                                                layout.createSequentialGroup()
-                                                                                                                .addGap(41, 41,
-                                                                                                                        41)
-                                                                                                                        .addGroup(
-                                                                                                                                layout.createParallelGroup(
-                                                                                                                                        javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                                                                        .addComponent(
-                                                                                                                                                _statusMsgLabel,
-                                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                                                29,
-                                                                                                                                                Short.MAX_VALUE)
-                                                                                                                                                .addComponent(
-                                                                                                                                                        _statusLabel,
-                                                                                                                                                        javax.swing.GroupLayout.Alignment.LEADING)))
-                                                                                                                                                        .addGroup(
-                                                                                                                                                                layout.createSequentialGroup()
-                                                                                                                                                                .addPreferredGap(
-                                                                                                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                                        .addComponent(
-                                                                                                                                                                                _closeButton)))
-                                                                                                                                                                                .addGap(32, 32, 32)));
+                .addGroup(layout.createSequentialGroup().addGroup(layout
+                        .createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.LEADING)
+                        //                                                        .addGroup(
+                        //                                                                layout
+                        //                                                                        .createSequentialGroup()
+                        //                                                                        .addGap(
+                        //                                                                                176,
+                        //                                                                                176,
+                        //                                                                                176)
+                        //                                                                        .addComponent(
+                        //                                                                                _jTabbedPane1,
+                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                        //                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addGroup(layout.createParallelGroup(
+                                        javax.swing.GroupLayout.Alignment.LEADING,
+                                        false)
+                                        .addComponent(_editPanel,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                Short.MAX_VALUE)
+                                        .addComponent(_attributesPanel,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                327,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(41, 41, 41)
+                                        .addGroup(layout.createParallelGroup(
+                                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(_statusMsgLabel,
+                                                        javax.swing.GroupLayout.Alignment.LEADING,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        29, Short.MAX_VALUE)
+                                                .addComponent(_statusLabel,
+                                                        javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(
+                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(_closeButton)))
+                        .addGap(32, 32, 32)));
 
-        _statusMsgLabel.getAccessibleContext().setAccessibleName(
-                "_statusMsgLabel");
+        _statusMsgLabel.getAccessibleContext()
+                .setAccessibleName("_statusMsgLabel");
         _statusLabel.getAccessibleContext().setAccessibleName("_statusLabel");
 
         // Set the close button.
@@ -1023,18 +938,17 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
             // Existing attribute
             boolean nameChanged = false;
 
-            if (!_currentEditedAttribute.getAttributeName().equals(
-                    _attributeNameField.getText())) {
+            if (!_currentEditedAttribute.getAttributeName()
+                    .equals(_attributeNameField.getText())) {
                 nameChanged = true;
             }
-            _currentEditedAttribute.setAttributeName(_attributeNameField
-                    .getText());
             _currentEditedAttribute
-            .setAttributeType((String) _attributeTypeField
-                    .getSelectedItem());
+                    .setAttributeName(_attributeNameField.getText());
+            _currentEditedAttribute.setAttributeType(
+                    (String) _attributeTypeField.getSelectedItem());
 
-            if (_attributeTypeField.getSelectedItem().equals(
-                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+            if (_attributeTypeField.getSelectedItem()
+                    .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
                 if (_listItems == null) {
                     _listItems = new ArrayList<String>();
                 }
@@ -1059,8 +973,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                 int index = 0;
                 for (Object element : _attributes) {
                     XMLDBAttribute attribute = (XMLDBAttribute) element;
-                    if (attribute.getAttributeId().equals(
-                            _currentEditedAttribute.getAttributeId())) {
+                    if (attribute.getAttributeId()
+                            .equals(_currentEditedAttribute.getAttributeId())) {
                         _attributes.set(index, _currentEditedAttribute);
 
                         break;
@@ -1082,8 +996,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                     _attributeNameField.getText(),
                     (String) _attributeTypeField.getSelectedItem());
 
-            if (_attributeTypeField.getSelectedItem().equals(
-                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+            if (_attributeTypeField.getSelectedItem()
+                    .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
                 if (_listItems == null) {
                     _listItems = new ArrayList<String>();
                 }
@@ -1096,12 +1010,12 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                         .createAttribute(newXmldbAttribute);
 
                 _statusMsgLabel
-                .setText("The new attribute is saved successfully.");
+                        .setText("The new attribute is saved successfully.");
 
                 _resetEditPanel();
 
                 ((ArrayModelList) _attributesList.getModel())
-                .addItem(newXmldbAttribute.getAttributeName());
+                        .addItem(newXmldbAttribute.getAttributeName());
 
                 _attributes.add(newXmldbAttribute);
 
@@ -1130,8 +1044,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
         for (Object element : _attributes) {
             XMLDBAttribute existingAttribute = (XMLDBAttribute) element;
 
-            if (existingAttribute.getAttributeName().equals(
-                    _attributeNameField.getText())) {
+            if (existingAttribute.getAttributeName()
+                    .equals(_attributeNameField.getText())) {
 
                 if (_currentEditedAttribute == null
                         || _currentEditedAttribute.getAttributeId() == null
@@ -1140,8 +1054,8 @@ public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
                     throw new IllegalNameException("Duplicated name!");
                 } else {
                     // Existing attribute.
-                    if (existingAttribute.getAttributeId().equals(
-                            _currentEditedAttribute.getAttributeId())) {
+                    if (existingAttribute.getAttributeId()
+                            .equals(_currentEditedAttribute.getAttributeId())) {
                         // Same attribute.
                         return true;
                     } else {

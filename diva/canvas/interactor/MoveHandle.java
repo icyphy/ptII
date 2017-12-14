@@ -109,8 +109,8 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
         if (x != _x || y != _y) {
             _x = x;
             _y = y;
-            ((Rectangle2D) getShape()).setFrame(x - _size, y - _size,
-                    _size * 2, _size * 2);
+            ((Rectangle2D) getShape()).setFrame(x - _size, y - _size, _size * 2,
+                    _size * 2);
         }
     }
 

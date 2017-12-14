@@ -145,8 +145,8 @@ public class StaticSchedulingDirector extends PortDirector {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "The firing of the StaticSchedulingDirector")));
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("The firing of the StaticSchedulingDirector")));
 
         // Generate code for one iteration.
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
@@ -168,7 +168,6 @@ public class StaticSchedulingDirector extends PortDirector {
             boolean inline = ((BooleanToken) getCodeGenerator().inline
                     .getToken()).booleanValue();
 
-
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
                     // Generate fire code for the actor.
@@ -187,13 +186,12 @@ public class StaticSchedulingDirector extends PortDirector {
                 if (count > 1) {
                     // for loops should have the loop initial declaration outside the for block.  Test case:
                     // $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DistributorMultipleTypes.xml
-                    code.append("{" + _eol + "int i = 0;" + _eol
-                            + "for (; i < " + count + " ; i++) {" + _eol);
+                    code.append("{" + _eol + "int i = 0;" + _eol + "for (; i < "
+                            + count + " ; i++) {" + _eol);
                 }
 
-                code.append(codeGenerator
-                        .generateFireFunctionMethodInvocation((NamedObj) actor)
-                        + "();" + _eol);
+                code.append(codeGenerator.generateFireFunctionMethodInvocation(
+                        (NamedObj) actor) + "();" + _eol);
 
                 if (codeGenerator.invokeGenerateUpdatePortOffsets()) {
                     _generateUpdatePortOffsetCode(code, actor);
@@ -288,9 +286,9 @@ public class StaticSchedulingDirector extends PortDirector {
             }
         }
 
-        String[] splitFireCode = getCodeGenerator()._splitBody(
-                "_" + CodeGeneratorAdapter.generateName(getComponent())
-                + "_run_", generateFireCode());
+        String[] splitFireCode = getCodeGenerator()._splitBody("_"
+                + CodeGeneratorAdapter.generateName(getComponent()) + "_run_",
+                generateFireCode());
 
         code.append("if (!run()) {" + _eol + "break;" + _eol + "}" + _eol + "}"
                 + _eol + "}" + _eol + _eol + splitFireCode[0] + _eol
@@ -412,10 +410,9 @@ public class StaticSchedulingDirector extends PortDirector {
             if (periodValue != 0.0) {
                 if (variableDeclarations.toString().indexOf(
                         StaticSchedulingDirector.CURRENTTIME_DECLARATION) == -1) {
-                    variableDeclarations.append(_eol
-                            + getCodeGenerator().comment(
-                                    "Director has a period attribute,"
-                                            + " so we track current time."));
+                    variableDeclarations.append(_eol + getCodeGenerator()
+                            .comment("Director has a period attribute,"
+                                    + " so we track current time."));
                     variableDeclarations.append(CURRENTTIME_DECLARATION);
                 }
             }
@@ -433,8 +430,8 @@ public class StaticSchedulingDirector extends PortDirector {
      */
     @Override
     final public Boolean padBuffers() throws IllegalActionException {
-        DecoratorAttributes decorators = getComponent().getDecoratorAttributes(
-                getCodeGenerator());
+        DecoratorAttributes decorators = getComponent()
+                .getDecoratorAttributes(getCodeGenerator());
         if (!(decorators instanceof StaticSchedulingDirectorAttributes)) {
             // $PTII/bin/vergil ptolemy/cg/lib/test/auto/ScaleC.xml was failing here
             // it is okd to not have a decorator and just default to false.
@@ -493,7 +490,7 @@ public class StaticSchedulingDirector extends PortDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         return "";
     }
 
@@ -512,8 +509,8 @@ public class StaticSchedulingDirector extends PortDirector {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: " + rate
-                    + " is negative.");
+            throw new IllegalActionException(port,
+                    "the rate: " + rate + " is negative.");
         }
 
         code.append(ports.updateConnectedPortsOffset(port, rate));
@@ -532,8 +529,8 @@ public class StaticSchedulingDirector extends PortDirector {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: " + rate
-                    + " is negative.");
+            throw new IllegalActionException(port,
+                    "the rate: " + rate + " is negative.");
         }
 
         code.append(ports.updateOffset(port, rate));

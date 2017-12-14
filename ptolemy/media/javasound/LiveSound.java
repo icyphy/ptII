@@ -214,8 +214,8 @@ public class LiveSound {
      *  @exception IOException If the calling program does not have permission
      *  to access the audio capture resources.
      */
-    public static void flushCaptureBuffer(Object consumer) throws IOException,
-    IllegalStateException {
+    public static void flushCaptureBuffer(Object consumer)
+            throws IOException, IllegalStateException {
         _implementation.flushCaptureBuffer(consumer);
 
     }
@@ -242,8 +242,8 @@ public class LiveSound {
      *  @exception IOException If the calling program does not have permission
      *  to access the audio playback resources.
      */
-    public static void flushPlaybackBuffer(Object producer) throws IOException,
-    IllegalStateException {
+    public static void flushPlaybackBuffer(Object producer)
+            throws IOException, IllegalStateException {
         _implementation.flushPlaybackBuffer(producer);
 
     }
@@ -368,8 +368,8 @@ public class LiveSound {
      *  @exception IOException If the calling program does not have permission
      *   to access the audio capture resources.
      */
-    public static double[][] getSamples(Object consumer) throws IOException,
-    IllegalStateException {
+    public static double[][] getSamples(Object consumer)
+            throws IOException, IllegalStateException {
 
         return _implementation.getSamples(consumer);
 
@@ -624,8 +624,8 @@ public class LiveSound {
      *  @exception IllegalStateException If this method is called
      *   while audio capture is already active.
      */
-    public static void startCapture(Object consumer) throws IOException,
-            IllegalStateException {
+    public static void startCapture(Object consumer)
+            throws IOException, IllegalStateException {
 
         _implementation.startCapture(consumer);
 
@@ -651,8 +651,8 @@ public class LiveSound {
      *  @exception IllegalStateException If this method is called
      *   while audio playback is already active.
      */
-    public static void startPlayback(Object producer) throws IOException,
-            IllegalStateException {
+    public static void startPlayback(Object producer)
+            throws IOException, IllegalStateException {
 
         _implementation.startPlayback(producer);
 
@@ -674,8 +674,8 @@ public class LiveSound {
      *   object did not hold an exclusive lock on the
      *   captured audio resources when this method was invoked.
      */
-    public static void stopCapture(Object consumer) throws IOException,
-            IllegalStateException {
+    public static void stopCapture(Object consumer)
+            throws IOException, IllegalStateException {
         _implementation.stopCapture(consumer);
     }
 
@@ -690,14 +690,14 @@ public class LiveSound {
      *
      *  @exception IOException If another object currently has access
      *   to the audio capture resources or if stopping the playback throws it.
-
+    
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   playback audio resources when this method was invoked.
      *
      */
-    public static void stopPlayback(Object producer) throws IOException,
-            IllegalStateException {
+    public static void stopPlayback(Object producer)
+            throws IOException, IllegalStateException {
         _implementation.stopPlayback(producer);
     }
 

@@ -61,8 +61,8 @@ public class ExampleSystem implements Serializable {
      *  @exception IllegalActionException if the example system cannot
      *  be built.
      */
-    public ExampleSystem() throws IllegalActionException,
-    NameDuplicationException {
+    public ExampleSystem()
+            throws IllegalActionException, NameDuplicationException {
         super();
 
         // Create composite entities
@@ -237,8 +237,8 @@ public class ExampleSystem implements Serializable {
      *  @exception IllegalActionException if the example system cannot
      *  be built.
      */
-    public static void main(String[] args) throws NameDuplicationException,
-    IllegalActionException {
+    public static void main(String[] args)
+            throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         System.out.println(exsys.toString());
     }

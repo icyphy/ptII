@@ -136,8 +136,8 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
         Document doc;
 
         _openFileChooser.setCurrentDirectory(new File(getDirectory()));
-        result = _openFileChooser.showOpenDialog(app.getAppContext()
-                .makeComponent());
+        result = _openFileChooser
+                .showOpenDialog(app.getAppContext().makeComponent());
 
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
@@ -211,7 +211,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 }
 
                 d.getApplication().getAppContext()
-                .showStatus("Saved " + d.getTitle());
+                        .showStatus("Saved " + d.getTitle());
                 d.setDirty(false);
             }
         }
@@ -244,7 +244,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                     int opt = JOptionPane.showConfirmDialog(
                             context.makeComponent(),
                             "File \"" + chosenFile.getName()
-                            + "\" exists. Overwrite?",
+                                    + "\" exists. Overwrite?",
                             "Overwrite file?", JOptionPane.YES_NO_OPTION);
 
                     if (opt != JOptionPane.YES_OPTION) {

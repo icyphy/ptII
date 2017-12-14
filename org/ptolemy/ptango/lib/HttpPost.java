@@ -84,7 +84,7 @@ public class HttpPost extends TypedAtomicActor {
         url.setStringMode(true);
         url.setExpression("http://localhost");
         new SingletonParameter(url.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
         StringAttribute cardinal = new StringAttribute(url.getPort(),
                 "_cardinal");
         cardinal.setExpression("SOUTH");
@@ -237,9 +237,9 @@ public class HttpPost extends TypedAtomicActor {
                     }
                     String timeout = timeoutResponse.stringValue();
                     if (timeout.trim().equals("")) {
-                        throw new IllegalActionException(this, "HTTP "
-                                + _request.getMethod() + " "
-                                + response.getResponseMessage());
+                        throw new IllegalActionException(this,
+                                "HTTP " + _request.getMethod() + " "
+                                        + response.getResponseMessage());
                     }
                 }
 
@@ -247,7 +247,8 @@ public class HttpPost extends TypedAtomicActor {
                 output.send(0, new StringToken(response.getBody()));
                 status.send(0, response.getStatus());
             } catch (IOException e) {
-                throw new IllegalActionException(this, e, "HTTP request failed");
+                throw new IllegalActionException(this, e,
+                        "HTTP request failed");
             }
         } else if (_debugging) {
             _debug("No input token.");

@@ -114,10 +114,11 @@ public class FileEditorTableauFactory extends TableauFactory {
                 .getAttribute(attributeName.getExpression());
 
         if (!(attribute instanceof FileParameter)) {
-            throw new IllegalActionException(object, "Expected "
-                    + object.getFullName()
-                    + " to contain a FileParameter named "
-                    + attributeName.getExpression() + ", but it does not.");
+            throw new IllegalActionException(object,
+                    "Expected " + object.getFullName()
+                            + " to contain a FileParameter named "
+                            + attributeName.getExpression()
+                            + ", but it does not.");
         }
 
         URL url = ((FileParameter) attribute).asURL();
@@ -139,8 +140,8 @@ public class FileEditorTableauFactory extends TableauFactory {
             File file = parameter.asFile();
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    throw new Exception("Failed to create \"" + file.getName()
-                            + "\"");
+                    throw new Exception(
+                            "Failed to create \"" + file.getName() + "\"");
                 }
             } else {
                 // FIXME: Why did this fail? Prompt for new file name?

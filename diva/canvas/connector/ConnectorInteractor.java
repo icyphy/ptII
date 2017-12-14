@@ -134,11 +134,11 @@ public class ConnectorInteractor extends DragInteractor {
         Site ret = null;
 
         if (_handle.getSite() == _connector.getHeadSite()) {
-            ret = _manipulator._connectorTarget
-                    .getHeadSite(_connector, f, x, y);
+            ret = _manipulator._connectorTarget.getHeadSite(_connector, f, x,
+                    y);
         } else {
-            ret = _manipulator._connectorTarget
-                    .getTailSite(_connector, f, x, y);
+            ret = _manipulator._connectorTarget.getTailSite(_connector, f, x,
+                    y);
         }
 
         return ret;
@@ -275,7 +275,8 @@ public class ConnectorInteractor extends DragInteractor {
                 Rectangle2D bounds = ShapeUtilities.transformBounds(hitRect,
                         transform);
 
-                if (findSite(f, bounds.getCenterX(), bounds.getCenterY()) == null) {
+                if (findSite(f, bounds.getCenterX(),
+                        bounds.getCenterY()) == null) {
                     return false;
                 }
 

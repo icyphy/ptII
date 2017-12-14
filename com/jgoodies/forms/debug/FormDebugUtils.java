@@ -190,8 +190,8 @@ public final class FormDebugUtils {
         for (int i = 0; i < childCount; i++) {
             Component child = container.getComponent(i);
             CellConstraints cc = layout.getConstraints(child);
-            String ccString = cc == null ? "no constraints" : cc
-                    .toShortString(layout);
+            String ccString = cc == null ? "no constraints"
+                    : cc.toShortString(layout);
             System.out.print(ccString);
             System.out.print("; ");
             String childType = child.getClass().getName();

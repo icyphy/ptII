@@ -106,7 +106,8 @@ public class JSONML {
                             do {
                                 token = x.nextMeta();
                                 if (token == null) {
-                                    throw x.syntaxError("Missing '>' after '<!'.");
+                                    throw x.syntaxError(
+                                            "Missing '>' after '<!'.");
                                 } else if (token == XML.LT) {
                                     i += 1;
                                 } else if (token == XML.GT) {
@@ -158,8 +159,8 @@ public class JSONML {
                         //                              attribute = value
 
                         attribute = (String) token;
-                        if (!arrayForm
-                                && (attribute == "tagName" || attribute == "childNode")) {
+                        if (!arrayForm && (attribute == "tagName"
+                                || attribute == "childNode")) {
                             throw x.syntaxError("Reserved attribute.");
                         }
                         token = x.nextToken();
@@ -221,8 +222,9 @@ public class JSONML {
                 }
             } else {
                 if (ja != null) {
-                    ja.put(token instanceof String ? JSONObject
-                            .stringToValue((String) token) : token);
+                    ja.put(token instanceof String
+                            ? JSONObject.stringToValue((String) token)
+                            : token);
                 }
             }
         }
@@ -267,7 +269,7 @@ public class JSONML {
      * the attributes will be in the JSONObject as properties. If the tag
      * contains children, the object will have a "childNodes" property which
      * will be an array of strings and JsonML JSONObjects.
-
+    
      * Comments, prologs, DTDs, and <code>&lt;[ [ ]]&gt;</code> are ignored.
      * @param x An XMLTokener of the XML source text.
      * @return A JSONObject containing the structured data from the XML string.

@@ -191,8 +191,7 @@ public abstract class StructuredType implements Type {
         if (newType.depth() >= MAXDEPTHBOUND) {
             throw new IllegalActionException(
                     "Large type structure detected during type resolution."
-                            + "  The structured type "
-                            + newType.toString()
+                            + "  The structured type " + newType.toString()
                             + " has depth larger than the bound "
                             + MAXDEPTHBOUND
                             + ".  This may be an indicator of type constraints "

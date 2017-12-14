@@ -98,10 +98,12 @@ public class HalftoneFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
-        if (mask == null)
+        }
+        if (mask == null) {
             return dst;
+        }
 
         int maskWidth = mask.getWidth();
         int maskHeight = mask.getHeight();
@@ -118,14 +120,16 @@ public class HalftoneFilter extends AbstractBufferedImageOp {
             for (int x = 0; x < width; x++) {
                 int maskRGB = maskPixels[x % maskWidth];
                 int inRGB = inPixels[x];
-                if (invert)
+                if (invert) {
                     maskRGB ^= 0xffffff;
+                }
                 if (monochrome) {
                     int v = PixelUtils.brightness(maskRGB);
                     int iv = PixelUtils.brightness(inRGB);
                     float f = 1 - ImageMath.smoothStep(iv - s, iv + s, v);
                     int a = (int) (255 * f);
-                    inPixels[x] = (inRGB & 0xff000000) | (a << 16) | (a << 8) | a;
+                    inPixels[x] = (inRGB & 0xff000000) | (a << 16) | (a << 8)
+                            | a;
                 } else {
                     int ir = (inRGB >> 16) & 0xff;
                     int ig = (inRGB >> 8) & 0xff;
@@ -133,10 +137,14 @@ public class HalftoneFilter extends AbstractBufferedImageOp {
                     int mr = (maskRGB >> 16) & 0xff;
                     int mg = (maskRGB >> 8) & 0xff;
                     int mb = maskRGB & 0xff;
-                    int r = (int) (255 * (1 - ImageMath.smoothStep(ir - s, ir + s, mr)));
-                    int g = (int) (255 * (1 - ImageMath.smoothStep(ig - s, ig + s, mg)));
-                    int b = (int) (255 * (1 - ImageMath.smoothStep(ib - s, ib + s, mb)));
-                    inPixels[x] = (inRGB & 0xff000000) | (r << 16) | (g << 8) | b;
+                    int r = (int) (255
+                            * (1 - ImageMath.smoothStep(ir - s, ir + s, mr)));
+                    int g = (int) (255
+                            * (1 - ImageMath.smoothStep(ig - s, ig + s, mg)));
+                    int b = (int) (255
+                            * (1 - ImageMath.smoothStep(ib - s, ib + s, mb)));
+                    inPixels[x] = (inRGB & 0xff000000) | (r << 16) | (g << 8)
+                            | b;
                 }
             }
 

@@ -68,8 +68,8 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
         if (_needScaleMethods) {
             codestream.appendCodeBlocks("Scale_scaleOn.*");
             if (!codestream.isEmpty()) {
-                sharedCode.add(_templateParser.processCode(codestream
-                        .toString()));
+                sharedCode.add(
+                        _templateParser.processCode(codestream.toString()));
             }
         }
         return sharedCode;

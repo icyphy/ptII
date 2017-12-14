@@ -218,8 +218,8 @@ public class Recorder extends Sink {
 
         if (capacityValue != 0) {
             _records.add(record);
-            _timeRecord.add(Double.valueOf(getDirector().getModelTime()
-                    .getDoubleValue()));
+            _timeRecord.add(Double
+                    .valueOf(getDirector().getModelTime().getDoubleValue()));
 
             if (capacityValue > 0 && _records.size() > capacityValue) {
                 // Remove the first element.

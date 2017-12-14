@@ -245,7 +245,8 @@ public class VertxHelperBase extends HelperBase {
         synchronized (_sendTypesMutex) {
             if (_sendTypes == null) {
                 int length = DATA_TYPE.values().length;
-                _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
+                _sendImageTypes = _removeDuplicates(
+                        ImageIO.getWriterFormatNames());
                 _sendTypes = new String[length + _sendImageTypes.size()];
                 int i = 0;
                 for (DATA_TYPE type : DATA_TYPE.values()) {
@@ -296,7 +297,8 @@ public class VertxHelperBase extends HelperBase {
      *  @param helper The helper providing the verticle and event
      *   handler, or null to create a new verticle and event handler.
      */
-    protected VertxHelperBase(Object actor, ScriptObjectMirror helping, VertxHelperBase helper) {
+    protected VertxHelperBase(Object actor, ScriptObjectMirror helping,
+            VertxHelperBase helper) {
         super(actor, helping);
 
         // See whether there is already a verticle associate with this actor
@@ -531,20 +533,27 @@ public class VertxHelperBase extends HelperBase {
         try {
             // If the vertx.cacheDirBase property is not set, then set it to $HOME/.vertxPt
             // See https://www.terraswarm.org/testbeds/wiki/Vert/VertxDirectories
-            String cacheDirBase = StringUtilities.getProperty("vertx.cacheDirBase");
+            String cacheDirBase = StringUtilities
+                    .getProperty("vertx.cacheDirBase");
             if (cacheDirBase.isEmpty()) {
                 File directory = null;
                 try {
-                    directory = new File(StringUtilities.getProperty("user.home"),  ".vertxPt");
-                    System.setProperty("vertx.cacheDirBase", directory.getCanonicalPath());
+                    directory = new File(
+                            StringUtilities.getProperty("user.home"),
+                            ".vertxPt");
+                    System.setProperty("vertx.cacheDirBase",
+                            directory.getCanonicalPath());
                 } catch (Throwable throwable) {
-                    System.err.println("Could not set the vertx.cacheDirBase property to " + directory
-                            + ".  This means that a .vertx directory will be created in the current directory.");
+                    System.err.println(
+                            "Could not set the vertx.cacheDirBase property to "
+                                    + directory
+                                    + ".  This means that a .vertx directory will be created in the current directory.");
                 }
             }
             _vertx = Vertx.vertx();
         } catch (Throwable throwable) {
-            System.err.println("Static initialization of VertxHelperBase failed.");
+            System.err.println(
+                    "Static initialization of VertxHelperBase failed.");
             throwable.printStackTrace();
             throw new RuntimeException(throwable);
         }

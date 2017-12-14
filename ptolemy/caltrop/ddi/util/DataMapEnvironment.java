@@ -67,8 +67,8 @@ public class DataMapEnvironment implements Environment {
             // try to find it. if we don't find it,
             // throw an UnboundPortVarException.
             String portName = pvi.getPortName();
-            List data = (List) _dataFromInputPorts.get(new ChannelID(portName,
-                    0));
+            List data = (List) _dataFromInputPorts
+                    .get(new ChannelID(portName, 0));
 
             if (data == null) {
                 throw new UnboundPortVarException(varName + "unbound.");
@@ -144,20 +144,20 @@ public class DataMapEnvironment implements Environment {
 
     @Override
     public Environment newFrame() {
-        throw new InterpreterException("Cannot make a new frame in "
-                + "DataMapEnvironment.");
+        throw new InterpreterException(
+                "Cannot make a new frame in " + "DataMapEnvironment.");
     }
 
     @Override
     public Environment newFrame(Environment parent) {
-        throw new InterpreterException("Cannot make a new frame in "
-                + "DataMapEnvironment.");
+        throw new InterpreterException(
+                "Cannot make a new frame in " + "DataMapEnvironment.");
     }
 
     @Override
     public void freezeLocal() {
-        throw new InterpreterException("Cannot freezeLocal() in "
-                + "DataMapEnvironment.");
+        throw new InterpreterException(
+                "Cannot freezeLocal() in " + "DataMapEnvironment.");
     }
 
     public DataMapEnvironment(InputPattern[] inputPatterns,
@@ -207,9 +207,8 @@ public class DataMapEnvironment implements Environment {
 
             for (int j = 0; j < variables.length; j++) {
                 String variable = variables[j];
-                result.put(variable, new PortVarInfo(
-                        inputPattern.getPortname(), j, variables.length,
-                        isList, repeatVal));
+                result.put(variable, new PortVarInfo(inputPattern.getPortname(),
+                        j, variables.length, isList, repeatVal));
             }
         }
 

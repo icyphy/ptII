@@ -301,8 +301,8 @@ public class DatagramWriter extends TypedAtomicActor {
             if (remoteSocketNumber.hasToken(jj)) {
                 // Valid socket numbers are 0..65535,
                 // so keep only lower 16 bits.
-                _remoteSocketNumber = 65535 & ((IntToken) remoteSocketNumber
-                        .get(jj)).intValue();
+                _remoteSocketNumber = 65535
+                        & ((IntToken) remoteSocketNumber.get(jj)).intValue();
             }
         }
 
@@ -390,9 +390,9 @@ public class DatagramWriter extends TypedAtomicActor {
 
         if (_remoteSocketNumber < 0 || _remoteSocketNumber > 65535) {
             _remoteSocketNumber &= 65535; // Truncate to 16 bits.
-            throw new IllegalActionException(this, "defaultRemoteSocketNumber"
-                    + _remoteSocketNumber
-                    + " is out of range, must be between 0 and 65535.");
+            throw new IllegalActionException(this,
+                    "defaultRemoteSocketNumber" + _remoteSocketNumber
+                            + " is out of range, must be between 0 and 65535.");
         }
     }
 

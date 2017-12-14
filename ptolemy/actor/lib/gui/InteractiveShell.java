@@ -99,8 +99,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class InteractiveShell extends TypedAtomicActor implements Placeable,
-ShellInterpreter, UsesInvokeAndWait {
+public class InteractiveShell extends TypedAtomicActor
+        implements Placeable, ShellInterpreter, UsesInvokeAndWait {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -123,7 +123,7 @@ ShellInterpreter, UsesInvokeAndWait {
         prompt = new PortParameter(this, "prompt");
         // Parameter to get Vergil to label the fileOrURL port.
         new SingletonParameter(prompt.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         // Make command be a StringParameter (no surrounding double quotes).
         prompt.setTypeEquals(BaseType.STRING);
@@ -140,10 +140,10 @@ ShellInterpreter, UsesInvokeAndWait {
         // of the window and save it.
         _windowProperties.setPersistent(true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-14\" y=\"-14\" "
-                + "width=\"28\" height=\"28\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"-14\" y=\"-14\" " + "width=\"28\" height=\"28\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-10,-10, -5,-5, -10,0\" "
                 + "style=\"stroke:black\"/>\n"
                 + "<polyline points=\"-7,-10, -2,-5, -7,0\" "
@@ -334,8 +334,8 @@ ShellInterpreter, UsesInvokeAndWait {
 
                     if (containerEffigy == null) {
                         MessageHandler
-                        .error("Cannot find effigy for top level: "
-                                + toplevel().getFullName());
+                                .error("Cannot find effigy for top level: "
+                                        + toplevel().getFullName());
                         return;
                     }
 
@@ -360,7 +360,7 @@ ShellInterpreter, UsesInvokeAndWait {
                         MessageHandler.error(
                                 "Error creating effigy and tableau "
                                         + InteractiveShell.this.getFullName(),
-                                        ex);
+                                ex);
                         return;
                     }
 
@@ -506,8 +506,8 @@ ShellInterpreter, UsesInvokeAndWait {
      *  @see #getName(NamedObj)
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         if (_tableau != null) {
@@ -567,8 +567,8 @@ ShellInterpreter, UsesInvokeAndWait {
         HashSet<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL),
+                    input.getTypeTerm()));
         }
         return result;
     }

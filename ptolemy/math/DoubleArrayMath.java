@@ -261,7 +261,8 @@ public class DoubleArrayMath {
      */
     public static final double dotProduct(final double[] array1,
             final double[] array2) {
-        int length = _commonLength(array1, array2, "DoubleArrayMath.dotProduct");
+        int length = _commonLength(array1, array2,
+                "DoubleArrayMath.dotProduct");
 
         double sum = 0.0;
 
@@ -416,8 +417,8 @@ public class DoubleArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue, newLength
-                - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue,
+                newLength - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -460,8 +461,7 @@ public class DoubleArrayMath {
 
         if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx
-                    + "' is greater than equal to the array length '"
+                    + startIdx + "' is greater than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }
@@ -722,7 +722,8 @@ public class DoubleArrayMath {
             throw new IllegalArgumentException("ptolemy.math." + methodName
                     + "() : input arrays must have the same length, "
                     + "but the first array has length " + array1.length
-                    + " and the second array has length " + array2.length + ".");
+                    + " and the second array has length " + array2.length
+                    + ".");
         }
 
         return array1.length;

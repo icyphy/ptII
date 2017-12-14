@@ -89,8 +89,8 @@ public class FeedBackDelay extends DDEActor {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public FeedBackDelay() throws IllegalActionException,
-    NameDuplicationException {
+    public FeedBackDelay()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _setVariables();
     }
@@ -103,8 +103,8 @@ public class FeedBackDelay extends DDEActor {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public FeedBackDelay(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public FeedBackDelay(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _setVariables();
     }
@@ -218,8 +218,8 @@ public class FeedBackDelay extends DDEActor {
         for (Receiver[] receiver2 : receivers) {
             for (int j = 0; j < receiver2.length; j++) {
                 DDEReceiver receiver = (DDEReceiver) receiver2[j];
-                receiver.put(new Token(), new Time(getDirector(),
-                        PrioritizedTimedQueue.IGNORE));
+                receiver.put(new Token(),
+                        new Time(getDirector(), PrioritizedTimedQueue.IGNORE));
             }
         }
 
@@ -254,8 +254,8 @@ public class FeedBackDelay extends DDEActor {
 
     /** Syntactic sugar for initializing parameters.
      */
-    private void _setVariables() throws IllegalActionException,
-    NameDuplicationException {
+    private void _setVariables()
+            throws IllegalActionException, NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.GENERAL);

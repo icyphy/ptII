@@ -56,8 +56,8 @@ import ptolemy.kernel.util.ValueListener;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DefaultDirectoryAttribute extends StringParameter implements
-ValueListener {
+public class DefaultDirectoryAttribute extends StringParameter
+        implements ValueListener {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -130,8 +130,8 @@ ValueListener {
      *  @see #getContainer()
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, false);

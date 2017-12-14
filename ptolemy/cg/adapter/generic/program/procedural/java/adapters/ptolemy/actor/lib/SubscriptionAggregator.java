@@ -39,14 +39,14 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class SubscriptionAggregator
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.SubscriptionAggregator {
+public class SubscriptionAggregator extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.SubscriptionAggregator {
     /**
      *  Construct a SubscriptionAggregator adapter.
      *  @param actor The given ptolemy.actor.lib.SubscriptionAggregator actor.
      */
-    public SubscriptionAggregator(ptolemy.actor.lib.SubscriptionAggregator actor) {
+    public SubscriptionAggregator(
+            ptolemy.actor.lib.SubscriptionAggregator actor) {
         super(actor);
     }
 }

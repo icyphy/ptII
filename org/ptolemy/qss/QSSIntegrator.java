@@ -52,6 +52,7 @@ A quantized-state integrator.
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
  */
+@Deprecated
 public class QSSIntegrator extends TypedAtomicActor {
 
     /** Construct a new instance of this integrator.
@@ -139,8 +140,8 @@ public class QSSIntegrator extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextOutputTime = _previousStateUpdateTime = null;
-        _nextOutputValue = _quantize(((DoubleToken) xInit.getToken())
-                .doubleValue());
+        _nextOutputValue = _quantize(
+                ((DoubleToken) xInit.getToken()).doubleValue());
         _previousInput = null;
         _previousOutputValue = _nextOutputValue;
         _previousStateUpdateTime = null;
@@ -188,11 +189,11 @@ public class QSSIntegrator extends TypedAtomicActor {
                     _firstFiring = false;
                 }
                 // Save the previous slope.
-                _previousSlope = _derivative(((DoubleToken) _previousInput)
-                        .doubleValue());
+                _previousSlope = _derivative(
+                        ((DoubleToken) _previousInput).doubleValue());
                 // Compute the new slope.
-                _currentSlope = _derivative(((DoubleToken) newInput)
-                        .doubleValue());
+                _currentSlope = _derivative(
+                        ((DoubleToken) newInput).doubleValue());
                 // Save the previous input
                 _previousInput = newInput;
                 // Set the received flag to true

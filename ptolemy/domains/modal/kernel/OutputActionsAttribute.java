@@ -91,8 +91,8 @@ import ptolemy.kernel.util.Workspace;
  @see Transition
  @see FSMActor
  */
-public class OutputActionsAttribute extends AbstractActionsAttribute implements
-ChoiceAction {
+public class OutputActionsAttribute extends AbstractActionsAttribute
+        implements ChoiceAction {
     /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.

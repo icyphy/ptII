@@ -128,9 +128,9 @@ public class BranchController implements Runnable {
      */
     public void addBranches(IOPort port) throws IllegalActionException {
         if (port.getContainer() != getParent()) {
-            throw new IllegalActionException("Can not contain "
-                    + "a port that is not contained by this "
-                    + "BranchController's container.");
+            throw new IllegalActionException(
+                    "Can not contain " + "a port that is not contained by this "
+                            + "BranchController's container.");
         }
 
         if (_ports.contains(port)) {
@@ -179,9 +179,7 @@ public class BranchController implements Runnable {
                     consumerReceiver = (ProcessReceiver) consumerReceivers[i][0];
                 } catch (ClassCastException ex) {
                     // See [Bug 5] and pn/test/PNInsideDE.xml
-                    throw new IllegalActionException(
-                            port,
-                            ex,
+                    throw new IllegalActionException(port, ex,
                             "At the current time, process-oriented domains "
                                     + "(PN and CSP) cannot be nested inside "
                                     + "firing-based domains (SDF, DE, CT, etc.).");

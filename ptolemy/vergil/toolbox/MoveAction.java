@@ -120,9 +120,9 @@ public class MoveAction extends FigureAction {
         }
 
         if (target.getDerivedLevel() < Integer.MAX_VALUE) {
-            MessageHandler.error("Cannot change the position of "
-                    + target.getFullName()
-                    + " because the position is set by the class.");
+            MessageHandler.error(
+                    "Cannot change the position of " + target.getFullName()
+                            + " because the position is set by the class.");
             return;
         }
 
@@ -163,8 +163,8 @@ public class MoveAction extends FigureAction {
         try {
             if (type == TO_FIRST || type == UP) {
                 // Traverse the list in reverse order.
-                ListIterator targetIterator = targets.listIterator(targets
-                        .size());
+                ListIterator targetIterator = targets
+                        .listIterator(targets.size());
 
                 for (int i = targets.size() - 1; i >= 0; i--) {
                     NamedObj target = (NamedObj) targetIterator.previous();

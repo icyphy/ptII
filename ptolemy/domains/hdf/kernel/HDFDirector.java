@@ -100,8 +100,8 @@ public class HDFDirector extends SDFDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public HDFDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public HDFDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -115,8 +115,8 @@ public class HDFDirector extends SDFDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public HDFDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public HDFDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -243,8 +243,8 @@ public class HDFDirector extends SDFDirector {
      *  default scheduler of the class CachedSDFScheduler and a
      *  cacheSize parameter with default value 100.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         // During construction, create the scheduleCacheSize parameter
         // with default value of 100.
         int cacheSize = 100;

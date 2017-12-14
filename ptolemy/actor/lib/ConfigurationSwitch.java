@@ -123,12 +123,12 @@ public class ConfigurationSwitch extends TypedAtomicActor {
 
         /** Make the icon show T and F for trueOutput and falseOutput.
          */
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" " + "width=\"100\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"39\" y=\"-3\" "
-                + "style=\"font-size:14\">\n" + "T \n" + "</text>\n"
-                + "<text x=\"39\" y=\"15\" " + "style=\"font-size:14\">\n"
-                + "F \n" + "</text>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-50\" y=\"-20\" "
+                + "width=\"100\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"39\" y=\"-3\" " + "style=\"font-size:14\">\n"
+                + "T \n" + "</text>\n" + "<text x=\"39\" y=\"15\" "
+                + "style=\"font-size:14\">\n" + "F \n" + "</text>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -215,8 +215,8 @@ public class ConfigurationSwitch extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConfigurationSwitch newObject = (ConfigurationSwitch) super
-                .clone(workspace);
+        ConfigurationSwitch newObject = (ConfigurationSwitch) super.clone(
+                workspace);
 
         newObject.trueOutput.setTypeAtLeast(newObject.input);
         newObject.falseOutput.setTypeAtLeast(newObject.input);

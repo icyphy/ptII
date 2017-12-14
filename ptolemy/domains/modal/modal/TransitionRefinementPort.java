@@ -128,8 +128,8 @@ public class TransitionRefinementPort extends RefinementPort {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
@@ -258,7 +258,8 @@ public class TransitionRefinementPort extends RefinementPort {
      *   not permitted.
      */
     @Override
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -317,8 +318,8 @@ public class TransitionRefinementPort extends RefinementPort {
      *   with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {

@@ -89,9 +89,7 @@ public class InterfaceTableau extends Tableau {
                 _manager = new Manager(model.workspace(), "manager");
                 ((CompositeActor) model).setManager(_manager);
             } catch (IllegalActionException ex) {
-                throw new IllegalActionException(
-                        this,
-                        ex,
+                throw new IllegalActionException(this, ex,
                         "Failed to set manager.  This can occur if "
                                 + "you try to run a non-toplevel model that "
                                 + "is a component of a toplevel model.  "

@@ -136,9 +136,9 @@ public class IIR extends Transformer {
             if (!_denominator[0].isEqualTo(_denominator[0].one())
                     .booleanValue()) {
                 try {
-                    MessageHandler
-                    .warning("First denominator value is required to be 1. "
-                            + "Using 1.");
+                    MessageHandler.warning(
+                            "First denominator value is required to be 1. "
+                                    + "Using 1.");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(this,
                             "Canceled parameter change.");
@@ -170,10 +170,10 @@ public class IIR extends Transformer {
         IIR newObject = (IIR) super.clone(workspace);
 
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.numerator));
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.denominator));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.numerator));
+            newObject.output.setTypeAtLeast(
+                    ArrayType.elementType(newObject.denominator));
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
 
@@ -269,9 +269,8 @@ public class IIR extends Transformer {
     ////                         private methods                   ////
     private Token _computeOutput(Token xCurrent) throws IllegalActionException {
         for (int j = 1; j < _denominator.length; j++) {
-            xCurrent = xCurrent.subtract(_denominator[j]
-                    .multiply(_stateVector[(_currentTap + j)
-                                           % _stateVector.length]));
+            xCurrent = xCurrent.subtract(_denominator[j].multiply(
+                    _stateVector[(_currentTap + j) % _stateVector.length]));
         }
 
         _stateVector[_currentTap] = xCurrent;
@@ -279,9 +278,8 @@ public class IIR extends Transformer {
         Token yCurrent = _numerator[0].zero();
 
         for (int k = 0; k < _numerator.length; k++) {
-            yCurrent = yCurrent.add(_numerator[k]
-                    .multiply(_stateVector[(_currentTap + k)
-                                           % _stateVector.length]));
+            yCurrent = yCurrent.add(_numerator[k].multiply(
+                    _stateVector[(_currentTap + k) % _stateVector.length]));
         }
 
         return yCurrent;

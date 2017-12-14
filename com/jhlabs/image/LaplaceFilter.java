@@ -39,8 +39,9 @@ public class LaplaceFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] row1 = null;
         int[] row2 = null;
@@ -68,8 +69,9 @@ public class LaplaceFilter extends AbstractBufferedImageOp {
 
                 int gradient = (int) (0.5f * Math.max((max - l), (l - min)));
 
-                int r = ((row1[x - 1] + row1[x] + row1[x + 1] + row2[x - 1] - (8 * row2[x]) + row2[x + 1] + row3[x - 1]
-                        + row3[x] + row3[x + 1]) > 0) ? gradient : (128 + gradient);
+                int r = ((row1[x - 1] + row1[x] + row1[x + 1] + row2[x - 1]
+                        - (8 * row2[x]) + row2[x + 1] + row3[x - 1] + row3[x]
+                        + row3[x + 1]) > 0) ? gradient : (128 + gradient);
                 pixels[x] = r;
             }
             setRGB(dst, 0, y, width, 1, pixels);
@@ -88,9 +90,12 @@ public class LaplaceFilter extends AbstractBufferedImageOp {
             pixels[0] = pixels[width - 1] = 0xff000000;//FIXME
             for (int x = 1; x < width - 1; x++) {
                 int r = row2[x];
-                r = (((r <= 128) && ((row1[x - 1] > 128) || (row1[x] > 128) || (row1[x + 1] > 128)
-                        || (row2[x - 1] > 128) || (row2[x + 1] > 128) || (row3[x - 1] > 128) || (row3[x] > 128)
-                        || (row3[x + 1] > 128))) ? ((r >= 128) ? (r - 128) : r) : 0);
+                r = (((r <= 128) && ((row1[x - 1] > 128) || (row1[x] > 128)
+                        || (row1[x + 1] > 128) || (row2[x - 1] > 128)
+                        || (row2[x + 1] > 128) || (row3[x - 1] > 128)
+                        || (row3[x] > 128) || (row3[x + 1] > 128)))
+                                ? ((r >= 128) ? (r - 128) : r)
+                                : 0);
 
                 pixels[x] = 0xff000000 | (r << 16) | (r << 8) | r;
             }

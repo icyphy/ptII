@@ -54,8 +54,8 @@ public class RenameDialog extends ComponentDialog {
      *  @param target The object being renamed.
      */
     public RenameDialog(Frame owner, NamedObj target) {
-        super(owner, "Rename " + target.getName(),
-                new RenameConfigurer(target), _buttons);
+        super(owner, "Rename " + target.getName(), new RenameConfigurer(target),
+                _buttons);
     }
 
     ///////////////////////////////////////////////////////////////////

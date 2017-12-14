@@ -78,7 +78,8 @@ public class DateToString extends Converter {
         super.fire();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                output.send(i, new StringToken(((DateToken)input.get(i)).stringValue()));
+                output.send(i, new StringToken(
+                        ((DateToken) input.get(i)).stringValue()));
             }
         }
     }

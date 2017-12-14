@@ -222,8 +222,8 @@ public class CachedMethod {
                 Class typeClass = Type.class;
                 java.util.Arrays.fill(typeArray, typeClass);
 
-                Method typeFunction = _method.getDeclaringClass().getMethod(
-                        _methodName + "ReturnType", typeArray);
+                Method typeFunction = _method.getDeclaringClass()
+                        .getMethod(_methodName + "ReturnType", typeArray);
 
                 // Invoke the function, and save the return type.
                 try {
@@ -275,8 +275,8 @@ public class CachedMethod {
             return false;
         }
 
-        if ((_type & FUNCTION + METHOD) != (cachedMethod._type & FUNCTION
-                + METHOD)) {
+        if ((_type & FUNCTION + METHOD) != (cachedMethod._type
+                & FUNCTION + METHOD)) {
             return false;
         }
 
@@ -458,8 +458,8 @@ public class CachedMethod {
         if (isValid()) {
             return _method;
         } else {
-            throw new IllegalActionException("No method " + toString()
-                    + " was found!");
+            throw new IllegalActionException(
+                    "No method " + toString() + " was found!");
         }
     }
 
@@ -757,7 +757,8 @@ public class CachedMethod {
                     Type type2 = ConversionUtilities
                             .convertJavaTypeToTokenType(class2);
 
-                    if (TypeLattice.compare(type2, type1) == ptolemy.graph.CPO.LOWER) {
+                    if (TypeLattice.compare(type2,
+                            type1) == ptolemy.graph.CPO.LOWER) {
                         // Found one conversion where the second method
                         // is preferable. This is enough to return false.
                         // An argument that is lower is the lower in the
@@ -792,24 +793,24 @@ public class CachedMethod {
      *  @return The best correct conversion, or IMPOSSIBLE_CONVERSION
      *  if no such conversion exists.
      */
-    protected static ArgumentConversion _getConversion(Class formal, Type actual) {
+    protected static ArgumentConversion _getConversion(Class formal,
+            Type actual) {
         // No conversion necessary.
         if (formal.isAssignableFrom(actual.getTokenClass())) {
             return IDENTITY_CONVERSION;
         }
 
         // ArrayTokens can be converted to Token[]
-        if (actual instanceof ArrayType
-                && formal.isArray()
-                && formal.getComponentType().isAssignableFrom(
-                        ptolemy.data.Token.class)) {
+        if (actual instanceof ArrayType && formal.isArray()
+                && formal.getComponentType()
+                        .isAssignableFrom(ptolemy.data.Token.class)) {
             return ARRAYTOKEN_CONVERSION;
         }
 
         try {
             // Tokens can be converted to native types.
-            if (formal.isAssignableFrom(ConversionUtilities
-                    .convertTokenTypeToJavaType(actual))) {
+            if (formal.isAssignableFrom(
+                    ConversionUtilities.convertTokenTypeToJavaType(actual))) {
                 return NATIVE_CONVERSION;
             }
         } catch (IllegalActionException ex) {
@@ -825,8 +826,8 @@ public class CachedMethod {
                 Type type = ConversionUtilities
                         .convertJavaTypeToTokenType(formal);
 
-                if (ptolemy.graph.CPO.LOWER == TypeLattice
-                        .compare(actual, type)) {
+                if (ptolemy.graph.CPO.LOWER == TypeLattice.compare(actual,
+                        type)) {
                     return new TypeArgumentConversion(type, NATIVE_CONVERSION);
                 }
             }
@@ -922,8 +923,8 @@ public class CachedMethod {
                 boolean match = true;
 
                 for (int j = 0; j < arguments.length && match; j++) {
-                    ArgumentConversion conversion = _getConversion(
-                            arguments[j], argumentTypes[j]);
+                    ArgumentConversion conversion = _getConversion(arguments[j],
+                            argumentTypes[j]);
 
                     // System.out.println("formalType is "
                     //        + arguments[j] + " " + arguments[j].getName());
@@ -1003,11 +1004,10 @@ public class CachedMethod {
                     // System.out.println("Found match: " + method);
                     // Compare to previous match, if there has
                     // been one.
-                    if (preferredMethod == null
-                            || _areConversionsPreferable(conversions,
-                                    method.getParameterTypes(),
-                                    preferredConversions,
-                                    preferredMethod.getParameterTypes())) {
+                    if (preferredMethod == null || _areConversionsPreferable(
+                            conversions, method.getParameterTypes(),
+                            preferredConversions,
+                            preferredMethod.getParameterTypes())) {
                         // Either there is no previous match,
                         // or the current match is preferable
                         // or equivalent to the previous match.
@@ -1184,8 +1184,8 @@ public class CachedMethod {
          */
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert argument token "
-                    + input);
+            throw new IllegalActionException(
+                    "Cannot convert argument token " + input);
         }
 
         /** Return true if this conversion is preferable to the given
@@ -1221,7 +1221,8 @@ public class CachedMethod {
      *  This conversion always has preference two.
      */
     public static class TypeArgumentConversion extends ArgumentConversion {
-        private TypeArgumentConversion(Type type, ArgumentConversion conversion) {
+        private TypeArgumentConversion(Type type,
+                ArgumentConversion conversion) {
             super(2);
             _conversionType = type;
             _conversion = conversion;
@@ -1297,10 +1298,10 @@ public class CachedMethod {
      *  operate on methods.
      */
     public static class BaseConvertCachedMethod extends CachedMethod {
-        private BaseConvertCachedMethod(String methodName,
-                Type[] argumentTypes, Method method,
-                ArgumentConversion baseConversion,
-                ArgumentConversion[] conversions) throws IllegalActionException {
+        private BaseConvertCachedMethod(String methodName, Type[] argumentTypes,
+                Method method, ArgumentConversion baseConversion,
+                ArgumentConversion[] conversions)
+                throws IllegalActionException {
             super(methodName, argumentTypes, method, conversions, METHOD);
             _baseConversion = baseConversion;
         }
@@ -1501,10 +1502,10 @@ public class CachedMethod {
                     if (argValues[i] instanceof MatrixToken) {
                         MatrixToken matrixToken = (MatrixToken) argValues[i];
 
-                        if (xdim != 0
-                                && ydim != 0
-                                && (matrixToken.getRowCount() != ydim || matrixToken
-                                        .getColumnCount() != xdim)) {
+                        if (xdim != 0 && ydim != 0
+                                && (matrixToken.getRowCount() != ydim
+                                        || matrixToken
+                                                .getColumnCount() != xdim)) {
                             throw new IllegalActionException("Argument " + i
                                     + " is a reducible matrixToken that "
                                     + "does not have compatible size!");

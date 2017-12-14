@@ -95,8 +95,8 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      *                If the container already contains an entity with the
      *                specified name.
      */
-    public MetroIISRDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public MetroIISRDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -156,8 +156,8 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIISRDirector newObject = (MetroIISRDirector) super
-                .clone(workspace);
+        MetroIISRDirector newObject = (MetroIISRDirector) super.clone(
+                workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
                 .clone();
         newObject._events = (ArrayList<Builder>) _events.clone();
@@ -179,7 +179,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
                     @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                                    throws CollectionAbortedException {
+                            throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -213,8 +213,8 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
                     if (!_actorsFinishedExecution.contains(actor)) {
                         // check if the actor is ready to fire.
                         if (_isReadyToFire(actor)) {
-                            Event.Builder builder = makeEventBuilder(actor
-                                    .getFullName());
+                            Event.Builder builder = makeEventBuilder(
+                                    actor.getFullName());
                             _nameToActor.put(builder.getName(), actor);
                             _events.add(builder);
                         } else {

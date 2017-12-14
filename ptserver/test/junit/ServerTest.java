@@ -64,27 +64,27 @@ public class ServerTest {
         // or create a proper initializer for it
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
-        modules.add(new PtolemyModule(ResourceBundle
-                .getBundle("ptserver.util.PTServerModule")));
+        modules.add(new PtolemyModule(
+                ResourceBundle.getBundle("ptserver.util.PTServerModule")));
         PtolemyInjector.createInjector(modules);
     }
 
     @Test
-    public void testServerGeneration() throws MalformedURLException,
-    URISyntaxException, Exception {
+    public void testServerGeneration()
+            throws MalformedURLException, URISyntaxException, Exception {
         MoMLParser parser = new MoMLParser();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         CompositeActor model = (CompositeActor) parser.parse(null,
                 ServerTest.class.getResource("junitmodel.xml").toURI().toURL());
         CompositeActor layout = (CompositeActor) parser.parse(null,
                 ServerTest.class.getResource("junitmodel_test.layout.xml")
-                .toURI().toURL());
+                        .toURI().toURL());
         HashSet<String> remoteAttributes = new HashSet<String>();
         remoteAttributes.add(ServerUtility.REMOTE_OBJECT_TAG);
         ServerUtility.mergeModelWithLayout(model, layout,
                 new HashSet<Class<? extends Attribute>>(), remoteAttributes);
-        ProxyModelBuilder builder = new ProxyModelBuilder(
-                ProxyModelType.SERVER, model);
+        ProxyModelBuilder builder = new ProxyModelBuilder(ProxyModelType.SERVER,
+                model);
         builder.build();
         System.out.println(model.exportMoML());
     }

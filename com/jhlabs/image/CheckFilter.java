@@ -153,11 +153,14 @@ public class CheckFilter extends PointFilter {
     public int filterRGB(int x, int y, int rgb) {
         float nx = (m00 * x + m01 * y) / xScale;
         float ny = (m10 * x + m11 * y) / yScale;
-        float f = ((int) (nx + 100000) % 2 != (int) (ny + 100000) % 2) ? 1.0f : 0.0f;
+        float f = ((int) (nx + 100000) % 2 != (int) (ny + 100000) % 2) ? 1.0f
+                : 0.0f;
         if (fuzziness != 0) {
             float fuzz = (fuzziness / 100.0f);
-            float fx = ImageMath.smoothPulse(0, fuzz, 1 - fuzz, 1, ImageMath.mod(nx, 1));
-            float fy = ImageMath.smoothPulse(0, fuzz, 1 - fuzz, 1, ImageMath.mod(ny, 1));
+            float fx = ImageMath.smoothPulse(0, fuzz, 1 - fuzz, 1,
+                    ImageMath.mod(nx, 1));
+            float fy = ImageMath.smoothPulse(0, fuzz, 1 - fuzz, 1,
+                    ImageMath.mod(ny, 1));
             f *= fx * fy;
         }
         return ImageMath.mixColors(f, foreground, background);

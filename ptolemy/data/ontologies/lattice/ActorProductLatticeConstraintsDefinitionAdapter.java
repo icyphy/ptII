@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ActorProductLatticeConstraintsDefinitionAdapter extends
-ActorConstraintsDefinitionAdapter {
+public class ActorProductLatticeConstraintsDefinitionAdapter
+        extends ActorConstraintsDefinitionAdapter {
 
     /** Construct the lattice ontology adapter for the given component
      *  and property lattice.
@@ -72,7 +72,7 @@ ActorConstraintsDefinitionAdapter {
     public ActorProductLatticeConstraintsDefinitionAdapter(
             ProductLatticeOntologySolver solver, ComponentEntity component,
             List<StringParameter> constraintExpressions)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, constraintExpressions);
 
@@ -104,7 +104,7 @@ ActorConstraintsDefinitionAdapter {
      */
     public static boolean areActorElementConstraintsInherited(
             StringParameter actorElementConstraintExpression)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (actorElementConstraintExpression == null) {
             throw new IllegalActionException(
                     "The constraint expression for the actor"
@@ -144,21 +144,21 @@ ActorConstraintsDefinitionAdapter {
                     if (adapter != null) {
                         Ontology adapterOntology = adapter.getSolver()
                                 .getOntology();
-                        adapter._addDefaultConstraints(adapter.getSolver()
-                                ._getConstraintType());
+                        adapter._addDefaultConstraints(
+                                adapter.getSolver()._getConstraintType());
                         List<Inequality> actorElementConstraints = _getActorElementConstraints(
                                 actorElement, adapter.constraintList());
                         ProductLatticeOntologyAdapter
-                        .addConstraintsFromTupleOntologyAdapter(
-                                actorElementConstraints,
-                                adapterOntology, this);
+                                .addConstraintsFromTupleOntologyAdapter(
+                                        actorElementConstraints,
+                                        adapterOntology, this);
                     }
                 }
             } else if (!isActorElementIgnored(constraintExpression)
                     && !isActorElementUnconstrained(constraintExpression)) {
                 _setConstraints(actorElement,
                         ((StringToken) constraintExpression.getToken())
-                        .stringValue());
+                                .stringValue());
             }
         }
 
@@ -185,8 +185,8 @@ ActorConstraintsDefinitionAdapter {
                 adapterConstraintsList);
 
         for (Inequality constraint : adapterConstraintsList) {
-            if (!actorElement.equals(constraint.getGreaterTerm()
-                    .getAssociatedObject())) {
+            if (!actorElement.equals(
+                    constraint.getGreaterTerm().getAssociatedObject())) {
                 elementConstraints.remove(constraint);
             }
         }

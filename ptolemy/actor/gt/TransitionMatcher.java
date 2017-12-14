@@ -53,8 +53,8 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransitionMatcher extends Transition implements GTEntity,
-ValueListener {
+public class TransitionMatcher extends Transition
+        implements GTEntity, ValueListener {
 
     /** Construct a transition matcher with the given name contained by the
      *  specified entity. The container argument must not be null, or a
@@ -162,8 +162,7 @@ ValueListener {
      */
     @Override
     public boolean match(NamedObj object) {
-        return object instanceof Transition
-                || object.getClass().getName()
+        return object instanceof Transition || object.getClass().getName()
                 .equals("ptolemy.domains.modal.kernel.Transition");
     }
 

@@ -73,7 +73,6 @@ public class ImageToString extends Converter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-
         // Set the type of the input port.
         input.setTypeEquals(BaseType.GENERAL); // FIXME: No image type available...
         input.setMultiport(false);
@@ -106,10 +105,11 @@ public class ImageToString extends Converter {
         final RenderedImage im = getRenderedImage(
                 ((AWTImageToken) input.get(0)).getValue());
         try {
-                OutputStream enc = Base64.getUrlEncoder().wrap(os);
+            OutputStream enc = Base64.getUrlEncoder().wrap(os);
             ImageIO.write(im, "png", enc); // FIXME: Use parameter instead.
             enc.close(); // Important, flushes the output buffer.
-            StringToken tk = new StringToken(os.toString(StandardCharsets.US_ASCII.name()));
+            StringToken tk = new StringToken(
+                    os.toString(StandardCharsets.US_ASCII.name()));
             output.send(0, tk);
         } catch (final IOException ioe) {
             throw new IllegalActionException(

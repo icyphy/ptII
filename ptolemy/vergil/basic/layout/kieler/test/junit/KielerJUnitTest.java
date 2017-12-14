@@ -94,8 +94,8 @@ public class KielerJUnitTest {
      *  @param args Not used.
      */
     public static void main(String args[]) {
-        org.junit.runner.JUnitCore
-                .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
+        org.junit.runner.JUnitCore.main(
+                "ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
 
     /** Save the previous value of the ptolemy.ptII.doNotExit property
@@ -125,23 +125,23 @@ public class KielerJUnitTest {
      * @exception Exception If there is a problem reading or laying
      * out a model.
      */
-//    @org.junit.Test
-//    public void runConstDisplay() throws Exception {
-//        _layoutTest(
-//                "$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml",
-//                true);
-//    }
+    //    @org.junit.Test
+    //    public void runConstDisplay() throws Exception {
+    //        _layoutTest(
+    //                "$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstDisplay.xml",
+    //                true);
+    //    }
 
     /** Test the layout of the ConstConstDisplay model.
      * @exception Exception If there is a problem reading or laying
      * out a model.
      */
-//    @org.junit.Test
-//    public void runConstConstDisplay() throws Exception {
-//        _layoutTest(
-//                "$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml",
-//                true);
-//    }
+    //    @org.junit.Test
+    //    public void runConstConstDisplay() throws Exception {
+    //        _layoutTest(
+    //                "$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml",
+    //                true);
+    //    }
 
     /* ----------------------------
      *          Actor Tests
@@ -218,8 +218,8 @@ public class KielerJUnitTest {
         };
         SwingUtilities.invokeAndWait(openModelAction);
         if (throwable[0] != null || model[0] == null) {
-            throw new Exception("Failed to open " + modelFileName
-                    + throwable[0]);
+            throw new Exception(
+                    "Failed to open " + modelFileName + throwable[0]);
         }
         String baseMoML = model[0].exportMoML();
         _basicGraphFrame = _getBasicGraphFrame(model[0]);
@@ -255,8 +255,8 @@ public class KielerJUnitTest {
         SwingUtilities.invokeAndWait(layoutModelAction);
         _sleep();
         if (throwable[0] != null || model[0] == null) {
-            throw new Exception("Failed to layout " + modelFileName
-                    + throwable[0]);
+            throw new Exception(
+                    "Failed to layout " + modelFileName + throwable[0]);
         }
 
         /////
@@ -284,8 +284,8 @@ public class KielerJUnitTest {
             SwingUtilities.invokeAndWait(kielerLayoutModelAction);
             _sleep();
             if (throwable[0] != null || model[0] == null) {
-                throw new Exception("Failed to layout " + modelFileName
-                        + throwable[0]);
+                throw new Exception(
+                        "Failed to layout " + modelFileName + throwable[0]);
             }
         }
 
@@ -307,15 +307,14 @@ public class KielerJUnitTest {
             SwingUtilities.invokeAndWait(undoAction);
             _sleep();
             if (throwable[0] != null || model[0] == null) {
-                throw new Exception("Failed to undo " + modelFileName
-                        + throwable[0]);
+                throw new Exception(
+                        "Failed to undo " + modelFileName + throwable[0]);
             }
 
             String undoMoML = model[0].exportMoML();
             if (_debug || !baseMoML.equals(undoMoML)) {
-                System.out
-                        .println("Difference between original MoML"
-                                + " and the exported MoML after Kieler Layout and then undo:");
+                System.out.println("Difference between original MoML"
+                        + " and the exported MoML after Kieler Layout and then undo:");
                 System.out.println(Diff.diff(baseMoML, undoMoML));
             }
 
@@ -335,17 +334,16 @@ public class KielerJUnitTest {
             SwingUtilities.invokeAndWait(redoAction);
             String redoMoML = model[0].exportMoML();
             if (_debug || !laidOutMoML.equals(redoMoML)) {
-                System.out
-                        .println("Difference between laid out MoML"
-                                + " and the exported MoML after Kieler Layout and then undo, then redo:");
+                System.out.println("Difference between laid out MoML"
+                        + " and the exported MoML after Kieler Layout and then undo, then redo:");
                 System.out.println(Diff.diff(laidOutMoML, redoMoML));
             }
 
             assertArrayEquals(laidOutMoML.getBytes(), redoMoML.getBytes());
             _sleep();
             if (throwable[0] != null || model[0] == null) {
-                throw new Exception("Failed to redo " + modelFileName
-                        + throwable[0]);
+                throw new Exception(
+                        "Failed to redo " + modelFileName + throwable[0]);
             }
 
         }
@@ -367,8 +365,8 @@ public class KielerJUnitTest {
         SwingUtilities.invokeAndWait(closeAction);
         _sleep();
         if (throwable[0] != null || model[0] == null) {
-            throw new Exception("Failed to close " + modelFileName
-                    + throwable[0]);
+            throw new Exception(
+                    "Failed to close " + modelFileName + throwable[0]);
         }
     }
 
@@ -396,16 +394,15 @@ public class KielerJUnitTest {
                     null);
             String canonicalModelFileName = canonicalModelFile
                     .getCanonicalPath();
-            byte[] baseMoMLBytes = FileUtilities
-                    .binaryReadURLToByteArray(canonicalModelFile.toURI()
-                            .toURL());
+            byte[] baseMoMLBytes = FileUtilities.binaryReadURLToByteArray(
+                    canonicalModelFile.toURI().toURL());
 
             if (_debug || !new String(baseMoMLBytes).equals(laidOutMoML)) {
                 System.out.println("Difference between "
                         + canonicalModelFileName
                         + " and the exported MoML after Kieler Layout:");
-                System.out.println(Diff.diff(new String(baseMoMLBytes),
-                        laidOutMoML));
+                System.out.println(
+                        Diff.diff(new String(baseMoMLBytes), laidOutMoML));
             }
             assertArrayEquals(laidOutMoML.getBytes(), baseMoMLBytes);
 

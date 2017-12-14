@@ -10,10 +10,10 @@ package ptolemy.actor.corba.CorbaIOUtil;
 /* A CORBA compatible interface for a pull supplier.
  */
 @SuppressWarnings("serial")
-public abstract class _pullSupplierImplBase extends
-org.omg.CORBA.portable.ObjectImpl implements
-ptolemy.actor.corba.CorbaIOUtil.pullSupplier,
-org.omg.CORBA.portable.InvokeHandler {
+public abstract class _pullSupplierImplBase
+        extends org.omg.CORBA.portable.ObjectImpl
+        implements ptolemy.actor.corba.CorbaIOUtil.pullSupplier,
+        org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _pullSupplierImplBase() {
     }
@@ -50,7 +50,7 @@ org.omg.CORBA.portable.InvokeHandler {
             } catch (ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                .write(out, $ex);
+                        .write(out, $ex);
             }
 
             break;

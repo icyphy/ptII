@@ -45,7 +45,8 @@ import ptolemy.vergil.basic.BasicGraphFrame;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class VergilGraphicalMessageHandler extends ActorGraphicalMessageHandler {
+public class VergilGraphicalMessageHandler
+        extends ActorGraphicalMessageHandler {
 
     /** Open the level of hierarchy of the model that contains the
      *  Nameable referred to by the KernelException or KernelRuntimeException and

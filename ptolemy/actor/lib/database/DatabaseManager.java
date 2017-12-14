@@ -112,7 +112,8 @@ public class DatabaseManager extends TypedAtomicActor {
         // Default database is the EECS database at Berkeley.
         // NOTE: the server and database name ("acgeecs")
         // are going to change in summer 2008...
-        database.setExpression("jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs");
+        database.setExpression(
+                "jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs");
 
         passwordFile = new FileParameter(this, "passwordFile");
         passwordFile.setExpression("");
@@ -270,8 +271,8 @@ public class DatabaseManager extends TypedAtomicActor {
                 } else {
                     int count = statement.getUpdateCount();
                     if (count != -1) {
-                        resultString.append("Statement OK. " + count
-                                + " rows affected.");
+                        resultString.append(
+                                "Statement OK. " + count + " rows affected.");
                         resultString.append("\n");
                     } else {
                         connection.commit();
@@ -333,8 +334,8 @@ public class DatabaseManager extends TypedAtomicActor {
             while (rset.next()) {
                 HashMap<String, Token> map = new HashMap<String, Token>();
                 for (int c = 1; c <= columnCount; c++) {
-                    String columnName = StringUtilities.sanitizeName(metaData
-                            .getColumnName(c));
+                    String columnName = StringUtilities
+                            .sanitizeName(metaData.getColumnName(c));
                     String value = rset.getString(c);
                     if (value == null) {
                         value = "";
@@ -410,9 +411,10 @@ public class DatabaseManager extends TypedAtomicActor {
             statement = connection.prepareStatement(sql);
             int result = statement.executeUpdate();
             if (expectedResult >= 0 && result != expectedResult) {
-                throw new IllegalActionException(this, "Update affected "
-                        + result + " rows, but should have affected "
-                        + expectedResult);
+                throw new IllegalActionException(this,
+                        "Update affected " + result
+                                + " rows, but should have affected "
+                                + expectedResult);
             }
             connection.commit();
             return result;
@@ -571,10 +573,10 @@ public class DatabaseManager extends TypedAtomicActor {
                         DriverManager.registerDriver((java.sql.Driver) Class
                                 .forName("oracle.jdbc.OracleDriver")
                                 .newInstance());
-                        _connection = DriverManager
-                                .getConnection(database.getExpression(),
-                                        userName.getExpression(), new String(
-                                                _password));
+                        _connection = DriverManager.getConnection(
+                                database.getExpression(),
+                                userName.getExpression(),
+                                new String(_password));
                         // If updating, use single transaction.
                         _connection.setAutoCommit(false);
                     } catch (Throwable throwable2) {

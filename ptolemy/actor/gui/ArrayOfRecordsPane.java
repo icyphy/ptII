@@ -256,8 +256,8 @@ public class ArrayOfRecordsPane extends JPanel {
             if (row >= _array.length() || column >= _columns.size()) {
                 return "";
             }
-            Token element = ((RecordToken) _array.getElement(row)).get(_columns
-                    .get(column));
+            Token element = ((RecordToken) _array.getElement(row))
+                    .get(_columns.get(column));
             if (element == null) {
                 return "";
             }

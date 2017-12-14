@@ -72,8 +72,8 @@ public class SuppressSimultaneousEvents extends DETransformer {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SuppressSimultaneousEvents newObject = (SuppressSimultaneousEvents) super
-                .clone(workspace);
+        SuppressSimultaneousEvents newObject = (SuppressSimultaneousEvents) super.clone(
+                workspace);
 
         newObject.output.setTypeEquals(input.getType());
         newObject.output.setWidthEquals(newObject.input, false);

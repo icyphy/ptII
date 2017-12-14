@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.org.ter
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class JSAccessor
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.org.terraswarm.accessor.JSAccessor {
+public class JSAccessor extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.org.terraswarm.accessor.JSAccessor {
 
     /**
      *  Construct the JSAccessor adapter.
@@ -49,6 +48,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.org.terraswarm.accessor.J
      */
     public JSAccessor(org.terraswarm.accessor.JSAccessor actor) {
         super(actor);
-        System.out.println("###### ctor: ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/org/terraswarm/accessor/JSAccessor.java");
+        System.out.println(
+                "###### ctor: ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/org/terraswarm/accessor/JSAccessor.java");
     }
 }

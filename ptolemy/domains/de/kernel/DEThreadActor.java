@@ -194,9 +194,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                     }
                 }
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(
-                        this,
-                        ex,
+                throw new InternalErrorException(this, ex,
                         "At this time IllegalActionExceptions are not allowed to happen.\n"
                                 + "Width inference should already have been done.");
             }

@@ -89,7 +89,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     public ActorConstraintsDefinitionAdapter(LatticeOntologySolver solver,
             ComponentEntity component,
             List<StringParameter> constraintExpressions)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, false);
         _constraintTermExpressions = constraintExpressions;
@@ -126,8 +126,10 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 }
                 if (actorElement == null) {
                     throw new InternalErrorException(
-                            (getComponent() instanceof NamedObj ? ((NamedObj) getComponent())
-                                    : null), null,
+                            (getComponent() instanceof NamedObj
+                                    ? ((NamedObj) getComponent())
+                                    : null),
+                            null,
                             "Could not find a component or attribute named \""
                                     + objName
                                     + "\".  Thus, actorElement is null?");
@@ -190,7 +192,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      */
     protected ConceptFunctionInequalityTerm _getConceptFunctionTerm(
             NamedObj actorElement, String functionString)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         ArrayList<String> argumentNameList = new ArrayList<String>();
         ArrayList<InequalityTerm> argumentList = new ArrayList<InequalityTerm>();
 
@@ -199,7 +201,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
 
         for (StringParameter constraintExpression : _constraintTermExpressions) {
             if (!isActorElementIgnored(constraintExpression)) {
-                String actorElementInExpressionName = getActorElementName(constraintExpression);
+                String actorElementInExpressionName = getActorElementName(
+                        constraintExpression);
 
                 // Have to use a Java regular expression Pattern here
                 // because the String.regex() method doesn't match
@@ -208,8 +211,9 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 // have been incorrectly parsed.
                 int regexOptions = Pattern.DOTALL;
                 // Note that "\\b" matches a word boundary.
-                Pattern compiledRegex = Pattern.compile(".*\\b"
-                        + actorElementInExpressionName + "\\b.*", regexOptions);
+                Pattern compiledRegex = Pattern.compile(
+                        ".*\\b" + actorElementInExpressionName + "\\b.*",
+                        regexOptions);
                 Matcher regexMatcher = compiledRegex.matcher(functionString);
 
                 if (regexMatcher.matches()) {
@@ -219,7 +223,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                     if (isActorElementAPort(constraintExpression)) {
                         argument = ((ComponentEntity) getComponent())
                                 .getPort(actorElementInExpressionName);
-                    } else if (isActorElementAnAttribute(constraintExpression)) {
+                    } else if (isActorElementAnAttribute(
+                            constraintExpression)) {
                         argument = ((ComponentEntity) getComponent())
                                 .getAttribute(actorElementInExpressionName);
                     }
@@ -251,7 +256,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             }
         }
 
-        InequalityTerm[] argumentTerms = new InequalityTerm[argumentList.size()];
+        InequalityTerm[] argumentTerms = new InequalityTerm[argumentList
+                .size()];
         System.arraycopy(argumentList.toArray(), 0, argumentTerms, 0,
                 argumentList.size());
 
@@ -259,16 +265,17 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         List<Ontology> domainOntologies = new ArrayList<Ontology>(
                 argumentTerms.length);
         //for (InequalityTerm argumentTerm : argumentTerms) {
-        for (int i=0; i < argumentTerms.length; i++) {
+        for (int i = 0; i < argumentTerms.length; i++) {
             domainOntologies.add(functionOntology);
         }
 
         ConceptFunction function = new ExpressionConceptFunction(
                 ((ComponentEntity) getComponent()).getName() + "_"
-                        + actorElement.getName() + "_ConstraintFunction", true,
-                        domainOntologies, functionOntology, argumentNameList,
-                        functionString, (OntologySolverModel) getSolver()
-                        .getContainedModel(), actorElement);
+                        + actorElement.getName() + "_ConstraintFunction",
+                true, domainOntologies, functionOntology, argumentNameList,
+                functionString,
+                (OntologySolverModel) getSolver().getContainedModel(),
+                actorElement);
 
         ConceptFunctionInequalityTerm functionTerm = new ConceptFunctionInequalityTerm(
                 function, argumentTerms);
@@ -292,7 +299,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 if (!isActorElementIgnored(constraintExpression)
                         && isActorElementAnAttribute(constraintExpression)) {
 
-                    String attributeName = getActorElementName(constraintExpression);
+                    String attributeName = getActorElementName(
+                            constraintExpression);
                     Attribute attributeToAdd = ((ComponentEntity) getComponent())
                             .getAttribute(attributeName);
                     result.add(attributeToAdd);
@@ -326,7 +334,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         for (String constraintString : singleConstraintExpressions) {
             constraintString = constraintString.trim();
 
-            List<String> dirAndRHSStrings = getConstraintDirAndRHSStrings(constraintString);
+            List<String> dirAndRHSStrings = getConstraintDirAndRHSStrings(
+                    constraintString);
             String constraintDir = null;
             String RHSString = null;
             if (dirAndRHSStrings == null) {
@@ -368,16 +377,15 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             // ontology analysis.
             if (RHSTerm != null && !(RHSTerm instanceof Concept)) {
                 for (StringParameter constraintExpression : _constraintTermExpressions) {
-                    if (getActorElementName(constraintExpression).equals(
-                            objName)) {
+                    if (getActorElementName(constraintExpression)
+                            .equals(objName)) {
                         if (isActorElementIgnored(constraintExpression)) {
                             throw new IllegalActionException(actorElement,
                                     "Cannot set up a constraint for "
                                             + actorElement + " in actor "
                                             + getComponent()
                                             + " because the actor element "
-                                            + RHSTerm
-                                            + " is on the RHS of the "
+                                            + RHSTerm + " is on the RHS of the "
                                             + "constraint but it is set "
                                             + "to be ignored by the ontology "
                                             + "analysis.");
@@ -404,8 +412,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 setAtLeast(actorElement, RHSTerm);
             } else if (constraintDir.equals(LTE)) {
                 if (RHSTerm instanceof ConceptFunctionInequalityTerm) {
-                    throw new IllegalActionException(
-                            actorElement,
+                    throw new IllegalActionException(actorElement,
                             "When the constraint is '<=' which"
                                     + " indicates an acceptance criterion and not a consraint for the solver, the"
                                     + " inequality cannot have a monotonic function inequality term"

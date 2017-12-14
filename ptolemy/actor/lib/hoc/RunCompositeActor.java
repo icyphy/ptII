@@ -113,8 +113,8 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
-    public RunCompositeActor() throws IllegalActionException,
-    NameDuplicationException {
+    public RunCompositeActor()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -350,8 +350,8 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is RunCompositeActor.
         // In derived classes, however, we usually do not want to identify

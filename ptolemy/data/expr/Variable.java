@@ -231,8 +231,8 @@ import ptolemy.util.StringUtilities;
  @see ScopeExtendingAttribute
  @see #setPersistent(boolean)
  */
-public class Variable extends AbstractSettableAttribute implements Typeable,
-        ValueListener {
+public class Variable extends AbstractSettableAttribute
+        implements Typeable, ValueListener {
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -460,7 +460,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (_parseTree == null) {
                 throw new InternalErrorException(this, null,
                         "getFreeIdentifiers(): failed to set _parseTree? _parseTree is null, "
-                        + "_parseTreeValid is " + _parseTreeValid);
+                                + "_parseTreeValid is " + _parseTreeValid);
             }
             return collector.collectFreeVariables(_parseTree);
         } finally {
@@ -900,10 +900,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   an attribute with the name of this variable.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
-
 
         // Warn if there are variables that depend on this one.
         if (container != previousContainer && previousContainer != null) {
@@ -917,9 +916,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             }
 
             if (!listeners.isEmpty()) {
-                if (!MessageHandler
-                        .yesNoQuestion("WARNING: There are variables depending on "
-                                + getName() + ". Continue?")) {
+                if (!MessageHandler.yesNoQuestion(
+                        "WARNING: There are variables depending on " + getName()
+                                + ". Continue?")) {
                     // Cancel.
                     throw new IllegalActionException(this,
                             "Cancelled change of container.");
@@ -1068,8 +1067,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *       attribute with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         String previousName = getName();
         // If the name is changing from a previous name, then
         // make sure to update the variables that depend on this.
@@ -1102,11 +1101,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                             // string mode if the listener is in string mode so
                             // referenced variables are correctly renamed. See:
                             // https://projects.ecoinformatics.org/ecoinfo/issues/5723
-                            writer.setStringMode(((Variable) listener)
-                                    .isStringMode());
+                            writer.setStringMode(
+                                    ((Variable) listener).isStringMode());
                             ((Variable) listener)
-                                    .setExpression(writer
-                                            .parseTreeToExpression(((Variable) listener)._parseTree));
+                                    .setExpression(writer.parseTreeToExpression(
+                                            ((Variable) listener)._parseTree));
                             changed.add(listener);
                         }
                     }
@@ -1124,11 +1123,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     Variable listener = (Variable) listeners.next();
                     // The listener could be referencing this variable.
                     ParseTreeFreeVariableRenamer renamer = new ParseTreeFreeVariableRenamer();
-                    renamer.renameVariables(listener._parseTree, listener,
-                            this, previousName);
+                    renamer.renameVariables(listener._parseTree, listener, this,
+                            previousName);
                     ParseTreeWriter writer = new ParseTreeWriter();
-                    listener.setExpression(writer
-                            .parseTreeToExpression(listener._parseTree));
+                    listener.setExpression(
+                            writer.parseTreeToExpression(listener._parseTree));
                 }
                 // Make sure to re-evaluate dependent variables.
                 validate();
@@ -1162,7 +1161,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   parameter is incompatible with the resulting type.
      *  @see #isStringMode()
      */
-    public void setStringMode(boolean stringMode) throws IllegalActionException {
+    public void setStringMode(boolean stringMode)
+            throws IllegalActionException {
         _isStringMode = stringMode;
 
         if (_isStringMode) {
@@ -1331,10 +1331,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         int typeInfo = TypeLattice.compare(currentType, type);
 
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(this, "setTypeAtMost(): "
-                    + "the current type " + currentType.toString()
-                    + " is not less than the desired bounding type "
-                    + type.toString());
+            throw new IllegalActionException(this,
+                    "setTypeAtMost(): " + "the current type "
+                            + currentType.toString()
+                            + " is not less than the desired bounding type "
+                            + type.toString());
         }
 
         _typeAtMost = type;
@@ -1387,8 +1388,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         _varType = _declaredType;
 
         if (_token != null && _declaredType instanceof StructuredType) {
-            ((StructuredType) _varType).updateType((StructuredType) _token
-                    .getType());
+            ((StructuredType) _varType)
+                    .updateType((StructuredType) _token.getType());
         }
     }
 
@@ -1811,11 +1812,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // have been triggered by evaluating the expression of this variable,
             // which means that the expression directly or indirectly refers
             // to itself.
-            if (_needsEvaluation && _threadEvaluating == Thread.currentThread()) {
+            if (_needsEvaluation
+                    && _threadEvaluating == Thread.currentThread()) {
                 _threadEvaluating = null;
                 throw new CircularDependencyError(this,
-                        "There is a dependency loop" + " where "
-                                + getFullName() + " directly or indirectly"
+                        "There is a dependency loop" + " where " + getFullName()
+                                + " directly or indirectly"
                                 + " refers to itself in its expression: "
                                 + _currentExpression);
             }
@@ -1883,10 +1885,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // name that does not yet exist.
             if (!_isWithinClassDefinition()
                     || (!(ex instanceof UndefinedConstantOrIdentifierException))
-                    && !(ex instanceof CircularDependencyError)) {
+                            && !(ex instanceof CircularDependencyError)) {
                 throw new IllegalActionException(this, ex,
-                        "Error evaluating expression:\n"
-                                + StringUtilities.truncateString(_currentExpression, 80, 1));
+                        "Error evaluating expression:\n" + StringUtilities
+                                .truncateString(_currentExpression, 80, 1));
             }
         } finally {
             workspace().doneReading();
@@ -1946,7 +1948,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     _parseTree.setToken(new StringToken(_currentExpression));
                     _parseTree.setType(BaseType.STRING);
                 } else {
-                    _parseTree = parser.generateStringParseTree(_currentExpression);
+                    _parseTree = parser
+                            .generateStringParseTree(_currentExpression);
                 }
             } else {
                 // Normal parse rules for expressions.
@@ -2059,7 +2062,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 if (listener instanceof Variable) {
                     try {
                         // Check that listener is still referencing this variable.
-                        if (((Variable) listener).getVariable(getName()) != this) {
+                        if (((Variable) listener)
+                                .getVariable(getName()) != this) {
                             // This variable is no longer in the scope of the listener.
                             // Note that the listener list is a CopyOnWriteArrayList,
                             // so this does not cause a concurrent modification exception.
@@ -2192,7 +2196,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 Type tokenType = newToken.getType();
                 int comparison = TypeLattice.compare(tokenType, _typeAtMost);
 
-                if (comparison == CPO.HIGHER || comparison == CPO.INCOMPARABLE) {
+                if (comparison == CPO.HIGHER
+                        || comparison == CPO.INCOMPARABLE) {
                     // Incompatible type!
                     throw new IllegalActionException(this,
                             "Cannot store a token of type "
@@ -2243,9 +2248,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             try {
                 oldVarType = (Type) ((StructuredType) _varType).clone();
             } catch (CloneNotSupportedException ex2) {
-                throw new InternalErrorException(
-                        "Variable._setTokenAndNotify: "
-                                + " Cannot clone _varType" + ex2.getMessage());
+                throw new InternalErrorException("Variable._setTokenAndNotify: "
+                        + " Cannot clone _varType" + ex2.getMessage());
             }
         }
 
@@ -2502,8 +2506,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
-        Iterator scopeAttributes = object.attributeList(
-                ScopeExtendingAttribute.class).iterator();
+        Iterator scopeAttributes = object
+                .attributeList(ScopeExtendingAttribute.class).iterator();
 
         while (scopeAttributes.hasNext()) {
             ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes
@@ -2621,7 +2625,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     /** Value listeners that should not be treated as true dependencies. */
     private Set<ValueListener> _weakValueListeners;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -2679,8 +2682,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         @Override
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("TypeTerm.initialize: "
-                        + "The type is not settable.");
+                throw new IllegalActionException(
+                        "TypeTerm.initialize: " + "The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
@@ -2726,8 +2729,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         @Override
         public void setValue(Object e) throws IllegalActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("TypeTerm.setValue: The "
-                        + "type is not settable.");
+                throw new IllegalActionException(
+                        "TypeTerm.setValue: The " + "type is not settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {

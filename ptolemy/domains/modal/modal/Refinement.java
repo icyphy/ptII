@@ -105,9 +105,9 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
     @Override
     public void addRefinement(State state, String name, Entity template,
             String className, InstanceOpener instanceOpener)
-                    throws IllegalActionException {
-        throw new IllegalActionException(this, "Unable to create a "
-                + "refinement within a CompositeActor.");
+            throws IllegalActionException {
+        throw new IllegalActionException(this,
+                "Unable to create a " + "refinement within a CompositeActor.");
     }
 
     /** Get the state in any ModalController within this ModalModel that has
@@ -228,8 +228,8 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      *   name already in the entity.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         // If mirroring is disabled, then the port is being added by the
         // container, which is surely OK.
         if (!_mirrorDisable) {
@@ -248,8 +248,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
                     // It is ok to have ParameterPorts inside a refinement.
                     // To replicate, create a refinement and drag in a ParameterPort.
                     // See also $PTII/ptolemy/domains/continuous/demo/Pendulum3D/Pendulum3D.xml
-                    throw new IllegalActionException(
-                            this,
+                    throw new IllegalActionException(this,
                             "Ports must be added to a ModalController via the newPort()"
                                     + " method, which in Vergil is accessed by clicking on one of"
                                     + " the port buttons at the top of the window."

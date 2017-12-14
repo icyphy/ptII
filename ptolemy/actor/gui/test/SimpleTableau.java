@@ -82,8 +82,8 @@ public class SimpleTableau extends Tableau {
                 effigy.writeFile(file);
                 effigy.setModified(false);
             } catch (IOException ex) {
-                throw new KernelRuntimeException(effigy, "Failed to write "
-                        + file);
+                throw new KernelRuntimeException(effigy,
+                        "Failed to write " + file);
             }
         }
         return true;

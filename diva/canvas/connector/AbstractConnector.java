@@ -52,8 +52,8 @@ import diva.util.java2d.ShapeUtilities;
  * @author  John Reekie
  * @author  Michael Shilman
  */
-public abstract class AbstractConnector extends AbstractFigure implements
-Connector {
+public abstract class AbstractConnector extends AbstractFigure
+        implements Connector {
     /** The head end.
      */
     private ConnectorEnd _headEnd = null;

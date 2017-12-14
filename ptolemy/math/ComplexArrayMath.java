@@ -323,8 +323,8 @@ public class ComplexArrayMath {
         Complex returnValue = Complex.ZERO;
 
         for (int i = 0; i < length; i++) {
-            returnValue = returnValue.add(array1[i].multiply(array2[i]
-                    .conjugate()));
+            returnValue = returnValue
+                    .add(array1[i].multiply(array2[i].conjugate()));
         }
 
         return returnValue;
@@ -616,8 +616,8 @@ public class ComplexArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue, newLength
-                - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue,
+                newLength - halfLengthCeil, halfLengthCeil);
 
         for (int i = halfLengthCeil; i < newLength - halfLengthCeil; i++) {
             returnValue[i] = Complex.ZERO;
@@ -792,8 +792,7 @@ public class ComplexArrayMath {
 
         if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx
-                    + "' is greater than equal to the array length '"
+                    + startIdx + "' is greater than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }
@@ -1078,7 +1077,8 @@ public class ComplexArrayMath {
             throw new IllegalArgumentException("ptolemy.math." + methodName
                     + "() : input arrays must have the same length, "
                     + "but the first array has length " + array1.length
-                    + " and the second array has length " + array2.length + '.');
+                    + " and the second array has length " + array2.length
+                    + '.');
         }
 
         return array1.length;

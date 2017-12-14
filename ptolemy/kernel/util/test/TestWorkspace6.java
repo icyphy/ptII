@@ -69,7 +69,8 @@ public class TestWorkspace6 extends TestWorkspaceBase {
         _thread = new AccessThread("T1", actions, this);
         _accessThreads.add(_thread);
         actions = new LinkedList();
-        action = new AccessAction(workspace, 500, 'W', 500, null, _record, "A3");
+        action = new AccessAction(workspace, 500, 'W', 500, null, _record,
+                "A3");
         actions.add(action);
         _accessThreads.add(new AccessThread("T2", actions, this));
         _testTime = 5000; // ms

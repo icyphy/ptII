@@ -46,8 +46,8 @@ import ptdb.common.exception.DBExecutionException;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class NameSearcher extends AbstractSearcher implements
-AbstractDBSearcher {
+public class NameSearcher extends AbstractSearcher
+        implements AbstractDBSearcher {
 
     /**
      * Construct the NameSearcher object according to the passed search

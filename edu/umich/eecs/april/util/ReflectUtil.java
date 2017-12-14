@@ -62,8 +62,9 @@ public class ReflectUtil {
         try {
             Class cls = Class.forName(className);
             Class clss[] = new Class[args.length];
-            for (int i = 0; i < args.length; i++)
+            for (int i = 0; i < args.length; i++) {
                 clss[i] = args[i].getClass();
+            }
 
             Object o = cls.getConstructor(clss).newInstance(args);
             return o;

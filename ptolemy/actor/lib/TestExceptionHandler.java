@@ -62,8 +62,8 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 @Deprecated
-public class TestExceptionHandler extends TypedAtomicActor implements
-ExceptionHandler {
+public class TestExceptionHandler extends TypedAtomicActor
+        implements ExceptionHandler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -135,11 +135,11 @@ ExceptionHandler {
             correctExceptionMessage.setExpression(exception.getMessage());
             correctExceptionMessage.setPersistent(true);
         } else {
-            if (!exception.getMessage().equals(
-                    correctExceptionMessage.stringValue())) {
-                throw new IllegalActionException(this, exception, "Expected:\n"
-                        + correctExceptionMessage.stringValue()
-                        + "\nBut got:\n" + exception.getMessage());
+            if (!exception.getMessage()
+                    .equals(correctExceptionMessage.stringValue())) {
+                throw new IllegalActionException(this, exception,
+                        "Expected:\n" + correctExceptionMessage.stringValue()
+                                + "\nBut got:\n" + exception.getMessage());
             }
         }
         return true;

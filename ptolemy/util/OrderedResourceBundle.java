@@ -66,15 +66,15 @@ public class OrderedResourceBundle {
      * @exception NullPointerException
      *             if the InputStream is null
      */
-    public OrderedResourceBundle(InputStream stream) throws IOException,
-    NullPointerException {
+    public OrderedResourceBundle(InputStream stream)
+            throws IOException, NullPointerException {
 
         if (stream == null) {
             throw new NullPointerException(
                     "OrderedResourceBundle constructor received a NULL InputStream");
         }
-        BufferedReader propsReader = new BufferedReader(new InputStreamReader(
-                stream));
+        BufferedReader propsReader = new BufferedReader(
+                new InputStreamReader(stream));
 
         // This method closes propsReader
         orderedMap = getPropsAsOrderedMap(propsReader);
@@ -175,7 +175,8 @@ public class OrderedResourceBundle {
                 int lineLen = readLine.length();
                 int keyStart;
                 for (keyStart = 0; keyStart < lineLen; keyStart++) {
-                    if (whiteSpaceChars.indexOf(readLine.charAt(keyStart)) == -1) {
+                    if (whiteSpaceChars
+                            .indexOf(readLine.charAt(keyStart)) == -1) {
                         break;
                     }
                 }
@@ -191,9 +192,10 @@ public class OrderedResourceBundle {
                         String choppedLine = readLine.substring(0, lineLen - 1);
                         // Advance beyond whitespace on new line
                         int startIndex;
-                        for (startIndex = 0; startIndex < nextLine.length(); startIndex++) {
-                            if (whiteSpaceChars.indexOf(nextLine
-                                    .charAt(startIndex)) == -1) {
+                        for (startIndex = 0; startIndex < nextLine
+                                .length(); startIndex++) {
+                            if (whiteSpaceChars.indexOf(
+                                    nextLine.charAt(startIndex)) == -1) {
                                 break;
                             }
                         }
@@ -209,7 +211,8 @@ public class OrderedResourceBundle {
                         char currentChar = readLine.charAt(sepIdx);
                         if (currentChar == '\\') {
                             sepIdx++;
-                        } else if (keyValueSeparators.indexOf(currentChar) != -1) {
+                        } else if (keyValueSeparators
+                                .indexOf(currentChar) != -1) {
                             break;
                         }
                     }
@@ -225,8 +228,8 @@ public class OrderedResourceBundle {
 
                     // Skip over one non whitespace key value separators if any
                     if (valueIndex < lineLen) {
-                        if (strictKeyValueSeparators.indexOf(readLine
-                                .charAt(valueIndex)) != -1) {
+                        if (strictKeyValueSeparators
+                                .indexOf(readLine.charAt(valueIndex)) != -1) {
                             valueIndex++;
                         }
                     }
@@ -239,9 +242,10 @@ public class OrderedResourceBundle {
                         valueIndex++;
                     }
                     String nextKey = readLine.substring(keyStart, sepIdx);
-                    String nextVal = sepIdx < lineLen ? readLine.substring(
-                            valueIndex, lineLen) : "";
-                            orderedMap.put(unescape(nextKey), unescape(nextVal));
+                    String nextVal = sepIdx < lineLen
+                            ? readLine.substring(valueIndex, lineLen)
+                            : "";
+                    orderedMap.put(unescape(nextKey), unescape(nextVal));
                 }
             }
         } finally {

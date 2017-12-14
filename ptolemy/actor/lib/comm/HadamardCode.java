@@ -192,7 +192,8 @@ public class HadamardCode extends Source {
             int matrixDimension = 1 << log2LengthValue;
 
             if (_latestIndex >= matrixDimension) {
-                throw new IllegalActionException(this, "index is out of range.");
+                throw new IllegalActionException(this,
+                        "index is out of range.");
             }
 
             _row = _calculateRow(matrixDimension, _latestIndex);

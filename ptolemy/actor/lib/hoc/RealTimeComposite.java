@@ -228,8 +228,8 @@ public class RealTimeComposite extends MirrorComposite {
         try {
             // Remove the old inner RealTimeDirector(s) that is(are) in the wrong workspace.
             String realTimeDirectorName = null;
-            Iterator realTimeDirectors = result.attributeList(
-                    RealTimeDirector.class).iterator();
+            Iterator realTimeDirectors = result
+                    .attributeList(RealTimeDirector.class).iterator();
             while (realTimeDirectors.hasNext()) {
                 RealTimeDirector oldRealTimeDirector = (RealTimeDirector) realTimeDirectors
                         .next();
@@ -245,8 +245,8 @@ public class RealTimeComposite extends MirrorComposite {
             realTimeDirector.setContainer(result);
             realTimeDirector.setName(realTimeDirectorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone: " + throwable);
         }
         return result;
     }
@@ -575,15 +575,15 @@ public class RealTimeComposite extends MirrorComposite {
             if (_realStartTime < 0L) {
                 _realStartTime = System.currentTimeMillis();
             }
-            Time environmentTime = RealTimeComposite.this
-                    .getExecutiveDirector().getModelTime();
+            Time environmentTime = RealTimeComposite.this.getExecutiveDirector()
+                    .getModelTime();
             if (_delayValue == 0.0) {
                 // Delay is zero, so wait until current time matches
                 // model time, and then treat this as an ordinary composite actor.
                 long realTimeMillis = System.currentTimeMillis()
                         - _realStartTime;
-                long modelTimeMillis = Math.round(environmentTime
-                        .getDoubleValue() * 1000.0);
+                long modelTimeMillis = Math
+                        .round(environmentTime.getDoubleValue() * 1000.0);
                 if (realTimeMillis < modelTimeMillis) {
                     try {
                         Thread.sleep(modelTimeMillis - realTimeMillis);
@@ -618,8 +618,8 @@ public class RealTimeComposite extends MirrorComposite {
                         // Time matches.  Compare to real time.
                         long realTimeMillis = System.currentTimeMillis()
                                 - _realStartTime;
-                        long modelTimeMillis = Math.round(environmentTime
-                                .getDoubleValue() * 1000.0);
+                        long modelTimeMillis = Math.round(
+                                environmentTime.getDoubleValue() * 1000.0);
                         if (realTimeMillis < modelTimeMillis) {
                             try {
                                 Thread.sleep(modelTimeMillis - realTimeMillis);
@@ -664,8 +664,8 @@ public class RealTimeComposite extends MirrorComposite {
             if (director != null) {
                 if (RealTimeComposite.this._debugging) {
                     RealTimeComposite.this
-                    ._debug("---- Actor requests firing at time "
-                            + time + ": " + actor.getFullName());
+                            ._debug("---- Actor requests firing at time " + time
+                                    + ": " + actor.getFullName());
                 }
                 result = director.fireAt(RealTimeComposite.this, time,
                         microstep);
@@ -699,8 +699,8 @@ public class RealTimeComposite extends MirrorComposite {
             // Coverity Scan reports that this method does not call
             // super.fireAtCurrentTime(), which is ok because we call
             // it on the executive director.
-            Time environmentTime = RealTimeComposite.this
-                    .getExecutiveDirector().getModelTime();
+            Time environmentTime = RealTimeComposite.this.getExecutiveDirector()
+                    .getModelTime();
             _inputFrames.put(new InputFrame(environmentTime,
                     new LinkedList<QueuedToken>()));
             Director director = RealTimeComposite.this.getExecutiveDirector();
@@ -713,13 +713,11 @@ public class RealTimeComposite extends MirrorComposite {
                 Time time = new Time(this,
                         (System.currentTimeMillis() - _realStartTime) / 1000.0);
                 if (RealTimeComposite.this._debugging) {
-                    RealTimeComposite.this
-                    ._debug("----- fireAtCurrentTime() request by actor "
-                            + actor.getFullName()
-                            + ". Model time is "
-                            + environmentTime
-                            + ", and real time is "
-                            + time);
+                    RealTimeComposite.this._debug(
+                            "----- fireAtCurrentTime() request by actor "
+                                    + actor.getFullName() + ". Model time is "
+                                    + environmentTime + ", and real time is "
+                                    + time);
                 }
                 director.fireAt(RealTimeComposite.this, time);
                 return time;
@@ -794,12 +792,12 @@ public class RealTimeComposite extends MirrorComposite {
             // The notion of current time presented to these actors
             // should match that of the frame.
             // super.prefire();
-            Time environmentTime = RealTimeComposite.this
-                    .getExecutiveDirector().getModelTime();
+            Time environmentTime = RealTimeComposite.this.getExecutiveDirector()
+                    .getModelTime();
             if (RealTimeComposite.this._debugging) {
                 RealTimeComposite.this
-                ._debug("----- Current environment time is: "
-                        + environmentTime);
+                        ._debug("----- Current environment time is: "
+                                + environmentTime);
             }
 
             if (_delayValue != 0) {
@@ -820,22 +818,22 @@ public class RealTimeComposite extends MirrorComposite {
         @Override
         public boolean postfire() throws IllegalActionException {
             boolean result = super.postfire();
-            Time environmentTime = RealTimeComposite.this
-                    .getExecutiveDirector().getModelTime();
+            Time environmentTime = RealTimeComposite.this.getExecutiveDirector()
+                    .getModelTime();
             if (_delayValue != 0) {
                 // Delay is either UNDEFINED or positive.
                 // Post the inputs for consumption in the
                 // associated thread.
                 if (_inputTokens.size() > 0) {
                     if (RealTimeComposite.this._debugging) {
-                        RealTimeComposite.this
-                        ._debug("Queueing input tokens for the associated thread: "
-                                + _inputTokens.toString()
-                                + " to be processed at time "
-                                + environmentTime);
+                        RealTimeComposite.this._debug(
+                                "Queueing input tokens for the associated thread: "
+                                        + _inputTokens.toString()
+                                        + " to be processed at time "
+                                        + environmentTime);
                     }
-                    _inputFrames.put(new InputFrame(environmentTime,
-                            _inputTokens));
+                    _inputFrames
+                            .put(new InputFrame(environmentTime, _inputTokens));
                     if (_delayValue > 0.0) {
                         // Delay value is positive. Schedule a firing
                         // at current time plus the delay.
@@ -857,10 +855,10 @@ public class RealTimeComposite extends MirrorComposite {
                         // Queue an iteration even if there are no inputs.
                         if (_inputTokens.size() == 0) {
                             if (RealTimeComposite.this._debugging) {
-                                RealTimeComposite.this
-                                ._debug("Queueing pure event for the associated thread, "
-                                        + " to be processed at time "
-                                        + environmentTime);
+                                RealTimeComposite.this._debug(
+                                        "Queueing pure event for the associated thread, "
+                                                + " to be processed at time "
+                                                + environmentTime);
                             }
                             _inputFrames.put(new InputFrame(environmentTime,
                                     _inputTokens));
@@ -900,13 +898,13 @@ public class RealTimeComposite extends MirrorComposite {
          */
         @Override
         public void stop() {
-            Time environmentTime = RealTimeComposite.this
-                    .getExecutiveDirector().getModelTime();
+            Time environmentTime = RealTimeComposite.this.getExecutiveDirector()
+                    .getModelTime();
             if (_delayValue != 0) {
                 if (RealTimeComposite.this._debugging) {
-                    RealTimeComposite.this
-                    ._debug("Queueing a stop-frame token for the associated thread with time: "
-                            + environmentTime);
+                    RealTimeComposite.this._debug(
+                            "Queueing a stop-frame token for the associated thread with time: "
+                                    + environmentTime);
                 }
                 // A "stop frame" has a null token list.
                 _inputFrames.put(new InputFrame(environmentTime, null));
@@ -937,8 +935,7 @@ public class RealTimeComposite extends MirrorComposite {
                             Token token = port.get(i);
                             _inputTokens.add(new QueuedToken(port, i, token));
                             if (RealTimeComposite.this._debugging) {
-                                RealTimeComposite.this._debug(
-                                        getName(),
+                                RealTimeComposite.this._debug(getName(),
                                         "transferring input from "
                                                 + port.getName());
                             }
@@ -970,9 +967,10 @@ public class RealTimeComposite extends MirrorComposite {
                 return super.transferOutputs(port);
             }
             // Compare against the environment time.
-            Time environmentTime = RealTimeComposite.this
-                    .getExecutiveDirector().getModelTime();
-            double realTimeInSeconds = (System.currentTimeMillis() - _realStartTime) / 1000.0;
+            Time environmentTime = RealTimeComposite.this.getExecutiveDirector()
+                    .getModelTime();
+            double realTimeInSeconds = (System.currentTimeMillis()
+                    - _realStartTime) / 1000.0;
             if (environmentTime.getDoubleValue() >= realTimeInSeconds) {
                 return super.transferOutputs(port);
             } else {
@@ -987,10 +985,9 @@ public class RealTimeComposite extends MirrorComposite {
                             if (port.hasTokenInside(i)) {
                                 Token token = port.getInside(i);
                                 outputTokens
-                                .add(new QueuedToken(port, i, token));
+                                        .add(new QueuedToken(port, i, token));
                                 if (RealTimeComposite.this._debugging) {
-                                    RealTimeComposite.this._debug(
-                                            getName(),
+                                    RealTimeComposite.this._debug(getName(),
                                             "transferring output from "
                                                     + port.getName()
                                                     + " with value " + token);
@@ -1027,21 +1024,21 @@ public class RealTimeComposite extends MirrorComposite {
                 Time environmentTime = RealTimeComposite.this
                         .getExecutiveDirector().getModelTime();
                 if (RealTimeComposite.this._debugging) {
-                    RealTimeComposite.this
-                    ._debug("Queueing a stop-frame token for the associated thread with time: "
-                            + environmentTime);
+                    RealTimeComposite.this._debug(
+                            "Queueing a stop-frame token for the associated thread with time: "
+                                    + environmentTime);
                 }
                 // A "stop frame" has a null token list.
                 _inputFrames.put(new InputFrame(environmentTime, null));
                 try {
                     if (RealTimeComposite.this._debugging) {
-                        RealTimeComposite.this
-                        ._debug("Waiting for associated thread to stop.");
+                        RealTimeComposite.this._debug(
+                                "Waiting for associated thread to stop.");
                     }
                     _thread.join();
                     if (RealTimeComposite.this._debugging) {
                         RealTimeComposite.this
-                        ._debug("Associated thread has stopped.");
+                                ._debug("Associated thread has stopped.");
                     }
                 } catch (InterruptedException e) {
                     // Ignore.
@@ -1077,24 +1074,23 @@ public class RealTimeComposite extends MirrorComposite {
                 while (!_stopRequested) {
                     try {
                         if (RealTimeComposite.this._debugging) {
-                            RealTimeComposite.this
-                            ._debug("---- Waiting for inputs in the associated thread.");
+                            RealTimeComposite.this._debug(
+                                    "---- Waiting for inputs in the associated thread.");
                         }
                         InputFrame frame = _inputFrames.take();
                         if (frame.tokens == null) {
                             // Recognize a "stop frame" and exit the thread.
                             if (RealTimeComposite.this._debugging) {
-                                RealTimeComposite.this
-                                ._debug("---- Read a stop frame in associated thread.");
+                                RealTimeComposite.this._debug(
+                                        "---- Read a stop frame in associated thread.");
                             }
                             break;
                         }
                         if (RealTimeComposite.this._debugging) {
-                            RealTimeComposite.this
-                            ._debug("---- Reading input tokens in associated thread with time "
-                                    + frame.time
-                                    + " and value "
-                                    + frame.tokens);
+                            RealTimeComposite.this._debug(
+                                    "---- Reading input tokens in associated thread with time "
+                                            + frame.time + " and value "
+                                            + frame.tokens);
                         }
                         // Current time of the director should match the frame time.
                         // This is the view of time that should be presented to any inside actors.

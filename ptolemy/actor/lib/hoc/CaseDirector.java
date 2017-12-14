@@ -165,11 +165,11 @@ public class CaseDirector extends Director {
                     }
                     super.put(token);
                 } catch (NoRoomException ex) {
-                    throw new InternalErrorException("One-place buffer: "
-                            + ex.getMessage());
+                    throw new InternalErrorException(
+                            "One-place buffer: " + ex.getMessage());
                 } catch (NoTokenException ex) {
-                    throw new InternalErrorException("One-place buffer: "
-                            + ex.getMessage());
+                    throw new InternalErrorException(
+                            "One-place buffer: " + ex.getMessage());
                 }
             }
         };
@@ -194,8 +194,8 @@ public class CaseDirector extends Director {
 
             Case container = (Case) getContainer();
             // Read from port parameters, including the control port.
-            Iterator portParameters = container.attributeList(
-                    PortParameter.class).iterator();
+            Iterator portParameters = container
+                    .attributeList(PortParameter.class).iterator();
             while (portParameters.hasNext()) {
                 PortParameter portParameter = (PortParameter) portParameters
                         .next();
@@ -219,8 +219,8 @@ public class CaseDirector extends Director {
             container._current = (Refinement) refinement;
 
             // Transfer input tokens.
-            for (Iterator inputPorts = container.inputPortList().iterator(); inputPorts
-                    .hasNext() && !_stopRequested;) {
+            for (Iterator inputPorts = container.inputPortList()
+                    .iterator(); inputPorts.hasNext() && !_stopRequested;) {
                 IOPort port = (IOPort) inputPorts.next();
 
                 if (!(port instanceof ParameterPort)) {
@@ -238,7 +238,7 @@ public class CaseDirector extends Director {
                                             _debug(new IOPortEvent(port,
                                                     insideReceivers[i][j]
                                                             .getContainer(),
-                                                            true, i, false, token));
+                                                    true, i, false, token));
                                         }
 
                                         insideReceivers[i][j].put(token);
@@ -247,7 +247,7 @@ public class CaseDirector extends Director {
                                             _debug(new IOPortEvent(port,
                                                     insideReceivers[i][j]
                                                             .getContainer(),
-                                                            false, i, false, token));
+                                                    false, i, false, token));
                                             _debug(getFullName(),
                                                     "transferring input from "
                                                             + port.getFullName()

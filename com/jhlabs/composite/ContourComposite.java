@@ -36,8 +36,10 @@ public final class ContourComposite implements Composite {
     }
 
     @Override
-    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
-        return new ContourCompositeContext(offset, srcColorModel, dstColorModel);
+    public CompositeContext createContext(ColorModel srcColorModel,
+            ColorModel dstColorModel, RenderingHints hints) {
+        return new ContourCompositeContext(offset, srcColorModel,
+                dstColorModel);
     }
 
     @Override
@@ -47,8 +49,9 @@ public final class ContourComposite implements Composite {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ContourComposite))
+        if (!(o instanceof ContourComposite)) {
             return false;
+        }
         return true;
     }
 
@@ -58,7 +61,8 @@ class ContourCompositeContext implements CompositeContext {
 
     private int offset;
 
-    public ContourCompositeContext(int offset, ColorModel srcColorModel, ColorModel dstColorModel) {
+    public ContourCompositeContext(int offset, ColorModel srcColorModel,
+            ColorModel dstColorModel) {
         this.offset = offset;
     }
 
@@ -88,7 +92,8 @@ class ContourCompositeContext implements CompositeContext {
                 int alpha = srcPix[k + 3];
                 int alphaAbove = i != 0 ? srcPix2[k + 3] : alpha;
 
-                if (i != 0 && j != 0 && ((alpha ^ lastAlpha) & 0x80) != 0 || ((alpha ^ alphaAbove) & 0x80) != 0) {
+                if (i != 0 && j != 0 && ((alpha ^ lastAlpha) & 0x80) != 0
+                        || ((alpha ^ alphaAbove) & 0x80) != 0) {
                     if ((offset + i + j) % 10 > 4) {
                         dstOutPix[k] = 0x00;
                         dstOutPix[k + 1] = 0x00;

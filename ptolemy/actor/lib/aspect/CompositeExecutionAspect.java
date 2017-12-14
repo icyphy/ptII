@@ -82,8 +82,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
-public class CompositeExecutionAspect extends TypedCompositeActor implements
-ActorExecutionAspect {
+public class CompositeExecutionAspect extends TypedCompositeActor
+        implements ActorExecutionAspect {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -168,8 +168,8 @@ ActorExecutionAspect {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CompositeExecutionAspect newObject = (CompositeExecutionAspect) super
-                .clone(workspace);
+        CompositeExecutionAspect newObject = (CompositeExecutionAspect) super.clone(
+                workspace);
         newObject._previousY = new HashMap<NamedObj, Double>();
         newObject._requestPorts = new HashMap<NamedObj, String>();
         newObject._lastTimeScheduled = new HashMap<NamedObj, Time>();
@@ -329,11 +329,12 @@ ActorExecutionAspect {
                             .getToken();
                     if (recordToken.get("actor") != null
                             && ((ObjectToken) recordToken.get("actor"))
-                            .getValue() != null) {
+                                    .getValue() != null) {
                         NamedObj actor = (NamedObj) ((ObjectToken) recordToken
                                 .get("actor")).getValue();
-                        notifyExecutionListeners(actor, getExecutiveDirector()
-                                .getModelTime().getDoubleValue(),
+                        notifyExecutionListeners(actor,
+                                getExecutiveDirector().getModelTime()
+                                        .getDoubleValue(),
                                 ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
@@ -395,12 +396,13 @@ ActorExecutionAspect {
             Time deadline, Time executionTime) throws IllegalActionException {
         _lastActorFinished = false;
         // make sure that director has the correct time.
-        getDirector().setModelTime(
-                getExecutiveDirector().localClock.getLocalTime());
+        getDirector()
+                .setModelTime(getExecutiveDirector().localClock.getLocalTime());
 
         // create token for scheduling requests and put them into ports.
         Time time = _lastTimeScheduled.get(actor);
-        if ((_justMonitor && (time == null || !time.equals(currentPlatformTime)))
+        if ((_justMonitor
+                && (time == null || !time.equals(currentPlatformTime)))
                 || !_currentlyExecuting.contains(actor)) {
             _lastTimeScheduled.put(actor, currentPlatformTime);
             notifyExecutionListeners(actor, getExecutiveDirector().localClock
@@ -416,13 +418,13 @@ ActorExecutionAspect {
                 }
                 setRequestPort(actor, portName);
             }
-            ExecutionRequestPort requestPort = (ExecutionRequestPort) getEntity(_requestPorts
-                    .get(actor));
+            ExecutionRequestPort requestPort = (ExecutionRequestPort) getEntity(
+                    _requestPorts.get(actor));
             if (requestPort != null) {
-                RecordToken recordToken = new RecordToken(new String[] {
-                        "actor", "executionTime" }, new Token[] {
-                        new ObjectToken(actor),
-                        new DoubleToken(executionTime.getDoubleValue()) });
+                RecordToken recordToken = new RecordToken(
+                        new String[] { "actor", "executionTime" },
+                        new Token[] { new ObjectToken(actor), new DoubleToken(
+                                executionTime.getDoubleValue()) });
                 requestPort.value.setToken(recordToken);
                 getDirector().fireAtCurrentTime(requestPort);
                 getExecutiveDirector().fireAt(this,
@@ -435,7 +437,8 @@ ActorExecutionAspect {
                 }
             } else {
                 throw new IllegalActionException(this,
-                        "No request port with name " + _requestPorts.get(actor));
+                        "No request port with name "
+                                + _requestPorts.get(actor));
             }
         }
         if (_justMonitor) {
@@ -537,8 +540,8 @@ ActorExecutionAspect {
                     _actors.add(entity);
                     notifyExecutionListeners(entity, 0.0, null);
                 } else if (entity instanceof CompositeActor) {
-                    _initializeManagedEntities(((CompositeActor) entity)
-                            .deepEntityList());
+                    _initializeManagedEntities(
+                            ((CompositeActor) entity).deepEntityList());
                 }
             }
         }
@@ -576,8 +579,8 @@ ActorExecutionAspect {
      *  from the director for the decorated actor.
      *  @author Patricia Derler
      */
-    public static class CompositeExecutionAspectAttributes extends
-    ExecutionTimeAttributes {
+    public static class CompositeExecutionAspectAttributes
+            extends ExecutionTimeAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -586,8 +589,8 @@ ActorExecutionAspect {
          *  @exception NameDuplicationException If the superclass throws it.
          */
         public CompositeExecutionAspectAttributes(NamedObj target,
-                Decorator decorator) throws IllegalActionException,
-                NameDuplicationException {
+                Decorator decorator)
+                throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
         }
@@ -626,8 +629,7 @@ ActorExecutionAspect {
                 CompositeExecutionAspect aspect = (CompositeExecutionAspect) getDecorator();
                 Token token = ((Parameter) attribute).getToken();
                 if (!(token instanceof StringToken)) {
-                    throw new IllegalActionException(
-                            this,
+                    throw new IllegalActionException(this,
                             "Decorator attribute for "
                                     + "mapped port in execution aspect for actor "
                                     + actor.getName()

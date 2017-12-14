@@ -65,7 +65,7 @@ public class SSMTest {
         StateSpaceModel ssm = new StateSpaceModel(toplevel, "myStateSpace");
         Iterator attributes = ssm.attributeList().iterator();
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
             System.out.println("Attribute: " + attribute);
             ssm.attributeChanged(attribute);
         }

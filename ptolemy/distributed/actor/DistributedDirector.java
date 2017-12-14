@@ -60,8 +60,8 @@ public class DistributedDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public DistributedDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public DistributedDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -124,8 +124,8 @@ public class DistributedDirector extends Director {
             idsReceiversMap.put(ID, receiver);
 
             if (VERBOSE) {
-                System.out.println("DistributedDirector.Created receiver: "
-                        + ID);
+                System.out
+                        .println("DistributedDirector.Created receiver: " + ID);
             }
         } else {
             ID = Integer.valueOf(lastId);
@@ -142,8 +142,8 @@ public class DistributedDirector extends Director {
      */
     public void setListOfIds(LinkedList list) {
         if (VERBOSE) {
-            System.out.println("DistributedDirector.setListOfIds: "
-                    + list.toString());
+            System.out.println(
+                    "DistributedDirector.setListOfIds: " + list.toString());
         }
 
         listOfIds = list;

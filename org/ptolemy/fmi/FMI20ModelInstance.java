@@ -62,14 +62,14 @@ public class FMI20ModelInstance extends Structure {
 
     /** Access the structure by reference.
      */
-    public static class ByReference extends FMI20ModelInstance implements
-            Structure.ByReference {
+    public static class ByReference extends FMI20ModelInstance
+            implements Structure.ByReference {
     };
 
     /** Access the structure by value.
      */
-    public static class ByValue extends FMI20ModelInstance implements
-            Structure.ByValue {
+    public static class ByValue extends FMI20ModelInstance
+            implements Structure.ByValue {
     };
 
     ///////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ public class FMI20ModelInstance extends Structure {
     public PointerByReference GUID;
 
     /** C type : const fmi2CallbackFunctions*. */
-    public Pointer /*org.ptolemy.fmi.fmi2CallbackFunctions.ByReference*/functions;
+    public Pointer /*org.ptolemy.fmi.fmi2CallbackFunctions.ByReference*/ functions;
 
     /** True if logging is on. */
     public int loggingOn;
@@ -132,6 +132,7 @@ public class FMI20ModelInstance extends Structure {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    @Override
     protected List<?> getFieldOrder() {
         return Arrays.asList("r", "i", "b", "s", "isPositive", "time",
                 "instanceName", "type", "GUID", "functions", "loggingOn",

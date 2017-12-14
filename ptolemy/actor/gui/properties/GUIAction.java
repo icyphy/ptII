@@ -157,8 +157,8 @@ public class GUIAction extends Attribute {
     public NamedObj getModel() {
         JFrame frame = getFrame();
         if (!(frame instanceof PtolemyFrame)) {
-            throw new InternalErrorException("The current frame has "
-                    + "no model.");
+            throw new InternalErrorException(
+                    "The current frame has " + "no model.");
         }
         return ((PtolemyFrame) frame).getModel();
     }
@@ -229,7 +229,8 @@ public class GUIAction extends Attribute {
                 }
                 moml = _momlText;
             }
-            MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml) {
+            MoMLChangeRequest request = new MoMLChangeRequest(this, model,
+                    moml) {
                 @Override
                 protected void _postParse(MoMLParser parser) {
                     Iterator topObjects = parser.topObjectsCreated().iterator();

@@ -68,8 +68,8 @@ public class NamedObjVariable extends Variable {
      *  @exception NameDuplicationException If the name coincides with a
      *   variable already in the container.
      */
-    public NamedObjVariable(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public NamedObjVariable(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         this(container, container.uniqueName(NAME_PREFIX));
     }
 
@@ -158,8 +158,8 @@ public class NamedObjVariable extends Variable {
      *   an attribute with the name of this variable.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = getContainer();
         super.setContainer(container);
         if (_setTokenWithContainer && container != oldContainer) {

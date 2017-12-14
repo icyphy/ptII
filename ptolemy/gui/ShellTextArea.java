@@ -372,12 +372,12 @@ public class ShellTextArea extends JPanel {
             text = "";
         } else {
             _historyCursor--;
-            text = (String) _historyCommands.elementAt(_historyCommands.size()
-                    - _historyCursor - 1);
+            text = (String) _historyCommands
+                    .elementAt(_historyCommands.size() - _historyCursor - 1);
         }
 
-        replaceRangeJTextArea(text, _promptCursor, _jTextArea.getText()
-                .length());
+        replaceRangeJTextArea(text, _promptCursor,
+                _jTextArea.getText().length());
     }
 
     // Replace the command with an entry from the history.
@@ -388,12 +388,12 @@ public class ShellTextArea extends JPanel {
             return;
         } else {
             _historyCursor++;
-            text = (String) _historyCommands.elementAt(_historyCommands.size()
-                    - _historyCursor);
+            text = (String) _historyCommands
+                    .elementAt(_historyCommands.size() - _historyCursor);
         }
 
-        replaceRangeJTextArea(text, _promptCursor, _jTextArea.getText()
-                .length());
+        replaceRangeJTextArea(text, _promptCursor,
+                _jTextArea.getText().length());
     }
 
     // Update the command history.

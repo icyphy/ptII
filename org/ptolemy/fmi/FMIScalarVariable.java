@@ -153,8 +153,8 @@ public class FMIScalarVariable {
                 _fmi2AttributeCheck(fmiModelDescription, attribute, message);
                 causality = Causality.parameter;
             } else {
-                throw new IllegalArgumentException("causality \"" + attribute
-                        + "\" " + message);
+                throw new IllegalArgumentException(
+                        "causality \"" + attribute + "\" " + message);
             }
         }
 
@@ -178,8 +178,8 @@ public class FMIScalarVariable {
                 valueReference = Long.parseLong(valueReferenceString);
             } catch (NumberFormatException ex) {
                 throw new NumberFormatException(
-                        "Failed to parse valueReference "
-                                + valueReferenceString + " of " + name);
+                        "Failed to parse valueReference " + valueReferenceString
+                                + " of " + name);
             }
         }
         if (element.hasAttribute("variability")) {
@@ -208,8 +208,8 @@ public class FMIScalarVariable {
             } else if (attribute.equals("tunable")) {
                 variability = Variability.tunable;
             } else {
-                throw new IllegalArgumentException("variability \"" + attribute
-                        + "\"" + message);
+                throw new IllegalArgumentException(
+                        "variability \"" + attribute + "\"" + message);
             }
         }
 
@@ -257,8 +257,8 @@ public class FMIScalarVariable {
                                 if (childType.equals("Name")) {
                                     // FIXME: Is getNodeValue() the way to get "foo"
                                     // from <Name>foo</Name>?
-                                    directDependency.add(((Element) child)
-                                            .getNodeValue());
+                                    directDependency.add(
+                                            ((Element) child).getNodeValue());
                                 }
                             }
                         }
@@ -422,14 +422,13 @@ public class FMIScalarVariable {
         // to the allocated memory and the memory does not get gc'd.
 
         // Include the trailing null character.
-        Pointer reference = fmiModelDescription.getFMUAllocateMemory().apply(
-                new NativeSizeT(value.length() + 1), new NativeSizeT(1));
+        Pointer reference = fmiModelDescription.getFMUAllocateMemory()
+                .apply(new NativeSizeT(value.length() + 1), new NativeSizeT(1));
         reference.setString(0, value);
         pointerByReference.setValue(reference);
 
         _setValue(fmiComponent, pointerByReference, FMIStringType.class);
     }
-
 
     /** Return the value of this variable as a boolean.
      *  This is an experimental method. It handles absent values.
@@ -586,8 +585,8 @@ public class FMIScalarVariable {
         // to the allocated memory and the memory does not get gc'd.
 
         // Include the trailing null character.
-        Pointer reference = fmiModelDescription.getFMUAllocateMemory().apply(
-                new NativeSizeT(value.length() + 1), new NativeSizeT(1));
+        Pointer reference = fmiModelDescription.getFMUAllocateMemory()
+                .apply(new NativeSizeT(value.length() + 1), new NativeSizeT(1));
         reference.setString(0, value);
         pointerByReference.setValue(reference);
         LongBuffer absentBuffer = LongBuffer.allocate(1).put(0,
@@ -757,20 +756,20 @@ public class FMIScalarVariable {
      *  @param typeClass The expected class of the type.
      *  @param getOrSetFunction the fmiGet or fmiSet function.
      */
-    private void _getOrSetValueHybrid(Pointer fmiComponent,
-            Object valueBuffer, Class typeClass,
-            Function getOrSetFunction, Object isAbsent) {
+    private void _getOrSetValueHybrid(Pointer fmiComponent, Object valueBuffer,
+            Class typeClass, Function getOrSetFunction, Object isAbsent) {
         // This is syntactic sugar that helps us avoid duplicated code.
         if (!typeClass.isInstance(type)) {
-            throw new RuntimeException("Variable " + name + " is not a "
-                    + typeClass.getName() + ", it is a "
-                    + type.getClass().getName());
+            throw new RuntimeException(
+                    "Variable " + name + " is not a " + typeClass.getName()
+                            + ", it is a " + type.getClass().getName());
         }
         IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
                 (int) valueReference);
-        int fmiFlag = ((Integer) getOrSetFunction.invokeInt(new Object[] {
-                fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                valueBuffer, isAbsent })).intValue();
+        int fmiFlag = ((Integer) getOrSetFunction
+                .invokeInt(new Object[] { fmiComponent, valueReferenceIntBuffer,
+                        new NativeSizeT(1), valueBuffer, isAbsent }))
+                                .intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not get or set \"" + name
                     + "\" as a " + typeClass.getName() + ", it was of type \""
@@ -793,15 +792,15 @@ public class FMIScalarVariable {
             Class typeClass, Function getOrSetFunction) {
         // This is syntactic sugar that helps us avoid duplicated code.
         if (!typeClass.isInstance(type)) {
-            throw new RuntimeException("Variable " + name + " is not a "
-                    + typeClass.getName() + ", it is a "
-                    + type.getClass().getName());
+            throw new RuntimeException(
+                    "Variable " + name + " is not a " + typeClass.getName()
+                            + ", it is a " + type.getClass().getName());
         }
         IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
                 (int) valueReference);
-        int fmiFlag = ((Integer) getOrSetFunction.invokeInt(new Object[] {
-                fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
-                valueBuffer })).intValue();
+        int fmiFlag = ((Integer) getOrSetFunction
+                .invokeInt(new Object[] { fmiComponent, valueReferenceIntBuffer,
+                        new NativeSizeT(1), valueBuffer })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not get or set \"" + name
                     + "\" as a " + typeClass.getName() + ", it was of type \""
@@ -842,16 +841,16 @@ public class FMIScalarVariable {
             Class typeClass) {
         if (_fmiGetFunction == null) {
             if (_typeName.equals("skip")) {
-                System.out
-                        .println("Could not process type, it was marked as skip.");
+                System.out.println(
+                        "Could not process type, it was marked as skip.");
                 return;
             }
             try {
-                _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGet"
-                        + _typeName);
+                _fmiGetFunction = fmiModelDescription
+                        .getFmiFunction("fmiGet" + _typeName);
             } catch (IOException ex) {
-                throw new RuntimeException(
-                        "Failed to find the native library.", ex);
+                throw new RuntimeException("Failed to find the native library.",
+                        ex);
             }
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiGetFunction);
@@ -869,16 +868,16 @@ public class FMIScalarVariable {
             Class typeClass) {
         if (_fmiSetFunction == null) {
             if (_typeName.equals("skip")) {
-                System.out
-                        .println("Could not process type, it was marked as skip.");
+                System.out.println(
+                        "Could not process type, it was marked as skip.");
                 return;
             }
             try {
-                _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSet"
-                        + _typeName);
+                _fmiSetFunction = fmiModelDescription
+                        .getFmiFunction("fmiSet" + _typeName);
             } catch (IOException ex) {
-                throw new RuntimeException(
-                        "Failed to find the native library.", ex);
+                throw new RuntimeException("Failed to find the native library.",
+                        ex);
             }
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
@@ -898,16 +897,16 @@ public class FMIScalarVariable {
             Class typeClass, Object isAbsent) {
         if (_fmiGetFunction == null) {
             if (_typeName.equals("skip")) {
-                System.out
-                        .println("Could not process type, it was marked as skip.");
+                System.out.println(
+                        "Could not process type, it was marked as skip.");
                 return;
             }
             try {
-                _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGetHybrid"
-                        + _typeName);
+                _fmiGetFunction = fmiModelDescription
+                        .getFmiFunction("fmiGetHybrid" + _typeName);
             } catch (IOException ex) {
-                throw new RuntimeException(
-                        "Failed to find the native library.", ex);
+                throw new RuntimeException("Failed to find the native library.",
+                        ex);
             }
         }
         _getOrSetValueHybrid(fmiComponent, valueBuffer, typeClass,
@@ -928,16 +927,16 @@ public class FMIScalarVariable {
             Class typeClass, Object isAbsent) {
         if (_fmiSetFunction == null) {
             if (_typeName.equals("skip")) {
-                System.out
-                        .println("Could not process type, it was marked as skip.");
+                System.out.println(
+                        "Could not process type, it was marked as skip.");
                 return;
             }
             try {
-                _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSetHybrid"
-                        + _typeName);
+                _fmiSetFunction = fmiModelDescription
+                        .getFmiFunction("fmiSetHybrid" + _typeName);
             } catch (IOException ex) {
-                throw new RuntimeException(
-                        "Failed to find the native library.", ex);
+                throw new RuntimeException("Failed to find the native library.",
+                        ex);
             }
         }
         _getOrSetValueHybrid(fmiComponent, valueBuffer, typeClass,

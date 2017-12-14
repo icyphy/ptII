@@ -149,8 +149,8 @@ public class Sequence extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sequence newObject = (Sequence) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

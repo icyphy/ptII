@@ -59,10 +59,9 @@ public class SeparatorComponentBuilder implements ComponentBuilder {
         if (text == null) {
             text = "";
         }
-        return "java.awt.Component "
-        + name
-        + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
-        + text + "\");\n";
+        return "java.awt.Component " + name
+                + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
+                + text + "\");\n";
     }
 
     @Override

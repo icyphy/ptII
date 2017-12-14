@@ -63,9 +63,10 @@ public class TestSource extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                        + "width=\"60\" height=\"20\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     public TypedIOPort input;

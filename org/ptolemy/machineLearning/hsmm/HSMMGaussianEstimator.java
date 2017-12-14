@@ -91,34 +91,30 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public HSMMGaussianEstimator(CompositeEntity container,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+    public HSMMGaussianEstimator(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        covariance = new TypedIOPort(this, "covariance", false,
-                true);
+        covariance = new TypedIOPort(this, "covariance", false, true);
         new SingletonParameter(covariance, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         mean = new TypedIOPort(this, "mean", false, true);
-        new SingletonParameter(mean, "_showName")
-        .setToken(BooleanToken.TRUE);
+        new SingletonParameter(mean, "_showName").setToken(BooleanToken.TRUE);
 
         meanVectorGuess = new Parameter(this, "meanVectorGuess");
-        meanVectorGuess
-                .setExpression("{{0.0, 0.0},{0.0, 50.0},{50.0, 0.0},{50.0, 50.0}}");
+        meanVectorGuess.setExpression(
+                "{{0.0, 0.0},{0.0, 50.0},{50.0, 0.0},{50.0, 50.0}}");
 
         standardDeviationGuess = new Parameter(this, "standardDeviationGuess");
+        standardDeviationGuess.setExpression(
+                "{[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0]}");
         standardDeviationGuess
-                .setExpression("{[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0]}");
-        standardDeviationGuess.setTypeEquals(new ArrayType(
-                BaseType.DOUBLE_MATRIX));
+                .setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
 
         _mu0 = new double[4][2];
 
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -143,7 +139,8 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             throws IllegalActionException {
         if (attribute == meanVectorGuess) {
             int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
-            if (((ArrayToken) meanVectorGuess.getToken()).getElementType().equals(BaseType.DOUBLE)) {
+            if (((ArrayToken) meanVectorGuess.getToken()).getElementType()
+                    .equals(BaseType.DOUBLE)) {
                 _obsDimension = 1;
                 _mu0 = new double[nS][1];
                 for (int i = 0; i < nS; i++) {
@@ -151,17 +148,20 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                             .getToken()).getElement(i)).doubleValue();
                 }
             } else {
-                _obsDimension = ((ArrayToken)((ArrayToken) meanVectorGuess.getToken()).getElement(0)).length();
+                _obsDimension = ((ArrayToken) ((ArrayToken) meanVectorGuess
+                        .getToken()).getElement(0)).length();
                 _mu0 = new double[nS][_obsDimension];
                 for (int i = 0; i < nS; i++) {
                     for (int j = 0; j < _obsDimension; j++) {
-                        _mu0[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) meanVectorGuess
-                                .getToken()).getElement(i)).getElement(j)).doubleValue();
+                        _mu0[i][j] = ((DoubleToken) ((ArrayToken) ((ArrayToken) meanVectorGuess
+                                .getToken()).getElement(i)).getElement(j))
+                                        .doubleValue();
                     }
                 }
             }
             if (_obsDimension > 1) {
-                mean.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
+                mean.setTypeEquals(
+                        new ArrayType(new ArrayType(BaseType.DOUBLE)));
                 covariance.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
             } else {
                 mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -169,7 +169,8 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             }
         } else if (attribute == standardDeviationGuess) {
             int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
-            if (((ArrayToken) standardDeviationGuess.getToken()).getElementType().equals(BaseType.DOUBLE)) {
+            if (((ArrayToken) standardDeviationGuess.getToken())
+                    .getElementType().equals(BaseType.DOUBLE)) {
                 _obsDimension = 1;
                 _sigma0 = new double[nS][1][1];
                 for (int i = 0; i < nS; i++) {
@@ -177,7 +178,8 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                             .getToken()).getElement(i)).doubleValue();
                 }
             } else {
-                _obsDimension = ((DoubleMatrixToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(0)).getColumnCount();
+                _obsDimension = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
+                        .getToken()).getElement(0)).getColumnCount();
                 _sigma0 = new double[nS][_obsDimension][_obsDimension];
                 for (int i = 0; i < nS; i++) {
                     _sigma0[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
@@ -188,10 +190,11 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             super.attributeChanged(attribute);
         }
     }
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMGaussianEstimator newObject = (HSMMGaussianEstimator) super
-                .clone(workspace);
+        HSMMGaussianEstimator newObject = (HSMMGaussianEstimator) super.clone(
+                workspace);
         newObject._sigma0 = new double[_nStates][_obsDimension][_obsDimension];
         newObject._mu0 = new double[_nStates][_obsDimension];
         newObject._mu = null;
@@ -201,7 +204,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         newObject.dPrior_new = null;
         newObject.s_new = null;
         newObject.prior_new = null;
-        newObject.clusters =null;
+        newObject.clusters = null;
         return newObject;
     }
 
@@ -268,6 +271,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
 
     }
 
+    @Override
     protected double emissionProbability(double[] y, int hiddenState) {
 
         double[][] s = _sigma[hiddenState];
@@ -282,7 +286,8 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         boolean nanDetected = false;
         for (int i = 0; i < m_new.length; i++) {
             if (Double.isNaN(m_new[0][0]) || Double.isNaN(s_new[0][0][0])
-                    || Double.isNaN(A_new[0][0]) || Double.isNaN(prior_new[0])) {
+                    || Double.isNaN(A_new[0][0])
+                    || Double.isNaN(prior_new[0])) {
                 nanDetected = true;
                 break;
             }

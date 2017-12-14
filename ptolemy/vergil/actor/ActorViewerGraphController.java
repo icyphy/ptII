@@ -259,7 +259,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                                     .newInstance();
 
                             isActorOfInterest = actorInteractionAddon
-                                    .isActorOfInterestForAddonController((NamedObj) semanticObject);
+                                    .isActorOfInterestForAddonController(
+                                            (NamedObj) semanticObject);
                         }
                     }
                 } catch (Exception e) {
@@ -288,8 +289,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
             return _entityPortController;
         }
 
-        throw new RuntimeException("Node with unknown semantic object: "
-                + object);
+        throw new RuntimeException(
+                "Node with unknown semantic object: " + object);
     }
 
     /** Set the configuration.  The configuration is used when
@@ -311,7 +312,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
             if (configuration != null) {
                 StringParameter actorInteractionAddon;
                 actorInteractionAddon = (StringParameter) configuration
-                        .getAttribute("_actorInteractionAddon", Parameter.class);
+                        .getAttribute("_actorInteractionAddon",
+                                Parameter.class);
 
                 if (actorInteractionAddon != null) {
                     _addonActorController.setConfiguration(configuration);
@@ -342,7 +344,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
             if (configuration != null) {
                 StringParameter actorInteractionAddon;
                 actorInteractionAddon = (StringParameter) configuration
-                        .getAttribute("_actorInteractionAddon", Parameter.class);
+                        .getAttribute("_actorInteractionAddon",
+                                Parameter.class);
 
                 if (actorInteractionAddon != null) {
                     _addonActorController.addHotKeys(jgraph);
@@ -378,7 +381,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
             if (configuration != null) {
                 StringParameter actorInteractionAddonParameter;
                 actorInteractionAddonParameter = (StringParameter) configuration
-                        .getAttribute("_actorInteractionAddon", Parameter.class);
+                        .getAttribute("_actorInteractionAddon",
+                                Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
                     String actorInteractionAddonClassName = actorInteractionAddonParameter
@@ -550,8 +554,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 label.translateTo(x, y + 5);
 
                 // Rotate the label.
-                AffineTransform rotate = AffineTransform.getRotateInstance(
-                        Math.PI / 2.0, x, y + 5);
+                AffineTransform rotate = AffineTransform
+                        .getRotateInstance(Math.PI / 2.0, x, y + 5);
                 label.transform(rotate);
             } else if (direction == SwingConstants.EAST) {
                 // The 1.0 argument is the padding.
@@ -581,8 +585,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 label.translateTo(x, y - 5);
 
                 // Rotate the label.
-                AffineTransform rotate = AffineTransform.getRotateInstance(
-                        -Math.PI / 2.0, x, y - 5);
+                AffineTransform rotate = AffineTransform
+                        .getRotateInstance(-Math.PI / 2.0, x, y - 5);
                 label.transform(rotate);
             }
 
@@ -640,8 +644,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                         try {
                             ordinal.setExpression(Integer.toString(size - 1));
                         } catch (Exception e) {
-                            MessageHandler.error(
-                                    "Error setting ordinal property", e);
+                            MessageHandler
+                                    .error("Error setting ordinal property", e);
                         }
 
                         ports.add(port);
@@ -651,8 +655,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
                         try {
                             ordinal.setExpression(Integer.toString(0));
                         } catch (Exception e) {
-                            MessageHandler.error(
-                                    "Error setting ordinal property", e);
+                            MessageHandler
+                                    .error("Error setting ordinal property", e);
                         }
 
                         ports.add(0, port);
@@ -681,11 +685,10 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 Port port = (Port) p;
                 Attribute portHide = port.getAttribute("_hide");
                 try {
-                    if (!(portHide != null
-                            && portHide instanceof Variable
-                            && ((Variable) portHide).getToken().equals(
-                                    BooleanToken.TRUE) && port
-                                    .linkedRelationList().isEmpty())) {
+                    if (!(portHide != null && portHide instanceof Variable
+                            && ((Variable) portHide).getToken()
+                                    .equals(BooleanToken.TRUE)
+                            && port.linkedRelationList().isEmpty())) {
                         count++;
                     }
                 } catch (IllegalActionException ex) {
@@ -712,11 +715,10 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 Attribute portHide = port.getAttribute("_hide");
                 // Skip ports that are hidden and not connected (Sven Koehler)
                 try {
-                    if (portHide != null
-                            && portHide instanceof Variable
-                            && ((Variable) portHide).getToken().equals(
-                                    BooleanToken.TRUE)
-                                    && port.linkedRelationList().isEmpty()) {
+                    if (portHide != null && portHide instanceof Variable
+                            && ((Variable) portHide).getToken()
+                                    .equals(BooleanToken.TRUE)
+                            && port.linkedRelationList().isEmpty()) {
                         continue;
                     }
                 } catch (IllegalActionException ex) {

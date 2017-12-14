@@ -87,7 +87,8 @@ public class FutureValue<V> implements Future<V>, Serializable {
     }
 
     @Override
-    public synchronized V get() throws InterruptedException, ExecutionException {
+    public synchronized V get()
+            throws InterruptedException, ExecutionException {
         _waitFor();
         return _getResult();
     }
@@ -224,7 +225,8 @@ public class FutureValue<V> implements Future<V>, Serializable {
      * Waits for the task to complete for timeout nanoseconds or throw TimeoutException if still not completed after that
      * Assumes that a lock is owned on this future instance!
      */
-    private void _waitFor(long nanos) throws InterruptedException, TimeoutException {
+    private void _waitFor(long nanos)
+            throws InterruptedException, TimeoutException {
         if (nanos < 0) {
             throw new IllegalArgumentException();
         }

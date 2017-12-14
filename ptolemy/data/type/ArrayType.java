@@ -51,15 +51,15 @@ public class ArrayType extends StructuredType implements Cloneable {
      */
     public ArrayType(Type elementType) {
         if (elementType == null) {
-            throw new IllegalArgumentException("Cannot create ArrayType "
-                    + " with null elementType");
+            throw new IllegalArgumentException(
+                    "Cannot create ArrayType " + " with null elementType");
         }
 
         try {
             _declaredElementType = (Type) elementType.clone();
         } catch (CloneNotSupportedException cnse) {
-            throw new InternalErrorException("The specified type "
-                    + elementType + " cannot be cloned.");
+            throw new InternalErrorException(
+                    "The specified type " + elementType + " cannot be cloned.");
         }
 
         _elementType = _declaredElementType;
@@ -75,8 +75,8 @@ public class ArrayType extends StructuredType implements Cloneable {
     public ArrayType(Type elementType, int length) {
         this(elementType);
         if (length < 0) {
-            throw new IllegalArgumentException("Cannot create ArrayType "
-                    + "with negative length.");
+            throw new IllegalArgumentException(
+                    "Cannot create ArrayType " + "with negative length.");
         }
         _length = length;
     }
@@ -164,8 +164,8 @@ public class ArrayType extends StructuredType implements Cloneable {
                 return token;
             }
             // If it's not an ArrayToken, then something is wrong.
-            throw new IllegalActionException("Cannot convert " + token
-                    + " to type {unknown}");
+            throw new IllegalActionException(
+                    "Cannot convert " + token + " to type {unknown}");
         }
         if (!(token instanceof ArrayToken)) {
             if (hasKnownLength() && length() != 1) {
@@ -482,9 +482,9 @@ public class ArrayType extends StructuredType implements Cloneable {
 
         // This type is a variable.
         if (!this.isSubstitutionInstance(newType)) {
-            throw new IllegalActionException("ArrayType.updateType: "
-                    + "The type " + this + " cannot be updated to " + newType
-                    + ".");
+            throw new IllegalActionException(
+                    "ArrayType.updateType: " + "The type " + this
+                            + " cannot be updated to " + newType + ".");
         }
 
         ArrayType arrayType = (ArrayType) newType;
@@ -507,7 +507,7 @@ public class ArrayType extends StructuredType implements Cloneable {
             // _declaredElementType is a StructuredType. _elementType
             // must also be.
             ((StructuredType) _elementType)
-            .updateType((StructuredType) newElemType);
+                    .updateType((StructuredType) newElemType);
         }
     }
 
@@ -878,7 +878,7 @@ public class ArrayType extends StructuredType implements Cloneable {
             if (!isSettable()) {
                 throw new IllegalActionException(
                         "ArrayType$ElementTypeTerm.setValue: This type " + e
-                        + " is not settable.");
+                                + " is not settable.");
             }
 
             if (!_declaredElementType.isSubstitutionInstance((Type) e)) {
@@ -1041,7 +1041,8 @@ public class ArrayType extends StructuredType implements Cloneable {
          */
         private ArrayType _getArrayTypeRaw() throws IllegalActionException {
             Type type = _typeable.getType();
-            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+            if (_arrayType == null
+                    || !_arrayType.getElementType().equals(type)) {
                 _arrayType = new ArrayType(type);
             }
             return _arrayType;
@@ -1342,7 +1343,8 @@ public class ArrayType extends StructuredType implements Cloneable {
          */
         private ArrayType _getArrayTypeRaw() throws IllegalActionException {
             Type type = _typeable.getType();
-            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+            if (_arrayType == null
+                    || !_arrayType.getElementType().equals(type)) {
                 _arrayType = new ArrayType(type, _length);
             }
             return _arrayType;

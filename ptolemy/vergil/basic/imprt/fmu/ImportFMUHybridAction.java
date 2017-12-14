@@ -65,7 +65,8 @@ public class ImportFMUHybridAction extends AbstractAction {
     public ImportFMUHybridAction(Top frame) {
         super("Import FMU Hybrid as a Ptolemy Actor");
         _frame = frame;
-        putValue("tooltip", "Import a Functional Mock-up Unit (FMU) file as a Ptolemy actor.");
+        putValue("tooltip",
+                "Import a Functional Mock-up Unit (FMU) file as a Ptolemy actor.");
         //putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_X));
     }
 
@@ -87,15 +88,18 @@ public class ImportFMUHybridAction extends AbstractAction {
         try {
             Class basicGraphFrameClass = null;
             try {
-                basicGraphFrameClass = Class.forName("ptolemy.vergil.basic.BasicGraphFrame");
+                basicGraphFrameClass = Class
+                        .forName("ptolemy.vergil.basic.BasicGraphFrame");
             } catch (Throwable throwable) {
                 throw new InternalErrorException(null, throwable,
                         "Could not find ptolemy.vergil.basic.BasicGraphFrame?");
             }
             if (basicGraphFrameClass == null) {
-                throw new InternalErrorException(null, null, "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
+                throw new InternalErrorException(null, null,
+                        "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
             } else if (!basicGraphFrameClass.isInstance(_frame)) {
-                throw new InternalErrorException("Frame " + _frame + " is not a BasicGraphFrame?");
+                throw new InternalErrorException(
+                        "Frame " + _frame + " is not a BasicGraphFrame?");
             } else {
                 BasicGraphFrame basicGraphFrame = (BasicGraphFrame) _frame;
 
@@ -103,21 +107,26 @@ public class ImportFMUHybridAction extends AbstractAction {
                 query.setTextWidth(60);
 
                 // Use this file chooser so that we can read URLs or files.
-                query.addFileChooser("location", "Location (URL)", _lastLocation, /* URI base */null,
-                        /* File startingDirectory */basicGraphFrame.getLastDirectory(), /* allowFiles */true,
-                        /* allowDirectories */false,
+                query.addFileChooser("location", "Location (URL)",
+                        _lastLocation, /* URI base */null,
+                        /* File startingDirectory */basicGraphFrame
+                                .getLastDirectory(),
+                        /* allowFiles */true, /* allowDirectories */false,
                         /* Color background */
-                        PtolemyQuery.preferredBackgroundColor(_frame), PtolemyQuery.preferredForegroundColor(_frame));
-                query.addCheckBox("modelExchange", "Import for Model Exchange", _lastModelExchange);
+                        PtolemyQuery.preferredBackgroundColor(_frame),
+                        PtolemyQuery.preferredForegroundColor(_frame));
+                query.addCheckBox("modelExchange", "Import for Model Exchange",
+                        _lastModelExchange);
 
-                ComponentDialog dialog = new ComponentDialog(_frame, "Instantiate Functional Mock-up Unit (FMU)",
-                        query);
+                ComponentDialog dialog = new ComponentDialog(_frame,
+                        "Instantiate Functional Mock-up Unit (FMU)", query);
                 if (dialog.buttonPressed().equals("OK")) {
                     _lastLocation = query.getStringValue("location");
                     _lastModelExchange = query.getBooleanValue("modelExchange");
 
                     // Use the center of the screen as a location.
-                    Rectangle2D bounds = basicGraphFrame.getVisibleCanvasRectangle();
+                    Rectangle2D bounds = basicGraphFrame
+                            .getVisibleCanvasRectangle();
                     double x = bounds.getWidth() / 2.0;
                     double y = bounds.getHeight() / 2.0;
 
@@ -130,25 +139,29 @@ public class ImportFMUHybridAction extends AbstractAction {
                     fmuFileName = _lastLocation;
 
                     // Get the associated Ptolemy model.
-                    GraphController controller = basicGraphFrame.getJGraph().getGraphPane().getGraphController();
-                    AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller.getGraphModel();
+                    GraphController controller = basicGraphFrame.getJGraph()
+                            .getGraphPane().getGraphController();
+                    AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                            .getGraphModel();
                     NamedObj context = model.getPtolemyModel();
 
                     // Create a temporary FileParameter so that we can use
                     // $PTII or $CLASSPATH.  The issue here is that the dialog
                     // that is brought up is a ptolemy.gui.Query, which
                     // does not know about FileParameter
-                    FileParameter fmuFileParameter = (FileParameter) context.getAttribute("_fmuFile",
-                            FileParameter.class);
+                    FileParameter fmuFileParameter = (FileParameter) context
+                            .getAttribute("_fmuFile", FileParameter.class);
                     try {
                         if (fmuFileParameter == null) {
-                            fmuFileParameter = new FileParameter(context, "_fmuFile");
+                            fmuFileParameter = new FileParameter(context,
+                                    "_fmuFile");
                         }
                         fmuFileParameter.setExpression(fmuFileName);
                         fmuFileParameter.setPersistent(false);
                         fmuFileParameter.setVisibility(Settable.EXPERT);
 
-                        FMUImportHybrid.importFMU(this, fmuFileParameter, context, x, y, _lastModelExchange);
+                        FMUImportHybrid.importFMU(this, fmuFileParameter,
+                                context, x, y, _lastModelExchange);
                     } finally {
                         // Avoid leaving a parameter in the model.
                         if (fmuFileParameter != null) {

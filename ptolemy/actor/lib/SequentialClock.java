@@ -221,8 +221,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequentialClock newObject = (SequentialClock) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -296,10 +296,10 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         }
 
         if (_offsets[_phase] >= periodValue) {
-            throw new IllegalActionException(this, "Offset number " + _phase
-                    + " with value " + _offsets[_phase]
-                            + " must be less than the " + "period, which is "
-                            + periodValue);
+            throw new IllegalActionException(this,
+                    "Offset number " + _phase + " with value "
+                            + _offsets[_phase] + " must be less than the "
+                            + "period, which is " + periodValue);
         }
 
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);

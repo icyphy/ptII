@@ -136,8 +136,7 @@ public class MicrostepDelay extends Transformer {
         _pendingOutput = null;
 
         if (!(getDirector() instanceof SuperdenseTimeDirector)) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "MicrostepDelay can only be used with a director that implements "
                             + "SuperdenseTimeDirector, such as ContinuousDirector or DEDirector.");
         }

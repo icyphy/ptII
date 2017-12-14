@@ -125,8 +125,8 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
-                args[args.length - 1]).toURI().toURL());
+        CompositeActor toplevel = (CompositeActor) parser.parse(null,
+                new File(args[args.length - 1]).toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
@@ -141,9 +141,9 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
             String arg = args[i];
             if (arg.trim().startsWith("-")) {
                 if (i >= args.length - 1) {
-                    throw new IllegalActionException("Cannot set "
-                            + "parameter " + arg + " when no value is "
-                            + "given.");
+                    throw new IllegalActionException(
+                            "Cannot set " + "parameter " + arg
+                                    + " when no value is " + "given.");
                 }
 
                 // Save in case this is a parameter name and value.

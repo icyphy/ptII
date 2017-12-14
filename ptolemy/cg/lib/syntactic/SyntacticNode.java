@@ -218,8 +218,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
                     _outref.put(ep, _numOuts);
 
                     for (int n = 0; n < width; ++n, ++_numOuts) {
-                        SyntacticPort oport = new SyntacticPort(this, ep,
-                                false, "out_ref_" + n + "_" + epname);
+                        SyntacticPort oport = new SyntacticPort(this, ep, false,
+                                "out_ref_" + n + "_" + epname);
                         oport.setChannel(n);
                         _outputs.add(oport);
                         StringAttribute cardinal = new StringAttribute(oport,
@@ -256,8 +256,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException If thrown while
      *  creating a new port.
      */
-    public int addPorts(Port port, boolean isin) throws IllegalActionException,
-    NameDuplicationException {
+    public int addPorts(Port port, boolean isin)
+            throws IllegalActionException, NameDuplicationException {
         String prefix = isin ? "in_" : "out_";
         List<SyntacticPort> portset = isin ? _inputs : _outputs;
         String cardinality = isin ? "WEST" : "EAST";
@@ -268,8 +268,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         (isin ? _inref : _outref).put(port, index);
 
         for (int n = index; n < width + index; ++n, ++_numOuts) {
-            SyntacticPort rport = new SyntacticPort(this, port, isin, prefix
-                    + n);
+            SyntacticPort rport = new SyntacticPort(this, port, isin,
+                    prefix + n);
             rport.setChannel(n);
             portset.add(rport);
             StringAttribute cardinal = new StringAttribute(rport, "_cardinal");
@@ -294,16 +294,16 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException If thrown while
      *  creating a new port or creating a new cardinal attribute.
      */
-    public void representExteriorPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    public void representExteriorPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         if (port instanceof IOPort) {
             IOPort ioport = (IOPort) port;
             int width = 1;//ioport.getWidthInside();
             _isIsolated = false;
             if (ioport.isInput()) {
                 for (int n = 0; n < width; ++n) {
-                    SyntacticPort oport = new SyntacticPort(this, ioport,
-                            false, "out_" + n + "_external_in");
+                    SyntacticPort oport = new SyntacticPort(this, ioport, false,
+                            "out_" + n + "_external_in");
                     oport.setChannel(n);
                     _outputs.add(oport);
                     _outref.put(port, n);
@@ -359,16 +359,16 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
         String name = this.getName();
         for (int n = 0; n < inputs; ++n, ++_numIns) {
-            SyntacticPort port = new SyntacticPort(this, null, true, "in_" + n
-                    + "_" + name);
+            SyntacticPort port = new SyntacticPort(this, null, true,
+                    "in_" + n + "_" + name);
             _inputs.add(port);
             StringAttribute cardinal = new StringAttribute(port, "_cardinal");
             cardinal.setExpression("WEST");
         }
 
         for (int n = 0; n < outputs; ++n, ++_numOuts) {
-            SyntacticPort port = new SyntacticPort(this, null, false, "out_"
-                    + n + "_" + name);
+            SyntacticPort port = new SyntacticPort(this, null, false,
+                    "out_" + n + "_" + name);
             _outputs.add(port);
             StringAttribute cardinal = new StringAttribute(port, "_cardinal");
             cardinal.setExpression("EAST");
@@ -384,8 +384,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  setting the node as purely syntactic, not representing
      *  any Entity.
      */
-    public void setIdentity() throws IllegalActionException,
-             NameDuplicationException {
+    public void setIdentity()
+            throws IllegalActionException, NameDuplicationException {
         setSyntactic(1, 1);
         _nodeType = NodeType.IDENTITY;
         _attachText("_iconDescription", _identityIcon);
@@ -400,8 +400,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  setting the node as purely syntactic, not representing
      *  any Entity.
      */
-    public void setFeedback(boolean direction) throws IllegalActionException,
-    NameDuplicationException {
+    public void setFeedback(boolean direction)
+            throws IllegalActionException, NameDuplicationException {
         if (direction) {
             setSyntactic(1, 0);
             _attachText("_iconDescription", _sendIcon);
@@ -451,8 +451,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  setting the node as purely syntactic, not representing
      *  any Entity.
      */
-    public void setCap(boolean direction) throws IllegalActionException,
-    NameDuplicationException {
+    public void setCap(boolean direction)
+            throws IllegalActionException, NameDuplicationException {
         if (direction) {
             setSyntactic(1, 0);
         } else {
@@ -569,8 +569,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException If thrown
      *  while creating a new location.
      */
-    public void setLocation(double x, double y) throws IllegalActionException,
-    NameDuplicationException {
+    public void setLocation(double x, double y)
+            throws IllegalActionException, NameDuplicationException {
         Location location = (Location) getAttribute("_location");
         if (location == null) {
             location = new Location(this, "_location");
@@ -916,8 +916,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      * @return Description of Node.
      */
     public String description(String prefix, String suffix) {
-        StringBuffer desc = new StringBuffer(prefix + "Node: " + getName()
-                + " {" + suffix);
+        StringBuffer desc = new StringBuffer(
+                prefix + "Node: " + getName() + " {" + suffix);
         String indent = "....";
 
         if (isRepresentative() && _isRepresented) {
@@ -927,9 +927,9 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
             desc.append(prefix + indent + "Pure syntactic node" + suffix);
         }
 
-        desc.append(prefix + indent + "Initial: " + _isInitial + suffix
-                + prefix + indent + "Terminal: " + _isTerminal + suffix
-                + prefix + indent + "Isolated: " + _isIsolated + suffix);
+        desc.append(prefix + indent + "Initial: " + _isInitial + suffix + prefix
+                + indent + "Terminal: " + _isTerminal + suffix + prefix + indent
+                + "Isolated: " + _isIsolated + suffix);
 
         desc.append(prefix + indent + "inputs: {" + suffix);
         for (Port port : _inputs) {
@@ -1007,10 +1007,10 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
         int permlen = permutation.length;
         int pheight = permlen * 35;
-        StringBuffer svgIcon = new StringBuffer("<svg>\n"
-                + "<rect x=\"-20\" y=\"" + -pheight
-                + "\" width=\"40\" height=\"" + 2 * pheight
-                + "\" style=\"fill:red\"/>\n");
+        StringBuffer svgIcon = new StringBuffer(
+                "<svg>\n" + "<rect x=\"-20\" y=\"" + -pheight
+                        + "\" width=\"40\" height=\"" + 2 * pheight
+                        + "\" style=\"fill:red\"/>\n");
 
         for (int n = 0; n < permlen; ++n) {
             int m = permutation[n];
@@ -1043,21 +1043,24 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         int outs = _outputs.size();
 
         if (ins == 1 && outs > 1) {
-            svgIcon.append("<polygon points=\"20,-20 -20,0 20,20\" style=\"fill:red\"/>\n");
+            svgIcon.append(
+                    "<polygon points=\"20,-20 -20,0 20,20\" style=\"fill:red\"/>\n");
             double vinc = 30.0 / (outs - 1);
             for (int n = 0; n < outs; ++n) {
                 svgIcon.append("<line x1=\"-18\" y1=\"0\" x2=\"18\" y2=\""
                         + (n * vinc - 15.0) + "\" />\n");
             }
         } else if (outs == 1 && ins > 1) {
-            svgIcon.append("<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n");
+            svgIcon.append(
+                    "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n");
             double vinc = 30.0 / (ins - 1);
             for (int n = 0; n < ins; ++n) {
                 svgIcon.append("<line x1=\"-18\" y1=\"" + (n * vinc - 15.0)
                         + "\" x2=\"18\" y2=\"0\" />\n");
             }
         } else {
-            svgIcon.append("<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n");
+            svgIcon.append(
+                    "<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n");
         }
 
         svgIcon.append("</svg>\n");

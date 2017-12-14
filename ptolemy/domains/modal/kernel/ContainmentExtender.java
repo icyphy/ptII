@@ -56,8 +56,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ContainmentExtender extends Attribute implements
-ptolemy.data.expr.ContainmentExtender {
+public class ContainmentExtender extends Attribute
+        implements ptolemy.data.expr.ContainmentExtender {
 
     /** Construct a ContainmentExtender attribute with the given name contained
      *  by the specified Refinement. The container argument must not be null,

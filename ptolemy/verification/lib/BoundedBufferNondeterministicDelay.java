@@ -42,7 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
  */
-public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay {
+public class BoundedBufferNondeterministicDelay
+        extends BoundedBufferTimedDelay {
 
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
@@ -53,8 +54,8 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
      *   actor with this name.
      */
     public BoundedBufferNondeterministicDelay(CompositeEntity container,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -75,8 +76,8 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
      */
     @Override
     public void preinitialize() throws IllegalActionException {
-        throw new IllegalActionException(this, getName() + " can not run in "
-                + "simulation mode.");
+        throw new IllegalActionException(this,
+                getName() + " can not run in " + "simulation mode.");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -86,8 +87,8 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
      *  parameter values.
      */
     @Override
-    protected void _init() throws NameDuplicationException,
-    IllegalActionException {
+    protected void _init()
+            throws NameDuplicationException, IllegalActionException {
         //delay = new PortParameter(this, "delay");
         //delay.setExpression("1.0");
         //delay.setTypeEquals(BaseType.DOUBLE);

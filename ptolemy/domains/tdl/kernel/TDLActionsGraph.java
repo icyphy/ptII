@@ -104,13 +104,15 @@ public class TDLActionsGraph {
         }
         _connectModes();
         System.out.println(_graph.nodeCount());
-        Node startNode = getNode(new TDLAction(new Time(_module.getDirector(),
-                0.0), TDLAction.AFTERMODESWITCH, startmode));
+        Node startNode = getNode(
+                new TDLAction(new Time(_module.getDirector(), 0.0),
+                        TDLAction.AFTERMODESWITCH, startmode));
         if (startNode == null) {
-            startNode = getNode(new TDLAction(
-                    ((TDLModuleDirector) _module.getDirector())
-                    .getModePeriod(startmode),
-                    TDLAction.AFTERMODESWITCH, startmode));
+            startNode = getNode(
+                    new TDLAction(
+                            ((TDLModuleDirector) _module.getDirector())
+                                    .getModePeriod(startmode),
+                            TDLAction.AFTERMODESWITCH, startmode));
         }
     }
 
@@ -155,16 +157,19 @@ public class TDLActionsGraph {
         for (Edge edge : edges) {
             Node targetNode = edge.sink();
 
-            if (((TDLAction) targetNode.getWeight()).actionType == TDLAction.MODESWITCH
-                    || ((TDLAction) targetNode.getWeight()).actionType == TDLAction.WRITEOUTPUT
-                    || ((TDLAction) targetNode.getWeight()).actionType == TDLAction.AFTERMODESWITCH
+            if (((TDLAction) targetNode
+                    .getWeight()).actionType == TDLAction.MODESWITCH
+                    || ((TDLAction) targetNode
+                            .getWeight()).actionType == TDLAction.WRITEOUTPUT
+                    || ((TDLAction) targetNode
+                            .getWeight()).actionType == TDLAction.AFTERMODESWITCH
                     || _graph.inputEdges(targetNode).size() > 1) {
                 List<TDLAction> actions = new ArrayList();
                 Collection<Edge> backwardEdges = _graph.inputEdges(targetNode);
                 for (Edge backwardNode : backwardEdges) {
                     if (!justExecuted.equals(backwardNode.source())) {
-                        actions.add((TDLAction) backwardNode.source()
-                                .getWeight());
+                        actions.add(
+                                (TDLAction) backwardNode.source().getWeight());
                     }
                 }
                 if (actions.size() > 0) {
@@ -174,8 +179,8 @@ public class TDLActionsGraph {
                             visited));
                 }
             } else {
-                events.putAll(getNextJoinNodes(justExecuted, targetNode,
-                        visited));
+                events.putAll(
+                        getNextJoinNodes(justExecuted, targetNode, visited));
             }
 
         }
@@ -198,8 +203,8 @@ public class TDLActionsGraph {
         for (Node node : nodes) {
             TDLAction gnode = (TDLAction) node.getWeight();
             if (gnode.time.equals(invocationTime)
-                    && (gnode.object != null && gnode.object.equals(actor) || gnode.object == null
-                    && actor == null)) {
+                    && (gnode.object != null && gnode.object.equals(actor)
+                            || gnode.object == null && actor == null)) {
                 return node;
             }
         }
@@ -275,15 +280,15 @@ public class TDLActionsGraph {
                     for (Time invocationTime : invocationTimes) {
                         if (invocationTime.compareTo(readTime) < 0
                                 && modeSwitchTimeBeforeRead
-                                .compareTo(invocationTime) < 0) {
+                                        .compareTo(invocationTime) < 0) {
                             modeSwitchTimeBeforeRead = invocationTime;
                         }
                     }
 
                     // get time of writing the task output; this time is >=
                     // modeSwitchTime and <= inputPortReadTime
-                    Node outNode = getNode(outputPort,
-                            modeSwitchTimeBeforeRead, readTime);
+                    Node outNode = getNode(outputPort, modeSwitchTimeBeforeRead,
+                            readTime);
                     if (outNode != null) {
                         Node inNode = getNode(readTime, inputPort);
                         Edge edge = new Edge(outNode, inNode, 0); // TODO:
@@ -428,8 +433,8 @@ public class TDLActionsGraph {
             }
 
         }
-        if (modeSwitchTimeBeforeNextTaskInvocation.equals(new Time(_module
-                .getDirector(), 0))) {
+        if (modeSwitchTimeBeforeNextTaskInvocation
+                .equals(new Time(_module.getDirector(), 0))) {
             return;
         }
 
@@ -488,7 +493,7 @@ public class TDLActionsGraph {
         if (previous != null) {
             Edge edge = new Edge(previous, node,
                     ((TDLAction) node.getWeight()).time
-                    .subtract(((TDLAction) previous.getWeight()).time));
+                            .subtract(((TDLAction) previous.getWeight()).time));
             _graph.addEdge(edge);
         }
         return node;
@@ -505,7 +510,8 @@ public class TDLActionsGraph {
      *            Actor of the TDL action.
      * @return New node.
      */
-    private Node _createNode(Time invocationTime, int actionType, Object actor) {
+    private Node _createNode(Time invocationTime, int actionType,
+            Object actor) {
         Node node = new Node(new TDLAction(invocationTime, actionType, actor));
         _graph.addNode(node);
         return node;
@@ -592,10 +598,14 @@ public class TDLActionsGraph {
             Node targetNode = edge.sink();
             if (_graph.inputEdgeCount(targetNode) == 1) {
                 events.add(targetNode);
-                if (((TDLAction) targetNode.getWeight()).actionType != TDLAction.READSENSOR
-                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.MODESWITCH
-                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.EXECUTETASK
-                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.AFTERMODESWITCH) {
+                if (((TDLAction) targetNode
+                        .getWeight()).actionType != TDLAction.READSENSOR
+                        && ((TDLAction) targetNode
+                                .getWeight()).actionType != TDLAction.MODESWITCH
+                        && ((TDLAction) targetNode
+                                .getWeight()).actionType != TDLAction.EXECUTETASK
+                        && ((TDLAction) targetNode
+                                .getWeight()).actionType != TDLAction.AFTERMODESWITCH) {
                     events.addAll(_getForwardReachableIndependentNodes(
                             targetNode, visited));
                 }
@@ -640,10 +650,10 @@ public class TDLActionsGraph {
                 if (startSlot == 0) {
                     startSlot = slotNumber;
                     if (prevSymbolWasAsterisk) {
-                        int lastStart = (Integer) invocations.get(invocations
-                                .size() - 2);
-                        int lastEnd = (Integer) invocations.get(invocations
-                                .size() - 1);
+                        int lastStart = (Integer) invocations
+                                .get(invocations.size() - 2);
+                        int lastEnd = (Integer) invocations
+                                .get(invocations.size() - 1);
                         int lastDiff = lastEnd - lastStart;
                         while (lastEnd + 1 < startSlot) {
                             invocations.add(lastEnd);
@@ -669,8 +679,8 @@ public class TDLActionsGraph {
                 invocations.add(endSlot);
                 startSlot = endSlot = 0;
                 if (prevSymbolWasAsterisk) {
-                    int lastStart = (Integer) invocations.get(invocations
-                            .size() - 2);
+                    int lastStart = (Integer) invocations
+                            .get(invocations.size() - 2);
                     int lastEnd = (Integer) invocations
                             .get(invocations.size() - 1);
                     if (lastEnd == 0) {
@@ -693,8 +703,8 @@ public class TDLActionsGraph {
                 }
                 break;
             default:
-                throw new IllegalActionException("'" + slots
-                        + "' cannot be parsed");
+                throw new IllegalActionException(
+                        "'" + slots + "' cannot be parsed");
             }
         }
         // update invocations so that 0-values which came from not initializing
@@ -760,7 +770,8 @@ public class TDLActionsGraph {
                     _tmpModeSwitchStarts.put(timeZero, modeSwitchStart);
                     _tmpModeSwitchEnds.put(timeZero, modeSwitchStart);
                 } else {
-                    new Exception("_tmpModeSwitchStarts was null?").printStackTrace();
+                    new Exception("_tmpModeSwitchStarts was null?")
+                            .printStackTrace();
                 }
             } else {
                 modeSwitchStart = _tmpModeSwitchStarts.get(timeZero);
@@ -777,8 +788,8 @@ public class TDLActionsGraph {
 
             List<Node> outputPortNodes = null;
             Node invocationEndNode = modeSwitchEnd;
-            for (long i = task.getOffset(); i < modePeriod.getLongValue(); i += task
-                    .getInvocationPeriod()) {
+            for (long i = task.getOffset(); i < modePeriod
+                    .getLongValue(); i += task.getInvocationPeriod()) {
                 Time invocationTime = new Time(_module.getDirector(), i);
 
                 List<IOPort> notConnectedToSensors = new ArrayList();
@@ -789,10 +800,11 @@ public class TDLActionsGraph {
                     // if not already been read at this time instant
                     if (_tmpReadSensors.size() == 0
                             || _tmpReadSensors.get(invocationTime) == null
-                            || !_tmpReadSensors.get(invocationTime).contains(
-                                    sensor)) {
+                            || !_tmpReadSensors.get(invocationTime)
+                                    .contains(sensor)) {
                         sensorNode = _createNode(invocationTime,
-                                TDLAction.READSENSOR, sensor, invocationEndNode);
+                                TDLAction.READSENSOR, sensor,
+                                invocationEndNode);
                     } else {
                         // if has already been read at this time instant, before a mode switch, connect
                         // task input ports to the mode switch and not to the sensor
@@ -802,12 +814,14 @@ public class TDLActionsGraph {
                                 .outputEdges(sensorNode);
                         if (edges.size() > 0) {
                             Node targetNode = edges.get(0).sink();
-                            while (((TDLAction) targetNode.getWeight()).actionType == TDLAction.READSENSOR) {
+                            while (((TDLAction) targetNode
+                                    .getWeight()).actionType == TDLAction.READSENSOR) {
                                 edges = (List<Edge>) _graph
                                         .outputEdges(targetNode);
                                 targetNode = edges.get(0).sink();
                             }
-                            if (((TDLAction) targetNode.getWeight()).actionType == TDLAction.MODESWITCH) {
+                            if (((TDLAction) targetNode
+                                    .getWeight()).actionType == TDLAction.MODESWITCH) {
                                 sensorWasReadBeforeModeSwitch = true;
 
                             }
@@ -853,10 +867,10 @@ public class TDLActionsGraph {
                 Node outputPortNode = null;
                 List<IOPort> outputPorts = taskActor.outputPortList();
                 for (IOPort outputPort : outputPorts) {
-                    Time writePortTime = new Time(_module.getDirector(), i
-                            + task.getLet());
-                    Time nextInvocationTime = new Time(_module.getDirector(), i
-                            + task.getLet() + task.getOffset());
+                    Time writePortTime = new Time(_module.getDirector(),
+                            i + task.getLet());
+                    Time nextInvocationTime = new Time(_module.getDirector(),
+                            i + task.getLet() + task.getOffset());
                     if (nextInvocationTime.equals(modePeriod)) {
                         nextInvocationTime = timeZero;
                     }
@@ -864,11 +878,10 @@ public class TDLActionsGraph {
                             TDLAction.WRITEOUTPUT, outputPort,
                             taskExecutionNode);
                     outputPortNodes.add(outputPortNode);
-                    _connectToIntermediateModeSwitch(
-                            outputPortNode,
+                    _connectToIntermediateModeSwitch(outputPortNode,
                             new Time(_module.getDirector(), i),
-                            new Time(_module.getDirector(), task
-                                    .getInvocationPeriod()));
+                            new Time(_module.getDirector(),
+                                    task.getInvocationPeriod()));
                     //                    List<IOPort> ports = outputPort.connectedPortList();
                     //                    for (IOPort port : ports) {
                     //                        if (port.isInput() && port.getContainer().equals(taskActor)) {
@@ -884,8 +897,8 @@ public class TDLActionsGraph {
                 } else if (outputPortNodes.size() == 1) {
                     invocationEndNode = outputPortNodes.get(0);
                 } else if (outputPortNodes.size() > 1) {
-                    invocationEndNode = getNode(new Time(_module.getDirector(),
-                            0), null);
+                    invocationEndNode = getNode(
+                            new Time(_module.getDirector(), 0), null);
                     if (invocationEndNode == null) {
                         invocationEndNode = _createNode(
                                 new Time(_module.getDirector(), i),
@@ -897,8 +910,8 @@ public class TDLActionsGraph {
             // add an edge to the graphStarts elements
             for (Node outputPortNode : outputPortNodes) {
                 Edge edge = new Edge(outputPortNode, modeSwitchStart,
-                        modePeriod.subtract(((TDLAction) outputPortNode
-                                .getWeight()).time));
+                        modePeriod.subtract(
+                                ((TDLAction) outputPortNode.getWeight()).time));
                 _graph.addEdge(edge);
             }
         }
@@ -930,8 +943,8 @@ public class TDLActionsGraph {
                 List l = sensorsAndTransitions.get(new Time(director, i));
                 if (l == null) {
                     l = new ArrayList();
-                    sensorsAndTransitions.put(new Time(_module.getDirector(), i
-                            * invocationPeriod), l);
+                    sensorsAndTransitions.put(new Time(_module.getDirector(),
+                            i * invocationPeriod), l);
                 }
                 List<IOPort> requiredSensors = transition.requiredSensors;
                 for (IOPort requiredSensor : requiredSensors) {
@@ -951,7 +964,7 @@ public class TDLActionsGraph {
                 Node prev = null;
                 Time modeSwitchEndTime = new Time(_module.getDirector(),
                         invocationTime.getLongValue()
-                        % modePeriod.getLongValue());
+                                % modePeriod.getLongValue());
                 Node endNode = new Node(new TDLAction(modeSwitchEndTime,
                         TDLAction.AFTERMODESWITCH, mode));
                 _tmpModeSwitchEnds.put(invocationTime, endNode);
@@ -1050,7 +1063,8 @@ public class TDLActionsGraph {
      * @param port
      *            Port that is read.
      */
-    private void _registerTaskInputPortReading(Time invocationTime, IOPort port) {
+    private void _registerTaskInputPortReading(Time invocationTime,
+            IOPort port) {
         List l = _tmpReadTaskInputPorts.get(port);
         if (l == null) {
             l = new ArrayList();

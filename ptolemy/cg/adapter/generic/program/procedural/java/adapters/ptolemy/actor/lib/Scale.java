@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class Scale
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
+public class Scale extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
 
     /**
      *  Construct a Scale adapter.

@@ -60,8 +60,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class FMIMACodeGeneratorAdapter extends
-        NamedProgramCodeGeneratorAdapter /*CodeGeneratorAdapter*/{
+public abstract class FMIMACodeGeneratorAdapter
+        extends NamedProgramCodeGeneratorAdapter /*CodeGeneratorAdapter*/ {
 
     /** Construct the code generator adapter associated
      *  with the given component.

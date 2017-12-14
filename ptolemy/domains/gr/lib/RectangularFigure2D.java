@@ -166,10 +166,11 @@ public abstract class RectangularFigure2D extends GRShape2D {
      */
     protected Point.Double _getCornerPoint() throws IllegalActionException {
         Point.Double center = _getCenterPoint();
-        return new Point.Double(center.getX()
-                + ((DoubleToken) width.getToken()).doubleValue() / 2.0,
+        return new Point.Double(
+                center.getX()
+                        + ((DoubleToken) width.getToken()).doubleValue() / 2.0,
                 center.getY() + ((DoubleToken) height.getToken()).doubleValue()
-                / 2.0);
+                        / 2.0);
     }
 
     /** Update the figure's position and size when the user changes

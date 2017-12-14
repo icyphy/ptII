@@ -223,9 +223,9 @@ public class SoundReader {
             int numBytesRead;
 
             if (_debug) {
-                System.out.println("SoundReader: getSamples(): "
-                        + "bytes available = "
-                        + _properFormatAudioInputStream.available());
+                System.out.println(
+                        "SoundReader: getSamples(): " + "bytes available = "
+                                + _properFormatAudioInputStream.available());
             }
 
             // Capture audio from file.
@@ -308,10 +308,10 @@ public class SoundReader {
         if (_isAudioCaptureActive == true) {
             return _sampleSizeInBits;
         } else {
-            throw new IllegalStateException("SoundReader: "
-                    + "getSampleSizeInBits() was called while "
-                    + "audio capture was"
-                    + " inactive (openFile() was never called).");
+            throw new IllegalStateException(
+                    "SoundReader: " + "getSampleSizeInBits() was called while "
+                            + "audio capture was"
+                            + " inactive (openFile() was never called).");
         }
     }
 
@@ -351,8 +351,8 @@ public class SoundReader {
         _bytesPerSample = _sampleSizeInBits / 8;
 
         if (_debug) {
-            System.out.println("SoundReader: sample size in bits = "
-                    + _sampleSizeInBits);
+            System.out.println(
+                    "SoundReader: sample size in bits = " + _sampleSizeInBits);
         }
 
         _channels = origFormat.getChannels();
@@ -367,8 +367,8 @@ public class SoundReader {
         }
 
         try {
-            _properFormatAudioInputStream = AudioSystem.getAudioInputStream(
-                    format, _audioInputStream);
+            _properFormatAudioInputStream = AudioSystem
+                    .getAudioInputStream(format, _audioInputStream);
         } catch (IllegalArgumentException e) {
             // Interpret a failed conversion to mean that
             // the input sound file has an unsupported format.
@@ -440,7 +440,7 @@ public class SoundReader {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
                     _b[i] = byteArray[currSamp * bytesPerSample * channels
-                                      + bytesPerSample * currChannel + i];
+                            + bytesPerSample * currChannel + i];
                 }
 
                 int result = _b[0] >> 7;

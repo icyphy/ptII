@@ -54,8 +54,8 @@ public class QSSDirectorTest extends QSSDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public QSSDirectorTest() throws IllegalActionException,
-            NameDuplicationException {
+    public QSSDirectorTest()
+            throws IllegalActionException, NameDuplicationException {
         super();
         System.out.println(getClass().getName() + "()");
     }
@@ -67,10 +67,10 @@ public class QSSDirectorTest extends QSSDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public QSSDirectorTest(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public QSSDirectorTest(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        System.out.println(getClass().getName() + "(" + workspace + ")" );
+        System.out.println(getClass().getName() + "(" + workspace + ")");
     }
 
     /** Construct a director in the given container with the given name.
@@ -88,6 +88,7 @@ public class QSSDirectorTest extends QSSDirector {
     public QSSDirectorTest(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        System.out.println(getClass().getName() + "(" + container + ", " + name + ")" );
+        System.out.println(
+                getClass().getName() + "(" + container + ", " + name + ")");
     }
 }

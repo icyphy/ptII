@@ -115,12 +115,13 @@ public class NoiseFilter extends PointFilter {
     }
 
     private int random(int x) {
-        x += (int) (((distribution == GAUSSIAN ? randomNumbers.nextGaussian() : 2 * randomNumbers.nextFloat() - 1))
-                * amount);
-        if (x < 0)
+        x += (int) (((distribution == GAUSSIAN ? randomNumbers.nextGaussian()
+                : 2 * randomNumbers.nextFloat() - 1)) * amount);
+        if (x < 0) {
             x = 0;
-        else if (x > 0xff)
+        } else if (x > 0xff) {
             x = 0xff;
+        }
         return x;
     }
 
@@ -132,7 +133,8 @@ public class NoiseFilter extends PointFilter {
             int g = (rgb >> 8) & 0xff;
             int b = rgb & 0xff;
             if (monochrome) {
-                int n = (int) (((distribution == GAUSSIAN ? randomNumbers.nextGaussian()
+                int n = (int) (((distribution == GAUSSIAN
+                        ? randomNumbers.nextGaussian()
                         : 2 * randomNumbers.nextFloat() - 1)) * amount);
                 r = PixelUtils.clamp(r + n);
                 g = PixelUtils.clamp(g + n);

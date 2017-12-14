@@ -85,7 +85,7 @@ public class SubscriptionAggregator extends Subscriber {
         // Set the operation attribute of the input port to inherit
         // the value of the operation parameter of this actor.
         ((SubscriptionAggregatorPort) input).operation
-        .setExpression("$operation");
+                .setExpression("$operation");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -137,8 +137,8 @@ public class SubscriptionAggregator extends Subscriber {
      *  @exception NameDuplicationException If there is already a port named "input".
      */
     @Override
-    protected void _createInputPort() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _createInputPort()
+            throws IllegalActionException, NameDuplicationException {
         input = new SubscriptionAggregatorPort(this, "input");
     }
 }

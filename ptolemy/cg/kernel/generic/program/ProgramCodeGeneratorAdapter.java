@@ -66,8 +66,8 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     public final ProgramCodeGeneratorAdapter getAdapter(Object component)
             throws IllegalActionException {
-        return (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(
-                component);
+        return (ProgramCodeGeneratorAdapter) getCodeGenerator()
+                .getAdapter(component);
     }
 
     /** Get the code generator associated with this adapter class.
@@ -95,8 +95,8 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         try {
             return _templateParser.processCode(code);
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException(null, ex, "Failed to parse \""
-                    + code + "\"");
+            throw new IllegalActionException(null, ex,
+                    "Failed to parse \"" + code + "\"");
         }
     }
 
@@ -163,13 +163,9 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
             if (getComponent() instanceof Nameable) {
 
-                codeStream.insert(
-                        0,
-                        _eol
-                        + getCodeGenerator().comment(
-                                shortBlockName
-                                + ((Nameable) getComponent())
-                                .getName()));
+                codeStream.insert(0,
+                        _eol + getCodeGenerator().comment(shortBlockName
+                                + ((Nameable) getComponent()).getName()));
             }
         }
         return processCode(codeStream.toString());
@@ -187,7 +183,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * with the code block name (String) as key.
      */
     protected static final String[] _defaultBlocks = { "preinitBlock",
-        "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line character so that the files we generate

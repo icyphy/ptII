@@ -130,8 +130,8 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
                 }
             }
         } else {
-            throw new IllegalActionException("Token type at DiscreteClock "
-                    + "not supported yet.");
+            throw new IllegalActionException(
+                    "Token type at DiscreteClock " + "not supported yet.");
         }
 
         StringBuffer offsetsString = new StringBuffer();
@@ -183,8 +183,8 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
                 }
             }
         } else {
-            throw new IllegalActionException("Token type at DiscreteClock "
-                    + "not supported yet.");
+            throw new IllegalActionException(
+                    "Token type at DiscreteClock " + "not supported yet.");
         }
 
         StringBuffer valuesString = new StringBuffer();
@@ -281,8 +281,8 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
             size = values.length;
         }
         args.add(Integer.toString(size));
-        args.add(Boolean
-                .toString(((ptolemy.actor.lib.DiscreteClock) getComponent()).trigger
+        args.add(Boolean.toString(
+                ((ptolemy.actor.lib.DiscreteClock) getComponent()).trigger
                         .numberOfSources() > 0));
 
         codeStream.appendCodeBlock("postfireBlock", args);

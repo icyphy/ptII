@@ -45,8 +45,9 @@ public class MapColorsFilter extends PointFilter {
 
     @Override
     public int filterRGB(int x, int y, int rgb) {
-        if (rgb == oldColor)
+        if (rgb == oldColor) {
             return newColor;
+        }
         return rgb;
     }
 }

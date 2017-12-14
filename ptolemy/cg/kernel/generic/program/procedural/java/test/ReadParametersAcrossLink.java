@@ -154,7 +154,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
             if (container.getAttribute("remoteParameter") != null) {
                 double remoteParameter = ((DoubleToken) ((Variable) container
                         .getAttribute("remoteParameter")).getToken())
-                        .doubleValue();
+                                .doubleValue();
                 group.setRemoteParameter(remoteParameter);
             } else {
                 throw new IllegalActionException(this,

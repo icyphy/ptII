@@ -180,8 +180,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         }
     }
 
-    public static class GTActorGraphModel extends ActorGraphModel implements
-    UpdateController {
+    public static class GTActorGraphModel extends ActorGraphModel
+            implements UpdateController {
 
         public GTActorGraphModel(NamedObj composite) {
             super(composite);
@@ -209,8 +209,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         private boolean _updateStopped = false;
     }
 
-    public static class GTFSMGraphModel extends FSMGraphModel implements
-    UpdateController {
+    public static class GTFSMGraphModel extends FSMGraphModel
+            implements UpdateController {
 
         public GTFSMGraphModel(CompositeEntity composite) {
             super(composite);
@@ -318,8 +318,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         _tabbedPane.addChangeListener(this);
         try {
             entity.workspace().getReadAccess();
-            Iterator<?> cases = ((TransformationRule) entity).entityList(
-                    CompositeActorMatcher.class).iterator();
+            Iterator<?> cases = ((TransformationRule) entity)
+                    .entityList(CompositeActorMatcher.class).iterator();
             boolean first = true;
             while (cases.hasNext()) {
                 CompositeActorMatcher matcher = (CompositeActorMatcher) cases
@@ -360,7 +360,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
      *  @param newPane True to add the pane prior to the last pane.
      *  @return The pane.
      */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher, boolean newPane) {
+    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
+            boolean newPane) {
         GraphPane pane = _createGraphPane(matcher);
         pane.getForegroundLayer().setPickHalo(2);
         pane.getForegroundEventLayer().setConsuming(false);
@@ -395,7 +396,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         if (configuration != null) {
             try {
                 PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                        .getPtolemyPreferencesWithinConfiguration(
+                                configuration);
                 if (preferences != null) {
                     jgraph.setBackground(preferences.backgroundColor.asColor());
                 }

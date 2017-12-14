@@ -43,8 +43,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ProductLatticeOntologyASTNodeAdapter extends
-LatticeOntologyASTNodeAdapter {
+public class ProductLatticeOntologyASTNodeAdapter
+        extends LatticeOntologyASTNodeAdapter {
 
     /** Construct the product lattice ontology adapter associated
      *  with the given AST node.
@@ -54,7 +54,7 @@ LatticeOntologyASTNodeAdapter {
      */
     public ProductLatticeOntologyASTNodeAdapter(
             ProductLatticeOntologySolver solver, ASTPtRootNode node)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         this(solver, node, true);
     }
 
@@ -92,11 +92,12 @@ LatticeOntologyASTNodeAdapter {
         for (LatticeOntologyAdapter adapter : _tupleAdapters) {
             if (adapter != null) {
                 Ontology adapterOntology = adapter.getSolver().getOntology();
-                adapter._addDefaultConstraints(adapter.getSolver()
-                        ._getConstraintType());
+                adapter._addDefaultConstraints(
+                        adapter.getSolver()._getConstraintType());
                 ProductLatticeOntologyAdapter
-                .addConstraintsFromTupleOntologyAdapter(
-                        adapter.constraintList(), adapterOntology, this);
+                        .addConstraintsFromTupleOntologyAdapter(
+                                adapter.constraintList(), adapterOntology,
+                                this);
             }
         }
         return super.constraintList();

@@ -149,8 +149,8 @@ public class OptimizingSDFDirector extends SDFDirector {
         OptimizingSDFScheduler scheduler = (OptimizingSDFScheduler) getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire "
-                    + "system with no scheduler");
+            throw new IllegalActionException(
+                    "Attempted to fire " + "system with no scheduler");
         }
 
         // This will throw IllegalActionException if this director
@@ -222,8 +222,8 @@ public class OptimizingSDFDirector extends SDFDirector {
      *  default scheduler of the class OptimizingSDFScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         // set the schedule to an instance of OptimizingSDFScheduler
         OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this,
@@ -249,12 +249,13 @@ public class OptimizingSDFDirector extends SDFDirector {
      * OptimizationCriterion string parameter
      * @exception IllegalActionException if the criterion used is unknown
      */
-    private void _setOptimizationCriterionValue() throws IllegalActionException {
+    private void _setOptimizationCriterionValue()
+            throws IllegalActionException {
         OptimizingSDFScheduler os = (OptimizingSDFScheduler) getScheduler();
         if (optimizationCriterion.getValueAsString().equals("\"Buffers\"")) {
             _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
-        } else if (optimizationCriterion.getValueAsString().equals(
-                "\"Execution Time\"")) {
+        } else if (optimizationCriterion.getValueAsString()
+                .equals("\"Execution Time\"")) {
             _optimizationCriterionValue = OptimizationCriteria.EXECUTIONTIME;
         } else {
             throw new IllegalActionException("Unknown optimization criterion");

@@ -175,8 +175,8 @@ public class PullSupplier extends Sink {
                     }
                 }
             } catch (InterruptedException e) {
-                throw new IllegalActionException(this, "blocking interrupted."
-                        + e.getMessage());
+                throw new IllegalActionException(this,
+                        "blocking interrupted." + e.getMessage());
             }
         }
 
@@ -252,8 +252,7 @@ public class PullSupplier extends Sink {
             NameComponent[] path = { namecomp };
             ncRef.rebind(path, _supplier);
         } catch (UserException ex) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     " initialize ORB failed. Please make sure the "
                             + "naming server has already started and the "
                             + "ORBInitProperty parameter is configured correctly. "
@@ -356,8 +355,8 @@ public class PullSupplier extends Sink {
 
                 return null;
             } catch (InterruptedException e) {
-                throw new InternalErrorException("pull method interrupted."
-                        + e.getMessage());
+                throw new InternalErrorException(
+                        "pull method interrupted." + e.getMessage());
             }
         }
     }

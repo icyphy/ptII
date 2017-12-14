@@ -195,8 +195,8 @@ public class PtFileChooser extends Container {
                 if (_useFileDialog) {
                     _fileDialog.setDirectory(currentWorkingDirectory);
                 } else {
-                    _jFileChooser.setCurrentDirectory(new File(
-                            currentWorkingDirectory));
+                    _jFileChooser.setCurrentDirectory(
+                            new File(currentWorkingDirectory));
                 }
             }
         }
@@ -218,7 +218,7 @@ public class PtFileChooser extends Container {
      *  DIRECTORIES_ONLY, then this class must have been instantiated
      *  with a mode of FileBrowser.LOAD or JFileChooser.OPEN_DIALOG in
      *  the constructor.</p>
-
+    
      *  @param mode One of JFileChooser.FILES_ONLY, JFileChooser.DIRECTORIES_ONLY or
      *  JFileChooser.FILES_AND_DIRECTORIES.
      */
@@ -228,10 +228,10 @@ public class PtFileChooser extends Container {
                 if (_mode != 0) {
                     if (!_printedDirectoryWarning) {
                         _printedDirectoryWarning = true;
-                        System.out
-                        .println("Warning: The PtFileChooser was instantiated with "
-                                + "a mode other than 0, but setFileSelectionMode(DIRECTORIES_ONLY) "
-                                + "was called.  This is likely to not work.");
+                        System.out.println(
+                                "Warning: The PtFileChooser was instantiated with "
+                                        + "a mode other than 0, but setFileSelectionMode(DIRECTORIES_ONLY) "
+                                        + "was called.  This is likely to not work.");
                     }
                 }
                 // Mac Specific: allow the user to select a directory.
@@ -239,7 +239,8 @@ public class PtFileChooser extends Container {
                 // works with FileDialog.LOAD, not FileDialog.SAVE.
                 // See
                 // https://developer.apple.com/library/mac/#documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html
-                System.setProperty("apple.awt.fileDialogForDirectories", "true");
+                System.setProperty("apple.awt.fileDialogForDirectories",
+                        "true");
             } else {
                 System.setProperty("apple.awt.fileDialogForDirectories",
                         "false");

@@ -77,15 +77,16 @@ public class Rotate2D extends GRTransform2D {
         angleType = new StringAttribute(this, "angleType");
         angleType.setExpression("radians");
 
-        initialTheta = new Parameter(this, "initialTheta", new DoubleToken(0.0));
+        initialTheta = new Parameter(this, "initialTheta",
+                new DoubleToken(0.0));
         initialTheta.setTypeEquals(BaseType.DOUBLE);
 
-        initialAnchorX = new Parameter(this, "initialAnchorX", new DoubleToken(
-                0.0));
+        initialAnchorX = new Parameter(this, "initialAnchorX",
+                new DoubleToken(0.0));
         initialAnchorX.setTypeEquals(BaseType.DOUBLE);
 
-        initialAnchorY = new Parameter(this, "initialAnchorY", new DoubleToken(
-                0.0));
+        initialAnchorY = new Parameter(this, "initialAnchorY",
+                new DoubleToken(0.0));
         initialAnchorY.setTypeEquals(BaseType.DOUBLE);
 
         theta = new TypedIOPort(this, "theta", true, false);
@@ -197,8 +198,8 @@ public class Rotate2D extends GRTransform2D {
             if (!figure.getTransformContext().getTransform()
                     .equals(inputTransform)) {
                 if (!_isAccumulating()) {
-                    inputTransform.concatenate(figure.getTransformContext()
-                            .getInverseTransform());
+                    inputTransform.concatenate(
+                            figure.getTransformContext().getInverseTransform());
                 }
 
                 figure.transform(inputTransform);

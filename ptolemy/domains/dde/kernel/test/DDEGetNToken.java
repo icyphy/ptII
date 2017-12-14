@@ -137,8 +137,8 @@ public class DDEGetNToken extends DDEGet {
 
                         if (rcvr.hasToken()) {
                             // System.out.println("#####");
-                            System.out
-                            .println("#####Past DDEGetNToken.rcvr.hasToken()");
+                            System.out.println(
+                                    "#####Past DDEGetNToken.rcvr.hasToken()");
 
                             // System.out.println("#####");
                             _tokens[cnt] = rcvr.get();

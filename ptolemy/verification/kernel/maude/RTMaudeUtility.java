@@ -77,14 +77,14 @@ public class RTMaudeUtility {
      *
      * @param model The system under analysis.
      * @param formula
-
+    
      * @return The converted .maude format of the system.
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
     public static StringBuffer generateRTMDescription(CompositeActor model,
             String formula, boolean inlineFilesIfPossible)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         // RTM initial state for current Ptolemy model (DE)
         RTMList topconf = _translateCompositeEntity(model, null);
@@ -108,14 +108,14 @@ public class RTMaudeUtility {
      *
      * @param model The system under analysis.
      * @param formula
-
+    
      * @return The converted .maude format of the system.
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
     public static StringBuffer generateRTMDescription(BufferedReader template,
             CompositeActor model, String formula)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         // RTM initial state for current Ptolemy model (DE)
         RTMList topconf = _translateCompositeEntity(model, null);
@@ -138,16 +138,15 @@ public class RTMaudeUtility {
 
                             do {
                                 line = template.readLine();
-                                if (line == null
-                                        || line.replace("-", "").trim()
+                                if (line == null || line.replace("-", "").trim()
                                         .equals("")) {
                                     break;
                                 }
                             } while (true);
                         }
                         if (beginModel) {
-                            _generateModelBody(returnRTMFormat,
-                                    model.getName(), topconf);
+                            _generateModelBody(returnRTMFormat, model.getName(),
+                                    topconf);
                             beginModel = false;
                         } else {
                             _generateFormula(returnRTMFormat, formula);
@@ -155,8 +154,8 @@ public class RTMaudeUtility {
                         }
                     } else if (lineTrimed.equals("")) {
                         if (beginModel) {
-                            _generateModelBody(returnRTMFormat,
-                                    model.getName(), topconf);
+                            _generateModelBody(returnRTMFormat, model.getName(),
+                                    topconf);
                             beginModel = false;
                             continue;
                         } else if (beginFormula) {
@@ -167,13 +166,13 @@ public class RTMaudeUtility {
                     } else if (lineTrimed.startsWith("---")
                             && lineTrimed.endsWith("---")
                             && lineTrimed.substring(3, lineTrimed.length() - 3)
-                            .trim().equalsIgnoreCase("Model Begin")) {
+                                    .trim().equalsIgnoreCase("Model Begin")) {
                         beginModel = true;
                         beginFormula = false;
                     } else if (lineTrimed.startsWith("---")
                             && lineTrimed.endsWith("---")
                             && lineTrimed.substring(3, lineTrimed.length() - 3)
-                            .trim().equalsIgnoreCase("Formula Begin")) {
+                                    .trim().equalsIgnoreCase("Formula Begin")) {
                         beginModel = false;
                         beginFormula = true;
                     }
@@ -185,7 +184,8 @@ public class RTMaudeUtility {
                 }
             } while (true);
         } catch (IOException e) {
-            throw new IllegalActionException(null, e, "Unable to read template");
+            throw new IllegalActionException(null, e,
+                    "Unable to read template");
         }
 
         return returnRTMFormat;
@@ -215,9 +215,10 @@ public class RTMaudeUtility {
             BufferedReader reader = null;
             Stack<BufferedReader> readerStack = null;
             try {
-                stream = loader.getResourceAsStream(SEMANTIC_FILE_PATH
-                        + "/ptolemy-modelcheck.maude");
-                reader = new BufferedReader(new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
+                stream = loader.getResourceAsStream(
+                        SEMANTIC_FILE_PATH + "/ptolemy-modelcheck.maude");
+                reader = new BufferedReader(new InputStreamReader(stream,
+                        java.nio.charset.Charset.defaultCharset()));
                 readerStack = new Stack<BufferedReader>();
                 readerStack.push(null);
                 while (!readerStack.isEmpty()) {
@@ -234,7 +235,9 @@ public class RTMaudeUtility {
                                 if (stream != null) {
                                     readerStack.push(reader);
                                     reader = new BufferedReader(
-                                            new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
+                                            new InputStreamReader(stream,
+                                                    java.nio.charset.Charset
+                                                            .defaultCharset()));
                                     skip = true;
                                 }
                             }
@@ -247,7 +250,8 @@ public class RTMaudeUtility {
                             line = reader.readLine();
                         }
                     } catch (IOException e) {
-                        throw new IllegalActionException("Unable to read file.");
+                        throw new IllegalActionException(
+                                "Unable to read file.");
                     } finally {
                         try {
                             if (reader != null) {
@@ -255,8 +259,8 @@ public class RTMaudeUtility {
                                 reader = null;
                             }
                         } catch (IOException e) {
-                            throw new IllegalActionException("Failed to close "
-                                    + reader);
+                            throw new IllegalActionException(
+                                    "Failed to close " + reader);
                         }
                     }
                     reader = readerStack.pop();
@@ -266,8 +270,8 @@ public class RTMaudeUtility {
                     try {
                         reader.close();
                     } catch (IOException ex) {
-                        throw new IllegalActionException("Failed to close "
-                                + reader);
+                        throw new IllegalActionException(
+                                "Failed to close " + reader);
                     }
                 }
                 if (readerStack != null) {
@@ -287,8 +291,8 @@ public class RTMaudeUtility {
                     try {
                         stream.close();
                     } catch (IOException ex) {
-                        throw new IllegalActionException("Failed to close "
-                                + stream);
+                        throw new IllegalActionException(
+                                "Failed to close " + stream);
                     }
                 }
             }
@@ -310,16 +314,16 @@ public class RTMaudeUtility {
             ret.setClass("Clock");
             ret.addStrAttr("period",
                     new RTMPtExp(((Clock) act).period.getExpression(), true)
-            .getValue());
+                            .getValue());
         } else if (act instanceof TimeDelay) {
             ret.setClass("Delay");
             // BoundedBufferNondeterministicDelay did not PROPERLY override "delay"
             if (act instanceof BoundedBufferNondeterministicDelay) {
-                ret.addStrAttr(
-                        "delay",
+                ret.addStrAttr("delay",
                         new RTMPtExp(
                                 ((BoundedBufferNondeterministicDelay) act).delay
-                                .getExpression(), true).getValue());
+                                        .getExpression(),
+                                true).getValue());
             } else {
                 ret.addStrAttr("delay",
                         new RTMPtExp(((TimeDelay) act).delay.getExpression(),
@@ -343,16 +347,17 @@ public class RTMaudeUtility {
             for (State s : target.entityList(State.class)) {
                 // State refinement
                 if (s.getRefinement() != null) {
-                    rrefines.add(procRefinements(s.getName(),
-                            s.getRefinement(), "State", processedActs));
+                    rrefines.add(procRefinements(s.getName(), s.getRefinement(),
+                            "State", processedActs));
                 }
                 // Transition and its refinement
                 for (Transition t : (List<Transition>) s.outgoingPort
                         .linkedRelationList()) {
                     rtrans.add(_translateTransition(t));
                     if (t.getRefinement() != null) {
-                        rrefines.add(procRefinements(t.getName(),
-                                t.getRefinement(), "Transition", processedActs));
+                        rrefines.add(
+                                procRefinements(t.getName(), t.getRefinement(),
+                                        "Transition", processedActs));
                     }
                 }
             }
@@ -482,22 +487,23 @@ public class RTMaudeUtility {
         RTMList os = new RTMList(";", "emptyMap");
         RTMList ss = new RTMList(";", "emptyMap");
 
-        for (String pt : (List<String>) tr.setActions.getDestinationNameList()) {
-            ss.add(ra.get(new RTMFragment(RTMTerm.transId(pt)), new RTMPtExp(
-                    tr.setActions.getParseTree(pt))));
+        for (String pt : (List<String>) tr.setActions
+                .getDestinationNameList()) {
+            ss.add(ra.get(new RTMFragment(RTMTerm.transId(pt)),
+                    new RTMPtExp(tr.setActions.getParseTree(pt))));
         }
 
         for (String ot : (List<String>) tr.outputActions
                 .getDestinationNameList()) {
-            os.add(ra.get(new RTMFragment(RTMTerm.transId(ot)), new RTMPtExp(
-                    tr.outputActions.getParseTree(ot))));
+            os.add(ra.get(new RTMFragment(RTMTerm.transId(ot)),
+                    new RTMPtExp(tr.outputActions.getParseTree(ot))));
         }
 
         return retTr.get(
                 new RTMFragment(RTMTerm.transId(tr.sourceState().getName())),
-                new RTMFragment(RTMTerm
-                        .transId(tr.destinationState().getName())),
-                        new RTMPtExp(tr.getGuardExpression(), false), os, ss);
+                new RTMFragment(
+                        RTMTerm.transId(tr.destinationState().getName())),
+                new RTMPtExp(tr.getGuardExpression(), false), os, ss);
     }
 
     private static RTMTerm portName(NamedObj upper, Port p) {
@@ -512,9 +518,9 @@ public class RTMaudeUtility {
 
     private static RTMTerm procRefinements(String name, Actor[] rfs,
             String identifier, HashSet<Actor> inact)
-                    throws IllegalActionException {
-        RTMOpTermGenerator refineAct = new RTMOpTermGenerator("(", "["
-                + identifier + ",false]: (", "))");
+            throws IllegalActionException {
+        RTMOpTermGenerator refineAct = new RTMOpTermGenerator("(",
+                "[" + identifier + ",false]: (", "))");
         RTMList rrf = new RTMList("", "none");
         for (Actor ra : rfs) {
             inact.add(ra);

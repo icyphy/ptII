@@ -199,7 +199,8 @@ public class BasicGraphModelTest extends TestSuite {
 
             @Override
             public void check() throws TestFailedException {
-                assertExpr(g.getNodeCount(root) == 65536, "Node count != 65536");
+                assertExpr(g.getNodeCount(root) == 65536,
+                        "Node count != 65536");
             }
         });
     }
