@@ -733,7 +733,8 @@ For example:
 	  depends="build, initReports"
 	  description="Run Spotbugs">
     <taskdef
-        resource="edu/umd/cs/findbugs/anttask/tasks.properties"/>
+        resource="edu/umd/cs/findbugs/anttask/tasks.properties"
+        classpath="ant/lib/spotbugs-ant.jar"/>
     <spotbugs 
        excludefilter="${basedir}/doc/spotbugs-exclude.xml"
        home="${spotbugs.home}"
