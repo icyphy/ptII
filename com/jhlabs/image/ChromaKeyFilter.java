@@ -75,8 +75,9 @@ public class ChromaKeyFilter extends AbstractBufferedImageOp {
         src.getType();
         src.getRaster();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         dst.getRaster();
 
         float[] hsb1 = null;
@@ -100,11 +101,13 @@ public class ChromaKeyFilter extends AbstractBufferedImageOp {
                 //                    return Math.abs(r1-r2) <= tolerance && Math.abs(g1-g2) <= tolerance && Math.abs(b1-b2) <= tolerance;
 
                 //                   if ( PixelUtils.nearColors( in, clean, (int)(255*tolerance) ) )
-                if (Math.abs(hsb1[0] - hsb2[0]) < hTolerance && Math.abs(hsb1[1] - hsb2[1]) < sTolerance
-                        && Math.abs(hsb1[2] - hsb2[2]) < bTolerance)
+                if (Math.abs(hsb1[0] - hsb2[0]) < hTolerance
+                        && Math.abs(hsb1[1] - hsb2[1]) < sTolerance
+                        && Math.abs(hsb1[2] - hsb2[2]) < bTolerance) {
                     inPixels[x] = rgb1 & 0xffffff;
-                else
+                } else {
                     inPixels[x] = rgb1;
+                }
             }
             setRGB(dst, 0, y, width, 1, inPixels);
         }

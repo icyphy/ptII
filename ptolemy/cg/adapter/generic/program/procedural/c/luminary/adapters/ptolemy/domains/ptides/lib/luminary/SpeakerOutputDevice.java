@@ -54,7 +54,7 @@ public class SpeakerOutputDevice extends OutputDevice {
      */
     public SpeakerOutputDevice(
             ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
 
@@ -89,8 +89,8 @@ public class SpeakerOutputDevice extends OutputDevice {
         CodeStream _codeStream = _templateParser.getCodeStream();
 
         ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice) getComponent();
-        PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(actor
-                .getDirector());
+        PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(
+                actor.getDirector());
 
         args.add(adapter.actuators.get(actor).toString());
 
@@ -104,8 +104,8 @@ public class SpeakerOutputDevice extends OutputDevice {
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
-                "initializeAudioOutput")));
+        code.append(processCode(_templateParser.getCodeStream()
+                .getCodeBlock("initializeAudioOutput")));
         return code.toString();
     }
 }

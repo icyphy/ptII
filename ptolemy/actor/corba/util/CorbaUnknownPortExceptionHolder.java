@@ -6,8 +6,8 @@ package ptolemy.actor.corba.util;
  * from CorbaActor.idl
  * Thursday, January 18, 2001 7:07:58 PM PST
  */
-public final class CorbaUnknownPortExceptionHolder implements
-org.omg.CORBA.portable.Streamable {
+public final class CorbaUnknownPortExceptionHolder
+        implements org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaUnknownPortException value = null;
 
     public CorbaUnknownPortExceptionHolder() {
@@ -26,8 +26,8 @@ org.omg.CORBA.portable.Streamable {
 
     @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
-        ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-        .write(o, value);
+        ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper.write(o,
+                value);
     }
 
     @Override

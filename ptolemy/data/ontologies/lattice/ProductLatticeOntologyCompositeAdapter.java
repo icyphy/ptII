@@ -43,8 +43,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ProductLatticeOntologyCompositeAdapter extends
-LatticeOntologyCompositeAdapter {
+public class ProductLatticeOntologyCompositeAdapter
+        extends LatticeOntologyCompositeAdapter {
 
     /** Construct the product lattice ontology adapter associated
      *  with the given composite actor.
@@ -54,7 +54,7 @@ LatticeOntologyCompositeAdapter {
      */
     public ProductLatticeOntologyCompositeAdapter(
             ProductLatticeOntologySolver solver, CompositeEntity component)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, component);
         _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver,
                 component);
@@ -81,13 +81,13 @@ LatticeOntologyCompositeAdapter {
                 // will be added by their respective product lattice ontology
                 // adapters when super.constraintList() is called.
                 Ontology adapterOntology = adapter.getSolver().getOntology();
-                adapter._addDefaultConstraints(adapter.getSolver()
-                        ._getConstraintType());
+                adapter._addDefaultConstraints(
+                        adapter.getSolver()._getConstraintType());
                 ((LatticeOntologyCompositeAdapter) adapter)
-                ._addInterConnectionConstraints();
+                        ._addInterConnectionConstraints();
                 ProductLatticeOntologyAdapter
-                .addConstraintsFromTupleOntologyAdapter(
-                        adapter._ownConstraints, adapterOntology, this);
+                        .addConstraintsFromTupleOntologyAdapter(
+                                adapter._ownConstraints, adapterOntology, this);
             }
         }
         return super.constraintList();

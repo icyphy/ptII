@@ -156,11 +156,8 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
             outputInitialValue.validate();
 
         } else {
-            throw new IllegalActionException(
-                    this,
-                    "Message actor "
-                            + getName()
-                            + " does not have a proper initial value.  Please set the initial value parameter.");
+            throw new IllegalActionException(this, "Message actor " + getName()
+                    + " does not have a proper initial value.  Please set the initial value parameter.");
         }
     }
 
@@ -176,8 +173,8 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
      *   the name of an existing actor in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
 
         // Set the expression in the copyVariableName for display in the icon
@@ -221,18 +218,13 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
             } else if (var.getType().equals(BaseType.BOOLEAN)) {
                 return new BooleanToken("true");
             } else {
-                throw new IllegalActionException(
-                        this,
-                        "The default value for actor "
-                                + getName()
+                throw new IllegalActionException(this,
+                        "The default value for actor " + getName()
                                 + " cannot be determined because the type on the input port is unknown or unsupported.  Please use an integer, double, or boolean.");
             }
         } else {
-            throw new IllegalActionException(
-                    this,
-                    "Actor "
-                            + getName()
-                            + " does not have a variable to store its state and/or initial value in.");
+            throw new IllegalActionException(this, "Actor " + getName()
+                    + " does not have a variable to store its state and/or initial value in.");
         }
     }
 
@@ -256,7 +248,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
                 Variable var = getVariable();
                 if (var != null && var.getToken() != null) {
                     copyVariableName
-                    .setExpression(variableName.getExpression());
+                            .setExpression(variableName.getExpression());
                 }
             }
             // OK if this throws an exception.  Want default of UNDEFINED which was already set.

@@ -132,8 +132,8 @@ public class TextStyle extends ParameterEditorStyle {
         try {
             int heightValue = ((IntToken) height.getToken()).intValue();
             int widthValue = ((IntToken) width.getToken()).intValue();
-            JTextArea area = query.addTextArea(name,
-                    container.getDisplayName(), defaultValue,
+            JTextArea area = query.addTextArea(name, container.getDisplayName(),
+                    defaultValue,
                     PtolemyQuery.preferredBackgroundColor(container),
                     PtolemyQuery.preferredForegroundColor(container),
                     heightValue, widthValue);
@@ -156,8 +156,8 @@ public class TextStyle extends ParameterEditorStyle {
     ////                         private methods                   ////
     // Initialize height and width.  This method is called by the
     // constructors so as to avoid code duplication.
-    private void _initialize() throws IllegalActionException,
-    NameDuplicationException {
+    private void _initialize()
+            throws IllegalActionException, NameDuplicationException {
         height = new Parameter(this, "height");
         height.setToken("10");
         height.setTypeEquals(BaseType.INT);

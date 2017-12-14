@@ -62,7 +62,7 @@ import ptolemy.graph.mapping.ToIntMapping;
  @version $Id$
  */
 public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
-implements MaximumProfitToCostRatioAnalyzer {
+        implements MaximumProfitToCostRatioAnalyzer {
     /** Construct an instance of this class.
      *
      * @param graph The given graph.
@@ -169,8 +169,8 @@ implements MaximumProfitToCostRatioAnalyzer {
                 int delays = _edgeCosts.toInt(edge);
 
                 for (int i = 0; i < delays; i++) {
-                    Node addedNode = graphPlusDelaysAsNodes.addNodeWeight("D"
-                            + j + i);
+                    Node addedNode = graphPlusDelaysAsNodes
+                            .addNodeWeight("D" + j + i);
                     _delayNodeList.add(addedNode);
 
                     Edge addedEdge = graphPlusDelaysAsNodes.addEdge(source,
@@ -258,7 +258,8 @@ implements MaximumProfitToCostRatioAnalyzer {
                 Node sink = (Node) _delayNodeList.get(j);
 
                 if (_firstOrderLongestPathMatrix[i][j] >= 0) {
-                    if (!(source == sink && _firstOrderLongestPathMatrix[i][j] == 0)) {
+                    if (!(source == sink
+                            && _firstOrderLongestPathMatrix[i][j] == 0)) {
                         Edge addedEdge = delayGraph.addEdge(source, sink);
                         delayGraphEdgeProfits.put(addedEdge, Double
                                 .valueOf(_firstOrderLongestPathMatrix[i][j]));
@@ -267,8 +268,8 @@ implements MaximumProfitToCostRatioAnalyzer {
             }
         }
 
-        double result = _computeMCM(delayGraph, new ToDoubleMapMapping(
-                delayGraphEdgeProfits));
+        double result = _computeMCM(delayGraph,
+                new ToDoubleMapMapping(delayGraphEdgeProfits));
 
         // creating the cycle that leads to the result
         //edges = graphPlusDelaysAsNodes.edges().toArray();
@@ -318,7 +319,8 @@ implements MaximumProfitToCostRatioAnalyzer {
      *  making the edge costs negative in order to compute the minimum cycle
      *  mean.
      */
-    private double _computeMCM(DirectedGraph graph, ToDoubleMapping edgeLength) {
+    private double _computeMCM(DirectedGraph graph,
+            ToDoubleMapping edgeLength) {
         CycleMeanAnalyzer cycleMean = new KarpCycleMeanStrategy(graph,
                 edgeLength);
         double result = cycleMean.maximumCycleMean();
@@ -331,8 +333,8 @@ implements MaximumProfitToCostRatioAnalyzer {
     // by the node label.
     private double[][] _makeFirstOrderLongestPathMatrix(HashMap D,
             DirectedGraph graph, HashMap predecessorMap) {
-        _firstOrderLongestPathMatrix = new double[_delayNodeList.size()][_delayNodeList
-                                                                         .size()];
+        _firstOrderLongestPathMatrix = new double[_delayNodeList
+                .size()][_delayNodeList.size()];
 
         for (int i = 0; i < _delayNodeList.size(); i++) {
             for (int j = 0; j < _delayNodeList.size(); j++) {

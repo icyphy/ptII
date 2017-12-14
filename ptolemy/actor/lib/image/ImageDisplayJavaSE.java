@@ -73,8 +73,8 @@ time blocked rather than rendering. Hence, we do not get smooth updates of image
 @Pt.AcceptedRating
  */
 
-public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
-ImageDisplayInterface {
+public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE
+        implements ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -193,8 +193,8 @@ ImageDisplayInterface {
      * @exception IllegalActionException If there is a problem initializing the effigy
      */
     @Override
-    public void initWindowAndSizeProperties() throws IllegalActionException,
-    NameDuplicationException {
+    public void initWindowAndSizeProperties()
+            throws IllegalActionException, NameDuplicationException {
         _windowProperties = (WindowPropertiesAttribute) _display.getAttribute(
                 "_windowProperties", WindowPropertiesAttribute.class);
         if (_windowProperties == null) {
@@ -351,20 +351,20 @@ ImageDisplayInterface {
             // No current container for the pane.
             // Need an effigy and a tableau so that menu ops work properly.
             if (_tableau == null) {
-                Effigy containerEffigy = Configuration.findEffigy(_display
-                        .toplevel());
+                Effigy containerEffigy = Configuration
+                        .findEffigy(_display.toplevel());
 
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
                             "Cannot find effigy for top level \""
-                            + _display.toplevel().getFullName()
-                            + "\".  This can happen when a is invoked"
-                            + " with a non-graphical execution engine"
-                            + " such as ptolemy.moml.MoMLSimpleApplication"
-                            + " but the "
-                            + " ptolemy.moml.filter.RemoveGraphicalClasses"
-                            + " MoML filter is not replacing the"
-                            + " class that extends ImageDisplay.");
+                                    + _display.toplevel().getFullName()
+                                    + "\".  This can happen when a is invoked"
+                                    + " with a non-graphical execution engine"
+                                    + " such as ptolemy.moml.MoMLSimpleApplication"
+                                    + " but the "
+                                    + " ptolemy.moml.filter.RemoveGraphicalClasses"
+                                    + " MoML filter is not replacing the"
+                                    + " class that extends ImageDisplay.");
                 }
 
                 try {
@@ -529,8 +529,8 @@ ImageDisplayInterface {
     }
 
     /** Listener for windowClosing action. */
-    class WindowClosingAdapter extends
-    AbstractPlaceableJavaSE.WindowClosingAdapter {
+    class WindowClosingAdapter
+            extends AbstractPlaceableJavaSE.WindowClosingAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
             _display.cleanUp();

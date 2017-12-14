@@ -280,8 +280,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
         for (int i = 0; i < nodes.length - 1; i++) {
             for (int j = i + 1; j < nodes.length; j++) {
                 if (greatestLowerBound(nodes[i], nodes[j]) == null) {
-                    return new NonLatticeCounterExample(
-                            BoundType.GREATESTLOWER, nodes[i], nodes[j]);
+                    return new NonLatticeCounterExample(BoundType.GREATESTLOWER,
+                            nodes[i], nodes[j]);
                 }
             }
         }
@@ -769,8 +769,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
     // compute transitive closure.  Throws GraphStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
-        if (!((CachedStrategy) _transitiveClosureAnalysis.analyzer())
-                .obsolete() && isAcyclic()) {
+        if (!((CachedStrategy) _transitiveClosureAnalysis.analyzer()).obsolete()
+                && isAcyclic()) {
             _closure = transitiveClosure();
             return;
         }

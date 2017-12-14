@@ -41,7 +41,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 
@@ -73,21 +72,28 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
     public String generateAccessor() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_eol + _INDENT1 + "// Ports: " + getComponent().getName()
-                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java"
+                + _eol);
 
         // Generate Accessor for the ports.
-        code.append(_generatePorts(((CompositeActor) getComponent()).inputPortList()));
-        code.append(_generatePorts(((CompositeActor) getComponent()).outputPortList()));
+        code.append(_generatePorts(
+                ((CompositeActor) getComponent()).inputPortList()));
+        code.append(_generatePorts(
+                ((CompositeActor) getComponent()).outputPortList()));
 
         // Generate Accessor for the JSAccessor actor.
-        Iterator<?> actors = ((CompositeActor) getComponent()).entityList().iterator();
+        Iterator<?> actors = ((CompositeActor) getComponent()).entityList()
+                .iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             String actorClassName = actor.getClass().getName();
             // We could check to see if the class is a JavaScript actor here.
             if (!actorClassName.equals("org.terraswarm.accessor.JSAccessor")
-                && !actorClassName.equals("ptolemy.actor.lib.jjs.JavaScript")) {
-                throw new IllegalActionException(actor, "The Accessor code generator only works on JavaScript actors, JSAccessor actors and TypedCompositeActors, the name of the class was:" + actorClassName);
+                    && !actorClassName
+                            .equals("ptolemy.actor.lib.jjs.JavaScript")) {
+                throw new IllegalActionException(actor,
+                        "The Accessor code generator only works on JavaScript actors, JSAccessor actors and TypedCompositeActors, the name of the class was:"
+                                + actorClassName);
             }
 
             AccessorCodeGeneratorAdapter adapter = null;
@@ -105,24 +111,29 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
             code.append(adapter.generateAccessor());
         }
 
-        code.append(_eol + _INDENT1 + "// Connections: " + getComponent().getName()
-                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
+        code.append(_eol + _INDENT1 + "// Connections: "
+                + getComponent().getName()
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java"
+                + _eol);
 
         // Generate Accessor for the toplevel input ports to actors or other ports.
-        List<Port> inputPorts = ((CompositeActor) getComponent()).inputPortList();
+        List<Port> inputPorts = ((CompositeActor) getComponent())
+                .inputPortList();
         for (Port port : inputPorts) {
             if (port instanceof IOPort) {
-                List<IOPort> connectedPorts = ((IOPort)port).insideSinkPortList();
+                List<IOPort> connectedPorts = ((IOPort) port)
+                        .insideSinkPortList();
                 for (IOPort connectedPort : connectedPorts) {
-                    IOPort ioPort = (IOPort)port;
-                    code.append(_INDENT1 + "this.connect('"
-                            + ioPort.getName());
+                    IOPort ioPort = (IOPort) port;
+                    code.append(_INDENT1 + "this.connect('" + ioPort.getName());
                     if (connectedPort.getContainer() == port.getContainer()) {
                         // Port to port connection?
                         code.append(", " + connectedPort.getName());
                     } else {
                         // Port to contained Actor connection
-                        code.append("', " + StringUtilities.sanitizeName(connectedPort.getContainer().getName())
+                        code.append("', "
+                                + StringUtilities.sanitizeName(
+                                        connectedPort.getContainer().getName())
                                 + ", '" + connectedPort.getName());
                     }
                     code.append("');" + _eol);
@@ -134,20 +145,22 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
         }
 
         // Generate Accessor for the toplevel output ports to actors or other ports.
-        List<Port> outputPorts = ((CompositeActor) getComponent()).outputPortList();
+        List<Port> outputPorts = ((CompositeActor) getComponent())
+                .outputPortList();
         for (Port port : outputPorts) {
             if (port instanceof IOPort) {
-                List<IOPort> connectedPorts = ((IOPort)port).insideSourcePortList();
+                List<IOPort> connectedPorts = ((IOPort) port)
+                        .insideSourcePortList();
                 for (IOPort connectedPort : connectedPorts) {
-                    IOPort ioPort = (IOPort)port;
+                    IOPort ioPort = (IOPort) port;
                     if (connectedPort.getContainer() != port.getContainer()) {
                         // Port to Port connections would have been handled with the input ports.
                         // Port to contained Actor connection.
                         code.append(_INDENT1 + "this.connect("
-                                + StringUtilities.sanitizeName(connectedPort.getContainer().getName())
-                                + ", '" + connectedPort.getName()
-                                + "', '" + ioPort.getName()
-                                + "');" + _eol);
+                                + StringUtilities.sanitizeName(
+                                        connectedPort.getContainer().getName())
+                                + ", '" + connectedPort.getName() + "', '"
+                                + ioPort.getName() + "');" + _eol);
                     }
                 }
             } else {
@@ -161,17 +174,18 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             List<IOPort> inputs = actor.inputPortList();
-            for (IOPort inputPort: inputs) {
-                List<IOPort>sourcePorts = inputPort.sourcePortList();
-                for (IOPort sourcePort: sourcePorts) {
+            for (IOPort inputPort : inputs) {
+                List<IOPort> sourcePorts = inputPort.sourcePortList();
+                for (IOPort sourcePort : sourcePorts) {
                     // Skip ports at the toplevel.
                     if (sourcePort.getContainer() != getComponent()) {
                         code.append(_INDENT1 + "this.connect("
-                                + StringUtilities.sanitizeName(sourcePort.getContainer().getName())
-                                + ", '" + sourcePort.getName()
-                                    + "', " +  StringUtilities.sanitizeName(inputPort.getContainer().getName())
-                                + ", '" + inputPort.getName()
-                                + "');" + _eol);
+                                + StringUtilities.sanitizeName(
+                                        sourcePort.getContainer().getName())
+                                + ", '" + sourcePort.getName() + "', "
+                                + StringUtilities.sanitizeName(
+                                        inputPort.getContainer().getName())
+                                + ", '" + inputPort.getName() + "');" + _eol);
                     }
                 }
             }
@@ -186,20 +200,22 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
      *  @exception IllegalActionException If thrown while reading the
      *  value of the defaultValue parameter.
      */
-    private StringBuffer _generatePorts(List<TypedIOPort> ports) throws IllegalActionException {
+    private StringBuffer _generatePorts(List<TypedIOPort> ports)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         for (TypedIOPort port : ports) {
-            String inputOrOutput = port.isInput() ? "input" :
-                port.isOutput() ? "output" : "neitherInputNorOutput";
-            code.append(_INDENT1 + "this." + inputOrOutput + "('" + port.getName() + "'");
+            String inputOrOutput = port.isInput() ? "input"
+                    : port.isOutput() ? "output" : "neitherInputNorOutput";
+            code.append(_INDENT1 + "this." + inputOrOutput + "('"
+                    + port.getName() + "'");
             String targetType = targetType(port.getType());
             if (!targetType.equals("unknown")) {
                 code.append(", {'type' : '" + targetType + "'");
                 if (port instanceof ParameterPort) {
-                    code.append(", 'value':"
-                            + targetExpression(((ParameterPort)port).getParameter()));
+                    code.append(", 'value':" + targetExpression(
+                            ((ParameterPort) port).getParameter()));
                 } else if (port instanceof IOPort) {
-                    IOPort ioPort = (IOPort)port;
+                    IOPort ioPort = port;
                     Token value = ioPort.defaultValue.getToken();
                     if (value != null) {
                         code.append(", 'value':"

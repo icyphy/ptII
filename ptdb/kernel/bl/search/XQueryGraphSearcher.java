@@ -50,8 +50,8 @@ import ptdb.common.exception.DBExecutionException;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class XQueryGraphSearcher extends GraphSearcher implements
-AbstractDBSearcher {
+public class XQueryGraphSearcher extends GraphSearcher
+        implements AbstractDBSearcher {
 
     /**
      * Construct the XQueryGraphSearcher from the search criteria.

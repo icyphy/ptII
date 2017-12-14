@@ -95,8 +95,7 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
                                 (ProductLatticeOntology) _outputRangeOntology);
                 if (result == null) {
                     throw new IllegalActionException(
-                            "Could not derive product lattice "
-                                    + "concept for "
+                            "Could not derive product lattice " + "concept for "
                                     + _outputRangeOntology.getName()
                                     + " from original concept "
                                     + originalOntologyInputConcept

@@ -117,8 +117,8 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
         try {
             Top.deferIfNecessary(doMessage);
         } catch (HeadlessException headless) {
-            System.err.println("HeadlessException: " + info
-                    + "Original Throwable was:\n");
+            System.err.println(
+                    "HeadlessException: " + info + "Original Throwable was:\n");
             throwable.printStackTrace();
             System.err.println("\n\nHeadlessException was:\n");
             headless.printStackTrace();
@@ -159,8 +159,7 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
     @Override
     protected void _warning(final String info) throws CancelException {
         if (isNonInteractive()) {
-            System.out
-            .println("Running nightly build or in batch mode.  "
+            System.out.println("Running nightly build or in batch mode.  "
                     + "A warning dialog would have been displayed, but instead we are printing:\n"
                     + info);
             return;
@@ -186,9 +185,8 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
                             StringUtilities.ELLIPSIS_LENGTH_LONG);
 
                     // Show the MODAL dialog
-                    /*int selected =*/JOptionPane.showOptionDialog(
-                            getContext(), message, "Warning",
-                            JOptionPane.YES_NO_OPTION,
+                    /*int selected =*/JOptionPane.showOptionDialog(getContext(),
+                            message, "Warning", JOptionPane.YES_NO_OPTION,
                             JOptionPane.WARNING_MESSAGE, null, options,
                             options[0]);
                 }
@@ -221,11 +219,9 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
     protected void _warning(final String info, final Throwable throwable)
             throws CancelException {
         if (isNonInteractive()) {
-            System.out
-            .println("Running nightly build or in batch mode.  "
+            System.out.println("Running nightly build or in batch mode.  "
                     + "A warning dialog would have been displayed, but instead we are printing:\n"
-                    + info + ": " + throwable.getMessage() + " "
-                    + throwable);
+                    + info + ": " + throwable.getMessage() + " " + throwable);
             return;
         }
         // In swing, updates to showing graphics must be done in the
@@ -336,8 +332,8 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, invoke and wait.
         if (EventQueue.isDispatchThread()) {
-            return super._yesNoCancelQuestion(question, trueOption,
-                    falseOption, exceptionOption);
+            return super._yesNoCancelQuestion(question, trueOption, falseOption,
+                    exceptionOption);
         } else {
             // Place to store results from doYesNoCancel thread.
             // results[0] is the return value ("Yes" or "No").
@@ -378,8 +374,8 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
                 SwingUtilities.invokeAndWait(doYesNoCancel);
             } catch (Exception ex) {
                 // do nothing.
-                System.out
-                        .println("Internal warning:? GraphicalMessageHandler modal threw an exception: "
+                System.out.println(
+                        "Internal warning:? GraphicalMessageHandler modal threw an exception: "
                                 + ex);
             }
 

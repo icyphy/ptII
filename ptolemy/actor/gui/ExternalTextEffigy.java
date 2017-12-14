@@ -200,8 +200,8 @@ public class ExternalTextEffigy extends TextEffigy {
                         .exportMoML();
                 tmpFile = File.createTempFile("effigy", "");
 
-                String tmpFilePathName = tmpFile.getAbsolutePath().replace(
-                        '\\', '/');
+                String tmpFilePathName = tmpFile.getAbsolutePath().replace('\\',
+                        '/');
                 FileWriter writer = null;
 
                 try {
@@ -216,8 +216,7 @@ public class ExternalTextEffigy extends TextEffigy {
                 todo = "gnudoit (find-file (symbol-name '" + path + "))"
                         + "(setq buffer-read-only nil)" + "(erase-buffer)"
                         + "(insert-file-contents " + "    (symbol-name '"
-                        + tmpFilePathName + "))"
-                        + "(set-buffer-modified-p nil)"
+                        + tmpFilePathName + "))" + "(set-buffer-modified-p nil)"
                         + "(setq buffer-read-only t)" + "(buffer-name)";
             } else {
                 // Reading file content from storage
@@ -247,8 +246,8 @@ public class ExternalTextEffigy extends TextEffigy {
 
             if (tmpFile != null) {
                 if (!tmpFile.delete()) {
-                    throw new InternalErrorException("Failed to delete \""
-                            + tmpFile + "\"?");
+                    throw new InternalErrorException(
+                            "Failed to delete \"" + tmpFile + "\"?");
                 }
             }
         } catch (Throwable throwable) {

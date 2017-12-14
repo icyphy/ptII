@@ -270,17 +270,18 @@ public class FBMFilter extends PointFilter implements Cloneable {
         f *= amount;
         int a = rgb & 0xff000000;
         int v;
-        if (colormap != null)
+        if (colormap != null) {
             v = colormap.getColor(f);
-        else {
+        } else {
             v = PixelUtils.clamp((int) (f * 255));
             int r = v << 16;
             int g = v << 8;
             int b = v;
             v = a | r | g | b;
         }
-        if (operation != PixelUtils.REPLACE)
+        if (operation != PixelUtils.REPLACE) {
             v = PixelUtils.combinePixels(rgb, v, operation);
+        }
         return v;
     }
 

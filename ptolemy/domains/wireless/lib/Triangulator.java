@@ -112,8 +112,8 @@ public class Triangulator extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
 
         TypeAttribute inputType = new TypeAttribute(input, "type");
-        inputType
-        .setExpression("{location = arrayType(double,2), time = double}");
+        inputType.setExpression(
+                "{location = arrayType(double,2), time = double}");
 
         output = new TypedIOPort(this, "output", false, true);
 
@@ -225,7 +225,8 @@ public class Triangulator extends TypedAtomicActor {
             double newestTime = Double.NEGATIVE_INFINITY;
 
             for (int i = 0; i < 3; i++) {
-                if (_locationsX[i] == locationX && _locationsY[i] == locationY) {
+                if (_locationsX[i] == locationX
+                        && _locationsY[i] == locationY) {
                     _times[i] = time;
                     foundMatch = true;
                 }
@@ -283,9 +284,9 @@ public class Triangulator extends TypedAtomicActor {
 
             // FIXME: Pass in the arrays for scalability.
             // FIXME: Replace naked 3 everywhere.
-            double[] result = _locate(_locationsX[0], _locationsY[0],
-                    _times[0], _locationsX[1], _locationsY[1], _times[1],
-                    _locationsX[2], _locationsY[2], _times[2], speed);
+            double[] result = _locate(_locationsX[0], _locationsY[0], _times[0],
+                    _locationsX[1], _locationsY[1], _times[1], _locationsX[2],
+                    _locationsY[2], _times[2], speed);
 
             if (Double.isInfinite(result[2]) || Double.isNaN(result[2])) {
                 // Result is not valid (inconsistent data).
@@ -343,12 +344,12 @@ public class Triangulator extends TypedAtomicActor {
             return Double.POSITIVE_INFINITY;
         }
 
-        double tdiff1 = Math.abs(_distance(x1, y1, result[0], result[1]) / v
-                - (t1 - result[2]));
-        double tdiff2 = Math.abs(_distance(x2, y2, result[0], result[1]) / v
-                - (t2 - result[2]));
-        double tdiff3 = Math.abs(_distance(x3, y3, result[0], result[1]) / v
-                - (t3 - result[2]));
+        double tdiff1 = Math.abs(
+                _distance(x1, y1, result[0], result[1]) / v - (t1 - result[2]));
+        double tdiff2 = Math.abs(
+                _distance(x2, y2, result[0], result[1]) / v - (t2 - result[2]));
+        double tdiff3 = Math.abs(
+                _distance(x3, y3, result[0], result[1]) / v - (t3 - result[2]));
 
         if (_debugging) {
             _debug("tdiff1: " + tdiff1 + " tdiff2:" + tdiff2 + " tdiff3: "
@@ -364,7 +365,8 @@ public class Triangulator extends TypedAtomicActor {
      *  @param y2 The second y coordinate.
      *  @return The distance.
      */
-    private static double _distance(double x1, double y1, double x2, double y2) {
+    private static double _distance(double x1, double y1, double x2,
+            double y2) {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 
@@ -406,11 +408,11 @@ public class Triangulator extends TypedAtomicActor {
                 { 2 * (x3 - x1), 2 * (y3 - y1) } };
         double[] b = { 2 * v2 * (t2 - t1), 2 * v2 * (t3 - t1) };
         double[] c = {
-                t1 * t1 * v2 - t2 * t2 * v2 + x2 * x2 - x1 * x1 + y2 * y2 - y1
-                * y1,
+                t1 * t1 * v2 - t2 * t2 * v2 + x2 * x2 - x1 * x1 + y2 * y2
+                        - y1 * y1,
 
-                t1 * t1 * v2 - t3 * t3 * v2 + x3 * x3 - x1 * x1 + y3 * y3 - y1
-                * y1 };
+                t1 * t1 * v2 - t3 * t3 * v2 + x3 * x3 - x1 * x1 + y3 * y3
+                        - y1 * y1 };
 
         // FIXME: what if det_m is 0? That is, the three sensors are located on
         // a straight line.
@@ -422,10 +424,10 @@ public class Triangulator extends TypedAtomicActor {
         double[] m_inv_c = { m_inv[0][0] * c[0] + m_inv[0][1] * c[1],
                 m_inv[1][0] * c[0] + m_inv[1][1] * c[1] };
         double ea = m_inv_b[0] * m_inv_b[0] + m_inv_b[1] * m_inv_b[1] - v2;
-        double eb = 2 * m_inv_b[0] * (m_inv_c[0] - x1) + 2 * m_inv_b[1]
-                * (m_inv_c[1] - y1) + 2 * v2 * t1;
-        double ec = (m_inv_c[0] - x1) * (m_inv_c[0] - x1) + (m_inv_c[1] - y1)
-                * (m_inv_c[1] - y1) - t1 * t1 * v2;
+        double eb = 2 * m_inv_b[0] * (m_inv_c[0] - x1)
+                + 2 * m_inv_b[1] * (m_inv_c[1] - y1) + 2 * v2 * t1;
+        double ec = (m_inv_c[0] - x1) * (m_inv_c[0] - x1)
+                + (m_inv_c[1] - y1) * (m_inv_c[1] - y1) - t1 * t1 * v2;
         double delta = eb * eb - 4 * ea * ec;
 
         //System.out.println("delta is " + delta);
@@ -435,8 +437,8 @@ public class Triangulator extends TypedAtomicActor {
             result[2] = (-eb + Math.sqrt(delta)) / ea / 2;
             result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
             result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
-            double tdiff1 = _checkResult(result, x1, y1, t1, x2, y2, t2, x3,
-                    y3, t3, v);
+            double tdiff1 = _checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3,
+                    t3, v);
 
             // Solution #2
             double[] result2 = new double[3];
@@ -468,7 +470,8 @@ public class Triangulator extends TypedAtomicActor {
             result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
             result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
 
-            if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v) < _EPSILON * 3) {
+            if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3,
+                    v) < _EPSILON * 3) {
                 return result;
             } else {
                 result[0] = Double.NEGATIVE_INFINITY;

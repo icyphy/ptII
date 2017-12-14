@@ -71,14 +71,16 @@ public class ErodeAlphaFilter extends PointFilter {
     @Override
     public int filterRGB(int x, int y, int rgb) {
         int a = (rgb >> 24) & 0xff;
-        if (a == 255)
+        if (a == 255) {
             return 0xffffffff;
+        }
         float f = ImageMath.smoothStep(lowerThreshold, upperThreshold, a);
         a = (int) (f * 255);
-        if (a < 0)
+        if (a < 0) {
             a = 0;
-        else if (a > 255)
+        } else if (a > 255) {
             a = 255;
+        }
         return (a << 24) | 0xffffff;
     }
 

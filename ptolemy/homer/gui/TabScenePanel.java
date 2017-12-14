@@ -210,8 +210,8 @@ public class TabScenePanel implements ContentPrototype {
             public void dragEnter(DropTargetDragEvent dropEvent) {
                 try {
                     // Reject is data flavor is not supported.
-                    if (dropEvent
-                            .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                    if (dropEvent.isDataFlavorSupported(
+                            PtolemyTransferable.namedObjFlavor)) {
 
                         List<?> dropObjects = (java.util.List) dropEvent
                                 .getTransferable().getTransferData(
@@ -234,7 +234,8 @@ public class TabScenePanel implements ContentPrototype {
                         // Reject if it's an entity, but not a sink.
                         if (transferable instanceof ComponentEntity) {
                             SinkOrSource isTransferableSinkOrSource = LayoutFileOperations
-                                    .isSinkOrSource((ComponentEntity) transferable);
+                                    .isSinkOrSource(
+                                            (ComponentEntity) transferable);
                             if (isTransferableSinkOrSource == SinkOrSource.NONE) {
                                 dropEvent.rejectDrag();
                                 return;
@@ -242,8 +243,8 @@ public class TabScenePanel implements ContentPrototype {
                         }
 
                         dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-                    } else if (dropEvent
-                            .isDataFlavorSupported(NamedObjectTree.LABEL_FLAVOR)) {
+                    } else if (dropEvent.isDataFlavorSupported(
+                            NamedObjectTree.LABEL_FLAVOR)) {
                         dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
                     } else {
                         dropEvent.rejectDrag();
@@ -251,12 +252,14 @@ public class TabScenePanel implements ContentPrototype {
                 } catch (UnsupportedFlavorException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
+                                    + dropEvent,
+                            e);
                     return;
                 } catch (IOException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
+                                    + dropEvent,
+                            e);
                     return;
                 }
             }
@@ -266,8 +269,8 @@ public class TabScenePanel implements ContentPrototype {
              */
             @Override
             public void drop(DropTargetDropEvent dropEvent) {
-                if (dropEvent
-                        .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                if (dropEvent.isDataFlavorSupported(
+                        PtolemyTransferable.namedObjFlavor)) {
                     try {
                         List<?> dropObjects = (java.util.List) dropEvent
                                 .getTransferable().getTransferData(
@@ -279,19 +282,23 @@ public class TabScenePanel implements ContentPrototype {
                     } catch (UnsupportedFlavorException e) {
                         MessageHandler.error(
                                 "Can't find a supported data flavor for drop in "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     } catch (IOException e) {
                         MessageHandler.error(
                                 "Can't find a supported data flavor for drop in "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     } catch (IllegalActionException e) {
                         MessageHandler.error(
                                 "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     } catch (NameDuplicationException e) {
                         MessageHandler.error(
                                 "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     }
                 } else if (dropEvent
                         .isDataFlavorSupported(NamedObjectTree.LABEL_FLAVOR)) {
@@ -305,19 +312,23 @@ public class TabScenePanel implements ContentPrototype {
                     } catch (UnsupportedFlavorException e) {
                         MessageHandler.error(
                                 "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     } catch (IOException e) {
                         MessageHandler.error(
                                 "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     } catch (IllegalActionException e) {
                         MessageHandler.error(
                                 "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     } catch (NameDuplicationException e) {
                         MessageHandler.error(
                                 "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
+                                        + dropEvent,
+                                e);
                     }
                 } else {
                     dropEvent.rejectDrop();
@@ -333,8 +344,8 @@ public class TabScenePanel implements ContentPrototype {
                 _mainLayer.setPreferredSize(_scene.getView().getSize());
                 _interactionLayer.setPreferredLocation(new Point(0, 0));
                 _interactionLayer.setPreferredSize(_scene.getView().getSize());
-                Rectangle bounds = new Rectangle(new Point(0, 0), _scene
-                        .getView().getBounds().getSize());
+                Rectangle bounds = new Rectangle(new Point(0, 0),
+                        _scene.getView().getBounds().getSize());
                 _scene.setMaximumBounds(bounds);
             }
         });
@@ -362,11 +373,12 @@ public class TabScenePanel implements ContentPrototype {
 
         widget.setPreferredLocation(location);
         if (homerLocation.getWidth() > 0 && homerLocation.getHeight() > 0) {
-            widget.setPreferredSize(new Dimension(homerLocation.getWidth()
-                    + insets.right, homerLocation.getHeight() + insets.bottom));
-            widget.setPreferredBounds(new Rectangle(new Dimension(homerLocation
-                    .getWidth() + insets.right, homerLocation.getHeight()
-                    + insets.bottom)));
+            widget.setPreferredSize(
+                    new Dimension(homerLocation.getWidth() + insets.right,
+                            homerLocation.getHeight() + insets.bottom));
+            widget.setPreferredBounds(new Rectangle(
+                    new Dimension(homerLocation.getWidth() + insets.right,
+                            homerLocation.getHeight() + insets.bottom)));
         }
 
         // Add widget resizing.
@@ -382,8 +394,8 @@ public class TabScenePanel implements ContentPrototype {
         widget.getActions().addAction(_moveAction);
 
         // Add widget double-click editing.
-        widget.getActions().addAction(
-                ActionFactory.createEditAction(new EditProvider() {
+        widget.getActions()
+                .addAction(ActionFactory.createEditAction(new EditProvider() {
                     @Override
                     public void edit(Widget widget) {
                         _showWidgetProperties(element);
@@ -490,13 +502,13 @@ public class TabScenePanel implements ContentPrototype {
             }
         }
         Point preferredLocation = widget.getPreferredLocation();
-        if (bounds.x + preferredLocation.x + bounds.getWidth() - insets.right > _scene
-                .getView().getWidth()) {
+        if (bounds.x + preferredLocation.x + bounds.getWidth()
+                - insets.right > _scene.getView().getWidth()) {
             bounds.width = _scene.getView().getWidth()
                     - (bounds.x + preferredLocation.x - insets.right);
         }
-        if (bounds.y + preferredLocation.y + bounds.getHeight() + insets.bottom > _scene
-                .getView().getHeight()) {
+        if (bounds.y + preferredLocation.y + bounds.getHeight()
+                + insets.bottom > _scene.getView().getHeight()) {
             bounds.height = _scene.getView().getHeight()
                     - (bounds.y + preferredLocation.y + insets.bottom);
         }
@@ -558,12 +570,11 @@ public class TabScenePanel implements ContentPrototype {
                         Parameter enabled = (Parameter) namedObj
                                 .getAttribute(HomerConstants.ENABLED_NODE);
                         if (enabled == null) {
-                            new Parameter(namedObj,
-                                    HomerConstants.ENABLED_NODE,
+                            new Parameter(namedObj, HomerConstants.ENABLED_NODE,
                                     new BooleanToken(dialog.getEnabled()));
                         } else {
-                            enabled.setToken(new BooleanToken(dialog
-                                    .getEnabled()));
+                            enabled.setToken(
+                                    new BooleanToken(dialog.getEnabled()));
                         }
 
                         Parameter required = (Parameter) namedObj
@@ -573,16 +584,16 @@ public class TabScenePanel implements ContentPrototype {
                                     HomerConstants.REQUIRED_NODE,
                                     new BooleanToken(dialog.getRequired()));
                         } else {
-                            required.setToken(new BooleanToken(dialog
-                                    .getRequired()));
+                            required.setToken(
+                                    new BooleanToken(dialog.getRequired()));
                         }
                     }
 
                     if (HomerMainFrame.isLabelWidget(element.getElement())
                             && widget instanceof AttributeStyleWidget) {
                         AttributeStyleWidget attributeStyleWidget = (AttributeStyleWidget) widget;
-                        ((Settable) element.getElement()).setExpression(dialog
-                                .getLabel());
+                        ((Settable) element.getElement())
+                                .setExpression(dialog.getLabel());
                         attributeStyleWidget.updateValue();
                     }
 
@@ -623,8 +634,8 @@ public class TabScenePanel implements ContentPrototype {
     /** Default stroke for use in widget connection.
      */
     private static final BasicStroke STROKE = new BasicStroke(1.0f,
-            BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
-            6.0f, 3.0f }, 0.0f);
+            BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f,
+            new float[] { 6.0f, 3.0f }, 0.0f);
 
     /** Hover action added to new widgets.
      */

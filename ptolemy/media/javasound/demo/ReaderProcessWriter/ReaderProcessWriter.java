@@ -70,7 +70,8 @@ public class ReaderProcessWriter {
         try {
             // Construct a SoundReader object that is used to read
             // sound samples from an audio file.
-            SoundReader soundReader = new SoundReader(sourceURL, getSamplesSize);
+            SoundReader soundReader = new SoundReader(sourceURL,
+                    getSamplesSize);
 
             // The sample rate to playback at, in Hz.
             // Set the playback sample rate to the sample rate of the
@@ -94,8 +95,8 @@ public class ReaderProcessWriter {
             int channels = soundReader.getChannels();
 
             if (_debug) {
-                System.out.println("Number of channels for the input file is "
-                        + channels);
+                System.out.println(
+                        "Number of channels for the input file is " + channels);
             }
 
             int putSamplesSize = getSamplesSize;

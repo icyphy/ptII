@@ -121,8 +121,8 @@ public class Derivative extends DETransformer {
             if (_lastInput != null) {
                 Time lastTime = _lastInput.timeStamp;
                 DoubleToken lastToken = (DoubleToken) _lastInput.contents;
-                DoubleToken timeGap = new DoubleToken(currentTime.subtract(
-                        lastTime).getDoubleValue());
+                DoubleToken timeGap = new DoubleToken(
+                        currentTime.subtract(lastTime).getDoubleValue());
 
                 //If the timeGap is zero, then we have received a simultaneous event. If the
                 // value of the input has not changed, then we can ignore this input, as a control
@@ -134,8 +134,8 @@ public class Derivative extends DETransformer {
                             "Derivative received discontinuous input.");
                 }
 
-                output.broadcast(currentToken.subtract(lastToken).divide(
-                        timeGap));
+                output.broadcast(
+                        currentToken.subtract(lastToken).divide(timeGap));
             }
         }
     }

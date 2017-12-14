@@ -134,8 +134,8 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
                 System.err.println(errorMessage);
                 return;
             }
-            _updateXMLFiles(new File(args[1]), args[0].equals("-demo") ? "demo"
-                    : null);
+            _updateXMLFiles(new File(args[1]),
+                    args[0].equals("-demo") ? "demo" : null);
         }
     }
 
@@ -163,13 +163,10 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
                 if (file.isFile()) {
                     String filename = file.getName();
                     int length = filename.length();
-                    if (length > 3
-                            && filename.substring(length - 4, length)
-                            .toLowerCase(Locale.getDefault())
-                            .equals(".xml")) {
+                    if (length > 3 && filename.substring(length - 4, length)
+                            .toLowerCase(Locale.getDefault()).equals(".xml")) {
                         try {
-                            if (filter == null
-                                    || file.toURI().toString()
+                            if (filter == null || file.toURI().toString()
                                     .toLowerCase(Locale.getDefault())
                                     .contains("/" + filter + "/")) {
                                 _updateFile(file.toString());
@@ -183,8 +180,8 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
                 }
             }
         } else {
-            throw new NullPointerException("Getting the files of \"" + folder
-                    + "\" returned null?");
+            throw new NullPointerException(
+                    "Getting the files of \"" + folder + "\" returned null?");
         }
     }
 

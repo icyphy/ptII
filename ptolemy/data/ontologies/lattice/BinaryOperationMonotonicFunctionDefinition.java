@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class BinaryOperationMonotonicFunctionDefinition extends
-ExpressionConceptFunctionDefinitionAttribute {
+public class BinaryOperationMonotonicFunctionDefinition
+        extends ExpressionConceptFunctionDefinitionAttribute {
 
     /** Construct the BinaryOperationConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -64,9 +64,9 @@ ExpressionConceptFunctionDefinitionAttribute {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BinaryOperationMonotonicFunctionDefinition(
-            CompositeEntity container, String name)
-                    throws IllegalActionException, NameDuplicationException {
+    public BinaryOperationMonotonicFunctionDefinition(CompositeEntity container,
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Since a binary function always has 2 arguments, its
@@ -78,13 +78,14 @@ ExpressionConceptFunctionDefinitionAttribute {
         constrainFunctionToBeMonotonic.setToken(BooleanToken.TRUE);
         constrainFunctionToBeMonotonic.setVisibility(Settable.NOT_EDITABLE);
 
-        functionOntologyName = new StringParameter(this, "functionOntologyName");
+        functionOntologyName = new StringParameter(this,
+                "functionOntologyName");
         functionOntologyName.setExpression("");
 
         // Constrain argument list to have only 2 arguments.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 2));
         argumentDomainOntologies
-        .setTypeEquals(new ArrayType(BaseType.STRING, 2));
+                .setTypeEquals(new ArrayType(BaseType.STRING, 2));
         argumentDomainOntologies.setVisibility(Settable.NONE);
 
         outputRangeOntologyName.setVisibility(Settable.NONE);
@@ -120,8 +121,8 @@ ExpressionConceptFunctionDefinitionAttribute {
                     .getToken();
             outputRangeOntologyName.setToken(ontologyNameToken);
 
-            ArrayToken domainOntologiesToken = new ArrayToken(new Token[] {
-                    ontologyNameToken, ontologyNameToken });
+            ArrayToken domainOntologiesToken = new ArrayToken(
+                    new Token[] { ontologyNameToken, ontologyNameToken });
             argumentDomainOntologies.setToken(domainOntologiesToken);
         }
 

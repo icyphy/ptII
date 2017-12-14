@@ -202,15 +202,13 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             }
         }
 
-        if (path == null
-                || path.indexOf(File.pathSeparatorChar + directoryName
-                        + File.pathSeparatorChar) == -1) {
+        if (path == null || path.indexOf(File.pathSeparatorChar + directoryName
+                + File.pathSeparatorChar) == -1) {
             if (_debug) {
                 stdout("JTextArea.appendToPath() updating\n");
             }
-            _envp = StreamExec.updateEnvironment(keyPath,
-                    File.pathSeparatorChar + directoryName
-                    + File.pathSeparatorChar);
+            _envp = StreamExec.updateEnvironment(keyPath, File.pathSeparatorChar
+                    + directoryName + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging
@@ -265,15 +263,11 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         }
         for (String element : _envp) {
             String envpKey = element.substring(0, element.indexOf("="));
-            if (key.length() == envpKey.length()
-                    && key.regionMatches(false /*ignoreCase*/, 0, envpKey, 0,
-                            envpKey.length())) {
+            if (key.length() == envpKey.length() && key.regionMatches(
+                    false /*ignoreCase*/, 0, envpKey, 0, envpKey.length())) {
 
                 if (_debug) {
-                    stdout("JTextArea.getenv("
-                            + key
-                            + "), \""
-                            + envpKey
+                    stdout("JTextArea.getenv(" + key + "), \"" + envpKey
                             + "\"\n\t_envp not null, returning: "
                             + element.substring(key.length() + 1,
                                     element.length()));
@@ -482,7 +476,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     }
 
                     _statusBar
-                    .setText("Executing: " + statusCommand.toString());
+                            .setText("Executing: " + statusCommand.toString());
 
                     // If _envp is null, then no environment changes.
                     _process = runtime.exec(commandTokens, _envp,
@@ -596,14 +590,14 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                         _statusBar.setText("Cancelled.");
                     } catch (ExecutionException ex1) {
                         _statusBar
-                        .setText("The computation threw an exception: "
-                                + ex1.getCause());
+                                .setText("The computation threw an exception: "
+                                        + ex1.getCause());
                     } catch (InterruptedException ex2) {
-                        _statusBar
-                        .setText("The worker thread was interrupted while waiting, which is probably not a problem.");
+                        _statusBar.setText(
+                                "The worker thread was interrupted while waiting, which is probably not a problem.");
                     } catch (TimeoutException ex3) {
-                        _statusBar
-                        .setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
+                        _statusBar.setText(
+                                "The wait to get the execution result timed out, which is unusual, but probably not a problem.");
                     }
                 }
             };
@@ -632,7 +626,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
     private static class _StreamReaderThread extends Thread {
-        _StreamReaderThread(InputStream inputStream, JTextAreaExec jTextAreaExec) {
+        _StreamReaderThread(InputStream inputStream,
+                JTextAreaExec jTextAreaExec) {
             _inputStream = inputStream;
             _jTextAreaExec = jTextAreaExec;
         }

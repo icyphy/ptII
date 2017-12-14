@@ -234,10 +234,10 @@ public class VariableDelaySwitch extends BasicSwitch {
         }
 
         // in addition to the static _inputBufferDelay, packet-specific delays calculated and added
-        _inputTokens.get(inputPortID).add(
-                new TimedEvent(lastTimeStamp.add(_inputBufferDelay
-                        + _priorityDelay + _packetSizeDelay), new Object[] {
-                    receiver, token }));
+        _inputTokens.get(inputPortID).add(new TimedEvent(
+                lastTimeStamp.add(
+                        _inputBufferDelay + _priorityDelay + _packetSizeDelay),
+                new Object[] { receiver, token }));
         _tokenCount++;
         sendCommunicationEvent((Actor) source.getContainer().getContainer(), 0,
                 _tokenCount, EventType.RECEIVED);

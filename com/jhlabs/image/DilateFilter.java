@@ -47,7 +47,8 @@ public class DilateFilter extends BinaryFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int[] outPixels = new int[width * height];
 
         for (int i = 0; i < iterations; i++) {
@@ -71,20 +72,24 @@ public class DilateFilter extends BinaryFilter {
                                 ioffset = iy * width;
                                 for (int dx = -1; dx <= 1; dx++) {
                                     int ix = x + dx;
-                                    if (!(dy == 0 && dx == 0) && 0 <= ix && ix < width) {
+                                    if (!(dy == 0 && dx == 0) && 0 <= ix
+                                            && ix < width) {
                                         int rgb = inPixels[ioffset + ix];
-                                        if (blackFunction.isBlack(rgb))
+                                        if (blackFunction.isBlack(rgb)) {
                                             neighbours++;
+                                        }
                                     }
                                 }
                             }
                         }
 
                         if (neighbours >= threshold) {
-                            if (colormap != null)
-                                pixel = colormap.getColor((float) i / iterations);
-                            else
+                            if (colormap != null) {
+                                pixel = colormap
+                                        .getColor((float) i / iterations);
+                            } else {
                                 pixel = newColor;
+                            }
                         }
                     }
                     outPixels[index++] = pixel;

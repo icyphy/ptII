@@ -40,7 +40,8 @@ package ptolemy.actor.continuous;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (eal)
  */
-public interface ContinuousStatefulDirector extends ContinuousStatefulComponent {
+public interface ContinuousStatefulDirector
+        extends ContinuousStatefulComponent {
     /** Return the current integration step size.
      *  @return The current integration step size.
      */

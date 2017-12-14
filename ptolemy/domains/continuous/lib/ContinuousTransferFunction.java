@@ -282,11 +282,11 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                     // The integrator names are d0x, d1x, etc.
                     integrators[i] = new Integrator(this, "Integrator" + i);
                     feedback[i] = new Scale(this, "Feedback" + i);
-                    feedback[i].factor.setToken(new DoubleToken(-a[i + 1]
-                            / a[0]));
+                    feedback[i].factor
+                            .setToken(new DoubleToken(-a[i + 1] / a[0]));
                     feedforward[i] = new Scale(this, "Feedforward" + i);
-                    feedforward[i].factor.setToken(new DoubleToken(
-                            (b[i + 1] - d * a[i + 1]) / a[0]));
+                    feedforward[i].factor.setToken(
+                            new DoubleToken((b[i + 1] - d * a[i + 1]) / a[0]));
 
                     // connections
                     nodes[i] = (IORelation) connect(integrators[i].state,
@@ -348,8 +348,8 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     ////                         private methods                   ////
 
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -367,11 +367,11 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         setClassName("ptolemy.domains.ct.lib.ContinuousTransferFunction");
 
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"0\" "
-                + "style=\"font-size:14\">\n" + "b(s)/a(s) \n" + "</text>\n"
-                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-25\" y=\"0\" " + "style=\"font-size:14\">\n"
+                + "b(s)/a(s) \n" + "</text>\n" + "style=\"fill:blue\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

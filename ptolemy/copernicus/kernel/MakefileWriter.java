@@ -57,7 +57,8 @@ import soot.SceneTransformer;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class MakefileWriter extends SceneTransformer implements HasPhaseOptions {
+public class MakefileWriter extends SceneTransformer
+        implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private MakefileWriter(CompositeEntity model) {
@@ -229,8 +230,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                     + "ptolemy/copernicus/Copernicus.java for details");
         }
 
-        System.out.println("MakefileWriter: parsing "
-                + _generatorAttributeFileName);
+        System.out.println(
+                "MakefileWriter: parsing " + _generatorAttributeFileName);
 
         GeneratorAttribute generatorAttribute = null;
 
@@ -258,8 +259,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
                 // We don't call parseFile() here because it calls gets
                 // the user.dir property.
-                toplevel = (CompositeActor) parser.parse(null, new File(
-                        _generatorAttributeFileName).toURI().toURL());
+                toplevel = (CompositeActor) parser.parse(null,
+                        new File(_generatorAttributeFileName).toURI().toURL());
             } finally {
                 // Restore the saved momlfilters
                 MoMLParser.setMoMLFilters(oldFilters);
@@ -278,8 +279,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                         Copernicus.GENERATOR_NAME);
             }
         } catch (Exception ex) {
-            throw new InternalErrorException(_model, ex, "Problem getting the"
-                    + " _generator attribute");
+            throw new InternalErrorException(_model, ex,
+                    "Problem getting the" + " _generator attribute");
         }
 
         _outputDirectory = PhaseOptions.getString(options, "outputDirectory");
@@ -331,9 +332,9 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                         + _templateDirectory + "makefile.in'\n\t writing '"
                         + _outputDirectory + "makefile'");
 
-                CodeGeneratorUtilities.substitute(_templateDirectory
-                        + "makefile.in", substituteMap, _outputDirectory
-                        + "makefile");
+                CodeGeneratorUtilities.substitute(
+                        _templateDirectory + "makefile.in", substituteMap,
+                        _outputDirectory + "makefile");
             } catch (Exception ex) {
                 // This exception tends to get eaten by soot, so we print as well.
                 System.err.println("Problem writing makefile:" + ex);
@@ -385,9 +386,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
         File possibleSubdirectoryFile = new File(possibleSubdirectory);
 
         if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
-            throw new IOException("'" + parent + "' or '"
-                    + possibleSubdirectory + "' is a file, "
-                    + "it should be a directory");
+            throw new IOException("'" + parent + "' or '" + possibleSubdirectory
+                    + "' is a file, " + "it should be a directory");
         }
 
         String parentCanonical = parentFile.getCanonicalPath();

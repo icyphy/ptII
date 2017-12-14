@@ -37,9 +37,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 @version $Id$
 @since Ptolemy II 10.0
  */
-public class BooleanSwitch
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.BooleanSwitch {
+public class BooleanSwitch extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.BooleanSwitch {
     /**
      *  Construct a BooleanSwitch adapter.
      *  @param actor The given ptolemy.actor.lib.BooleanSwitch actor.

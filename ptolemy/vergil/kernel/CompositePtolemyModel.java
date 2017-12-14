@@ -88,7 +88,8 @@ public class CompositePtolemyModel implements CompositeModel {
 
         long version = ((NamedObj) composite).workspace().getVersion();
 
-        if (_nodeList == null || composite != _composite || version != _version) {
+        if (_nodeList == null || composite != _composite
+                || version != _version) {
             _nodeList = _nodeList((NamedObj) composite, true, true);
             _composite = composite;
             _version = version;
@@ -112,7 +113,8 @@ public class CompositePtolemyModel implements CompositeModel {
 
         long version = ((NamedObj) composite).workspace().getVersion();
 
-        if (_nodeList == null || composite != _composite || version != _version) {
+        if (_nodeList == null || composite != _composite
+                || version != _version) {
             _nodeList = _nodeList((NamedObj) composite, true, true);
             _composite = composite;
             _version = version;

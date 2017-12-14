@@ -182,7 +182,8 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
 
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             ptolemy.data.Token token = node.getToken();
             if (_isStringMode && (token instanceof StringToken)) {

@@ -68,8 +68,8 @@ public class MoMLSimpleTimeoutApplication extends MoMLSimpleApplication {
     public synchronized void waitForFinish() {
         long timeout = 5000;
         try {
-            System.out.print("Waiting for " + timeout / 1000.0
-                    + " seconds. . .");
+            System.out
+                    .print("Waiting for " + timeout / 1000.0 + " seconds. . .");
             wait(timeout);
             _toplevel.getDirector().finish();
             _toplevel.getDirector().stopFire();

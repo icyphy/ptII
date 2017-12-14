@@ -154,7 +154,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      */
     abstract protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source)
-                    throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Given a String that is an assignment operation, return the
      *  right hand side (the source).
@@ -167,8 +167,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         int equalIndex = TemplateParser.indexOf("=", token, 0);
 
         if (equalIndex < 0) {
-            throw new IllegalActionException(
-                    getComponent().getContainer(),
+            throw new IllegalActionException(getComponent().getContainer(),
                     "The parsed type conversion statement is"
                             + "expected to be of the form: sinkRef = $convert(sourceRef), not \""
                             + token + "\", which does not contain \"=\".");
@@ -187,8 +186,9 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      *  FIXME: this is not exactly correct.
      */
     protected Director _getDirectorForReceiver() throws IllegalActionException {
-        return (Director) getAdapter(((Actor) getComponent().getContainer()
-                .getContainer()).getDirector());
+        return (Director) getAdapter(
+                ((Actor) getComponent().getContainer().getContainer())
+                        .getDirector());
     }
 
     ///////////////////////////////////////////////////////////////////

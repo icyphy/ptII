@@ -192,14 +192,14 @@ public class DotProduct extends TypedAtomicActor {
         Token[] array2 = token2.arrayValue();
 
         if (array1.length != array2.length) {
-            throw new IllegalActionException("Inputs to DotProduct have "
-                    + "unequal lengths: " + array1.length + " and "
-                    + array2.length + ".");
+            throw new IllegalActionException(
+                    "Inputs to DotProduct have " + "unequal lengths: "
+                            + array1.length + " and " + array2.length + ".");
         }
 
         if (array1.length < 1) {
-            throw new IllegalActionException("Inputs to DotProduct have "
-                    + "no elements.");
+            throw new IllegalActionException(
+                    "Inputs to DotProduct have " + "no elements.");
         }
 
         Token dotProd = null;
@@ -285,7 +285,8 @@ public class DotProduct extends TypedAtomicActor {
 
             if (type1 == BaseType.UNKNOWN || type2 == BaseType.UNKNOWN) {
                 return BaseType.UNKNOWN;
-            } else if (type1 instanceof ArrayType && type2 instanceof ArrayType) {
+            } else if (type1 instanceof ArrayType
+                    && type2 instanceof ArrayType) {
                 Type elType1 = ((ArrayType) type1).getElementType();
                 Type elType2 = ((ArrayType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();

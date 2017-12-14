@@ -152,8 +152,8 @@ public class ClientProcess extends Thread {
         logToSysOut = true;
         // Delete log file if it exists
         if (logFil.exists() && !logFil.delete()) {
-            throw new RuntimeException("Cannot delete \""
-                    + logFil.getAbsolutePath() + "\"");
+            throw new RuntimeException(
+                    "Cannot delete \"" + logFil.getAbsolutePath() + "\"");
         }
     }
 
@@ -174,8 +174,7 @@ public class ClientProcess extends Thread {
             priStdErr.start();
         } catch (SecurityException exc) {
             proSta = false;
-            errMes = "Error when starting external process."
-                    + LS
+            errMes = "Error when starting external process." + LS
                     + "You may not have the permission to execute this command."
                     + LS + "Error message           : " + exc.getMessage() + LS
                     + "Current directory       : " + worDir + LS
@@ -258,8 +257,8 @@ public class ClientProcess extends Thread {
         // compared to the top left corner.
 
         // Move window up on Mac and Windows so that it does not overlap with taskbar
-        final String osName = System.getProperty("os.name").toLowerCase(
-                Locale.getDefault());
+        final String osName = System.getProperty("os.name")
+                .toLowerCase(Locale.getDefault());
         int dLocY = 0;
         if (osName.indexOf("windows") > -1) {
             dLocY = 20;
@@ -329,8 +328,8 @@ public class ClientProcess extends Thread {
                     }
 
                     stdAre.setEditable(false);
-                    stdScrPan
-                    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    stdScrPan.setVerticalScrollBarPolicy(
+                            ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     stdFra.add(stdScrPan);
                     stdFra.setVisible(true);
                 }
@@ -377,8 +376,8 @@ public class ClientProcess extends Thread {
                         if (showConsoleWindow) {
                             stdAre.append(line + LS);
                             //scroll to bottom of text area
-                            stdAre.scrollRectToVisible(new Rectangle(0, stdAre
-                                    .getHeight() - 2, 1, 1));
+                            stdAre.scrollRectToVisible(new Rectangle(0,
+                                    stdAre.getHeight() - 2, 1, 1));
                         }
                     }
                 } catch (java.io.IOException e) {
@@ -530,12 +529,13 @@ public class ClientProcess extends Thread {
         if (dir.equalsIgnoreCase(".")) {
             worDir = new File(System.getProperty("user.dir"));
         } else if (dir.startsWith("./")) {
-            worDir = new File(System.getProperty("user.dir") + dir.substring(1));
+            worDir = new File(
+                    System.getProperty("user.dir") + dir.substring(1));
         } else {
             worDir = new File(dir);
             if (!worDir.isAbsolute()) {
-                worDir = new File(System.getProperty("user.dir")
-                        + File.separator + dir);
+                worDir = new File(
+                        System.getProperty("user.dir") + File.separator + dir);
             }
         }
     }

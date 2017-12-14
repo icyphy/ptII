@@ -42,23 +42,26 @@ public class DeinterlaceFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] pixels = null;
 
         if (mode == EVEN) {
             for (int y = 0; y < height - 1; y += 2) {
                 pixels = getRGB(src, 0, y, width, 1, pixels);
-                if (src != dst)
+                if (src != dst) {
                     setRGB(dst, 0, y, width, 1, pixels);
+                }
                 setRGB(dst, 0, y + 1, width, 1, pixels);
             }
         } else if (mode == ODD) {
             for (int y = 1; y < height; y += 2) {
                 pixels = getRGB(src, 0, y, width, 1, pixels);
-                if (src != dst)
+                if (src != dst) {
                     setRGB(dst, 0, y, width, 1, pixels);
+                }
                 setRGB(dst, 0, y - 1, width, 1, pixels);
             }
         } else if (mode == AVERAGE) {

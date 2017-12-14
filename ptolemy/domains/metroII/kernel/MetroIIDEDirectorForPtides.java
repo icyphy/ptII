@@ -83,8 +83,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (glp)
  *
  */
-public abstract class MetroIIDEDirectorForPtides extends DEDirector implements
-GetFirable {
+public abstract class MetroIIDEDirectorForPtides extends DEDirector
+        implements GetFirable {
 
     /**
      * Constructs a director in the given container with the given name. The
@@ -122,8 +122,8 @@ GetFirable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIDEDirectorForPtides newObject = (MetroIIDEDirectorForPtides) super
-                .clone(workspace);
+        MetroIIDEDirectorForPtides newObject = (MetroIIDEDirectorForPtides) super.clone(
+                workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
                 .clone();
         newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
@@ -172,8 +172,8 @@ GetFirable {
                     _actorDictionary.put(actor.getFullName(),
                             new ResumableFire(actor));
                 } else {
-                    _actorDictionary.put(actor.getFullName(), new BlockingFire(
-                            actor));
+                    _actorDictionary.put(actor.getFullName(),
+                            new BlockingFire(actor));
                 }
             }
         }
@@ -411,7 +411,8 @@ GetFirable {
                 return new Pair(null, 0);
             }
 
-            _debug(new FiringEvent(this, actorToFire, FiringEvent.AFTER_PREFIRE));
+            _debug(new FiringEvent(this, actorToFire,
+                    FiringEvent.AFTER_PREFIRE));
 
             _debug(new FiringEvent(this, actorToFire, FiringEvent.BEFORE_FIRE));
 
@@ -748,8 +749,8 @@ GetFirable {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void _initializeParameters() throws IllegalActionException,
-    NameDuplicationException {
+    private void _initializeParameters()
+            throws IllegalActionException, NameDuplicationException {
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
         printTrace.setExpression("true");

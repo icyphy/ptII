@@ -35,10 +35,10 @@ package ptolemy.domains.pthales.JNI;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class ABF implements ABFConstants {
-    public static void AddJam(int nb_ant, int nb_rg, int nb_pul,
-            float[] sig_in, int nb_ant2, int nb_rg2, int nb_pul2,
-            float[] jammed, float CIR, float Power, float Freq,
-            float SubArraySpacing, float lambda, float rgsize) {
+    public static void AddJam(int nb_ant, int nb_rg, int nb_pul, float[] sig_in,
+            int nb_ant2, int nb_rg2, int nb_pul2, float[] jammed, float CIR,
+            float Power, float Freq, float SubArraySpacing, float lambda,
+            float rgsize) {
         ABFJNI.AddJam(nb_ant, nb_rg, nb_pul, sig_in, nb_ant2, nb_rg2, nb_pul2,
                 jammed, CIR, Power, Freq, SubArraySpacing, lambda, rgsize);
     }
@@ -112,8 +112,8 @@ public class ABF implements ABFConstants {
                 Nrows1_2, Matprod);
     }
 
-    public static void Slid_Filter(int Nrg, float[] Sig, int Lfilt,
-            float[] Fil, int out, float[] Out) {
+    public static void Slid_Filter(int Nrg, float[] Sig, int Lfilt, float[] Fil,
+            int out, float[] Out) {
         ABFJNI.Slid_Filter(Nrg, Sig, Lfilt, Fil, out, Out);
     }
 }

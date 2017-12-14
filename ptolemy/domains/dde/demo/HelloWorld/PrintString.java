@@ -88,8 +88,8 @@ public class PrintString extends DDEActor {
             if (token == null) {
                 System.out.println("Null token in PrintString");
             } else {
-                System.out.println("\t" + token.toString() + "\tTime is "
-                        + time);
+                System.out
+                        .println("\t" + token.toString() + "\tTime is " + time);
             }
         }
     }

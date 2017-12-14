@@ -82,8 +82,8 @@ public class DFUtilities {
                 // Compare full names.
                 NamedObj namedObject1 = (NamedObj) object1;
                 NamedObj namedObject2 = (NamedObj) object2;
-                int compare = namedObject1.getFullName().compareTo(
-                        namedObject2.getFullName());
+                int compare = namedObject1.getFullName()
+                        .compareTo(namedObject2.getFullName());
 
                 if (compare != 0) {
                     return compare;
@@ -129,8 +129,8 @@ public class DFUtilities {
      *  valid expression.
      *  @see #setRate
      */
-    public static int getRate(IOPort port) throws NotSchedulableException,
-    IllegalActionException {
+    public static int getRate(IOPort port)
+            throws NotSchedulableException, IllegalActionException {
         if (port.isInput() && port.isOutput()) {
             throw new NotSchedulableException(port,
                     "Port is both an input and an output, which is not"
@@ -199,10 +199,10 @@ public class DFUtilities {
         if (token instanceof IntToken) {
             return ((IntToken) token).intValue();
         } else {
-            throw new IllegalActionException("Variable "
-                    + parameter.getFullName() + " was expected "
-                    + "to contain an IntToken, but instead " + "contained a "
-                    + token.getType() + ".");
+            throw new IllegalActionException(
+                    "Variable " + parameter.getFullName() + " was expected "
+                            + "to contain an IntToken, but instead "
+                            + "contained a " + token.getType() + ".");
         }
     }
 
@@ -402,8 +402,8 @@ public class DFUtilities {
     public static Variable setRate(Port port, String name, int rate)
             throws IllegalActionException {
         if (rate < 0) {
-            throw new IllegalActionException("Negative rate is not allowed: "
-                    + rate);
+            throw new IllegalActionException(
+                    "Negative rate is not allowed: " + rate);
         }
 
         Variable parameter = (Variable) port.getAttribute(name);

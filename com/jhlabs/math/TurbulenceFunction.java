@@ -37,8 +37,9 @@ public class TurbulenceFunction extends CompoundFunction2D {
     public float evaluate(float x, float y) {
         float t = 0.0f;
 
-        for (float f = 1.0f; f <= octaves; f *= 2)
+        for (float f = 1.0f; f <= octaves; f *= 2) {
             t += Math.abs(basis.evaluate(f * x, f * y)) / f;
+        }
         return t;
     }
 

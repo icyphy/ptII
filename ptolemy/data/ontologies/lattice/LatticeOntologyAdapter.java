@@ -66,8 +66,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public LatticeOntologyAdapter(LatticeOntologySolver solver, Object component)
-            throws IllegalActionException {
+    public LatticeOntologyAdapter(LatticeOntologySolver solver,
+            Object component) throws IllegalActionException {
         this(solver, component, true);
     }
 
@@ -83,7 +83,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public LatticeOntologyAdapter(LatticeOntologySolver solver,
             Object component, boolean useDefaultConstraints)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         setComponent(component);
         _useDefaultConstraints = useDefaultConstraints;
@@ -387,8 +387,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     protected List _getConstrainedPorts(boolean constraintSource) {
         Actor actor = (Actor) getComponent();
-        return constraintSource ? actor.outputPortList() : actor
-                .inputPortList();
+        return constraintSource ? actor.outputPortList()
+                : actor.inputPortList();
     }
 
     /**

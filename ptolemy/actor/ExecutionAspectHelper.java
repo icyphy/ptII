@@ -55,10 +55,12 @@ public class ExecutionAspectHelper {
      *  @param container The container.
      *  @return All entities to decorate.
      */
-    public static List<NamedObj> getEntitiesToDecorate(CompositeEntity container) {
+    public static List<NamedObj> getEntitiesToDecorate(
+            CompositeEntity container) {
         List<NamedObj> toDecorate = new ArrayList<NamedObj>();
         for (Object entity : container.entityList(ComponentEntity.class)) {
-            if (!(entity instanceof ActorExecutionAspect || entity instanceof Director)) {
+            if (!(entity instanceof ActorExecutionAspect
+                    || entity instanceof Director)) {
                 toDecorate.add((NamedObj) entity);
                 if (entity instanceof CompositeEntity) {
                     toDecorate.addAll(ExecutionAspectHelper
@@ -95,8 +97,8 @@ public class ExecutionAspectHelper {
                 environmentTime.getDoubleValue(), ExecutionEventType.START);
         aspect.notifyExecutionListeners(((NamedObj) aspect),
                 environmentTime.getDoubleValue(), ExecutionEventType.STOP);
-        return aspect.schedule(actor, environmentTime, deadline, new Time(
-                director, executionTime));
+        return aspect.schedule(actor, environmentTime, deadline,
+                new Time(director, executionTime));
     }
 
 }

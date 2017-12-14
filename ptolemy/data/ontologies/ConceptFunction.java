@@ -88,8 +88,8 @@ public abstract class ConceptFunction {
             throw new IllegalActionException("The ontology cannot be null.");
         }
         if (numArgs < -1) {
-            throw new IllegalActionException("Invalid number of arguments: "
-                    + numArgs);
+            throw new IllegalActionException(
+                    "Invalid number of arguments: " + numArgs);
         }
 
         _name = name;
@@ -119,7 +119,7 @@ public abstract class ConceptFunction {
         if (argValues == null) {
             throw new IllegalActionException(
                     "The input array to the ConceptFunction " + this
-                    + " is null.");
+                            + " is null.");
 
             // If the function has a fixed number of arguments, check to make sure
             // the input list has the right number of arguments and also check
@@ -131,8 +131,7 @@ public abstract class ConceptFunction {
         } else if (_numArgsIsFixed) {
             if (argValues.size() != getNumberOfArguments()) {
                 throw new IllegalActionException(
-                        "The input array to the ConceptFunction "
-                                + this
+                        "The input array to the ConceptFunction " + this
                                 + " has the "
                                 + "wrong number of arguments. Expected number of arguments: "
                                 + getNumberOfArguments()
@@ -143,20 +142,14 @@ public abstract class ConceptFunction {
                 // contained in the ontology domain for that argument.
                 int index = 0;
                 for (Concept argument : argValues) {
-                    if (argument != null
-                            && !_argumentDomainOntologies.get(index)
-                            .entityList(Concept.class)
+                    if (argument != null && !_argumentDomainOntologies
+                            .get(index).entityList(Concept.class)
                             .contains(argument)) {
-                        throw new IllegalActionException(
-                                "The input value "
-                                        + argument
-                                        + " at argument index "
-                                        + index
-                                        + " to the ConceptFunction "
-                                        + this
-                                        + " is not within the expected domain ontology "
-                                        + _argumentDomainOntologies.get(index)
-                                        + ".");
+                        throw new IllegalActionException("The input value "
+                                + argument + " at argument index " + index
+                                + " to the ConceptFunction " + this
+                                + " is not within the expected domain ontology "
+                                + _argumentDomainOntologies.get(index) + ".");
                     }
                     index++;
                 }

@@ -58,6 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (yuhong)
  */
+@Deprecated
 public class TriggeredClock extends Clock {
     /** Construct an actor with the specified container and name.
      *  @param container The container.

@@ -89,8 +89,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
-public class GeneratorAttribute extends SingletonAttribute implements
-ChangeListener {
+public class GeneratorAttribute extends SingletonAttribute
+        implements ChangeListener {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -114,9 +114,10 @@ ChangeListener {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
 
-        initialParametersURL = new StringParameter(this, "initialParametersURL");
-        initialParametersURL.setToken(new StringToken(
-                "ptolemy/copernicus/kernel/Generator.xml"));
+        initialParametersURL = new StringParameter(this,
+                "initialParametersURL");
+        initialParametersURL.setToken(
+                new StringToken("ptolemy/copernicus/kernel/Generator.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -155,12 +156,12 @@ ChangeListener {
             if (token instanceof StringToken) {
                 return ((StringToken) token).stringValue();
             } else {
-                throw new IllegalActionException("Parameter with name " + name
-                        + " is not a String.");
+                throw new IllegalActionException(
+                        "Parameter with name " + name + " is not a String.");
             }
         } else {
-            throw new IllegalActionException("Parameter with name " + name
-                    + " does not exist!");
+            throw new IllegalActionException(
+                    "Parameter with name " + name + " does not exist!");
         }
     }
 
@@ -177,27 +178,28 @@ ChangeListener {
      *  initialParametersURL and creating Parameters and Variables
      *  accordingly.
      */
-    public void initialize() throws IllegalActionException,
-    NameDuplicationException {
+    public void initialize()
+            throws IllegalActionException, NameDuplicationException {
         if (_initialized) {
             return;
         }
 
         if (initialParametersURL == null) {
-            throw new IllegalActionException(this, "initialParametersURL "
-                    + "parameter was null?");
+            throw new IllegalActionException(this,
+                    "initialParametersURL " + "parameter was null?");
         }
 
         // Read in the initialParameters file.
-        URL initialParameters = getClass().getClassLoader().getResource(
-                initialParametersURL.getExpression());
+        URL initialParameters = getClass().getClassLoader()
+                .getResource(initialParametersURL.getExpression());
 
         //            .getResource(((StringToken)initialParametersURL.getToken())
         //                    .stringValue());
         if (initialParameters == null) {
-            throw new IllegalActionException(this, "Failed to find the "
-                    + "value of the " + "initialParametersURL: '"
-                    + initialParametersURL.getExpression() + "'");
+            throw new IllegalActionException(this,
+                    "Failed to find the " + "value of the "
+                            + "initialParametersURL: '"
+                            + initialParametersURL.getExpression() + "'");
         }
 
         BufferedReader inputReader = null;
@@ -216,11 +218,11 @@ ChangeListener {
             addChangeListener(this);
 
             try {
-                requestChange(new MoMLChangeRequest(this, this,
-                        buffer.toString()));
+                requestChange(
+                        new MoMLChangeRequest(this, this, buffer.toString()));
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex, "Failed to parse "
-                        + buffer.toString());
+                throw new IllegalActionException(this, ex,
+                        "Failed to parse " + buffer.toString());
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to parse '"
@@ -231,8 +233,8 @@ ChangeListener {
                     inputReader.close();
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to close '"
-                        + initialParameters + "'");
+                throw new IllegalActionException(this, ex,
+                        "Failed to close '" + initialParameters + "'");
             }
         }
 
@@ -295,27 +297,26 @@ ChangeListener {
                         && ptIIUserDirectory.equals(ptII)) {
             if (!ptIIUserDirectoryFile.isDirectory()) {
                 System.out
-                .println("AppletWriter: WARNING: ptIIUserDirectory = '"
-                        + ptIIUserDirectory
-                        + "', but there is no directory there?");
+                        .println("AppletWriter: WARNING: ptIIUserDirectory = '"
+                                + ptIIUserDirectory
+                                + "', but there is no directory there?");
             } else {
                 if (!ptIIUserDirectoryFile.canWrite()) {
-                    System.out
-                    .println("AppletWriter: WARNING: ptIIUserDirectory = '"
-                            + ptIIUserDirectory
-                            + "', but it is not writable");
+                    System.out.println(
+                            "AppletWriter: WARNING: ptIIUserDirectory = '"
+                                    + ptIIUserDirectory
+                                    + "', but it is not writable");
                 } else {
-                    System.out
-                    .println("AppletWriter: ptIIUserDirectory = "
-                            + ptIIUserDirectory
-                            + " isDirectory: "
+                    System.out.println("AppletWriter: ptIIUserDirectory = "
+                            + ptIIUserDirectory + " isDirectory: "
                             + ptIIUserDirectoryFile.isDirectory()
-                            + " canWrite: "
-                            + ptIIUserDirectoryFile.canWrite()
+                            + " canWrite: " + ptIIUserDirectoryFile.canWrite()
                             + " WebStart: "
-                            + (JNLPUtilities.isRunningUnderWebStart() || StringUtilities
-                                    .getProperty("lax.user.dir")
-                                    .length() > 0) + " ptII: " + ptII);
+                            + (JNLPUtilities.isRunningUnderWebStart()
+                                    || StringUtilities
+                                            .getProperty("lax.user.dir")
+                                            .length() > 0)
+                            + " ptII: " + ptII);
                 }
             }
 
@@ -346,7 +347,7 @@ ChangeListener {
                 } else {
                     ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
                     ((StringParameter) getAttribute("ptIIUserDirectory"))
-                    .setExpression(ptIIUserDirectory);
+                            .setExpression(ptIIUserDirectory);
 
                     //.setExpression("property(\"user.dir\") + "
                     //        + "\"/ptII/cg\"");
@@ -358,8 +359,8 @@ ChangeListener {
         String ptIIUserDirectoryAsURL;
 
         try {
-            ptIIUserDirectoryAsURL = new File(ptIIUserDirectory).toURI()
-                    .toURL().toString();
+            ptIIUserDirectoryAsURL = new File(ptIIUserDirectory).toURI().toURL()
+                    .toString();
         } catch (java.net.MalformedURLException ex) {
             ptIIUserDirectoryAsURL = ex.getMessage();
         }
@@ -372,7 +373,7 @@ ChangeListener {
         }
 
         ((Variable) getAttribute("ptIIUserDirectoryAsURL"))
-        .setExpression(ptIIUserDirectoryAsURL);
+                .setExpression(ptIIUserDirectoryAsURL);
 
         String targetPath = getParameter("targetPath");
 
@@ -428,8 +429,8 @@ ChangeListener {
             ((Settable) attribute).setExpression(value);
             ((Settable) attribute).validate();
         } else {
-            throw new IllegalActionException("Parameter with name " + name
-                    + " does not exist!");
+            throw new IllegalActionException(
+                    "Parameter with name " + name + " does not exist!");
         }
     }
 
@@ -473,7 +474,8 @@ ChangeListener {
             if (tooltipAttribute != null
                     && tooltipAttribute instanceof Documentation) {
                 results.append("\n Documentation: "
-                        + ((Documentation) tooltipAttribute).getValueAsString());
+                        + ((Documentation) tooltipAttribute)
+                                .getValueAsString());
             } else {
                 String tip = Documentation.consolidate(attribute);
 
@@ -509,8 +511,8 @@ ChangeListener {
             }
 
             if (modelURL == null) {
-                throw new IllegalActionException(this, ex, "Failed to parse '"
-                        + modelPathOrURL + "'");
+                throw new IllegalActionException(this, ex,
+                        "Failed to parse '" + modelPathOrURL + "'");
             }
         }
 
@@ -573,14 +575,15 @@ ChangeListener {
             }
 
             if (modelPath == null) {
-                throw new NullPointerException("Could not get the attribute \"modelPath\" from "
-                        + getFullName());
+                throw new NullPointerException(
+                        "Could not get the attribute \"modelPath\" from "
+                                + getFullName());
             }
             modelPath.setExpression(modelPathOrURL);
 
             // Strip off the leading '.' and then sanitize.
-            String modelNameValue = StringUtilities.sanitizeName(toplevel
-                    .getFullName().substring(1));
+            String modelNameValue = StringUtilities
+                    .sanitizeName(toplevel.getFullName().substring(1));
 
             Parameter modelName = (StringParameter) getAttribute("modelName");
             modelName.setExpression(modelNameValue);
@@ -594,24 +597,26 @@ ChangeListener {
             } catch (ClassCastException ex) {
                 throw new InternalErrorException(this, ex,
                         "Failed to cast toplevel '" + toplevel
-                        + "' to a CompositeActor");
+                                + "' to a CompositeActor");
             }
 
             if (compositeEntity instanceof CompositeActor) {
-                Director director = ((CompositeActor)compositeEntity).getDirector();
+                Director director = ((CompositeActor) compositeEntity)
+                        .getDirector();
 
                 // If we save a blank model, then there might not be a director.
-                Parameter iterations = (StringParameter) getAttribute("iterations");
+                Parameter iterations = (StringParameter) getAttribute(
+                        "iterations");
 
                 if (director == null) {
                     iterations.setExpression("1000");
                 } else {
                     Attribute directorIterations = director
-                        .getAttribute("iterations");
+                            .getAttribute("iterations");
 
                     if (directorIterations != null) {
                         Token iterationsToken = ((Parameter) directorIterations)
-                            .getToken();
+                                .getToken();
                         iterations.setExpression(iterationsToken.toString());
                     } else {
                         iterations.setExpression("1000");
@@ -619,8 +624,8 @@ ChangeListener {
                 }
             }
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to parse '"
-                    + modelPathOrURL + "'");
+            throw new IllegalActionException(this, ex,
+                    "Failed to parse '" + modelPathOrURL + "'");
         } finally {
             MoMLParser.setMoMLFilters(oldFilters);
         }
@@ -636,8 +641,8 @@ ChangeListener {
     private void _updateNecessaryClassPath() throws IllegalActionException {
         //StringParameter necessaryClassesParameter =
         //    (StringParameter)getAttribute("necessaryClasses");
-        ArrayToken necessaryClassesToken = (ArrayToken) ((Parameter) getAttribute("necessaryClasses"))
-                .getToken();
+        ArrayToken necessaryClassesToken = (ArrayToken) ((Parameter) getAttribute(
+                "necessaryClasses")).getToken();
 
         List classPathList = new LinkedList();
 
@@ -657,8 +662,8 @@ ChangeListener {
         // Convert the list of directories to a classpath with separators.
         // We could use property("path.separator") here, but if the user
         // changes the classPathSeparator parameter, then we better use it.
-        String classPathSeparator = ((StringToken) ((Parameter) getAttribute("classPathSeparator"))
-                .getToken()).stringValue();
+        String classPathSeparator = ((StringToken) ((Parameter) getAttribute(
+                "classPathSeparator")).getToken()).stringValue();
 
         StringBuffer necessaryClassPath = new StringBuffer();
 
@@ -673,7 +678,7 @@ ChangeListener {
         }
 
         ((StringParameter) getAttribute("necessaryClassPath"))
-        .setExpression(necessaryClassPath.toString());
+                .setExpression(necessaryClassPath.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

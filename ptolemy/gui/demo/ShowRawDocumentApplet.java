@@ -126,7 +126,8 @@ public class ShowRawDocumentApplet extends BasicJApplet {
             InputStream in = null;
             try {
                 in = sourceURL.openStream();
-                _bufferedReader = new BufferedReader(new InputStreamReader(in, java.nio.charset.Charset.defaultCharset()));
+                _bufferedReader = new BufferedReader(new InputStreamReader(in,
+                        java.nio.charset.Charset.defaultCharset()));
 
                 String line = _bufferedReader.readLine();
 

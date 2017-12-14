@@ -126,7 +126,6 @@ public class ConstraintsCalculator extends TypedAtomicActor {
     /** The xValue. */
     public TypedIOPort xValue;
 
-
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -207,8 +206,9 @@ public class ConstraintsCalculator extends TypedAtomicActor {
                 }
             }
             _minimum_distances[n] = new DoubleToken(minimum_distance);
-            _speed[n] = new DoubleToken(Math.sqrt(_xValue[n * 2]
-                    * _xValue[n * 2] + _xValue[n * 2 + 1] * _xValue[n * 2 + 1]));
+            _speed[n] = new DoubleToken(
+                    Math.sqrt(_xValue[n * 2] * _xValue[n * 2]
+                            + _xValue[n * 2 + 1] * _xValue[n * 2 + 1]));
         }
     }
 

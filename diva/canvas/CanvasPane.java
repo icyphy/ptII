@@ -505,6 +505,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
             _horizontalRangeModel.setValue(visX);
         }
     }
+
     /** The parent component.
      */
     private CanvasComponent _parent = null;

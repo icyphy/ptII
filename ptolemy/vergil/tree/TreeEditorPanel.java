@@ -78,7 +78,8 @@ public class TreeEditorPanel extends JScrollPane {
         _toplevel = _parser.parseFile(filename);
 
         if (_toplevel instanceof CompositeEntity) {
-            FullTreeModel model = new FullTreeModel((CompositeEntity) _toplevel);
+            FullTreeModel model = new FullTreeModel(
+                    (CompositeEntity) _toplevel);
             JTree tree = new JTree(model);
             tree.setPreferredSize(new Dimension(600, 800));
 

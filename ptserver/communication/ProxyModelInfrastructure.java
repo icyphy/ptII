@@ -133,9 +133,9 @@ public class ProxyModelInfrastructure {
      *  @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
      */
     public ProxyModelInfrastructure(ProxyModelType modelType,
-            CompositeActor plainTopLevelActor) throws IllegalActionException,
-            TypeConflictException, NameDuplicationException,
-            CloneNotSupportedException {
+            CompositeActor plainTopLevelActor)
+            throws IllegalActionException, TypeConflictException,
+            NameDuplicationException, CloneNotSupportedException {
         _tokenPublisher = new TokenPublisher(_PERIOD, this);
         _executor = Executors.newFixedThreadPool(_POOL_SIZE);
         _modelType = modelType;
@@ -214,8 +214,7 @@ public class ProxyModelInfrastructure {
      */
     public void fireModelException(String message, Throwable e) {
         if (_firedExceptionEvent) {
-            _LOGGER.log(
-                    Level.INFO,
+            _LOGGER.log(Level.INFO,
                     "Trying to fire model exception from the proxy model that has fired the same event before. Ignoring to prevent recursive model exceptions",
                     e);
             return;
@@ -462,9 +461,9 @@ public class ProxyModelInfrastructure {
      *  @exception NameDuplicationException if there is a problem creating proxy sinks or sources.
      *  @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
      */
-    private void _loadPlainModel() throws IllegalActionException,
-    TypeConflictException, NameDuplicationException,
-    CloneNotSupportedException {
+    private void _loadPlainModel()
+            throws IllegalActionException, TypeConflictException,
+            NameDuplicationException, CloneNotSupportedException {
         ProxyModelBuilder builder = new ProxyModelBuilder(_modelType,
                 _topLevelActor);
         builder.build();
@@ -517,20 +516,19 @@ public class ProxyModelInfrastructure {
                             .getAttribute("targetPortName");
 
                     if (targetPortName != null) {
-                        type = TypeParser.parse(_modelTypes.get(targetPortName
-                                .getExpression()));
+                        type = TypeParser.parse(_modelTypes
+                                .get(targetPortName.getExpression()));
                         if (type != null) {
                             port.setTypeEquals(type);
                         }
                         port.typeConstraints().clear();
-                    } else if ((type = TypeParser.parse(_modelTypes.get(port
-                            .getFullName()))) != null) {
+                    } else if ((type = TypeParser.parse(
+                            _modelTypes.get(port.getFullName()))) != null) {
                         port.setTypeEquals(type);
                         port.typeConstraints().clear();
                     } else {
                         // Not sure if this is possible, but just in case.
-                        throw new IllegalActionException(
-                                port,
+                        throw new IllegalActionException(port,
                                 "Type constraint for the port was not found.\n"
                                         + "The port did not have an attribute named \"targetPortName\", which would be added by ProxyActor "
                                         + "if the port was typed and the full name of the original port saved within an attribute."
@@ -566,8 +564,7 @@ public class ProxyModelInfrastructure {
             _mqttClient.connect(topic, true, (short) 10);
         } catch (MqttException ex) {
             MqttException exception = new MqttException(
-                    "Failed to connect to topic \""
-                            + topic
+                    "Failed to connect to topic \"" + topic
                             + "\".  Perhaps the mosquitto daemon is not running? "
                             + "See $PTII/ptserver/control/PtolemyServer.java.");
             exception.initCause(ex);

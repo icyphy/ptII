@@ -151,9 +151,9 @@ public class Cobyla {
         return status;
     }
 
-    private static CobylaExitStatus cobylb(Calcfc calcfc, int n, int m,
-            int mpp, double[] x, double rhobeg, double rhoend, int iprint,
-            int maxfun, boolean[] terminate) throws IllegalActionException {
+    private static CobylaExitStatus cobylb(Calcfc calcfc, int n, int m, int mpp,
+            double[] x, double rhobeg, double rhoend, int iprint, int maxfun,
+            boolean[] terminate) throws IllegalActionException {
         // N.B. Arguments CON, SIM, SIMI, DATMAT, A, VSIG, VETA, SIGBAR, DX, W & IACT
         //      have been removed.
 
@@ -199,9 +199,9 @@ public class Cobyla {
         double[] w = new double[1 + n];
 
         if (iprint >= 2) {
-            System.out
-                    .format("%nThe initial value of RHO is %13.6f and PARMU is set to zero.%n",
-                            rho);
+            System.out.format(
+                    "%nThe initial value of RHO is %13.6f and PARMU is set to zero.%n",
+                    rho);
         }
 
         int nfvals = 0;
@@ -298,8 +298,8 @@ public class Cobyla {
                     if (!skipVertexIdent) {
                         //     Identify the optimal vertex of the current simplex.
 
-                        double phimin = datmat[mp][np] + parmu
-                                * datmat[mpp][np];
+                        double phimin = datmat[mp][np]
+                                + parmu * datmat[mpp][np];
                         int nbest = np;
 
                         for (int j = 1; j <= n; ++j) {
@@ -434,8 +434,8 @@ public class Cobyla {
                                     cvmaxm = Math.max(cvmaxm, total - temp);
                                 }
                             }
-                            double dxsign = parmu * (cvmaxp - cvmaxm) > 2.0 * total ? -1.0
-                                    : 1.0;
+                            double dxsign = parmu * (cvmaxp - cvmaxm) > 2.0
+                                    * total ? -1.0 : 1.0;
 
                             //     Update the elements of SIM and SIMI, and set the next X.
 
@@ -451,8 +451,7 @@ public class Cobyla {
 
                             for (int j = 1; j <= n; ++j) {
                                 if (j != jdrop) {
-                                    temp = DOT_PRODUCT(
-                                            PART(ROW(simi, j), 1, n),
+                                    temp = DOT_PRODUCT(PART(ROW(simi, j), 1, n),
                                             PART(dx, 1, n));
                                     for (int k = 1; k <= n; ++k) {
                                         simi[j][k] -= temp * simi[jdrop][k];
@@ -485,9 +484,8 @@ public class Cobyla {
                         double resnew = 0.0;
                         con[mp] = 0.0;
                         for (int k = 1; k <= mp; ++k) {
-                            total = con[k]
-                                    - DOT_PRODUCT(PART(COL(a, k), 1, n),
-                                            PART(dx, 1, n));
+                            total = con[k] - DOT_PRODUCT(PART(COL(a, k), 1, n),
+                                    PART(dx, 1, n));
                             if (k < mp) {
                                 resnew = Math.max(resnew, total);
                             }
@@ -507,12 +505,12 @@ public class Cobyla {
                                         "%nIncrease in PARMU to %13.6f%n",
                                         parmu);
                             }
-                            double phi = datmat[mp][np] + parmu
-                                    * datmat[mpp][np];
+                            double phi = datmat[mp][np]
+                                    + parmu * datmat[mpp][np];
                             for (int j = 1; j <= n; ++j) {
                                 temp = datmat[mp][j] + parmu * datmat[mpp][j];
-                                if (temp < phi
-                                        || (temp == phi && parmu == 0.0 && datmat[mpp][j] < datmat[mpp][np])) {
+                                if (temp < phi || (temp == phi && parmu == 0.0
+                                        && datmat[mpp][j] < datmat[mpp][np])) {
                                     continue L_140;
                                 }
                             }
@@ -612,52 +610,52 @@ public class Cobyla {
                 } while (false);
 
                 if (!iflag) {
-                ibrnch = false;
-                continue L_140;
-            }
+                    ibrnch = false;
+                    continue L_140;
+                }
 
-            if (rho <= rhoend) {
-                status = CobylaExitStatus.Normal;
-                break L_40;
-            }
+                if (rho <= rhoend) {
+                    status = CobylaExitStatus.Normal;
+                    break L_40;
+                }
 
-            //     Otherwise reduce RHO if it is not at its least value and reset PARMU.
+                //     Otherwise reduce RHO if it is not at its least value and reset PARMU.
 
-            double cmin = 0.0, cmax = 0.0;
+                double cmin = 0.0, cmax = 0.0;
 
-            rho *= 0.5;
-            if (rho <= 1.5 * rhoend) {
-                rho = rhoend;
-            }
-            if (parmu > 0.0) {
-                double denom = 0.0;
-                for (int k = 1; k <= mp; ++k) {
-                    cmin = datmat[k][np];
-                    cmax = cmin;
-                    for (int i = 1; i <= n; ++i) {
-                        cmin = Math.min(cmin, datmat[k][i]);
-                        cmax = Math.max(cmax, datmat[k][i]);
+                rho *= 0.5;
+                if (rho <= 1.5 * rhoend) {
+                    rho = rhoend;
+                }
+                if (parmu > 0.0) {
+                    double denom = 0.0;
+                    for (int k = 1; k <= mp; ++k) {
+                        cmin = datmat[k][np];
+                        cmax = cmin;
+                        for (int i = 1; i <= n; ++i) {
+                            cmin = Math.min(cmin, datmat[k][i]);
+                            cmax = Math.max(cmax, datmat[k][i]);
+                        }
+                        if (k <= m && cmin < 0.5 * cmax) {
+                            temp = Math.max(cmax, 0.0) - cmin;
+                            denom = denom <= 0.0 ? temp : Math.min(denom, temp);
+                        }
                     }
-                    if (k <= m && cmin < 0.5 * cmax) {
-                        temp = Math.max(cmax, 0.0) - cmin;
-                        denom = denom <= 0.0 ? temp : Math.min(denom, temp);
+                    if (denom == 0.0) {
+                        parmu = 0.0;
+                    } else if (cmax - cmin < parmu * denom) {
+                        parmu = (cmax - cmin) / denom;
                     }
                 }
-                if (denom == 0.0) {
-                    parmu = 0.0;
-                } else if (cmax - cmin < parmu * denom) {
-                    parmu = (cmax - cmin) / denom;
+                if (iprint >= 2) {
+                    System.out.format(
+                            "%nReduction in RHO to %1$13.6f  and PARMU = %2$13.6f%n",
+                            rho, parmu);
                 }
-            }
-            if (iprint >= 2) {
-                System.out
-                            .format("%nReduction in RHO to %1$13.6f  and PARMU = %2$13.6f%n",
-                                    rho, parmu);
-            }
-            if (iprint == 2) {
-                PrintIterationResult(nfvals, datmat[mp][np],
+                if (iprint == 2) {
+                    PrintIterationResult(nfvals, datmat[mp][np],
                             datmat[mpp][np], COL(sim, np), n);
-            }
+                }
 
             } while (true);
         } while (true);
@@ -676,20 +674,20 @@ public class Cobyla {
             break;
         case MaxIterationsReached:
             if (iprint >= 1) {
-                System.out
-                        .format("%nReturn from subroutine COBYLA because the MAXFUN limit has been reached.%n");
+                System.out.format(
+                        "%nReturn from subroutine COBYLA because the MAXFUN limit has been reached.%n");
             }
             break;
         case DivergingRoundingErrors:
             if (iprint >= 1) {
-                System.out
-                        .format("%nReturn from subroutine COBYLA because rounding errors are becoming damaging.%n");
+                System.out.format(
+                        "%nReturn from subroutine COBYLA because rounding errors are becoming damaging.%n");
             }
             break;
         case TerminateRequested:
             if (iprint >= 1) {
-                System.out
-                        .format("%nReturn from subroutine COBYLA because termination requested by user.%n");
+                System.out.format(
+                        "%nReturn from subroutine COBYLA because termination requested by user.%n");
             }
 
         }
@@ -807,8 +805,9 @@ public class Cobyla {
                 double step, stpful;
 
                 L_70: do {
-                    double optnew = mcon == m ? resmax : -DOT_PRODUCT(
-                            PART(dx, 1, n), PART(COL(a, mcon), 1, n));
+                    double optnew = mcon == m ? resmax
+                            : -DOT_PRODUCT(PART(dx, 1, n),
+                                    PART(COL(a, mcon), 1, n));
 
                     if (icount == 0 || optnew < optold) {
                         optold = optnew;
@@ -843,16 +842,16 @@ public class Cobyla {
                                 int kk = iact[kp];
                                 double sp = DOT_PRODUCT(PART(COL(z, k), 1, n),
                                         PART(COL(a, kk), 1, n));
-                                temp = Math.sqrt(sp * sp + zdota[kp]
-                                        * zdota[kp]);
+                                temp = Math
+                                        .sqrt(sp * sp + zdota[kp] * zdota[kp]);
                                 double alpha = zdota[kp] / temp;
                                 double beta = sp / temp;
                                 zdota[kp] = alpha * zdota[k];
                                 zdota[k] = temp;
                                 for (int i = 1; i <= n; ++i) {
                                     temp = alpha * z[i][kp] + beta * z[i][k];
-                                    z[i][kp] = alpha * z[i][k] - beta
-                                            * z[i][kp];
+                                    z[i][kp] = alpha * z[i][k]
+                                            - beta * z[i][kp];
                                     z[i][k] = temp;
                                 }
                                 iact[k] = kk;
@@ -913,13 +912,15 @@ public class Cobyla {
                                     double beta = tot / temp;
                                     ////////////////////////////////////////////
                                     //When temp is quite small, alpha and beta must be set to approximated value.
-                                    if (temp<1.0E-200) {
-                                        temp = sp+tot;
-                                        alpha = sp/temp;
-                                        beta = tot/temp;
-                                        double prop = Math.sqrt(alpha*alpha+beta*beta);
-                                        if (prop<1.0E-200) {
-                                            alpha = 1; beta = 0;
+                                    if (temp < 1.0E-200) {
+                                        temp = sp + tot;
+                                        alpha = sp / temp;
+                                        beta = tot / temp;
+                                        double prop = Math.sqrt(
+                                                alpha * alpha + beta * beta);
+                                        if (prop < 1.0E-200) {
+                                            alpha = 1;
+                                            beta = 0;
                                         } else {
                                             temp /= prop;
                                             alpha /= prop;
@@ -929,10 +930,10 @@ public class Cobyla {
                                     ///////////////////////////////////////////////
                                     tot = temp;
                                     for (int i = 1; i <= n; ++i) {
-                                        temp = alpha * z[i][k] + beta
-                                                * z[i][kp];
-                                        z[i][kp] = alpha * z[i][kp] - beta
-                                                * z[i][k];
+                                        temp = alpha * z[i][k]
+                                                + beta * z[i][kp];
+                                        z[i][kp] = alpha * z[i][kp]
+                                                - beta * z[i][k];
                                         z[i][k] = temp;
                                     }
                                 }
@@ -960,10 +961,10 @@ public class Cobyla {
                                         zdotv += temp;
                                         zdvabs += Math.abs(temp);
                                     }
-                                    double acca = zdvabs + 0.1
-                                            * Math.abs(zdotv);
-                                    double accb = zdvabs + 0.2
-                                            * Math.abs(zdotv);
+                                    double acca = zdvabs
+                                            + 0.1 * Math.abs(zdotv);
+                                    double accb = zdvabs
+                                            + 0.2 * Math.abs(zdotv);
                                     if (zdvabs < acca && acca < accb) {
                                         temp = zdotv / zdota[k];
                                         if (temp > 0.0 && iact[k] <= m) {
@@ -994,8 +995,8 @@ public class Cobyla {
                             //     new value of ZDOTA(NACT) and branch if it is not acceptable.
 
                             for (int k = 1; k <= nact; ++k) {
-                                vmultc[k] = Math.max(0.0, vmultc[k] - ratio
-                                        * vmultd[k]);
+                                vmultc[k] = Math.max(0.0,
+                                        vmultc[k] - ratio * vmultd[k]);
                             }
                             if (icon < nact) {
                                 int isave = iact[icon];
@@ -1007,17 +1008,17 @@ public class Cobyla {
                                     double sp = DOT_PRODUCT(
                                             PART(COL(z, k), 1, n),
                                             PART(COL(a, kw), 1, n));
-                                    temp = Math.sqrt(sp * sp + zdota[kp]
-                                            * zdota[kp]);
+                                    temp = Math.sqrt(
+                                            sp * sp + zdota[kp] * zdota[kp]);
                                     double alpha = zdota[kp] / temp;
                                     double beta = sp / temp;
                                     zdota[kp] = alpha * zdota[k];
                                     zdota[k] = temp;
                                     for (int i = 1; i <= n; ++i) {
-                                        temp = alpha * z[i][kp] + beta
-                                                * z[i][k];
-                                        z[i][kp] = alpha * z[i][k] - beta
-                                                * z[i][kp];
+                                        temp = alpha * z[i][kp]
+                                                + beta * z[i][k];
+                                        z[i][kp] = alpha * z[i][k]
+                                                - beta * z[i][kp];
                                         z[i][k] = temp;
                                     }
                                     iact[k] = kw;
@@ -1054,16 +1055,16 @@ public class Cobyla {
                             int k = nact - 1;
                             double sp = DOT_PRODUCT(PART(COL(z, k), 1, n),
                                     PART(COL(a, kk), 1, n));
-                            temp = Math.sqrt(sp * sp + zdota[nact]
-                                    * zdota[nact]);
+                            temp = Math
+                                    .sqrt(sp * sp + zdota[nact] * zdota[nact]);
                             double alpha = zdota[nact] / temp;
                             double beta = sp / temp;
                             zdota[nact] = alpha * zdota[k];
                             zdota[k] = temp;
                             for (int i = 1; i <= n; ++i) {
                                 temp = alpha * z[i][nact] + beta * z[i][k];
-                                z[i][nact] = alpha * z[i][k] - beta
-                                        * z[i][nact];
+                                z[i][nact] = alpha * z[i][k]
+                                        - beta * z[i][nact];
                                 z[i][k] = temp;
                             }
                             iact[nact] = iact[k];
@@ -1141,9 +1142,8 @@ public class Cobyla {
                         resmax = 0.0;
                         for (int k = 1; k <= nact; ++k) {
                             int kk = iact[k];
-                            temp = b[kk]
-                                    - DOT_PRODUCT(PART(COL(a, kk), 1, n),
-                                            PART(dxnew, 1, n));
+                            temp = b[kk] - DOT_PRODUCT(PART(COL(a, kk), 1, n),
+                                    PART(dxnew, 1, n));
                             resmax = Math.max(resmax, temp);
                         }
                     }
@@ -1227,8 +1227,8 @@ public class Cobyla {
                         dx[k] = temp * dx[k] + ratio * dxnew[k];
                     }
                     for (int k = 1; k <= mcon; ++k) {
-                        vmultc[k] = Math.max(0.0, temp * vmultc[k] + ratio
-                                * vmultd[k]);
+                        vmultc[k] = Math.max(0.0,
+                                temp * vmultc[k] + ratio * vmultd[k]);
                     }
                     if (mcon == m) {
                         resmax = resold + ratio * (resmax - resold);
@@ -1245,8 +1245,8 @@ public class Cobyla {
 
             } while (true);
 
-        //     We employ any freedom that may be available to reduce the objective
-        //     function before returning a DX whose length is less than RHO.
+            //     We employ any freedom that may be available to reduce the objective
+            //     function before returning a DX whose length is less than RHO.
 
         } while (mcon == m);
 
@@ -1256,8 +1256,8 @@ public class Cobyla {
     private static void PrintIterationResult(int nfvals, double f,
             double resmax, double[] x, int n) {
         System.out.format(
-                "%nNFVALS = %1$5d   F = %2$13.6f    MAXCV = %3$13.6e%n",
-                nfvals, f, resmax);
+                "%nNFVALS = %1$5d   F = %2$13.6f    MAXCV = %3$13.6e%n", nfvals,
+                f, resmax);
         System.out.format("X = %s%n", FORMAT(PART(x, 1, n)));
     }
 

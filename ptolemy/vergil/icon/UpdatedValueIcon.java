@@ -159,10 +159,12 @@ public class UpdatedValueIcon extends AttributeValueIcon {
                     .intValue();
 
             // NOTE: Padding of 10.
-            int width = (int) (stringBounds.getWidth() * numberOfCharacters + 10);
+            int width = (int) (stringBounds.getWidth() * numberOfCharacters
+                    + 10);
 
             _displayString();
-            label = new LabelFigure("N", _labelFont, 1.0, SwingConstants.CENTER);
+            label = new LabelFigure("N", _labelFont, 1.0,
+                    SwingConstants.CENTER);
             stringBounds = label.getBounds();
             if (width < stringBounds.getWidth()) {
                 width = (int) stringBounds.getWidth() + 10;

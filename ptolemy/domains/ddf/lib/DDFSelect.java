@@ -209,10 +209,11 @@ public class DDFSelect extends TypedAtomicActor {
             } else {
                 // If the value of the received control token is out of
                 // range, throw an IllegalActionException.
-                throw new IllegalActionException(this, "The width of the "
-                        + "input port is " + input.getWidth() + " , but "
-                        + "the value of the received control token: "
-                        + _control + " is out of range.");
+                throw new IllegalActionException(this,
+                        "The width of the " + "input port is "
+                                + input.getWidth() + " , but "
+                                + "the value of the received control token: "
+                                + _control + " is out of range.");
             }
         }
     }

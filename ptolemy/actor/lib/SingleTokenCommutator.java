@@ -50,7 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class SingleTokenCommutator extends Transformer implements SequenceActor {
+public class SingleTokenCommutator extends Transformer
+        implements SequenceActor {
     // SingleTokenCommutator used to be in sr.lib, but
     // ddf.lib.DDFSingleTokenCommutator depends on it, so we moved it
     // to actor.lib

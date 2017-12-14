@@ -93,7 +93,8 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
     }
 
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         _displayNode(node);
     }
 

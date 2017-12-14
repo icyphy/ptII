@@ -84,8 +84,8 @@ public class RelationController extends ParameterizedNodeController {
         _getDocumentationAction = new GetDocumentationAction();
 
         // Add to the context menu.
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _getDocumentationAction));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(_getDocumentationAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,8 +139,8 @@ public class RelationController extends ParameterizedNodeController {
                 relation = (Relation) vertex.getContainer();
 
                 // NOTE: The preferences mechanism may set this.
-                Token relationSize = PtolemyPreferences.preferenceValue(
-                        relation, "_relationSize");
+                Token relationSize = PtolemyPreferences
+                        .preferenceValue(relation, "_relationSize");
 
                 if (relationSize instanceof DoubleToken) {
                     height = ((DoubleToken) relationSize).doubleValue();
@@ -160,7 +160,8 @@ public class RelationController extends ParameterizedNodeController {
             if (node != null) {
                 ActorGraphModel model = (ActorGraphModel) getController()
                         .getGraphModel();
-                figure.setToolTipText(relation.getName(model.getPtolemyModel()));
+                figure.setToolTipText(
+                        relation.getName(model.getPtolemyModel()));
                 // Old way to set the color.
                 try {
                     StringAttribute colorAttr = (StringAttribute) relation
@@ -168,10 +169,10 @@ public class RelationController extends ParameterizedNodeController {
 
                     if (colorAttr != null) {
                         String color = colorAttr.getExpression();
-                        ((BasicFigure) figure).setFillPaint(SVGUtilities
-                                .getColor(color));
-                        ((BasicFigure) figure).setStrokePaint(SVGUtilities
-                                .getColor(color));
+                        ((BasicFigure) figure)
+                                .setFillPaint(SVGUtilities.getColor(color));
+                        ((BasicFigure) figure)
+                                .setStrokePaint(SVGUtilities.getColor(color));
                     }
                 } catch (IllegalActionException e) {
                     // Ignore.
@@ -181,8 +182,8 @@ public class RelationController extends ParameterizedNodeController {
                         .attributeList(ColorAttribute.class);
                 if (colorAttributes != null && colorAttributes.size() > 0) {
                     // Use the last color added.
-                    Color color = colorAttributes.get(
-                            colorAttributes.size() - 1).asColor();
+                    Color color = colorAttributes
+                            .get(colorAttributes.size() - 1).asColor();
                     ((BasicFigure) figure).setFillPaint(color);
                     ((BasicFigure) figure).setStrokePaint(color);
                 }

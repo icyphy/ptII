@@ -65,8 +65,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ShowTypes extends AbstractInitializableAttribute implements
-ExecutionListener {
+public class ShowTypes extends AbstractInitializableAttribute
+        implements ExecutionListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -81,9 +81,9 @@ ExecutionListener {
         super(container, name);
 
         // The icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" " + "width=\"90\" height=\"20\" "
-                + "style=\"fill:#00FFFF\"/>\n" + "<text x=\"-55\" y=\"5\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-60\" y=\"-10\" "
+                + "width=\"90\" height=\"20\" " + "style=\"fill:#00FFFF\"/>\n"
+                + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
                 + "ShowTypes\n" + "</text>\n" + "</svg>\n");
 
@@ -209,11 +209,11 @@ ExecutionListener {
                             if (attribute instanceof StringParameter) {
                                 if (port instanceof TypedIOPort) {
                                     ((StringParameter) attribute)
-                                    .setExpression(((TypedIOPort) port)
-                                            .getType().toString());
+                                            .setExpression(((TypedIOPort) port)
+                                                    .getType().toString());
                                 } else {
                                     ((StringParameter) attribute)
-                                    .setExpression("untyped");
+                                            .setExpression("untyped");
                                 }
                             }
                         }

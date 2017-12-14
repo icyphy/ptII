@@ -61,7 +61,8 @@ public class ListenToAction extends FigureAction {
      *  @param controller The corresponding controller.
      *  @param componentType A String that names the listened to component.
      */
-    public ListenToAction(BasicGraphController controller, String componentType) {
+    public ListenToAction(BasicGraphController controller,
+            String componentType) {
         super("Listen to " + componentType);
         _controller = controller;
     }
@@ -83,8 +84,8 @@ public class ListenToAction extends FigureAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         if (_configuration == null) {
-            MessageHandler
-            .error("Cannot listen to component without a configuration.");
+            MessageHandler.error(
+                    "Cannot listen to component without a configuration.");
             return;
         }
 
@@ -113,8 +114,8 @@ public class ListenToAction extends FigureAction {
                     effigy.uniqueName("debugListener" + object.getName()));
 
             DebugListenerTableau debugTableau = new DebugListenerTableau(
-                    textEffigy, textEffigy.uniqueName("debugListener"
-                            + object.getName()));
+                    textEffigy,
+                    textEffigy.uniqueName("debugListener" + object.getName()));
             debugTableau.setDebuggable(object);
 
             // If the actor is an ExecutionAspect, open Plot as well.

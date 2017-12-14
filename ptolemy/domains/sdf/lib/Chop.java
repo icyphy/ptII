@@ -190,8 +190,8 @@ public class Chop extends SDFTransformer {
             _numberToRead = ((IntToken) numberToRead.getToken()).intValue();
 
             if (_numberToRead <= 0) {
-                throw new IllegalActionException(this, "Invalid numberToRead: "
-                        + _numberToRead);
+                throw new IllegalActionException(this,
+                        "Invalid numberToRead: " + _numberToRead);
             }
         } else if (attribute == numberToWrite) {
             _numberToWrite = ((IntToken) numberToWrite.getToken()).intValue();

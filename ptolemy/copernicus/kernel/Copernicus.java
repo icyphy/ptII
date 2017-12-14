@@ -241,7 +241,8 @@ public class Copernicus {
         // then modifies the GeneratorAttribute according to the
         // values of the command line arguments and other values, but
         // we never update the model with this data.
-        String generatorAttributeFileName = exportMoMLToTemporaryFile(generatorAttribute);
+        String generatorAttributeFileName = exportMoMLToTemporaryFile(
+                generatorAttribute);
 
         // We add the filename as an attribute so that we can use its
         // value to substitute.
@@ -249,8 +250,8 @@ public class Copernicus {
         // having backward slashes in attributes causes TokenMgrErrors
         // while reading in a model.
         new Parameter(generatorAttribute, "generatorAttributeFileName",
-                new StringToken(StringUtilities.substitute(
-                        generatorAttributeFileName, "\\", "/")));
+                new StringToken(StringUtilities
+                        .substitute(generatorAttributeFileName, "\\", "/")));
 
         int exitValue = 1;
         String compile = generatorAttribute.getParameter("compile");
@@ -282,7 +283,7 @@ public class Copernicus {
             String codeGeneratorClassName = generatorAttribute
                     .getParameter("codeGeneratorClassName");
             System.out
-            .println("codeGeneratorClass = " + codeGeneratorClassName);
+                    .println("codeGeneratorClass = " + codeGeneratorClassName);
 
             Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
             KernelMain codeGenerator = (KernelMain) codeGeneratorClass
@@ -299,9 +300,9 @@ public class Copernicus {
             exitValue = executeCommand(command);
 
             if (exitValue != 0) {
-                throw new Exception("Problem executing command. "
-                        + "Return value was: " + exitValue + ". Command was:\n"
-                        + command);
+                throw new Exception(
+                        "Problem executing command. " + "Return value was: "
+                                + exitValue + ". Command was:\n" + command);
             }
         }
     }
@@ -339,8 +340,8 @@ public class Copernicus {
         }
 
         if (commands.length > 0) {
-            System.out.println("        \"" + commands[commands.length - 1]
-                    + "\"");
+            System.out.println(
+                    "        \"" + commands[commands.length - 1] + "\"");
         }
 
         System.out.flush();
@@ -507,8 +508,8 @@ public class Copernicus {
             }
 
             if (modelURL == null) {
-                throw new IllegalActionException(null, ex, "Failed to parse '"
-                        + modelPathOrURL + "'");
+                throw new IllegalActionException(null, ex,
+                        "Failed to parse '" + modelPathOrURL + "'");
             }
         }
 
@@ -552,8 +553,8 @@ public class Copernicus {
         // However, if we remove Location, then shallow CG of Wireless fails.
         //removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
-        removeGraphicalClasses.put(
-                "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
+        removeGraphicalClasses
+                .put("ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
 
         // FIXME: If this is Deep codegen, then don't use Test, use CGTest
         // because Test has a SharedParameter
@@ -578,9 +579,9 @@ public class Copernicus {
         try {
             toplevel = (CompositeEntity) _parser.parse(modelURL, modelURL);
         } catch (Exception ex) {
-            throw new IllegalActionException(null, ex, "Failed to parse '"
-                    + modelPathOrURL + "' as a top level model in \n"
-                    + modelURL + "!");
+            throw new IllegalActionException(null, ex,
+                    "Failed to parse '" + modelPathOrURL
+                            + "' as a top level model in \n" + modelURL + "!");
         }
 
         // If the name of the toplevel is the empty string, change it to
@@ -697,8 +698,7 @@ public class Copernicus {
         } else if (arg.equals("-verbose")) {
             _verbose = true;
         } else if (arg.equals("-version")) {
-            System.out
-            .println("Version "
+            System.out.println("Version "
                     + VersionAttribute.CURRENT_VERSION.getExpression()
                     + ", Build $Id$");
 
@@ -727,9 +727,9 @@ public class Copernicus {
             if (_parseArg(arg) == false) {
                 if (arg.trim().startsWith("-")) {
                     if (i >= args.length - 1) {
-                        throw new IllegalActionException("Cannot set "
-                                + "parameter " + arg + " when no value is "
-                                + "given.");
+                        throw new IllegalActionException(
+                                "Cannot set " + "parameter " + arg
+                                        + " when no value is " + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -738,8 +738,8 @@ public class Copernicus {
                     i++;
                 } else {
                     // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
+                    throw new IllegalActionException(
+                            "Unrecognized option: " + arg);
                 }
             }
         }
@@ -804,14 +804,15 @@ public class Copernicus {
 
     /** Return a string containing the usage */
     private String _usage() {
-        StringBuffer usage = new StringBuffer(StringUtilities.usageString(
-                _commandTemplate, _commandOptions, _commandFlags));
+        StringBuffer usage = new StringBuffer(StringUtilities
+                .usageString(_commandTemplate, _commandOptions, _commandFlags));
 
         try {
             NamedObj namedObj = new NamedObj();
-            usage.append("\n\nThe following attributes of the code generator can\n"
-                    + "be set.  For example '-codeGenerator java' means\n"
-                    + "to use the java code generator\n\n");
+            usage.append(
+                    "\n\nThe following attributes of the code generator can\n"
+                            + "be set.  For example '-codeGenerator java' means\n"
+                            + "to use the java code generator\n\n");
 
             _generatorAttribute = new GeneratorAttribute(namedObj,
                     GENERATOR_NAME);
@@ -833,15 +834,14 @@ public class Copernicus {
     ////                         protected variables               ////
 
     /** The command-line options that are either present or not. */
-    protected String[] _commandFlags = {
-            "-help: Print this help information\n",
+    protected String[] _commandFlags = { "-help: Print this help information\n",
             "-test: Smoke test the code generator by killing after 2 seconds.\n",
             "-verbose: Show verbose execution information.\n",
             "-version: Show version information.\n", };
 
     /** The command-line options that take arguments. */
-    protected String[][] _commandOptions = { { "-<parameter name>",
-    "<parameter value>" }, };
+    protected String[][] _commandOptions = {
+            { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "\ncopernicus [options . . .] [relative xml filename]\n"

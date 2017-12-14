@@ -80,9 +80,8 @@ public class CommunicationRequestPort extends Const {
         value.setExpression("");
         firingCountLimit.setVisibility(Settable.NONE);
 
-        value.setTypeEquals(new RecordType(
-                new String[] { "receiver", "token" }, new Type[] {
-                        BaseType.OBJECT, BaseType.GENERAL }));
+        value.setTypeEquals(new RecordType(new String[] { "receiver", "token" },
+                new Type[] { BaseType.OBJECT, BaseType.GENERAL }));
     }
 
     /** Do not set a value before initialization.

@@ -218,8 +218,8 @@ public class Philosopher extends CSPActor {
                 _notifyListeners();
             }
         } catch (NoTokenException ex) {
-            throw new IllegalActionException(getName() + ": cannot "
-                    + "get token.");
+            throw new IllegalActionException(
+                    getName() + ": cannot " + "get token.");
         } catch (InterruptedException ex) {
             // Terminating the fire().
         }

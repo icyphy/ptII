@@ -273,7 +273,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public DEDirector() throws IllegalActionException, NameDuplicationException {
+    public DEDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _initParameters();
     }
@@ -285,8 +286,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public DEDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public DEDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -660,9 +661,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 index = _microstep + 1;
 
                 if (index == Integer.MAX_VALUE) {
-                    throw new IllegalActionException(
-                            this,
-                            actor,
+                    throw new IllegalActionException(this, actor,
                             "Microstep has hit the maximum while scheduling a firing of "
                                     + actor.getFullName()
                                     + ". Perhaps the model has a stuttering Zeno Condition?");
@@ -811,8 +810,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (executiveDirector != null && !_isTopLevel()) {
 
             Time aFutureTimeOfUpperLevel = localClock
-                    .getLocalTimeForEnvironmentTime(executiveDirector
-                            .getModelNextIterationTime());
+                    .getLocalTimeForEnvironmentTime(
+                            executiveDirector.getModelNextIterationTime());
 
             if (aFutureTime.compareTo(aFutureTimeOfUpperLevel) > 0) {
                 aFutureTime = aFutureTimeOfUpperLevel;
@@ -1058,8 +1057,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             // the stop time.
             if (moreOutputsToTransfer) {
                 fireContainerAt(getModelTime());
-            } else if (_noMoreActorsToFire
-                    && (stop || getModelTime().compareTo(getModelStopTime()) == 0)) {
+            } else if (_noMoreActorsToFire && (stop
+                    || getModelTime().compareTo(getModelStopTime()) == 0)) {
                 if (_debugging) {
                     _debug("No more actors to fire and time to stop.");
                 }
@@ -1239,10 +1238,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             // we check if there's any external input.
             Iterator<?> inputPorts = container.inputPortList().iterator();
             boolean hasInput = false;
-
+        
             while (inputPorts.hasNext() && !hasInput) {
                 IOPort port = (IOPort) inputPorts.next();
-
+        
                 for (int i = 0; i < port.getWidth(); i++) {
                     if (port.hasToken(i)) {
                         hasInput = true;
@@ -1250,7 +1249,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     }
                 }
             }
-
+        
             if (!hasInput) {
                 // If there is no internal event, it is not the correct
                 // time to fire.
@@ -1299,7 +1298,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 _eventQueue = new DECQEventQueue(
                         ((IntToken) minBinCount.getToken()).intValue(),
                         ((IntToken) binCountFactor.getToken()).intValue(),
-                        ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
+                        ((BooleanToken) isCQAdaptive.getToken())
+                                .booleanValue());
             }
         } else {
             _isInitializing = true;
@@ -1577,10 +1577,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         || next.microstep() < _microstep) {
                     throw new IllegalActionException(
                             "The tag of the next event (" + next.timeStamp()
-                            + "." + next.microstep()
-                            + ") can not be less than"
-                            + " the current tag (" + getModelTime()
-                            + "." + _microstep + ") !");
+                                    + "." + next.microstep()
+                                    + ") can not be less than"
+                                    + " the current tag (" + getModelTime()
+                                    + "." + _microstep + ") !");
                 } else {
                     // The next event has the same tag as the current tag,
                     // indicating that at least one actor is going to be
@@ -1633,8 +1633,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _enqueueEvent(Actor actor, Time time, int defaultMicrostep)
             throws IllegalActionException {
-        if (_eventQueue == null || _disabledActors != null
-                && _disabledActors.contains(actor)) {
+        if (_eventQueue == null
+                || _disabledActors != null && _disabledActors.contains(actor)) {
             return;
         }
 
@@ -1651,9 +1651,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 microstep = _microstep + 1;
 
                 if (microstep == Integer.MAX_VALUE) {
-                    throw new IllegalActionException(
-                            this,
-                            actor,
+                    throw new IllegalActionException(this, actor,
                             "Microstep has hit the maximum while scheduling a firing of "
                                     + actor.getFullName()
                                     + ". Perhaps the model has a stuttering Zeno Condition?");
@@ -1670,8 +1668,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         if (_debugging) {
             _debug("DEDirector: enqueue a pure event: ",
-                    ((NamedObj) actor).getName(), "time = " + time
-                    + " microstep = " + microstep + " depth = " + depth);
+                    ((NamedObj) actor).getName(),
+                    "time = " + time + " microstep = " + microstep + " depth = "
+                            + depth);
         }
 
         DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
@@ -1714,8 +1713,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     private void _enqueueTriggerEvent(IOPort ioPort, Time time)
             throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
-        if (_eventQueue == null || _disabledActors != null
-                && _disabledActors.contains(actor)) {
+        if (_eventQueue == null
+                || _disabledActors != null && _disabledActors.contains(actor)) {
             return;
         }
 
@@ -1731,16 +1730,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
          * a dependency on domains/modal.
          */
         if (_microstep < 1 && _enforceMicrostepSemantics) {
-            throw new IllegalActionException(
-                    this,
-                    ioPort.getContainer(),
-                    "Received a non-discrete event at port "
-                            + ioPort.getName()
-                            + " of actor "
-                            + ioPort.getContainer().getName()
+            throw new IllegalActionException(this, ioPort.getContainer(),
+                    "Received a non-discrete event at port " + ioPort.getName()
+                            + " of actor " + ioPort.getContainer().getName()
                             + ". Discrete events are required to have microstep greater than zero,"
-                            + " but this one has microstep "
-                            + _microstep
+                            + " but this one has microstep " + _microstep
                             + ". Perhaps a Continuous submodel is sending a continuous rather than"
                             + " discrete signal?");
         }
@@ -1771,9 +1765,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         if (_debugging) {
-            _debug("enqueue a trigger event for ",
-                    ((NamedObj) actor).getName(), " time = " + time
-                    + " microstep = " + microstep + " depth = " + depth);
+            _debug("enqueue a trigger event for ", ((NamedObj) actor).getName(),
+                    " time = " + time + " microstep = " + microstep
+                            + " depth = " + depth);
         }
 
         // Register this trigger event.
@@ -1990,9 +1984,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     + ". Refire the actor.");
                         }
                         // refire only if can be scheduled.
-                        if (!_aspectsPresent
-                                || _schedule((NamedObj) actorToFire,
-                                        getModelTime())) {
+                        if (!_aspectsPresent || _schedule(
+                                (NamedObj) actorToFire, getModelTime())) {
                             refire = true;
 
                             // Found a channel that has input data,
@@ -2256,8 +2249,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 try {
                     synchronized (_eventQueueLock) {
                         lastFoundEvent = _eventQueue.get();
-                        currentTime = _consultTimeRegulators(lastFoundEvent
-                                .timeStamp());
+                        currentTime = _consultTimeRegulators(
+                                lastFoundEvent.timeStamp());
 
                         // NOTE: Synchronize to real time here for backward compatibility,
                         // but the preferred way to do this is now to use a
@@ -2265,12 +2258,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         //  {@link TimeRegulator} interface.
                         if (_synchronizeToRealTime) {
                             // If synchronized to the real time.
-                            Manager manager = ((CompositeActor) getContainer()).getManager();
+                            Manager manager = ((CompositeActor) getContainer())
+                                    .getManager();
                             while (!_stopRequested && !_stopFireRequested) {
                                 lastFoundEvent = _eventQueue.get();
                                 currentTime = lastFoundEvent.timeStamp();
 
-                                if (currentTime.compareTo(getModelStopTime()) > 0) {
+                                if (currentTime
+                                        .compareTo(getModelStopTime()) > 0) {
                                     // Next event is past the stop time of the model.
                                     // Do not stall.
                                     break;
@@ -2282,7 +2277,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                 // safely cast to a double.  This means that
                                 // the DE domain has an upper limit on running
                                 // time of Double.MAX_VALUE milliseconds.
-                                double elapsedTimeInSeconds = elapsedTime / 1000.0;
+                                double elapsedTimeInSeconds = elapsedTime
+                                        / 1000.0;
                                 ptolemy.actor.util.Time elapsed = new ptolemy.actor.util.Time(
                                         this, elapsedTimeInSeconds);
                                 if (currentTime.compareTo(elapsed) <= 0) {
@@ -2304,8 +2300,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                     break;
                                 }*/
 
-                                long timeToWait = (long) (currentTime.subtract(
-                                        elapsed).getDoubleValue() * 1000.0);
+                                long timeToWait = (long) (currentTime
+                                        .subtract(elapsed).getDoubleValue()
+                                        * 1000.0);
 
                                 if (timeToWait > 0) {
                                     if (_debugging) {
@@ -2325,43 +2322,44 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                         // This will have the side effect of executing any pending change requests.
                                         setDeferringChangeRequests(false);
                                         // Tell the manager what thread is waiting.
-                                        manager.setWaitingThread(Thread.currentThread());
+                                        manager.setWaitingThread(
+                                                Thread.currentThread());
                                         _eventQueueLock.wait(timeToWait);
                                     } catch (InterruptedException ex) {
-                                            // Ignore and circulate around the loop.
-                                            // The interrupt could be due to a change request,
-                                            // which we will want to process.
-                                            // This used to do the following with flawed reasoning:
-                                            /*
+                                        // Ignore and circulate around the loop.
+                                        // The interrupt could be due to a change request,
+                                        // which we will want to process.
+                                        // This used to do the following with flawed reasoning:
+                                        /*
                                         throw new IllegalActionException(
-                                                this,
-                                                ex,
-                                                "Thread interrupted when waiting for"
-                                                        + " real time to match model time.");
+                                            this,
+                                            ex,
+                                            "Thread interrupted when waiting for"
+                                                    + " real time to match model time.");
                                         */
-                                            // The reasoning was:
+                                        // The reasoning was:
                                         // Continue executing?
                                         // No, because this could be a problem if any
                                         // actor assumes that model time always exceeds
                                         // real time when synchronizeToRealTime is set.
-                                            //
-                                            // But this is flawed because we are in a while loop
-                                            // that will check again for matching to real time.
-                                            // EAL 10/27/15.
+                                        //
+                                        // But this is flawed because we are in a while loop
+                                        // that will check again for matching to real time.
+                                        // EAL 10/27/15.
                                     } finally {
-                                            setDeferringChangeRequests(true);
+                                        setDeferringChangeRequests(true);
                                         manager.setWaitingThread(null);
                                     }
                                 }
                             } // while
-                            // If stopFire() has been called, then the wait for real
-                            // time above was interrupted by a change request. Hence,
-                            // real time will not have reached the time of the first
-                            // event in the event queue. If we allow this method to
-                            // proceed, it will set model time to that event time,
-                            // which is in the future. This violates the principle
-                            // of synchronize to real time.  Hence, we must return
-                            // without processing the event or incrementing time.
+                              // If stopFire() has been called, then the wait for real
+                              // time above was interrupted by a change request. Hence,
+                              // real time will not have reached the time of the first
+                              // event in the event queue. If we allow this method to
+                              // proceed, it will set model time to that event time,
+                              // which is in the future. This violates the principle
+                              // of synchronize to real time.  Hence, we must return
+                              // without processing the event or incrementing time.
 
                             // NOTE: CompositeActor used to call stopFire() before
                             // queuing the change request, which created the risk
@@ -2478,7 +2476,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _actorsFinished.remove(actorToFire);
                 } else if (!_schedule((NamedObj) actorToFire, getModelTime())) {
                     _nextScheduleTime.get(_aspectForActor.get(actorToFire))
-                    .add(getModelTime());
+                            .add(getModelTime());
                     if (_actorsInExecution == null) {
                         _actorsInExecution = new HashMap();
                     }
@@ -2502,7 +2500,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  this is not the case.
      *  @exception IllegalActionException If thrown by getExecutionAspect().
      */
-    protected void _issueExecutionAspectWarning() throws IllegalActionException {
+    protected void _issueExecutionAspectWarning()
+            throws IllegalActionException {
         if (_executionAspects.size() > 0) {
             boolean _aspectUsed = false;
             if (getContainer() instanceof CompositeActor) {
@@ -2517,8 +2516,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             }
             if (_aspectUsed) {
                 //if (!MessageHandler.yesNoQuestion(
-                System.out
-                        .println("WARNING: The execution aspects in this model can "
+                System.out.println(
+                        "WARNING: The execution aspects in this model can "
                                 + "influence the timing of actors by delaying the \n"
                                 + "execution, which can potentially reverse causality. "
                                 + "There is no guarantee that actors fire at the \n"
@@ -2559,9 +2558,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             ActorExecutionAspect scheduler = getExecutionAspect(actor);
             if (scheduler != null) {
                 ((CompositeActor) scheduler.getContainer()).getDirector()
-                        .fireAt((Actor) scheduler,
-                                getModelTime().add(
-                                        _nextScheduleTime.get(scheduler)));
+                        .fireAt((Actor) scheduler, getModelTime()
+                                .add(_nextScheduleTime.get(scheduler)));
             } else {
                 throw new InternalErrorException(this, null,
                         "_getExecutionAspect(" + actor.getFullName()
@@ -2623,7 +2621,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @return The enclosing ContinuousDirector, or null if there is none.
      */
     private SuperdenseTimeDirector _enclosingSuperdenseTimeDirector() {
-        if (_enclosingSuperdenseTimeDirectorVersion != _workspace.getVersion()) {
+        if (_enclosingSuperdenseTimeDirectorVersion != _workspace
+                .getVersion()) {
             // Update the cache.
             _enclosingSuperdenseTimeDirector = null;
             NamedObj container = getContainer().getContainer();
@@ -2655,7 +2654,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             stopWhenQueueIsEmpty.setExpression("true");
             stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
 
-            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+            synchronizeToRealTime = new Parameter(this,
+                    "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
@@ -2679,8 +2679,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             enforceMicrostepSemantics.setExpression("false");
             enforceMicrostepSemantics.setTypeEquals(BaseType.BOOLEAN);
         } catch (KernelException e) {
-            throw new InternalErrorException("Cannot set parameter:\n"
-                    + e.getMessage());
+            throw new InternalErrorException(
+                    "Cannot set parameter:\n" + e.getMessage());
         }
     }
 
@@ -2755,8 +2755,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  only when all inputs at the current microstep are known. See
      *  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml.
      */
-    private static class DECausalityInterface extends
-    CausalityInterfaceForComposites {
+    private static class DECausalityInterface
+            extends CausalityInterfaceForComposites {
         // FindBugs indicates that this should be a static class.
 
         /** Construct a causality interface for the specified actor.

@@ -253,9 +253,9 @@ public class NonStrictTest extends Sink {
         _initialized = true;
         _firedOnce = false;
         _numberOfInputTokensSeen = 0;
-        _matchedValues = new boolean[((ArrayToken) correctValues.getToken()).length()];
+        _matchedValues = new boolean[((ArrayToken) correctValues.getToken())
+                .length()];
         _trainingTokens = null;
-
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
             if (MessageHandler.isNonInteractive()) {
@@ -284,9 +284,9 @@ public class NonStrictTest extends Sink {
             return false;
         }
         if (input.getWidth() != 1) {
-            throw new IllegalActionException(this, "Width of input is "
-                    + input.getWidth()
-                    + " but NonStrictTest only supports a width of 1.");
+            throw new IllegalActionException(this,
+                    "Width of input is " + input.getWidth()
+                            + " but NonStrictTest only supports a width of 1.");
         }
 
         boolean training = ((BooleanToken) trainingMode.getToken())
@@ -319,28 +319,27 @@ public class NonStrictTest extends Sink {
             Token token = input.get(0);
             Token referenceToken = null;
 
-            if (((BooleanToken) requireOrderedValues.getToken()).booleanValue()) {
+            if (((BooleanToken) requireOrderedValues.getToken())
+                    .booleanValue()) {
                 referenceToken = ((ArrayToken) correctValues.getToken())
-                    .getElement(_numberOfInputTokensSeen);
+                        .getElement(_numberOfInputTokensSeen);
 
                 if (!_isClose(token, referenceToken, _tolerance)) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
-                            + "Value was: " + token
-                            + ". Should have been: " + referenceToken);
+                                    + "Value was: " + token
+                                    + ". Should have been: " + referenceToken);
                 }
             } else {
                 // requireCorrectOrder is false.
                 boolean sawMatch = false;
-                for (int i = 0;
-                     i < ((ArrayToken) correctValues.getToken()).length();
-                     i++) {
+                for (int i = 0; i < ((ArrayToken) correctValues.getToken())
+                        .length(); i++) {
                     if (!_matchedValues[i]) {
                         referenceToken = ((ArrayToken) correctValues.getToken())
-                            .getElement(i);
+                                .getElement(i);
 
-                        if (_isClose(
-                                token, referenceToken, _tolerance)) {
+                        if (_isClose(token, referenceToken, _tolerance)) {
                             _matchedValues[i] = true;
                             sawMatch = true;
                             break;
@@ -350,9 +349,9 @@ public class NonStrictTest extends Sink {
                 if (!sawMatch) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
-                            + "Value was: " + token
-                            + ". No matches were found in any of "
-                            + "the as yet unmatched correct values.");
+                                    + "Value was: " + token
+                                    + ". No matches were found in any of "
+                                    + "the as yet unmatched correct values.");
                 }
             }
             _numberOfInputTokensSeen++;
@@ -383,7 +382,8 @@ public class NonStrictTest extends Sink {
                         + "starvation is occurring.";
                 String fireCompatProperty = "ptolemy.actor.lib.NonStrictTest.fire.compat";
 
-                if (StringUtilities.getProperty(fireCompatProperty).length() > 0) {
+                if (StringUtilities.getProperty(fireCompatProperty)
+                        .length() > 0) {
                     System.err.println("Warning: '" + getFullName() + "' "
                             + errorMessage
                             + "\nThis error is being ignored because " + "the "
@@ -408,8 +408,8 @@ public class NonStrictTest extends Sink {
                     // FIXME: this produce a dialog for each failed test.
                     throw new IllegalActionException(this, errorMessage);
                 }
-                System.err.println("Warning: '" + getFullName() + "' "
-                        + errorMessage);
+                System.err.println(
+                        "Warning: '" + getFullName() + "' " + errorMessage);
             }
         }
 
@@ -526,13 +526,8 @@ public class NonStrictTest extends Sink {
                     tolerance.setToken(new DoubleToken(newTolerance));
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
-                    System.out
-                    .println("NonStrictTest: "
-                            + getFullName()
-                            + ": exponent of "
-                            + newValue
-                            + " is "
-                            + log
+                    System.out.println("NonStrictTest: " + getFullName()
+                            + ": exponent of " + newValue + " is " + log
                             + ", which cannot be compared with the previous tolerance."
                             + " The new tolerance is "
                             + tolerance.getExpression() + ".");
@@ -552,8 +547,8 @@ public class NonStrictTest extends Sink {
         HashSet<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL),
+                    input.getTypeTerm()));
         }
         return result;
     }
@@ -572,8 +567,8 @@ public class NonStrictTest extends Sink {
      *  @return True if the first argument is close
      *  to this token.  False
      */
-    protected static boolean _isClose(
-            Token token1, Token token2, double epsilon) {
+    protected static boolean _isClose(Token token1, Token token2,
+            double epsilon) {
 
         // FIXME: If we get a nil token on the input, what should we do?
         // Here, we require that the referenceToken also be nil.
@@ -588,21 +583,17 @@ public class NonStrictTest extends Sink {
 
         try {
             boolean isClose;
-            isClose = token1.isCloseTo(token2, epsilon)
-                    .booleanValue()
-                    || token1.isNil()
-                    && token2.isNil();
+            isClose = token1.isCloseTo(token2, epsilon).booleanValue()
+                    || token1.isNil() && token2.isNil();
             // Additional guards makes things slightly easier for
             // Copernicus.
-            if (token1 instanceof ArrayToken
-                    && token2 instanceof ArrayToken) {
-                isClose |= _isCloseToIfNilArrayElement(token1, token2,
-                        epsilon);
+            if (token1 instanceof ArrayToken && token2 instanceof ArrayToken) {
+                isClose |= _isCloseToIfNilArrayElement(token1, token2, epsilon);
             }
             if (token1 instanceof RecordToken
                     && token2 instanceof RecordToken) {
-                isClose |= _isCloseToIfNilRecordElement(token1,
-                        token2, epsilon);
+                isClose |= _isCloseToIfNilRecordElement(token1, token2,
+                        epsilon);
             }
             return isClose;
         } catch (IllegalActionException ex) {
@@ -633,7 +624,8 @@ public class NonStrictTest extends Sink {
      */
     protected static boolean _isCloseToIfNilArrayElement(Token token1,
             Token token2, double epsilon) throws IllegalActionException {
-        if (!(token1 instanceof ArrayToken) || !(token2 instanceof ArrayToken)) {
+        if (!(token1 instanceof ArrayToken)
+                || !(token2 instanceof ArrayToken)) {
             return false;
         }
 
@@ -647,8 +639,8 @@ public class NonStrictTest extends Sink {
             // Here is where isCloseTo() differs from isEqualTo().
             // Note that we return false the first time we hit an
             // element token that is not close to our current element token.
-            BooleanToken result = array1.getElement(i).isCloseTo(
-                    array2.getElement(i), epsilon);
+            BooleanToken result = array1.getElement(i)
+                    .isCloseTo(array2.getElement(i), epsilon);
 
             // If the tokens are not close and array1[i] and is not nil, then
             // the arrays really aren't close.

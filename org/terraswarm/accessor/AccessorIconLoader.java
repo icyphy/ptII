@@ -78,8 +78,8 @@ public class AccessorIconLoader implements IconLoader {
      *  the icon.
      */
     @Override
-    public boolean loadIconForClass(final String className, final NamedObj context)
-            throws Exception {
+    public boolean loadIconForClass(final String className,
+            final NamedObj context) throws Exception {
         // If we are creating hierarchy, then the context might be null.
         if (context == null) {
             return false;
@@ -108,8 +108,9 @@ public class AccessorIconLoader implements IconLoader {
                 List previousIcons = context.attributeList(IconAttribute.class);
                 if (previousIcons != null) {
                     for (Object icon : previousIcons) {
-                        if (((Attribute)icon).isPersistent()
-                                && ((Attribute)icon).getDerivedLevel() == Integer.MAX_VALUE) {
+                        if (((Attribute) icon).isPersistent()
+                                && ((Attribute) icon)
+                                        .getDerivedLevel() == Integer.MAX_VALUE) {
                             // There is already an icon that will be stored with the model.
                             return;
                         }
@@ -120,7 +121,7 @@ public class AccessorIconLoader implements IconLoader {
 
                 // First, if the context is an instance JSAccessor, proceed.
                 if (context instanceof JSAccessor) {
-                    JSAccessor accessor = (JSAccessor)context;
+                    JSAccessor accessor = (JSAccessor) context;
                     // Use FileParameter to preprocess the source to resolve
                     // relative classpaths and references to $CLASSPATH, etc.
 
@@ -142,11 +143,14 @@ public class AccessorIconLoader implements IconLoader {
                             tail = source.lastIndexOf(".xml");
                         }
                         if (tail > 0) {
-                            String iconURLSpec = source.substring(0, tail) + "Icon.xml";
+                            String iconURLSpec = source.substring(0, tail)
+                                    + "Icon.xml";
                             // Do not update the repo (second argument is false).
                             try {
-                                URL iconURL = JSAccessor._sourceToURL(iconURLSpec, false);
-                                iconURL = JSAccessor.getLocalURL(iconURLSpec, iconURL);
+                                URL iconURL = JSAccessor
+                                        ._sourceToURL(iconURLSpec, false);
+                                iconURL = JSAccessor.getLocalURL(iconURLSpec,
+                                        iconURL);
 
                                 // For performance reasons, ignore icon URLs that start with http.
                                 if (!iconURL.getProtocol().startsWith("http")) {
@@ -155,7 +159,9 @@ public class AccessorIconLoader implements IconLoader {
                                     // up to 10 redirects.  Otherwise, we just
                                     // call URL.getInputStream().
 
-                                    InputStream input = FileUtilities.openStreamFollowingRedirects(iconURL);
+                                    InputStream input = FileUtilities
+                                            .openStreamFollowingRedirects(
+                                                    iconURL);
 
                                     MoMLParser newParser = new MoMLParser();
                                     // Mark the parser to keep track of objects created.
@@ -178,8 +184,13 @@ public class AccessorIconLoader implements IconLoader {
                                         // FIXME: NO! This messes up any further calls to accessorSource.asURL()
                                         // if the accessorSource is relative, because then they will use the accessor
                                         // source location rather than the model. E.g., reload will no longer work.
-                                        URL sourceURL = JSAccessor._sourceToURL(((JSAccessor)context).accessorSource.asURL().toExternalForm(), false);
-                                        uriAttribute = new URIAttribute((JSAccessor)context, "_uri");
+                                        URL sourceURL = JSAccessor._sourceToURL(
+                                                ((JSAccessor) context).accessorSource
+                                                        .asURL()
+                                                        .toExternalForm(),
+                                                false);
+                                        uriAttribute = new URIAttribute(context,
+                                                "_uri");
                                         uriAttribute.setURL(sourceURL);
                                     } catch (Throwable e) {
                                         // Ignore. The only effect will be that icons don't load properly
@@ -187,17 +198,22 @@ public class AccessorIconLoader implements IconLoader {
                                     }
 
                                     try {
-                                        newParser.parse(iconURL, iconURL.toExternalForm(), input);
+                                        newParser.parse(iconURL,
+                                                iconURL.toExternalForm(),
+                                                input);
                                         // Have to mark the contents derived objects, so that
                                         // the icon is not exported with the MoML export.
-                                        List<NamedObj> icons = newParser.topObjectsCreated();
+                                        List<NamedObj> icons = newParser
+                                                .topObjectsCreated();
                                         if (icons != null) {
                                             Iterator objects = icons.iterator();
 
                                             while (objects.hasNext()) {
-                                                NamedObj newObject = (NamedObj) objects.next();
+                                                NamedObj newObject = (NamedObj) objects
+                                                        .next();
                                                 newObject.setDerivedLevel(1);
-                                                _markContentsDerived(newObject, 1);
+                                                _markContentsDerived(newObject,
+                                                        1);
                                                 foundAnIcon = true;
                                             }
                                         }
@@ -216,7 +232,8 @@ public class AccessorIconLoader implements IconLoader {
                 if (!foundAnIcon) {
                     // Try for an icon based on the class name.
                     String fileName = className.replace('.', '/') + "Icon.xml";
-                    URL xmlFile = getClass().getClassLoader().getResource(fileName);
+                    URL xmlFile = getClass().getClassLoader()
+                            .getResource(fileName);
                     if (xmlFile != null) {
                         InputStream input = xmlFile.openStream();
                         MoMLParser newParser = new MoMLParser();
@@ -243,7 +260,7 @@ public class AccessorIconLoader implements IconLoader {
                 if (foundAnIcon && previousIcons != null) {
                     // Remove previous icons.
                     for (Object icon : previousIcons) {
-                        ((Attribute)icon).setContainer(null);
+                        ((Attribute) icon).setContainer(null);
                     }
                 }
             }

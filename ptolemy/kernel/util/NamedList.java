@@ -115,8 +115,8 @@ public final class NamedList implements Cloneable, Serializable {
      *  @exception NameDuplicationException If the name coincides with
      *   an element already on the list.
      */
-    public void append(Nameable element) throws IllegalActionException,
-    NameDuplicationException {
+    public void append(Nameable element)
+            throws IllegalActionException, NameDuplicationException {
         String newName = element.getName();
 
         if (newName == null) {
@@ -412,8 +412,8 @@ public final class NamedList implements Cloneable, Serializable {
      *  @exception NameDuplicationException If the name coincides with
      *   an element already on the list.
      */
-    public void prepend(Nameable element) throws IllegalActionException,
-    NameDuplicationException {
+    public void prepend(Nameable element)
+            throws IllegalActionException, NameDuplicationException {
         _insertAt(0, element);
         if (_hashEnabled) {
             _hashedList.put(element.getName(), element);

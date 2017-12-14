@@ -59,8 +59,8 @@ public class IntMatrixTokenHandler implements TokenHandler<IntMatrixToken> {
      */
     @Override
     public void convertToBytes(IntMatrixToken token,
-            DataOutputStream outputStream) throws IOException,
-            IllegalActionException {
+            DataOutputStream outputStream)
+            throws IOException, IllegalActionException {
 
         outputStream.writeInt(token.getRowCount());
         outputStream.writeInt(token.getColumnCount());
@@ -85,8 +85,8 @@ public class IntMatrixTokenHandler implements TokenHandler<IntMatrixToken> {
      */
     @Override
     public IntMatrixToken convertToToken(DataInputStream inputStream,
-            Class<? extends IntMatrixToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends IntMatrixToken> tokenType)
+            throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();
         int colunmCount = inputStream.readInt();

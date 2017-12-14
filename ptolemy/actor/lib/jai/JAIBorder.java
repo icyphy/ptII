@@ -102,8 +102,8 @@ public class JAIBorder extends Transformer {
         // An initial array that simply copies a three banded image.
         DoubleToken[] initialArray = { new DoubleToken(0) };
 
-        constants = new Parameter(this, "constants", new ArrayToken(
-                BaseType.DOUBLE, initialArray));
+        constants = new Parameter(this, "constants",
+                new ArrayToken(BaseType.DOUBLE, initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -220,8 +220,8 @@ public class JAIBorder extends Transformer {
             break;
 
         case _BORDER_COPY:
-            parameters.add(BorderExtender
-                    .createInstance(BorderExtender.BORDER_COPY));
+            parameters.add(
+                    BorderExtender.createInstance(BorderExtender.BORDER_COPY));
             break;
 
         case _BORDER_REFLECT:
@@ -230,13 +230,13 @@ public class JAIBorder extends Transformer {
             break;
 
         case _BORDER_WRAP:
-            parameters.add(BorderExtender
-                    .createInstance(BorderExtender.BORDER_WRAP));
+            parameters.add(
+                    BorderExtender.createInstance(BorderExtender.BORDER_WRAP));
             break;
 
         case _BORDER_ZERO:
-            parameters.add(BorderExtender
-                    .createInstance(BorderExtender.BORDER_ZERO));
+            parameters.add(
+                    BorderExtender.createInstance(BorderExtender.BORDER_ZERO));
             break;
 
         default:

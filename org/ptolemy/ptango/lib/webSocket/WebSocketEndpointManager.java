@@ -51,129 +51,129 @@ import ptolemy.kernel.util.IllegalActionException;
 
 public class WebSocketEndpointManager {
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   /** Get the factory instance, creating a new one if none created yet.
+    /** Get the factory instance, creating a new one if none created yet.
     * @return The websocket client factory instance.
     */
-   public static WebSocketEndpointManager getInstance() {
-       return WebSocketEndpointFactoryHolder.INSTANCE;
-   }
+    public static WebSocketEndpointManager getInstance() {
+        return WebSocketEndpointFactoryHolder.INSTANCE;
+    }
 
-   /** Create a new WebSocketConnectionFactory.  The private
+    /** Create a new WebSocketConnectionFactory.  The private
     *  constructor prevents instantiation from other classes.
     */
-   private WebSocketEndpointManager() {
+    private WebSocketEndpointManager() {
 
-       _webSocketClientFactory = new WebSocketClientFactory();
-       _pathToServlet = new Hashtable();
-       _pathToClientEndpoint = new Hashtable();
-       _pathToServletEndpoint = new Hashtable();
+        _webSocketClientFactory = new WebSocketClientFactory();
+        _pathToServlet = new Hashtable();
+        _pathToClientEndpoint = new Hashtable();
+        _pathToServletEndpoint = new Hashtable();
 
-       try {
-           _webSocketClientFactory.start();
-           _webSocketClient = _webSocketClientFactory.newWebSocketClient();
-       } catch (Exception e) {
-           // If an exception occurs, _webSocketClient will remain null.
-           // This is checked for later.
-       }
-   }
+        try {
+            _webSocketClientFactory.start();
+            _webSocketClient = _webSocketClientFactory.newWebSocketClient();
+        } catch (Exception e) {
+            // If an exception occurs, _webSocketClient will remain null.
+            // This is checked for later.
+        }
+    }
 
-   /** The Holder is loaded on the first execution of getInstance()
-   * or the first access to INSTANCE, allowing on-demand loading since
-   * not all models use websockets.
-   */
-   private static class WebSocketEndpointFactoryHolder {
-       private static final WebSocketEndpointManager INSTANCE =
-               new WebSocketEndpointManager();
-   }
+    /** The Holder is loaded on the first execution of getInstance()
+    * or the first access to INSTANCE, allowing on-demand loading since
+    * not all models use websockets.
+    */
+    private static class WebSocketEndpointFactoryHolder {
+        private static final WebSocketEndpointManager INSTANCE = new WebSocketEndpointManager();
+    }
 
-   /** Close all servlet websocket endpoints.  Called by webserver in wrapup().
+    /** Close all servlet websocket endpoints.  Called by webserver in wrapup().
     * Synchronized to avoid interleaving opening and closing endpoints.
     */
-   public synchronized void closeServlets() {
-       for (String path : _pathToServletEndpoint.keySet()) {
-           if (_pathToServletEndpoint.get(path).isOpen()) {
-               _pathToServletEndpoint.get(path).close();
-           }
-           _pathToServletEndpoint.remove(path);
-           _pathToServlet.remove(path);
-       }
-   }
+    public synchronized void closeServlets() {
+        for (String path : _pathToServletEndpoint.keySet()) {
+            if (_pathToServletEndpoint.get(path).isOpen()) {
+                _pathToServletEndpoint.get(path).close();
+            }
+            _pathToServletEndpoint.remove(path);
+            _pathToServlet.remove(path);
+        }
+    }
 
-   /** Get the servlet for the given path.  If the servlet does not exist,
+    /** Get the servlet for the given path.  If the servlet does not exist,
     *  create it.  Called by the web server.  Synchronized to avoid interleaving
     *  creating and deleting a servlet.
     * @param path  The URI the servlet should be mapped to.
     * @return The servlet mapped to this path.
     * @exception IllegalActionException Not thrown in this base class.
     */
-   public synchronized PtolemyWebSocketServlet getServlet(String path)
-       throws IllegalActionException {
-       if (_pathToServlet.containsKey(path)) {
-           return _pathToServlet.get(path);
-       } else {
+    public synchronized PtolemyWebSocketServlet getServlet(String path)
+            throws IllegalActionException {
+        if (_pathToServlet.containsKey(path)) {
+            return _pathToServlet.get(path);
+        } else {
 
-           WebSocketEndpoint endpoint;
+            WebSocketEndpoint endpoint;
 
-           // If we already have an endpoint, retrieve it
-           if (_pathToServletEndpoint.containsKey(path)) {
-               endpoint = _pathToServletEndpoint.get(path);
-           } else {
+            // If we already have an endpoint, retrieve it
+            if (_pathToServletEndpoint.containsKey(path)) {
+                endpoint = _pathToServletEndpoint.get(path);
+            } else {
                 endpoint = new WebSocketEndpoint();
                 _pathToServletEndpoint.put(path, endpoint);
-           }
+            }
 
-           PtolemyWebSocketServlet servlet =
-                   new PtolemyWebSocketServlet(endpoint);
-           _pathToServlet.put(path, servlet);
-           return servlet;
-       }
-   }
+            PtolemyWebSocketServlet servlet = new PtolemyWebSocketServlet(
+                    endpoint);
+            _pathToServlet.put(path, servlet);
+            return servlet;
+        }
+    }
 
-   /** Return true if the path refers to a remote resource; false otherwise.
+    /** Return true if the path refers to a remote resource; false otherwise.
     * Throw an exception if the path is not a valid URI.
     * @param path  The candidate URI.
     * @return True if the path refers to a remote resource; false otherwise.
     * @exception IllegalActionException If the path is not a valid URI.
     */
-   public static boolean isRemoteURI(String path) throws IllegalActionException{
-       String uri = pathToURI(path).toString();
-       if (uri.startsWith("ws://") || uri.startsWith("wss://")) {
-           return true;
-       }
-       return false;
-   }
+    public static boolean isRemoteURI(String path)
+            throws IllegalActionException {
+        String uri = pathToURI(path).toString();
+        if (uri.startsWith("ws://") || uri.startsWith("wss://")) {
+            return true;
+        }
+        return false;
+    }
 
-   /** Return true if the path refers to a remote resource; false otherwise.
+    /** Return true if the path refers to a remote resource; false otherwise.
     * Throw an exception if the path is not a valid URI.
     * @param uri The candidate URI.
     * @return True if the path refers to a remote resource; false otherwise.
     */
-   public static boolean isRemoteURI(URI uri) {
-       if (uri.toString().startsWith("ws://") ||
-               uri.toString().startsWith("wss://")) {
-           return true;
-       }
-       return false;
-   }
+    public static boolean isRemoteURI(URI uri) {
+        if (uri.toString().startsWith("ws://")
+                || uri.toString().startsWith("wss://")) {
+            return true;
+        }
+        return false;
+    }
 
-   /** Check if the given path is a valid URI.  Return true if so; false
+    /** Check if the given path is a valid URI.  Return true if so; false
     * otherwise.
     * @param path  The candidate URI.
     * @return True if the path is a valid URI; false otherwise.
     */
-   public static boolean isValidURI(String path) {
-       try {
-           pathToURI(path);
-       } catch(IllegalActionException e) {
-           return false;
-       }
-       return true;
-   }
+    public static boolean isValidURI(String path) {
+        try {
+            pathToURI(path);
+        } catch (IllegalActionException e) {
+            return false;
+        }
+        return true;
+    }
 
-   /** Open connections for the given set of services by looking up each
+    /** Open connections for the given set of services by looking up each
     * service's affiliated endpoint and opening a connection for that endpoint.
     * Assumes that these are local services.  The WebServer uses this to open
     * local services after it has started.  Synchronized so that subscribing and
@@ -182,67 +182,69 @@ public class WebSocketEndpointManager {
     * @param portNumber The port number of the local web server.
     * @exception IllegalActionException If one or more services cannot be opened.
     */
-  public synchronized void openLocalServices(HashSet<WebSocketService> services,
-           int portNumber) throws IllegalActionException {
-       for (WebSocketService service: services) {
-           String path = service.getRelativePath().toString();
+    public synchronized void openLocalServices(
+            HashSet<WebSocketService> services, int portNumber)
+            throws IllegalActionException {
+        for (WebSocketService service : services) {
+            String path = service.getRelativePath().toString();
 
-           // Subscribe this service.  This creates a new endpoint if needed.
-           // Called by the WebServer.  Needed as initialize() in WebServer
-           // might be called before initialize() in the reader / writer actors.
-           subscribe(service, path);
+            // Subscribe this service.  This creates a new endpoint if needed.
+            // Called by the WebServer.  Needed as initialize() in WebServer
+            // might be called before initialize() in the reader / writer actors.
+            subscribe(service, path);
 
-           WebSocketEndpoint endpoint;
-           if (service.isClient()) {
-               endpoint = _pathToClientEndpoint.get(path);
-           } else {
-               endpoint = _pathToServletEndpoint.get(path);
-           }
+            WebSocketEndpoint endpoint;
+            if (service.isClient()) {
+                endpoint = _pathToClientEndpoint.get(path);
+            } else {
+                endpoint = _pathToServletEndpoint.get(path);
+            }
 
-           URI connectPath = URI.create("ws://localhost:" + portNumber
-                       + service.getRelativePath().toString());
+            URI connectPath = URI.create("ws://localhost:" + portNumber
+                    + service.getRelativePath().toString());
 
-           _open(endpoint, connectPath);
-       }
-   }
+            _open(endpoint, connectPath);
+        }
+    }
 
-   /** Check the given path to see if it is a valid websocket URI and return a
+    /** Check the given path to see if it is a valid websocket URI and return a
     *  URI.  Throw an exception if the path is invalid.
     * @param path The string representation of a websocket URI.
     * @return The URI corresponding to this path string.
     * @exception IllegalActionException If the path is not a valid URI.
     */
-   public static URI pathToURI(String path) throws IllegalActionException {
+    public static URI pathToURI(String path) throws IllegalActionException {
 
-       try {
-           // Paths connecting to remote websockets should start with ws://
-           // or wss:// (for secure websockets)
-           // Paths not starting with these are assumed to be local
-           // For locally hosted websockets should start with a "/"
-           // or be "*"
-           if (!path.trim().equals("")) {
-               // Check for common incorrect protocols
-               if (path.startsWith("http") || path.startsWith("ftp")) {
-                   throw new IllegalActionException("Remote websocket"
-                        + " paths must start with ws:// or wss://");
-               }
+        try {
+            // Paths connecting to remote websockets should start with ws://
+            // or wss:// (for secure websockets)
+            // Paths not starting with these are assumed to be local
+            // For locally hosted websockets should start with a "/"
+            // or be "*"
+            if (!path.trim().equals("")) {
+                // Check for common incorrect protocols
+                if (path.startsWith("http") || path.startsWith("ftp")) {
+                    throw new IllegalActionException("Remote websocket"
+                            + " paths must start with ws:// or wss://");
+                }
 
-               if (path.startsWith("ws://") || path.startsWith("wss://")) {
-                   return URI.create(path);
-               } else if (!path.trim().startsWith("/")) {
-                   return URI.create("/" + path);
-               } else {
-                   return URI.create(path);
-               }
-           } else {
-               return URI.create("/*");
-           }
-       } catch (IllegalArgumentException e2) {
-           throw new IllegalActionException("Path is not a valid URI: " + path);
-       }
-   }
+                if (path.startsWith("ws://") || path.startsWith("wss://")) {
+                    return URI.create(path);
+                } else if (!path.trim().startsWith("/")) {
+                    return URI.create("/" + path);
+                } else {
+                    return URI.create(path);
+                }
+            } else {
+                return URI.create("/*");
+            }
+        } catch (IllegalArgumentException e2) {
+            throw new IllegalActionException(
+                    "Path is not a valid URI: " + path);
+        }
+    }
 
-   /** Add the given service as a subscriber to the endpoint for this path.
+    /** Add the given service as a subscriber to the endpoint for this path.
     * Create a new endpoint if none exists for this path.  Synchronized to avoid
     * interleaved subscribing and unsubscribing.
     * Generally, subscribers should subscribe in initialize() and should
@@ -252,150 +254,149 @@ public class WebSocketEndpointManager {
     * @exception IllegalActionException If the URI is not valid.
     * @see #unsubscribe(WebSocketService, String)
     */
-   // TODO:  Allow non-shared websockets.
-   public synchronized void subscribe(WebSocketService service, String path)
-       throws IllegalActionException {
+    // TODO:  Allow non-shared websockets.
+    public synchronized void subscribe(WebSocketService service, String path)
+            throws IllegalActionException {
 
-       // Check for existing endpoint
-       WebSocketEndpoint endpoint;
+        // Check for existing endpoint
+        WebSocketEndpoint endpoint;
 
-       if (service.isClient()) {
-           if (_pathToClientEndpoint.containsKey(path)) {
-               endpoint = _pathToClientEndpoint.get(path);
-           } else {
+        if (service.isClient()) {
+            if (_pathToClientEndpoint.containsKey(path)) {
+                endpoint = _pathToClientEndpoint.get(path);
+            } else {
 
-               // If no existing endpoint, create a new endpoint
-               // First, check that the URI is valid
-               if (!isValidURI(path)) {
-                   throw new IllegalActionException("Path is not a valid URI: "
-                           + path);
-               }
+                // If no existing endpoint, create a new endpoint
+                // First, check that the URI is valid
+                if (!isValidURI(path)) {
+                    throw new IllegalActionException(
+                            "Path is not a valid URI: " + path);
+                }
 
-               endpoint = new WebSocketEndpoint();
-               _pathToClientEndpoint.put(path, endpoint);
+                endpoint = new WebSocketEndpoint();
+                _pathToClientEndpoint.put(path, endpoint);
 
-               // Open any new remote endpoints.
-               // Local client-side endpoints will be opened by the webserver.
-               // If a server-side endpoint, create a servlet.  This servlet
-               // will automatically open the socket when an incoming request is
-               // received.
-               if (isRemoteURI(path)) {
-                   _open(endpoint, pathToURI(path));
-               }
-           }
-       } else {
+                // Open any new remote endpoints.
+                // Local client-side endpoints will be opened by the webserver.
+                // If a server-side endpoint, create a servlet.  This servlet
+                // will automatically open the socket when an incoming request is
+                // received.
+                if (isRemoteURI(path)) {
+                    _open(endpoint, pathToURI(path));
+                }
+            }
+        } else {
 
-           if (_pathToServletEndpoint.containsKey(path)) {
-               endpoint = _pathToServletEndpoint.get(path);
-           } else {
-               // If no existing endpoint, create a new endpoint
-               // First, check that the URI is valid
-               if (!isValidURI(path)) {
-                   throw new IllegalActionException("Path is not a valid URI: "
-                           + path);
-               }
+            if (_pathToServletEndpoint.containsKey(path)) {
+                endpoint = _pathToServletEndpoint.get(path);
+            } else {
+                // If no existing endpoint, create a new endpoint
+                // First, check that the URI is valid
+                if (!isValidURI(path)) {
+                    throw new IllegalActionException(
+                            "Path is not a valid URI: " + path);
+                }
 
-               endpoint = new WebSocketEndpoint();
-               _pathToServletEndpoint.put(path, endpoint);
+                endpoint = new WebSocketEndpoint();
+                _pathToServletEndpoint.put(path, endpoint);
 
+                // Create a new servlet for server-side endpoints
+                // _pathToServlet should not contain an endpoint if
+                // _pathToEndpoint did not contain the endpoint
+                _pathToServlet.put(path, new PtolemyWebSocketServlet(endpoint));
+            }
+        }
 
-               // Create a new servlet for server-side endpoints
-               // _pathToServlet should not contain an endpoint if
-               // _pathToEndpoint did not contain the endpoint
-               _pathToServlet.put(path, new PtolemyWebSocketServlet(endpoint));
-           }
-       }
+        endpoint.addSubscriber(service);
+        service.setEndpoint(endpoint);
+    }
 
-       endpoint.addSubscriber(service);
-       service.setEndpoint(endpoint);
-   }
-
-   /** Remove the given service as a subscriber to the endpoint for this path.
+    /** Remove the given service as a subscriber to the endpoint for this path.
     * Delete the endpoint if no services are associated with it. Synchronized to
     * avoid conflicting writes to tables.
     * @param service  The service to remove as a subscriber
     * @param path  The URL to subscribe to
     * @see #subscribe(WebSocketService, String)
     */
-   // TODO:  Allow non-shared websockets.
-   public synchronized void unsubscribe(WebSocketService service, String path) {
-       WebSocketEndpoint endpoint;
+    // TODO:  Allow non-shared websockets.
+    public synchronized void unsubscribe(WebSocketService service,
+            String path) {
+        WebSocketEndpoint endpoint;
 
-       if (_pathToClientEndpoint.containsKey(path)) {
-           endpoint = _pathToClientEndpoint.get(path);
-           endpoint.removeSubscriber(service);
-           service.setEndpoint(null);
+        if (_pathToClientEndpoint.containsKey(path)) {
+            endpoint = _pathToClientEndpoint.get(path);
+            endpoint.removeSubscriber(service);
+            service.setEndpoint(null);
 
-           if (endpoint.getSubscriberCount() <= 0) {
-               endpoint.close();
-               _pathToClientEndpoint.remove(path);
-           }
-       } else if (_pathToServletEndpoint.containsKey(path)) {
-           endpoint = _pathToServletEndpoint.get(path);
-           endpoint.removeSubscriber(service);
-           service.setEndpoint(null);
+            if (endpoint.getSubscriberCount() <= 0) {
+                endpoint.close();
+                _pathToClientEndpoint.remove(path);
+            }
+        } else if (_pathToServletEndpoint.containsKey(path)) {
+            endpoint = _pathToServletEndpoint.get(path);
+            endpoint.removeSubscriber(service);
+            service.setEndpoint(null);
 
-           // Close connection if no subscribers left
-           if (endpoint.getSubscriberCount() <= 0) {
-               endpoint.close();
-               _pathToServletEndpoint.remove(path);
-           }
-       }
+            // Close connection if no subscribers left
+            if (endpoint.getSubscriberCount() <= 0) {
+                endpoint.close();
+                _pathToServletEndpoint.remove(path);
+            }
+        }
 
-       // The webserver closes server-side connections on wrapup
-       // Server-side connections also close automatically if the client closes
-   }
+        // The webserver closes server-side connections on wrapup
+        // Server-side connections also close automatically if the client closes
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         private methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-   /** Open a websocket connection for the given endpoint.
+    /** Open a websocket connection for the given endpoint.
     * @param endpoint  The endpoint to open a connection for.
     * @param uri  The URI to connect to.
     * @exception IllegalActionException If the connection cannot be opened.
     */
-   private void _open(WebSocketEndpoint endpoint, URI uri)
-           throws IllegalActionException{
-       if (!endpoint.isOpen()) {
+    private void _open(WebSocketEndpoint endpoint, URI uri)
+            throws IllegalActionException {
+        if (!endpoint.isOpen()) {
 
-           // .open() will call .onOpen() on the endpoint.
-           // TODO:  Add timeout here?
-           try {
-               _webSocketClient.open(uri, endpoint);
-           } catch (IOException e) {
-               throw new IllegalActionException("Cannot open "
-                       + "websocket to path " + uri.toString());
-           }
-       }
-   }
+            // .open() will call .onOpen() on the endpoint.
+            // TODO:  Add timeout here?
+            try {
+                _webSocketClient.open(uri, endpoint);
+            } catch (IOException e) {
+                throw new IllegalActionException(
+                        "Cannot open " + "websocket to path " + uri.toString());
+            }
+        }
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-   /** The timeout for establishing a connection.  In milliseconds. */
-   // TODO:  Not used currently.
-   //private static int _connectionTimeout = 5000;
+    /** The timeout for establishing a connection.  In milliseconds. */
+    // TODO:  Not used currently.
+    //private static int _connectionTimeout = 5000;
 
-   /** Paths and their corresponding client endpoints.  Assumes all connections
+    /** Paths and their corresponding client endpoints.  Assumes all connections
     * are shared. */
-   // TODO:  Enable non-shared connections.
-   private Hashtable<String, WebSocketEndpoint> _pathToClientEndpoint;
+    // TODO:  Enable non-shared connections.
+    private Hashtable<String, WebSocketEndpoint> _pathToClientEndpoint;
 
-   /** Websocket servlets for creating connections to local URLs.  */
-   private Hashtable<String, PtolemyWebSocketServlet> _pathToServlet;
+    /** Websocket servlets for creating connections to local URLs.  */
+    private Hashtable<String, PtolemyWebSocketServlet> _pathToServlet;
 
-   /** Paths and their corresponding servlet endpoints.  (Note that a client
+    /** Paths and their corresponding servlet endpoints.  (Note that a client
     * endpoint and a servlet endpoint may have the same path, so these
     * endpoints cannot be stored in the same hashtable).  Assumes all
     * connections are shared.
     */
-   private Hashtable<String, WebSocketEndpoint> _pathToServletEndpoint;
+    private Hashtable<String, WebSocketEndpoint> _pathToServletEndpoint;
 
-   /** A websocket client for creating connections to remote URLs.  */
-   private static WebSocketClient _webSocketClient;
+    /** A websocket client for creating connections to remote URLs.  */
+    private static WebSocketClient _webSocketClient;
 
-   /** A factory for creating WebSocketClients. */
-   private static WebSocketClientFactory _webSocketClientFactory;
+    /** A factory for creating WebSocketClients. */
+    private static WebSocketClientFactory _webSocketClientFactory;
 
 }
-

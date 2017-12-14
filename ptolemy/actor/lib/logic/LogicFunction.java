@@ -107,9 +107,10 @@ public class LogicFunction extends Transformer {
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                        + "width=\"60\" height=\"30\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,8 +158,8 @@ public class LogicFunction extends Transformer {
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized logic function: " + functionName
-                        + ".  Valid functions are 'and', 'or', 'xor', "
-                        + "'nand', 'nor', and 'xnor'.");
+                                + ".  Valid functions are 'and', 'or', 'xor', "
+                                + "'nand', 'nor', and 'xnor'.");
             }
         } else {
             super.attributeChanged(attribute);

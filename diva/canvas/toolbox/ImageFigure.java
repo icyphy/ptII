@@ -174,8 +174,8 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
 
         if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
             // Create a default error image.
-            URL url = getClass().getClassLoader().getResource(
-                    "/diva/canvas/toolbox/errorImage.gif");
+            URL url = getClass().getClassLoader()
+                    .getResource("/diva/canvas/toolbox/errorImage.gif");
             Toolkit tk = Toolkit.getDefaultToolkit();
             _image = tk.getImage(url);
             return true;
@@ -202,7 +202,8 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
 
         // A zillion calls are made with PROPERTIES or SOMEBITS.
         // If these occur, do not call repaint().
-        if ((infoflags & (ImageObserver.PROPERTIES | ImageObserver.SOMEBITS)) != 0) {
+        if ((infoflags
+                & (ImageObserver.PROPERTIES | ImageObserver.SOMEBITS)) != 0) {
             // In case the width or height is later updated.
             _image.getWidth(this);
             _image.getHeight(this);

@@ -70,8 +70,8 @@ public class FormattedDocument extends PlainDocument {
             super.insertString(offs, str, a);
         } catch (ParseException e) {
             Toolkit.getDefaultToolkit().beep();
-            System.err.println("insertString: could not parse: "
-                    + proposedResult);
+            System.err.println(
+                    "insertString: could not parse: " + proposedResult);
         }
     }
 

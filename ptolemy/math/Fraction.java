@@ -72,8 +72,8 @@ public class Fraction extends Object {
      */
     public Fraction(int numerator, int denominator) {
         if (denominator == 0) {
-            throw new ArithmeticException("Illegal Fraction: "
-                    + "cannot have denominator of zero.");
+            throw new ArithmeticException(
+                    "Illegal Fraction: " + "cannot have denominator of zero.");
         }
 
         _numerator = numerator;
@@ -97,8 +97,9 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms.
      */
     public Fraction add(Fraction b) {
-        Fraction f = new Fraction(_numerator * b._denominator + _denominator
-                * b._numerator, _denominator * b._denominator);
+        Fraction f = new Fraction(
+                _numerator * b._denominator + _denominator * b._numerator,
+                _denominator * b._denominator);
         return f;
     }
 
@@ -113,8 +114,8 @@ public class Fraction extends Object {
             throw new ArithmeticException("Division by zero!");
         }
 
-        Fraction f = new Fraction(_numerator * b._denominator, _denominator
-                * b._numerator);
+        Fraction f = new Fraction(_numerator * b._denominator,
+                _denominator * b._numerator);
         return f;
     }
 
@@ -204,8 +205,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms.
      */
     public Fraction multiply(Fraction b) {
-        Fraction f = new Fraction(_numerator * b._numerator, _denominator
-                * b._denominator);
+        Fraction f = new Fraction(_numerator * b._numerator,
+                _denominator * b._denominator);
         return f;
     }
 
@@ -221,8 +222,9 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction subtract(Fraction b) {
-        Fraction f = new Fraction(_numerator * b._denominator - _denominator
-                * b._numerator, _denominator * b._denominator);
+        Fraction f = new Fraction(
+                _numerator * b._denominator - _denominator * b._numerator,
+                _denominator * b._denominator);
         return f;
     }
 

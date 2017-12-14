@@ -142,7 +142,7 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
                     _currentActorFullName = container.getFullName() + "."
                             + _lastNameSeen;
                 }
-                _portName = (String) _actorsWithMultiPortToSinglePortChanges
+                _portName = _actorsWithMultiPortToSinglePortChanges
                         .get(attributeValue);
 
                 //             } else if (_currentlyProcessingActorWithPropertyClassChanges
@@ -160,8 +160,8 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
             } else if (_currentlyProcessingActorWithPropertyClassChanges
                     && container != null
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(
-                            _currentActorFullName)) {
+                    && !container.getFullName()
+                            .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with multiport change
                 //_foundChange = false;
@@ -199,12 +199,11 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
         //.iterator();
 
         //while (actors.hasNext()) {
-        for (Map.Entry<String,String> actor: _actorsWithMultiPortToSinglePortChanges.entrySet()) {
+        for (Map.Entry<String, String> actor : _actorsWithMultiPortToSinglePortChanges
+                .entrySet()) {
             //String actor = (String) actors.next();
-            results.append("\t"
-                    + actor.getKey()
-                    + "\n"
-                    //+ (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
+            results.append("\t" + actor.getKey() + "\n"
+            //+ (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
                     + actor.getValue());
         }
 
@@ -239,17 +238,17 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
         _actorsWithMultiPortToSinglePortChanges = new HashMap<String, String>();
 
         // Autocorrelation
-        _actorsWithMultiPortToSinglePortChanges.put(
-                "ptolemy.domains.sdf.lib.Autocorrelation", "output");
+        _actorsWithMultiPortToSinglePortChanges
+                .put("ptolemy.domains.sdf.lib.Autocorrelation", "output");
 
-        _actorsWithMultiPortToSinglePortChanges.put(
-                "ptolemy.actor.lib.NonStrictTest", "input");
+        _actorsWithMultiPortToSinglePortChanges
+                .put("ptolemy.actor.lib.NonStrictTest", "input");
 
         // In Ptolemy II 3.0.2, SOC_FSM_SR_HDE.xml has a Const with multiport.
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.Const",
                 "output");
 
-        _actorsWithMultiPortToSinglePortChanges.put(
-                "ptolemy.actor.lib.gui.MatrixViewer", "input");
+        _actorsWithMultiPortToSinglePortChanges
+                .put("ptolemy.actor.lib.gui.MatrixViewer", "input");
     }
 }

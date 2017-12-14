@@ -146,11 +146,11 @@ public class LinkController extends BasicEdgeController {
                         .createContextMenuFactory(controller);
             } catch (Exception ex) {
                 //do nothing - will default to ptii right-click menus
-                System.out
-                .println("Unable to use the alternative right-click menu "
-                        + "handler that was specified in the "
-                        + "configuration; defaulting to ptii handler. "
-                        + "Exception was: " + ex);
+                System.out.println(
+                        "Unable to use the alternative right-click menu "
+                                + "handler that was specified in the "
+                                + "configuration; defaulting to ptii handler. "
+                                + "Exception was: " + ex);
             }
 
         }
@@ -261,8 +261,8 @@ public class LinkController extends BasicEdgeController {
                     if (colorAttribute != null) {
                         String color = colorAttribute.getExpression();
                         if (color != null && !color.trim().equals("")) {
-                            connector.setStrokePaint(SVGUtilities
-                                    .getColor(color));
+                            connector.setStrokePaint(
+                                    SVGUtilities.getColor(color));
                         }
                     }
                 } catch (IllegalActionException e) {
@@ -273,8 +273,8 @@ public class LinkController extends BasicEdgeController {
                         .attributeList(ColorAttribute.class);
                 if (colorAttributes != null && colorAttributes.size() > 0) {
                     // Use the last color added.
-                    Color color = colorAttributes.get(
-                            colorAttributes.size() - 1).asColor();
+                    Color color = colorAttributes
+                            .get(colorAttributes.size() - 1).asColor();
                     connector.setStrokePaint(color);
                 }
 
@@ -286,8 +286,8 @@ public class LinkController extends BasicEdgeController {
                 }
 
                 // NOTE: The preferences mechanism may set this.
-                Token radiusValue = PtolemyPreferences.preferenceValue(
-                        relation, "_linkBendRadius");
+                Token radiusValue = PtolemyPreferences.preferenceValue(relation,
+                        "_linkBendRadius");
 
                 if (radiusValue instanceof DoubleToken) {
                     double overrideRadius = ((DoubleToken) radiusValue)
@@ -320,9 +320,10 @@ public class LinkController extends BasicEdgeController {
                     || object instanceof SubscriberPort;
 
             if (object instanceof Port && !isPubSubPort
-                    || object instanceof Vertex || object instanceof Link
-                    && c != f || object instanceof Locatable
-                    && ((Locatable) object).getContainer() instanceof Port) {
+                    || object instanceof Vertex
+                    || object instanceof Link && c != f
+                    || object instanceof Locatable && ((Locatable) object)
+                            .getContainer() instanceof Port) {
 
                 // It is possible to link with an existing link.
                 // If this existing link has a vertex as head or tail,
@@ -354,9 +355,10 @@ public class LinkController extends BasicEdgeController {
                     || object instanceof SubscriberPort;
 
             if (object instanceof Port && !isPubSubPort
-                    || object instanceof Vertex || object instanceof Link
-                    && c != f || object instanceof Locatable
-                    && ((Locatable) object).getContainer() instanceof Port) {
+                    || object instanceof Vertex
+                    || object instanceof Link && c != f
+                    || object instanceof Locatable && ((Locatable) object)
+                            .getContainer() instanceof Port) {
 
                 // It is possible to link with an existing link.
                 // If this existing link has a vertex as head or tail,
@@ -432,7 +434,7 @@ public class LinkController extends BasicEdgeController {
             case ConnectorEvent.HEAD_END:
                 if (node == link.getTail()) {
                     MessageHandler
-                    .error("Cannot link both ends to the same object.");
+                            .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }
@@ -442,7 +444,7 @@ public class LinkController extends BasicEdgeController {
             case ConnectorEvent.TAIL_END:
                 if (node == link.getHead()) {
                     MessageHandler
-                    .error("Cannot link both ends to the same object.");
+                            .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }

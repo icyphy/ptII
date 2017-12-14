@@ -83,13 +83,13 @@ public class StringMatches extends TypedAtomicActor {
         pattern.setStringMode(true);
         pattern.setExpression("");
         new SingletonParameter(pattern.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         matchString = new PortParameter(this, "matchString");
         matchString.setStringMode(true);
         matchString.setExpression("");
         new SingletonParameter(matchString.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -134,8 +134,8 @@ public class StringMatches extends TypedAtomicActor {
                 String patternValue = ((StringToken) pattern.getToken())
                         .stringValue();
                 throw new IllegalActionException(this, ex,
-                        "Failed to compile regular expression \""
-                                + patternValue + "\"");
+                        "Failed to compile regular expression \"" + patternValue
+                                + "\"");
             }
         } else {
             super.attributeChanged(attribute);
@@ -160,7 +160,7 @@ public class StringMatches extends TypedAtomicActor {
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Failed to compile regular expression \"" + patternValue
-                    + "\"");
+                            + "\"");
         }
         return newObject;
     }

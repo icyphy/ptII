@@ -59,6 +59,6 @@ public interface ModelElementClassProvider {
      *
      * @see VersionSpecification
      */
-    Class<? extends NamedObj> getClass(String className, VersionSpecification versionSpec)
-            throws ClassNotFoundException;
+    Class<? extends NamedObj> getClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException;
 }

@@ -68,8 +68,8 @@ public class AutoCGTests extends ModelTests {
         _applicationClass = Class
                 .forName("ptolemy.cg.kernel.generic.GenericCodeGenerator");
 
-        _cgDirectory = new File(StringUtilities.getProperty("user.home")
-                + "/cg");
+        _cgDirectory = new File(
+                StringUtilities.getProperty("user.home") + "/cg");
 
         Class[] argTypes = new Class[] { String[].class };
         _generateCodeMethod = _applicationClass.getMethod("generateCode",
@@ -116,13 +116,12 @@ public class AutoCGTests extends ModelTests {
             System.out.println("Warning, failed to delete " + _cgDirectory);
         }
 
-        LinkedList<String> argumentsList = new LinkedList<String>(
-                Arrays.asList("-language", language, "-generateInSubdirectory",
-                        Boolean.toString(generateInSubdirectory), "-inline",
-                        Boolean.toString(inline), "-maximumLinesPerBlock",
-                        Integer.toString(maximumLinesPerBlock),
-                        "-variablesAsArrays",
-                        Boolean.toString(variablesAsArrays)));
+        LinkedList<String> argumentsList = new LinkedList<String>(Arrays.asList(
+                "-language", language, "-generateInSubdirectory",
+                Boolean.toString(generateInSubdirectory), "-inline",
+                Boolean.toString(inline), "-maximumLinesPerBlock",
+                Integer.toString(maximumLinesPerBlock), "-variablesAsArrays",
+                Boolean.toString(variablesAsArrays)));
         if (generatorPackageList != null && generatorPackageList.length() > 0) {
             argumentsList.add("-generatorPackageList");
             argumentsList.add(generatorPackageList);
@@ -139,13 +138,12 @@ public class AutoCGTests extends ModelTests {
         int returnValue = ((Integer) _generateCodeMethod.invoke(null,
                 (Object) args)).intValue();
         if (returnValue != 0) {
-            System.out
-            .println("AutoCGTests: "
-                    + fullPath
+            System.out.println("AutoCGTests: " + fullPath
                     + ": Return value of the last command executed was not zero, it was: "
                     + returnValue + ", marking this as a test failure.");
-            Assert.fail("Return value of the last command executed was not zero, it was: "
-                    + returnValue);
+            Assert.fail(
+                    "Return value of the last command executed was not zero, it was: "
+                            + returnValue);
         }
     }
 

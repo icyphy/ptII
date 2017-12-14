@@ -198,8 +198,8 @@ public class Schedule extends ScheduleElement {
                             + "authorized firing element");
                 }
             } else {
-                throw new RuntimeException("Attempt to add a non "
-                        + "authorized firing element");
+                throw new RuntimeException(
+                        "Attempt to add a non " + "authorized firing element");
             }
         } else {
             element.setParent(this);
@@ -277,8 +277,8 @@ public class Schedule extends ScheduleElement {
     //       doesn't matter.
     public List firings(Object firingElement) {
         Map firingElementFiringsMap = _getFiringElementFiringsMap();
-        return Collections.unmodifiableList((List) firingElementFiringsMap
-                .get(firingElement));
+        return Collections.unmodifiableList(
+                (List) firingElementFiringsMap.get(firingElement));
     }
 
     /** Return the element at the specified position in the list.
@@ -475,7 +475,8 @@ public class Schedule extends ScheduleElement {
                         return _lastHasNext;
                     }
                 } else {
-                    if (_currentIteration < _currentFiring.getIterationCount()) {
+                    if (_currentIteration < _currentFiring
+                            .getIterationCount()) {
                         _currentIteration++;
                         _advance = false;
                         _lastHasNext = true;
@@ -687,7 +688,8 @@ public class Schedule extends ScheduleElement {
 
             if (node == null) {
                 return null;
-            } else if (node.size() > ++_horizontalNodePosition[_currentDepth + 1]) {
+            } else if (node
+                    .size() > ++_horizontalNodePosition[_currentDepth + 1]) {
                 return node;
             } else if (++_iterationCounts[_currentDepth] < node
                     .getIterationCount()) {
@@ -737,7 +739,8 @@ public class Schedule extends ScheduleElement {
 
             if (node == null) {
                 return null;
-            } else if (node.size() > _horizontalNodePosition[_currentDepth + 1]) {
+            } else if (node
+                    .size() > _horizontalNodePosition[_currentDepth + 1]) {
                 _currentDepth++;
 
                 ScheduleElement nodeElement = node

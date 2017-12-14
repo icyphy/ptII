@@ -49,7 +49,8 @@ public class RenderTextFilter extends AbstractBufferedImageOp {
     * @param composite the composite (may be null)
     * @param transform the transform (may be null)
     */
-    public RenderTextFilter(String text, Font font, Paint paint, Composite composite, AffineTransform transform) {
+    public RenderTextFilter(String text, Font font, Paint paint,
+            Composite composite, AffineTransform transform) {
         this.text = text;
         this.font = font;
         this.composite = composite;
@@ -149,21 +150,28 @@ public class RenderTextFilter extends AbstractBufferedImageOp {
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         Graphics2D g = dst.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        if (font != null)
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        if (font != null) {
             g.setFont(font);
-        if (transform != null)
+        }
+        if (transform != null) {
             g.setTransform(transform);
-        if (composite != null)
+        }
+        if (composite != null) {
             g.setComposite(composite);
-        if (paint != null)
+        }
+        if (paint != null) {
             g.setPaint(paint);
-        if (text != null)
+        }
+        if (text != null) {
             g.drawString(text, 10, 100);
+        }
         g.dispose();
         return dst;
     }

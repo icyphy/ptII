@@ -136,7 +136,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                        + actor.exclusiveBuffers,
+                                                + actor.exclusiveBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -156,7 +156,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                        + actor.sharedBuffers,
+                                                + actor.sharedBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -233,7 +233,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                        + actor.exclusiveBuffers,
+                                                + actor.exclusiveBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -253,7 +253,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                        + actor.sharedBuffers,
+                                                + actor.sharedBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -298,7 +298,8 @@ public class OptimalScheduleFinder {
         // create the actors
         Iterator actorIterator = firingVector.entrySet().iterator();
         while (actorIterator.hasNext()) {
-            int sharedBuffers, exclusiveBuffers, sharedExecutionTime, exclusiveExecutionTime;
+            int sharedBuffers, exclusiveBuffers, sharedExecutionTime,
+                    exclusiveExecutionTime;
             Map.Entry pair = (Map.Entry) actorIterator.next();
             ptolemy.actor.Actor actor = (ptolemy.actor.Actor) pair.getKey();
             // if it is an actor which implements our BufferingProfile
@@ -668,7 +669,8 @@ public class OptimalScheduleFinder {
          */
         protected _Actor(String name, int repetitionCount,
                 int sharedBuffersNeeded, int exclusiveBuffersNeeded,
-                int sharedExecutionTimeNeeded, int exclusiveExecutionTimeNeeded) {
+                int sharedExecutionTimeNeeded,
+                int exclusiveExecutionTimeNeeded) {
             _name = name;
             _repetitionCount = repetitionCount;
             sharedBuffers = sharedBuffersNeeded;
@@ -959,15 +961,16 @@ public class OptimalScheduleFinder {
      * list of states.
      */
     @SuppressWarnings("serial")
-    protected static abstract class _StateComparator implements Comparator,
-    Serializable {
+    protected static abstract class _StateComparator
+            implements Comparator, Serializable {
     }
 
     /**
      * A Comparator to maintain a sorted list of states, sorted on their value.
      */
     @SuppressWarnings("serial")
-    protected static class _StateComparatorLowestValue extends _StateComparator {
+    protected static class _StateComparatorLowestValue
+            extends _StateComparator {
 
         /**
          * compare two states on their value. If values tie, then sort
@@ -1008,8 +1011,8 @@ public class OptimalScheduleFinder {
      * progress to the final state.
      */
     @SuppressWarnings("serial")
-    protected static class _StateComparatorMaximumProgress extends
-    _StateComparator {
+    protected static class _StateComparatorMaximumProgress
+            extends _StateComparator {
 
         /**
          * Construct an instance of StateComparatorMaximumProgress. It creates

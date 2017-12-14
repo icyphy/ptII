@@ -27,12 +27,14 @@ public final class BurnComposite extends RGBComposite {
     }
 
     @Override
-    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
+    public CompositeContext createContext(ColorModel srcColorModel,
+            ColorModel dstColorModel, RenderingHints hints) {
         return new Context(extraAlpha, srcColorModel, dstColorModel);
     }
 
     static class Context extends RGBCompositeContext {
-        public Context(float alpha, ColorModel srcColorModel, ColorModel dstColorModel) {
+        public Context(float alpha, ColorModel srcColorModel,
+                ColorModel dstColorModel) {
             super(alpha, srcColorModel, dstColorModel);
         }
 
@@ -51,18 +53,21 @@ public final class BurnComposite extends RGBComposite {
                 int dia = dst[i + 3];
                 int dor, dog, dob;
 
-                if (dir != 255)
+                if (dir != 255) {
                     dor = clamp(255 - ((255 - sr << 8) / (dir + 1)));
-                else
+                } else {
                     dor = sr;
-                if (dig != 255)
+                }
+                if (dig != 255) {
                     dog = clamp(255 - ((255 - sg << 8) / (dig + 1)));
-                else
+                } else {
                     dog = sg;
-                if (dib != 255)
+                }
+                if (dib != 255) {
                     dob = clamp(255 - ((255 - sb << 8) / (dib + 1)));
-                else
+                } else {
                     dob = sb;
+                }
 
                 float a = alpha * sa / 255f;
                 float ac = 1 - a;

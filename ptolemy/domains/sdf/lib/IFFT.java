@@ -133,8 +133,8 @@ public class IFFT extends SDFTransformer {
                     .complexValue();
         }
 
-        Complex[] outComplexArray = SignalProcessing.IFFTComplexOut(
-                _inComplexArray, _orderValue);
+        Complex[] outComplexArray = SignalProcessing
+                .IFFTComplexOut(_inComplexArray, _orderValue);
 
         for (int i = 0; i < _transformSize; i++) {
             _outTokenArray[i] = new ComplexToken(outComplexArray[i]);

@@ -103,8 +103,8 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HMMMultinomialClassifier newObject = (HMMMultinomialClassifier) super
-                .clone(workspace);
+        HMMMultinomialClassifier newObject = (HMMMultinomialClassifier) super.clone(
+                workspace);
         newObject._B = new double[_nStates][_nCategories];
         return newObject;
     }
@@ -157,12 +157,13 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
     }
 
     @Override
-    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException {
+    protected double emissionProbability(double[] y, int hiddenState)
+            throws IllegalActionException {
         if (y.length == 1) {
             return _B[hiddenState][(int) y[0]];
         } else {
-            throw new IllegalActionException(this, this.getClassName() +
-                    " supports single dimensional distributions.");
+            throw new IllegalActionException(this, this.getClassName()
+                    + " supports single dimensional distributions.");
         }
     }
 

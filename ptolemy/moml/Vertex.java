@@ -135,10 +135,10 @@ public class Vertex extends Location {
                     + "\"";
         }
 
-        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-                + name // + "\" class=\""
+        output.write(
+                _getIndentPrefix(depth) + "<" + _elementName + " name=\"" + name // + "\" class=\""
                 // + getClassName()
-                + "\"" + valueTerm + ">\n");
+                        + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }

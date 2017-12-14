@@ -36,9 +36,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (mankit)
  */
-public class Comparator
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.Comparator {
+public class Comparator extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.Comparator {
 
     /**
      * Construct the Comparator adapter.

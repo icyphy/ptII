@@ -95,7 +95,7 @@ public class Quat4f extends Tuple4f {
                     Quat4f q3 = new Quat4f();
                     Vector3f vectorq1 = new Vector3f( x, y, z );
                     Vector3f vectorq2 = new Vector3f( q.x, q.y, q.z );
-
+    
                     Vector3f tempvec1 = new Vector3f( vectorq1 );
                     Vector3f tempvec2;
                     Vector3f tempvec3;
@@ -146,8 +146,9 @@ public class Quat4f extends Tuple4f {
             case 0:
                 s = (float) Math.sqrt((m.m00 - (m.m11 + m.m22)) + 1.0f);
                 x = s * 0.5f;
-                if (s != 0.0)
+                if (s != 0.0) {
                     s = 0.5f / s;
+                }
                 w = (m.m12 - m.m21) * s;
                 y = (m.m01 + m.m10) * s;
                 z = (m.m02 + m.m20) * s;
@@ -155,8 +156,9 @@ public class Quat4f extends Tuple4f {
             case 1:
                 s = (float) Math.sqrt((m.m11 - (m.m22 + m.m00)) + 1.0f);
                 y = s * 0.5f;
-                if (s != 0.0)
+                if (s != 0.0) {
                     s = 0.5f / s;
+                }
                 w = (m.m20 - m.m02) * s;
                 z = (m.m12 + m.m21) * s;
                 x = (m.m10 + m.m01) * s;
@@ -164,8 +166,9 @@ public class Quat4f extends Tuple4f {
             case 2:
                 s = (float) Math.sqrt((m.m00 - (m.m11 + m.m22)) + 1.0f);
                 z = s * 0.5f;
-                if (s != 0.0)
+                if (s != 0.0) {
                     s = 0.5f / s;
+                }
                 w = (m.m01 - m.m10) * s;
                 x = (m.m20 + m.m02) * s;
                 y = (m.m21 + m.m12) * s;

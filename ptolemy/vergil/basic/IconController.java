@@ -151,8 +151,8 @@ public class IconController extends ParameterizedNodeController {
                     // container.  Otherwise, that second change request
                     // will result in the creation of a second figure.
 
-                    final EditorIcon icon = XMLIcon.getXMLIcon(
-                            object.workspace(), "_icon");
+                    final EditorIcon icon = XMLIcon
+                            .getXMLIcon(object.workspace(), "_icon");
                     icon.setContainerToBe(object);
                     icon.setPersistent(false);
                     result = icon.createFigure();
@@ -253,21 +253,22 @@ public class IconController extends ParameterizedNodeController {
                     if (decoratorAttributes instanceof ExecutionAttributes) {
                         if (decoratorAttributes.getDecorator() != null
                                 && ((ExecutionAttributes) decoratorAttributes)
-                                .enabled()) {
+                                        .enabled()) {
                             try {
-                                if (object
-                                        .getAttribute("_decoratorHighlightColor") == null) {
+                                if (object.getAttribute(
+                                        "_decoratorHighlightColor") == null) {
                                     highlightColor = new ColorAttribute(object,
                                             "_decoratorHighlightColor");
                                     Attribute attribute = ((NamedObj) decorator)
-                                            .getAttribute("decoratorHighlightColor");
+                                            .getAttribute(
+                                                    "decoratorHighlightColor");
                                     String colorExpression = "{0.5, 0.5, 0.5, 0.5}";
                                     if (attribute != null) {
                                         colorExpression = (((ColorAttribute) attribute)
                                                 .getToken()).toString();
                                     }
                                     ((ColorAttribute) highlightColor)
-                                    .setExpression(colorExpression);
+                                            .setExpression(colorExpression);
                                 }
                             } catch (NameDuplicationException e) {
                                 // Not gonna happen.
@@ -308,9 +309,8 @@ public class IconController extends ParameterizedNodeController {
                         shadowAttribute = (ColorAttribute) container
                                 .getAttribute("_shadowColor",
                                         ColorAttribute.class);
-                        if (shadowAttribute != null
-                                && !shadowAttribute.getExpression().trim()
-                                .equals("")) {
+                        if (shadowAttribute != null && !shadowAttribute
+                                .getExpression().trim().equals("")) {
                             Color color = shadowAttribute.asColor();
                             // FIXME: How to set the size of the shadow?
                             ShadowRenderer animationRenderer = new ShadowRenderer(

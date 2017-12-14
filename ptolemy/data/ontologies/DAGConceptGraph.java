@@ -205,7 +205,8 @@ public class DAGConceptGraph extends ConceptGraph {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
 
-        return _getBoundForConcepts(concept1, concept2, BoundType.GREATESTLOWER);
+        return _getBoundForConcepts(concept1, concept2,
+                BoundType.GREATESTLOWER);
     }
 
     /** Return why this concept graph is not a lattice, or null if it is.
@@ -320,9 +321,8 @@ public class DAGConceptGraph extends ConceptGraph {
      *   GREATESTLOWER or LEASTUPPER.
      *  @return The concept that is the correct bound for the two concepts.
      */
-    private Concept _getBoundForInfiniteConcept(
-            InfiniteConcept infiniteConcept, Concept otherConcept,
-            BoundType boundType) {
+    private Concept _getBoundForInfiniteConcept(InfiniteConcept infiniteConcept,
+            Concept otherConcept, BoundType boundType) {
         switch (boundType) {
         case GREATESTLOWER:
             return infiniteConcept.greatestLowerBound(otherConcept);

@@ -106,8 +106,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // generated.
         if (!(((CompositeActor) getComponent().getContainer())
                 .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector)) {
-            code.append(_templateParser.getCodeStream().getCodeBlock(
-                    "initPIBlock"));
+            code.append(_templateParser.getCodeStream()
+                    .getCodeBlock("initPIBlock"));
         }
         code.append(super.generateInitializeCode());
 
@@ -124,8 +124,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol
-                + _templateParser.getCodeStream().getCodeBlock("mainLoopBlock"));
+        code.append(_eol + _templateParser.getCodeStream()
+                .getCodeBlock("mainLoopBlock"));
         return code.toString();
     }
 
@@ -192,8 +192,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
     @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "Transfer tokens to the inside")));
+        code.append(CodeStream.indent(
+                getCodeGenerator().comment("Transfer tokens to the inside")));
 
         // FIXME: Transfer token to inside actually only needs to run once...
         code.append(CodeStream.indent(getCodeGenerator().comment(
@@ -208,8 +208,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 String sinkPortString = "Event_Head_"
                         + getAdapter(sinkPort).getName() + "["
                         + Integer.toString(i) + "]";
-                code.append(sinkPortString + " = " + sourcePortString + ";"
-                        + _eol);
+                code.append(
+                        sinkPortString + " = " + sourcePortString + ";" + _eol);
             }
         }
     }
@@ -233,10 +233,10 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     @Override
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
-        code.append(getCodeGenerator()
-                .comment("Transfer tokens to the outside"));
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
+        code.append(
+                getCodeGenerator().comment("Transfer tokens to the outside"));
     }
 
     /**
@@ -307,8 +307,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
         _templateParser.getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        _templateParser.getCodeStream().append(
-                "#define numActuators " + actuators.size() + _eol);
+        _templateParser.getCodeStream()
+                .append("#define numActuators " + actuators.size() + _eol);
 
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
@@ -317,14 +317,14 @@ public class PtidesPreemptiveEDFDirector extends Director {
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
 
         // prototypes for actuator functions.
-        _templateParser.getCodeStream().append(
-                _generateActuatorActuationFuncArrayCode());
+        _templateParser.getCodeStream()
+                .append(_generateActuatorActuationFuncArrayCode());
 
         _templateParser.getCodeStream().appendCodeBlocks("FuncBlock");
 
         if (!_templateParser.getCodeStream().isEmpty()) {
-            sharedCode.add(processCode(_templateParser.getCodeStream()
-                    .toString()));
+            sharedCode.add(
+                    processCode(_templateParser.getCodeStream().toString()));
         }
 
         return sharedCode;
@@ -438,7 +438,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
     protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
@@ -453,15 +453,11 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
         // The references are associated with their own adapter, so we need
         // to find the associated adapter.
-        String sourcePortChannel = CodeGeneratorAdapter
-                .generateName(source.port)
-                + "#"
-                + source.channelNumber
-                + ", "
-                + offset;
+        String sourcePortChannel = CodeGeneratorAdapter.generateName(
+                source.port) + "#" + source.channelNumber + ", " + offset;
         String sourceRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                .getAdapter(source.port.getContainer())).getReference(
-                        sourcePortChannel, false);
+                .getAdapter(source.port.getContainer()))
+                        .getReference(sourcePortChannel, false);
 
         String sinkPortChannel = CodeGeneratorAdapter.generateName(sink.port)
                 + "#" + sink.channelNumber + ", " + offset;
@@ -474,8 +470,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
             sinkPortChannel = "@" + sinkPortChannel;
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                .getAdapter(sink.port.getContainer())).getReference(
-                        sinkPortChannel, true);
+                .getAdapter(sink.port.getContainer()))
+                        .getReference(sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -588,8 +584,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
             return "";
         }*/
         StringBuffer code = new StringBuffer();
-        code.append("/* generate code for clearing Event Head buffer. */"
-                + _eol);
+        code.append(
+                "/* generate code for clearing Event Head buffer. */" + _eol);
         for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
                 code.append("Event_Head_"
@@ -618,9 +614,10 @@ public class PtidesPreemptiveEDFDirector extends Director {
             for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
                 if (inputPort.getWidth() > 0) {
                     code.append("Event* Event_Head_"
-                            + CodeGeneratorAdapter.generateName(inputPort)
-                            + "[" + inputPort.getWidth() + "] = {NULL");
-                    for (int channel = 1; channel < inputPort.getWidth(); channel++) {
+                            + CodeGeneratorAdapter.generateName(inputPort) + "["
+                            + inputPort.getWidth() + "] = {NULL");
+                    for (int channel = 1; channel < inputPort
+                            .getWidth(); channel++) {
                         code.append(", NULL");
                     }
                     code.append("};" + _eol);

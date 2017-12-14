@@ -165,8 +165,8 @@ public class SymmetricDecryption extends CipherActor {
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
             return byteArrayOutputStream.toByteArray();
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Problem processing "
-                    + dataBytes.length + " bytes.");
+            throw new IllegalActionException(this, ex,
+                    "Problem processing " + dataBytes.length + " bytes.");
         }
     }
 

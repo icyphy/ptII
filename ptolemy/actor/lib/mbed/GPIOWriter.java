@@ -84,7 +84,6 @@ public class GPIOWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
     /** This is the GPIO port to write to. This only serves a
      *  purpose for code generation.
      */
@@ -102,8 +101,9 @@ public class GPIOWriter extends Sink {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GPIOWriter newObject = (GPIOWriter) super.clone(workspace);
-        newObject._GPIOIcon = (EditorIcon)newObject.getAttribute("_icon");
-        newObject._GPIOState = (RectangleAttribute)newObject.getAttribute("_led_");
+        newObject._GPIOIcon = (EditorIcon) newObject.getAttribute("_icon");
+        newObject._GPIOState = (RectangleAttribute) newObject
+                .getAttribute("_led_");
 
         return newObject;
     }
@@ -116,19 +116,18 @@ public class GPIOWriter extends Sink {
     @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            if (((BooleanToken) input.get(0)).booleanValue() == true)
-
-                if (((IntToken)BoardPortNumber.getToken()).intValue() == 0) {
+            if (((BooleanToken) input.get(0)).booleanValue() == true) {
+                if (((IntToken) BoardPortNumber.getToken()).intValue() == 0) {
                     _GPIOState.fillColor.setToken("{1.0, 0.0, 0.0, 1.0}");
-                }
-                else if (((IntToken) BoardPortNumber.getToken()).intValue() == 1) {
+                } else if (((IntToken) BoardPortNumber.getToken())
+                        .intValue() == 1) {
                     _GPIOState.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
-                }
-                else {
+                } else {
                     _GPIOState.fillColor.setToken("{0.0, 0.0, 1.0, 1.0}");
                 }
-            else
+            } else {
                 _GPIOState.fillColor.setToken("{0.0, 0.0, 0.0, 1.0}");
+            }
         }
         return super.postfire();
     }

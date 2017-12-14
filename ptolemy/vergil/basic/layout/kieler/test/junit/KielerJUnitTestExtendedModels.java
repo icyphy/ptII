@@ -44,7 +44,7 @@ package ptolemy.vergil.basic.layout.kieler.test.junit;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class KielerJUnitTestExtendedModels extends KielerJUnitTest{
+public class KielerJUnitTestExtendedModels extends KielerJUnitTest {
 
     /* ----------------------------
      *          Actor Tests
@@ -68,9 +68,9 @@ public class KielerJUnitTestExtendedModels extends KielerJUnitTest{
      */
     @org.junit.Test
     public void runRouter() throws Exception {
-        _layoutTest("$CLASSPATH/ptolemy/demo/ExecDemos/Demos/Router.xml", false);
+        _layoutTest("$CLASSPATH/ptolemy/demo/ExecDemos/Demos/Router.xml",
+                false);
     }
-
 
     /* ----------------------------
      *          FSM Tests

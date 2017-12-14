@@ -118,9 +118,9 @@ public abstract class Element {
     public final void setWeight(Object weight) {
         // FIXME: add @see Graph#validateWeight(Edge)
         if (weight == null) {
-            throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to the following " + descriptor() + ": " + this
-                    + "\n");
+            throw new IllegalArgumentException(
+                    "Attempt to assign a null " + "weight to the following "
+                            + descriptor() + ": " + this + "\n");
         } else {
             _weight = weight;
         }

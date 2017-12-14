@@ -73,8 +73,8 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      * @param target The model
      * @param configuration  a Configuration object
      */
-    public PtolemyDialog(String title, DialogTableau dialogTableau,
-            Frame owner, Entity target, Configuration configuration) {
+    public PtolemyDialog(String title, DialogTableau dialogTableau, Frame owner,
+            Entity target, Configuration configuration) {
         super(title);
         _owner = owner;
         _dialogTableau = dialogTableau;

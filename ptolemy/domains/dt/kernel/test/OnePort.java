@@ -60,7 +60,8 @@ public class OnePort extends TypedAtomicActor {
         outrate = new Parameter(this, "outrate", new IntToken(1));
         _outrate = 1;
 
-        output_tokenProductionRate = new Parameter(input, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(input,
+                "tokenProductionRate");
         output_tokenProductionRate.setExpression("outrate");
 
         initialOutputs = new Parameter(this, "initialOutputs",

@@ -68,7 +68,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
 
         _icon.setIconText("T");
         displayText
-        .setExpression("Default title to give to icons in the model.");
+                .setExpression("Default title to give to icons in the model.");
 
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("true");
@@ -170,8 +170,8 @@ public class DefaultTitle extends WebContent implements WebExportable {
          */
 
         boolean entities = false, attributes = false;
-        String includeValue = include.stringValue().toLowerCase(
-                Locale.getDefault());
+        String includeValue = include.stringValue()
+                .toLowerCase(Locale.getDefault());
         if (includeValue.equals("all")) {
             entities = true;
             attributes = true;
@@ -192,8 +192,8 @@ public class DefaultTitle extends WebContent implements WebExportable {
                     objects = ((CompositeEntity) container)
                             .entityList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this, "No such class: "
-                            + instances);
+                    throw new IllegalActionException(this,
+                            "No such class: " + instances);
                 }
             }
             /* title attribute is now used for displaying parameter table.
@@ -217,8 +217,8 @@ public class DefaultTitle extends WebContent implements WebExportable {
                     objects = ((CompositeEntity) container)
                             .attributeList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this, "No such class: "
-                            + instances);
+                    throw new IllegalActionException(this,
+                            "No such class: " + instances);
                 }
             }
             for (NamedObj object : objects) {

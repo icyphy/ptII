@@ -82,8 +82,8 @@ public class FmvAutomatonGraphTableau extends FSMGraphTableau {
      *   contains an object with the specified name.
      */
     public FmvAutomatonGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, defaultLibrary);
     }
 

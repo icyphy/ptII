@@ -61,8 +61,8 @@ public class SCRModel extends ModalModel {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SCRModel(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public SCRModel(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -87,8 +87,8 @@ public class SCRModel extends ModalModel {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         Parameter parameter = new Parameter(this, "openAsSCRActor");
         parameter.setTypeEquals(BaseType.BOOLEAN);
         parameter.setToken("true");

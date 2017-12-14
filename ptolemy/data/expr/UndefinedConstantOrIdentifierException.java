@@ -47,8 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 @SuppressWarnings("serial")
-public class UndefinedConstantOrIdentifierException extends
-        IllegalActionException {
+public class UndefinedConstantOrIdentifierException
+        extends IllegalActionException {
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument.
      *  @param nodeName The name of the missing constant or identifier

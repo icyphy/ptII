@@ -97,7 +97,8 @@ public class ExecEvent implements DebugEvent {
 
     public static final ExecEventType BLOCKED = new ExecEventType("blocked");
 
-    public static final ExecEventType ACCESSING = new ExecEventType("accessing");
+    public static final ExecEventType ACCESSING = new ExecEventType(
+            "accessing");
 
     public static final ExecEventType WAITING = new ExecEventType("waiting");
 

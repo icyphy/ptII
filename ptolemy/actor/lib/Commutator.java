@@ -139,7 +139,7 @@ public class Commutator extends Transformer implements SequenceActor {
         newObject.output_tokenProductionRate = (Parameter) newObject.output
                 .getAttribute("tokenProductionRate");
         ((WidthDependentParameter) newObject.output_tokenProductionRate)
-        .setPort(newObject.input);
+                .setPort(newObject.input);
         return newObject;
     }
 
@@ -224,8 +224,8 @@ public class Commutator extends Transformer implements SequenceActor {
      */
     private class WidthDependentParameter extends Parameter {
         public WidthDependentParameter(NamedObj container, String name,
-                IOPort port) throws IllegalActionException,
-                NameDuplicationException {
+                IOPort port)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
             _port = port;
             setPersistent(false);
@@ -234,7 +234,8 @@ public class Commutator extends Transformer implements SequenceActor {
         @Override
         public ptolemy.data.Token getToken() throws IllegalActionException {
             IntToken blockSizeValue = (IntToken) blockSize.getToken();
-            setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));
+            setToken(
+                    new IntToken(_port.getWidth() * blockSizeValue.intValue()));
             return super.getToken();
         }
 

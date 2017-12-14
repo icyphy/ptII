@@ -85,9 +85,9 @@ public class ContinuousMerge extends Transformer {
         super(container, name);
         input.setMultiport(true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:green\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:green\"/>\n" + "</svg>\n");
 
         discard = new Parameter(this, "discard");
         discard.setExpression("true");

@@ -338,11 +338,8 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
         if (a instanceof Variable) {
             return (Variable) a;
         } else {
-            throw new IllegalActionException(
-                    this,
-                    "Actor "
-                            + getName()
-                            + " does not have a variable to store its state and/or initial value in.");
+            throw new IllegalActionException(this, "Actor " + getName()
+                    + " does not have a variable to store its state and/or initial value in.");
         }
     }
 
@@ -390,11 +387,8 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
                 || variableName.getExpression().equals("")
                 || initialVariableName.getExpression() == null
                 || initialVariableName.getExpression().equals("")) {
-            throw new IllegalActionException(
-                    this,
-                    "Actor "
-                            + getName()
-                            + " has a null or empty string for its parameter or its inital value parameter.  Please enter a valid name.");
+            throw new IllegalActionException(this, "Actor " + getName()
+                    + " has a null or empty string for its parameter or its inital value parameter.  Please enter a valid name.");
         }
 
         // Add a new type constraint relating the output to the modified variable
@@ -453,8 +447,8 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  name in the actor's container
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
 
         // Set up strings for moml change requests
@@ -490,8 +484,8 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
             if (variableName.getExpression() != null
                     && compareName.equals(variableName.getExpression())
                     && initialVariableName.getExpression() != null
-                    && compareInitialName.equals(initialVariableName
-                            .getExpression())) {
+                    && compareInitialName
+                            .equals(initialVariableName.getExpression())) {
                 return;
             }
 
@@ -535,7 +529,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
                             {
                                     container = container.getContainer();
                             }
-
+            
                             for (int i = 0; i < momlChangeRequests.size(); i++)
                             {
                                     container.addChangeListener(this);
@@ -543,7 +537,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
                                     request.setUndoable(true);
                                     container.requestChange(request);
                             }
-
+            
             }
              */
 
@@ -638,13 +632,13 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
     /*
      *     protected void _setValue(Token value) throws IllegalActionException {
        Attribute variable = getModifiedVariable();
-
+    
        if (variable instanceof Variable) {
            Token oldToken = ((Variable) variable).getToken();
-
+    
            if (oldToken == null || !oldToken.equals(value)) {
                ((Variable) variable).setToken(value);
-
+    
             // Beth 09/23/09 validate() used to be here
            }
            // Beth 09/23/09
@@ -657,7 +651,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
            ((Variable) variable).validate();
        } else if (variable instanceof Settable) {
            ((Settable) variable).setExpression(value.toString());
-
+    
            // NOTE: If we don't call validate(), then the
            // change will not propagate to dependents.
            ((Settable) variable).validate();
@@ -751,11 +745,8 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
         // the actor's name is checked and must be valid, and the variable names are
         // based on the actor's name
         else {
-            throw new IllegalActionException(
-                    this,
-                    "Actor "
-                            + getName()
-                            + " has an empty of null string for the parameter that holds its state or initial value.  Please enter a non-empty string.");
+            throw new IllegalActionException(this, "Actor " + getName()
+                    + " has an empty of null string for the parameter that holds its state or initial value.  Please enter a non-empty string.");
         }
 
         return a;

@@ -289,8 +289,8 @@ public class DataflowWithRates extends Dataflow {
                 if (o instanceof ActionRateSignature) {
                     return inputRates
                             .equals(((ActionRateSignature) o).inputRates)
-                            && outputRates
-                            .equals(((ActionRateSignature) o).outputRates);
+                            && outputRates.equals(
+                                    ((ActionRateSignature) o).outputRates);
                 } else {
                     return false;
                 }

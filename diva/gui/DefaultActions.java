@@ -276,8 +276,8 @@ public class DefaultActions {
         return new AbstractAction(SAVE_AS) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                app.getStoragePolicy().saveAs(
-                        app.getCurrentView().getDocument());
+                app.getStoragePolicy()
+                        .saveAs(app.getCurrentView().getDocument());
             }
         };
     }

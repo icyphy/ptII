@@ -93,8 +93,8 @@ public class NewComponentDialog extends JPanel {
     JButton prevButton = new JButton("Preview");
     JButton okButton = new JButton("OK");
     JButton cancelButton = new JButton("Cancel");
-    Component buttonBar = ButtonBarFactory.buildRightAlignedBar(new JButton[] {
-            prevButton, okButton, cancelButton });
+    Component buttonBar = ButtonBarFactory.buildRightAlignedBar(
+            new JButton[] { prevButton, okButton, cancelButton });
 
     ComponentDef componentDef;
     private String preview;
@@ -125,7 +125,8 @@ public class NewComponentDialog extends JPanel {
         add(new JScrollPane(importsComponent), "importsComponent");
         add(new JScrollPane(declarationsComponent), "declarationsComponent");
         add(new JScrollPane(configureComponent), "configureComponent");
-        add(new JScrollPane(addToContainerComponent), "addToContainerComponent");
+        add(new JScrollPane(addToContainerComponent),
+                "addToContainerComponent");
         add(buttonBar, "buttonBar");
         add(declarationsLabel, "declarationsLabel");
         add(componentNameLabel, "componentNameLabel");
@@ -182,7 +183,7 @@ public class NewComponentDialog extends JPanel {
     <p>
     For example, if the component is a JButton, this method is the
     equivalent of <code>new JButton(<i>text</i>)</code>.
-
+    
     @return Component An instance of the component, null if there
     is a problem in the specification. [It is recommended that the
     'Preview' button should be clicked before exiting the dialog.]

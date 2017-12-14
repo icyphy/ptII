@@ -124,9 +124,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
                     rate[i] = _zero;
                 }
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(
-                        this,
-                        ex,
+                throw new InternalErrorException(this, ex,
                         "At this time IllegalActionExceptions are not allowed to happen.\n"
                                 + "Width inference should already have been done.");
             }
@@ -155,7 +153,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         boolean postfireReturn = super.postfire();
 
         input_tokenConsumptionRate
-        .setToken(_rateArray[_getCurrentInputPosition()]);
+                .setToken(_rateArray[_getCurrentInputPosition()]);
 
         return postfireReturn;
     }

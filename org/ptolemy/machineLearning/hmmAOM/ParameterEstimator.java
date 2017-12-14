@@ -252,7 +252,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                     for (int j = 0; j < nCol; j++) {
                         _transitionMatrix[i][j] = ((DoubleToken) ((MatrixToken) A0
                                 .getToken()).getElementAsToken(i, j))
-                                .doubleValue();
+                                        .doubleValue();
                         if (_transitionMatrix[i][j] < 0.0) {
                             throw new IllegalActionException(this,
                                     "Transition probabilities cannot be negative.");
@@ -382,8 +382,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ParameterEstimator newObject = (ParameterEstimator) super
-                .clone(workspace);
+        ParameterEstimator newObject = (ParameterEstimator) super.clone(
+                workspace);
         newObject._tokens = new FIFOQueue();
         newObject._receiversAndTokensToSendTo = new HashMap<Receiver, Token>();
         newObject._tempReceiverQueue = new FIFOQueue();
@@ -414,8 +414,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
             Token token = (Token) output[1];
 
             if ((_observedTokens.keySet()).contains(receiver.toString())) {
-                List tokensForReceiver = _observedTokens.get(receiver
-                        .toString());
+                List tokensForReceiver = _observedTokens
+                        .get(receiver.toString());
                 tokensForReceiver.add(((DoubleToken) token).doubleValue());
                 List newTokens = new LinkedList<Double>();
                 newTokens.addAll(tokensForReceiver);
@@ -479,8 +479,9 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                 if (token != null) {
                     _tokens.put(new Object[] { receiver, token });
                     _tokenCount++;
-                    sendCommunicationEvent((Actor) receiver.getContainer()
-                            .getContainer(), 0, _tokenCount, EventType.RECEIVED);
+                    sendCommunicationEvent(
+                            (Actor) receiver.getContainer().getContainer(), 0,
+                            _tokenCount, EventType.RECEIVED);
                 }
             }
         }
@@ -545,8 +546,9 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                 if (!(getDirector() instanceof FixedPointDirector)) {
                     _tokens.put(new Object[] { receiver, token });
                     _tokenCount++;
-                    sendCommunicationEvent((Actor) source.getContainer()
-                            .getContainer(), 0, _tokenCount, EventType.RECEIVED);
+                    sendCommunicationEvent(
+                            (Actor) source.getContainer().getContainer(), 0,
+                            _tokenCount, EventType.RECEIVED);
                     if (_tokens.size() == 1) { // no refiring has been scheduled
                         _scheduleRefire();
                     }
@@ -719,8 +721,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         for (int j = 0; j < nStates; j++) {
                             alphasum += alphas[t][j] * A[j][qtp];
                         }
-                        gamma[t][qt] += (alphas[t][qt] * A[qt][qtp] * gamma[t + 1][qtp])
-                                / alphasum;
+                        gamma[t][qt] += (alphas[t][qt] * A[qt][qtp]
+                                * gamma[t + 1][qtp]) / alphasum;
                     }
                 }
             }
@@ -737,7 +739,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                        / alphas[t + 1][next]; // MJ Eqn (11.45)
+                                / alphas[t + 1][next]; // MJ Eqn (11.45)
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -801,7 +803,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
         double logLikelihood = 0.0;
         for (int t = 0; t < _observations.length - 1; t++) {
             logLikelihood += emissionProbability(y[t], clusterAssignments[t]);
-            logLikelihood += A_hat[clusterAssignments[t]][clusterAssignments[t + 1]];
+            logLikelihood += A_hat[clusterAssignments[t]][clusterAssignments[t
+                    + 1]];
         }
         // add the emission probability at final time value
         logLikelihood += emissionProbability(y[_observations.length - 1],
@@ -886,7 +889,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                        / alphas[t + 1][next];
+                                / alphas[t + 1][next];
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -954,7 +957,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
 
         for (int t = 0; t < _observations.length - 1; t++) {
             logLikelihood += emissionProbability(y[t], clusterAssignments[t]);
-            logLikelihood += A_hat[clusterAssignments[t]][clusterAssignments[t + 1]];
+            logLikelihood += A_hat[clusterAssignments[t]][clusterAssignments[t
+                    + 1]];
         }
         // add the emission probability at final time value
         logLikelihood += emissionProbability(y[_observations.length - 1],
@@ -1049,7 +1053,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
          */
         public BusAttributes(NamedObj target,
                 AtomicCommunicationAspect decorator)
-                        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
         }
 

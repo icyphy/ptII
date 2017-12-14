@@ -99,11 +99,9 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
             if (director != null) {
                 if (!(director instanceof TMDirector)) {
-                    throw new IllegalActionException(
-                            "Director '"
-                                    + director
-                                    + "' is not a TMDirector, so adding a SchedulePlotter "
-                                    + "makes no sense");
+                    throw new IllegalActionException("Director '" + director
+                            + "' is not a TMDirector, so adding a SchedulePlotter "
+                            + "makes no sense");
                 }
 
                 ((TMDirector) director).addScheduleListener(this);

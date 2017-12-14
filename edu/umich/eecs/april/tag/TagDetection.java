@@ -111,10 +111,10 @@ public class TagDetection {
                         / z + hxy[1] };
     }
 
+    @Override
     public String toString() {
-        return String
-                .format("[TagDetection code 0x%010x   id=%-5d   errors=%d   position =  (%8.2f,%8.2f) @ %3d deg]",
-                        code, id, hammingDistance, cxy[0], cxy[1],
-                        rotation * 90);
+        return String.format(
+                "[TagDetection code 0x%010x   id=%-5d   errors=%d   position =  (%8.2f,%8.2f) @ %3d deg]",
+                code, id, hammingDistance, cxy[0], cxy[1], rotation * 90);
     }
 }

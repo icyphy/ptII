@@ -51,8 +51,8 @@ public class MalformedStringException extends KernelException {
      *  @param expression The expression that is malformed.
      */
     public MalformedStringException(String expression) {
-        super(null, null, null, "Rule list string \"" + expression
-                + "\" is malformed.");
+        super(null, null, null,
+                "Rule list string \"" + expression + "\" is malformed.");
     }
 
 }

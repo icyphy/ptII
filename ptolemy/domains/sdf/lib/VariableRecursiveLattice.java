@@ -64,8 +64,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (eal)
  */
-public class VariableRecursiveLattice extends RecursiveLattice implements
-ExplicitChangeContext {
+public class VariableRecursiveLattice extends RecursiveLattice
+        implements ExplicitChangeContext {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -139,8 +139,8 @@ ExplicitChangeContext {
             _blockSizeValue = blockSizeToken.intValue();
 
             if (_blockSizeValue < 1) {
-                throw new IllegalActionException(this, "Invalid blockSize: "
-                        + _blockSizeValue);
+                throw new IllegalActionException(this,
+                        "Invalid blockSize: " + _blockSizeValue);
             }
         }
 
@@ -156,11 +156,11 @@ ExplicitChangeContext {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        VariableRecursiveLattice newObject = (VariableRecursiveLattice) super
-                .clone(workspace);
+        VariableRecursiveLattice newObject = (VariableRecursiveLattice) super.clone(
+                workspace);
 
         newObject.newCoefficients
-        .setTypeSameAs(newObject.reflectionCoefficients);
+                .setTypeSameAs(newObject.reflectionCoefficients);
 
         // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);

@@ -53,8 +53,8 @@ import ptolemy.kernel.util.Attribute;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class AttributeSearcher extends AbstractSearcher implements
-AbstractDBSearcher {
+public class AttributeSearcher extends AbstractSearcher
+        implements AbstractDBSearcher {
 
     /**
      * Construct the AttributeSearcher according to the input search criteria.
@@ -83,25 +83,25 @@ AbstractDBSearcher {
 
                     //newAttribute.addValue(((Variable) originalAttribute)
                     //        .getValueAsString());
-                    newAttribute.addValue(((Variable) originalAttribute)
-                            .getExpression());
+                    newAttribute.addValue(
+                            ((Variable) originalAttribute).getExpression());
 
                     if (originalAttribute instanceof PTDBSearchAttribute) {
                         if (!((PTDBSearchAttribute) originalAttribute)
                                 .isGenericAttribute()) {
 
-                            newAttribute.setClassName(originalAttribute
-                                    .getClassName());
+                            newAttribute.setClassName(
+                                    originalAttribute.getClassName());
                         } else {
 
-                            newAttribute
-                            .setClassName(((PTDBSearchAttribute) originalAttribute)
-                                    .getGenericClassName());
+                            newAttribute.setClassName(
+                                    ((PTDBSearchAttribute) originalAttribute)
+                                            .getGenericClassName());
 
                         }
                     } else {
-                        newAttribute.setClassName(originalAttribute
-                                .getClassName());
+                        newAttribute
+                                .setClassName(originalAttribute.getClassName());
                     }
 
                     attributesMap.put(newAttribute.getAttributeName(),
@@ -111,8 +111,8 @@ AbstractDBSearcher {
                             .get(originalAttribute.getName());
                     //attribute.addValue(((Variable) originalAttribute)
                     //        .getValueAsString());
-                    attribute.addValue(((Variable) originalAttribute)
-                            .getExpression());
+                    attribute.addValue(
+                            ((Variable) originalAttribute).getExpression());
                 }
 
             }

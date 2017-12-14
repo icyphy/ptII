@@ -94,8 +94,8 @@ public abstract class MonotonicFunction implements InequalityTerm {
      */
     @Override
     public final void initialize(Object e) throws IllegalActionException {
-        throw new IllegalActionException(getClass().getName()
-                + ": Cannot initialize a function term.");
+        throw new IllegalActionException(
+                getClass().getName() + ": Cannot initialize a function term.");
     }
 
     /** Return false.  Monotonic Functions are not settable.
@@ -121,8 +121,8 @@ public abstract class MonotonicFunction implements InequalityTerm {
      */
     @Override
     public final void setValue(Object e) throws IllegalActionException {
-        throw new IllegalActionException(getClass().getName()
-                + ": The type is not settable.");
+        throw new IllegalActionException(
+                getClass().getName() + ": The type is not settable.");
     }
 
     /** Override the base class to give a description of this term.

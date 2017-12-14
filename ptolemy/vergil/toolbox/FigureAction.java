@@ -159,10 +159,10 @@ public class FigureAction extends AbstractAction {
              } else if (source instanceof JMenuItem) {
              // Action activated using a context menu.
              JMenuItem item = (JMenuItem) source;
-
+            
              if (item.getParent() instanceof JContextMenu) {
              _sourceType = CONTEXTMENU_TYPE;
-
+            
              JContextMenu menu = (JContextMenu) item.getParent();
              parent = menu.getInvoker();
              _target = (NamedObj) menu.getTarget();
@@ -215,7 +215,8 @@ public class FigureAction extends AbstractAction {
                     //
                     // So, if the current figure is a BasicGrabHandle, we
                     // do not throw the exception
-                    if (!(layer.getCurrentFigure() instanceof BasicGrabHandle)) {
+                    if (!(layer
+                            .getCurrentFigure() instanceof BasicGrabHandle)) {
                         throw new InternalErrorException(
                                 "Internal error: FigureLayer \""
                                         + layer.getCurrentFigure()
@@ -369,8 +370,8 @@ public class FigureAction extends AbstractAction {
             // Iterate through figures within the region.
             Iterator<?> foregroundFigures = foregroundLayer.getFigures()
                     .getIntersectedFigures(region).figuresFromFront();
-            Iterator<?> pickFigures = CanvasUtilities.pickIter(
-                    foregroundFigures, region);
+            Iterator<?> pickFigures = CanvasUtilities
+                    .pickIter(foregroundFigures, region);
 
             while (pickFigures.hasNext() && !checkFigure) {
                 CanvasComponent possibleFigure = (CanvasComponent) pickFigures
@@ -387,9 +388,9 @@ public class FigureAction extends AbstractAction {
                             && userObject == null && !checkFigure) {
                         userObject = ((UserObjectContainer) possibleFigure)
                                 .getUserObject();
-                        if (userObject instanceof Location
-                                && (figureClass.isInstance(userObject) || figureClass
-                                        .isInstance(possibleFigure))) {
+                        if (userObject instanceof Location && (figureClass
+                                .isInstance(userObject)
+                                || figureClass.isInstance(possibleFigure))) {
                             // We found a figure here, so we will
                             // loop again.
                             checkFigure = true;
@@ -399,20 +400,20 @@ public class FigureAction extends AbstractAction {
                             // Check to make sure we are not outside the view
                             if (point[0] > visibleRectangle.getWidth()) {
                                 point[0] = originalX;
-                                point[1] = originalY - PASTE_OFFSET * 2
-                                        * ++xMax;
+                                point[1] = originalY
+                                        - PASTE_OFFSET * 2 * ++xMax;
                                 if (point[1] < 0) {
-                                    point[1] = originalY + PASTE_OFFSET * 2
-                                            * ++xMax;
+                                    point[1] = originalY
+                                            + PASTE_OFFSET * 2 * ++xMax;
                                 }
                             }
 
                             if (point[1] > visibleRectangle.getHeight()) {
-                                point[0] = originalX - PASTE_OFFSET * 2
-                                        * ++yMax;
+                                point[0] = originalX
+                                        - PASTE_OFFSET * 2 * ++yMax;
                                 if (point[0] < 0) {
-                                    point[0] = originalX + PASTE_OFFSET * 2
-                                            * ++xMax;
+                                    point[0] = originalX
+                                            + PASTE_OFFSET * 2 * ++xMax;
                                 }
                                 point[1] = originalY;
 
@@ -421,7 +422,8 @@ public class FigureAction extends AbstractAction {
                             // Fail safe. Don't try forever, just give up.
                             if (point[0] < 0 || point[1] < 0
                                     || point[0] > visibleRectangle.getWidth()
-                                    || point[1] > visibleRectangle.getHeight()) {
+                                    || point[1] > visibleRectangle
+                                            .getHeight()) {
                                 // Can't do anything here, so return.
                                 point[0] = originalX + 0.5 * xOffset;
                                 point[1] = originalY + 0.5 * yOffset;

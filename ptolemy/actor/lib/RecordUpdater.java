@@ -92,9 +92,9 @@ public class RecordUpdater extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"0\" y=\"0\" width=\"6\" "
-                + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                        + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -209,7 +209,8 @@ public class RecordUpdater extends TypedAtomicActor {
     @Override
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(new MinimalOutputTerm(), output.getTypeTerm()));
+        result.add(
+                new Inequality(new MinimalOutputTerm(), output.getTypeTerm()));
         return result;
     }
 

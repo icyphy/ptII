@@ -74,7 +74,8 @@ public class PtIndexer {
      *  @exception IOException If thrown by the tokenizer.
      */
     public void append(String location, String words) throws IOException {
-        StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(words));
+        StreamTokenizer tokenizer = new StreamTokenizer(
+                new StringReader(words));
 
         tokenizer.lowerCaseMode(true);
         while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
@@ -138,8 +139,8 @@ public class PtIndexer {
      *  @exception ClassNotFoundException If the file does not contain the
      *  dictionary class.
      */
-    public static void main(String args[]) throws IOException,
-    ClassNotFoundException {
+    public static void main(String args[])
+            throws IOException, ClassNotFoundException {
         String usage = "Usage: java -classpath $PTII doc.doclets.PtIndexer [target]";
         String dictionaryFile = "PtIndexer.ser";
 
@@ -169,7 +170,8 @@ public class PtIndexer {
             int numberOfFiles = 0;
             int numberOfLines = 0;
             try {
-                stdin = new BufferedReader(new InputStreamReader(System.in, java.nio.charset.Charset.defaultCharset()));
+                stdin = new BufferedReader(new InputStreamReader(System.in,
+                        java.nio.charset.Charset.defaultCharset()));
                 String fileName = null;
                 String line = null;
                 while ((fileName = stdin.readLine()) != null) {
@@ -181,8 +183,8 @@ public class PtIndexer {
                         fileName = fileName.substring(0,
                                 fileName.lastIndexOf("."));
                         // Replace "./" with "" and then "/" with "."
-                        String className = fileName.replace("./", "").replace(
-                                "/", ".");
+                        String className = fileName.replace("./", "")
+                                .replace("/", ".");
                         while ((line = fileInput.readLine()) != null) {
                             numberOfLines++;
                             ptIndexer.append(className, line);
@@ -221,8 +223,8 @@ public class PtIndexer {
      *  @exception ClassNotFoundException If the file does not contain the
      *  dictionary class.
      */
-    public void read(String fileName) throws IOException,
-    ClassNotFoundException {
+    public void read(String fileName)
+            throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream = null;
         ObjectInputStream objectInputStream = null;
         try {
@@ -313,8 +315,8 @@ public class PtIndexer {
         return "Number of keys: " + dictionarySize
                 + "\nKey with the most definitions: \"" + maximumKey
                 + "\" with " + maximumDefinitions + " definitions."
-                + "\nAverage number of definitions: " + definitionsSum
-                / dictionarySize;
+                + "\nAverage number of definitions: "
+                + definitionsSum / dictionarySize;
     }
 
     /** Write the dictionary to a file or URL.

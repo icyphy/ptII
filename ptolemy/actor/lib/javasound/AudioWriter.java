@@ -337,8 +337,8 @@ public class AudioWriter extends Sink {
             return true;
         } else if (returnVal == NOT_READY) {
             // This should never happen.
-            throw new IllegalActionException(this, "Actor "
-                    + "is not ready to fire.");
+            throw new IllegalActionException(this,
+                    "Actor " + "is not ready to fire.");
         } else if (returnVal == STOP_ITERATING) {
             return false;
         }
@@ -369,8 +369,8 @@ public class AudioWriter extends Sink {
             try {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
-                throw new IllegalActionException(this, "Error closing file:\n"
-                        + ex.getMessage());
+                throw new IllegalActionException(this,
+                        "Error closing file:\n" + ex.getMessage());
             }
         }
 
@@ -389,15 +389,16 @@ public class AudioWriter extends Sink {
      *  @exception IllegalActionException If there is a problem
      *   initializing the SoundWriter object.
      */
-    private synchronized void _initializeWriter() throws IllegalActionException {
+    private synchronized void _initializeWriter()
+            throws IllegalActionException {
         // Close any open sound files. Free
         // up audio system resources.
         if (_soundWriter != null) {
             try {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
-                throw new IllegalActionException(this, "Cannot write audio: \n"
-                        + ex.getMessage());
+                throw new IllegalActionException(this,
+                        "Cannot write audio: \n" + ex.getMessage());
             }
         }
 

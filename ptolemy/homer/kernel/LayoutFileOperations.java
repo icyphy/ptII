@@ -156,8 +156,8 @@ public final class LayoutFileOperations {
             }
             String tag = ((Settable) tab).getExpression();
             Scene scene = mainFrame.getTabContent(tag);
-            mainFrame.addVisualNamedObject(tag, new HomerWidgetElement(object,
-                    scene));
+            mainFrame.addVisualNamedObject(tag,
+                    new HomerWidgetElement(object, scene));
         }
 
         // Add non-visual elements
@@ -184,8 +184,8 @@ public final class LayoutFileOperations {
         try {
             topLevel = (CompositeEntity) parser.parse(null, url);
         } catch (Exception e) {
-            throw new IllegalActionException(null, e, "Unable to parse url: "
-                    + url);
+            throw new IllegalActionException(null, e,
+                    "Unable to parse url: " + url);
         }
 
         return topLevel;
@@ -234,7 +234,7 @@ public final class LayoutFileOperations {
             orientationNode.setPersistent(true);
             orientationNode.setVisibility(Settable.NONE);
             orientationNode
-            .setExpression(mainFrame.getOrientation().toString());
+                    .setExpression(mainFrame.getOrientation().toString());
 
             // Add screen dimensions to top level actor.
             ArrayToken token = new ArrayToken(new IntToken[] {
@@ -265,14 +265,15 @@ public final class LayoutFileOperations {
                 // Add location and tab information for each element in the tab.
                 for (PositionableElement element : tab.getElements()) {
                     HomerWidgetElement homerElement = (HomerWidgetElement) element;
-                    String strippedFullName = _stripFullName(homerElement
-                            .getElement().getFullName());
+                    String strippedFullName = _stripFullName(
+                            homerElement.getElement().getFullName());
                     NamedObj elementInModel = null;
                     NamedObj elementOnScreen = element.getElement();
 
                     if (homerElement.getElement() instanceof Attribute) {
                         elementInModel = model.getAttribute(strippedFullName);
-                    } else if (homerElement.getElement() instanceof ComponentEntity) {
+                    } else if (homerElement
+                            .getElement() instanceof ComponentEntity) {
                         elementInModel = model.getEntity(strippedFullName);
                     } else {
                         // This should never happen.
@@ -327,8 +328,8 @@ public final class LayoutFileOperations {
                         elementInModel.removeAttribute(positionNode);
                     }
                     new HomerLocation(elementInModel,
-                            HomerConstants.POSITION_NODE)
-                    .setToken(getLocationToken(homerElement.getWidget()));
+                            HomerConstants.POSITION_NODE).setToken(
+                                    getLocationToken(homerElement.getWidget()));
 
                     // Add tab information
                     Attribute tabNode = elementInModel
@@ -337,7 +338,7 @@ public final class LayoutFileOperations {
                         elementInModel.removeAttribute(tabNode);
                     }
                     new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
-                    .setExpression(tab.getTag());
+                            .setExpression(tab.getTag());
                 }
             }
 
@@ -389,9 +390,9 @@ public final class LayoutFileOperations {
         Rectangle bounds = widget.getPreferredBounds();
         Insets insets = widget.getBorder().getInsets();
         int[][] location = new int[][] { {
-            bounds.x + preferredLocation.x + insets.left,
-            bounds.y + preferredLocation.y + insets.top,
-            bounds.width - insets.right, bounds.height - insets.bottom } };
+                bounds.x + preferredLocation.x + insets.left,
+                bounds.y + preferredLocation.y + insets.top,
+                bounds.width - insets.right, bounds.height - insets.bottom } };
 
         IntMatrixToken locationToken = null;
         try {
@@ -496,7 +497,8 @@ public final class LayoutFileOperations {
                 element.removeAttribute(proxy);
             }
 
-            SinkOrSource sinkOrSource = isSinkOrSource((ComponentEntity) element);
+            SinkOrSource sinkOrSource = isSinkOrSource(
+                    (ComponentEntity) element);
 
             try {
                 model.workspace().getWriteAccess();
@@ -507,8 +509,8 @@ public final class LayoutFileOperations {
                             entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
                     parameter.setVisibility(Settable.NONE);
                     parameter.setPersistent(true);
-                    parameter
-                    .setExpression(ServerUtility.PROXY_SOURCE_ATTRIBUTE);
+                    parameter.setExpression(
+                            ServerUtility.PROXY_SOURCE_ATTRIBUTE);
                 } else if (sinkOrSource == SinkOrSource.SINK) {
                     SingletonParameter parameter = new SingletonParameter(
                             entityInModel, ServerUtility.REMOTE_OBJECT_TAG);

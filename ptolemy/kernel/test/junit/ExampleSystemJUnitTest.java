@@ -63,8 +63,8 @@ public class ExampleSystemJUnitTest {
                 + "R5: P4 P5 " + _eol + "R6: P3 P6 " + _eol + "R7: P7 P13 P11 "
                 + _eol + "R8: P9 P8 " + _eol + "R9: P10 P11 " + _eol
                 + "R10: P8 P12 " + _eol + "R11: P12 P13 " + _eol
-                + "R12: P14 P13 " + _eol + "" + _eol + "deepLinkedPorts:"
-                + _eol + "R1: P1 " + _eol + "R2: P1 P9 P14 P10 P5 P3 " + _eol
+                + "R12: P14 P13 " + _eol + "" + _eol + "deepLinkedPorts:" + _eol
+                + "R1: P1 " + _eol + "R2: P1 P9 P14 P10 P5 P3 " + _eol
                 + "R3: P1 P2 " + _eol + "R4: P1 P3 P9 P14 P10 " + _eol
                 + "R5: P1 P3 P5 " + _eol + "R6: P3 P6 " + _eol
                 + "R7: P1 P3 P9 P14 P10 " + _eol + "R8: P9 P1 P3 P10 " + _eol
@@ -75,8 +75,8 @@ public class ExampleSystemJUnitTest {
                 + _eol + "P2: P1 " + _eol + "P3: P1 P4 P6 " + _eol
                 + "P4: P7 P5 " + _eol + "P5: P4 " + _eol + "P6: P3 " + _eol
                 + "P7: P13 P11 " + _eol + "P8: P12 " + _eol + "P9: P8 " + _eol
-                + "P10: P11 " + _eol + "P11: P7 P13 " + _eol + "P12: P8 "
-                + _eol + "P13: P7 P11 " + _eol + "P14: P13 " + _eol + "" + _eol
+                + "P10: P11 " + _eol + "P11: P7 P13 " + _eol + "P12: P8 " + _eol
+                + "P13: P7 P11 " + _eol + "P14: P13 " + _eol + "" + _eol
                 + "deepConnectedPorts:" + _eol + "P0: " + _eol
                 + "P1: P9 P14 P10 P5 P3 P2 " + _eol + "P2: P1 " + _eol
                 + "P3: P1 P9 P14 P10 P5 P6 " + _eol + "P4: P9 P14 P10 P5 "
@@ -93,7 +93,7 @@ public class ExampleSystemJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-        .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
+                .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
     }
 
     private static String _eol = System.getProperty("line.separator");

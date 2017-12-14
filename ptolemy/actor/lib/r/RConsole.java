@@ -72,6 +72,7 @@ public class RConsole implements RMainLoopCallbacks {
      * @param text The text to by written.
      * @param oType Ignored in this method.
      */
+    @Override
     public void rWriteConsole(Rengine re, String text, int oType) {
         _consoleText.append(text);
     }
@@ -84,6 +85,7 @@ public class RConsole implements RMainLoopCallbacks {
      *  @param re The R engine
      *  @param which Unknown.
      */
+    @Override
     public void rBusy(Rengine re, int which) {
         System.out.println("rBusy(" + which + ")");
     }
@@ -95,6 +97,7 @@ public class RConsole implements RMainLoopCallbacks {
      *  @param addToHistory unknown
      *  @return the string read from the console
      */
+    @Override
     public String rReadConsole(Rengine re, String prompt, int addToHistory) {
         return null;
     }
@@ -103,6 +106,7 @@ public class RConsole implements RMainLoopCallbacks {
      * @param re The R engine
      * @param message The message
      */
+    @Override
     public void rShowMessage(Rengine re, String message) {
         System.out.println("rShowMessage \"" + message + "\"");
     }
@@ -113,6 +117,7 @@ public class RConsole implements RMainLoopCallbacks {
      * @param newFile unused
      * @return The file name.
      */
+    @Override
     public String rChooseFile(Rengine re, int newFile) {
         return "";
     }
@@ -121,6 +126,7 @@ public class RConsole implements RMainLoopCallbacks {
      * In this class, do nothing.
      * @param re The R engine
      */
+    @Override
     public void rFlushConsole(Rengine re) {
     }
 
@@ -129,6 +135,7 @@ public class RConsole implements RMainLoopCallbacks {
      * @param re The R engine
      * @param filename The file that contains the history.
      */
+    @Override
     public void rLoadHistory(Rengine re, String filename) {
     }
 
@@ -137,6 +144,7 @@ public class RConsole implements RMainLoopCallbacks {
      * @param re The R engine
      * @param filename the file in which to save the history.
      */
+    @Override
     public void rSaveHistory(Rengine re, String filename) {
     }
 

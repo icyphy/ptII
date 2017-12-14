@@ -136,8 +136,8 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
         if (basicGraphFrame != null) {
             controller = basicGraphFrame.getJGraph().getGraphPane()
                     .getGraphController();
-            Point componentLocation = basicGraphFrame.getJGraph()
-                    .getGraphPane().getCanvas().getLocationOnScreen();
+            Point componentLocation = basicGraphFrame.getJGraph().getGraphPane()
+                    .getCanvas().getLocationOnScreen();
 
             AffineTransform current = basicGraphFrame.getJGraph()
                     .getCanvasPane().getTransformContext().getTransform();
@@ -211,8 +211,9 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
                 public void run() {
                     Interactor interactor = null;
                     try {
-                        interactor = controllerFinal.getEdgeController(
-                                new Object()).getEdgeInteractor();
+                        interactor = controllerFinal
+                                .getEdgeController(new Object())
+                                .getEdgeInteractor();
                     } catch (Exception ex) {
                         interactor = controllerFinal.getNodeController(null)
                                 .getNodeInteractor();

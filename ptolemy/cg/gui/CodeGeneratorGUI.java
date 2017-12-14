@@ -88,8 +88,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
      *  @exception NameDuplicationException If a name collision occurs.
      */
     public CodeGeneratorGUI(final GenericCodeGenerator codeGenerator,
-            Tableau tableau) throws IllegalActionException,
-            NameDuplicationException {
+            Tableau tableau)
+            throws IllegalActionException, NameDuplicationException {
         super(codeGenerator, tableau);
 
         this._statusBar.setVisible(false);
@@ -114,7 +114,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                 "NOTE: This is a highly preliminary "
                         + "code generator facility, with many "
                         + "limitations.  It is best viewed as "
-                        + "a concept demonstration.", 2, 10);
+                        + "a concept demonstration.",
+                2, 10);
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
@@ -246,10 +247,11 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                 // FIXME: Customize to the particular code generator.
                 // Use Thread.currentThread() so that this code will
                 // work under WebStart.
-                URL infoURL = ClassUtilities.getResource("ptolemy/cg/README.html");
+                URL infoURL = ClassUtilities
+                        .getResource("ptolemy/cg/README.html");
 
-                configuration
-                .openModel(null, infoURL, infoURL.toExternalForm());
+                configuration.openModel(null, infoURL,
+                        infoURL.toExternalForm());
             } catch (Exception ex) {
                 throw new InternalErrorException(getModel(), ex,
                         "Failed to open doc/codegen.htm: ");

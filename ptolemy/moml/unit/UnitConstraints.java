@@ -101,8 +101,8 @@ public class UnitConstraints implements UnitPresentation {
                 UnitAttribute attr = (UnitAttribute) unitsAttrs.get(j);
 
                 if (attr.getName().equals("_unitConstraints")) {
-                    actorConstraints.addAll(attr.getUnitConstraints()
-                            .getConstraints());
+                    actorConstraints
+                            .addAll(attr.getUnitConstraints().getConstraints());
                 }
             }
 
@@ -149,17 +149,15 @@ public class UnitConstraints implements UnitPresentation {
                 }
             }
 
-            if (inputPort != null
-                    && _bindings.bindingExists(inputPort.getName(inputPort
-                            .getContainer().getContainer()))) {
+            if (inputPort != null && _bindings.bindingExists(inputPort
+                    .getName(inputPort.getContainer().getContainer()))) {
                 Iterator portsIterator = ports.iterator();
 
                 while (portsIterator.hasNext()) {
                     IOPort outPort = (IOPort) portsIterator.next();
 
-                    if (outPort != inputPort
-                            && _bindings.bindingExists(outPort.getName(outPort
-                                    .getContainer().getContainer()))) {
+                    if (outPort != inputPort && _bindings.bindingExists(outPort
+                            .getName(outPort.getContainer().getContainer()))) {
                         UnitExpr lhsUExpr = new UnitExpr(outPort);
                         UnitExpr rhsUExpr = new UnitExpr(inputPort);
                         UnitEquation uC = new UnitEquation(lhsUExpr, rhsUExpr);
@@ -188,8 +186,8 @@ public class UnitConstraints implements UnitPresentation {
         Solution solution = null;
 
         if (_debug) {
-            System.out.println("Constraints\n" + descriptiveForm()
-                    + "\\Constraints");
+            System.out.println(
+                    "Constraints\n" + descriptiveForm() + "\\Constraints");
         }
 
         Solution G = new Solution(_model, _bindings.variableLabels(),
@@ -236,8 +234,8 @@ public class UnitConstraints implements UnitPresentation {
         Vector solutions = null;
 
         if (_debug) {
-            System.out.println("Constraints\n" + descriptiveForm()
-                    + "\\Constraints");
+            System.out.println(
+                    "Constraints\n" + descriptiveForm() + "\\Constraints");
         }
 
         Solution G = new Solution(_model, _bindings.variableLabels(),
@@ -250,8 +248,8 @@ public class UnitConstraints implements UnitPresentation {
             System.out.println(G.headerInfo());
 
             for (int i = 0; i < solutions.size(); i++) {
-                System.out.println(((Solution) solutions.elementAt(i))
-                        .stateInfo());
+                System.out.println(
+                        ((Solution) solutions.elementAt(i)).stateInfo());
             }
         }
 

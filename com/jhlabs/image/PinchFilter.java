@@ -154,8 +154,9 @@ public class PinchFilter extends TransformFilter {
         height = src.getHeight();
         icentreX = width * centreX;
         icentreY = height * centreY;
-        if (radius == 0)
+        if (radius == 0) {
             radius = Math.min(icentreX, icentreY);
+        }
         radius2 = radius * radius;
         return super.filter(src, dst);
     }

@@ -79,8 +79,8 @@ public class TestSharedParameter extends SharedParameter {
      *   a parameter already in the container.
      */
     public TestSharedParameter(NamedObj container, String name,
-            Class containerClass) throws IllegalActionException,
-            NameDuplicationException {
+            Class containerClass)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, containerClass, "");
     }
 
@@ -102,7 +102,7 @@ public class TestSharedParameter extends SharedParameter {
      */
     public TestSharedParameter(NamedObj container, String name,
             Class containerClass, String defaultValue)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, containerClass, defaultValue);
     }
 

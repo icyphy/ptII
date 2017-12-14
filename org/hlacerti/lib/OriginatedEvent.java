@@ -37,43 +37,46 @@ import ptolemy.actor.util.TimedEvent;
  * @author David Come
  * @version $Id$
  */
-public class OriginatedEvent extends TimedEvent{
+public class OriginatedEvent extends TimedEvent {
 
+    /**
+     * Constructs an OriginatedEvent object.
+     *
+     * @param time      a Time object
+     * @param obj       an Object ...
+     * @param federate  an int specifying ...
+     */
+    public OriginatedEvent(Time time, Object obj, int federate) {
+        super(time, obj);
+        objectID = federate;
+    }
 
-        /**
-         * Constructs an OriginatedEvent object.
-         *
-         * @param time      a Time object
-         * @param obj       an Object ...
-         * @param federate  an int specifying ...
-         */
-        public OriginatedEvent(Time time, Object obj,int federate) {
-                super(time, obj);
-                objectID = federate;
-        }
+    /** The object id which is responsible for the UAV. */
+    public int objectID;
 
-        /** The object id which is responsible for the UAV. */
-        public int objectID;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + objectID;
+        return result;
+    }
 
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = super.hashCode();
-            result = prime * result + objectID;
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (!super.equals(obj))
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            OriginatedEvent other = (OriginatedEvent) obj;
-            if (objectID != other.objectID)
-                return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        OriginatedEvent other = (OriginatedEvent) obj;
+        if (objectID != other.objectID) {
+            return false;
+        }
+        return true;
+    }
 }

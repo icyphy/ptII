@@ -94,10 +94,10 @@ public class StringToken extends AbstractConvertibleToken {
                 // 1. Substitute a special word for every instance of \"
                 String backslashed = _value.replaceAll("\\\\\"",
                         "MaGiCBakSlash");
-
+        
                 // 2. Substitute \" for every remaining "
                 String backslashed2 = backslashed.replaceAll("\"", "\\\\\"");
-
+        
                 // 3. Add the leading and trailing " and substitute
                 //    \" for every instance of the special word
                 _toString = "\""
@@ -152,8 +152,8 @@ public class StringToken extends AbstractConvertibleToken {
 
         // The argument is below StringToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "string"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "string"));
     }
 
     /** Return true if the argument is an instance of StringToken with the
@@ -290,8 +290,8 @@ public class StringToken extends AbstractConvertibleToken {
      */
     @Override
     protected Token _divide(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("divide", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("divide", this, rightArgument));
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -322,8 +322,8 @@ public class StringToken extends AbstractConvertibleToken {
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         StringToken convertedArgument = (StringToken) rightArgument;
-        return BooleanToken.getInstance(toString().compareTo(
-                convertedArgument.toString()) == 0);
+        return BooleanToken.getInstance(
+                toString().compareTo(convertedArgument.toString()) == 0);
     }
 
     /** Return a new token whose value is the value of this token
@@ -337,8 +337,8 @@ public class StringToken extends AbstractConvertibleToken {
      */
     @Override
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("modulo", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -354,8 +354,8 @@ public class StringToken extends AbstractConvertibleToken {
     @Override
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("multiply", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("multiply", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -370,8 +370,8 @@ public class StringToken extends AbstractConvertibleToken {
     @Override
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("subtract", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

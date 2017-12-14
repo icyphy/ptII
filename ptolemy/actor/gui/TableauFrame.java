@@ -141,9 +141,8 @@ public class TableauFrame extends Top {
                 tableau.setFrame(this);
             }
         } catch (IllegalActionException e) {
-            throw new InternalErrorException("This frame of class "
-                    + getClass() + " is not compatible with tableau "
-                    + tableau.getName());
+            throw new InternalErrorException("This frame of class " + getClass()
+                    + " is not compatible with tableau " + tableau.getName());
         }
 
         setTableau(tableau);
@@ -353,22 +352,19 @@ public class TableauFrame extends Top {
                     if (topPackClass == null) {
                         throw new ClassNotFoundException(
                                 "Failed to find class \"" + topPackClass
-                                + "\", Class.forName() returned null.");
+                                        + "\", Class.forName() returned null.");
                     }
                     _topPack = (TopPack) topPackClass.newInstance();
                     // Do the alternate pack
                     _topPack.pack(this, _packCalled);
                     _packCalled = true;
                 } catch (Exception ex) {
-                    throw new InternalErrorException(
-                            configuration,
-                            ex,
+                    throw new InternalErrorException(configuration, ex,
                             "Could not get the alternate top pack class \""
                                     + topPackClassName
                                     + "\" named in the configuration by the \""
                                     + alternateTopPackClass
-                                    + "\" attribute because: "
-                                    + ex.getMessage()
+                                    + "\" attribute because: " + ex.getMessage()
                                     + "\nPlease check your configuration and try again.");
                 }
             } else {
@@ -498,8 +494,8 @@ public class TableauFrame extends Top {
             // is capable of creating blank effigies.
             final Configuration configuration = getConfiguration();
             if (configuration == null) {
-                System.out
-                .println("TableauFrame._addMenus: configuration == null?");
+                System.out.println(
+                        "TableauFrame._addMenus: configuration == null?");
                 return;
             }
             EffigyFactory effigyFactory = (EffigyFactory) configuration
@@ -554,7 +550,7 @@ public class TableauFrame extends Top {
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(KeyStroke.getKeyStroke(
                                 KeyEvent.VK_N, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
+                                        .getMenuShortcutKeyMask()));
                     }
                     ((JMenu) _fileMenuItems[_NEW_MENU_INDEX]).add(item);
                 }
@@ -581,8 +577,8 @@ public class TableauFrame extends Top {
                     _menubar.add(_viewMenu);
 
                     ViewMenuListener viewMenuListener = new ViewMenuListener();
-                    Iterator factories = _factoryContainer.attributeList(
-                            TableauFactory.class).iterator();
+                    Iterator factories = _factoryContainer
+                            .attributeList(TableauFactory.class).iterator();
 
                     while (factories.hasNext()) {
                         TableauFactory factory = (TableauFactory) factories
@@ -617,8 +613,8 @@ public class TableauFrame extends Top {
 
         // Record window properties, if appropriate.
         if (_getPlaceable() instanceof NamedObj) {
-            Iterator properties = ((NamedObj) _getPlaceable()).attributeList(
-                    WindowPropertiesAttribute.class).iterator();
+            Iterator properties = ((NamedObj) _getPlaceable())
+                    .attributeList(WindowPropertiesAttribute.class).iterator();
             while (properties.hasNext()) {
                 WindowPropertiesAttribute windowProperties = (WindowPropertiesAttribute) properties
                         .next();
@@ -627,8 +623,8 @@ public class TableauFrame extends Top {
             // Regrettably, have to also record the size of the contents
             // because in Swing, setSize() methods do not set the size.
             // Only the first component size is recorded.
-            properties = ((NamedObj) _getPlaceable()).attributeList(
-                    SizeAttribute.class).iterator();
+            properties = ((NamedObj) _getPlaceable())
+                    .attributeList(SizeAttribute.class).iterator();
             while (properties.hasNext()) {
                 SizeAttribute size = (SizeAttribute) properties.next();
                 Component[] components = getContentPane().getComponents();
@@ -681,11 +677,8 @@ public class TableauFrame extends Top {
                 if (!effigy.isPersistent()) {
                     if (_debugClosing) {
                         NamedObj model = ((PtolemyEffigy) effigy).getModel();
-                        System.out
-                        .println("TableauFrame._close(): model "
-                                + model.getFullName()
-                                + " has Effigy "
-                                + effigy
+                        System.out.println("TableauFrame._close(): model "
+                                + model.getFullName() + " has Effigy " + effigy
                                 + ", which is not persistent, so it will not be saved.");
                     }
                     dispose();
@@ -970,10 +963,9 @@ public class TableauFrame extends Top {
                     // Use nameToURL so this will work with WebStart
                     // and so that this class can be extended and we
                     // will still find the gif.
-                    url = FileUtilities
-                            .nameToURL(
-                                    "$CLASSPATH/ptolemy/actor/gui/PtolemyIISmallIcon.gif",
-                                    null, getClass().getClassLoader());
+                    url = FileUtilities.nameToURL(
+                            "$CLASSPATH/ptolemy/actor/gui/PtolemyIISmallIcon.gif",
+                            null, getClass().getClassLoader());
                 } catch (Throwable throwable) {
                     // Ignore, stick with the default
                 }
@@ -1064,8 +1056,8 @@ public class TableauFrame extends Top {
     @Override
     protected void _read(URL url) throws Exception {
         if (_tableau == null) {
-            throw new Exception("No associated Tableau!"
-                    + " Can't open a file.");
+            throw new Exception(
+                    "No associated Tableau!" + " Can't open a file.");
         }
 
         // NOTE: Used to use for the first argument the following, but
@@ -1297,9 +1289,8 @@ public class TableauFrame extends Top {
                     newKey);
 
             if (newTableau != null && newTableau.getFrame() != null) {
-                newTableau.getFrame().setTitle(
-                        StringUtilities.abbreviate(new File(_directory, file
-                                .getName()).toString()));
+                newTableau.getFrame().setTitle(StringUtilities.abbreviate(
+                        new File(_directory, file.getName()).toString()));
 
                 // If the tableau was unnamed before, then we need
                 // to close this window after doing the save.
@@ -1456,8 +1447,9 @@ public class TableauFrame extends Top {
             // dialog so that subclasses can customize this dialog.
             JFileChooser fileDialog = _saveAsJFileChooserComponent();
             if (_initialSaveAsFileName != null) {
-                fileDialog.setSelectedFile(new File(fileDialog
-                        .getCurrentDirectory(), _initialSaveAsFileName));
+                fileDialog.setSelectedFile(
+                        new File(fileDialog.getCurrentDirectory(),
+                                _initialSaveAsFileName));
             }
 
             // Show the dialog.
@@ -1476,8 +1468,8 @@ public class TableauFrame extends Top {
                         return null;
                     }
                 } catch (Throwable throwable) {
-                    throw new RuntimeException("Failed to confirm saving of "
-                            + file, throwable);
+                    throw new RuntimeException(
+                            "Failed to confirm saving of " + file, throwable);
                 }
                 return _saveAsHelperCommon(file,
                         fileDialog.getCurrentDirectory());
@@ -1552,8 +1544,8 @@ public class TableauFrame extends Top {
          * @param configuration The Configuration for this instance
          * of Ptolemy.
          */
-        public MenuItemListener(EffigyFactory factory,
-                ModelDirectory directory, Configuration configuration) {
+        public MenuItemListener(EffigyFactory factory, ModelDirectory directory,
+                Configuration configuration) {
             _factory = factory;
             _directory = directory;
             _configuration = configuration;
@@ -1616,8 +1608,8 @@ public class TableauFrame extends Top {
                         Tableau tableau = factory
                                 .createTableau(tableauContainer);
                         if (tableau == null) {
-                            MessageHandler
-                            .warning("Cannot create view. Perhaps the model needs to be saved first?");
+                            MessageHandler.warning(
+                                    "Cannot create view. Perhaps the model needs to be saved first?");
                         } else {
                             tableau.show();
                         }

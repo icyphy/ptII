@@ -47,7 +47,8 @@ public class BorderFilter extends AbstractBufferedImageOp {
      * @param bottomBorder the bottom border value
      * @param borderPaint the paint with which to fill the border
      */
-    public BorderFilter(int leftBorder, int topBorder, int rightBorder, int bottomBorder, Paint borderPaint) {
+    public BorderFilter(int leftBorder, int topBorder, int rightBorder,
+            int bottomBorder, Paint borderPaint) {
         this.leftBorder = leftBorder;
         this.topBorder = topBorder;
         this.rightBorder = rightBorder;
@@ -170,7 +171,8 @@ public class BorderFilter extends AbstractBufferedImageOp {
                 // Type 0 is not known.
                 type = BufferedImage.TYPE_INT_ARGB;
             }
-            dst = new BufferedImage(width + leftBorder + rightBorder, height + topBorder + bottomBorder, type);
+            dst = new BufferedImage(width + leftBorder + rightBorder,
+                    height + topBorder + bottomBorder, type);
         }
         Graphics2D g = dst.createGraphics();
         if (borderPaint == null) {
@@ -179,17 +181,23 @@ public class BorderFilter extends AbstractBufferedImageOp {
         if (borderPaint != null) {
             g.setPaint(borderPaint);
             // Original was buggy here. Fixed by Edward A. Lee.
-            if (leftBorder > 0)
+            if (leftBorder > 0) {
                 g.fillRect(0, 0, leftBorder, height + topBorder + bottomBorder);
-            if (rightBorder > 0)
-                g.fillRect(width + leftBorder, 0, rightBorder, height + topBorder + bottomBorder);
-            if (topBorder > 0)
+            }
+            if (rightBorder > 0) {
+                g.fillRect(width + leftBorder, 0, rightBorder,
+                        height + topBorder + bottomBorder);
+            }
+            if (topBorder > 0) {
                 g.fillRect(leftBorder, 0, width, topBorder);
-            if (bottomBorder > 0)
+            }
+            if (bottomBorder > 0) {
                 g.fillRect(leftBorder, height + topBorder, width, bottomBorder);
+            }
         }
         // Original was buggy here. Fixed by Edward A. Lee.
-        g.drawRenderedImage(src, AffineTransform.getTranslateInstance(leftBorder, topBorder));
+        g.drawRenderedImage(src,
+                AffineTransform.getTranslateInstance(leftBorder, topBorder));
         g.dispose();
         return dst;
     }

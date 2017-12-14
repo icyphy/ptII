@@ -234,10 +234,10 @@ public class Utilities {
      * @param modelId The Id of the model that needs to be inserted.
      * @return The resulting modelBody after inserting the Id to it.
      */
-    public static String insertIdTagToModelBody(String modelBody, String modelId) {
+    public static String insertIdTagToModelBody(String modelBody,
+            String modelId) {
 
-        String modelIdTag = "<property name=\""
-                + XMLDBModel.DB_MODEL_ID_ATTR
+        String modelIdTag = "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR
                 + "\" "
                 + "class=\"ptolemy.data.expr.StringConstantParameter\" value=\""
                 + modelId + "\"></property>";
@@ -335,9 +335,8 @@ public class Utilities {
                 .newInstance();
 
         if (docBuilderFactory == null) {
-            throw new XMLDBModelParsingException(
-                    "Faild to parse the xml - "
-                            + "could not create a new instance of DocumentBuilderFactory.");
+            throw new XMLDBModelParsingException("Faild to parse the xml - "
+                    + "could not create a new instance of DocumentBuilderFactory.");
         }
 
         docBuilderFactory.setIgnoringElementContentWhitespace(true);
@@ -347,9 +346,8 @@ public class Utilities {
             docBuilder = docBuilderFactory.newDocumentBuilder();
 
             if (docBuilder == null) {
-                throw new XMLDBModelParsingException(
-                        "Faild to parse the xml - "
-                                + "could not create a new instance of DocumentBuilder.");
+                throw new XMLDBModelParsingException("Faild to parse the xml - "
+                        + "could not create a new instance of DocumentBuilder.");
             }
 
             InputSource inputSource = new InputSource();
@@ -360,15 +358,15 @@ public class Utilities {
 
         } catch (ParserConfigurationException e) {
 
-            throw new XMLDBModelParsingException("Failed to parse the model - "
-                    + e.getMessage(), e);
+            throw new XMLDBModelParsingException(
+                    "Failed to parse the model - " + e.getMessage(), e);
 
         } catch (SAXException e) {
-            throw new XMLDBModelParsingException("Failed to parse the model - "
-                    + e.getMessage(), e);
+            throw new XMLDBModelParsingException(
+                    "Failed to parse the model - " + e.getMessage(), e);
         } catch (IOException e) {
-            throw new XMLDBModelParsingException("Failed to parse the model - "
-                    + e.getMessage(), e);
+            throw new XMLDBModelParsingException(
+                    "Failed to parse the model - " + e.getMessage(), e);
         }
 
         return firstNode;

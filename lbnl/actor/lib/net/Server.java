@@ -167,15 +167,13 @@ public class Server {
      */
     private void _write(StringBuffer strBuf) throws IOException {
         if (cliSoc == null) {
-            System.out
-                    .println("lbnl.actor.lib.net.Server._write(\""
-                            + strBuf
-                            + "\"): the client socket is null, this can happen if _write() "
-                            + "is called before _read(), such as when exporting to JNLP.");
+            System.out.println("lbnl.actor.lib.net.Server._write(\"" + strBuf
+                    + "\"): the client socket is null, this can happen if _write() "
+                    + "is called before _read(), such as when exporting to JNLP.");
             return;
         }
-        BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(
-                cliSoc.getOutputStream()));
+        BufferedWriter wr = new BufferedWriter(
+                new OutputStreamWriter(cliSoc.getOutputStream()));
         final String str = new String(strBuf);
         // We write 8192 characters at once since the client only
         // receives that many characters, even if setsockopt is called
@@ -265,9 +263,9 @@ public class Server {
             dblVal = new double[nDbl];
             // check sufficient array length
             if (nDbl != dblVal.length) {
-                throw new IOException("Received " + nDbl
-                        + " doubles, but expected " + dblVal.length
-                        + " elements.");
+                throw new IOException(
+                        "Received " + nDbl + " doubles, but expected "
+                                + dblVal.length + " elements.");
             }
             for (int i = 0; i < nDbl; i++) {
                 dblVal[i] = Double.parseDouble(ele[6 + i]);

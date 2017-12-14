@@ -112,15 +112,15 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
             Parameter attributeToEdit = (Parameter) object.getAttribute(
                     parameterName.getExpression(), Parameter.class);
             if (attributeToEdit == null) {
-                MessageHandler.error("No such parameter: "
-                        + parameterName.getExpression());
+                MessageHandler.error(
+                        "No such parameter: " + parameterName.getExpression());
                 return;
             }
             Token value = attributeToEdit.getToken();
             if (!(value instanceof ArrayToken)) {
                 MessageHandler
-                .error("Parameter does not contain an array token: "
-                        + attributeToEdit.toString());
+                        .error("Parameter does not contain an array token: "
+                                + attributeToEdit.toString());
                 return;
             }
             ArrayOfRecordsPane pane = new ArrayOfRecordsPane();

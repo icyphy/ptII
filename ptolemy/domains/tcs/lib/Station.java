@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.tcs.lib;
 
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -59,6 +58,5 @@ public class Station extends AbstractStation {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-
 
 }

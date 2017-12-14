@@ -74,7 +74,8 @@ public interface AccessorOrchestrator extends Nameable {
      *  @param function The function to invoke.
      *  @exception IllegalActionException If the request cannot be honored.
      */
-    public void invokeCallback(final Runnable function) throws IllegalActionException;
+    public void invokeCallback(final Runnable function)
+            throws IllegalActionException;
 
     /** Report an error.
      *  @param message The error message.
@@ -94,7 +95,8 @@ public interface AccessorOrchestrator extends Nameable {
      *  @exception IllegalActionException If the director cannot respect the request.
      *  @see #clearTimeout(Object)
      */
-    public Object setInterval(Runnable function, int milliseconds) throws IllegalActionException;
+    public Object setInterval(Runnable function, int milliseconds)
+            throws IllegalActionException;
 
     /** Invoke the specified function after the specified amount of time.
      *  @param function The function to invoke.
@@ -103,7 +105,8 @@ public interface AccessorOrchestrator extends Nameable {
      *  @exception IllegalActionException If the director cannot respect the request.
      *  @see #clearTimeout(Object)
      */
-    public Object setTimeout(Runnable function, int milliseconds) throws IllegalActionException;
+    public Object setTimeout(Runnable function, int milliseconds)
+            throws IllegalActionException;
 
     /** Cancel all pending callbacks and stop responding to future
      * callbacks.

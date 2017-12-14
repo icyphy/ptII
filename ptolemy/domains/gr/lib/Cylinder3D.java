@@ -136,8 +136,8 @@ public class Cylinder3D extends GRShadedShape {
                 float heightValue = (float) ((DoubleToken) height.getToken())
                         .doubleValue();
 
-                _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
-                        radiusValue));
+                _scaleTransform.setScale(
+                        new Vector3d(radiusValue, heightValue, radiusValue));
 
                 // The following seems to be needed so the new scale
                 // takes effect.
@@ -192,8 +192,8 @@ public class Cylinder3D extends GRShadedShape {
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
-            _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
-                    radiusValue));
+            _scaleTransform.setScale(
+                    new Vector3d(radiusValue, heightValue, radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(cylinder);
             _containedNode = scaler;

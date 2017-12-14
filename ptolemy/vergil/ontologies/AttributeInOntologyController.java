@@ -87,8 +87,8 @@ public class AttributeInOntologyController extends AttributeWithIconController {
         List menuItemFactories = _menuFactory.menuItemFactoryList();
         for (Object menuItemFactory : menuItemFactories) {
             if (menuItemFactory instanceof MenuActionFactory) {
-                if (((MenuActionFactory) menuItemFactory).substitute(
-                        _listenToAction, _listenToAction)) {
+                if (((MenuActionFactory) menuItemFactory)
+                        .substitute(_listenToAction, _listenToAction)) {
                     return (MenuActionFactory) menuItemFactory;
                 }
             }

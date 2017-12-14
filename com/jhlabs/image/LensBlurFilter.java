@@ -113,11 +113,14 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
         int tileWidth = 128;
         int tileHeight = tileWidth;
 
-        tileWidth = iradius < 32 ? Math.min(128, width + 2 * iradius) : Math.min(256, width + 2 * iradius);
-        tileHeight = iradius < 32 ? Math.min(128, height + 2 * iradius) : Math.min(256, height + 2 * iradius);
+        tileWidth = iradius < 32 ? Math.min(128, width + 2 * iradius)
+                : Math.min(256, width + 2 * iradius);
+        tileHeight = iradius < 32 ? Math.min(128, height + 2 * iradius)
+                : Math.min(256, height + 2 * iradius);
 
-        if (dst == null)
+        if (dst == null) {
             dst = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        }
 
         while (rows < tileHeight) {
             rows *= 2;
@@ -159,8 +162,9 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                         double a = Math.atan2(dy, dx) + rangle;
                         a = ImageMath.mod(a, polyAngle * 2) - polyAngle;
                         f = Math.cos(a) * polyScale;
-                    } else
+                    } else {
                         f = 1;
+                    }
                     f = f * r < radius ? 1 : 0;
                 }
                 total += (float) f;
@@ -182,8 +186,10 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
 
         fft.transform2D(mask[0], mask[1], w, h, true);
 
-        for (int tileY = -iradius; tileY < height; tileY += tileHeight - 2 * iradius) {
-            for (int tileX = -iradius; tileX < width; tileX += tileWidth - 2 * iradius) {
+        for (int tileY = -iradius; tileY < height; tileY += tileHeight
+                - 2 * iradius) {
+            for (int tileX = -iradius; tileX < width; tileX += tileWidth
+                    - 2 * iradius) {
                 //                System.out.println("Tile: "+tileX+" "+tileY+" "+tileWidth+" "+tileHeight);
 
                 // Clip the tile to the image bounds
@@ -199,10 +205,12 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                     fy -= ty;
                     ty = 0;
                 }
-                if (tx + tw > width)
+                if (tx + tw > width) {
                     tw = width - tx;
-                if (ty + th > height)
+                }
+                if (ty + th > height) {
                     th = height - ty;
+                }
                 src.getRGB(tx, ty, tw, th, rgb, fy * w + fx, w);
 
                 // Create a float array from the pixels. Any pixels off the edge of the source image get duplicated from the edge.
@@ -210,22 +218,24 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                 for (int y = 0; y < h; y++) {
                     int imageY = y + tileY;
                     int j;
-                    if (imageY < 0)
+                    if (imageY < 0) {
                         j = fy;
-                    else if (imageY > height)
+                    } else if (imageY > height) {
                         j = fy + th - 1;
-                    else
+                    } else {
                         j = y;
+                    }
                     j *= w;
                     for (int x = 0; x < w; x++) {
                         int imageX = x + tileX;
                         int k;
-                        if (imageX < 0)
+                        if (imageX < 0) {
                             k = fx;
-                        else if (imageX > width)
+                        } else if (imageX > width) {
                             k = fx + tw - 1;
-                        else
+                        } else {
                             k = x;
+                        }
                         k += j;
 
                         ar[0][i] = ((rgb[k] >> 24) & 0xff);
@@ -234,15 +244,18 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                         float b = (rgb[k] & 0xff);
 
                         // Bloom...
-                        if (r > bloomThreshold)
+                        if (r > bloomThreshold) {
                             r *= bloom;
+                        }
                         //                                                        r = bloomThreshold + (r-bloomThreshold) * bloom;
-                        if (g > bloomThreshold)
+                        if (g > bloomThreshold) {
                             g *= bloom;
+                        }
                         //                                                        g = bloomThreshold + (g-bloomThreshold) * bloom;
-                        if (b > bloomThreshold)
+                        if (b > bloomThreshold) {
                             b *= bloom;
-                        //                                                        b = bloomThreshold + (b-bloomThreshold) * bloom;
+                            //                                                        b = bloomThreshold + (b-bloomThreshold) * bloom;
+                        }
 
                         ar[1][i] = r;
                         gb[0][i] = g;
@@ -297,12 +310,15 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                         int b = (int) gb[1][xm];
 
                         // Clamp high pixels due to blooming
-                        if (r > 255)
+                        if (r > 255) {
                             r = 255;
-                        if (g > 255)
+                        }
+                        if (g > 255) {
                             g = 255;
-                        if (b > 255)
+                        }
+                        if (b > 255) {
                             b = 255;
+                        }
                         int argb = (a << 24) | (r << 16) | (g << 8) | b;
                         rgb[index++] = argb;
                     }
@@ -313,10 +329,12 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                 ty = tileY + iradius;
                 tw = tileWidth - 2 * iradius;
                 th = tileHeight - 2 * iradius;
-                if (tx + tw > width)
+                if (tx + tw > width) {
                     tw = width - tx;
-                if (ty + th > height)
+                }
+                if (ty + th > height) {
                     th = height - ty;
+                }
                 dst.setRGB(tx, ty, tw, th, rgb, iradius * w + iradius, w);
             }
         }

@@ -368,9 +368,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         try {
             link = new Link();
         } catch (Exception e) {
-            throw new InternalErrorException("Failed to create "
-                    + "new link, even though one does not " + "already exist:"
-                    + e.getMessage());
+            throw new InternalErrorException(
+                    "Failed to create " + "new link, even though one does not "
+                            + "already exist:" + e.getMessage());
         }
 
         link.setRelation(relation);
@@ -551,8 +551,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
-                                    + ((NamedObj) refinement)
-                                    .getName(container) + "\"/>\n");
+                                    + ((NamedObj) refinement).getName(container)
+                                    + "\"/>\n");
                         }
                     }
                 }
@@ -718,8 +718,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                 @Override
                 public void changeExecuted(ChangeRequest change) {
-                    if (GraphUtilities.isPartiallyContainedEdge(edge,
-                            getRoot(), FSMGraphModel.this)) {
+                    if (GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+                            FSMGraphModel.this)) {
                         _linkSet.add(edge);
                     } else {
                         _linkSet.remove(edge);
@@ -822,8 +822,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                 @Override
                 public void changeExecuted(ChangeRequest change) {
-                    if (GraphUtilities.isPartiallyContainedEdge(edge,
-                            getRoot(), FSMGraphModel.this)) {
+                    if (GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+                            FSMGraphModel.this)) {
                         _linkSet.add(edge);
                     } else {
                         _linkSet.remove(edge);
@@ -910,12 +910,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         // again have to be handled specially.
                         double angle;
 
-                        if (headPort.getContainer() != tailPort.getContainer()) {
-                            angle = Math.PI / 5.0 + 1.5
-                                    * Math.atan(0.3 * count);
+                        if (headPort.getContainer() != tailPort
+                                .getContainer()) {
+                            angle = Math.PI / 5.0
+                                    + 1.5 * Math.atan(0.3 * count);
                         } else {
-                            angle = Math.PI / 3.0 - 0.75
-                                    * Math.atan(0.3 * count);
+                            angle = Math.PI / 3.0
+                                    - 0.75 * Math.atan(0.3 * count);
                         }
 
                         // Create the new relation.
@@ -929,9 +930,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 + "\" relation=\"" + relationName + "\"/>\n");
                     }
 
-                    moml.append("<link port=\""
-                            + headPort.getName(ptolemyModel) + "\" relation=\""
-                            + relationName + "\"/>\n");
+                    moml.append("<link port=\"" + headPort.getName(ptolemyModel)
+                            + "\" relation=\"" + relationName + "\"/>\n");
 
                     // Record moml so that we can blow away these
                     // links in case we can't create them
@@ -943,8 +943,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         failmoml.append("<unlink port=\""
                                 + tailPort.getName(ptolemyModel)
                                 + "\" relation=\"" + relationName + "\"/>\n");
-                        failmoml.append("<deleteRelation name=\""
-                                + relationName + "\"/>\n");
+                        failmoml.append("<deleteRelation name=\"" + relationName
+                                + "\"/>\n");
                     }
 
                     // close the context
@@ -1020,16 +1020,15 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                         // Note that we specify no class so that we use the
                         // container's factory method when this gets parsed
-                        moml.append("<relation name=\"" + relationName
-                                + "\"/>\n");
+                        moml.append(
+                                "<relation name=\"" + relationName + "\"/>\n");
                         moml.append("<link port=\""
                                 + headPort.getName(ptolemyModel)
                                 + "\" relation=\"" + relationName + "\"/>\n");
                     }
 
-                    moml.append("<link port=\""
-                            + tailPort.getName(ptolemyModel) + "\" relation=\""
-                            + relationName + "\"/>\n");
+                    moml.append("<link port=\"" + tailPort.getName(ptolemyModel)
+                            + "\" relation=\"" + relationName + "\"/>\n");
 
                     // Record moml so that we can blow away these
                     // links in case we can't create them
@@ -1041,8 +1040,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         failmoml.append("<unlink port=\""
                                 + headPort.getName(ptolemyModel)
                                 + "\" relation=\"" + relationName + "\"/>\n");
-                        failmoml.append("<deleteRelation name=\""
-                                + relationName + "\"/>\n");
+                        failmoml.append("<deleteRelation name=\"" + relationName
+                                + "\"/>\n");
                     }
 
                     // close the context
@@ -1299,8 +1298,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
-                                    + ((NamedObj) refinement)
-                                    .getName(container) + "\"/>\n");
+                                    + ((NamedObj) refinement).getName(container)
+                                    + "\"/>\n");
                         }
                     }
                 }

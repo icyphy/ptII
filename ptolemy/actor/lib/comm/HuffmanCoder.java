@@ -88,8 +88,8 @@ public class HuffmanCoder extends HuffmanBasic {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanCoder newObject = (HuffmanCoder) super.clone(workspace);
         try {
-            newObject.alphabet.setTypeAtLeast(ArrayType
-                    .arrayOf(newObject.input));
+            newObject.alphabet
+                    .setTypeAtLeast(ArrayType.arrayOf(newObject.input));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

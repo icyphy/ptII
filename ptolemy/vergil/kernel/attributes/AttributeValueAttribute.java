@@ -61,8 +61,8 @@ import ptolemy.kernel.util.ValueListener;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class AttributeValueAttribute extends AbstractTextAttribute implements
-ValueListener, Settable {
+public class AttributeValueAttribute extends AbstractTextAttribute
+        implements ValueListener, Settable {
     // NOTE: This attribute only implements settable as a workaround
     // to ensure that it gets notified of the start of execution.
     // Unfortunately, most of the code in the Variable class is
@@ -313,7 +313,8 @@ ValueListener, Settable {
                                         .getInstance();
                                 format.setGroupingUsed(false);
                                 format.setMinimumFractionDigits(1);
-                                format.setRoundingMode(RoundingMode.UNNECESSARY);
+                                format.setRoundingMode(
+                                        RoundingMode.UNNECESSARY);
                                 value = format.format(doubleValue);
                                 // If the value shown is 0.0, make sure it's actually zero.
                                 if (value.equals("0.0") && doubleValue != 0.0) {

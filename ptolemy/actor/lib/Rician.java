@@ -137,10 +137,10 @@ public class Rician extends RandomSource {
                 .getToken()).doubleValue();
         double xRawNum = _random.nextGaussian();
         double yRawNum = _random.nextGaussian();
-        _current = java.lang.Math.sqrt(java.lang.Math.pow(xRawNum
-                * standardDeviationValue + xMeanValue, 2)
-                + java.lang.Math.pow(yRawNum * standardDeviationValue
-                        + yMeanValue, 2));
+        _current = java.lang.Math.sqrt(java.lang.Math
+                .pow(xRawNum * standardDeviationValue + xMeanValue, 2)
+                + java.lang.Math
+                        .pow(yRawNum * standardDeviationValue + yMeanValue, 2));
     }
 
     ///////////////////////////////////////////////////////////////////

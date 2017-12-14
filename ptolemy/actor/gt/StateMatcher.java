@@ -71,8 +71,8 @@ import ptolemy.vergil.gt.StateMatcherController;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class StateMatcher extends State implements GTEntity, TypedActor,
-ValueListener {
+public class StateMatcher extends State
+        implements GTEntity, TypedActor, ValueListener {
 
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -337,8 +337,7 @@ ValueListener {
      */
     @Override
     public boolean match(NamedObj object) {
-        return object instanceof State
-                || object.getClass().getName()
+        return object instanceof State || object.getClass().getName()
                 .equals("ptolemy.domains.modal.kernel.State");
     }
 

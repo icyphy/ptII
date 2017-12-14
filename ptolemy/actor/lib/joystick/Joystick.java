@@ -98,8 +98,8 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
 
         isPolling = new Parameter(this, "isPolling", new BooleanToken("true"));
 
-        pollingInterval = new Parameter(this, "pollingInterval", new IntToken(
-                "50"));
+        pollingInterval = new Parameter(this, "pollingInterval",
+                new IntToken("50"));
 
         x = new TypedIOPort(this, "x", false, true);
         x.setTypeEquals(BaseType.DOUBLE);

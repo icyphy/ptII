@@ -53,8 +53,8 @@ import javax.swing.ListSelectionModel;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DndList extends JList implements DragSourceListener,
-DragGestureListener {
+public class DndList extends JList
+        implements DragSourceListener, DragGestureListener {
     /**
      *
      */
@@ -82,11 +82,13 @@ DragGestureListener {
     }
 
     @Override
-    public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
+    public void dragDropEnd(
+            java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
     }
 
     @Override
-    public void dragEnter(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
+    public void dragEnter(
+            java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
     @Override

@@ -86,14 +86,13 @@ public class MidiKeyToNote extends TypedAtomicActor {
      */
     public TypedIOPort midiKey;
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (midiKey.hasToken(0)) {
             int key = ((IntToken) midiKey.get(0)).intValue();
-            letterNote.send(
-                    0,
-                    new StringToken(MusicSpecs.translateKeyToLetterNote(key,
-                            true)));
+            letterNote.send(0, new StringToken(
+                    MusicSpecs.translateKeyToLetterNote(key, true)));
         }
     }
 }

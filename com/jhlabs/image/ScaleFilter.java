@@ -50,11 +50,13 @@ public class ScaleFilter extends AbstractBufferedImageOp {
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
         if (dst == null) {
             ColorModel dstCM = src.getColorModel();
-            dst = new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(width, height),
+            dst = new BufferedImage(dstCM,
+                    dstCM.createCompatibleWritableRaster(width, height),
                     dstCM.isAlphaPremultiplied(), null);
         }
 
-        Image scaleImage = src.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING);
+        Image scaleImage = src.getScaledInstance(width, height,
+                Image.SCALE_AREA_AVERAGING);
         Graphics2D g = dst.createGraphics();
         g.drawImage(scaleImage, 0, 0, width, height, null);
         g.dispose();

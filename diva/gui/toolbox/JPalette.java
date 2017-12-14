@@ -127,7 +127,8 @@ public class JPalette extends JPanel {
                     Transferable transferable = new StringSelection(dataHandle);
 
                     //initial cursor, transferable, dsource listener
-                    e.startDrag(DragSource.DefaultCopyNoDrop, transferable, dsl);
+                    e.startDrag(DragSource.DefaultCopyNoDrop, transferable,
+                            dsl);
                 } catch (InvalidDnDOperationException idoe) {
                     System.err.println(idoe);
                 }

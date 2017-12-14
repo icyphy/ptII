@@ -81,8 +81,8 @@ public class TDLTask extends TypedCompositeActor {
      * @exception NameDuplicationException
      * @exception IllegalActionException
      */
-    public TDLTask(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public TDLTask(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -157,7 +157,7 @@ public class TDLTask extends TypedCompositeActor {
                 //for (Iterator inputIt = taskRefinementInputs.iterator(); inputIt.hasNext();) {
                 List taskModuleInputs = new ArrayList();
                 taskModuleInputs
-                .addAll(taskRefinementInput.connectedPortList());
+                        .addAll(taskRefinementInput.connectedPortList());
                 taskModuleInputs.retainAll(moduleInputPorts);
                 _readsFromSensors.addAll(taskModuleInputs);
             }
@@ -197,8 +197,8 @@ public class TDLTask extends TypedCompositeActor {
      * @exception NameDuplicationException Thrown if parameters cannot be set.
      * @exception IllegalActionException Thrown if parameters cannot be set.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         SDFDirector director = new SDFDirector(this, "SDF director");
         director.iterations.setExpression("0");
         frequency = new Parameter(this, "frequency");

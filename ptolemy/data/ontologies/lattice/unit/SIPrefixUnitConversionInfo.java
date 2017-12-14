@@ -61,8 +61,8 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      *   in the DimensionRepresentativeConcept container with the same name.
      */
     public SIPrefixUnitConversionInfo(DimensionRepresentativeConcept container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -111,11 +111,11 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
                         baseUnitRecord);
             }
         } else {
-            throw new IllegalActionException(dimension, "The given dimension "
-                    + dimension.getName() + "is not an "
-                    + "SIBaseDimensionRepresentativeConcept or an "
-                    + "SIDerivedDimensionRepresentativeConcept so no "
-                    + "SI prefix units can be created.");
+            throw new IllegalActionException(dimension,
+                    "The given dimension " + dimension.getName() + "is not an "
+                            + "SIBaseDimensionRepresentativeConcept or an "
+                            + "SIDerivedDimensionRepresentativeConcept so no "
+                            + "SI prefix units can be created.");
         }
     }
 
@@ -136,7 +136,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
     private static void createUnitConversionParameterForFactor(
             DimensionRepresentativeConcept dimension, String unitName,
             double unitFactor, RecordToken unitRecord)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         SIPrefixUnitConversionInfo unitParameter = null;
         try {
             unitParameter = new SIPrefixUnitConversionInfo(dimension, unitName);
@@ -155,10 +155,11 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
                 unitParameter.setToken(RecordToken.merge(unitRecord,
                         (RecordToken) unitParameter.getToken()));
             } else {
-                throw new IllegalActionException(dimension, "Error creating "
-                        + "SI unit factor: The dimension is an "
-                        + "SIDerivedDimensionRepresentativeConcept "
-                        + "but the base unitRecord is null.");
+                throw new IllegalActionException(dimension,
+                        "Error creating "
+                                + "SI unit factor: The dimension is an "
+                                + "SIDerivedDimensionRepresentativeConcept "
+                                + "but the base unitRecord is null.");
             }
         }
     }
@@ -172,7 +173,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      */
     private static void removeAllSIPrefixConversionParameters(
             DimensionRepresentativeConcept dimension)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         for (SIPrefixUnitConversionInfo prefixUnitParameter : dimension
                 .attributeList(SIPrefixUnitConversionInfo.class)) {
             try {

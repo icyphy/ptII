@@ -180,7 +180,8 @@ public class VisualModelReference extends ModelReference {
                 _openOnFiringValue = _DO_NOT_OPEN;
             } else if (openOnFiringValue.equals("open in Vergil")) {
                 _openOnFiringValue = _OPEN_IN_VERGIL;
-            } else if (openOnFiringValue.equals("open in Vergil (full screen)")) {
+            } else if (openOnFiringValue
+                    .equals("open in Vergil (full screen)")) {
                 _openOnFiringValue = _OPEN_IN_VERGIL_FULL_SCREEN;
             } else {
                 throw new IllegalActionException(this,
@@ -236,8 +237,8 @@ public class VisualModelReference extends ModelReference {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        VisualModelReference newActor = (VisualModelReference) super
-                .clone(workspace);
+        VisualModelReference newActor = (VisualModelReference) super.clone(
+                workspace);
         newActor._tableau = null;
         newActor._effigy = null;
         return newActor;
@@ -325,7 +326,7 @@ public class VisualModelReference extends ModelReference {
                                         if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                                             if (frame instanceof ExtendedGraphFrame) {
                                                 ((ExtendedGraphFrame) frame)
-                                                .fullScreen();
+                                                        .fullScreen();
                                             }
                                         }
 

@@ -114,8 +114,10 @@ public class Picture extends JPanel {
     @Override
     public synchronized void paint(Graphics graphics) {
         if (_image != null) {
-            ((Graphics2D) graphics).setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_OFF);
-            ((Graphics2D) graphics).setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
+            ((Graphics2D) graphics).setRenderingHint(KEY_ANTIALIASING,
+                    VALUE_ANTIALIAS_OFF);
+            ((Graphics2D) graphics).setRenderingHint(KEY_RENDERING,
+                    VALUE_RENDER_SPEED);
             graphics.drawImage(_image, 0, 0, this);
         }
     }

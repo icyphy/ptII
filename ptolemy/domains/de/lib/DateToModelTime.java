@@ -90,8 +90,7 @@ public class DateToModelTime extends Transformer {
         if (director instanceof DEDirector) {
             if (!((BooleanToken) ((DEDirector) director).synchronizeToRealTime
                     .getToken()).booleanValue()) {
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "This actor can only be used when synchronizeToRealTime "
                                 + "in the director is enabled because a reference to real time is needed to compare "
                                 + "dates.");
@@ -110,15 +109,15 @@ public class DateToModelTime extends Transformer {
             if (input.hasToken(channel)) {
                 DateToken token = (DateToken) input.get(channel);
                 if (_manager == null) {
-                        _manager = ((CompositeActor) getContainer()).getManager();
+                    _manager = ((CompositeActor) getContainer()).getManager();
                 }
                 long realStartTime = _manager.getRealStartTime();
 
-                Time modelTime = new Time(
-                        _director,
-                        (double)(token.getCalendarInstance().getTimeInMillis()
+                Time modelTime = new Time(_director,
+                        (double) (token.getCalendarInstance().getTimeInMillis()
                                 - realStartTime) / 1000); // The default unit of time is seconds.
-                output.send(channel, new DoubleToken(modelTime.getDoubleValue()));
+                output.send(channel,
+                        new DoubleToken(modelTime.getDoubleValue()));
             }
         }
     }

@@ -154,16 +154,12 @@ public class GiottoScheduler extends Scheduler {
         int actorCount = actorList.size();
 
         if (actorCount < 1) {
-            throw new NotSchedulableException(
-                    this,
-                    "Could not get schedule, "
-                            + "the number of deeply contained entities for '"
-                            + compositeActor.getFullName()
-                            + "' is "
-                            + actorCount
-                            + ", which is less than 1."
-                            + "If you have empty composite actors, try adding an  actor"
-                            + "to the inside of one of the empty composite actors.");
+            throw new NotSchedulableException(this, "Could not get schedule, "
+                    + "the number of deeply contained entities for '"
+                    + compositeActor.getFullName() + "' is " + actorCount
+                    + ", which is less than 1."
+                    + "If you have empty composite actors, try adding an  actor"
+                    + "to the inside of one of the empty composite actors.");
         }
 
         int[] frequencyArray = new int[actorCount];
@@ -180,8 +176,8 @@ public class GiottoScheduler extends Scheduler {
                 frequency = GiottoDirector.getActorFrequency((NamedObj) actor,
                         (GiottoDirector) getContainer());
             } catch (IllegalActionException e) {
-                throw new NotSchedulableException(actor, "Invalid frequency: "
-                        + e.getMessage());
+                throw new NotSchedulableException(actor,
+                        "Invalid frequency: " + e.getMessage());
             }
 
             // if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {

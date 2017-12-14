@@ -62,8 +62,8 @@ public class FactorOracleTop extends ModalModel {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    public FactorOracleTop(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public FactorOracleTop(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init(null, 1.0, false, false);
     }
@@ -98,8 +98,8 @@ public class FactorOracleTop extends ModalModel {
      */
     public FactorOracleTop(CompositeEntity container, String name,
             Object[] trainingSequence, double repetitionFactor, boolean pitch,
-            boolean validate) throws NameDuplicationException,
-            IllegalActionException {
+            boolean validate)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init(trainingSequence, repetitionFactor, pitch, validate);
     }
@@ -150,7 +150,7 @@ public class FactorOracleTop extends ModalModel {
      */
     protected FactorOracle _createController(Object[] trainingSequence,
             double repetitionFactor, boolean pitch, boolean validate)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         //return new FactorOracle(this, "_Controller");
         return new FactorOracle(this, "_Controller", trainingSequence,
                 repetitionFactor, pitch, validate);
@@ -164,6 +164,7 @@ public class FactorOracleTop extends ModalModel {
      *   if one of the attributes cannot be cloned.
      *  @return The new Entity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FactorOracleTop newModel = (FactorOracleTop) super.clone(workspace);
         newModel._controller = (FactorOracle) newModel.getEntity("_Controller");
@@ -182,8 +183,8 @@ public class FactorOracleTop extends ModalModel {
     }
 
     private void _init(Object[] trainingSequence, double repetitionFactor,
-            boolean pitch, boolean validate) throws IllegalActionException,
-            NameDuplicationException {
+            boolean pitch, boolean validate)
+            throws IllegalActionException, NameDuplicationException {
 
         setClassName("org.ptolemy.machineImprovisation.FactorOracleTop");
         ComponentEntity controller = getEntity("_Controller");

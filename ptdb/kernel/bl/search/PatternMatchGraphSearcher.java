@@ -68,7 +68,8 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
      *
      * @param dbGraphSearchCriteria The search criteria for the graph matching.
      */
-    public PatternMatchGraphSearcher(DBGraphSearchCriteria dbGraphSearchCriteria) {
+    public PatternMatchGraphSearcher(
+            DBGraphSearchCriteria dbGraphSearchCriteria) {
         _dbGraphSearchCriteria = dbGraphSearchCriteria;
 
         _isIndependent = false;
@@ -87,7 +88,8 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
      */
 
     @Override
-    protected void _search() throws DBConnectionException, DBExecutionException {
+    protected void _search()
+            throws DBConnectionException, DBExecutionException {
 
         Pattern pattern = _dbGraphSearchCriteria.getPattern();
 

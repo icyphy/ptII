@@ -130,8 +130,8 @@ public class ArrayAppend extends Transformer {
                     arraysToAppend[i] = arrayToken;
                     resultWidth += arrayToken.length();
                 } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this, ex, "Cannot cast \""
-                            + token + "\" to an ArrayToken");
+                    throw new IllegalActionException(this, ex,
+                            "Cannot cast \"" + token + "\" to an ArrayToken");
                 }
             }
         }

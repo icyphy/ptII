@@ -47,8 +47,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Time {
-    public static void main(String[] arg) throws IllegalActionException,
-    NameDuplicationException {
+    public static void main(String[] arg)
+            throws IllegalActionException, NameDuplicationException {
         Workspace w = new Workspace("w");
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");

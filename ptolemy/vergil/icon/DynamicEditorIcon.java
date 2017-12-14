@@ -112,8 +112,8 @@ public class DynamicEditorIcon extends EditorIcon {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DynamicEditorIcon newObject = (DynamicEditorIcon) super
-                .clone(workspace);
+        DynamicEditorIcon newObject = (DynamicEditorIcon) super.clone(
+                workspace);
         newObject._figures = new LinkedList();
         return newObject;
     }

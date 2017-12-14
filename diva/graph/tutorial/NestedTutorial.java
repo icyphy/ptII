@@ -129,8 +129,8 @@ public class NestedTutorial {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                RandomLayout random = new RandomLayout(new BasicLayoutTarget(
-                        bgc));
+                RandomLayout random = new RandomLayout(
+                        new BasicLayoutTarget(bgc));
                 random.layout(model.getRoot());
             }
         });

@@ -152,11 +152,11 @@ public class SCRTableHelper {
         //Check that pairwise OR of events in a row is always false.
         for (int i = 0; i < rowCount - 1; i++) { // for every mode
             for (int j = 1; j < columnCount; j++) {
-                String event = _tableContent.get(getContentIndex(i, j,
-                        columnCount));
+                String event = _tableContent
+                        .get(getContentIndex(i, j, columnCount));
                 for (int k = j + 1; k < columnCount; k++) {
-                    String event2 = _tableContent.get(getContentIndex(i, k,
-                            columnCount));
+                    String event2 = _tableContent
+                            .get(getContentIndex(i, k, columnCount));
 
                     String condition = event + " & " + event2;
                     condition = condition.replace("@T(Inmode)", "true");
@@ -174,8 +174,8 @@ public class SCRTableHelper {
                         _scope = new VariableScope(model);
                     }
 
-                    Token result = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope);
+                    Token result = _parseTreeEvaluator
+                            .evaluateParseTree(_parseTree, _scope);
                     BooleanToken booleanResult = (BooleanToken) result;
                     if (booleanResult.booleanValue()) {
                         throw new IllegalActionException(
@@ -191,14 +191,15 @@ public class SCRTableHelper {
      *  @param parameter the parameter.
      *  @return the self transition.
      */
-    public static Transition getSelfTransition(State state, Parameter parameter) {
+    public static Transition getSelfTransition(State state,
+            Parameter parameter) {
         for (Object relation : state.incomingPort.linkedRelationList()) {
             if (state.outgoingPort.linkedRelationList().contains(relation)) {
                 Transition transition = (Transition) relation;
                 if (parameter != null) {
                     try {
-                        if (transition.setActions.getDestinations().contains(
-                                parameter)) {
+                        if (transition.setActions.getDestinations()
+                                .contains(parameter)) {
                             return transition;
                         }
                     } catch (IllegalActionException e) {

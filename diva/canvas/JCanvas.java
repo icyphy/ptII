@@ -115,8 +115,8 @@ public class JCanvas extends JComponent implements Printable {
         super();
         setBackground(Color.white);
         setCanvasPane(pane);
-        enableEvents(AWTEvent.MOUSE_EVENT_MASK
-                | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+        enableEvents(
+                AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 
         // We have to set this to something other than null, or else no
         // tool tips will appear!
@@ -147,8 +147,8 @@ public class JCanvas extends JComponent implements Printable {
         }
 
         Dimension size = getSize();
-        BufferedImage bufferedImage = new BufferedImage(size.width,
-                size.height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(size.width, size.height,
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = bufferedImage.createGraphics();
         RenderingHints hints = new RenderingHints(null);
         hints.put(RenderingHints.KEY_ANTIALIASING,
@@ -350,8 +350,8 @@ public class JCanvas extends JComponent implements Printable {
         Rectangle2D pageBounds = new Rectangle2D.Double(format.getImageableX(),
                 format.getImageableY(), format.getImageableWidth(),
                 format.getImageableHeight());
-        ((Graphics2D) graphics).transform(CanvasUtilities.computeFitTransform(
-                printRegion, pageBounds));
+        ((Graphics2D) graphics).transform(
+                CanvasUtilities.computeFitTransform(printRegion, pageBounds));
         graphics.setClip(printRegion);
 
         paint(graphics);
@@ -509,7 +509,7 @@ public class JCanvas extends JComponent implements Printable {
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it prevents popup menus from being created...
         //if (!e.isConsumed()) {
-            super.processMouseEvent(e);
+        super.processMouseEvent(e);
         //}
     }
 
@@ -528,7 +528,7 @@ public class JCanvas extends JComponent implements Printable {
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it is probably necessary (see above).
         //if (!e.isConsumed()) {
-            super.processMouseMotionEvent(e);
+        super.processMouseMotionEvent(e);
         //}
     }
 

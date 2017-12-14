@@ -84,8 +84,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (beth)
  * @see SendMail
  */
-public class ExceptionEmailer extends AbstractInitializableAttribute implements
-        ExceptionSubscriber {
+public class ExceptionEmailer extends AbstractInitializableAttribute
+        implements ExceptionSubscriber {
     /** Invoked by an exception handler (e.g. CatchExceptionAttribute) when an
      *  exception occurs.  Some subscribers may need to set up access to
      *  resources (such as opening a file) prior to being notified of an
@@ -224,6 +224,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == SMTPHostName || attribute == SMTPUserName) {
@@ -351,8 +352,8 @@ public class ExceptionEmailer extends AbstractInitializableAttribute implements
                 try {
                     passwordFile.close();
                 } catch (IllegalActionException e) {
-                    statusMessage.setExpression("Failed to close password "
-                            + "file.");
+                    statusMessage.setExpression(
+                            "Failed to close password " + "file.");
                     try {
                         statusMessage.validate();
                     } catch (IllegalActionException e2) {
@@ -430,8 +431,8 @@ public class ExceptionEmailer extends AbstractInitializableAttribute implements
             reallySendMailValue = ((BooleanToken) reallySendMail.getToken())
                     .booleanValue();
         } catch (IllegalActionException e) {
-            statusMessage.setExpression("Failed to read reallySendMail "
-                    + "parameter.");
+            statusMessage.setExpression(
+                    "Failed to read reallySendMail " + "parameter.");
             try {
                 statusMessage.validate();
             } catch (IllegalActionException e2) {
@@ -477,10 +478,11 @@ public class ExceptionEmailer extends AbstractInitializableAttribute implements
 
             if (!replyTo.getValueAsString().equals("")) {
                 ArrayList<Address> replyToAddresses = new ArrayList<Address>();
-                tokenizer = new StringTokenizer(replyTo.getValueAsString(), ",");
+                tokenizer = new StringTokenizer(replyTo.getValueAsString(),
+                        ",");
                 while (tokenizer.hasMoreTokens()) {
-                    replyToAddresses.add(new InternetAddress(tokenizer
-                            .nextToken().trim()));
+                    replyToAddresses.add(
+                            new InternetAddress(tokenizer.nextToken().trim()));
                 }
                 mimeMessage.setReplyTo(replyToAddresses
                         .toArray(new Address[replyToAddresses.size()]));
@@ -554,6 +556,7 @@ public class ExceptionEmailer extends AbstractInitializableAttribute implements
     ////                         inner classes                     ////
 
     private class SMTPAuthenticator extends javax.mail.Authenticator {
+        @Override
         public PasswordAuthentication getPasswordAuthentication() {
             String username;
             try {

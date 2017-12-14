@@ -76,8 +76,8 @@ public class BooleanToken extends ScalarToken {
      */
     public BooleanToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(notSupportedNullNilStringMessage(
-                    "BooleanToken", init));
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("BooleanToken", init));
         }
         _value = init.toLowerCase(Locale.getDefault()).equals("true");
     }
@@ -134,11 +134,12 @@ public class BooleanToken extends ScalarToken {
 
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
-                    notSupportedIncomparableConversionMessage(token, "boolean"));
+                    notSupportedIncomparableConversionMessage(token,
+                            "boolean"));
         }
 
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "boolean"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "boolean"));
     }
 
     /** Return true if the argument's class is BooleanToken and it has the
@@ -456,8 +457,8 @@ public class BooleanToken extends ScalarToken {
     @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("isLessThan",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("isLessThan", this, rightArgument));
     }
 
     /** Throw an exception. This method is not supported.
@@ -468,8 +469,8 @@ public class BooleanToken extends ScalarToken {
     @Override
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("modulo", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -492,8 +493,8 @@ public class BooleanToken extends ScalarToken {
     @Override
     protected ScalarToken _subtract(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("subtract", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

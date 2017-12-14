@@ -99,8 +99,8 @@ public class CDL {
         for (;;) {
             String value = getValue(x);
             char c = x.next();
-            if (value == null || ja.length() == 0 && value.length() == 0
-                    && c != ',') {
+            if (value == null
+                    || ja.length() == 0 && value.length() == 0 && c != ',') {
                 return null;
             }
             ja.put(value);
@@ -112,8 +112,8 @@ public class CDL {
                     if (c == '\n' || c == '\r' || c == 0) {
                         return ja;
                     }
-                    throw x.syntaxError("Bad character '" + c + "' (" + (int) c
-                            + ").");
+                    throw x.syntaxError(
+                            "Bad character '" + c + "' (" + (int) c + ").");
                 }
                 c = x.next();
             }
@@ -214,10 +214,9 @@ public class CDL {
             Object o = ja.opt(i);
             if (o != null) {
                 String s = o.toString();
-                if (s.length() > 0
-                        && (s.indexOf(',') >= 0 || s.indexOf('\n') >= 0
-                        || s.indexOf('\r') >= 0 || s.indexOf(0) >= 0 || s
-                        .charAt(0) == '"')) {
+                if (s.length() > 0 && (s.indexOf(',') >= 0
+                        || s.indexOf('\n') >= 0 || s.indexOf('\r') >= 0
+                        || s.indexOf(0) >= 0 || s.charAt(0) == '"')) {
                     sb.append('"');
                     int length = s.length();
                     for (int j = 0; j < length; j += 1) {

@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.tcs.lib;
 
-
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -42,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @version $Id$
  *  @since Ptolemy II 11.0
  */
-public class SourceStation extends AbstractSourceStation{
+public class SourceStation extends AbstractSourceStation {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -56,8 +54,8 @@ public class SourceStation extends AbstractSourceStation{
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-   public SourceStation(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
-       super(container, name);
-   }
+    public SourceStation(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
 }

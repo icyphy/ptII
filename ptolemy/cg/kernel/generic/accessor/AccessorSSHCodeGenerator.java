@@ -157,7 +157,8 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         userHost.setExpression("sbuser@10.0.0.1");
 
         // Invoke the accessoInvokeSSH script
-        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@ @npmInstall@ @runForever@ @stopForeverAccessors@");
+        runCommand.setExpression(
+                "@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@ @npmInstall@ @runForever@ @stopForeverAccessors@");
 
         _checkForLocalModules = false;
     }
@@ -205,6 +206,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *  @return return The list of commands.
      *  @exception IllegalActionException If thrown in a base class.
      */
+    @Override
     protected List<String> _setupCommands() throws IllegalActionException {
         List<String> commands = super._setupCommands();
         Iterator<String> iterator = commands.iterator();
@@ -228,8 +230,8 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *  @exception IllegalActionException If the modules parameter
      *  contains spaces or if thrown by a base class.
      */
-    protected void _updateSubstituteMap()
-        throws IllegalActionException {
+    @Override
+    protected void _updateSubstituteMap() throws IllegalActionException {
         super._updateSubstituteMap();
 
         // The value of the modules parameter names one or more
@@ -238,8 +240,9 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         if (modules.getExpression().length() > 0) {
             String modulesValue = modules.getExpression();
             if (modulesValue.indexOf(" ") != -1) {
-                throw new IllegalActionException(this, "The value of the modules parameter (" + modulesValue
-                                                 + ") must not contain spaces.  Use commas to separate modules.");
+                throw new IllegalActionException(this,
+                        "The value of the modules parameter (" + modulesValue
+                                + ") must not contain spaces.  Use commas to separate modules.");
             }
             modulesFlagAndValue = "-modules " + modulesValue;
         }
@@ -264,10 +267,10 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         // If the value of the stopForeverAccessors parameter is true, then pass
         // "stopForeverAccessors" as an argument to accessorInvokeSSH.
         if (((BooleanToken) stopForeverAccessors.getToken()).booleanValue()) {
-            _substituteMap.put("@stopForeverAccessors@", "stopForeverAccessors");
+            _substituteMap.put("@stopForeverAccessors@",
+                    "stopForeverAccessors");
         } else {
             _substituteMap.put("@stopForeverAccessors@", "");
         }
     }
 }
-

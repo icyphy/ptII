@@ -281,7 +281,8 @@ public class Expression extends TypedAtomicActor {
         _addPathCommand = null; // Assume none
         _previousPath = null;
 
-        Parameter packageDirectories = (Parameter) getAttribute("packageDirectories");
+        Parameter packageDirectories = (Parameter) getAttribute(
+                "packageDirectories");
 
         if (packageDirectories != null) {
             StringTokenizer dirs = new StringTokenizer(
@@ -379,18 +380,17 @@ public class Expression extends TypedAtomicActor {
                 }
 
                 try {
-                    matlabEngine.put(engine, "time", new DoubleToken(director
-                            .getModelTime().getDoubleValue()));
+                    matlabEngine.put(engine, "time", new DoubleToken(
+                            director.getModelTime().getDoubleValue()));
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to set the \"time\" variable in the Matlab "
-                                    + "engine to "
-                                    + new DoubleToken(director.getModelTime()
-                                            .getDoubleValue()));
+                                    + "engine to " + new DoubleToken(director
+                                            .getModelTime().getDoubleValue()));
                 }
                 try {
-                    matlabEngine
-                            .put(engine, "iteration", _iteration.getToken());
+                    matlabEngine.put(engine, "iteration",
+                            _iteration.getToken());
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to set the \"iteration\" variable in the Matlab "
@@ -487,31 +487,29 @@ public class Expression extends TypedAtomicActor {
                 matlabEngine = new Engine();
             } catch (Throwable throwable) {
                 // LinkageError is and Error, not an exceptoin
-                throw new IllegalActionException(
-                        this,
-                        throwable,
+                throw new IllegalActionException(this, throwable,
                         "There was a problem invoking the Ptolemy II Matlab "
-                        + "interface.\nThe interface has been tested under "
-                        + "Linux, Mac OS X, and Windows.\n"
-                        + "The interface requires that Matlab be installed "
-                        + "on the local machine and that the ptmatlab "
-                        + "shared library available.\n"
-                        + "* Under Linux, you must have the LD_LIBRARY_PATH "
-                        + "environment variable set to include the directories "
-                        + "that contain libmx.so and libptmatlab.so.\n"
-                        + "* Under Mac OS X, you must have the DYLD_LIBRARY_PATH "
-                        + "environment variable set to include the directories "
-                        + "that contain libmx.dylib and libptmatlab.jnilib.\n"
-                        + "* Under Windows, you must have your PATH set to include "
-                        + "the Matlab bin/win32 or equivalent directory so that "
-                        + "libmex.dll is found and the directory that contains "
-                        + "libptmatlab.dll. "
-                        + "In addition, if you are running under Windows from "
-                        + "the Cygwin bash prompt, then you must start Vergil with "
-                        + "the -jni argument: $PTII/bin/vergil -jni. For details, "
-                        + "see $PTII/jni/package.html.\n"
-                        + "Refer to $PTII/ptolemy/matlab/makefile for more "
-                        + "information.");
+                                + "interface.\nThe interface has been tested under "
+                                + "Linux, Mac OS X, and Windows.\n"
+                                + "The interface requires that Matlab be installed "
+                                + "on the local machine and that the ptmatlab "
+                                + "shared library available.\n"
+                                + "* Under Linux, you must have the LD_LIBRARY_PATH "
+                                + "environment variable set to include the directories "
+                                + "that contain libmx.so and libptmatlab.so.\n"
+                                + "* Under Mac OS X, you must have the DYLD_LIBRARY_PATH "
+                                + "environment variable set to include the directories "
+                                + "that contain libmx.dylib and libptmatlab.jnilib.\n"
+                                + "* Under Windows, you must have your PATH set to include "
+                                + "the Matlab bin/win32 or equivalent directory so that "
+                                + "libmex.dll is found and the directory that contains "
+                                + "libptmatlab.dll. "
+                                + "In addition, if you are running under Windows from "
+                                + "the Cygwin bash prompt, then you must start Vergil with "
+                                + "the -jni argument: $PTII/bin/vergil -jni. For details, "
+                                + "see $PTII/jni/package.html.\n"
+                                + "Refer to $PTII/ptolemy/matlab/makefile for more "
+                                + "information.");
             }
 
             // First set default debugging level, then check for more

@@ -210,9 +210,9 @@ import ptolemy.vergil.tree.VisibleTreeModel;
  @Pt.AcceptedRating Red (johnr)
  */
 @SuppressWarnings("serial")
-public abstract class BasicGraphFrame extends PtolemyFrame implements
-        Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
-        MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
+public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
+        ClipboardOwner, ChangeListener, MouseWheelListener, MouseListener,
+        MouseMotionListener, ImageExportable, HTMLExportable {
 
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
@@ -319,8 +319,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             NamedObj container = (NamedObj) _getGraphModel().getRoot();
 
             // NOTE: The order in the model must be respected.
-            Iterator<NamedObj> elements = container.sortContainedObjects(
-                    namedObjSet).iterator();
+            Iterator<NamedObj> elements = container
+                    .sortContainedObjects(namedObjSet).iterator();
 
             while (elements.hasNext()) {
                 NamedObj element = elements.next();
@@ -347,14 +347,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             String variablesToBePrepended = "";
             try {
                 MoMLVariableChecker variableChecker = new MoMLVariableChecker();
-                variablesToBePrepended = variableChecker.checkCopy(
-                        momlToBeCopied, container);
+                variablesToBePrepended = variableChecker
+                        .checkCopy(momlToBeCopied, container);
             } catch (IllegalActionException ex) {
                 // Ignore, maybe the missing symbols will work out
                 // in the pasted context.
             }
-            clipboard.setContents(new StringSelection(variablesToBePrepended
-                    + momlToBeCopied), this);
+            clipboard.setContents(new StringSelection(
+                    variablesToBePrepended + momlToBeCopied), this);
 
         } catch (IOException ex) {
             MessageHandler.error("Copy failed", ex);
@@ -495,15 +495,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 while (!(headOK && tailOK) && objects.hasNext()) {
                     Object object = objects.next();
 
-                    if (!headOK
-                            && GraphUtilities.isContainedNode(head, object,
-                                    graphModel)) {
+                    if (!headOK && GraphUtilities.isContainedNode(head, object,
+                            graphModel)) {
                         headOK = true;
                     }
 
-                    if (!tailOK
-                            && GraphUtilities.isContainedNode(tail, object,
-                                    graphModel)) {
+                    if (!tailOK && GraphUtilities.isContainedNode(tail, object,
+                            graphModel)) {
                         tailOK = true;
                     }
                 }
@@ -577,22 +575,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             intRelations.append("<relation name=\""
                                     + relationName + "\" class=\""
                                     + "ptolemy.actor.TypedIORelation\"/>\n");
-                            intConnections.append("<link port=\""
-                                    + entity.getName() + "."
-                                    + headProperties.port.getName()
-                                    + "\" relation=\"" + relationName
-                                    + "\"/>\n");
+                            intConnections.append(
+                                    "<link port=\"" + entity.getName() + "."
+                                            + headProperties.port.getName()
+                                            + "\" relation=\"" + relationName
+                                            + "\"/>\n");
                             intConnections.append("<link port=\"" + portName
                                     + "\" relation=\"" + relationName
                                     + "\"/>\n");
 
                             // Create external links.
                             if (duplicateRelation) {
-                                extRelations
-                                        .append("<relation name=\""
-                                                + relation.getName()
-                                                + "\" class=\""
-                                                + "ptolemy.actor.TypedIORelation\"/>\n");
+                                extRelations.append("<relation name=\""
+                                        + relation.getName() + "\" class=\""
+                                        + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -612,24 +608,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                 }
                             }
 
-                            extConnections.append("<link port=\""
-                                    + compositeActorName + "." + portName
-                                    + "\" relation=\"" + relation.getName()
-                                    + "\"/>\n");
+                            extConnections
+                                    .append("<link port=\"" + compositeActorName
+                                            + "." + portName + "\" relation=\""
+                                            + relation.getName() + "\"/>\n");
                         } else {
                             // The port is outside the hierarchy.
                             // The relation must be inside.
                             if (isInput
                                     && headProperties.type == ElementInLinkType.PORT_IN_ACTOR
                                     || isOutput
-                                    && headProperties.type == ElementInLinkType.STANDALONE_PORT) {
+                                            && headProperties.type == ElementInLinkType.STANDALONE_PORT) {
                                 newPorts.append("<property name=\"output\"/>");
                             }
 
                             if (isOutput
                                     && headProperties.type == ElementInLinkType.PORT_IN_ACTOR
                                     || isInput
-                                    && headProperties.type == ElementInLinkType.STANDALONE_PORT) {
+                                            && headProperties.type == ElementInLinkType.STANDALONE_PORT) {
                                 newPorts.append("<property name=\"input\"/>");
                             }
 
@@ -643,23 +639,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             if (getModel() != entity) {
                                 entityPrefix = entity.getName() + ".";
                             }
-                            extConnections.append("<link port=\""
-                                    + entityPrefix
+                            extConnections.append("<link port=\"" + entityPrefix
                                     + headProperties.port.getName()
                                     + "\" relation=\"" + relationName
                                     + "\"/>\n");
-                            extConnections.append("<link port=\""
-                                    + compositeActorName + "." + portName
-                                    + "\" relation=\"" + relationName
-                                    + "\"/>\n");
+                            extConnections
+                                    .append("<link port=\"" + compositeActorName
+                                            + "." + portName + "\" relation=\""
+                                            + relationName + "\"/>\n");
 
                             // Create external links.
                             if (duplicateRelation) {
-                                intRelations
-                                        .append("<relation name=\""
-                                                + relation.getName()
-                                                + "\" class=\""
-                                                + "ptolemy.actor.TypedIORelation\"/>\n");
+                                intRelations.append("<relation name=\""
+                                        + relation.getName() + "\" class=\""
+                                        + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -806,8 +799,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             BasicGraphFrameExtension.alternateDelete(selection, graphModel,
                     container);
         } catch (Exception ex) {
-            MessageHandler
-                    .error("Delete failed, changeRequest was:" + moml, ex);
+            MessageHandler.error("Delete failed, changeRequest was:" + moml,
+                    ex);
         }
 
         graphModel.dispatchGraphEvent(new GraphEvent(this,
@@ -840,7 +833,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
 
         if (_findInLibraryEntryBox != null) {
-            ActionListener[] listeners = _findInLibraryEntryBox.getActionListeners();
+            ActionListener[] listeners = _findInLibraryEntryBox
+                    .getActionListeners();
             if (listeners != null) {
                 for (ActionListener listener : listeners) {
                     //System.out.println("BGF.dispose(): _findInLibraryEntryBox: Removing " + listener);
@@ -928,17 +922,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 if (model.getAttribute("_alternateGetMomlAction") == null) {
                     alternateGetMoml = new StringAttribute(model,
                             "_alternateGetMomlAction");
-                    alternateGetMoml
-                            .setExpression(DesignPatternGetMoMLAction.class
-                                    .getName());
+                    alternateGetMoml.setExpression(
+                            DesignPatternGetMoMLAction.class.getName());
                 }
 
                 if (model.getAttribute("_designPatternIcon") == null) {
                     icon = new DesignPatternIcon(model, "_designPatternIcon");
                 }
             } catch (Exception e) {
-                throw new InternalErrorException(null, e, "Fail to prepare "
-                        + "for exporting a design pattern.");
+                throw new InternalErrorException(null, e,
+                        "Fail to prepare " + "for exporting a design pattern.");
             }
 
             _prepareExportDesignPattern();
@@ -1203,8 +1196,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         report(new IllegalActionException("The model \"" + file
                                 + "\" is not a design pattern."));
                     } else {
-                        String moml = new DesignPatternGetMoMLAction().getMoml(
-                                model, model.getName());
+                        String moml = new DesignPatternGetMoMLAction()
+                                .getMoml(model, model.getName());
                         NamedObj context = getModel();
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
                                 context, moml);
@@ -1295,9 +1288,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
             Effigy effigy = Configuration.findEffigy(target.toplevel());
             if (effigy == null) {
-                throw new IllegalActionException(target, "Failed to find an "
-                        + "effigy for the toplevel "
-                        + target.toplevel().getFullName());
+                throw new IllegalActionException(target,
+                        "Failed to find an " + "effigy for the toplevel "
+                                + target.toplevel().getFullName());
             }
             Configuration configuration = (Configuration) effigy.toplevel();
             Tableau tableau = configuration.openInstance(container);
@@ -1308,13 +1301,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // this is a parameter in an actor so go up the hierarchy
             // until we get to the container we found above or we find
             // a non-null location attribute.
-            Location locationAttribute = (Location) target.getAttribute(
-                    "_location", Location.class);
+            Location locationAttribute = (Location) target
+                    .getAttribute("_location", Location.class);
             if (locationAttribute == null) {
                 NamedObj targetContainer = target.getContainer();
                 while (targetContainer != null
                         && (locationAttribute = (Location) targetContainer
-                                .getAttribute("_location", Location.class)) == null) {
+                                .getAttribute("_location",
+                                        Location.class)) == null) {
                     // FindBugs: Load of known null value.  locationAttribute is always null here.
                     // The break is unnecessary as if locationAttribute is non-null, then
                     // the body of the while loop is not executed.
@@ -1550,8 +1544,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
         try {
-            ptolemy.actor.gui.UserActorLibrary.saveComponentInLibrary(
-                    configuration, entity);
+            ptolemy.actor.gui.UserActorLibrary
+                    .saveComponentInLibrary(configuration, entity);
         } catch (Exception ex) {
             // We catch exceptions here because this method used to
             // not throw Exceptions, and we don't want to break compatibility.
@@ -1602,8 +1596,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @exception NameDuplicationException If there is a problem
      *  creating a parameter.
      */
-    public void updateWindowAttributes() throws IllegalActionException,
-            NameDuplicationException {
+    public void updateWindowAttributes()
+            throws IllegalActionException, NameDuplicationException {
         // First, record size and position.
 
         // See "composite window size & position not always saved"
@@ -1662,7 +1656,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (_exportHTMLAction != null) {
             ((HTMLExportable) _exportHTMLAction).writeHTML(parameters, writer);
         } else {
-            throw new IOException("Export to Web not supported.  Probably the configuration does not have a _exportHTMLActionClassName parameter or the class named by that parameter is not present.");
+            throw new IOException(
+                    "Export to Web not supported.  Probably the configuration does not have a _exportHTMLActionClassName parameter or the class named by that parameter is not present.");
         }
     }
 
@@ -1739,12 +1734,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
 
         Rectangle2D viewSize = getVisibleRectangle();
-        Rectangle2D paddedViewSize = new Rectangle2D.Double(viewSize.getX()
-                + _ZOOM_FIT_PADDING, viewSize.getY() + _ZOOM_FIT_PADDING,
+        Rectangle2D paddedViewSize = new Rectangle2D.Double(
+                viewSize.getX() + _ZOOM_FIT_PADDING,
+                viewSize.getY() + _ZOOM_FIT_PADDING,
                 viewSize.getWidth() - 2 * _ZOOM_FIT_PADDING,
                 viewSize.getHeight() - 2 * _ZOOM_FIT_PADDING);
-        AffineTransform newTransform = CanvasUtilities.computeFitTransform(
-                bounds, paddedViewSize);
+        AffineTransform newTransform = CanvasUtilities
+                .computeFitTransform(bounds, paddedViewSize);
         JCanvas canvas = pane.getCanvas();
         canvas.getCanvasPane().setTransform(newTransform);
 
@@ -2000,9 +1996,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             NamedObj element = elementIterator.next();
 
             if (element.getDerivedLevel() < Integer.MAX_VALUE) {
-                MessageHandler.error("Cannot change the position of "
-                        + element.getFullName()
-                        + " because the position is set by the class.");
+                MessageHandler.error(
+                        "Cannot change the position of " + element.getFullName()
+                                + " because the position is set by the class.");
                 return true;
             }
         }
@@ -2114,8 +2110,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // is only one configuration, or that if there are multiple configurations
         // in this execution, that the first one will determine whether PDF
         // export is provided.
-        Configuration configuration = (Configuration) Configuration
-                .configurations().get(0);
+        Configuration configuration = Configuration.configurations().get(0);
         // NOTE: Configuration should not be null, but just in case:
         if (configuration != null) {
 
@@ -2130,7 +2125,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 if (importActionClassNames != null) {
                     ArrayToken importActionClassNamesToken = (ArrayToken) importActionClassNames
                             .getToken();
-                    for (int i = 0; i < importActionClassNamesToken.length(); i++) {
+                    for (int i = 0; i < importActionClassNamesToken
+                            .length(); i++) {
                         String importActionClassName = ((StringToken) importActionClassNamesToken
                                 .getElement(i)).stringValue();
                         try {
@@ -2138,7 +2134,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             Class importActionClass = Class
                                     .forName(importActionClassName);
                             Constructor constructor = importActionClass
-                                    .getDeclaredConstructor(new Class[] { Top.class });
+                                    .getDeclaredConstructor(
+                                            new Class[] { Top.class });
                             AbstractAction importAction = (AbstractAction) constructor
                                     .newInstance(new Object[] { this });
                             JMenuItem importItem = new JMenuItem(importAction);
@@ -2147,8 +2144,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             // We do not want to abort at this point because the worst
                             // case is that we will have no Import FMU in the menu.
                             // That is better than preventing the user from opening a model.
-                            System.err
-                                    .println("Warning: Tried to create the an import menu item by looking for the "
+                            System.err.println(
+                                    "Warning: Tried to create the an import menu item by looking for the "
                                             + importActionClassName
                                             + " Java class, but failed: "
                                             + throwable);
@@ -2158,9 +2155,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             } catch (Throwable throwable) {
                 if (!_printedImportActionClassNamesMessage) {
                     _printedImportActionClassNamesMessage = true;
-                    System.err
-                    .println("Problem reading the _importActionClassNames parameter from "
-                            + "the configuration: " + throwable);
+                    System.err.println(
+                            "Problem reading the _importActionClassNames parameter from "
+                                    + "the configuration: " + throwable);
                 }
             }
 
@@ -2182,8 +2179,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Deal with the HTML Action next.
             try {
                 _exportHTMLAction = (AbstractAction) configuration
-                        .getStringParameterAsClass(
-                                "_exportHTMLActionClassName",
+                        .getStringParameterAsClass("_exportHTMLActionClassName",
                                 new Class[] { BasicGraphFrame.class },
                                 new Object[] { this });
             } catch (Throwable throwable) {
@@ -2320,8 +2316,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // setting the size of the frame is ignored if we don't
         // also set the size of the JGraph. Why? Who knows. Swing.
         if (model != null) {
-            SizeAttribute size = (SizeAttribute) model.getAttribute(
-                    "_vergilSize", SizeAttribute.class);
+            SizeAttribute size = (SizeAttribute) model
+                    .getAttribute("_vergilSize", SizeAttribute.class);
 
             if (size == null) {
                 size = new SizeAttribute(model, "_vergilSize");
@@ -2378,8 +2374,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                 HashSet<NamedObj> namedObjSet = _getSelectionSet();
                 NamedObj container = (NamedObj) _getGraphModel().getRoot();
-                Iterator<NamedObj> elements = container.sortContainedObjects(
-                        namedObjSet).iterator();
+                Iterator<NamedObj> elements = container
+                        .sortContainedObjects(namedObjSet).iterator();
                 while (elements.hasNext()) {
                     elements.next().exportMoML(writer, 1);
                 }
@@ -2537,15 +2533,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     while (!(headOK && tailOK) && objects.hasNext()) {
                         Object object = objects.next();
 
-                        if (!headOK
-                                && GraphUtilities.isContainedNode(head, object,
-                                        graphModel)) {
+                        if (!headOK && GraphUtilities.isContainedNode(head,
+                                object, graphModel)) {
                             headOK = true;
                         }
 
-                        if (!tailOK
-                                && GraphUtilities.isContainedNode(tail, object,
-                                        graphModel)) {
+                        if (!tailOK && GraphUtilities.isContainedNode(tail,
+                                object, graphModel)) {
                             tailOK = true;
                         }
                     }
@@ -2615,8 +2609,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // there appears to be no way to control the size of the
             // JGraph from the size of the Frame, which is specified
             // by the WindowPropertiesAttribute.
-            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
-                    "_vergilSize", SizeAttribute.class);
+            SizeAttribute size = (SizeAttribute) getModel()
+                    .getAttribute("_vergilSize", SizeAttribute.class);
 
             if (size != null) {
                 size.setSize(_rightComponent);
@@ -2640,8 +2634,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // models
         // FIXME: should we be checking for _library instead?
         Configuration configuration = getConfiguration();
-        if (configuration != null
-                && (CompositeEntity) configuration.getEntity("actor library") != null) {
+        if (configuration != null && (CompositeEntity) configuration
+                .getEntity("actor library") != null) {
             // Create the panner.
             _graphPanner = new JCanvasPanner(getJGraph());
             _graphPanner.setPreferredSize(new Dimension(200, 150));
@@ -2709,8 +2703,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         // Only include the palettePane and panner if there is an actor library.
         // The ptinyViewer configuration uses this.
-        if (configuration != null
-                && (CompositeEntity) configuration.getEntity("actor library") != null) {
+        if (configuration != null && (CompositeEntity) configuration
+                .getEntity("actor library") != null) {
             _libraryModel = new VisibleTreeModel(_topLibrary);
             // Second arguments prevents parameter values from showing in the library.
             _library = new PTree(_libraryModel, false);
@@ -2778,8 +2772,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // EditIconFrame will have a EditorIcon as a model, not a CompositeEntity.
                 _treeViewScrollPane = null;
             } else {
-                _treeViewModel = new ClassAndEntityTreeModel(getModel()
-                        .toplevel());
+                _treeViewModel = new ClassAndEntityTreeModel(
+                        getModel().toplevel());
 
                 // Second arguments prevents parameter values from showing in the library,
                 // I'm not sure if that is relevant for the hierarchy tree browser.
@@ -2794,8 +2788,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // See _libraryScrollPane above.
                 _treeViewScrollPane.setMinimumSize(new Dimension(200, 200));
                 _treeViewScrollPane.setPreferredSize(new Dimension(200, 300));
-                _treeViewScrollPane.setBorder(BorderFactory
-                        .createEtchedBorder());
+                _treeViewScrollPane
+                        .setBorder(BorderFactory.createEtchedBorder());
                 _setBackgroundColor(_treeView);
 
                 // Make the Ptolemy model visible in the tree.
@@ -2998,8 +2992,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     - (visible.getY() - bounds.getY());
 
             // Set the new center point, but add a little free space between model and border
-            _setCenter(jgraph, new Point2D.Double(centerX - 10.0,
-                    centerY - 10.0));
+            _setCenter(jgraph,
+                    new Point2D.Double(centerX - 10.0, centerY - 10.0));
         }
     }
 
@@ -3028,9 +3022,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             };
         }
         _layoutAction.putValue("tooltip", "Layout the graph (Ctrl+T)");
-        _layoutAction.putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke
-                .getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-                        .getMenuShortcutKeyMask()));
+        _layoutAction.putValue(GUIUtilities.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_T,
+                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         _layoutAction.putValue(GUIUtilities.MNEMONIC_KEY,
                 Integer.valueOf(KeyEvent.VK_L));
     }
@@ -3041,8 +3035,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // method can be found, then add a menu choice.
         Method accessorReloader = null;
         try {
-            Class accessorClass = Class.forName("org.terraswarm.accessor.JSAccessor");
-            accessorReloader = accessorClass.getDeclaredMethod("reloadAllAccessors", new Class [] {CompositeEntity.class});
+            Class accessorClass = Class
+                    .forName("org.terraswarm.accessor.JSAccessor");
+            accessorReloader = accessorClass.getDeclaredMethod(
+                    "reloadAllAccessors",
+                    new Class[] { CompositeEntity.class });
         } catch (Throwable throwable) {
             // Fail silently!
         }
@@ -3052,15 +3049,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        accessorReloaderFinal.invoke(null, (CompositeEntity)getModel());
+                        accessorReloaderFinal.invoke(null,
+                                (CompositeEntity) getModel());
                     } catch (Exception ex) {
-                        MessageHandler.error("Failed to reload all the accessors.", ex);
+                        MessageHandler.error(
+                                "Failed to reload all the accessors.", ex);
                     }
                 }
             };
         }
     }
-
 
     /** Return true if this is a design pattern.
      *  @return true if the model corresponding to this object
@@ -3115,7 +3113,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false
      *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsFileDialogComponent()} is used.</p>
-
+    
      *  @return A file dialog for save as.
      */
     @Override
@@ -3145,10 +3143,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (configuration != null) {
             try {
                 PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                        .getPtolemyPreferencesWithinConfiguration(
+                                configuration);
                 if (preferences != null) {
-                    component.setBackground(preferences.backgroundColor
-                            .asColor());
+                    component.setBackground(
+                            preferences.backgroundColor.asColor());
                 }
             } catch (IllegalActionException e1) {
                 // Ignore the exception and use the default color.
@@ -3210,8 +3209,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * parameter.
      */
     protected void _updateWindowAttributes(Frame parent, NamedObj model,
-            JGraph graph) throws IllegalActionException,
-            NameDuplicationException {
+            JGraph graph)
+            throws IllegalActionException, NameDuplicationException {
 
         // If there is no parent that is a Frame, do nothing.
         // We know that: (parent == null) || (parent instanceof Frame)
@@ -3259,7 +3258,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             //zoom.setToken(new DoubleToken(scale));
             String moml = "<property name=\"_vergilZoomFactor\" " + " value=\""
                     + scale + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, model,
+                    moml);
             request.setUndoable(true);
             model.requestChange(request);
 
@@ -3297,7 +3297,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             String moml = "<property name=\"_vergilCenter\" " + " value=\"{"
                     + center.getX() + ", " + center.getY() + "}\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, model,
+                    moml);
             request.setUndoable(true);
             model.requestChange(request);
 
@@ -3326,8 +3327,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         } catch (KernelException ex) {
             // Ignore problems here.  Errors simply result in a
             // default size and location.
-            System.out
-                    .println("While writing, failed to save size, position or zoom factor: "
+            System.out.println(
+                    "While writing, failed to save size, position or zoom factor: "
                             + ex);
         }
 
@@ -3749,8 +3750,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue("tooltip",
                     "Copy the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_C, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_C,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
@@ -3769,10 +3770,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         /** Create a new action to copy and delete the current selection. */
         public CutAction() {
             super("Cut");
-            putValue("tooltip", "Cut the current selection onto the clipboard.");
+            putValue("tooltip",
+                    "Cut the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_X, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_X,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_T));
         }
 
@@ -3810,7 +3812,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          * documentation for the given object
          */
         @Override
-        public JMenuItem create(final JContextMenu menu, final NamedObj object) {
+        public JMenuItem create(final JContextMenu menu,
+                final NamedObj object) {
             Action action = new GetDocumentationAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -3878,10 +3881,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     BasicGraphFrame frame = frames.next();
                     GraphModel graphModel = frame._getGraphController()
                             .getGraphModel();
-                    graphModel
-                            .dispatchGraphEvent(new GraphEvent(this,
-                                    GraphEvent.STRUCTURE_CHANGED, graphModel
-                                            .getRoot()));
+                    graphModel.dispatchGraphEvent(
+                            new GraphEvent(this, GraphEvent.STRUCTURE_CHANGED,
+                                    graphModel.getRoot()));
 
                     if (frame._graphPanner != null) {
                         frame._graphPanner.repaint();
@@ -3979,17 +3981,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         "Specify a " + _formatName + " file to be written.",
                         JFileChooser.SAVE_DIALOG);
 
-                ptFileChooser.setSelectedFile(new File(getModel().getName()
-                        + "." + _formatName));
+                ptFileChooser.setSelectedFile(
+                        new File(getModel().getName() + "." + _formatName));
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
-                ptFileChooser
-                        .addChoosableFileFilter(new ExtensionFilenameFilter(
-                                extensions));
+                ptFileChooser.addChoosableFileFilter(
+                        new ExtensionFilenameFilter(extensions));
                 ptFileChooser.setCurrentDirectory(_directory);
 
-                int returnVal = ptFileChooser.showDialog(
-                        BasicGraphFrame.this,
+                int returnVal = ptFileChooser.showDialog(BasicGraphFrame.this,
                         "Export "
                                 + _formatName.toUpperCase(Locale.getDefault()));
 
@@ -4005,8 +4005,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                     // The Mac OS X FileDialog will ask if we want to save before this point.
                     if (imageFile.exists() && !PtGUIUtilities.useFileDialog()) {
-                        if (!MessageHandler.yesNoQuestion("Overwrite \""
-                                + imageFile.getName() + "\"?")) {
+                        if (!MessageHandler.yesNoQuestion(
+                                "Overwrite \"" + imageFile.getName() + "\"?")) {
                             return;
                         }
                     }
@@ -4021,15 +4021,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
 
                     // Open the image file.
-                    if (MessageHandler
-                            .yesNoQuestion("Open \""
-                                    + imageFile.getCanonicalPath()
+                    if (MessageHandler.yesNoQuestion(
+                            "Open \"" + imageFile.getCanonicalPath()
                                     + "\" in a browser?")) {
                         Configuration configuration = getConfiguration();
                         try {
-                            URL imageURL = new URL(imageFile.toURI().toURL()
-                                    .toString()
-                                    + "#in_browser");
+                            URL imageURL = new URL(
+                                    imageFile.toURI().toURL().toString()
+                                            + "#in_browser");
                             configuration.openModel(imageURL, imageURL,
                                     imageURL.toExternalForm(),
                                     BrowserEffigy.staticFactory);
@@ -4040,10 +4039,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                 }
             } catch (Exception ex) {
-                MessageHandler.error(
-                        "Export to "
-                                + _formatName.toUpperCase(Locale.getDefault())
-                                + " failed", ex);
+                MessageHandler.error("Export to "
+                        + _formatName.toUpperCase(Locale.getDefault())
+                        + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }
@@ -4086,8 +4084,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             super("Find");
             putValue("tooltip", "Find occurrences of specified text.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_F,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4140,10 +4138,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             try {
                 // Indicate that something is happening with the cursor.
                 // setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                _findInLibraryEntryBox.setCursor(Cursor
-                        .getPredefinedCursor(Cursor.WAIT_CURSOR));
-                _library.setCursor(Cursor
-                        .getPredefinedCursor(Cursor.WAIT_CURSOR));
+                _findInLibraryEntryBox.setCursor(
+                        Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                _library.setCursor(
+                        Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
                 // Put a message in the progress bar at the bottom of the window.
                 // FIXME: Sadly, this doesn't work.
@@ -4168,8 +4166,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 if (!foundOne) {
                     // Reached the end of the library.
                     try {
-                        if (MessageHandler
-                                .yesNoCancelQuestion("Reached the end of the library. Start search again from the top?")) {
+                        if (MessageHandler.yesNoCancelQuestion(
+                                "Reached the end of the library. Start search again from the top?")) {
                             // Restart the search.
                             _stack.clear();
                             _indexes.clear();
@@ -4319,13 +4317,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 boolean sel, boolean expanded, boolean leaf, int row,
                 boolean hasFocus) {
 
-            DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
-                    .getTreeCellRendererComponent(tree, value, selected,
-                            expanded, leaf, row, hasFocus);
+            DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super.getTreeCellRendererComponent(
+                    tree, value, selected, expanded, leaf, row, hasFocus);
             NamedObj model = getModel();
             if (model != null && component != null && model.equals(value)) {
-                component.setText("<html><b>" + component.getText()
-                        + "</b></html>");
+                component.setText(
+                        "<html><b>" + component.getText() + "</b></html>");
             }
             return this;
         }
@@ -4366,6 +4363,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Listen for clicks of the mouse on the tree.
      */
     private class HierarchyTreeMouseAdapter extends MouseAdapter {
+        @Override
         public void mousePressed(MouseEvent e) {
             if (e.getClickCount() == 2) {
                 // Returns the last path element of the selection.
@@ -4377,8 +4375,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         getConfiguration().openInstance(
                                 (NamedObj) lastSelectedPathComponent);
                     } catch (Throwable throwable) {
-                        MessageHandler.error("Could not open "
-                                + lastSelectedPathComponent, throwable);
+                        MessageHandler.error(
+                                "Could not open " + lastSelectedPathComponent,
+                                throwable);
                     }
                 }
             }
@@ -4397,8 +4396,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             super("Send to Back");
             putValue("tooltip", "Send to back of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_B, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_B,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_B));
         }
 
@@ -4418,7 +4417,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
 
             // Issue a change request, since this requires write access.
-            ChangeRequest request = new ChangeRequest(container, "Send to back") {
+            ChangeRequest request = new ChangeRequest(container,
+                    "Send to back") {
                 @Override
                 protected void _execute() throws IllegalActionException {
                     MoveAction.move(elements, MoveAction.TO_FIRST, container);
@@ -4442,8 +4442,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             super("Bring to Front");
             putValue("tooltip", "Bring to front of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_F,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4487,8 +4487,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             super("Paste");
             putValue("tooltip", "Paste the contents of the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_V, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_V,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
@@ -4519,15 +4519,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/up.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/up_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/up_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/up_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/up.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/up_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/basic/img/up_ov.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/up_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description);
 
@@ -4554,7 +4555,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          * given object as an editable model.
          */
         @Override
-        public JMenuItem create(final JContextMenu menu, final NamedObj object) {
+        public JMenuItem create(final JContextMenu menu,
+                final NamedObj object) {
             Action action = new AbstractAction("Open for Editing") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -4593,15 +4595,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/print.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/print_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/print_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/print_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/print.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/print_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/basic/img/print_ov.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/print_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
         }
 
         /** Print the current layout.
@@ -4664,15 +4667,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/save.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/save_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/save_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/save_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/save.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/save_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/basic/img/save_ov.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/save_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
@@ -4733,24 +4737,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/zoomin.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomin_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomin_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/zoomin.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomin_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomin_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+=)");
 
             // NOTE: The following assumes that the + key is the same
             // as the = key.  Unfortunately, the VK_PLUS key event doesn't
             // work, so we have to do it this way.
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+                                    | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
@@ -4779,22 +4785,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/zoomreset.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/zoomreset.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             // Control-m is usually carriage return.  In this case, we use
             // it to mean "return the zoom to the original state".
             putValue("tooltip", description + " (Ctrl+M)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_M, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_M,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
@@ -4823,20 +4830,22 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/zoomfit.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/zoomfit.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+-)");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+                                    | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4865,20 +4874,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/zoomout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomout_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/zoomout.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomout_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/zoomout_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_MINUS,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_U));
         }
 
@@ -4916,13 +4926,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     layoutConfiguration = "ptolemy.vergil.basic.layout.ModalLayoutConfiguration";
                 }
 
-                String momlChange = "<property name=\"_layoutConfiguration\" class=\"" + layoutConfiguration + "\"/>";
-                model.requestChange(new MoMLChangeRequest(this, model,
-                        momlChange, false));
+                String momlChange = "<property name=\"_layoutConfiguration\" class=\""
+                        + layoutConfiguration + "\"/>";
+                model.requestChange(
+                        new MoMLChangeRequest(this, model, momlChange, false));
                 attribute = model.getAttribute("_layoutConfiguration");
                 if (attribute == null) {
-                    MessageHandler
-                            .error("Could not create the layout configuration attribute.");
+                    MessageHandler.error(
+                            "Could not create the layout configuration attribute.");
                     return;
                 }
             }

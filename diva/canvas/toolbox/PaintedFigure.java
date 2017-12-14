@@ -102,8 +102,8 @@ public class PaintedFigure extends AbstractFigure {
      */
     @Override
     public Rectangle2D getBounds() {
-        Rectangle2D bounds = (Rectangle2D) ShapeUtilities.transformModify(
-                _paintedList.getBounds(), _transform);
+        Rectangle2D bounds = (Rectangle2D) ShapeUtilities
+                .transformModify(_paintedList.getBounds(), _transform);
         return bounds;
     }
 

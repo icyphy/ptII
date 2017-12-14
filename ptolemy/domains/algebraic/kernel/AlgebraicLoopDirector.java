@@ -232,8 +232,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AlgebraicLoopDirector newObject = (AlgebraicLoopDirector) super
-                .clone(workspace);
+        AlgebraicLoopDirector newObject = (AlgebraicLoopDirector) super.clone(
+                workspace);
         // FIXME: populate.
 
         return newObject;
@@ -461,6 +461,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      * @exception IllegalActionException If the superclass throws it, or
      *  if any of the contained actors throw it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
         @SuppressWarnings("unchecked")
@@ -543,8 +544,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             }
         }
         if (port != null) {
-            Parameter tolerance = (Parameter) port.getAttribute(
-                    "errorTolerance", Parameter.class);
+            Parameter tolerance = (Parameter) port
+                    .getAttribute("errorTolerance", Parameter.class);
             if (tolerance != null) {
                 Token value = tolerance.getToken();
                 if (value instanceof DoubleToken) {
@@ -595,7 +596,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
     /**
      A class for solving algebraic loops.
-
+    
      This class solves an algebraic loop of the form x=g(x)
      <pre>
          -----------
@@ -630,7 +631,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      Eugene L. Allgower and Kurt Georg,
      Introduction to Numerical Continuation Methods,
      Classics in Applied Mathematics, Vol. 45, SIAM, 2003.
-
+    
      @author Michael Wetter
      */
     abstract class AlgebraicLoopSolver {
@@ -783,9 +784,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 // Check for maximum number of iterations in case we did not yet converge.
                 if (!_converged && _iterationCount > _maxIterations) {
-                    throw new IllegalActionException(
-                            "Failed to converge after " + _maxIterations
-                                    + " iterations.");
+                    throw new IllegalActionException("Failed to converge after "
+                            + _maxIterations + " iterations.");
                 }
             } while (!_converged && !_stopRequested);
 
@@ -836,7 +836,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             final double det = DoubleMatrixMath.determinant(J);
             if (Math.abs(det) < 1E-5) {
                 StringBuffer message = new StringBuffer();
-                message.append("Singular Jacobian in Newton step. Reformulate equation or try different start values.\n");
+                message.append(
+                        "Singular Jacobian in Newton step. Reformulate equation or try different start values.\n");
                 message.append("Break variables:\n");
                 for (String name : _variableNames) {
                     message.append("    ");
@@ -1085,8 +1086,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Check condition number of initial point.
             if (cond > _cdmax) {
-                throw new IllegalActionException("Bad condition number '"
-                        + cond
+                throw new IllegalActionException("Bad condition number '" + cond
                         + "' of initial point. Select different initial point.");
             }
 
@@ -1107,9 +1107,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         StringBuffer message = new StringBuffer();
                         message.append("Failure at minimum step size after "
                                 + _iterationCount + " function evaluations.\n");
-                        message.append("Last solution vector was "
-                                + DoubleArrayMath.toString(DoubleArrayMath.add(
-                                        w, _xIni)) + "\n");
+                        message.append(
+                                "Last solution vector was "
+                                        + DoubleArrayMath.toString(
+                                                DoubleArrayMath.add(w, _xIni))
+                                        + "\n");
                         message.append("with homotopy factor lambda = "
                                 + x1[_nVars] + "\n");
                         message.append("(lambda should be 1 at solution.)\n");
@@ -1427,8 +1429,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             final double contr = d3 / (d1 + _dmin);
             if (contr > _ctmax) {
                 if (_debugging) {
-                    _debug("Failed contraction test 'contr > ctmax' as "
-                            + contr + " > " + _ctmax);
+                    _debug("Failed contraction test 'contr > ctmax' as " + contr
+                            + " > " + _ctmax);
                 }
                 _test = false;
             }
@@ -1655,9 +1657,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 // Check for maximum number of iterations in case we did not yet converge.
                 if (!_converged && _iterationCount > _maxIterations) {
-                    throw new IllegalActionException(
-                            "Failed to converge after " + _maxIterations
-                                    + " iterations.");
+                    throw new IllegalActionException("Failed to converge after "
+                            + _maxIterations + " iterations.");
                 }
             } while (!_converged && !_stopRequested);
 

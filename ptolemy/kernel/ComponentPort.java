@@ -579,8 +579,8 @@ public class ComponentPort extends Port {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity entity) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
         if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
@@ -822,7 +822,8 @@ public class ComponentPort extends Port {
             Entity container = (Entity) getContainer();
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
-            if (container.isClassDefinition() && container != relationContainer) {
+            if (container.isClassDefinition()
+                    && container != relationContainer) {
                 throw new IllegalActionException(this, relation,
                         "Cannot establish a link to a port contained "
                                 + "by a class definition");
@@ -833,10 +834,10 @@ public class ComponentPort extends Port {
          * EAL 4/21/09.
         if (relation != null) {
             Entity container = (Entity) getContainer();
-
+        
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
-
+        
             if ((container != relationContainer)
                     && (container.getContainer() != relationContainer)) {
                 throw new IllegalActionException(this, relation,
@@ -1096,8 +1097,9 @@ public class ComponentPort extends Port {
                     Relation relation = (Relation) insideRelations.next();
 
                     if (relation != null) {
-                        result.append(relation._description(detail, indent + 1,
-                                2) + "\n");
+                        result.append(
+                                relation._description(detail, indent + 1, 2)
+                                        + "\n");
                     } else {
                         result.append(_getIndentPrefix(indent + 1) + "null\n");
                     }

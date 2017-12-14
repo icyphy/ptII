@@ -103,10 +103,11 @@ public class G4LTL {
      */
     public static String generateMoML(File ltlFile, int optionTechnique,
             int unrollSteps, boolean findStrategy, NamedObj context)
-                    throws Exception {
+            throws Exception {
         SolverUtility solver = new SolverUtility();
         ResultLTLSynthesis result = G4LTL.synthesizeFromFile(solver, ltlFile,
-                optionTechnique, unrollSteps, /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
+                optionTechnique,
+                unrollSteps, /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/
                 findStrategy);
         if (findStrategy && result.getMessage1().startsWith("<") == false) {
             result = solver.synthesizeFromFile(ltlFile, optionTechnique,

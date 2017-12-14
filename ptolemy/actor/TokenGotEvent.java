@@ -78,7 +78,8 @@ public class TokenGotEvent {
      *  false otherwise.
      */
 
-    public TokenGotEvent(IOPort sink, int channel, Token token, boolean outside) {
+    public TokenGotEvent(IOPort sink, int channel, Token token,
+            boolean outside) {
         _port = sink;
         _channel = channel;
         _tokenArray = null;

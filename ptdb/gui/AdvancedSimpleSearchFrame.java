@@ -238,8 +238,8 @@ public class AdvancedSimpleSearchFrame extends JFrame {
      * names are found in the search criteria.
      * @exception IllegalActionException Thrown if the intend action is illegal.
      */
-    private boolean _isValid() throws NameDuplicationException,
-    IllegalActionException {
+    private boolean _isValid()
+            throws NameDuplicationException, IllegalActionException {
 
         if (_attributesListPanel.getAttributeCount() == 0
                 && _attributesListPanel.getModelName().trim().isEmpty()) {
@@ -257,7 +257,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
                 JOptionPane.showMessageDialog(this,
                         "The model name should only "
                                 + "contain letters and numbers.",
-                                "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+                        "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
                 return false;
             }
@@ -269,7 +269,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
             JOptionPane.showMessageDialog(this,
                     "The search criteria cannot contain more"
                             + " than one instance " + "of the same attribute.",
-                            "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             return false;
 

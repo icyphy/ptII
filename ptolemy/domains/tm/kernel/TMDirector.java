@@ -141,7 +141,8 @@ public class TMDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public TMDirector() throws IllegalActionException, NameDuplicationException {
+    public TMDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _initParameters();
     }
@@ -153,8 +154,8 @@ public class TMDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public TMDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public TMDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -326,7 +327,7 @@ public class TMDirector extends Director {
                 if (_debugging) {
                     _debug(getName(), "put trigger event ", event.toString(),
                             " into " + ((NamedObj) event.actor()).getName()
-                            + " and processing");
+                                    + " and processing");
                 }
 
                 event.receiver()._triggerEvent(event.token());
@@ -564,8 +565,9 @@ public class TMDirector extends Director {
             double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
             if (_outsideTime.getDoubleValue() - elapsedTimeInSeconds > 1e-3) {
-                long timeToWait = (long) (_outsideTime.subtract(
-                        elapsedTimeInSeconds).getDoubleValue() * 1000.0);
+                long timeToWait = (long) (_outsideTime
+                        .subtract(elapsedTimeInSeconds).getDoubleValue()
+                        * 1000.0);
 
                 if (timeToWait > 0) {
                     if (_debugging) {
@@ -599,9 +601,8 @@ public class TMDirector extends Director {
 
             if (event.hasStarted()) {
                 if (_debugging) {
-                    _debug("deduct "
-                            + getModelTime().subtract(cachedCurrentTime)
-                            .getDoubleValue(),
+                    _debug("deduct " + getModelTime()
+                            .subtract(cachedCurrentTime).getDoubleValue(),
                             " from processing time of event", event.toString());
                 }
 
@@ -740,7 +741,8 @@ public class TMDirector extends Director {
      *  @see #addScheduleListener(ScheduleListener)
      */
     public void removeScheduleListener(ScheduleListener listener) {
-        if (_scheduleListeners != null && _scheduleListeners.contains(listener)) {
+        if (_scheduleListeners != null
+                && _scheduleListeners.contains(listener)) {
             _scheduleListeners.remove(listener);
         }
     }
@@ -815,8 +817,8 @@ public class TMDirector extends Director {
                 Iterator listeners = _scheduleListeners.iterator();
 
                 while (listeners.hasNext()) {
-                    ((ScheduleListener) listeners.next()).event(actorName,
-                            time, scheduleEvent);
+                    ((ScheduleListener) listeners.next()).event(actorName, time,
+                            scheduleEvent);
                 }
             }
         }
@@ -856,23 +858,23 @@ public class TMDirector extends Director {
     // different defaults.
     private void _initParameters() {
         try {
-            preemptive = new Parameter(this, "preemptive", new BooleanToken(
-                    false));
+            preemptive = new Parameter(this, "preemptive",
+                    new BooleanToken(false));
 
             preemptive.setTypeEquals(BaseType.BOOLEAN);
             defaultTaskExecutionTime = new Parameter(this,
                     "defaultTaskExecutionTime", new DoubleToken(0.0));
             defaultTaskExecutionTime.setTypeEquals(BaseType.DOUBLE);
 
-            synchronizeToRealTime = new Parameter(this,
-                    "synchronizeToRealTime", new BooleanToken(false));
+            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime",
+                    new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(getName()
-                    + "fail to initialize parameters.");
+            throw new InternalErrorException(
+                    getName() + "fail to initialize parameters.");
         } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(getName()
-                    + "fail to initialize parameters.");
+            throw new InternalErrorException(
+                    getName() + "fail to initialize parameters.");
         }
     }
 
@@ -882,8 +884,8 @@ public class TMDirector extends Director {
     // If the queue is empty, then throw an InvalidStateException
     private void _requestFiringAt(Time time) throws IllegalActionException {
         if (_debugging) {
-            _debug("Request refiring of composite actor.", getContainer()
-                    .getName(), "at " + time);
+            _debug("Request refiring of composite actor.",
+                    getContainer().getName(), "at " + time);
         }
 
         // Enqueue a refire for the container of this director.

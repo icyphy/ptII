@@ -104,11 +104,9 @@ public class URLToImage extends Transformer {
             output.send(0, new AWTImageToken(image));
         } catch (MalformedURLException ex) {
             throw new IllegalActionException(this, ex,
-                    "'" + urlToken.stringValue()
-                    + "' is malformed.");
+                    "'" + urlToken.stringValue() + "' is malformed.");
         } catch (IOException e) {
-            throw new IllegalActionException(this, e,
-                    "Failed to read image.");
+            throw new IllegalActionException(this, e, "Failed to read image.");
         }
     }
 

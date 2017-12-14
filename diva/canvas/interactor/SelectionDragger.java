@@ -325,8 +325,8 @@ public class SelectionDragger extends DragInteractor {
                 if (r != null && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
-                    if (_selectionModels.contains(interactor
-                            .getSelectionModel())) {
+                    if (_selectionModels
+                            .contains(interactor.getSelectionModel())) {
                         expandSelection((SelectionInteractor) r, f);
                     }
                 }
@@ -342,8 +342,8 @@ public class SelectionDragger extends DragInteractor {
                 if (r != null && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
-                    if (_selectionModels.contains(interactor
-                            .getSelectionModel())) {
+                    if (_selectionModels
+                            .contains(interactor.getSelectionModel())) {
                         contractSelection((SelectionInteractor) r, f);
                     }
                 }
@@ -360,9 +360,10 @@ public class SelectionDragger extends DragInteractor {
                 if (r != null && r instanceof SelectionInteractor) {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
-                    if (_selectionModels.contains(interactor
-                            .getSelectionModel())) {
-                        if (interactor.getSelectionModel().containsSelection(f)) {
+                    if (_selectionModels
+                            .contains(interactor.getSelectionModel())) {
+                        if (interactor.getSelectionModel()
+                                .containsSelection(f)) {
                             contractSelection(interactor, f);
                         } else {
                             expandSelection(interactor, f);
@@ -402,8 +403,8 @@ public class SelectionDragger extends DragInteractor {
         _overlayLayer.add(_rubberBand);
         _overlayLayer.repaint(_rubberBand);
 
-        _intersectedFigures = _figureLayer.getFigures().getIntersectedFigures(
-                _rubberBand);
+        _intersectedFigures = _figureLayer.getFigures()
+                .getIntersectedFigures(_rubberBand);
         _currentFigures = new HashSet();
         _holdovers = new HashSet();
 

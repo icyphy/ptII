@@ -63,8 +63,8 @@ public class RunnableExceptionCatcher implements Runnable {
         try {
             _runnable.run();
         } catch (Throwable e) {
-            ptolemy.util.MessageHandler.error(
-                    ptolemy.util.MessageHandler.shortDescription(e), e);
+            ptolemy.util.MessageHandler
+                    .error(ptolemy.util.MessageHandler.shortDescription(e), e);
         }
     }
 

@@ -204,78 +204,78 @@ class TablePanel extends Panel {
         Coordinate r_2;
 
         p = new Coordinate(origin.X - pR, origin.Y - (int) r1 - pR);
-        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18), p.Y + pR
-                + (int) (r3 * cos18));
-        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18), p.Y + pR
-                + (int) ((r3 + l) * cos18));
-        r_1 = new Coordinate(p.X + pR - (int) (r3 * sin18), p.Y + pR
-                + (int) (r3 * cos18));
-        r_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * sin18), p.Y + pR
-                + (int) ((r3 + l) * cos18));
+        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18),
+                p.Y + pR + (int) (r3 * cos18));
+        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18),
+                p.Y + pR + (int) ((r3 + l) * cos18));
+        r_1 = new Coordinate(p.X + pR - (int) (r3 * sin18),
+                p.Y + pR + (int) (r3 * cos18));
+        r_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * sin18),
+                p.Y + pR + (int) ((r3 + l) * cos18));
         philsLoc[0].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate(origin.X - (int) (r1 * cos18) - pR, origin.Y
-                - (int) (r1 * sin18) - pR);
+        p = new Coordinate(origin.X - (int) (r1 * cos18) - pR,
+                origin.Y - (int) (r1 * sin18) - pR);
         l_1 = new Coordinate(p.X + pR + (int) r3, p.Y + pR);
         l_2 = new Coordinate(p.X + pR + (int) (r3 + l), p.Y + pR);
-        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36), p.Y + pR
-                + (int) (r3 * sin36));
-        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36), p.Y + pR
-                + (int) ((r3 + l) * sin36));
+        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36),
+                p.Y + pR + (int) (r3 * sin36));
+        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36),
+                p.Y + pR + (int) ((r3 + l) * sin36));
         philsLoc[1].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate(origin.X - (int) (r1 * sin36) - pR, origin.Y
-                + (int) (r1 * cos36) - pR);
-        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18), p.Y + pR
-                - (int) (r3 * cos18));
-        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18), p.Y + pR
-                - (int) ((r3 + l) * cos18));
-        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36), p.Y + pR
-                - (int) (r3 * sin36));
-        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36), p.Y + pR
-                - (int) ((r3 + l) * sin36));
+        p = new Coordinate(origin.X - (int) (r1 * sin36) - pR,
+                origin.Y + (int) (r1 * cos36) - pR);
+        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18),
+                p.Y + pR - (int) (r3 * cos18));
+        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18),
+                p.Y + pR - (int) ((r3 + l) * cos18));
+        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36),
+                p.Y + pR - (int) (r3 * sin36));
+        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36),
+                p.Y + pR - (int) ((r3 + l) * sin36));
         philsLoc[2].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate(origin.X + (int) (r1 * sin36) - pR, origin.Y
-                + (int) (r1 * cos36) - pR);
-        l_1 = new Coordinate(p.X + pR - (int) (r3 * cos36), p.Y + pR
-                - (int) (r3 * sin36));
-        l_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * cos36), p.Y + pR
-                - (int) ((r3 + l) * sin36));
-        r_1 = new Coordinate(p.X + pR - (int) (r3 * sin18), p.Y + pR
-                - (int) (r3 * cos18));
-        r_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * sin18), p.Y + pR
-                - (int) ((r3 + l) * cos18));
+        p = new Coordinate(origin.X + (int) (r1 * sin36) - pR,
+                origin.Y + (int) (r1 * cos36) - pR);
+        l_1 = new Coordinate(p.X + pR - (int) (r3 * cos36),
+                p.Y + pR - (int) (r3 * sin36));
+        l_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * cos36),
+                p.Y + pR - (int) ((r3 + l) * sin36));
+        r_1 = new Coordinate(p.X + pR - (int) (r3 * sin18),
+                p.Y + pR - (int) (r3 * cos18));
+        r_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * sin18),
+                p.Y + pR - (int) ((r3 + l) * cos18));
         philsLoc[3].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate(origin.X + (int) (r1 * cos18) - pR, origin.Y
-                - (int) (r1 * sin18) - pR);
-        l_1 = new Coordinate(p.X + pR - (int) (r3 * cos36), p.Y + pR
-                + (int) (r3 * sin36));
-        l_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * cos36), p.Y + pR
-                + (int) ((r3 + l) * sin36));
+        p = new Coordinate(origin.X + (int) (r1 * cos18) - pR,
+                origin.Y - (int) (r1 * sin18) - pR);
+        l_1 = new Coordinate(p.X + pR - (int) (r3 * cos36),
+                p.Y + pR + (int) (r3 * sin36));
+        l_2 = new Coordinate(p.X + pR - (int) ((r3 + l) * cos36),
+                p.Y + pR + (int) ((r3 + l) * sin36));
         r_1 = new Coordinate(p.X + pR - (int) r3, p.Y + pR);
         r_2 = new Coordinate(p.X + pR - (int) (r3 + l), p.Y + pR);
         philsLoc[4].setPos(p, l_1, l_2, r_1, r_2);
 
-        p = new Coordinate(origin.X + (int) (r2 * sin36), origin.Y
-                - (int) (r2 * cos36));
-        q = new Coordinate(origin.X + (int) ((r2 + l) * sin36), origin.Y
-                - (int) ((r2 + l) * cos36));
+        p = new Coordinate(origin.X + (int) (r2 * sin36),
+                origin.Y - (int) (r2 * cos36));
+        q = new Coordinate(origin.X + (int) ((r2 + l) * sin36),
+                origin.Y - (int) ((r2 + l) * cos36));
         chopsticksLoc[0].setPos(p, q);
-        p = new Coordinate(origin.X - (int) (r2 * sin36), origin.Y
-                - (int) (r2 * cos36));
-        q = new Coordinate(origin.X - (int) ((r2 + l) * sin36), origin.Y
-                - (int) ((r2 + l) * cos36));
+        p = new Coordinate(origin.X - (int) (r2 * sin36),
+                origin.Y - (int) (r2 * cos36));
+        q = new Coordinate(origin.X - (int) ((r2 + l) * sin36),
+                origin.Y - (int) ((r2 + l) * cos36));
         chopsticksLoc[1].setPos(p, q);
-        p = new Coordinate(origin.X - (int) (r2 * cos18), origin.Y
-                + (int) (r2 * sin18));
-        q = new Coordinate(origin.X - (int) ((r2 + l) * cos18), origin.Y
-                + (int) ((r2 + l) * sin18));
+        p = new Coordinate(origin.X - (int) (r2 * cos18),
+                origin.Y + (int) (r2 * sin18));
+        q = new Coordinate(origin.X - (int) ((r2 + l) * cos18),
+                origin.Y + (int) ((r2 + l) * sin18));
         chopsticksLoc[2].setPos(p, q);
         p = new Coordinate(origin.X, origin.Y + (int) r2);
         q = new Coordinate(origin.X, origin.Y + (int) (r2 + l));
         chopsticksLoc[3].setPos(p, q);
-        p = new Coordinate(origin.X + (int) (r2 * cos18), origin.Y
-                + (int) (r2 * sin18));
-        q = new Coordinate(origin.X + (int) ((r2 + l) * cos18), origin.Y
-                + (int) ((r2 + l) * sin18));
+        p = new Coordinate(origin.X + (int) (r2 * cos18),
+                origin.Y + (int) (r2 * sin18));
+        q = new Coordinate(origin.X + (int) ((r2 + l) * cos18),
+                origin.Y + (int) ((r2 + l) * sin18));
         chopsticksLoc[4].setPos(p, q);
     }
 

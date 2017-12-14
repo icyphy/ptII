@@ -42,8 +42,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class JSAccessor
-    extends ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs.JavaScript {
+public class JSAccessor extends
+        ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs.JavaScript {
 
     /**
      *  Construct the JSAccessor adapter.
@@ -67,35 +67,36 @@ public class JSAccessor
         String name = StringUtilities.sanitizeName(actor.getName());
 
         code.append(_eol + _INDENT1 + "// Start: " + getComponent().getName()
-                + ": ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/JSAccessor.java" + _eol);
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/JSAccessor.java"
+                + _eol);
 
         // If the script has local modifications, then emit the contents of the script.
         // This code is needed for the Mutable accessors.
         boolean isOverridden = actor.getAttribute("_localChanges") != null;
         if (isOverridden) {
-            code.append(_INDENT1 + "// The script has local modifications, so it is being emitted." + _eol);
+            code.append(_INDENT1
+                    + "// The script has local modifications, so it is being emitted."
+                    + _eol);
             code.append(super.generateAccessor());
             return code.toString();
         }
 
         code.append(_INDENT1 + "var " + name + " = this.instantiate('" + name
-                + "', '"
-                + actor.accessorSource.getExpression()
-                // Replace both https and http.  http is used in older accessors.
-                .replace("http://www.terraswarm.org/accessors", "")
-                .replace("https://www.terraswarm.org/accessors", "")
-                .replace("http://www.icyphy.org/accessors", "")
-                .replace("https://www.icyphy.org/accessors", "")
-                .replace("http://accessors.org/", "")
-                .replace("https://accessors.org/", "")
-                + "');"
-                + _eol
-                // No need to add this accessor to the container or containedAccessors because
-                // this is handled elsewhere.  Note that for JavaScript actors, we *do*
-                // need to add them.
-                // + _INDENT1 + name + ".container = this;" + _eol
-                // + _INDENT1 + "this.containedAccessors.push("+ name + ");" + _eol
-                    );
+                + "', '" + actor.accessorSource.getExpression()
+                        // Replace both https and http.  http is used in older accessors.
+                        .replace("http://www.terraswarm.org/accessors", "")
+                        .replace("https://www.terraswarm.org/accessors", "")
+                        .replace("http://www.icyphy.org/accessors", "")
+                        .replace("https://www.icyphy.org/accessors", "")
+                        .replace("http://accessors.org/", "")
+                        .replace("https://accessors.org/", "")
+                + "');" + _eol
+        // No need to add this accessor to the container or containedAccessors because
+        // this is handled elsewhere.  Note that for JavaScript actors, we *do*
+        // need to add them.
+        // + _INDENT1 + name + ".container = this;" + _eol
+        // + _INDENT1 + "this.containedAccessors.push("+ name + ");" + _eol
+        );
 
         // _generateJavaScriptParameters() is defined in
         // ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java

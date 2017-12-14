@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  * @Pt.AcceptedRating Red (cxh)
  *
  */
-public class Publisher
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
+public class Publisher extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
     /**
      * Constructor method for the Publisher adapter.
      * @param actor the associated actor

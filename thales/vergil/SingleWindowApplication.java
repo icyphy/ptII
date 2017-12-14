@@ -89,7 +89,8 @@ public class SingleWindowApplication extends VergilApplication {
      */
     @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
-        return readConfiguration(specToURL("thales/configs/singleWindow/singleWindowConfiguration.xml"));
+        return readConfiguration(specToURL(
+                "thales/configs/singleWindow/singleWindowConfiguration.xml"));
     }
 
     /* (non-Javadoc)
@@ -106,7 +107,8 @@ public class SingleWindowApplication extends VergilApplication {
         }
 
         // FIXME: This code is Dog slow for some reason.
-        URL inurl = specToURL("thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
+        URL inurl = specToURL(
+                "thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl);

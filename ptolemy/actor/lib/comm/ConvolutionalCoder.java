@@ -292,8 +292,8 @@ public class ConvolutionalCoder extends Transformer {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConvolutionalCoder newObject = (ConvolutionalCoder) super
-                .clone(workspace);
+        ConvolutionalCoder newObject = (ConvolutionalCoder) super.clone(
+                workspace);
 
         newObject._inputRate = (Parameter) newObject.input
                 .getAttribute("tokenConsumptionRate");

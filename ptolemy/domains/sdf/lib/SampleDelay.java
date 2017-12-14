@@ -128,8 +128,8 @@ public class SampleDelay extends SDFTransformer {
 
         // set the type constraints
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.initialOutputs));
+            newObject.output.setTypeAtLeast(
+                    ArrayType.elementType(newObject.initialOutputs));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -196,7 +196,8 @@ public class SampleDelay extends SDFTransformer {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()) {
-            result.add(new Inequality(output.getTypeTerm(), input.getTypeTerm()));
+            result.add(
+                    new Inequality(output.getTypeTerm(), input.getTypeTerm()));
         }
         return result;
     }

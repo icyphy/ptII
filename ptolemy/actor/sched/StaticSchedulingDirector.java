@@ -75,8 +75,8 @@ public class StaticSchedulingDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public StaticSchedulingDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public StaticSchedulingDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -139,8 +139,8 @@ public class StaticSchedulingDirector extends Director {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StaticSchedulingDirector newObject = (StaticSchedulingDirector) super
-                .clone(workspace);
+        StaticSchedulingDirector newObject = (StaticSchedulingDirector) super.clone(
+                workspace);
         Scheduler scheduler = getScheduler();
         if (scheduler == null) {
             newObject._setScheduler(null);
@@ -192,8 +192,8 @@ public class StaticSchedulingDirector extends Director {
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire "
-                    + "system with no scheduler");
+            throw new IllegalActionException(
+                    "Attempted to fire " + "system with no scheduler");
         }
 
         // This will throw IllegalActionException if this director
@@ -361,7 +361,8 @@ public class StaticSchedulingDirector extends Director {
                 if (!_actorFinished) {
                     if (_tokenSentToCommunicationAspect) {
                         _tokenSentToCommunicationAspect = false;
-                        if (((CompositeActor) getContainer()).getContainer() != null) {
+                        if (((CompositeActor) getContainer())
+                                .getContainer() != null) {
                             ((CompositeActor) getContainer())
                                     .getExecutiveDirector().fireAtCurrentTime(
                                             (CompositeActor) getContainer());

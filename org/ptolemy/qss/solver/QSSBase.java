@@ -810,8 +810,9 @@ public abstract class QSSBase {
         * @return The smallest time.
         */
     public final Time minimumTime(Time time1, Time time2) {
-        if (time1.compareTo(time2) > 0)
+        if (time1.compareTo(time2) > 0) {
             time1 = time2;
+        }
         return (time1);
     }
 
@@ -915,9 +916,10 @@ public abstract class QSSBase {
 
         if (_need_predQuantEvtTimes[stateIdx]) {
             // Perform work defined by specific member of the QSS family.
-            predQuantEvtTime = _predictQuantizationEventTimeWorker(
-                    stateIdx, _quantEvtTimeMax);
-            assert (predQuantEvtTime.compareTo(_cStateModels[stateIdx].tModel) > 0
+            predQuantEvtTime = _predictQuantizationEventTimeWorker(stateIdx,
+                    _quantEvtTimeMax);
+            assert (predQuantEvtTime
+                    .compareTo(_cStateModels[stateIdx].tModel) > 0
                     || predQuantEvtTime.compareTo(_quantEvtTimeMax) == 0);
             _predQuantEvtTimes[stateIdx] = predQuantEvtTime;
             _need_predQuantEvtTimes[stateIdx] = false;
@@ -1694,15 +1696,17 @@ public abstract class QSSBase {
      * @param exactInputs True if exact inputs are expected.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2QFromC(
-            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
-            final double dq, final boolean exactInputs) {
+            final ModelPolynomial qStateModel,
+            final ModelPolynomial cStateModel, final double dq,
+            final boolean exactInputs) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
         assert (qStateModel.getMaximumOrder() >= 1);
-        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder()
+                + 1);
         assert (qStateModel.tModel.compareTo(cStateModel.tModel) > 0); // Require {qStateModel} more recent.
         assert (dq > 0);
 
@@ -1759,21 +1763,24 @@ public abstract class QSSBase {
      * @param exactInputs True if exact inputs are expected.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2General(
-            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
-            final double dq, final boolean exactInputs) {
+            final ModelPolynomial qStateModel,
+            final ModelPolynomial cStateModel, final double dq,
+            final boolean exactInputs) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
         assert (qStateModel.getMaximumOrder() >= 1);
-        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder()
+                + 1);
         assert (dq > 0);
 
         double dt;
 
         // Get coefficients of the quadratic equation that defines the step.
-        final double hStar = qStateModel.tModel.subtractToDouble(cStateModel.tModel);
+        final double hStar = qStateModel.tModel
+                .subtractToDouble(cStateModel.tModel);
         final double qecConst = cStateModel.coeffs[0] - qStateModel.coeffs[0]
                 + hStar * qStateModel.coeffs[1];
         final double qeb = cStateModel.coeffs[1] - qStateModel.coeffs[1];
@@ -1851,15 +1858,17 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3QFromC(
-            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
-            final double dq, final boolean exactInputs) {
+            final ModelPolynomial qStateModel,
+            final ModelPolynomial cStateModel, final double dq,
+            final boolean exactInputs) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
         assert (qStateModel.getMaximumOrder() >= 2);
-        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder()
+                + 1);
         assert (qStateModel.tModel.compareTo(cStateModel.tModel) > 0); // Require {qStateModel} more recent.
         assert (dq > 0);
 
@@ -1905,23 +1914,26 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3General(
-            final ModelPolynomial qStateModel, final ModelPolynomial cStateModel,
-            final double dq) {
+            final ModelPolynomial qStateModel,
+            final ModelPolynomial cStateModel, final double dq) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
         assert (qStateModel.getMaximumOrder() >= 2);
-        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder() + 1);
+        assert (cStateModel.getMaximumOrder() == qStateModel.getMaximumOrder()
+                + 1);
         assert (dq > 0);
 
         double dt;
 
         // Get coefficients of the cubic equation that defines the step.
-        final double hStar = qStateModel.tModel.subtractToDouble(cStateModel.tModel);
+        final double hStar = qStateModel.tModel
+                .subtractToDouble(cStateModel.tModel);
         final double cedConst = cStateModel.coeffs[0] - qStateModel.coeffs[0]
-                + hStar * (qStateModel.coeffs[1] - hStar * qStateModel.coeffs[2]);
+                + hStar * (qStateModel.coeffs[1]
+                        - hStar * qStateModel.coeffs[2]);
         final double cec = cStateModel.coeffs[1] - qStateModel.coeffs[1]
                 + 2 * hStar * qStateModel.coeffs[2];
         final double ceb = cStateModel.coeffs[2] - qStateModel.coeffs[2];
@@ -2097,7 +2109,8 @@ public abstract class QSSBase {
         final int cStateOrder = _qStateModelOrder + 1;
         assert (cStateOrder >= 1);
         for (int ii = 0; ii < _stateCt; ++ii) {
-            final ModelPolynomial cStateModel = new ModelPolynomial(cStateOrder);
+            final ModelPolynomial cStateModel = new ModelPolynomial(
+                    cStateOrder);
             cStateModel.claimWriteAccess();
             _cStateModels[ii] = cStateModel;
         }
@@ -2283,7 +2296,8 @@ public abstract class QSSBase {
         //   I.e., require called method setStateValue() on each state, because
         // the model time gets set to {_currSimTime} when set the state.
         for (int ii = 0; ii < _stateCt; ++ii) {
-            if (null == _cStateModels[ii].tModel || null == _qStateModels[ii].tModel) {
+            if (null == _cStateModels[ii].tModel
+                    || null == _qStateModels[ii].tModel) {
                 // Note test above should be redundant.  Both models should get
                 // the same initial time at the same point in the worflow, and
                 // after that the model time should never return to {null}.

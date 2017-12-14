@@ -192,8 +192,8 @@ public class Chopstick extends CSPActor {
                 }
             }
         } catch (NoTokenException ex) {
-            throw new IllegalActionException(getName() + ": cannot "
-                    + "get token.");
+            throw new IllegalActionException(
+                    getName() + ": cannot " + "get token.");
         }
     }
 }

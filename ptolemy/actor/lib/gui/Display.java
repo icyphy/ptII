@@ -128,10 +128,10 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
         title = new StringParameter(this, "title");
         title.setExpression("");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-15\" " + "width=\"40\" height=\"30\" "
-                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-15\" y=\"-10\" "
-                + "width=\"30\" height=\"20\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-15\" "
+                + "width=\"40\" height=\"30\" " + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"-15\" y=\"-10\" " + "width=\"30\" height=\"20\" "
+                + "style=\"fill:white\"/>\n"
                 + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
                 + "style=\"stroke:grey\"/>\n"
                 + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
@@ -357,8 +357,8 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  @see #title
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         _setTitle(name);
@@ -378,8 +378,8 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
         HashSet<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL),
+                    input.getTypeTerm()));
         }
         return result;
     }
@@ -407,8 +407,8 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
                         + "so Display is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    DisplayInterface.class);
+            _implementation = PtolemyInjector.getInjector()
+                    .getInstance(DisplayInterface.class);
             try {
                 _implementation.init(this);
             } catch (NameDuplicationException e) {

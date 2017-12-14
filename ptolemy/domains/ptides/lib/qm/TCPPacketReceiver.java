@@ -146,7 +146,7 @@ public class TCPPacketReceiver extends InputDevice {
                         .get(singleEventLabel);
                 new Time(getDirector(),
                         ((DoubleToken) singleEventRecord.get(timestamp))
-                        .doubleValue());
+                                .doubleValue());
 
                 ((IntToken) singleEventRecord.get(microstep)).intValue();
 
@@ -182,8 +182,7 @@ public class TCPPacketReceiver extends InputDevice {
             }
         }
         if (!flag) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "A NetworkReceiver must be connected to a port "
                             + "on the outside, and that port should be a network port "
                             + "(a port with the parameter networkPort).");

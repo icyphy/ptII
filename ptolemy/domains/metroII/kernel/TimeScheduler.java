@@ -111,8 +111,8 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
                     if (EventTimeComparator.compare(event.getTime(),
                             timeBuilder.build()) < 0) {
                         timeBuilder.setValue(event.getTime().getValue());
-                        timeBuilder.setResolution(event.getTime()
-                                .getResolution());
+                        timeBuilder
+                                .setResolution(event.getTime().getResolution());
                     }
                     numTimedEvent++;
                 } else {

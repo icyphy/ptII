@@ -50,12 +50,11 @@ public class ShortTitleTabbedPaneUI extends BasicTabbedPaneUI {
      */
     @Override
     protected void paintText(Graphics g, int tabPlacement, Font font,
-            FontMetrics metrics, int tabIndex, String title,
-            Rectangle textRect, boolean isSelected) {
+            FontMetrics metrics, int tabIndex, String title, Rectangle textRect,
+            boolean isSelected) {
         if (title.length() > TAB_MINIMUM_SIZE) {
-            title = "..."
-                    + title.substring(title.length() - TAB_MINIMUM_SIZE + 3,
-                            title.length());
+            title = "..." + title.substring(
+                    title.length() - TAB_MINIMUM_SIZE + 3, title.length());
             textRect.x += 4;
         }
 
@@ -73,10 +72,10 @@ public class ShortTitleTabbedPaneUI extends BasicTabbedPaneUI {
         String title = tabPane.getTitleAt(tabIndex);
 
         if (title.length() > TAB_MINIMUM_SIZE) {
-            taille = SwingUtilities.computeStringWidth(
-                    metrics,
-                    title.substring(title.length() - TAB_MINIMUM_SIZE,
-                            title.length())) + 3;
+            taille = SwingUtilities
+                    .computeStringWidth(metrics, title.substring(
+                            title.length() - TAB_MINIMUM_SIZE, title.length()))
+                    + 3;
         } else {
             taille = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
         }

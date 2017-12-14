@@ -211,9 +211,9 @@ public class PythonScript extends TypedAtomicActor {
                 + "    # token = self.input.get(0)\n"
                 + "    # compute, and send an output using\n"
                 + "    # self.output.broadcast(token)\n" + "    return\n\n");
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"60\" height=\"30\" "
-                + "style=\"fill:black\"/>\n" + "<text x=\"-22\" y=\"4\""
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                + "width=\"60\" height=\"30\" " + "style=\"fill:black\"/>\n"
+                + "<text x=\"-22\" y=\"4\""
                 + "style=\"font-size:14; fill:white; font-family:SansSerif\">"
                 + "Python</text>\n" + "</svg>\n");
     }
@@ -545,8 +545,8 @@ public class PythonScript extends TypedAtomicActor {
 
             // Get the class defined by the script.
             try {
-                _class = (PyClass) _interpreter.get(jythonClassName
-                        .getExpression());
+                _class = (PyClass) _interpreter
+                        .get(jythonClassName.getExpression());
             } catch (ClassCastException ex) {
                 try {
                     PyModule module = (PyModule) _interpreter
@@ -557,16 +557,15 @@ public class PythonScript extends TypedAtomicActor {
                             "Failed to cast _interpreter.get(jythonClassName.getExpression()) "
                                     + " which is of type "
                                     + _interpreter
-                                    .get(jythonClassName
-                                            .getExpression())
+                                            .get(jythonClassName
+                                                    .getExpression())
                                             .getClass().getName()
-                                            + " to PyClass.");
+                                    + " to PyClass.");
                 }
             }
 
             if (_class == null) {
-                throw new IllegalActionException(
-                        this,
+                throw new IllegalActionException(this,
                         "The script does not define a \""
                                 + jythonClassName.getExpression()
                                 + " \" class, try setting the jythonClassName parameter "
@@ -738,8 +737,8 @@ public class PythonScript extends TypedAtomicActor {
             }
         } catch (Exception ex) {
             // Ignore, we are probably under an an applet
-            System.err
-                    .println("Warning: PythonScript threw an exception.  Perhaps we are under an applet?");
+            System.err.println(
+                    "Warning: PythonScript threw an exception.  Perhaps we are under an applet?");
             ex.printStackTrace();
         }
 
@@ -754,7 +753,7 @@ public class PythonScript extends TypedAtomicActor {
             String[] propertyNames = { "file.separator", "line.separator",
                     "path.separator", "java.class.version", "java.vendor",
                     "java.vendor.url", "java.version", "os.name", "os.arch",
-            "os.version" };
+                    "os.version" };
             Properties preProperties = new Properties();
 
             for (String propertyName : propertyNames) {
@@ -805,6 +804,6 @@ public class PythonScript extends TypedAtomicActor {
     // Listed here are all methods of the Executable interface, except
     // iterate().
     private static final String[] _METHOD_NAMES = { "fire", "initialize",
-        "postfire", "prefire", "preinitialize", "stop", "stopFire",
-        "terminate", "wrapup" };
+            "postfire", "prefire", "preinitialize", "stop", "stopFire",
+            "terminate", "wrapup" };
 }

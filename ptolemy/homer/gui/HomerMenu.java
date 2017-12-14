@@ -221,8 +221,9 @@ public class HomerMenu {
      */
     private void _initializeFileChooser() {
         _fileChooser = new JFileChooser();
-        _fileChooser.setCurrentDirectory(new File(ResourceBundle.getBundle(
-                "ptserver.PtolemyServerConfig").getString("MODELS_DIRECTORY")));
+        _fileChooser.setCurrentDirectory(new File(
+                ResourceBundle.getBundle("ptserver.PtolemyServerConfig")
+                        .getString("MODELS_DIRECTORY")));
 
         _modelFilter = new FileFilter() {
             @Override
@@ -280,30 +281,28 @@ public class HomerMenu {
                     .evaluate(doc, XPathConstants.NODESET);
 
             for (int i = 0; i < manufacturers.getLength(); i++) {
-                NodeList devices = (NodeList) xpath
-                        .compile("devices//device")
-                        .evaluate(manufacturers.item(i), XPathConstants.NODESET);
+                NodeList devices = (NodeList) xpath.compile("devices//device")
+                        .evaluate(manufacturers.item(i),
+                                XPathConstants.NODESET);
 
                 JMenu mfgItem = new JMenu(manufacturers.item(i).getAttributes()
                         .getNamedItem("name").getNodeValue());
                 for (int x = 0; x < devices.getLength(); x++) {
                     final NamedNodeMap attributes = devices.item(x)
                             .getAttributes();
-                    final int width = Integer.parseInt(attributes.getNamedItem(
-                            "width").getNodeValue());
-                    final int height = Integer.parseInt(attributes
-                            .getNamedItem("height").getNodeValue());
+                    final int width = Integer.parseInt(
+                            attributes.getNamedItem("width").getNodeValue());
+                    final int height = Integer.parseInt(
+                            attributes.getNamedItem("height").getNodeValue());
 
-                    JMenuItem deviceItem = new JMenuItem(attributes
-                            .getNamedItem("name").getNodeValue()
-                            + " ("
-                            + width
-                            + "x" + height + ")");
+                    JMenuItem deviceItem = new JMenuItem(
+                            attributes.getNamedItem("name").getNodeValue()
+                                    + " (" + width + "x" + height + ")");
                     deviceItem.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            _mainFrame.setScreenSize(new Dimension(width,
-                                    height));
+                            _mainFrame.setScreenSize(
+                                    new Dimension(width, height));
                         }
                     });
 
@@ -322,11 +321,12 @@ public class HomerMenu {
             public void actionPerformed(ActionEvent e) {
                 TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
                 if (scene != null) {
-                    SizeDialog dialog = new SizeDialog(scene.getSceneTabs()
-                            .getHeight(), scene.getSceneTabs().getWidth());
+                    SizeDialog dialog = new SizeDialog(
+                            scene.getSceneTabs().getHeight(),
+                            scene.getSceneTabs().getWidth());
                     if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
-                        scene.getSceneTabs().setPreferredSize(
-                                dialog.getDimensions());
+                        scene.getSceneTabs()
+                                .setPreferredSize(dialog.getDimensions());
                         scene.revalidate();
                     }
                 }
@@ -392,8 +392,8 @@ public class HomerMenu {
             }
 
             try {
-                _mainFrame.openLayout(model.toURI().toURL(), layout.toURI()
-                        .toURL());
+                _mainFrame.openLayout(model.toURI().toURL(),
+                        layout.toURI().toURL());
             } catch (MalformedURLException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();

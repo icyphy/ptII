@@ -54,7 +54,8 @@ Defines an initial value for the state and simulates the model from there.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */
-public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements StateSpaceActor {
+public class StateSpaceSimulator extends AbstractStateSpaceSimulator
+        implements StateSpaceActor {
 
     /** Instantiate a state space actor.
      *  @param container The container
@@ -91,13 +92,11 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StateSpaceSimulator newObject = (StateSpaceSimulator) super
-                .clone(workspace);
+        StateSpaceSimulator newObject = (StateSpaceSimulator) super.clone(
+                workspace);
         newObject._decorator = null;
         return newObject;
     }
-
-
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -107,8 +106,8 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
         // Check state variable names.
 
         if (validDecoratorAssociationExists()) {
-            Parameter stateVariableNames =
-                    (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
+            Parameter stateVariableNames = (Parameter) this
+                    .getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
             int n = _stateNames.length();
             if (n < 1) {
@@ -126,17 +125,15 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
                 // Check state equations.
                 String equation = name + "_update";
                 if (this.getUserDefinedParameter(equation) == null) {
-                    throw new IllegalActionException(
-                            this,
-                            "Please add a "
-                                    + "parameter with name \""
-                                    + equation
-                                    + "\" that gives the state update expression for state "
-                                    + name + ".");
+                    throw new IllegalActionException(this, "Please add a "
+                            + "parameter with name \"" + equation
+                            + "\" that gives the state update expression for state "
+                            + name + ".");
                 }
             }
         } else {
-            throw new IllegalActionException(this, "No valid State Space Model association found!");
+            throw new IllegalActionException(this,
+                    "No valid State Space Model association found!");
         }
     }
 
@@ -147,27 +144,31 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      * @exception IllegalActionException
      */
     @Override
-    public boolean validDecoratorAssociationExists() throws IllegalActionException {
+    public boolean validDecoratorAssociationExists()
+            throws IllegalActionException {
         boolean found = false;
         boolean mapExists = false;
-        Set<Decorator> decoratorSet =decorators();
+        Set<Decorator> decoratorSet = decorators();
         for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
                     if (!found) {
                         found = true;
                         _decorator = (StateSpaceModel) d;
                     } else {
-                        throw new IllegalActionException(this, "A StateSpaceActor "
-                                + "can be associated with exactly one StateSpaceModel "
-                                + "at a time.");
+                        throw new IllegalActionException(this,
+                                "A StateSpaceActor "
+                                        + "can be associated with exactly one StateSpaceModel "
+                                        + "at a time.");
                     }
                 }
             }
             if (d instanceof Map) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
                     _mapDecorator = (Map) d;
                     mapExists = true;
                 }
@@ -184,8 +185,8 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
             throws IllegalActionException {
 
         if (_decorator != null) {
-            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName);
-            return ((Parameter)attr);
+            Attribute attr = this.getDecoratorAttribute(_decorator, eqnName);
+            return ((Parameter) attr);
         } else {
             throw new IllegalActionException("No decorator found!");
         }
@@ -201,11 +202,11 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
         return (_mapDecorator != null);
     }
 
-
     @Override
     public boolean satisfiesMapConstraints(double[] coordinates) {
         if (this._decoratedByMap()) {
-            return _mapDecorator.withinValidMapArea(coordinates[0], coordinates[1]);
+            return _mapDecorator.withinValidMapArea(coordinates[0],
+                    coordinates[1]);
         } else {
             return true;
         }

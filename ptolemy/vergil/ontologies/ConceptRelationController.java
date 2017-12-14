@@ -313,8 +313,8 @@ public class ConceptRelationController extends BasicEdgeController {
                                 0, dashvalues, 0);
                          */
                         Stroke dashed = new BasicStroke(2.0f,
-                                BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                                0, dashvalues, 0);
+                                BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+                                dashvalues, 0);
                         c.setStroke(dashed);
                     }
                 } catch (IllegalActionException ex) {
@@ -375,7 +375,8 @@ public class ConceptRelationController extends BasicEdgeController {
          *   false if the method should check the tail connection.
          *  @return True if the connection can be made, false otherwise.
          */
-        private boolean _acceptConnection(Connector c, Figure f, boolean isHead) {
+        private boolean _acceptConnection(Connector c, Figure f,
+                boolean isHead) {
             Object object = f.getUserObject();
 
             if (object instanceof Locatable) {
@@ -420,8 +421,8 @@ public class ConceptRelationController extends BasicEdgeController {
                     if (tailFigure != null) {
                         Object tailObject = tailFigure.getUserObject();
                         if (tailObject instanceof Locatable) {
-                            if (concept.equals(((Locatable) tailObject)
-                                    .getContainer())) {
+                            if (concept.equals(
+                                    ((Locatable) tailObject).getContainer())) {
                                 return true;
                             }
                         }

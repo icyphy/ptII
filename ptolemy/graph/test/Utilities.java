@@ -64,7 +64,8 @@ public class Utilities {
      *  collections should be recursively converted to sorted strings.
      *  @return The string representation.
      */
-    public static String toSortedString(Collection collection, boolean recursive) {
+    public static String toSortedString(Collection collection,
+            boolean recursive) {
         ArrayList result = new ArrayList(collection.size());
         Iterator elements = collection.iterator();
 
@@ -80,8 +81,8 @@ public class Utilities {
 
             int i;
 
-            for (i = 0; i < result.size()
-                    && ((String) result.get(i)).compareTo(elementString) < 0; i++) {
+            for (i = 0; i < result.size() && ((String) result.get(i))
+                    .compareTo(elementString) < 0; i++) {
                 ;
             }
 

@@ -170,10 +170,10 @@ public class SaveModelManager {
      * dependency.
      *
      */
-    public String save(XMLDBModel xmlDBModel) throws DBConnectionException,
-    DBExecutionException, IllegalArgumentException,
-    ModelAlreadyExistException, XMLDBModelParsingException,
-    CircularDependencyException {
+    public String save(XMLDBModel xmlDBModel)
+            throws DBConnectionException, DBExecutionException,
+            IllegalArgumentException, ModelAlreadyExistException,
+            XMLDBModelParsingException, CircularDependencyException {
 
         String modelId = null;
 
@@ -205,8 +205,8 @@ public class SaveModelManager {
                 dbConnection.abortConnection();
             }
 
-            throw new DBExecutionException("Failed to save the model - "
-                    + e.getMessage(), e);
+            throw new DBExecutionException(
+                    "Failed to save the model - " + e.getMessage(), e);
         } finally {
 
             if (dbConnection != null) {
@@ -245,10 +245,10 @@ public class SaveModelManager {
      */
     public String saveWithParents(
             XMLDBModelWithReferenceChanges xmlDBModelWithReferenceChanges)
-                    throws DBConnectionException, DBExecutionException,
-                    DBModelNotFoundException, ModelAlreadyExistException,
-                    IllegalArgumentException, XMLDBModelParsingException,
-                    CircularDependencyException {
+            throws DBConnectionException, DBExecutionException,
+            DBModelNotFoundException, ModelAlreadyExistException,
+            IllegalArgumentException, XMLDBModelParsingException,
+            CircularDependencyException {
 
         String modelId = "";
 
@@ -274,13 +274,15 @@ public class SaveModelManager {
 
             if (!xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()
                     && xmlDBModelWithReferenceChanges.getVersionName() != null
-                    && xmlDBModelWithReferenceChanges.getVersionName().length() > 0
+                    && xmlDBModelWithReferenceChanges.getVersionName()
+                            .length() > 0
                     && xmlDBModelWithReferenceChanges.getParentsList() != null
-                    && xmlDBModelWithReferenceChanges.getParentsList().size() > 0) {
+                    && xmlDBModelWithReferenceChanges.getParentsList()
+                            .size() > 0) {
 
                 GetModelTask getModelTask = new GetModelTask(
                         xmlDBModelWithReferenceChanges.getModelToBeSaved()
-                        .getModelName());
+                                .getModelName());
 
                 // Get the content of the model to be saved from the database.
                 XMLDBModel dbModelToBeSaved = dbConnection
@@ -291,10 +293,10 @@ public class SaveModelManager {
 
                 newXMLDBModel.setIsNew(true);
                 String modelContent = dbModelToBeSaved.getModel();
-                modelContent = modelContent.replaceFirst("name=\""
-                        + dbModelToBeSaved.getModelName() + "\"", "name=\""
-                                + xmlDBModelWithReferenceChanges.getVersionName()
-                                + "\"");
+                modelContent = modelContent.replaceFirst(
+                        "name=\"" + dbModelToBeSaved.getModelName() + "\"",
+                        "name=\"" + xmlDBModelWithReferenceChanges
+                                .getVersionName() + "\"");
                 newXMLDBModel.setModel(modelContent);
 
                 String newModelId = save(newXMLDBModel, dbConnection);
@@ -305,16 +307,14 @@ public class SaveModelManager {
 
                 updateParentsToNewVersionTask.setNewModel(newXMLDBModel);
 
-                updateParentsToNewVersionTask
-                .setOldModel(xmlDBModelWithReferenceChanges
-                        .getModelToBeSaved());
+                updateParentsToNewVersionTask.setOldModel(
+                        xmlDBModelWithReferenceChanges.getModelToBeSaved());
 
-                updateParentsToNewVersionTask
-                .setParentsList(xmlDBModelWithReferenceChanges
-                        .getParentsList());
+                updateParentsToNewVersionTask.setParentsList(
+                        xmlDBModelWithReferenceChanges.getParentsList());
 
-                dbConnection
-                .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
+                dbConnection.executeUpdateParentsToNewVersion(
+                        updateParentsToNewVersionTask);
 
                 ArrayList<String> parentsList = xmlDBModelWithReferenceChanges
                         .getParentsList();
@@ -426,8 +426,8 @@ public class SaveModelManager {
         /*
          * First level nodes.
          */
-        Node topEntityNode = modelDocument.getElementsByTagName("entity").item(
-                0);
+        Node topEntityNode = modelDocument.getElementsByTagName("entity")
+                .item(0);
 
         //        if (topEntityNode != null) {
 
@@ -466,16 +466,16 @@ public class SaveModelManager {
                         if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
                                 && !dbModelIdFound) {
 
-                            referencedModelId = Utilities.getValueForAttribute(
-                                    parameter, "value");
+                            referencedModelId = Utilities
+                                    .getValueForAttribute(parameter, "value");
 
                             dbModelIdFound = true;
 
                         } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
                                 && !isReferencedFound) {
 
-                            String value = Utilities.getValueForAttribute(
-                                    parameter, "value");
+                            String value = Utilities
+                                    .getValueForAttribute(parameter, "value");
                             isReferenced = "TRUE".equals(value);
 
                             isReferencedFound = true;
@@ -506,13 +506,12 @@ public class SaveModelManager {
 
                         if ("property".equals(childNode.getNodeName())) {
 
-                            String name = Utilities.getValueForAttribute(
-                                    childNode, "name");
+                            String name = Utilities
+                                    .getValueForAttribute(childNode, "name");
 
-                            if (name != null
-                                    && (name.startsWith("_")
-                                            || XMLDBModel.DB_REFERENCE_ATTR
-                                            .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
+                            if (name != null && (name.startsWith("_")
+                                    || XMLDBModel.DB_REFERENCE_ATTR.equals(name)
+                                    || XMLDBModel.DB_MODEL_ID_ATTR
                                             .equals(name))) {
                                 entityElement.appendChild(childNode);
                             } else {
@@ -576,8 +575,8 @@ public class SaveModelManager {
         }
 
         if (originalModel.getModelId() == null
-                && (originalModel.getModelName() == null || originalModel
-                .getModelName().length() == 0)) {
+                && (originalModel.getModelName() == null
+                        || originalModel.getModelName().length() == 0)) {
 
             throw new IllegalArgumentException(
                     "The original model must contain either"
@@ -712,8 +711,8 @@ public class SaveModelManager {
 
         } catch (DBExecutionException e) {
 
-            throw new DBExecutionException("Failed to save the model - "
-                    + e.getMessage(), e);
+            throw new DBExecutionException(
+                    "Failed to save the model - " + e.getMessage(), e);
 
         }
 
@@ -760,7 +759,8 @@ public class SaveModelManager {
 
                             for (XMLDBModel modelToRemove : branch) {
 
-                                if (!modelsToRemoveList.contains(modelToRemove)) {
+                                if (!modelsToRemoveList
+                                        .contains(modelToRemove)) {
 
                                     modelsToRemoveList.add(modelToRemove);
                                 }
@@ -802,14 +802,14 @@ public class SaveModelManager {
 
         if (newModelContent.indexOf("<?xml") == 0) {
 
-            newModelContent = newModelContent.substring(newModelContent
-                    .indexOf("<?xml"));
+            newModelContent = newModelContent
+                    .substring(newModelContent.indexOf("<?xml"));
 
-            newModelContent = newModelContent.substring(newModelContent
-                    .indexOf(">") + 1);
+            newModelContent = newModelContent
+                    .substring(newModelContent.indexOf(">") + 1);
 
-            newModelContent = newModelContent.substring(newModelContent
-                    .indexOf("<"));
+            newModelContent = newModelContent
+                    .substring(newModelContent.indexOf("<"));
 
             newModelContent = newModelContent.trim();
 
@@ -817,14 +817,14 @@ public class SaveModelManager {
 
         if (newModelContent.indexOf("<!DOCTYPE") == 0) {
 
-            newModelContent = newModelContent.substring(newModelContent
-                    .indexOf("<!DOCTYPE"));
+            newModelContent = newModelContent
+                    .substring(newModelContent.indexOf("<!DOCTYPE"));
 
-            newModelContent = newModelContent.substring(newModelContent
-                    .indexOf(">") + 1);
+            newModelContent = newModelContent
+                    .substring(newModelContent.indexOf(">") + 1);
 
-            newModelContent = newModelContent.substring(newModelContent
-                    .indexOf("<"));
+            newModelContent = newModelContent
+                    .substring(newModelContent.indexOf("<"));
 
             newModelContent = newModelContent.trim();
         }

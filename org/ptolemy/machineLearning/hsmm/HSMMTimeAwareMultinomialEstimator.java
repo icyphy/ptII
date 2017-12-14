@@ -64,7 +64,8 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Red (ilgea)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator {
+public class HSMMTimeAwareMultinomialEstimator
+        extends HSMMMultinomialEstimator {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -75,13 +76,15 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
      *   actor with this name.
      */
     public HSMMTimeAwareMultinomialEstimator(CompositeEntity container,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         timestamps = new TypedIOPort(this, "timestamps", true, false);
         timestamps.setTypeEquals(new ArrayType(BaseType.INT));
-        empiricalStartTimes = new TypedIOPort(this, "empiricalStartTimes", false, true);
-        empiricalStartTimes.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+        empiricalStartTimes = new TypedIOPort(this, "empiricalStartTimes",
+                false, true);
+        empiricalStartTimes
+                .setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
 
         transitionMatrixEstimationMethod = new StringParameter(this,
                 "transitionMatrixEstimationMethod");
@@ -107,7 +110,9 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     /** Array of estimated probability transition matrices for each hour. */
     public TypedIOPort empiricalStartTimes;
 
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == transitionMatrixEstimationMethod) {
             _method = transitionMatrixEstimationMethod.getExpression();
         } else {
@@ -115,11 +120,10 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         }
     }
 
-
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMTimeAwareMultinomialEstimator newObject = (HSMMTimeAwareMultinomialEstimator) super
-                .clone(workspace);
+        HSMMTimeAwareMultinomialEstimator newObject = (HSMMTimeAwareMultinomialEstimator) super.clone(
+                workspace);
         newObject.At = null;
         newObject.Atlearned = null;
         newObject.incompleteCategories = null;
@@ -131,20 +135,22 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        TimeZone tz = new SimpleTimeZone(0,"GMT");
+        TimeZone tz = new SimpleTimeZone(0, "GMT");
 
         if (timestamps.hasToken(0)) {
-            Token[] tsTokens = ((ArrayToken)timestamps.get(0)).arrayValue();
+            Token[] tsTokens = ((ArrayToken) timestamps.get(0)).arrayValue();
             if (tsTokens.length != clusters.length) {
-                throw new IllegalActionException("Timestamp array length must be equal"
-                        + "to the training sequence length.");
+                throw new IllegalActionException(
+                        "Timestamp array length must be equal"
+                                + "to the training sequence length.");
             }
 
             // generate a start time distribution given the timestamps.
             _hourOfDay = new int[tsTokens.length];
-            for ( int i = 0; i < tsTokens.length ; i++) {
-                DateToken dt = new DateToken(((IntToken)tsTokens[i]).intValue(),
-                        DateToken.PRECISION_SECOND,tz);
+            for (int i = 0; i < tsTokens.length; i++) {
+                DateToken dt = new DateToken(
+                        ((IntToken) tsTokens[i]).intValue(),
+                        DateToken.PRECISION_SECOND, tz);
                 _hourOfDay[i] = dt.getHour();
             }
             // find the transition times in the cluster assignments and build an
@@ -157,15 +163,15 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
             At = new double[NUM_CATEGORIES][_nStates][_nStates];
             for (int h = 0; h < NUM_CATEGORIES; h++) {
-                for (int i =0; i < _nStates; i++) {
-                    for (int j=0; j< _nStates; j++) {
+                for (int i = 0; i < _nStates; i++) {
+                    for (int j = 0; j < _nStates; j++) {
                         At[h][i][j] = Atlearned[h][i][j];
                     }
                 }
             }
 
-            for (int i = 0 ; i < NUM_CATEGORIES; i++) {
-                _calculateTransitionScheme(_method,i);
+            for (int i = 0; i < NUM_CATEGORIES; i++) {
+                _calculateTransitionScheme(_method, i);
             }
 
             _sendEmpiricalMatrix();
@@ -177,10 +183,11 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
      * @exception NoRoomException
      * @exception IllegalActionException
      */
-    public void _sendEmpiricalMatrix() throws NoRoomException, IllegalActionException {
+    public void _sendEmpiricalMatrix()
+            throws NoRoomException, IllegalActionException {
 
         Token[] Atokens = new Token[NUM_CATEGORIES];
-        for (int i = 0 ; i < NUM_CATEGORIES; i++) {
+        for (int i = 0; i < NUM_CATEGORIES; i++) {
             Atokens[i] = new DoubleMatrixToken(At[i]);
         }
 
@@ -194,7 +201,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         incompleteCategories = new HashSet<int[]>();
         Atlearned = new double[NUM_CATEGORIES][_nStates][_nStates];
         int prevState = clusters[0];
-        for (int i = 1 ; i < clusters.length; i++) {
+        for (int i = 1; i < clusters.length; i++) {
             if (clusters[i] != prevState) {
                 //transition
                 Atlearned[_hourOfDay[i]][prevState][clusters[i]]++;
@@ -203,18 +210,18 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         }
 
         // for each hour, set the learned matrices
-        for (int i = 0 ; i < NUM_CATEGORIES; i++) {
-            for (int j = 0 ; j < _nStates; j++) {
+        for (int i = 0; i < NUM_CATEGORIES; i++) {
+            for (int j = 0; j < _nStates; j++) {
                 double sum = 0.0;
-                for (int k=0; k < _nStates; k ++) {
+                for (int k = 0; k < _nStates; k++) {
                     sum += Atlearned[i][j][k];
                 }
-                if ( Math.abs(sum) > 1E-5) {
-                    for (int k=0; k < _nStates; k ++) {
-                        Atlearned[i][j][k]/= sum;
+                if (Math.abs(sum) > 1E-5) {
+                    for (int k = 0; k < _nStates; k++) {
+                        Atlearned[i][j][k] /= sum;
                     }
                 } else {
-                    int[] cat = {i,j}; // at category i, from state j, not enough info.
+                    int[] cat = { i, j }; // at category i, from state j, not enough info.
                     incompleteCategories.add(cat);
                 }
             }
@@ -234,15 +241,15 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                 switch (method) {
                 case INTERPOLATE:
                     ArrayList<Integer> allowedTransitionIndices = new ArrayList<Integer>();
-                    for (int b = 0; b < _nStates; b ++) {
+                    for (int b = 0; b < _nStates; b++) {
                         // bitCount o the xor gives us the hamming distance
                         // i.e., the number of bits that differ among x and b
-                        if (_bitCount(j ^ b) <=1) {
+                        if (_bitCount(j ^ b) <= 1) {
                             allowedTransitionIndices.add(b);
                         }
                     }
                     for (int b : allowedTransitionIndices) {
-                        Asub[j][b] = 1.0/allowedTransitionIndices.size();
+                        Asub[j][b] = 1.0 / allowedTransitionIndices.size();
                     }
                     break;
                 case FORCE_SELF:
@@ -254,7 +261,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                 case NO_ACTION:
                     break;
                 case SELF_AND_ZERO:
-                    if (j==0) {
+                    if (j == 0) {
                         Asub[j][j] = 1.0;
                     } else {
                         Asub[j][0] = 0.5;
@@ -276,8 +283,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
      * @param xor the input integer
      * @return Number of 1's in bit representation
      */
-    private int _bitCount( int xor)
-    {
+    private int _bitCount(int xor) {
         int oneCount = 0;
         oneCount = xor - ((xor >> 1) & 033333333333)
                 - ((xor >> 2) & 011111111111);
@@ -313,7 +319,5 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     /** hour of day for input observations. */
     protected int[] _hourOfDay;
     String _method;
-
-
 
 }

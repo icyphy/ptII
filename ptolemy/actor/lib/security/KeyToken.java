@@ -131,9 +131,9 @@ public class KeyToken extends Token {
         // FIXME: we print this token in a format similar to RecordToken.
         // Perhaps this token should be a RecordToken?
         // FIXME: Should we have a constructor that reads in string?
-        StringBuffer result = new StringBuffer("{ algorithm = "
-                + _value.getAlgorithm() + ", format = " + _value.getFormat()
-                + ", encoded = ");
+        StringBuffer result = new StringBuffer(
+                "{ algorithm = " + _value.getAlgorithm() + ", format = "
+                        + _value.getFormat() + ", encoded = ");
         result.append(" Encoded: ");
 
         byte[] encoded = _value.getEncoded();

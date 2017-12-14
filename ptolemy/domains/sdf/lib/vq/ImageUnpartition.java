@@ -78,8 +78,8 @@ public class ImageUnpartition extends Transformer {
         input_tokenConsumptionRate = new Parameter(input,
                 "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
-        input_tokenConsumptionRate
-        .setExpression("imageColumns * imageRows / partitionColumns / partitionRows");
+        input_tokenConsumptionRate.setExpression(
+                "imageColumns * imageRows / partitionColumns / partitionRows");
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);

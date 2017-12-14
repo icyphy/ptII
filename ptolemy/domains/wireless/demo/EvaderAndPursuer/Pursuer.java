@@ -151,8 +151,8 @@ public class Pursuer extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         //super.fire();
         Entity container = (Entity) this.getContainer();
-        Location locationAttribute = (Location) container.getAttribute(
-                "_location", Location.class);
+        Location locationAttribute = (Location) container
+                .getAttribute("_location", Location.class);
 
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
@@ -181,7 +181,7 @@ public class Pursuer extends TypedAtomicActor {
 
             if (time.doubleValue() > _timeValue
                     || time.doubleValue() == _timeValue
-                    && d.intValue() < _parentDepth) {
+                            && d.intValue() < _parentDepth) {
                 //the root node may have been changed
                 //or there is a shorter path.
                 ArrayToken locationArray = (ArrayToken) inputToken
@@ -210,8 +210,8 @@ public class Pursuer extends TypedAtomicActor {
         super.initialize();
 
         Entity container = (Entity) this.getContainer();
-        Location locationAttribute = (Location) container.getAttribute(
-                "_location", Location.class);
+        Location locationAttribute = (Location) container
+                .getAttribute("_location", Location.class);
 
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
@@ -268,8 +268,8 @@ public class Pursuer extends TypedAtomicActor {
         int dimensions = rangeValue.length();
 
         if (dimensions < 2) {
-            throw new IllegalActionException(this, "Invalid range dimension: "
-                    + workRange.getExpression());
+            throw new IllegalActionException(this,
+                    "Invalid range dimension: " + workRange.getExpression());
         }
 
         _workRange = new double[dimensions][dimensions];
@@ -278,16 +278,16 @@ public class Pursuer extends TypedAtomicActor {
             ArrayToken lowHigh = (ArrayToken) rangeValue.getElement(i);
 
             if (lowHigh.length() < 2) {
-                throw new IllegalActionException(this, "Invalid range: "
-                        + workRange.getExpression());
+                throw new IllegalActionException(this,
+                        "Invalid range: " + workRange.getExpression());
             }
 
             double low = ((DoubleToken) lowHigh.getElement(0)).doubleValue();
             double high = ((DoubleToken) lowHigh.getElement(1)).doubleValue();
 
             if (high < low) {
-                throw new IllegalActionException(this, "Invalid range: "
-                        + workRange.getExpression());
+                throw new IllegalActionException(this,
+                        "Invalid range: " + workRange.getExpression());
             }
 
             _workRange[i][0] = low;

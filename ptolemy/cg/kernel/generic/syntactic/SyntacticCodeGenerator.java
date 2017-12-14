@@ -145,8 +145,7 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
      */
     protected void _showGraph() throws IllegalActionException {
         try {
-            Configuration config = (Configuration) Configuration
-                    .configurations().get(0);
+            Configuration config = Configuration.configurations().get(0);
             _syntaxTableau = config.openInstance(_syntaxGraph);
             _syntaxTableau.show();
         } catch (Exception ex) {

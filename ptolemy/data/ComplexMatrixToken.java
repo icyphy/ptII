@@ -76,8 +76,8 @@ public class ComplexMatrixToken extends MatrixToken {
     public ComplexMatrixToken(final Complex[][] value)
             throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("ComplexMatrixToken: The "
-                    + "specified matrix is null.");
+            throw new IllegalActionException(
+                    "ComplexMatrixToken: The " + "specified matrix is null.");
         }
 
         _initialize(value, DO_COPY);
@@ -105,8 +105,8 @@ public class ComplexMatrixToken extends MatrixToken {
     public ComplexMatrixToken(final Complex[][] value, int copy)
             throws IllegalActionException {
         if (value == null) {
-            throw new IllegalActionException("ComplexMatrixToken: The "
-                    + "specified matrix is null.");
+            throw new IllegalActionException(
+                    "ComplexMatrixToken: The " + "specified matrix is null.");
         }
 
         _initialize(value, copy);
@@ -152,9 +152,8 @@ public class ComplexMatrixToken extends MatrixToken {
         }
 
         if (tokens.length != rows * columns) {
-            throw new IllegalActionException(
-                    "ComplexMatrixToken: The specified"
-                            + " array is not of the correct length");
+            throw new IllegalActionException("ComplexMatrixToken: The specified"
+                    + " array is not of the correct length");
         }
 
         _rowCount = rows;
@@ -233,8 +232,8 @@ public class ComplexMatrixToken extends MatrixToken {
 
         // The argument is below ComplexMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "[complex]"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[complex]"));
     }
 
     /** Return a new matrix that is a sub-matrix of this matrix.
@@ -247,8 +246,8 @@ public class ComplexMatrixToken extends MatrixToken {
      *   parameters result in out of bounds accesses.
      */
     @Override
-    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
-            throws IllegalActionException {
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan,
+            int colSpan) throws IllegalActionException {
         Complex[][] value = this.complexMatrix();
         try {
             Complex[][] result = new Complex[rowSpan][colSpan];
@@ -260,8 +259,8 @@ public class ComplexMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                    + ", colStart = " + colStart + ", rowSpan = "
-                    + rowSpan + ", colSpan = " + colSpan + ").");
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -407,7 +406,8 @@ public class ComplexMatrixToken extends MatrixToken {
     @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
-        if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
+        if (matrices == null || matrices.length == 0
+                || matrices[0].length == 0) {
             throw new IllegalActionException("matrixJoin: No input matrices.");
         }
         // Calculate the size of the result.
@@ -498,8 +498,8 @@ public class ComplexMatrixToken extends MatrixToken {
     @Override
     public Token one() {
         try {
-            return new ComplexMatrixToken(
-                    ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
+            return new ComplexMatrixToken(ComplexMatrixMath.identity(_rowCount),
+                    DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.one: "
@@ -535,12 +535,13 @@ public class ComplexMatrixToken extends MatrixToken {
     @Override
     public Token zero() {
         try {
-            return new ComplexMatrixToken(ComplexMatrixMath.zero(_rowCount,
-                    _columnCount), DO_NOT_COPY);
+            return new ComplexMatrixToken(
+                    ComplexMatrixMath.zero(_rowCount, _columnCount),
+                    DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
-            throw new InternalErrorException("ComplexMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
+            throw new InternalErrorException(
+                    "ComplexMatrixToken.zero: " + "Cannot create zero matrix.");
         }
     }
 
@@ -580,7 +581,8 @@ public class ComplexMatrixToken extends MatrixToken {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
             if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((ComplexMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -607,7 +609,8 @@ public class ComplexMatrixToken extends MatrixToken {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
             if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((ComplexMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -660,7 +663,8 @@ public class ComplexMatrixToken extends MatrixToken {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
             if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((ComplexMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -705,7 +709,8 @@ public class ComplexMatrixToken extends MatrixToken {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
             if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((ComplexMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -732,7 +737,8 @@ public class ComplexMatrixToken extends MatrixToken {
         Complex scalar;
         if (rightArgument instanceof ComplexMatrixToken) {
             if (((ComplexMatrixToken) rightArgument).getRowCount() != 1
-                    || ((ComplexMatrixToken) rightArgument).getColumnCount() != 1) {
+                    || ((ComplexMatrixToken) rightArgument)
+                            .getColumnCount() != 1) {
                 // Throw an exception.
                 return super._moduloElement(rightArgument);
             }
@@ -740,8 +746,8 @@ public class ComplexMatrixToken extends MatrixToken {
         } else {
             scalar = ((ComplexToken) rightArgument).complexValue();
         }
-        Complex[][] result = ComplexMatrixMath.negative(ComplexMatrixMath.add(
-                _value, scalar.negate()));
+        Complex[][] result = ComplexMatrixMath
+                .negative(ComplexMatrixMath.add(_value, scalar.negate()));
         return new ComplexMatrixToken(result);
     }
 

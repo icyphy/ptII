@@ -70,15 +70,15 @@ public class ContextAwareHelper {
      * @param response is the input in xml format
      * @return the json formatted data in an array
      */
-    public ArrayList  convertXMLtoJSON(String response) {
+    public ArrayList convertXMLtoJSON(String response) {
         try {
             JSONObject xmlJson = XML.toJSONObject(response);
             String prettyString = xmlJson.toString(4);
             System.out.println(prettyString);
             Iterator x = xmlJson.keys();
-            ArrayList jsonArray=new ArrayList();
+            ArrayList jsonArray = new ArrayList();
             while (x.hasNext()) {
-                String key=(String)x.next();
+                String key = (String) x.next();
                 jsonArray.add(xmlJson.get(key));
             }
             return jsonArray;
@@ -87,6 +87,7 @@ public class ContextAwareHelper {
             return null;
         }
     }
+
     /** Return the discovered services.  Currently, this method sets
      * the selected service to the list of services and then returns
      * the string "pluto.cs.txstate.edu:22001"
@@ -188,8 +189,10 @@ public class ContextAwareHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private String[] _firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
-    private String[] _gsnOutputPort = {"sound", "sensorName"};
+    private String[] _firebaseOutputPort = { "microwave", "microwaveStatus",
+            "pastValues" };
+    private String[] _gsnOutputPort = { "sound", "sensorName" };
     private String[] _iotServiceList = { "GSN", "Paraimpu", "Firebase" };
-    private String[] _paraimpuOutputPort = {"payload","producer", "sensorId"};
+    private String[] _paraimpuOutputPort = { "payload", "producer",
+            "sensorId" };
 }

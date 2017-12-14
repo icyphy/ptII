@@ -99,8 +99,8 @@ public class MultipageWriter {
      */
     private void writeHeader(Writer writer) throws IOException {
         writer.write("<?xml version=\"1.0\" standalone=\"no\"?>\n");
-        writer.write("<!DOCTYPE " + MultipageParser.MULTIPAGE_TAG
-                + " PUBLIC \"" + MultipageParser.PUBLIC_ID + "\"\n\t\""
+        writer.write("<!DOCTYPE " + MultipageParser.MULTIPAGE_TAG + " PUBLIC \""
+                + MultipageParser.PUBLIC_ID + "\"\n\t\""
                 + MultipageParser.DTD_URL + "\">\n\n");
     }
 }

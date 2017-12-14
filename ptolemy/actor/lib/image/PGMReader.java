@@ -77,8 +77,9 @@ public class PGMReader extends Source {
         levelMap = new Parameter(this, "levelMap");
         levelMap.setExpression("{}");
         levelMap.setTypeEquals(new ArrayType(BaseType.INT));
-        String[] outputLabels = {"width","height","grid"};
-        Type[] types = {BaseType.INT, BaseType.INT, new ArrayType(BaseType.INT)};
+        String[] outputLabels = { "width", "height", "grid" };
+        Type[] types = { BaseType.INT, BaseType.INT,
+                new ArrayType(BaseType.INT) };
         output.setTypeEquals(new RecordType(outputLabels, types));
     }
 
@@ -96,14 +97,16 @@ public class PGMReader extends Source {
     public Parameter levelMap;
 
     @Override
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        if ( attribute == levelMap) {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == levelMap) {
             int length = ((ArrayToken) levelMap.getToken()).length();
             _quantize = true;
             if (length > 0) {
                 _levels = new int[length];
-                for (int i = 0 ; i < _levels.length; i ++ ) {
-                    _levels[i] = ((IntToken)((ArrayToken)levelMap.getToken()).getElement(i)).intValue();
+                for (int i = 0; i < _levels.length; i++) {
+                    _levels[i] = ((IntToken) ((ArrayToken) levelMap.getToken())
+                            .getElement(i)).intValue();
                 }
             } else {
                 _quantize = false;
@@ -136,59 +139,65 @@ public class PGMReader extends Source {
                 do {
                     c = (char) dis.readUnsignedByte();
                 } while (c != '\n');
-                lines ++;
+                lines++;
             }
 
-            _grid = new int[_height*_width];
+            _grid = new int[_height * _width];
 
             for (int col = 0; col < _width; col++) {
                 for (int row = 0; row < _height; row++) {
                     int intVal = dis.readUnsignedByte();
                     if (!_quantize) {
-                        _grid[row*_width + col] = intVal;
+                        _grid[row * _width + col] = intVal;
                     } else {
-                        int index=0;
-                        for (int i = 0; i < _levels.length; i ++) {
-                            if (i==0 ) {
+                        int index = 0;
+                        for (int i = 0; i < _levels.length; i++) {
+                            if (i == 0) {
                                 if (intVal < _levels[i]) {
                                     index = 0;
                                 } else {
                                     continue;
                                 }
-                            } else if (intVal > _levels[i-1] && intVal <= _levels[i]) {
+                            } else if (intVal > _levels[i - 1]
+                                    && intVal <= _levels[i]) {
                                 index = i;
-                            } else if (intVal > _levels[i] && i >= _levels.length -1) {
+                            } else if (intVal > _levels[i]
+                                    && i >= _levels.length - 1) {
                                 index = i;
                             }
                         }
-                        _grid[row + col*_height] = _levels[index];
+                        _grid[row + col * _height] = _levels[index];
 
                     }
                 }
             }
         } catch (IOException e) {
-            throw new IllegalActionException(this, e, "Failed to read " + fileOrURL);
+            throw new IllegalActionException(this, e,
+                    "Failed to read " + fileOrURL);
         } finally {
             try {
                 if (dis != null) {
                     dis.close();
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to close data input stream " + fileOrURL);
+                throw new IllegalActionException(this, ex,
+                        "Failed to close data input stream " + fileOrURL);
             }
             try {
                 if (fileInputStream != null) {
                     fileInputStream.close();
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to close file input stream " + fileOrURL);
+                throw new IllegalActionException(this, ex,
+                        "Failed to close file input stream " + fileOrURL);
             }
             try {
-                if (scan!=null) {
+                if (scan != null) {
                     scan.close();
                 }
             } catch (Throwable ex) {
-                throw new IllegalActionException(this, ex, "Failed to close scanner " + fileOrURL);
+                throw new IllegalActionException(this, ex,
+                        "Failed to close scanner " + fileOrURL);
             }
         }
 
@@ -203,13 +212,12 @@ public class PGMReader extends Source {
         super.fire();
         // convert grid to array token
         Token[] grid = new IntToken[_grid.length];
-        for (int i = 0 ; i < _grid.length; i++) {
+        for (int i = 0; i < _grid.length; i++) {
             grid[i] = new IntToken(_grid[i]);
         }
-        String[] labels = {"width","height","grid"};
-        Token[] tokens = {new IntToken(_width),
-                new IntToken(_height),
-                new ArrayToken(grid)};
+        String[] labels = { "width", "height", "grid" };
+        Token[] tokens = { new IntToken(_width), new IntToken(_height),
+                new ArrayToken(grid) };
         RecordToken outputToken = new RecordToken(labels, tokens);
         output.broadcast(outputToken);
     }
@@ -225,6 +233,5 @@ public class PGMReader extends Source {
     private int[] _levels;
 
     private boolean _quantize;
-
 
 }

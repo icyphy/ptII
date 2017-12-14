@@ -100,8 +100,8 @@ public abstract class LayoutStyle {
         try {
             return System.getProperty(key);
         } catch (SecurityException e) {
-            Logger.getLogger(LayoutStyle.class.getName()).warning(
-                    "Can't read the System property " + key + ".");
+            Logger.getLogger(LayoutStyle.class.getName())
+                    .warning("Can't read the System property " + key + ".");
             return "";
         }
     }

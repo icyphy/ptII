@@ -28,7 +28,8 @@ public final class ValueComposite extends RGBComposite {
     }
 
     @Override
-    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
+    public CompositeContext createContext(ColorModel srcColorModel,
+            ColorModel dstColorModel, RenderingHints hints) {
         return new Context(extraAlpha, srcColorModel, dstColorModel);
     }
 
@@ -36,7 +37,8 @@ public final class ValueComposite extends RGBComposite {
         private float[] sHSB = new float[3];
         private float[] dHSB = new float[3];
 
-        public Context(float alpha, ColorModel srcColorModel, ColorModel dstColorModel) {
+        public Context(float alpha, ColorModel srcColorModel,
+                ColorModel dstColorModel) {
             super(alpha, srcColorModel, dstColorModel);
         }
 

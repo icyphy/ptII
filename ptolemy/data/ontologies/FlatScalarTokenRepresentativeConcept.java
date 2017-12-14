@@ -48,8 +48,8 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public class FlatScalarTokenRepresentativeConcept extends
-FlatTokenRepresentativeConcept {
+public class FlatScalarTokenRepresentativeConcept
+        extends FlatTokenRepresentativeConcept {
 
     /** Create a new FlatScalarTokenRepresentativeConcept with the specified
      *  name and ontology.
@@ -61,8 +61,8 @@ FlatTokenRepresentativeConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     public FlatScalarTokenRepresentativeConcept(CompositeEntity ontology,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
 
         // Parameters that determine the interval of scalar numbers covered by
@@ -110,10 +110,9 @@ FlatTokenRepresentativeConcept {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute.equals(leftEndPoint)) {
-            if (leftEndPoint.getToken() != null
-                    && _rightEndPoint != null
-                    && ((ScalarToken) leftEndPoint.getToken()).isGreaterThan(
-                            _rightEndPoint).booleanValue()) {
+            if (leftEndPoint.getToken() != null && _rightEndPoint != null
+                    && ((ScalarToken) leftEndPoint.getToken())
+                            .isGreaterThan(_rightEndPoint).booleanValue()) {
                 throw new IllegalActionException(this, "The left end point of "
                         + "the interval must be less than or equal to the "
                         + "right end point.");
@@ -127,15 +126,12 @@ FlatTokenRepresentativeConcept {
                 leftIntervalClosed.setVisibility(Settable.FULL);
             }
         } else if (attribute.equals(rightEndPoint)) {
-            if (rightEndPoint.getToken() != null
-                    && _leftEndPoint != null
-                    && ((ScalarToken) rightEndPoint.getToken()).isLessThan(
-                            _leftEndPoint).booleanValue()) {
-                throw new IllegalActionException(
-                        this,
-                        "The right end point of "
-                                + "the interval must be greater than or equal to the "
-                                + "left end point.");
+            if (rightEndPoint.getToken() != null && _leftEndPoint != null
+                    && ((ScalarToken) rightEndPoint.getToken())
+                            .isLessThan(_leftEndPoint).booleanValue()) {
+                throw new IllegalActionException(this, "The right end point of "
+                        + "the interval must be greater than or equal to the "
+                        + "left end point.");
             }
             _rightEndPoint = (ScalarToken) rightEndPoint.getToken();
 
@@ -197,8 +193,8 @@ FlatTokenRepresentativeConcept {
     @Override
     protected FlatScalarTokenInfiniteConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
-        return (FlatScalarTokenInfiniteConcept) super
-                ._createInfiniteConceptInstance(infiniteConceptString);
+        return (FlatScalarTokenInfiniteConcept) super._createInfiniteConceptInstance(
+                infiniteConceptString);
     }
 
     /** Return a new FlatScalarTokenInfiniteConcept for this representative with
@@ -241,7 +237,7 @@ FlatTokenRepresentativeConcept {
         if (value.isEqualTo(new DoubleToken(Double.POSITIVE_INFINITY))
                 .booleanValue()
                 || value.isEqualTo(new DoubleToken(Double.NEGATIVE_INFINITY))
-                .booleanValue()) {
+                        .booleanValue()) {
             return true;
         } else {
             return false;

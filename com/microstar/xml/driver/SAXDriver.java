@@ -406,8 +406,8 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
     @Override
     public void error(String message, String url, int line, int column)
             throws SAXException {
-        errorHandler.fatalError(new SAXParseException(message, null, url, line,
-                column));
+        errorHandler.fatalError(
+                new SAXParseException(message, null, url, line, column));
     }
 
     /**

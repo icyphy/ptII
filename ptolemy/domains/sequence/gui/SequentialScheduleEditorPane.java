@@ -60,8 +60,8 @@ import ptolemy.actor.sched.Schedule;
  * @Pt.AcceptedRating Red (ristau)
  */
 @SuppressWarnings("serial")
-public class SequentialScheduleEditorPane extends JPanel implements
-ListSelectionListener {
+public class SequentialScheduleEditorPane extends JPanel
+        implements ListSelectionListener {
 
     /** Construct a SequentialScheduleEditorPane displaying the given actors
      * in the order given by the vector containing the actors.
@@ -159,14 +159,14 @@ ListSelectionListener {
         JScrollPane listScrollPane = new JScrollPane(_list);
 
         _upButton = new JButton("Move up");
-        _upButton
-        .setToolTipText("Move the currently selected _list item higher.");
+        _upButton.setToolTipText(
+                "Move the currently selected _list item higher.");
         _upButton.setActionCommand(_upString);
         _upButton.addActionListener(new UpDownListener());
 
         _downButton = new JButton("Move down");
-        _downButton
-        .setToolTipText("Move the currently selected _list item lower.");
+        _downButton.setToolTipText(
+                "Move the currently selected _list item lower.");
         _downButton.setActionCommand(_downString);
         _downButton.addActionListener(new UpDownListener());
 

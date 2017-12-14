@@ -69,8 +69,8 @@ import ptolemy.kernel.util.InvalidStateException;
  * @Pt.ProposedRating Green (tfeng)
  * @Pt.AcceptedRating Green (tfeng)
  */
-public class RendezvousReceiver extends AbstractReceiver implements
-ProcessReceiver {
+public class RendezvousReceiver extends AbstractReceiver
+        implements ProcessReceiver {
 
     /**
      * Construct a RendezvousReceiver with no container.
@@ -218,7 +218,7 @@ ProcessReceiver {
      */
     public static void getFromAnyPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
-                    throws IllegalActionException, TerminateProcessException {
+            throws IllegalActionException, TerminateProcessException {
         _getOrPutTokens(getReceivers, putReceivers, director, null, null,
                 GET_FROM_ANY_PUT_TO_ALL);
     }
@@ -312,8 +312,8 @@ ProcessReceiver {
      * @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-    IllegalActionException {
+    public boolean isConnectedToBoundaryInside()
+            throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -329,7 +329,8 @@ ProcessReceiver {
      * @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
-    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
+    public boolean isConnectedToBoundaryOutside()
+            throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
@@ -430,8 +431,8 @@ ProcessReceiver {
      * was not allowed to run to completion.
      */
     @Override
-    public void put(Token token) throws IllegalActionException,
-    TerminateProcessException {
+    public void put(Token token)
+            throws IllegalActionException, TerminateProcessException {
         if (token == null) {
             return;
         }
@@ -455,7 +456,7 @@ ProcessReceiver {
      * @exception TerminateProcessException If the actor to which this
      * receiver belongs has been terminated while still running i.e it
      * was not allowed to run to completion.
-
+    
      */
     @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
@@ -507,8 +508,8 @@ ProcessReceiver {
      * receiver belongs is to be terminated.
      */
     public void putToAll(Token token, Receiver[] receivers,
-            RendezvousDirector director) throws IllegalActionException,
-            TerminateProcessException {
+            RendezvousDirector director)
+            throws IllegalActionException, TerminateProcessException {
         if (token == null || receivers == null || receivers.length == 0) {
             return;
         }
@@ -539,8 +540,8 @@ ProcessReceiver {
      * receiver belongs is to be terminated.
      */
     public static void putToAll(Token[][] tokens, Receiver[][] receivers,
-            RendezvousDirector director) throws IllegalActionException,
-            TerminateProcessException {
+            RendezvousDirector director)
+            throws IllegalActionException, TerminateProcessException {
         _getOrPutTokens(null, receivers, director, null, tokens, PUT_TO_ALL);
     }
 
@@ -559,8 +560,8 @@ ProcessReceiver {
      * receiver belongs is to be terminated.
      */
     public static void putToAny(Token token, Receiver[][] receivers,
-            RendezvousDirector director) throws IllegalActionException,
-            TerminateProcessException {
+            RendezvousDirector director)
+            throws IllegalActionException, TerminateProcessException {
         _getOrPutTokens(null, receivers, director, token, null, PUT_TO_ANY);
     }
 
@@ -695,10 +696,9 @@ ProcessReceiver {
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-            throw new TerminateProcessException(
-                    "RendezvousReceiver: trying to "
-                            + "rendezvous with a receiver with no "
-                            + "director => terminate.");
+            throw new TerminateProcessException("RendezvousReceiver: trying to "
+                    + "rendezvous with a receiver with no "
+                    + "director => terminate.");
         }
     }
 
@@ -856,7 +856,8 @@ ProcessReceiver {
                     return false;
                 }
 
-                if (beingChecked.contains(receiver) || ready.contains(receiver)) {
+                if (beingChecked.contains(receiver)
+                        || ready.contains(receiver)) {
                     // If the receiver has been visited or is ready, do
                     // nothing.
                 } else if (notReady.contains(receiver)) {
@@ -876,7 +877,8 @@ ProcessReceiver {
                     // Otherwise, assume the receiver is ready, and
                     // continue to check its dependencies.
 
-                    Receiver[][] farSideReceivers = isPut ? receiver._getReceivers
+                    Receiver[][] farSideReceivers = isPut
+                            ? receiver._getReceivers
                             : receiver._putReceivers;
 
                     beingChecked.add(receiver);
@@ -909,10 +911,9 @@ ProcessReceiver {
                     }
 
                     // Test the far side receivers.
-                    if (branchReady
-                            && !_checkRendezvous(farSideReceivers, !isPut,
-                                    beingChecked, ready, notReady,
-                                    new HashSet(), false, false, receiver)) {
+                    if (branchReady && !_checkRendezvous(farSideReceivers,
+                            !isPut, beingChecked, ready, notReady,
+                            new HashSet(), false, false, receiver)) {
                         branchReady = false;
                     }
 
@@ -928,7 +929,8 @@ ProcessReceiver {
                 }
             }
 
-            if (isConditional && branchReady || !isConditional && !branchReady) {
+            if (isConditional && branchReady
+                    || !isConditional && !branchReady) {
                 // If either is true, no further test is needed.
                 break;
             }
@@ -974,9 +976,9 @@ ProcessReceiver {
      * receiver belongs is to be terminated.
      */
     private static Map _getOrPutTokens(Receiver[][] getReceivers,
-            Receiver[][] putReceivers, RendezvousDirector director,
-            Token token, Token[][] tokenArray, int flag)
-                    throws IllegalActionException, TerminateProcessException {
+            Receiver[][] putReceivers, RendezvousDirector director, Token token,
+            Token[][] tokenArray, int flag)
+            throws IllegalActionException, TerminateProcessException {
 
         // Extract information from the flag.
         boolean isGet = (flag & GET) == GET;
@@ -1112,7 +1114,8 @@ ProcessReceiver {
                 if (receiver == null) {
                     continue;
                 }
-                if (beingChecked.contains(receiver) || ready.contains(receiver)) {
+                if (beingChecked.contains(receiver)
+                        || ready.contains(receiver)) {
                     return i;
                 }
             }
@@ -1127,7 +1130,8 @@ ProcessReceiver {
      *  get conditional (false).
      *  @return Whether the receivers are conditional.
      */
-    private static boolean _isConditional(Receiver[][] receivers, boolean isPut) {
+    private static boolean _isConditional(Receiver[][] receivers,
+            boolean isPut) {
         for (Receiver[] receiver2 : receivers) {
             if (receiver2 != null) {
                 for (int j = 0; j < receiver2.length; j++) {
@@ -1179,8 +1183,8 @@ ProcessReceiver {
             if (receiver != null) {
                 for (int j = 0; j < receiver.length; j++) {
                     if (receiver[j] != null) {
-                        ((RendezvousReceiver) receiver[j])._resetFlags(
-                                clearGet, clearPut);
+                        ((RendezvousReceiver) receiver[j])._resetFlags(clearGet,
+                                clearPut);
                     }
                 }
             }

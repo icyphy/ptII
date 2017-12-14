@@ -348,8 +348,8 @@ public class KeyStoreActor extends TypedAtomicActor {
             javaHome = StringUtilities.getProperty(javaHomeProperty);
         } catch (SecurityException ex) {
             System.out.println("Warning: KeyStoreActor: Failed to get the "
-                    + "java home directory "
-                    + "(-sandbox always causes this): " + ex);
+                    + "java home directory " + "(-sandbox always causes this): "
+                    + ex);
         }
 
         if (javaHome == null || javaHome.length() == 0) {
@@ -372,15 +372,11 @@ public class KeyStoreActor extends TypedAtomicActor {
         File javaHomeFile = new File(javaHome);
 
         if (!javaHomeFile.isDirectory()) {
-            throw new InternalErrorException(
-                    this,
-                    null,
+            throw new InternalErrorException(this, null,
                     "Could not find the Java "
                             + "directory that contains bin/keytool.  "
-                            + "Tried looking for the '"
-                            + javaHome
-                            + "' directory. "
-                            + "Perhaps the "
+                            + "Tried looking for the '" + javaHome
+                            + "' directory. " + "Perhaps the "
                             + javaHomeProperty
                             + " or java.home property was not set "
                             + "properly because "
@@ -389,14 +385,12 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         String keytoolPath = javaHome + "/bin/keytool";
 
-        String commonCommand = " -keystore " + keystoreFilename
-                + " -storetype " + _keyStoreType + " -alias " + _alias
-                + " -storepass \"" + _storePassword + "\"" + " -keypass \""
-                + _keyPassword + "\"";
+        String commonCommand = " -keystore " + keystoreFilename + " -storetype "
+                + _keyStoreType + " -alias " + _alias + " -storepass \""
+                + _storePassword + "\"" + " -keypass \"" + _keyPassword + "\"";
 
-        String command1 = keytoolPath
-                + " -genkey"
-            //+ " -keyalg RSA"
+        String command1 = keytoolPath + " -genkey"
+        //+ " -keyalg RSA"
                 + " -dname \"CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US\""
                 + commonCommand;
 
@@ -408,9 +402,9 @@ public class KeyStoreActor extends TypedAtomicActor {
         _exec(command3);
 
         if (!new File(keystoreFilename).exists()) {
-            throw new IllegalActionException(this, "Failed to create '"
-                    + keystoreFilename + "', try running\n" + command1 + "\n"
-                    + command2 + "\n" + command3);
+            throw new IllegalActionException(this,
+                    "Failed to create '" + keystoreFilename + "', try running\n"
+                            + command1 + "\n" + command2 + "\n" + command3);
         }
     }
 
@@ -513,7 +507,7 @@ public class KeyStoreActor extends TypedAtomicActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to get instance '" + keyStoreType
-                        + "'of keyStore");
+                                + "'of keyStore");
             }
         }
     }
@@ -548,8 +542,8 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // so we are trying to create a new empty keyStore.
             } catch (IOException ex2) {
                 // We once had a bug here where asURL() had a bug.
-                throw new IllegalActionException(this, ex2, "Failed to open '"
-                        + fileOrURL.asURL() + "' keyStore");
+                throw new IllegalActionException(this, ex2,
+                        "Failed to open '" + fileOrURL.asURL() + "' keyStore");
             }
 
             if (keyStoreInputStream == null) {
@@ -563,18 +557,16 @@ public class KeyStoreActor extends TypedAtomicActor {
 
                         if (keystoreFileName.startsWith(classpathProperty)) {
                             keystoreFileName = ((StringToken) Constants
-                                    .get("PTII")).stringValue()
-                                    + "/"
-                                    + keystoreFileName
-                                    .substring(classpathProperty
-                                            .length());
+                                    .get("PTII")).stringValue() + "/"
+                                    + keystoreFileName.substring(
+                                            classpathProperty.length());
                         }
 
                         createKeystore(keystoreFileName);
                     } catch (IllegalActionException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed to create keystore '"
-                                        + keystoreFileName + "'");
+                                "Failed to create keystore '" + keystoreFileName
+                                        + "'");
                     }
 
                     try {
@@ -614,9 +606,9 @@ public class KeyStoreActor extends TypedAtomicActor {
                 } catch (java.io.EOFException ex) {
                     throw new IllegalActionException(this, ex,
                             "Problem loading " + fileOrURLDescription()
-                            + ", perhaps the file is of length 0? "
-                            + "To create a sample file, try "
-                            + "cd $PTII; make ptKeystore");
+                                    + ", perhaps the file is of length 0? "
+                                    + "To create a sample file, try "
+                                    + "cd $PTII; make ptKeystore");
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
                             "Problem loading " + fileOrURLDescription());
@@ -718,10 +710,12 @@ public class KeyStoreActor extends TypedAtomicActor {
             // Create two threads to read from the subprocess.
             _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
                     "KeyStoreActor Stdout Gobbler-"
-                            + _keystoreStreamReaderThreadCount++, this);
+                            + _keystoreStreamReaderThreadCount++,
+                    this);
             _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
                     "KeyStoreActor Stderr Gobbler-"
-                            + _keystoreStreamReaderThreadCount++, this);
+                            + _keystoreStreamReaderThreadCount++,
+                    this);
             _errorGobbler.start();
             _outputGobbler.start();
 
@@ -772,10 +766,12 @@ public class KeyStoreActor extends TypedAtomicActor {
          *  @param actor The parent actor of this thread, which
          *  is used in error messages.
          */
-        _StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
+        _StreamReaderThread(InputStream inputStream, String name,
+                Nameable actor) {
             super(name);
             _inputStream = inputStream;
-            _inputStreamReader = new InputStreamReader(_inputStream, java.nio.charset.Charset.defaultCharset());
+            _inputStreamReader = new InputStreamReader(_inputStream,
+                    java.nio.charset.Charset.defaultCharset());
             _actor = actor;
             _stringBuffer = new StringBuffer();
         }
@@ -812,8 +808,8 @@ public class KeyStoreActor extends TypedAtomicActor {
             try {
                 _inputStreamReader.close();
             } catch (Exception ex) {
-                throw new InternalErrorException(null, ex, getName()
-                        + " failed to close.");
+                throw new InternalErrorException(null, ex,
+                        getName() + " failed to close.");
             }
 
             return results;

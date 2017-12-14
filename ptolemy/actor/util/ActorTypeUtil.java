@@ -87,8 +87,8 @@ public class ActorTypeUtil {
      *  the type of the typeable, since it may change dynamically.
      *  This term is not variable and cannot be set.
      */
-    private static class TypeableSizedArrayVariableTypeTerm extends
-    MonotonicFunction {
+    private static class TypeableSizedArrayVariableTypeTerm
+            extends MonotonicFunction {
 
         /** Construct a term that will defer to the type of the
          *  specified typeable.
@@ -142,7 +142,8 @@ public class ActorTypeUtil {
          */
         private ArrayType _getArrayTypeRaw() throws IllegalActionException {
             Type type = _typeable.getType();
-            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+            if (_arrayType == null
+                    || !_arrayType.getElementType().equals(type)) {
                 _arrayType = new ArrayType(type);
             }
             return _arrayType;
@@ -157,7 +158,8 @@ public class ActorTypeUtil {
         private ArrayType _getArrayTypeRaw(int length)
                 throws IllegalActionException {
             Type type = _typeable.getType();
-            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+            if (_arrayType == null
+                    || !_arrayType.getElementType().equals(type)) {
                 _arrayType = new ArrayType(type, length);
             }
             return _arrayType;

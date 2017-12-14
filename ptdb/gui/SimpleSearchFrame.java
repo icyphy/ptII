@@ -222,7 +222,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         });
 
         advancedSearchButton
-        .addActionListener(new OpenPatternSearchFrameAction(tableau));
+                .addActionListener(new OpenPatternSearchFrameAction(tableau));
 
         addWindowListener(new WindowListener() {
 
@@ -277,8 +277,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         });
 
         // Add the action listener to model name text field.
-        _attributesListPanel.getNameTextField().addKeyListener(
-                new KeyListener() {
+        _attributesListPanel.getNameTextField()
+                .addKeyListener(new KeyListener() {
 
                     @Override
                     public void keyTyped(KeyEvent e) {
@@ -535,14 +535,14 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
                 try {
 
-                    _searchCriteria = SearchCriteriaManager.open(chooser
-                            .getSelectedFile().getCanonicalPath(),
+                    _searchCriteria = SearchCriteriaManager.open(
+                            chooser.getSelectedFile().getCanonicalPath(),
                             _configuration);
 
                 } catch (SearchCriteriaParseException e1) {
 
-                    MessageHandler.error(
-                            "Cannot retrieve the search criteria.", e1);
+                    MessageHandler.error("Cannot retrieve the search criteria.",
+                            e1);
 
                 }
 
@@ -553,15 +553,16 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                 repaint();
 
                 if (_searchCriteria.getModelName() != null) {
-                    _attributesListPanel.setModelName(_searchCriteria
-                            .getModelName());
+                    _attributesListPanel
+                            .setModelName(_searchCriteria.getModelName());
                 }
 
                 if (_searchCriteria.getAttributes() != null) {
 
-                    for (Attribute attribute : _searchCriteria.getAttributes()) {
+                    for (Attribute attribute : _searchCriteria
+                            .getAttributes()) {
                         _attributesListPanel
-                        .addAttribute((StringParameter) attribute);
+                                .addAttribute((StringParameter) attribute);
                     }
 
                 }
@@ -575,8 +576,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                         _patternMatchframe = null;
                     }
 
-                    URL toRead = getClass().getClassLoader().getResource(
-                            "ptolemy.actor.gt.controller.Match");
+                    URL toRead = getClass().getClassLoader()
+                            .getResource("ptolemy.actor.gt.controller.Match");
 
                     try {
 
@@ -594,11 +595,12 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                                 effigy, "DB Search Pattern");
 
                         _patternMatchframe = new GraphPatternSearchEditor(
-                                compositeEntity, new Tableau(effigy,
-                                        "DBSearchframe"),
-                                        ((ActorGraphDBTableau) _baseTableau)
-                                        .getGtLibrary(), _containerModel,
-                                        _sourceFrame, SimpleSearchFrame.this);
+                                compositeEntity,
+                                new Tableau(effigy, "DBSearchframe"),
+                                ((ActorGraphDBTableau) _baseTableau)
+                                        .getGtLibrary(),
+                                _containerModel, _sourceFrame,
+                                SimpleSearchFrame.this);
 
                         String moml = _searchCriteria.getPatternMoML();
 
@@ -608,8 +610,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                             _patternMatchframe.repaint();
 
                             _patternMatchframe.pack();
-                            _patternMatchframe
-                            .setLocationRelativeTo(SimpleSearchFrame.this);
+                            _patternMatchframe.setLocationRelativeTo(
+                                    SimpleSearchFrame.this);
                             _patternMatchframe.setVisible(true);
                         }
 
@@ -650,8 +652,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
                 if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
-                    _searchCriteria.setModelName(_attributesListPanel
-                            .getModelName());
+                    _searchCriteria
+                            .setModelName(_attributesListPanel.getModelName());
                 }
 
                 if (_attributesListPanel.getAttributeCount() > 0) {
@@ -665,8 +667,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                 if (_patternMatchframe != null
                         && !_patternMatchframe.isPatternEmpty()) {
 
-                    _searchCriteria.setPatternMoML(_patternMatchframe
-                            .getPatternMoML());
+                    _searchCriteria.setPatternMoML(
+                            _patternMatchframe.getPatternMoML());
                 }
 
                 SearchCriteriaManager.save(_searchCriteria, _saveLocation);
@@ -700,8 +702,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
             if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
-                _searchCriteria.setModelName(_attributesListPanel
-                        .getModelName());
+                _searchCriteria
+                        .setModelName(_attributesListPanel.getModelName());
             }
 
             if (_attributesListPanel.getAttributeCount() > 0) {
@@ -715,8 +717,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
             if (_patternMatchframe != null
                     && !_patternMatchframe.isPatternEmpty()) {
 
-                _searchCriteria.setPatternMoML(_patternMatchframe
-                        .getPatternMoML());
+                _searchCriteria
+                        .setPatternMoML(_patternMatchframe.getPatternMoML());
             }
 
             JFileChooser chooser = new JFileChooser();
@@ -736,7 +738,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
             while (!saveComplete) {
 
-                if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+                if (chooser
+                        .showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
 
                     return;
 
@@ -746,21 +749,21 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                     String name = filename.getName();
                     if (!name.endsWith(".xml")) {
 
-                        filename = new File(filename.getParent(), name + ".xml");
+                        filename = new File(filename.getParent(),
+                                name + ".xml");
 
                     }
 
-                    if (filename.exists()
-                            && !filename.getCanonicalFile().toString()
-                            .equals(_saveLocation)) {
+                    if (filename.exists() && !filename.getCanonicalFile()
+                            .toString().equals(_saveLocation)) {
 
                         Object[] options = { "Yes", "No" };
                         int n = JOptionPane.showOptionDialog(this,
                                 filename.toString() + " already exists.\n"
                                         + "Do you want to replace it?",
-                                        "Overwrite File?", JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.WARNING_MESSAGE, null, options,
-                                        options[1]);
+                                "Overwrite File?", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE, null, options,
+                                options[1]);
 
                         if (n == JOptionPane.YES_OPTION) {
 
@@ -864,19 +867,23 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
      */
     private boolean _isSearchCriteriaEnough(SearchCriteria searchCriteria) {
 
-        if ((searchCriteria.getAttributes() == null || searchCriteria
-                .getAttributes().size() == 0)
+        if ((searchCriteria.getAttributes() == null
+                || searchCriteria.getAttributes().size() == 0)
 
-                && (searchCriteria.getDBGraphSearchCriteria() == null || (searchCriteria
-                        .getDBGraphSearchCriteria().getPortsList() == null || searchCriteria
-                        .getDBGraphSearchCriteria().getPortsList().isEmpty())
-                        && (searchCriteria.getDBGraphSearchCriteria()
-                                .getComponentEntitiesList() == null || searchCriteria
-                                .getDBGraphSearchCriteria()
-                                .getComponentEntitiesList().isEmpty()))
+                && (searchCriteria.getDBGraphSearchCriteria() == null
+                        || (searchCriteria.getDBGraphSearchCriteria()
+                                .getPortsList() == null
+                                || searchCriteria.getDBGraphSearchCriteria()
+                                        .getPortsList().isEmpty())
+                                && (searchCriteria.getDBGraphSearchCriteria()
+                                        .getComponentEntitiesList() == null
+                                        || searchCriteria
+                                                .getDBGraphSearchCriteria()
+                                                .getComponentEntitiesList()
+                                                .isEmpty()))
 
-                                && (searchCriteria.getModelName() == null || searchCriteria
-                                .getModelName().trim().isEmpty())) {
+                && (searchCriteria.getModelName() == null
+                        || searchCriteria.getModelName().trim().isEmpty())) {
 
             return false;
         } else {
@@ -918,7 +925,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                 JOptionPane.showMessageDialog(this,
                         "The model name should only "
                                 + "contain letters and numbers.",
-                                "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+                        "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
                 return false;
             }
@@ -928,14 +935,14 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         //Duplicates are now allowed.  This allows OR searches.
         /*
         if (_attributesListPanel.containsDuplicates()) {
-
+        
             JOptionPane.showMessageDialog(this,
                     "The search criteria cannot contain more"
                             + " than one instance " + "of the same attribute.",
                     "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
-
+        
             return false;
-
+        
         }
          */
 
@@ -963,8 +970,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
     }
 
     private void _simpleSearch() throws DBConnectionException,
-    DBExecutionException, NameDuplicationException,
-    IllegalActionException, MalformedStringException {
+            DBExecutionException, NameDuplicationException,
+            IllegalActionException, MalformedStringException {
 
         _attributesListPanel.regroup();
 
@@ -1019,8 +1026,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                     // Call the Search Manager to trigger the search.
                     SearchManager searchManager = new SearchManager();
                     try {
-                        searchManager
-                        .search(searchCriteria, searchResultBuffer);
+                        searchManager.search(searchCriteria,
+                                searchResultBuffer);
 
                     } catch (DBConnectionException e1) {
                         searchResultsFrame.setVisible(false);
@@ -1043,8 +1050,9 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                             + "search criteria.  At least one of "
                             + "attribute, model name, port or" + " component"
                             + " entity needs to be set in the search "
-                            + "criteria.", "Not Enough Search Criteria",
-                            JOptionPane.INFORMATION_MESSAGE, null);
+                            + "criteria.",
+                    "Not Enough Search Criteria",
+                    JOptionPane.INFORMATION_MESSAGE, null);
 
         }
 
@@ -1084,8 +1092,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         public void actionPerformed(ActionEvent e) {
 
             if (_patternMatchframe == null) {
-                URL toRead = getClass().getClassLoader().getResource(
-                        "ptolemy.actor.gt.controller.Match");
+                URL toRead = getClass().getClassLoader()
+                        .getResource("ptolemy.actor.gt.controller.Match");
 
                 try {
 
@@ -1102,14 +1110,14 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                             effigy, "transformation rule");
 
                     _patternMatchframe = new GraphPatternSearchEditor(
-                            compositeEntity, new Tableau(effigy,
-                                    "DBSearchframe"),
-                                    ((ActorGraphDBTableau) _tableau).getGtLibrary(),
-                                    _containerModel, _sourceFrame,
-                                    SimpleSearchFrame.this);
+                            compositeEntity,
+                            new Tableau(effigy, "DBSearchframe"),
+                            ((ActorGraphDBTableau) _tableau).getGtLibrary(),
+                            _containerModel, _sourceFrame,
+                            SimpleSearchFrame.this);
 
                     _ptdbContainedFramesManager
-                    .addContainedFrame(_patternMatchframe);
+                            .addContainedFrame(_patternMatchframe);
 
                 } catch (Exception e2) {
 

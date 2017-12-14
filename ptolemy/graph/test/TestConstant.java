@@ -108,8 +108,8 @@ public class TestConstant implements InequalityTerm {
      */
     @Override
     public void initialize(Object e) throws GraphActionException {
-        throw new GraphActionException("TestConstant.initialize: This term "
-                + "is a constant.");
+        throw new GraphActionException(
+                "TestConstant.initialize: This term " + "is a constant.");
     }
 
     /** Check whether the current value of this term is acceptable,
@@ -141,8 +141,8 @@ public class TestConstant implements InequalityTerm {
      */
     @Override
     public void setValue(Object e) throws GraphActionException {
-        throw new GraphActionException("TestConstant.setValue: This term "
-                + "is a constant.");
+        throw new GraphActionException(
+                "TestConstant.setValue: This term " + "is a constant.");
     }
 
     /** Override the base class to describe the constant.

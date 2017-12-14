@@ -88,9 +88,10 @@ public interface DerivativeFunction {
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
     */
-    public int evaluateDerivatives(final Time time, final double [] dtSample,
-            final double[] xdot, final double[] xdotSample, final double[] xdotSample2,
-            final int stOrd) throws IllegalActionException;
+    public int evaluateDerivatives(final Time time, final double[] dtSample,
+            final double[] xdot, final double[] xdotSample,
+            final double[] xdotSample2, final int stOrd)
+            throws IllegalActionException;
 
     /**
     * Evaluate the derivative function. An implementation of this function
@@ -175,11 +176,12 @@ public interface DerivativeFunction {
     */
     public int eventIndicatorDerivativeInputs(final Time time, double[] xx,
             double[] uu, Time timeSample, double[] xxSample, double[] uuSample,
-            double dtSample, Time timeSample2, double[] xxSample2, double[] uuSample2,
-            double dtSample2,Time timeSample3, double[] xxSample3, double[] uuSample3,
-            double dtSample3, Time timeSample4, double[] xxSample4, double[] uuSample4,
-            double dtSample4, Time timeSample5, double[] xxSample5, double[] uuSample5,
-            double dtSample5, int stateModelOrder)
+            double dtSample, Time timeSample2, double[] xxSample2,
+            double[] uuSample2, double dtSample2, Time timeSample3,
+            double[] xxSample3, double[] uuSample3, double dtSample3,
+            Time timeSample4, double[] xxSample4, double[] uuSample4,
+            double dtSample4, Time timeSample5, double[] xxSample5,
+            double[] uuSample5, double dtSample5, int stateModelOrder)
             throws IllegalActionException;
 
     /**

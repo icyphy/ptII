@@ -87,12 +87,16 @@ public class UndoListener implements UndoableEditListener {
         ActionMap actionMap = textArea.getActionMap();
 
         // Ctrl-z or equivalent to undo.
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit
-                .getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
+        inputMap.put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+                "undo");
         actionMap.put("undo", _undoAction);
         // Ctrl-y or equivalent to redo
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit
-                .getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
+        inputMap.put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_Y,
+                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
+                "redo");
         actionMap.put("redo", _redoAction);
     }
 
@@ -169,7 +173,7 @@ public class UndoListener implements UndoableEditListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            synchronized(UndoListener.this) {
+            synchronized (UndoListener.this) {
                 try {
                     _undo.undo();
                 } catch (CannotUndoException ex) {
@@ -204,7 +208,7 @@ public class UndoListener implements UndoableEditListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            synchronized(UndoListener.this) {
+            synchronized (UndoListener.this) {
                 try {
                     _undo.redo();
                 } catch (CannotRedoException ex) {

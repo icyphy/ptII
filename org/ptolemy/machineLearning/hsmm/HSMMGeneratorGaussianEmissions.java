@@ -81,26 +81,25 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public HSMMGeneratorGaussianEmissions(CompositeEntity container, String name)
+    public HSMMGeneratorGaussianEmissions(CompositeEntity container,
+            String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
 
         mean = new PortParameter(this, "mean");
         mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         mean.setExpression("{0.0,100.0}");
-        new StringAttribute(mean.getPort(), "_cardinal")
-            .setExpression("SOUTH");
+        new StringAttribute(mean.getPort(), "_cardinal").setExpression("SOUTH");
         new SingletonParameter(mean.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         covariance = new PortParameter(this, "covariance");
         covariance.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         covariance.setExpression("{10.0,10.0}");
         new StringAttribute(covariance.getPort(), "_cardinal")
-            .setExpression("SOUTH");
+                .setExpression("SOUTH");
         new SingletonParameter(covariance.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +110,6 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
 
     /** Variance array. */
     public PortParameter covariance;
-
 
     @Override
     public void attributeChanged(Attribute attribute)
@@ -140,8 +138,8 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMGeneratorGaussianEmissions newObject = (HSMMGeneratorGaussianEmissions) super
-                .clone(workspace);
+        HSMMGeneratorGaussianEmissions newObject = (HSMMGeneratorGaussianEmissions) super.clone(
+                workspace);
         newObject._mean = null;
         newObject._covariance = null;
 
@@ -191,11 +189,11 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
             // start generating values
             boolean validSequenceFound = false;
             int trials = 0;
-            double [] ys = new double[_windowSize];
-            int [] xs = new int [_windowSize];
+            double[] ys = new double[_windowSize];
+            int[] xs = new int[_windowSize];
             while (!validSequenceFound && trials < MAX_TRIALS) {
                 double cumulativePower = 0.0;
-                for (int i = 0; i < _windowSize; i ++ ) {
+                for (int i = 0; i < _windowSize; i++) {
                     if (_firstIteration) {
                         // sample hidden state from prior
                         _xt = _sampleHiddenStateFromPrior();
@@ -216,18 +214,20 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
                     xs[i] = _xt;
                     ys[i] = yt[0];
                 }
-                if (cumulativePower <= ((DoubleToken)powerUpperBound.getToken()).doubleValue()) {
+                if (cumulativePower <= ((DoubleToken) powerUpperBound
+                        .getToken()).doubleValue()) {
                     validSequenceFound = true;
                     break;
                 } else {
                     trials++;
                 }
             }
-            System.out.println(trials + " sequences rejected until sequence found");
+            System.out.println(
+                    trials + " sequences rejected until sequence found");
             if (validSequenceFound) {
                 Token[] outputObservations = new DoubleToken[_windowSize];
                 Token[] states = new IntToken[_windowSize];
-                for (int i = 0; i < _windowSize; i ++) {
+                for (int i = 0; i < _windowSize; i++) {
                     outputObservations[i] = new DoubleToken(ys[i]);
                     states[i] = new IntToken(xs[i]);
                 }
@@ -244,7 +244,7 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
         double s = _covariance[_xt];
 
         DoubleToken yt = UtilityFunctions.gaussian(mu, s);
-        return new double[]{yt.doubleValue()};
+        return new double[] { yt.doubleValue() };
     }
 
     @Override

@@ -48,8 +48,7 @@ import ptolemy.kernel.util.Workspace;
  *  @author Ilge Akkya
  *  @version $Id$
  */
-public class Predictor extends AbstractPredictor
-implements StateSpaceActor {
+public class Predictor extends AbstractPredictor implements StateSpaceActor {
 
     /** Instantiate a new predictor.
      *  @param container The container
@@ -86,8 +85,8 @@ implements StateSpaceActor {
         // Check state variable names.
 
         if (validDecoratorAssociationExists()) {
-            Parameter stateVariableNames =
-                    (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
+            Parameter stateVariableNames = (Parameter) this
+                    .getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
             int n = _stateNames.length();
             if (n < 1) {
@@ -105,13 +104,10 @@ implements StateSpaceActor {
                 // Check state equations.
                 String equation = name + "_update";
                 if (this.getUserDefinedParameter(equation) == null) {
-                    throw new IllegalActionException(
-                            this,
-                            "Please add a "
-                                    + "parameter with name \""
-                                    + equation
-                                    + "\" that gives the state update expression for state "
-                                    + name + ".");
+                    throw new IllegalActionException(this, "Please add a "
+                            + "parameter with name \"" + equation
+                            + "\" that gives the state update expression for state "
+                            + name + ".");
                 }
             }
         }
@@ -122,20 +118,23 @@ implements StateSpaceActor {
      * @exception IllegalActionException
      */
     @Override
-    public boolean validDecoratorAssociationExists() throws IllegalActionException {
+    public boolean validDecoratorAssociationExists()
+            throws IllegalActionException {
         boolean found = false;
-        Set<Decorator> decoratorSet =decorators();
+        Set<Decorator> decoratorSet = decorators();
         for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
                     if (!found) {
                         found = true;
                         _decorator = (StateSpaceModel) d;
                     } else {
-                        throw new IllegalActionException(this, "A StateSpaceActor "
-                                + "can be associated with exactly one StateSpaceModel "
-                                + "at a time.");
+                        throw new IllegalActionException(this,
+                                "A StateSpaceActor "
+                                        + "can be associated with exactly one StateSpaceModel "
+                                        + "at a time.");
                     }
                 }
             }
@@ -148,8 +147,8 @@ implements StateSpaceActor {
             throws IllegalActionException {
 
         if (_decorator != null) {
-            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName);
-            return ((Parameter)attr);
+            Attribute attr = this.getDecoratorAttribute(_decorator, eqnName);
+            return ((Parameter) attr);
         } else {
             throw new IllegalActionException("No decorator found!");
         }

@@ -85,8 +85,8 @@ public class TransformerAdapter extends SceneTransformer {
                 try {
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-                    for (Iterator transformers = _transformers.iterator(); transformers
-                            .hasNext();) {
+                    for (Iterator transformers = _transformers
+                            .iterator(); transformers.hasNext();) {
                         BodyTransformer transformer = (BodyTransformer) transformers
                                 .next();
 
@@ -96,8 +96,8 @@ public class TransformerAdapter extends SceneTransformer {
                         transformer.transform(body, phaseName, options);
                     }
                 } catch (RuntimeException ex) {
-                    System.err.println("Exception occurred while processing "
-                            + method);
+                    System.err.println(
+                            "Exception occurred while processing " + method);
                     throw ex;
                 }
             }

@@ -173,8 +173,7 @@ public class SequenceSchedule extends Schedule {
      *  nodes to their subgraphs Used in conjunction with the control
      *  graph for determining the schedule.
      */
-    public SequenceSchedule(
-            List<SequenceAttribute> independentList,
+    public SequenceSchedule(List<SequenceAttribute> independentList,
             Hashtable<SequenceAttribute, Hashtable> controlTable,
             Hashtable<SequenceAttribute, DirectedAcyclicGraph> sequencedActorsToSubgraph) {
         super();
@@ -426,13 +425,13 @@ public class SequenceSchedule extends Schedule {
             {
                 // Get the next sequence attribute
                 SequenceAttribute seqControlActor = (SequenceAttribute) _independentList.get(i);
-
+            
                 System.out.println("Independent sequence attribute value: " + seqControlActor.getExpression());
                 System.out.println("Actor for this sequence attribute: " + ((Actor) seqControlActor.getContainer()).getFullName());
-
+            
                 // From the control table, get the hash table <String, List> corresponding to this SequenceAttribute
                 Hashtable branches = (Hashtable) _controlTable.get(seqControlActor);
-
+            
                 // This sequence attribute may or may not correspond to a control element
                 // Even if it does, the control element may not have any branches
                 if (branches != null)
@@ -440,15 +439,15 @@ public class SequenceSchedule extends Schedule {
                     // Get the key set
                     Set<String> branchNames = branches.keySet();
                     Iterator branchIterator = branchNames.iterator();
-
+            
                     while (branchIterator.hasNext())
                     {
                         String branchName = ((String) branchIterator.next());
                         System.out.println("Branch name: " + branchName);
-
+            
                         // Get the sequence attributes of actors for this key
                         ArrayList seqAttributes = (ArrayList) branches.get((String) branchIterator.next());
-
+            
                         if (seqAttributes != null)
                         {
                             Iterator actorIterator = seqAttributes.iterator();
@@ -459,7 +458,7 @@ public class SequenceSchedule extends Schedule {
                                 System.out.println("Actor for this sequence attribute: " + ((Actor) seqDependentActor.getContainer()).getFullName());
                             }
                         }
-
+            
                     }
                 }
             }
@@ -504,7 +503,7 @@ public class SequenceSchedule extends Schedule {
                 // then there are no more firings - don't have to check anything else
                 if (_schedulePosition > 0
                         && ((Firing) _schedule.get(_schedulePosition - 1))
-                        .getActor() instanceof Break) {
+                                .getActor() instanceof Break) {
                     return _lastHasNext; // which was just set to false
                 }
 
@@ -651,8 +650,8 @@ public class SequenceSchedule extends Schedule {
                             // Get the list of actors, if any, for this branch
                             // Get the sequence attributes of actors for this key
                             seqAttributes
-                            .addAll((List<SequenceAttribute>) branches
-                                    .get(portName));
+                                    .addAll((List<SequenceAttribute>) branches
+                                            .get(portName));
 
                             // return seqAttributes
                             // The calling function will set _lastHasNext
@@ -724,7 +723,8 @@ public class SequenceSchedule extends Schedule {
                 // _schedulePosition starts at 0
 
                 if (_schedulePosition < _schedule.size()) {
-                    if (!(_schedule.get(_schedulePosition) instanceof SequenceFiring)) {
+                    if (!(_schedule.get(
+                            _schedulePosition) instanceof SequenceFiring)) {
                         throw new NoSuchElementException(
                                 "Error - SequenceScheduler encounter a ScheduleElement that is not an instance of SequenceFiring");
                     }
@@ -754,16 +754,18 @@ public class SequenceSchedule extends Schedule {
                         if (seqAttributes != null && !seqAttributes.isEmpty()) {
                             // If the control actor is a While loop, add it back into
                             // the schedule after all the activated sequence actors.
-                            if (_currentControlSeqAttr.getContainer() instanceof While) {
+                            if (_currentControlSeqAttr
+                                    .getContainer() instanceof While) {
                                 seqAttributes.add(_currentControlSeqAttr);
                             }
 
                             // Add dependent actors last-to-first at current position
                             // (so execution in _independentList will be first-to-last
-                            for (int i = seqAttributes.size() - 1; i >= 0; i--) {
+                            for (int i = seqAttributes.size()
+                                    - 1; i >= 0; i--) {
                                 _independentList.add(_independentListPosition,
                                         (SequenceAttribute) seqAttributes
-                                        .get(i));
+                                                .get(i));
                             }
 
                         }
@@ -799,7 +801,7 @@ public class SequenceSchedule extends Schedule {
 
                         if (_independentList != null
                                 && _independentListPosition < _independentList
-                                .size()) {
+                                        .size()) {
                             // Get the next sequenced actor
                             SequenceAttribute seq = _independentList
                                     .get(_independentListPosition);
@@ -839,7 +841,7 @@ public class SequenceSchedule extends Schedule {
                                         String methodName = null;
                                         if (act instanceof MultipleFireMethodsInterface
                                                 && ((MultipleFireMethodsInterface) act)
-                                                .numFireMethods() > 1) {
+                                                        .numFireMethods() > 1) {
                                             if (node instanceof ProcessAttribute) {
                                                 try {
                                                     methodName = ((ProcessAttribute) node)
@@ -854,7 +856,8 @@ public class SequenceSchedule extends Schedule {
                                                 }
                                             } else if (node instanceof IOPort) {
                                                 StringAttribute methodNameAttribute = (StringAttribute) ((IOPort) node)
-                                                        .getAttribute("methodName");
+                                                        .getAttribute(
+                                                                "methodName");
                                                 if (methodNameAttribute != null) {
                                                     methodName = methodNameAttribute
                                                             .getValueAsString();
@@ -863,7 +866,7 @@ public class SequenceSchedule extends Schedule {
                                                             "Problem scheduling the next actor to fire in the sequence schedule "
                                                                     + "because the output port "
                                                                     + ((IOPort) node)
-                                                                    .getName()
+                                                                            .getName()
                                                                     + " for a MultipleFireMethodsInterface "
                                                                     + act.getName()
                                                                     + " with more than one fire method has no fire method name attribute.");

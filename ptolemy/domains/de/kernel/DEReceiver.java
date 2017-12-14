@@ -164,7 +164,8 @@ public class DEReceiver extends AbstractReceiver {
      *  @exception NoRoomException Not thrown in this class.
      */
     @Override
-    public void put(Token token) throws IllegalActionException, NoRoomException {
+    public void put(Token token)
+            throws IllegalActionException, NoRoomException {
         if (token == null) {
             return;
         }

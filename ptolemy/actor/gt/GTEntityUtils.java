@@ -174,8 +174,8 @@ public class GTEntityUtils {
                         port.setDerivedLevel(1);
                     }
                     port.setMultiport(isMultiport);
-                } else if (ingredient instanceof SubclassCriterion
-                        && !isIconSet && !foundPersistentIcon) {
+                } else if (ingredient instanceof SubclassCriterion && !isIconSet
+                        && !foundPersistentIcon) {
                     SubclassCriterion criterion = (SubclassCriterion) ingredient;
                     final String superclass = criterion.getSuperclass();
                     object.requestChange(new ChangeRequest(entity,
@@ -190,7 +190,8 @@ public class GTEntityUtils {
                 i++;
             }
             if (!isIconSet && !foundPersistentIcon) {
-                object.requestChange(new RestoreAppearanceChangeRequest(entity));
+                object.requestChange(
+                        new RestoreAppearanceChangeRequest(entity));
             }
 
             ComponentEntity component = (ComponentEntity) entity;
@@ -325,7 +326,7 @@ public class GTEntityUtils {
     /**
      A change request to copy the icon of a newly created entity within a
      container to a given GTEntity.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -411,7 +412,7 @@ public class GTEntityUtils {
 
     /**
      A change request to restore the default icon of an entity.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

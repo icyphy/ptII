@@ -154,8 +154,8 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
             if (((Settable) attribute).getVisibility().equals(Settable.FULL)) {
                 if (_filter != null && _filter.length() > 0) {
                     if (((Nameable) attribute).getFullName()
-                            .toLowerCase(Locale.getDefault())
-                            .contains(_filter.toLowerCase(Locale.getDefault()))) {
+                            .toLowerCase(Locale.getDefault()).contains(
+                                    _filter.toLowerCase(Locale.getDefault()))) {
                         children.add(attribute);
                     }
                 } else {

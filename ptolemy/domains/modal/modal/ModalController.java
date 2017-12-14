@@ -70,8 +70,8 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class ModalController extends FSMActor implements DropTargetHandler,
-RefinementActor {
+public class ModalController extends FSMActor
+        implements DropTargetHandler, RefinementActor {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -188,8 +188,8 @@ RefinementActor {
             TypedActor refinement = null;
             if (refinements != null) {
                 for (TypedActor actor : refinements) {
-                    if (((NamedObj) actor).getClassName().equals(
-                            refinementClass)) {
+                    if (((NamedObj) actor).getClassName()
+                            .equals(refinementClass)) {
                         refinement = actor;
                         break;
                     }
@@ -364,8 +364,8 @@ RefinementActor {
      *   name already in the entity.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         // If mirroring is disabled, then the port is being added by the
         // container, which is surely OK.
         if (!_mirrorDisable) {
@@ -380,8 +380,7 @@ RefinementActor {
             // don't match? Could get very subtle bugs.
             if (container instanceof ModalModel) {
                 if (((ModalModel) container).getPort(port.getName()) == null) {
-                    throw new IllegalActionException(
-                            this,
+                    throw new IllegalActionException(this,
                             "Ports must be added to a ModalController via the newPort()"
                                     + " method, which in Vergil is accessed by clicking on one of"
                                     + " the port buttons at the top of the window.  "

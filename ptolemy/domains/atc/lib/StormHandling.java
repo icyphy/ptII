@@ -62,8 +62,7 @@ public class StormHandling extends TypedAtomicActor {
      *   actor with this name.
      */
     public StormHandling(CompositeEntity container, String name)
-            throws NameDuplicationException,
-            IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         selectedTrack = new TypedIOPort(this, "selectedTrack", true, false);
         selectedTrack.setTypeEquals(BaseType.INT);
@@ -71,10 +70,9 @@ public class StormHandling extends TypedAtomicActor {
         selectedValue.setTypeEquals(BaseType.BOOLEAN);
         numberOfTracks = new Parameter(this, "numberOfTracks", new IntToken(0));
         numberOfTracks.setTypeEquals(BaseType.INT);
-        trackStatus=new TypedIOPort(this,"trackStatus",false,true);
+        trackStatus = new TypedIOPort(this, "trackStatus", false, true);
         trackStatus.setTypeEquals(new ArrayType(BaseType.BOOLEAN));
     }
-
 
     /** An integer indicating the selected track. */
     public TypedIOPort selectedTrack;
@@ -97,29 +95,31 @@ public class StormHandling extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _count = ((IntToken)numberOfTracks.getToken()).intValue();
-        _temp=new Token[_count];
-        for (int i=0;i<_count;i++)
-            _temp[i]=(Token) new BooleanToken(false);
+        _count = ((IntToken) numberOfTracks.getToken()).intValue();
+        _temp = new Token[_count];
+        for (int i = 0; i < _count; i++) {
+            _temp[i] = new BooleanToken(false);
+        }
     }
 
     /** Fire the actor.
      *  @exception IllegalActionException If thrown by the baseclass
      *  or if there is a problem accessing the ports or parameters.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        int trackNumber=0;
+        int trackNumber = 0;
         Token value;
         if (selectedValue.hasToken(0)) {
-            value=selectedValue.get(0);
+            value = selectedValue.get(0);
             if (selectedTrack.hasToken(0)) {
-                trackNumber=((IntToken)selectedTrack.get(0)).intValue();
-                _temp[trackNumber-1]=value;
+                trackNumber = ((IntToken) selectedTrack.get(0)).intValue();
+                _temp[trackNumber - 1] = value;
             }
 
         }
-        trackStatus.send(0, (Token)(new ArrayToken(BaseType.BOOLEAN, _temp)));
+        trackStatus.send(0, (new ArrayToken(BaseType.BOOLEAN, _temp)));
     }
 
     private int _count = 0;

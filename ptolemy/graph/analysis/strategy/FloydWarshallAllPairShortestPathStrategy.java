@@ -59,8 +59,8 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @author Shahrooz Shahparnia
  @version $Id$
  */
-public class FloydWarshallAllPairShortestPathStrategy extends
-FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
+public class FloydWarshallAllPairShortestPathStrategy
+        extends FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
     /** Construct an AllPairShortestPathAnalyzer which works using the
      *  Floyd-Warshall strategy.
      *
@@ -100,8 +100,8 @@ FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
 
             while (nodeOnPath != startNode) {
                 int nodeOnPathLabel = graph().nodeLabel(nodeOnPath);
-                nodeOnPath = graph().node(
-                        nodeLabels[startNodeLabel][nodeOnPathLabel]);
+                nodeOnPath = graph()
+                        .node(nodeLabels[startNodeLabel][nodeOnPathLabel]);
                 shortestPath.add(nodeOnPath);
             }
         }
@@ -123,7 +123,7 @@ FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
         //int n = graph().nodeCount();
         double[][] shortestPathResults = (double[][]) _result();
         result = shortestPathResults[graph().nodeLabel(startNode)][graph()
-                                                                   .nodeLabel(endNode)];
+                .nodeLabel(endNode)];
         return result;
     }
 

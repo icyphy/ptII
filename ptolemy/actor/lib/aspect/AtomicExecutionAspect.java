@@ -94,8 +94,8 @@ hierarchy layers by a PtidesDirector. </li>
 @Pt.ProposedRating Red (derler)
 @Pt.AcceptedRating Red (derler)
  */
-public class AtomicExecutionAspect extends TypedAtomicActor implements
-ActorExecutionAspect {
+public class AtomicExecutionAspect extends TypedAtomicActor
+        implements ActorExecutionAspect {
 
     /** Create a new resource schedule in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -144,8 +144,8 @@ ActorExecutionAspect {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AtomicExecutionAspect newObject = (AtomicExecutionAspect) super
-                .clone(workspace);
+        AtomicExecutionAspect newObject = (AtomicExecutionAspect) super.clone(
+                workspace);
         newObject._executionAspectListeners = new ArrayList<ExecutionAspectListener>();
         newObject._lastTimeScheduled = new HashMap<NamedObj, Time>();
         newObject._actors = new ArrayList<NamedObj>();
@@ -396,7 +396,8 @@ ActorExecutionAspect {
             for (NamedObj actor : _actors) {
                 notifyExecutionListeners(actor,
                         ((CompositeActor) getContainer()).getDirector()
-                                .getEnvironmentTime().getDoubleValue(), null);
+                                .getEnvironmentTime().getDoubleValue(),
+                        null);
             }
         }
     }
@@ -476,8 +477,8 @@ ActorExecutionAspect {
                     notifyExecutionListeners(entity, 0.0, null);
 
                 } else if (entity instanceof CompositeActor) {
-                    _initializeManagedEntities(((CompositeActor) entity)
-                            .deepEntityList());
+                    _initializeManagedEntities(
+                            ((CompositeActor) entity).deepEntityList());
                 }
             }
         }

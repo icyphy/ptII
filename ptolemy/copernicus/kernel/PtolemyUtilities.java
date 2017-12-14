@@ -108,8 +108,8 @@ public class PtolemyUtilities {
 
         if (token instanceof ptolemy.data.ArrayToken) {
             ArrayToken arrayToken = (ArrayToken) token;
-            RefType tokenType = getSootTypeForTokenType(arrayToken
-                    .getElementType());
+            RefType tokenType = getSootTypeForTokenType(
+                    arrayToken.getElementType());
             Type tokenArrayType = ArrayType.v(tokenType, 1);
             Local tokenArrayLocal = Jimple.v().newLocal(localName + "Array",
                     tokenArrayType);
@@ -119,21 +119,21 @@ public class PtolemyUtilities {
 
             // Create the array of tokens.
             units.insertBefore(
-                    Jimple.v().newAssignStmt(
-                            tokenArrayLocal,
+                    Jimple.v().newAssignStmt(tokenArrayLocal,
                             Jimple.v().newNewArrayExpr(tokenType,
                                     IntConstant.v(arrayToken.length()))),
-                                    insertPoint);
+                    insertPoint);
 
             // recurse
             for (int i = 0; i < arrayToken.length(); i++) {
                 Local argLocal = buildConstantTokenLocal(body, insertPoint,
                         arrayToken.getElement(i), localName + "_" + i);
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                Jimple.v().newArrayRef(tokenArrayLocal,
-                                        IntConstant.v(i)), argLocal),
-                                        insertPoint);
+                        Jimple.v()
+                                .newAssignStmt(Jimple.v().newArrayRef(
+                                        tokenArrayLocal, IntConstant.v(i)),
+                                        argLocal),
+                        insertPoint);
             }
 
             Local tokenLocal = Jimple.v().newLocal(localName,
@@ -142,13 +142,12 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(tokenLocal,
                             Jimple.v().newNewExpr(RefType.v(arrayTokenClass))),
-                            insertPoint);
-            units.insertBefore(
-                    Jimple.v().newInvokeStmt(
-                            Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                    arrayTokenWithTypeConstructor.makeRef(),
-                                    elementTypeLocal, tokenArrayLocal)),
-                                    insertPoint);
+                    insertPoint);
+            units.insertBefore(Jimple.v()
+                    .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                            arrayTokenWithTypeConstructor.makeRef(),
+                            elementTypeLocal, tokenArrayLocal)),
+                    insertPoint);
             return tokenLocal;
         } else if (token instanceof ptolemy.data.RecordToken) {
             throw new RuntimeException(
@@ -211,8 +210,8 @@ public class PtolemyUtilities {
             //             return tokenLocal;
         } else if (token.getClass().equals(Token.class)) {
             // Token has no string constructor.
-            SootClass tokenClass = Scene.v().loadClassAndSupport(
-                    token.getClass().getName());
+            SootClass tokenClass = Scene.v()
+                    .loadClassAndSupport(token.getClass().getName());
             SootMethod tokenConstructor = tokenClass.getMethod("void <init>()");
 
             Local tokenLocal = Jimple.v().newLocal(localName,
@@ -221,11 +220,12 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(tokenLocal,
                             Jimple.v().newNewExpr(RefType.v(tokenClass))),
-                            insertPoint);
+                    insertPoint);
             units.insertBefore(
-                    Jimple.v().newInvokeStmt(
-                            Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                    tokenConstructor.makeRef())), insertPoint);
+                    Jimple.v()
+                            .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                                    tokenLocal, tokenConstructor.makeRef())),
+                    insertPoint);
             return tokenLocal;
         } else if (token instanceof IntToken) {
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
@@ -260,8 +260,8 @@ public class PtolemyUtilities {
             Complex complex = ((ComplexToken) token).complexValue();
 
             // ComplexToken takes a Complex as a constructor.
-            SootClass complexClass = Scene.v().loadClassAndSupport(
-                    "ptolemy.math.Complex");
+            SootClass complexClass = Scene.v()
+                    .loadClassAndSupport("ptolemy.math.Complex");
             SootMethod complexConstructor = complexClass
                     .getMethod("void <init>(double,double)");
 
@@ -271,14 +271,14 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(complexLocal,
                             Jimple.v().newNewExpr(RefType.v(complexClass))),
-                            insertPoint);
+                    insertPoint);
             units.insertBefore(
-                    Jimple.v().newInvokeStmt(
-                            Jimple.v().newSpecialInvokeExpr(complexLocal,
-                                    complexConstructor.makeRef(),
+                    Jimple.v()
+                            .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                                    complexLocal, complexConstructor.makeRef(),
                                     DoubleConstant.v(complex.real),
                                     DoubleConstant.v(complex.imag))),
-                                    insertPoint);
+                    insertPoint);
 
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
                     localName, complexTokenClass, complexTokenConstructor,
@@ -297,11 +297,12 @@ public class PtolemyUtilities {
             // Some possible loss of precision?
             args.add(DoubleConstant.v(fixValue.doubleValue()));
             args.add(IntConstant.v(fixValue.getPrecision().getNumberOfBits()));
-            args.add(IntConstant.v(fixValue.getPrecision()
-                    .getIntegerBitLength()));
+            args.add(IntConstant
+                    .v(fixValue.getPrecision().getIntegerBitLength()));
 
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
-                    localName, fixTokenClass, fixTokenThreeArgConstructor, args);
+                    localName, fixTokenClass, fixTokenThreeArgConstructor,
+                    args);
             return tokenLocal;
         } else if (token instanceof FloatToken) {
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
@@ -328,8 +329,8 @@ public class PtolemyUtilities {
         } else {
             // We want to avoid doing this for all tokens, because
             // string constructors are expensive..
-            SootClass tokenClass = Scene.v().loadClassAndSupport(
-                    token.getClass().getName());
+            SootClass tokenClass = Scene.v()
+                    .loadClassAndSupport(token.getClass().getName());
             SootMethod tokenConstructor = tokenClass
                     .getMethod("void <init>(java.lang.String)");
             Local tokenLocal = Jimple.v().newLocal(localName,
@@ -338,13 +339,13 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(tokenLocal,
                             Jimple.v().newNewExpr(RefType.v(tokenClass))),
-                            insertPoint);
+                    insertPoint);
             units.insertBefore(
-                    Jimple.v().newInvokeStmt(
-                            Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                    tokenConstructor.makeRef(),
+                    Jimple.v()
+                            .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                                    tokenLocal, tokenConstructor.makeRef(),
                                     StringConstant.v(token.toString()))),
-                                    insertPoint);
+                    insertPoint);
             return tokenLocal;
         }
     }
@@ -359,50 +360,46 @@ public class PtolemyUtilities {
     }
 
     public static Local addTokenLocalBefore(Body body, Unit insertPoint,
-            String localName, SootClass tokenClass,
-            SootMethod tokenConstructor, Value constructorArg) {
+            String localName, SootClass tokenClass, SootMethod tokenConstructor,
+            Value constructorArg) {
         return _buildConstantTokenLocal(body, insertPoint, localName,
                 tokenClass, tokenConstructor, constructorArg);
     }
 
     public static Local addTokenLocalBefore(Body body, Unit insertPoint,
-            String localName, SootClass tokenClass,
-            SootMethod tokenConstructor, List constructorArgs) {
+            String localName, SootClass tokenClass, SootMethod tokenConstructor,
+            List constructorArgs) {
         return _buildConstantTokenLocal(body, insertPoint, localName,
                 tokenClass, tokenConstructor, constructorArgs);
     }
 
     private static Local _buildConstantTokenLocal(Body body, Unit insertPoint,
-            String localName, SootClass tokenClass,
-            SootMethod tokenConstructor, List constructorArgs) {
+            String localName, SootClass tokenClass, SootMethod tokenConstructor,
+            List constructorArgs) {
         RefType tokenType = RefType.v(tokenClass);
         Local tokenLocal = Jimple.v().newLocal(localName, tokenType);
         body.getLocals().add(tokenLocal);
-        body.getUnits().insertBefore(
-                Jimple.v().newAssignStmt(tokenLocal,
-                        Jimple.v().newNewExpr(tokenType)), insertPoint);
-        body.getUnits().insertBefore(
-                Jimple.v().newInvokeStmt(
-                        Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                tokenConstructor.makeRef(), constructorArgs)),
-                                insertPoint);
+        body.getUnits().insertBefore(Jimple.v().newAssignStmt(tokenLocal,
+                Jimple.v().newNewExpr(tokenType)), insertPoint);
+        body.getUnits().insertBefore(Jimple.v()
+                .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                        tokenConstructor.makeRef(), constructorArgs)),
+                insertPoint);
         return tokenLocal;
     }
 
     private static Local _buildConstantTokenLocal(Body body, Unit insertPoint,
-            String localName, SootClass tokenClass,
-            SootMethod tokenConstructor, Value constructorArg) {
+            String localName, SootClass tokenClass, SootMethod tokenConstructor,
+            Value constructorArg) {
         RefType tokenType = RefType.v(tokenClass);
         Local tokenLocal = Jimple.v().newLocal(localName, tokenType);
         body.getLocals().add(tokenLocal);
-        body.getUnits().insertBefore(
-                Jimple.v().newAssignStmt(tokenLocal,
-                        Jimple.v().newNewExpr(tokenType)), insertPoint);
-        body.getUnits().insertBefore(
-                Jimple.v().newInvokeStmt(
-                        Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                tokenConstructor.makeRef(), constructorArg)),
-                                insertPoint);
+        body.getUnits().insertBefore(Jimple.v().newAssignStmt(tokenLocal,
+                Jimple.v().newNewExpr(tokenType)), insertPoint);
+        body.getUnits().insertBefore(Jimple.v()
+                .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                        tokenConstructor.makeRef(), constructorArg)),
+                insertPoint);
         return tokenLocal;
     }
 
@@ -428,142 +425,132 @@ public class PtolemyUtilities {
             // during the translation process if we want to inline code.
             if (type.equals(ptolemy.data.type.BaseType.UNKNOWN)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         unknownTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.GENERAL)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         generalTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.BOOLEAN)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         booleanTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.BOOLEAN_MATRIX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         booleanMatrixTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.COMPLEX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         complexTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.COMPLEX_MATRIX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         complexMatrixTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.DOUBLE)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         doubleTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.DOUBLE_MATRIX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         doubleMatrixTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FIX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
-                                Jimple.v().newStaticFieldRef(
-                                        fixTypeField.makeRef())), insertPoint);
+                        Jimple.v()
+                                .newAssignStmt(typeLocal,
+                                        Jimple.v().newStaticFieldRef(
+                                                fixTypeField.makeRef())),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FIX_MATRIX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         fixMatrixTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FLOAT)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
-                                        floatTypeField.makeRef())), insertPoint);
+                                        floatTypeField.makeRef())),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.UNSIGNED_BYTE)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
-                                Jimple.v().newStaticFieldRef(
-                                        byteTypeField.makeRef())), insertPoint);
+                        Jimple.v()
+                                .newAssignStmt(typeLocal,
+                                        Jimple.v().newStaticFieldRef(
+                                                byteTypeField.makeRef())),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.INT)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
-                                Jimple.v().newStaticFieldRef(
-                                        intTypeField.makeRef())), insertPoint);
+                        Jimple.v()
+                                .newAssignStmt(typeLocal,
+                                        Jimple.v().newStaticFieldRef(
+                                                intTypeField.makeRef())),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.INT_MATRIX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         intMatrixTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.LONG)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
-                                Jimple.v().newStaticFieldRef(
-                                        longTypeField.makeRef())), insertPoint);
+                        Jimple.v()
+                                .newAssignStmt(typeLocal,
+                                        Jimple.v().newStaticFieldRef(
+                                                longTypeField.makeRef())),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.LONG_MATRIX)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         longMatrixTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.OBJECT)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         objectTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.SHORT)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
-                                        shortTypeField.makeRef())), insertPoint);
+                                        shortTypeField.makeRef())),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.STRING)) {
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         stringTypeField.makeRef())),
-                                        insertPoint);
+                        insertPoint);
             } else {
                 // Some base type that we didn't special case above.
                 SootMethod typeConstructor = SootUtilities
                         .searchForMethodByName(baseTypeClass, "forName");
                 units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                typeLocal,
+                        Jimple.v().newAssignStmt(typeLocal,
                                 Jimple.v().newStaticInvokeExpr(
                                         typeConstructor.makeRef(),
                                         StringConstant.v(type.toString()))),
-                                        insertPoint);
+                        insertPoint);
             }
 
             return typeLocal;
@@ -585,13 +572,11 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(typeLocal,
                             Jimple.v().newNewExpr(RefType.v(arrayTypeClass))),
-                            insertPoint);
-            units.insertBefore(
-                    Jimple.v().newInvokeStmt(
-                            Jimple.v()
-                            .newSpecialInvokeExpr(typeLocal,
-                                    typeConstructor.makeRef(),
-                                    elementTypeLocal)), insertPoint);
+                    insertPoint);
+            units.insertBefore(Jimple.v()
+                    .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(typeLocal,
+                            typeConstructor.makeRef(), elementTypeLocal)),
+                    insertPoint);
             return typeLocal;
         } else if (type instanceof ptolemy.data.type.RecordType) {
             ptolemy.data.type.RecordType recordType = (ptolemy.data.type.RecordType) type;
@@ -604,26 +589,23 @@ public class PtolemyUtilities {
                     ArrayType.v(RefType.v("java.lang.String"), 1));
             body.getLocals().add(labelArrayLocal);
             units.insertBefore(
-                    Jimple.v().newAssignStmt(
-                            labelArrayLocal,
-                            Jimple.v()
-                            .newNewArrayExpr(
+                    Jimple.v().newAssignStmt(labelArrayLocal,
+                            Jimple.v().newNewArrayExpr(
                                     RefType.v("java.lang.String"),
-                                    IntConstant.v(recordType.labelSet()
-                                            .size()))), insertPoint);
+                                    IntConstant
+                                            .v(recordType.labelSet().size()))),
+                    insertPoint);
 
             // Create the new array of types.
             Local typeArrayLocal = Jimple.v().newLocal("typeArray",
                     ArrayType.v(RefType.v(typeClass), 1));
             body.getLocals().add(typeArrayLocal);
             units.insertBefore(
-                    Jimple.v().newAssignStmt(
-                            typeArrayLocal,
-                            Jimple.v()
-                            .newNewArrayExpr(
-                                    RefType.v(typeClass),
-                                    IntConstant.v(recordType.labelSet()
-                                            .size()))), insertPoint);
+                    Jimple.v().newAssignStmt(typeArrayLocal,
+                            Jimple.v().newNewArrayExpr(RefType.v(typeClass),
+                                    IntConstant
+                                            .v(recordType.labelSet().size()))),
+                    insertPoint);
 
             int count = 0;
 
@@ -640,15 +622,16 @@ public class PtolemyUtilities {
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newArrayRef(labelArrayLocal,
                                         IntConstant.v(count)),
-                                        StringConstant.v(label)), insertPoint);
+                                StringConstant.v(label)),
+                        insertPoint);
 
                 // Store into the array of types.
                 units.insertBefore(
-                        Jimple.v()
-                        .newAssignStmt(
+                        Jimple.v().newAssignStmt(
                                 Jimple.v().newArrayRef(typeArrayLocal,
                                         IntConstant.v(count)),
-                                        elementTypeLocal), insertPoint);
+                                elementTypeLocal),
+                        insertPoint);
             }
 
             // Create the new local and assign to local variable.
@@ -658,28 +641,28 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(typeLocal,
                             Jimple.v().newNewExpr(RefType.v(recordTypeClass))),
-                            insertPoint);
+                    insertPoint);
 
             // invoke the initializer.
-            SootMethod typeConstructor = SootUtilities.searchForMethodByName(
-                    recordTypeClass, "<init>");
+            SootMethod typeConstructor = SootUtilities
+                    .searchForMethodByName(recordTypeClass, "<init>");
             System.out.println("typeConstructor = " + typeConstructor);
             units.insertBefore(
-                    Jimple.v().newInvokeStmt(
-                            Jimple.v().newSpecialInvokeExpr(typeLocal,
-                                    typeConstructor.makeRef(), labelArrayLocal,
-                                    typeArrayLocal)), insertPoint);
+                    Jimple.v()
+                            .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                                    typeLocal, typeConstructor.makeRef(),
+                                    labelArrayLocal, typeArrayLocal)),
+                    insertPoint);
             return typeLocal;
         } else if (type instanceof ptolemy.data.type.FixType) {
             Local typeLocal = Jimple.v().newLocal("type_fix",
                     RefType.v(fixTypeClass));
             body.getLocals().add(typeLocal);
             units.insertBefore(
-                    Jimple.v().newAssignStmt(
-                            typeLocal,
+                    Jimple.v().newAssignStmt(typeLocal,
                             Jimple.v()
-                            .newStaticFieldRef(fixTypeField.makeRef())),
-                            insertPoint);
+                                    .newStaticFieldRef(fixTypeField.makeRef())),
+                    insertPoint);
             return typeLocal;
         } else if (type instanceof ptolemy.data.type.FunctionType) {
             ptolemy.data.type.FunctionType functionType = (ptolemy.data.type.FunctionType) type;
@@ -692,11 +675,10 @@ public class PtolemyUtilities {
                     ArrayType.v(RefType.v(typeClass), 1));
             body.getLocals().add(typeArrayLocal);
             units.insertBefore(
-                    Jimple.v().newAssignStmt(
-                            typeArrayLocal,
+                    Jimple.v().newAssignStmt(typeArrayLocal,
                             Jimple.v().newNewArrayExpr(RefType.v(typeClass),
                                     IntConstant.v(functionType.getArgCount()))),
-                                    insertPoint);
+                    insertPoint);
 
             for (int i = 0; i < functionType.getArgCount(); i++) {
                 ptolemy.data.type.Type elementType = functionType.getArgType(i);
@@ -704,11 +686,10 @@ public class PtolemyUtilities {
                         insertPoint, elementType);
 
                 // Store into the array of types.
-                units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                Jimple.v().newArrayRef(typeArrayLocal,
-                                        IntConstant.v(i)), elementTypeLocal),
-                                        insertPoint);
+                units.insertBefore(Jimple.v()
+                        .newAssignStmt(Jimple.v().newArrayRef(typeArrayLocal,
+                                IntConstant.v(i)), elementTypeLocal),
+                        insertPoint);
             }
 
             Local returnTypeLocal = buildConstantTypeLocal(body, insertPoint,
@@ -719,27 +700,26 @@ public class PtolemyUtilities {
                     RefType.v(functionTypeClass));
             body.getLocals().add(typeLocal);
             units.insertBefore(
-                    Jimple.v()
-                    .newAssignStmt(
-                            typeLocal,
-                            Jimple.v().newNewExpr(
-                                    RefType.v(functionTypeClass))),
-                                    insertPoint);
+                    Jimple.v().newAssignStmt(typeLocal,
+                            Jimple.v()
+                                    .newNewExpr(RefType.v(functionTypeClass))),
+                    insertPoint);
 
             // invoke the initializer.
-            SootMethod typeConstructor = SootUtilities.searchForMethodByName(
-                    functionTypeClass, "<init>");
+            SootMethod typeConstructor = SootUtilities
+                    .searchForMethodByName(functionTypeClass, "<init>");
             System.out.println("typeConstructor = " + typeConstructor);
             units.insertBefore(
-                    Jimple.v().newInvokeStmt(
-                            Jimple.v().newSpecialInvokeExpr(typeLocal,
-                                    typeConstructor.makeRef(), typeArrayLocal,
-                                    returnTypeLocal)), insertPoint);
+                    Jimple.v()
+                            .newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                                    typeLocal, typeConstructor.makeRef(),
+                                    typeArrayLocal, returnTypeLocal)),
+                    insertPoint);
             return typeLocal;
         }
 
-        throw new RuntimeException("Unidentified type class = "
-                + type.getClass().getName());
+        throw new RuntimeException(
+                "Unidentified type class = " + type.getClass().getName());
     }
 
     /** Insert code into the given body before the
@@ -758,15 +738,13 @@ public class PtolemyUtilities {
                     attributeType);
             body.getLocals().add(attributeLocal);
             body.getUnits().insertBefore(
-                    Jimple.v().newAssignStmt(
-                            attributeLocal,
-                            Jimple.v().newCastExpr(oldAttributeLocal,
-                                    attributeType)), insertPoint);
+                    Jimple.v().newAssignStmt(attributeLocal, Jimple.v()
+                            .newCastExpr(oldAttributeLocal, attributeType)),
+                    insertPoint);
         }
 
-        Stmt stmt = Jimple.v().newInvokeStmt(
-                Jimple.v().newVirtualInvokeExpr(base,
-                        attributeChangedMethod.makeRef(), attributeLocal));
+        Stmt stmt = Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
+                base, attributeChangedMethod.makeRef(), attributeLocal));
         body.getUnits().insertBefore(stmt, insertPoint);
     }
 
@@ -823,9 +801,8 @@ public class PtolemyUtilities {
                     + name + "\")");
         }
 
-        units.add(Jimple.v().newInvokeStmt(
-                Jimple.v().newSpecialInvokeExpr(local, constructor.makeRef(),
-                        args)));
+        units.add(Jimple.v().newInvokeStmt(Jimple.v()
+                .newSpecialInvokeExpr(local, constructor.makeRef(), args)));
         return local;
     }
 
@@ -862,9 +839,8 @@ public class PtolemyUtilities {
         parameterList.remove(thisLocal);
 
         // Call the super constructor.
-        units.add(Jimple.v().newInvokeStmt(
-                Jimple.v().newSpecialInvokeExpr(thisLocal,
-                        superConstructor.makeRef(), parameterList)));
+        units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(
+                thisLocal, superConstructor.makeRef(), parameterList)));
 
         units.add(Jimple.v().newReturnVoidStmt());
         return constructor;
@@ -898,8 +874,8 @@ public class PtolemyUtilities {
         SootClass objectClass = returnType.getSootClass();
 
         if (SootUtilities.derivesFrom(objectClass, PtolemyUtilities.tokenClass)
-                || objectClass.getName().equals(
-                        "ptolemy.data.BitwiseOperationToken")) {
+                || objectClass.getName()
+                        .equals("ptolemy.data.BitwiseOperationToken")) {
             return returnType;
         }
 
@@ -933,7 +909,8 @@ public class PtolemyUtilities {
 
         SootClass objectClass = returnType.getSootClass();
 
-        if (SootUtilities.derivesFrom(objectClass, PtolemyUtilities.typeClass)) {
+        if (SootUtilities.derivesFrom(objectClass,
+                PtolemyUtilities.typeClass)) {
             return returnType;
         }
 
@@ -945,8 +922,8 @@ public class PtolemyUtilities {
      */
     public static int getTypeDepth(ptolemy.data.type.Type type) {
         if (type instanceof ptolemy.data.type.ArrayType) {
-            return 1 + getTypeDepth(((ptolemy.data.type.ArrayType) type)
-                    .getElementType());
+            return 1 + getTypeDepth(
+                    ((ptolemy.data.type.ArrayType) type).getElementType());
         } else if (type instanceof ptolemy.data.type.RecordType) {
             ptolemy.data.type.RecordType recordType = (ptolemy.data.type.RecordType) type;
             Iterator labels = recordType.labelSet().iterator();
@@ -1027,7 +1004,8 @@ public class PtolemyUtilities {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if (className.equals("ptolemy.data.ScalarToken")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
-        } else if (className.equals("ptolemy.data.AbstractNotConvertibleToken")) {
+        } else if (className
+                .equals("ptolemy.data.AbstractNotConvertibleToken")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if (className.equals("ptolemy.data.AbstractConvertibleToken")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
@@ -1101,7 +1079,8 @@ public class PtolemyUtilities {
      *  otherwise throw an exception
      */
     public static ptolemy.data.type.Type getTypeValue(SootMethod method,
-            Local local, Unit location, LocalDefs localDefs, LocalUses localUses) {
+            Local local, Unit location, LocalDefs localDefs,
+            LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
 
         if (definitionList.size() == 1) {
@@ -1178,13 +1157,12 @@ public class PtolemyUtilities {
                     if (pair.getUnit() instanceof InvokeStmt) {
                         InvokeStmt useStmt = (InvokeStmt) pair.getUnit();
 
-                        if (useStmt.getInvokeExpr() instanceof SpecialInvokeExpr) {
+                        if (useStmt
+                                .getInvokeExpr() instanceof SpecialInvokeExpr) {
                             SpecialInvokeExpr constructorExpr = (SpecialInvokeExpr) useStmt
                                     .getInvokeExpr();
 
-                            if (constructorExpr
-                                    .getMethod()
-                                    .getSignature()
+                            if (constructorExpr.getMethod().getSignature()
                                     .equals("<ptolemy.data.type.ArrayType: void <init>(ptolemy.data.type.Type)>")) {
                                 Local arg1Local = (Local) constructorExpr
                                         .getArg(0);
@@ -1208,8 +1186,8 @@ public class PtolemyUtilities {
                 // attribute statically evaluates to null.
                 return null;
             } else {
-                throw new RuntimeException("Unknown type of value: " + value
-                        + " in " + method);
+                throw new RuntimeException(
+                        "Unknown type of value: " + value + " in " + method);
             }
         } else {
             StringBuffer message = new StringBuffer(
@@ -1960,26 +1938,26 @@ public class PtolemyUtilities {
         systemClass = Scene.v().loadClassAndSupport("java.lang.System");
         arraycopyMethod = systemClass.getMethodByName("arraycopy");
 
-        namedObjClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.util.NamedObj");
+        namedObjClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.util.NamedObj");
 
-        nonStrictTestClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.lib.NonStrictTest");
+        nonStrictTestClass = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.lib.NonStrictTest");
 
         debuggingField = namedObjClass.getField("boolean _debugging");
 
-        atomicActorClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.AtomicActor");
+        atomicActorClass = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.AtomicActor");
         stopRequestedField = atomicActorClass
                 .getField("boolean _stopRequested");
 
         getAttributeMethod = namedObjClass
                 .getMethod("ptolemy.kernel.util.Attribute "
                         + "getAttribute(java.lang.String)");
-        attributeChangedMethod = namedObjClass
-                .getMethod("void attributeChanged(ptolemy.kernel.util.Attribute)");
-        attachTextMethod = namedObjClass
-                .getMethod("void _attachText(java.lang.String,java.lang.String)");
+        attributeChangedMethod = namedObjClass.getMethod(
+                "void attributeChanged(ptolemy.kernel.util.Attribute)");
+        attachTextMethod = namedObjClass.getMethod(
+                "void _attachText(java.lang.String,java.lang.String)");
         getFullNameMethod = namedObjClass
                 .getMethod("java.lang.String getFullName()");
         setNameMethod = namedObjClass
@@ -1987,25 +1965,22 @@ public class PtolemyUtilities {
         getNameMethod = namedObjClass.getMethod("java.lang.String getName()");
         toplevelMethod = namedObjClass
                 .getMethod("ptolemy.kernel.util.NamedObj toplevel()");
-        handleModelErrorMethod = namedObjClass
-                .getMethod("boolean handleModelError(ptolemy.kernel.util.NamedObj,ptolemy.kernel.util.IllegalActionException)");
+        handleModelErrorMethod = namedObjClass.getMethod(
+                "boolean handleModelError(ptolemy.kernel.util.NamedObj,ptolemy.kernel.util.IllegalActionException)");
 
-        getContainerMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.kernel.util.NamedObj: ptolemy.kernel.util.NamedObj getContainer()>");
-        getModelURIMethod = Scene
-                .v()
+        getContainerMethod = Scene.v().getMethod(
+                "<ptolemy.kernel.util.NamedObj: ptolemy.kernel.util.NamedObj getContainer()>");
+        getModelURIMethod = Scene.v()
                 .loadClassAndSupport("ptolemy.kernel.attributes.URIAttribute")
                 .getMethod(
                         "java.net.URI getModelURI(ptolemy.kernel.util.NamedObj)");
 
-        attributeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.util.Attribute");
+        attributeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.util.Attribute");
         attributeType = RefType.v(attributeClass);
 
-        settableClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.util.Settable");
+        settableClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.util.Settable");
         settableType = RefType.v(settableClass);
         setExpressionMethod = settableClass.getMethodByName("setExpression");
         setVisibilityMethod = settableClass.getMethodByName("setVisibility");
@@ -2014,17 +1989,17 @@ public class PtolemyUtilities {
         validateMethod = settableClass
                 .getMethod("java.util.Collection validate()");
 
-        stringAttributeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.util.StringAttribute");
+        stringAttributeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.util.StringAttribute");
 
-        parameterClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.expr.Parameter");
-        variableClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.expr.Variable");
-        variableConstructorWithoutToken = variableClass
-                .getMethod("void <init>(ptolemy.kernel.util.NamedObj,java.lang.String)");
-        variableConstructorWithToken = variableClass
-                .getMethod("void <init>(ptolemy.kernel.util.NamedObj,java.lang.String,ptolemy.data.Token)");
+        parameterClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.expr.Parameter");
+        variableClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.expr.Variable");
+        variableConstructorWithoutToken = variableClass.getMethod(
+                "void <init>(ptolemy.kernel.util.NamedObj,java.lang.String)");
+        variableConstructorWithToken = variableClass.getMethod(
+                "void <init>(ptolemy.kernel.util.NamedObj,java.lang.String,ptolemy.data.Token)");
         variableSetTokenMethod = variableClass
                 .getMethod("void setToken(ptolemy.data.Token)");
         variableGetTokenMethod = variableClass
@@ -2038,24 +2013,24 @@ public class PtolemyUtilities {
         getPortMethod = entityClass
                 .getMethod("ptolemy.kernel.Port getPort(java.lang.String)");
 
-        componentEntityClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.ComponentEntity");
+        componentEntityClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.ComponentEntity");
         componentEntityType = RefType.v(PtolemyUtilities.componentEntityClass);
-        compositeEntityClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.CompositeEntity");
-        getEntityMethod = compositeEntityClass
-                .getMethod("ptolemy.kernel.ComponentEntity getEntity(java.lang.String)");
+        compositeEntityClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.CompositeEntity");
+        getEntityMethod = compositeEntityClass.getMethod(
+                "ptolemy.kernel.ComponentEntity getEntity(java.lang.String)");
 
-        executableInterface = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.Executable");
+        executableInterface = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.Executable");
         executablePrefireMethod = executableInterface
                 .getMethodByName("prefire");
         executableFireMethod = executableInterface.getMethodByName("fire");
         executablePostfireMethod = executableInterface
                 .getMethodByName("postfire");
 
-        actorClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.TypedAtomicActor");
+        actorClass = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
         actorType = RefType.v(actorClass);
 
         getDirectorMethod = Scene.v().getMethod(
@@ -2064,167 +2039,133 @@ public class PtolemyUtilities {
         invalidateResolvedTypesMethod = Scene.v().getMethod(
                 "<ptolemy.actor.Director: void invalidateResolvedTypes()>");
 
-        compositeActorClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.TypedCompositeActor");
+        compositeActorClass = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
 
-        limitedFiringSourceClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.lib.LimitedFiringSource");
+        limitedFiringSourceClass = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.lib.LimitedFiringSource");
 
         portClass = Scene.v().loadClassAndSupport("ptolemy.kernel.Port");
-        componentPortClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.ComponentPort");
+        componentPortClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.ComponentPort");
         componentPortType = RefType.v(componentPortClass);
 
-        relationClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.ComponentRelation");
+        relationClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.ComponentRelation");
         relationType = RefType.v(relationClass);
 
-        initializableInterface = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.Initializable");
+        initializableInterface = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.Initializable");
 
         ioportClass = Scene.v()
                 .loadClassAndSupport("ptolemy.actor.TypedIOPort");
         ioportType = RefType.v(ioportClass);
 
-        portParameterClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.parameters.PortParameter");
-        portParameterGetPortMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.actor.parameters.PortParameter: ptolemy.actor.parameters.ParameterPort getPort()>");
+        portParameterClass = Scene.v()
+                .loadClassAndSupport("ptolemy.actor.parameters.PortParameter");
+        portParameterGetPortMethod = Scene.v().getMethod(
+                "<ptolemy.actor.parameters.PortParameter: ptolemy.actor.parameters.ParameterPort getPort()>");
         portParameterUpdateMethod = Scene.v().getMethod(
                 "<ptolemy.actor.parameters.PortParameter: boolean update()>");
 
-        portSetTypeMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.actor.TypedIOPort: void setTypeEquals(ptolemy.data.type.Type)>");
+        portSetTypeMethod = Scene.v().getMethod(
+                "<ptolemy.actor.TypedIOPort: void setTypeEquals(ptolemy.data.type.Type)>");
 
-        insertLinkMethod = SootUtilities.searchForMethodByName(
-                componentPortClass, "insertLink");
-        setInputMethod = Scene.v().getMethod(
-                "<ptolemy.actor.IOPort: void setInput(boolean)>");
-        setOutputMethod = Scene.v().getMethod(
-                "<ptolemy.actor.IOPort: void setOutput(boolean)>");
+        insertLinkMethod = SootUtilities
+                .searchForMethodByName(componentPortClass, "insertLink");
+        setInputMethod = Scene.v()
+                .getMethod("<ptolemy.actor.IOPort: void setInput(boolean)>");
+        setOutputMethod = Scene.v()
+                .getMethod("<ptolemy.actor.IOPort: void setOutput(boolean)>");
         setMultiportMethod = Scene.v().getMethod(
                 "<ptolemy.actor.IOPort: void setMultiport(boolean)>");
         getMethod = Scene.v().getMethod(
                 "<ptolemy.actor.IOPort: ptolemy.data.Token get(int)>");
         getInsideMethod = Scene.v().getMethod(
                 "<ptolemy.actor.IOPort: ptolemy.data.Token getInside(int)>");
-        hasTokenMethod = Scene.v().getMethod(
-                "<ptolemy.actor.IOPort: boolean hasToken(int)>");
+        hasTokenMethod = Scene.v()
+                .getMethod("<ptolemy.actor.IOPort: boolean hasToken(int)>");
         sendMethod = Scene.v().getMethod(
                 "<ptolemy.actor.IOPort: void send(int,ptolemy.data.Token)>");
-        sendInsideMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.actor.IOPort: void sendInside(int,ptolemy.data.Token)>");
+        sendInsideMethod = Scene.v().getMethod(
+                "<ptolemy.actor.IOPort: void sendInside(int,ptolemy.data.Token)>");
 
         tokenClass = Scene.v().loadClassAndSupport("ptolemy.data.Token");
         tokenType = RefType.v(tokenClass);
         tokenGetTypeMethod = Scene.v().getMethod(
                 "<ptolemy.data.Token: ptolemy.data.type.Type getType()>");
-        tokenZeroMethod = Scene.v().getMethod(
-                "<ptolemy.data.Token: ptolemy.data.Token zero()>");
-        tokenAddMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.Token: ptolemy.data.Token add(ptolemy.data.Token)>");
-        tokenSubtractMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.Token: ptolemy.data.Token subtract(ptolemy.data.Token)>");
-        tokenModuloMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.Token: ptolemy.data.Token modulo(ptolemy.data.Token)>");
-        tokenMultiplyMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.Token: ptolemy.data.Token multiply(ptolemy.data.Token)>");
-        tokenDivideMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.Token: ptolemy.data.Token divide(ptolemy.data.Token)>");
-        tokenEqualsMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.Token: ptolemy.data.BooleanToken isEqualTo(ptolemy.data.Token)>");
+        tokenZeroMethod = Scene.v()
+                .getMethod("<ptolemy.data.Token: ptolemy.data.Token zero()>");
+        tokenAddMethod = Scene.v().getMethod(
+                "<ptolemy.data.Token: ptolemy.data.Token add(ptolemy.data.Token)>");
+        tokenSubtractMethod = Scene.v().getMethod(
+                "<ptolemy.data.Token: ptolemy.data.Token subtract(ptolemy.data.Token)>");
+        tokenModuloMethod = Scene.v().getMethod(
+                "<ptolemy.data.Token: ptolemy.data.Token modulo(ptolemy.data.Token)>");
+        tokenMultiplyMethod = Scene.v().getMethod(
+                "<ptolemy.data.Token: ptolemy.data.Token multiply(ptolemy.data.Token)>");
+        tokenDivideMethod = Scene.v().getMethod(
+                "<ptolemy.data.Token: ptolemy.data.Token divide(ptolemy.data.Token)>");
+        tokenEqualsMethod = Scene.v().getMethod(
+                "<ptolemy.data.Token: ptolemy.data.BooleanToken isEqualTo(ptolemy.data.Token)>");
         Scene.v().loadClassAndSupport("ptolemy.data.ScalarToken");
-        tokenIsLessThanMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.ScalarToken: ptolemy.data.BooleanToken isLessThan(ptolemy.data.ScalarToken)>");
+        tokenIsLessThanMethod = Scene.v().getMethod(
+                "<ptolemy.data.ScalarToken: ptolemy.data.BooleanToken isLessThan(ptolemy.data.ScalarToken)>");
         tokenNotMethod = Scene.v().getMethod(
                 "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken not()>");
-        tokenBitwiseAndMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseAnd(ptolemy.data.Token)>");
-        tokenBitwiseOrMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseOr(ptolemy.data.Token)>");
-        tokenBitwiseXorMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseXor(ptolemy.data.Token)>");
-        tokenBitwiseNotMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseNot()>");
-        tokenLeftShiftMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken leftShift(int)>");
-        tokenRightShiftMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken rightShift(int)>");
-        tokenLogicalRightShiftMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken logicalRightShift(int)>");
-        tokenIntValueMethod = Scene.v().getMethod(
-                "<ptolemy.data.ScalarToken: int intValue()>");
-        tokenPowMethod = Scene.v().getMethod(
-                "<ptolemy.data.Token: ptolemy.data.Token pow(int)>");
+        tokenBitwiseAndMethod = Scene.v().getMethod(
+                "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseAnd(ptolemy.data.Token)>");
+        tokenBitwiseOrMethod = Scene.v().getMethod(
+                "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseOr(ptolemy.data.Token)>");
+        tokenBitwiseXorMethod = Scene.v().getMethod(
+                "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseXor(ptolemy.data.Token)>");
+        tokenBitwiseNotMethod = Scene.v().getMethod(
+                "<ptolemy.data.BitwiseOperationToken: ptolemy.data.BitwiseOperationToken bitwiseNot()>");
+        tokenLeftShiftMethod = Scene.v().getMethod(
+                "<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken leftShift(int)>");
+        tokenRightShiftMethod = Scene.v().getMethod(
+                "<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken rightShift(int)>");
+        tokenLogicalRightShiftMethod = Scene.v().getMethod(
+                "<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken logicalRightShift(int)>");
+        tokenIntValueMethod = Scene.v()
+                .getMethod("<ptolemy.data.ScalarToken: int intValue()>");
+        tokenPowMethod = Scene.v()
+                .getMethod("<ptolemy.data.Token: ptolemy.data.Token pow(int)>");
 
-        arrayTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.ArrayToken");
+        arrayTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.ArrayToken");
         arrayTokenConstructor = arrayTokenClass
                 .getMethod("void <init>(ptolemy.data.Token[])");
-        arrayTokenWithTypeConstructor = arrayTokenClass
-                .getMethod("void <init>(ptolemy.data.type.Type,ptolemy.data.Token[])");
+        arrayTokenWithTypeConstructor = arrayTokenClass.getMethod(
+                "void <init>(ptolemy.data.type.Type,ptolemy.data.Token[])");
         arrayValueMethod = arrayTokenClass
                 .getMethod("ptolemy.data.Token[] arrayValue()");
         arrayGetElementMethod = arrayTokenClass
                 .getMethod("ptolemy.data.Token getElement(int)");
 
-        recordTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.RecordToken");
-        recordTokenConstructor = recordTokenClass
-                .getMethod("void <init>(java.lang.String[],ptolemy.data.Token[])");
+        recordTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.RecordToken");
+        recordTokenConstructor = recordTokenClass.getMethod(
+                "void <init>(java.lang.String[],ptolemy.data.Token[])");
         recordGetMethod = recordTokenClass
                 .getMethod("ptolemy.data.Token get(java.lang.String)");
 
-        scalarTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.ScalarToken");
-        matrixTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.MatrixToken");
-        matrixTokenCreateMethod = matrixTokenClass
-                .getMethod("ptolemy.data.MatrixToken create(ptolemy.data.Token[],int,int)");
+        scalarTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.ScalarToken");
+        matrixTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.MatrixToken");
+        matrixTokenCreateMethod = matrixTokenClass.getMethod(
+                "ptolemy.data.MatrixToken create(ptolemy.data.Token[],int,int)");
         matrixGetElementAsTokenMethod = matrixTokenClass
                 .getMethod("ptolemy.data.Token getElementAsToken(int,int)");
 
-        doubleTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.DoubleToken");
+        doubleTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.DoubleToken");
         doubleTokenConstructor = doubleTokenClass
                 .getMethod("void <init>(double)");
         doubleValueMethod = scalarTokenClass.getMethod("double doubleValue()");
-        doubleMatrixTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.DoubleMatrixToken");
+        doubleMatrixTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.DoubleMatrixToken");
         doubleMatrixTokenConstructor = doubleMatrixTokenClass
                 .getMethod("void <init>(double[][])");
         doubleMatrixTokenArrayConstructor = doubleMatrixTokenClass
@@ -2232,14 +2173,14 @@ public class PtolemyUtilities {
         doubleMatrixMethod = doubleMatrixTokenClass
                 .getMethod("double[][] doubleMatrix()");
 
-        booleanTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.BooleanToken");
+        booleanTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.BooleanToken");
         booleanTokenConstructor = booleanTokenClass
                 .getMethod("void <init>(boolean)");
         booleanValueMethod = booleanTokenClass
                 .getMethod("boolean booleanValue()");
-        booleanMatrixTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.BooleanMatrixToken");
+        booleanMatrixTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.BooleanMatrixToken");
         booleanMatrixTokenConstructor = booleanMatrixTokenClass
                 .getMethod("void <init>(boolean[][])");
         booleanMatrixTokenArrayConstructor = booleanMatrixTokenClass
@@ -2247,8 +2188,8 @@ public class PtolemyUtilities {
         booleanMatrixMethod = booleanMatrixTokenClass
                 .getMethod("boolean[][] booleanMatrix()");
 
-        unsignedByteTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.UnsignedByteToken");
+        unsignedByteTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.UnsignedByteToken");
         unsignedByteTokenConstructor = unsignedByteTokenClass
                 .getMethod("void <init>(int)");
         unsignedByteValueMethod = scalarTokenClass
@@ -2257,8 +2198,8 @@ public class PtolemyUtilities {
         intTokenClass = Scene.v().loadClassAndSupport("ptolemy.data.IntToken");
         intTokenConstructor = intTokenClass.getMethod("void <init>(int)");
         intValueMethod = scalarTokenClass.getMethod("int intValue()");
-        intMatrixTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.IntMatrixToken");
+        intMatrixTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.IntMatrixToken");
         intMatrixTokenConstructor = intMatrixTokenClass
                 .getMethod("void <init>(int[][])");
         intMatrixTokenArrayConstructor = intMatrixTokenClass
@@ -2272,8 +2213,8 @@ public class PtolemyUtilities {
                 .getMethod("void <init>(double,int,int)");
         fixValueMethod = scalarTokenClass
                 .getMethod("ptolemy.math.FixPoint fixValue()");
-        fixMatrixTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.FixMatrixToken");
+        fixMatrixTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.FixMatrixToken");
         fixMatrixTokenConstructor = fixMatrixTokenClass
                 .getMethod("void <init>(ptolemy.math.FixPoint[][])");
         fixMatrixTokenArrayConstructor = fixMatrixTokenClass
@@ -2281,19 +2222,19 @@ public class PtolemyUtilities {
         fixMatrixMethod = fixMatrixTokenClass
                 .getMethod("ptolemy.math.FixPoint[][] fixMatrix()");
 
-        floatTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.FloatToken");
+        floatTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.FloatToken");
         floatTokenConstructor = floatTokenClass.getMethod("void <init>(float)");
         floatValueMethod = scalarTokenClass.getMethod("float floatValue()");
 
-        complexTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.ComplexToken");
+        complexTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.ComplexToken");
         complexTokenConstructor = complexTokenClass
                 .getMethod("void <init>(ptolemy.math.Complex)");
         complexValueMethod = scalarTokenClass
                 .getMethod("ptolemy.math.Complex complexValue()");
-        complexMatrixTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.ComplexMatrixToken");
+        complexMatrixTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.ComplexMatrixToken");
         complexMatrixTokenArrayConstructor = complexMatrixTokenClass
                 .getMethod("void <init>(ptolemy.data.Token[],int,int)");
         complexMatrixMethod = matrixTokenClass
@@ -2303,8 +2244,8 @@ public class PtolemyUtilities {
                 .loadClassAndSupport("ptolemy.data.LongToken");
         longTokenConstructor = longTokenClass.getMethod("void <init>(long)");
         longValueMethod = scalarTokenClass.getMethod("long longValue()");
-        longMatrixTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.LongMatrixToken");
+        longMatrixTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.LongMatrixToken");
         longMatrixTokenConstructor = longMatrixTokenClass
                 .getMethod("void <init>(long[][])");
         longMatrixTokenArrayConstructor = longMatrixTokenClass
@@ -2312,13 +2253,13 @@ public class PtolemyUtilities {
         longMatrixMethod = longMatrixTokenClass
                 .getMethod("long[][] longMatrix()");
 
-        shortTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.ShortToken");
+        shortTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.ShortToken");
         shortTokenConstructor = shortTokenClass.getMethod("void <init>(short)");
         shortValueMethod = scalarTokenClass.getMethod("short shortValue()");
 
-        stringTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.StringToken");
+        stringTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.StringToken");
         stringTokenConstructor = stringTokenClass
                 .getMethod("void <init>(java.lang.String)");
         stringValueMethod = stringTokenClass
@@ -2328,16 +2269,16 @@ public class PtolemyUtilities {
         typeConvertMethod = typeClass
                 .getMethod("ptolemy.data.Token convert(ptolemy.data.Token)");
 
-        arrayTypeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.ArrayType");
-        fixTypeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.FixType");
-        recordTypeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.RecordType");
-        baseTypeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.BaseType");
-        matrixTypeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.MatrixType");
+        arrayTypeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.type.ArrayType");
+        fixTypeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.type.FixType");
+        recordTypeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.type.RecordType");
+        baseTypeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.type.BaseType");
+        matrixTypeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.type.MatrixType");
         unknownTypeField = baseTypeClass.getFieldByName("UNKNOWN");
         generalTypeField = baseTypeClass.getFieldByName("GENERAL");
         booleanTypeField = baseTypeClass.getFieldByName("BOOLEAN");
@@ -2358,15 +2299,15 @@ public class PtolemyUtilities {
         shortTypeField = baseTypeClass.getFieldByName("SHORT");
         stringTypeField = baseTypeClass.getFieldByName("STRING");
 
-        typeLatticeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.TypeLattice");
+        typeLatticeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.type.TypeLattice");
 
-        kernelExceptionClass = Scene.v().loadClassAndSupport(
-                "ptolemy.kernel.util.KernelException");
+        kernelExceptionClass = Scene.v()
+                .loadClassAndSupport("ptolemy.kernel.util.KernelException");
         kernelRuntimeExceptionClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.KernelRuntimeException");
-        runtimeExceptionClass = Scene.v().loadClassAndSupport(
-                "java.lang.RuntimeException");
+        runtimeExceptionClass = Scene.v()
+                .loadClassAndSupport("java.lang.RuntimeException");
         exceptionClass = Scene.v().loadClassAndSupport("java.lang.Exception");
         runtimeExceptionConstructor = runtimeExceptionClass
                 .getMethod("void <init>()");
@@ -2376,28 +2317,26 @@ public class PtolemyUtilities {
         managerClass = Scene.v().loadClassAndSupport("ptolemy.actor.Manager");
 
         Scene.v().loadClassAndSupport("ptolemy.actor.gui.Configuration");
-        findEffigyMethod = Scene
-                .v()
-                .getMethod(
-                        "<ptolemy.actor.gui.Configuration: ptolemy.actor.gui.Effigy findEffigy(ptolemy.kernel.util.NamedObj)>");
+        findEffigyMethod = Scene.v().getMethod(
+                "<ptolemy.actor.gui.Configuration: ptolemy.actor.gui.Effigy findEffigy(ptolemy.kernel.util.NamedObj)>");
 
-        inequalityTermClass = Scene.v().loadClassAndSupport(
-                "ptolemy.graph.InequalityTerm");
+        inequalityTermClass = Scene.v()
+                .loadClassAndSupport("ptolemy.graph.InequalityTerm");
         explicitChangeContextClass = Scene.v().loadClassAndSupport(
                 "ptolemy.actor.util.ExplicitChangeContext");
 
-        functionTokenClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.FunctionToken");
+        functionTokenClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.FunctionToken");
         functionTokenApplyMethod = functionTokenClass
                 .getMethod("ptolemy.data.Token apply(ptolemy.data.Token[])");
-        functionTokenConstructor = functionTokenClass
-                .getMethod("void <init>(ptolemy.data.Function,ptolemy.data.type.FunctionType)");
-        functionInterface = Scene.v().loadClassAndSupport(
-                "ptolemy.data.Function");
-        functionTypeClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.type.FunctionType");
+        functionTokenConstructor = functionTokenClass.getMethod(
+                "void <init>(ptolemy.data.Function,ptolemy.data.type.FunctionType)");
+        functionInterface = Scene.v()
+                .loadClassAndSupport("ptolemy.data.Function");
+        functionTypeClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.type.FunctionType");
 
-        ptParserClass = Scene.v().loadClassAndSupport(
-                "ptolemy.data.expr.PtParser");
+        ptParserClass = Scene.v()
+                .loadClassAndSupport("ptolemy.data.expr.PtParser");
     }
 }

@@ -197,7 +197,8 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @exception Exception If the parser fails.
      */
     public void parse(URL base, InputStream input) throws Exception {
-        parse(base, new InputStreamReader(input, java.nio.charset.Charset.defaultCharset()));
+        parse(base, new InputStreamReader(input,
+                java.nio.charset.Charset.defaultCharset()));
     }
 
     /** Parse the given stream as a PlotML file.

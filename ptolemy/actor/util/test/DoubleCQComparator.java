@@ -108,8 +108,8 @@ public class DoubleCQComparator implements CQComparator {
      */
     @Override
     public long getVirtualBinNumber(Object entry) {
-        return (long) ((((Double) entry).doubleValue() - _zeroReference
-                .doubleValue()) / _binWidth.doubleValue());
+        return (long) ((((Double) entry).doubleValue()
+                - _zeroReference.doubleValue()) / _binWidth.doubleValue());
     }
 
     /** Given an array of Double objects, find the appropriate bin

@@ -67,7 +67,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtProductNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtProductNode node)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -85,16 +85,16 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         // are needed for the PtProductNode monotonic function.
         ConceptFunction multiplyFunction = null;
         ConceptFunctionDefinitionAttribute multiplyDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
         if (multiplyDefinition != null) {
             multiplyFunction = multiplyDefinition.createConceptFunction();
         }
 
         ConceptFunction divideFunction = null;
         ConceptFunctionDefinitionAttribute divideDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         if (divideDefinition != null) {
             divideFunction = divideDefinition.createConceptFunction();
         }
@@ -115,8 +115,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                 multiplyFunction, divideFunction, operatorTokenList);
 
         if (!astProductFunction.isMonotonic()) {
-            throw new IllegalActionException(
-                    _solver,
+            throw new IllegalActionException(_solver,
                     "The concept function for determining the "
                             + "PtProductNode concept is not monotonic. All concept functions used for a "
                             + "lattice ontology solver must be monotonic.");
@@ -155,11 +154,10 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          *  expression.
          * @exception IllegalActionException If the class cannot be initialized.
          */
-        public ASTPtProductNodeFunction(
-                List<Ontology> argumentDomainOntologies,
+        public ASTPtProductNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction multiplyFunction,
                 ConceptFunction divideFunction, List<Token> operatorTokenList)
-                        throws IllegalActionException {
+                throws IllegalActionException {
             super("defaultASTPtProductNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
 

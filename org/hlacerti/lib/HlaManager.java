@@ -623,15 +623,14 @@ public class HlaManager extends AbstractInitializableAttribute
             }
             _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
         } catch (RTIinternalError e) {
-            throw new IllegalActionException(this, e,
-                    "RTIinternalError. "
-                            + "If the error is \"Connection to RTIA failed\", "
-                            + "then the problem is likely that the rtig "
-                            + "binary could not be started by CertRtig. "
-                            + "One way to debug this is to set the various "
-                            + "environment variables by sourcing certi/share/scripts/myCERTI_env.sh, "
-                            + "then invoking rtig on the .fed file "
-                            + "then rerunning the model.");
+            throw new IllegalActionException(this, e, "RTIinternalError. "
+                    + "If the error is \"Connection to RTIA failed\", "
+                    + "then the problem is likely that the rtig "
+                    + "binary could not be started by CertRtig. "
+                    + "One way to debug this is to set the various "
+                    + "environment variables by sourcing certi/share/scripts/myCERTI_env.sh, "
+                    + "then invoking rtig on the .fed file "
+                    + "then rerunning the model.");
         }
 
         // Create the Federation or raise a warning it the Federation already exits.
@@ -712,10 +711,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Try to launch the HLA/CERTI RTIG subprocess.
         _certiRtig = new CertiRtig(this, _debugging);
-        if (_debugListeners != null
-            && _debugListeners.size() > 0) {
-            for (Object listener: _debugListeners) {
-                _certiRtig.addDebugListener((DebugListener)listener);
+        if (_debugListeners != null && _debugListeners.size() > 0) {
+            for (Object listener : _debugListeners) {
+                _certiRtig.addDebugListener((DebugListener) listener);
             }
         }
         _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
@@ -1038,10 +1036,9 @@ public class HlaManager extends AbstractInitializableAttribute
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (_debugListeners != null
-            && _debugListeners.size() > 0) {
-            for (Object listener: _debugListeners) {
-                _certiRtig.removeDebugListener((DebugListener)listener);
+        if (_debugListeners != null && _debugListeners.size() > 0) {
+            for (Object listener : _debugListeners) {
+                _certiRtig.removeDebugListener((DebugListener) listener);
             }
         }
         _strucuralInformation.clear();
@@ -1068,10 +1065,12 @@ public class HlaManager extends AbstractInitializableAttribute
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             } catch (ArrayIndexOutOfBoundsException e2) {
-                throw new IllegalActionException(this, e2, "While unsubscribing to the HLA attributes, "
-                                                 + "Failed to get class handle from object \""
-                                                 + Arrays.toString(obj) + "\", which has a length of " + obj.length
-                                                 + ".  Attempted to access array index ");
+                throw new IllegalActionException(this, e2,
+                        "While unsubscribing to the HLA attributes, "
+                                + "Failed to get class handle from object \""
+                                + Arrays.toString(obj)
+                                + "\", which has a length of " + obj.length
+                                + ".  Attempted to access array index ");
             }
             if (_debugging) {
                 _debug("wrapup() - unsubscribe "
@@ -1088,10 +1087,12 @@ public class HlaManager extends AbstractInitializableAttribute
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             } catch (ArrayIndexOutOfBoundsException e2) {
-                throw new IllegalActionException(this, e2, "While unpublishing the HLA attributes, "
-                                                 + "Failed to get class handle from object \""
-                                                 + Arrays.toString(obj) + "\", which has a length of " + obj.length
-                                                 + ".  Attempted to access array index ");
+                throw new IllegalActionException(this, e2,
+                        "While unpublishing the HLA attributes, "
+                                + "Failed to get class handle from object \""
+                                + Arrays.toString(obj)
+                                + "\", which has a length of " + obj.length
+                                + ".  Attempted to access array index ");
             }
             if (_debugging) {
                 _debug("wrapup() - unpublish "
@@ -1273,8 +1274,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 info.append(";;;" + _nameOfTheAttributesToPublish[i] + ";"
                         + _UAVsValues[i] + "\n");
             }
-            _UAVsValuesFile = _createTextFile(
-                    "uav" + _federateName + ".csv");
+            _UAVsValuesFile = _createTextFile("uav" + _federateName + ".csv");
             writeInTextFile(_UAVsValuesFile, String.valueOf(info));
         }
     }
@@ -1297,8 +1297,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 info.append(";;;" + _nameOfTheAttributesSubscribedTo[i] + ";"
                         + _RAVsValues[i] + "\n");
             }
-            _RAVsValuesFile = _createTextFile(
-                    "rav" + _federateName + ".csv");
+            _RAVsValuesFile = _createTextFile("rav" + _federateName + ".csv");
             writeInTextFile(_RAVsValuesFile, String.valueOf(info));
         }
     }
@@ -1314,16 +1313,16 @@ public class HlaManager extends AbstractInitializableAttribute
         String fullName = federateName.toString();
         //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
         String nameOfTheFile = fullName.substring(fullName.indexOf('{') + 1,
-                                                  fullName.lastIndexOf('.'));
+                fullName.lastIndexOf('.'));
         String RKSolver = "<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
         nameOfTheFile = nameOfTheFile.substring(1,
-                                                nameOfTheFile.lastIndexOf('.')) + ".xml";
+                nameOfTheFile.lastIndexOf('.')) + ".xml";
         String path = fedFile.asFile().getPath();
         path = path.substring(0, path.lastIndexOf("/") + 1);
         File file = new File(path + nameOfTheFile);
 
         StringBuffer info = new StringBuffer("Federate " + getDisplayName()
-                                             + " in the model " + nameOfTheFile);
+                + " in the model " + nameOfTheFile);
 
         try {
             // FIXME: Reading a file and doing a string match is not a robust
@@ -1331,27 +1330,27 @@ public class HlaManager extends AbstractInitializableAttribute
             // the getAttribute(String, Class) method from NamedObj.
             RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver);
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to find the parameter value \"" + RKSolver
-                                             + "\" in \"" + file + "\".");
+            throw new IllegalActionException(this, ex,
+                    "Failed to find the parameter value \"" + RKSolver
+                            + "\" in \"" + file + "\".");
         }
         info.append("\nRKSolver: " + RKSolver);
 
         info.append("\n" + "stopTime: " + _stopTime + "    hlaTimeUnit: "
-                    + _hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead);
+                + _hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead);
         if (_isCreator) {
             info = new StringBuffer("SP register -> " + info);
         }
         if (_timeStepped) {
             info.append("    Time Step: " + _hlaTimeStep + "\n"
-                        + "Number of TARs: " + _numberOfTARs);
+                    + "Number of TARs: " + _numberOfTARs);
         } else if (_eventBased) {
 
             info.append("\nNumber of NERs: " + _numberOfNERs);
         }
-        info.append("    Number of UAVs:" + _numberOfUAVs
-                    + "\nNumber of TAGs: " + _numberOfTAGs
-                    + "    Number of RAVs:" + _numberOfRAVs + "\n" + "Runtime: "
-                    + _runtime + "\n");
+        info.append("    Number of UAVs:" + _numberOfUAVs + "\nNumber of TAGs: "
+                + _numberOfTAGs + "    Number of RAVs:" + _numberOfRAVs + "\n"
+                + "Runtime: " + _runtime + "\n");
         writeInTextFile(_file, info.toString());
     }
 
@@ -1362,24 +1361,22 @@ public class HlaManager extends AbstractInitializableAttribute
 
         String fullName = federateName.toString();
         String nameOfTheFile = fullName.substring(fullName.indexOf('{') + 1,
-                                                  fullName.lastIndexOf('.'));
+                fullName.lastIndexOf('.'));
         nameOfTheFile = nameOfTheFile.substring(1,
-                                                nameOfTheFile.lastIndexOf('.')) + ".xml";
-        String nameOfTheFederate = fullName
-            .substring(fullName.indexOf('"'));
+                nameOfTheFile.lastIndexOf('.')) + ".xml";
+        String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
         String info = "\nFederate: " + nameOfTheFederate + ";in the model:;"
-            + nameOfTheFile + "\nhlaTimeUnit: ;" + _hlaTimeUnitValue
-            + ";lookAhead: ;" + _hlaLookAHead + ";runtime: ;" + _runtime
-            + "\nApproach:;";
+                + nameOfTheFile + "\nhlaTimeUnit: ;" + _hlaTimeUnitValue
+                + ";lookAhead: ;" + _hlaLookAHead + ";runtime: ;" + _runtime
+                + "\nApproach:;";
         if (_timeStepped) {
-            info = info + "TAR;Time step:;" + _hlaTimeStep
-                + ";Number of TARs:;" + _numberOfTARs + "\n";
+            info = info + "TAR;Time step:;" + _hlaTimeStep + ";Number of TARs:;"
+                    + _numberOfTARs + "\n";
         } else if (_eventBased) {
             info = info + "NER;Number of NERs:;" + _numberOfNERs + "\n";
         }
-        info = info + "Number of UAVs:;" + _numberOfUAVs
-            + ";Number of RAVs:;" + _numberOfRAVs + ";Number of TAGs:;"
-            + _numberOfTAGs;
+        info = info + "Number of UAVs:;" + _numberOfUAVs + ";Number of RAVs:;"
+                + _numberOfRAVs + ";Number of TAGs:;" + _numberOfTAGs;
         String numberOfTicks = "\nNumber of ticks:;";
         String delay = "\nDelay :;";
         double averageNumberOfTicks = 0;
@@ -1394,61 +1391,56 @@ public class HlaManager extends AbstractInitializableAttribute
                 delay = delay + _TAGDelay.get(i) + ";";
                 if (_numberOfTicks.get(i) > 0) {
                     bufferDelayPerTick.append(
-                        (_TAGDelay.get(i) / _numberOfTicks.get(i))
-                        + ";");
+                            (_TAGDelay.get(i) / _numberOfTicks.get(i)) + ";");
                 } else {
                     bufferDelayPerTick.append("0;");
                 }
             }
-            averageNumberOfTicks = averageNumberOfTicks
-                + _numberOfTicks.get(i);
+            averageNumberOfTicks = averageNumberOfTicks + _numberOfTicks.get(i);
             averageDelay = averageDelay + _TAGDelay.get(i);
         }
         header.append("Sum;");
         int totalNumberOfHLACalls = _numberOfOtherTicks
-            + (int) averageNumberOfTicks + _numberOfTARs + _numberOfNERs
-            + _numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
+                + (int) averageNumberOfTicks + _numberOfTARs + _numberOfNERs
+                + _numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
         numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
         delay = delay + averageDelay + ";";
         bufferDelayPerTick.append(";");
         header.append("Average;");
         if (_timeStepped) {
             _reportFile = _createTextFile(
-                                          nameOfTheFederate.substring(1,
-                                                                      nameOfTheFederate.length() - 1) + "TAR"
-                                          + ".csv",
-                                          "date;timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+                    nameOfTheFederate.substring(1,
+                            nameOfTheFederate.length() - 1) + "TAR" + ".csv",
+                    "date;timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
             writeInTextFile(_reportFile,
-                            _date + ";" + _hlaTimeStep + ";" + _hlaLookAHead + ";"
+                    _date + ";" + _hlaTimeStep + ";" + _hlaLookAHead + ";"
                             + _runtime + ";" + totalNumberOfHLACalls + ";"
                             + _numberOfTARs + ";" + _numberOfTAGs + ";"
                             + _numberOfRAVs + ";" + _numberOfUAVs + ";"
                             + _numberOfTicks2 + ";" + averageDelay);
         } else {
             _reportFile = _createTextFile(
-                                          nameOfTheFederate.substring(1,
-                                                                      nameOfTheFederate.length() - 1) + "NER"
-                                          + ".csv",
-                                          "date;lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+                    nameOfTheFederate.substring(1,
+                            nameOfTheFederate.length() - 1) + "NER" + ".csv",
+                    "date;lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
             writeInTextFile(_reportFile,
-                            _date + ";" + _hlaLookAHead + ";" + _runtime + ";"
-                            + totalNumberOfHLACalls + ";" + _numberOfNERs
-                            + ";" + _numberOfTAGs + ";" + _numberOfRAVs
-                            + ";" + _numberOfUAVs + ";" + _numberOfTicks2
-                            + ";" + averageDelay);
+                    _date + ";" + _hlaLookAHead + ";" + _runtime + ";"
+                            + totalNumberOfHLACalls + ";" + _numberOfNERs + ";"
+                            + _numberOfTAGs + ";" + _numberOfRAVs + ";"
+                            + _numberOfUAVs + ";" + _numberOfTicks2 + ";"
+                            + averageDelay);
         }
 
         averageNumberOfTicks = averageNumberOfTicks / _numberOfTAGs;
         averageDelay = averageDelay / _numberOfTAGs;
-        bufferDelayPerTick.append((averageDelay / averageNumberOfTicks)
-            + ";");
+        bufferDelayPerTick.append((averageDelay / averageNumberOfTicks) + ";");
         String delayPerTick = bufferDelayPerTick.toString();
         numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
         delay = delay + averageDelay + ";";
 
         writeInTextFile(_csvFile, info + header + delay + numberOfTicks
-                        + delayPerTick + "\nOther ticks:;" + _numberOfOtherTicks
-                        + "\nTotal number of HLA Calls:;" + totalNumberOfHLACalls);
+                + delayPerTick + "\nOther ticks:;" + _numberOfOtherTicks
+                + "\nTotal number of HLA Calls:;" + totalNumberOfHLACalls);
     }
 
     /** Write information in a txt file.
@@ -1463,7 +1455,8 @@ public class HlaManager extends AbstractInitializableAttribute
         BufferedWriter writer = null;
 
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(file, true), "UTF-8"));
             writer.write(data);
             writer.newLine();
             writer.flush();
@@ -1895,8 +1888,9 @@ public class HlaManager extends AbstractInitializableAttribute
                         // Store reflected attributes as events on HLASubscriber actors.
                         _putReflectedAttributesOnHlaSubscribers();
                         // If the new rav-event will arrive before our lastFoundEvent,
-                        if (hlaNextPointInTime.compareTo(proposedTime) < 0)
+                        if (hlaNextPointInTime.compareTo(proposedTime) < 0) {
                             proposedTime = hlaNextPointInTime;
+                        }
                     }
                     // Advance the hlaNextPointInTime
                     hlaNextPointInTime = _getHlaNextPointInTime();
@@ -2757,7 +2751,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                                 ts = new Time(_director, timeValue);
                                 value = MessageProcessing.decodeHlaValue(hs,
-                                        (BaseType) _getTypeFromTab(tObj),
+                                        _getTypeFromTab(tObj),
                                         theAttributes.getValue(i));
                                 te = new OriginatedEvent(ts, new Object[] {
                                         (BaseType) _getTypeFromTab(tObj),
@@ -2787,10 +2781,18 @@ public class HlaManager extends AbstractInitializableAttribute
                                                         .length()) {
                                     int indexOfAttribute = 0;
                                     for (int j = 0; j < _numberOfAttributesSubscribedTo; j++) {
-                                        String instanceName = hs.getDisplayName();
+                                        String instanceName = hs
+                                                .getDisplayName();
                                         int pos = instanceName.lastIndexOf(" ");
-                                        if (_nameOfTheAttributesSubscribedTo[j].equals(
-                                                instanceName.substring(0, pos) + "-" + instanceName.substring(pos + 1, instanceName.length()))) {
+                                        if (_nameOfTheAttributesSubscribedTo[j]
+                                                .equals(instanceName
+                                                        .substring(0, pos)
+                                                        + "-"
+                                                        + instanceName
+                                                                .substring(
+                                                                        pos + 1,
+                                                                        instanceName
+                                                                                .length()))) {
                                             indexOfAttribute = j;
                                             break;
                                         }
@@ -2824,10 +2826,18 @@ public class HlaManager extends AbstractInitializableAttribute
 
                                     int indexOfAttribute = 0;
                                     for (int j = 0; j < _numberOfAttributesSubscribedTo; j++) {
-                                        String instanceName = hs.getDisplayName();
+                                        String instanceName = hs
+                                                .getDisplayName();
                                         int pos = instanceName.lastIndexOf(" ");
-                                        if (_nameOfTheAttributesSubscribedTo[j].equals(
-                                                instanceName.substring(0, pos) + "-" + instanceName.substring(pos + 1, instanceName.length()))) {
+                                        if (_nameOfTheAttributesSubscribedTo[j]
+                                                .equals(instanceName
+                                                        .substring(0, pos)
+                                                        + "-"
+                                                        + instanceName
+                                                                .substring(
+                                                                        pos + 1,
+                                                                        instanceName
+                                                                                .length()))) {
                                             indexOfAttribute = j;
                                             break;
                                         }

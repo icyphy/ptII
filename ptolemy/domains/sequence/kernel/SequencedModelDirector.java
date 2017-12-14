@@ -72,8 +72,8 @@ public abstract class SequencedModelDirector extends Director {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SequencedModelDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public SequencedModelDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -170,8 +170,8 @@ public abstract class SequencedModelDirector extends Director {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SequencedModelDirector newObject = (SequencedModelDirector) super
-                .clone(workspace);
+        SequencedModelDirector newObject = (SequencedModelDirector) super.clone(
+                workspace);
         SequenceScheduler scheduler = getScheduler();
 
         // Note that _setScheduler() invalidates the schedule (which is what we want)
@@ -286,49 +286,54 @@ public abstract class SequencedModelDirector extends Director {
                 .outputPortList()) {
 
             for (int channel = 0; channel < port.getWidth(); channel++) {
-                if (userDefinedOutputInitialValue.getToken().equals(
-                        BooleanToken.FALSE)
-                        && defaultOutputInitialValue.getToken().equals(
-                                BooleanToken.TRUE)) {
+                if (userDefinedOutputInitialValue.getToken()
+                        .equals(BooleanToken.FALSE)
+                        && defaultOutputInitialValue.getToken()
+                                .equals(BooleanToken.TRUE)) {
                     initialValueParameter = new Parameter();
-                    if (userDefinedDefaultOutputInitialValue.getToken() != null) {
-                        port.send(channel,
-                                userDefinedDefaultOutputInitialValue.getToken());
+                    if (userDefinedDefaultOutputInitialValue
+                            .getToken() != null) {
+                        port.send(channel, userDefinedDefaultOutputInitialValue
+                                .getToken());
                     } else {
-                        initialValueParameter.setExpression(port.getType()
-                                .zero().toString());
+                        initialValueParameter.setExpression(
+                                port.getType().zero().toString());
                         port.send(channel, initialValueParameter.getToken());
                     }
 
-                } else if (userDefinedOutputInitialValue.getToken().equals(
-                        BooleanToken.TRUE)
-                        && defaultOutputInitialValue.getToken().equals(
-                                BooleanToken.TRUE)) {
+                } else if (userDefinedOutputInitialValue.getToken()
+                        .equals(BooleanToken.TRUE)
+                        && defaultOutputInitialValue.getToken()
+                                .equals(BooleanToken.TRUE)) {
                     initialValueParameter = (Parameter) actorEntity
-                            .getAttribute(_getInitialValueParameterName(port,
-                                    channel).trim());
+                            .getAttribute(
+                                    _getInitialValueParameterName(port, channel)
+                                            .trim());
                     if (initialValueParameter == null) {
-                        if (userDefinedDefaultOutputInitialValue.getToken() != null) {
+                        if (userDefinedDefaultOutputInitialValue
+                                .getToken() != null) {
                             port.send(channel,
                                     userDefinedDefaultOutputInitialValue
-                                    .getToken());
+                                            .getToken());
                         } else {
                             initialValueParameter = new Parameter();
-                            initialValueParameter.setExpression(port.getType()
-                                    .zero().toString());
-                            port.send(channel, initialValueParameter.getToken());
+                            initialValueParameter.setExpression(
+                                    port.getType().zero().toString());
+                            port.send(channel,
+                                    initialValueParameter.getToken());
                         }
                     } else {
                         initialValueParameter.setTypeAtMost(port.getType());
                         port.send(channel, initialValueParameter.getToken());
                     }
-                } else if (userDefinedOutputInitialValue.getToken().equals(
-                        BooleanToken.TRUE)
-                        && defaultOutputInitialValue.getToken().equals(
-                                BooleanToken.FALSE)) {
+                } else if (userDefinedOutputInitialValue.getToken()
+                        .equals(BooleanToken.TRUE)
+                        && defaultOutputInitialValue.getToken()
+                                .equals(BooleanToken.FALSE)) {
                     initialValueParameter = (Parameter) actorEntity
-                            .getAttribute(_getInitialValueParameterName(port,
-                                    channel).trim());
+                            .getAttribute(
+                                    _getInitialValueParameterName(port, channel)
+                                            .trim());
                     if (initialValueParameter == null) {
                         if (port.isMultiport()) {
                             throw new IllegalActionException(
@@ -469,7 +474,7 @@ public abstract class SequencedModelDirector extends Director {
                 isTransparentCompositeActor = true;
                 checkAttributeType(actorEntity, sequenceAttributes, processAttributes,isTransparentCompositeActor);
             }
-
+        
         }
          */
 
@@ -508,13 +513,17 @@ public abstract class SequencedModelDirector extends Director {
                     if (compositeActor.getDirector() != null
                             && !sequenceAttributes.isEmpty()) {
 
-                        if (compositeActor.getDirector().getClass() == SequenceDirector.class
-                                && sequenceAttributes.get(0).getClass() == ProcessAttribute.class) {
+                        if (compositeActor.getDirector()
+                                .getClass() == SequenceDirector.class
+                                && sequenceAttributes.get(0)
+                                        .getClass() == ProcessAttribute.class) {
                             System.out.println("Warning: " + actor.getName()
                                     + "'s Process Attribute will be ignored");
                         }
-                        if (compositeActor.getDirector().getClass() == ProcessDirector.class
-                                && sequenceAttributes.get(0).getClass() == SequenceAttribute.class) {
+                        if (compositeActor.getDirector()
+                                .getClass() == ProcessDirector.class
+                                && sequenceAttributes.get(0)
+                                        .getClass() == SequenceAttribute.class) {
 
                             System.out.println("Warning: " + actor.getName()
                                     + "'s Sequence Attribute will be ignored");
@@ -529,12 +538,12 @@ public abstract class SequencedModelDirector extends Director {
                     else {
                         if ( sequenceAttributes.isEmpty() && processAttributes.isEmpty() ) {
                             if ( ( compositeActor.getDirector().getClass() == SequenceDirector.class ) ) {
-
+                    
                                 throw new IllegalActionException(this,"Composite Actor " + actor.getName() +" should have Sequence Attribute");
                             }
-
+                    
                             if ( ( compositeActor.getDirector().getClass() == ProcessDirector.class ) ) {
-
+                    
                                 throw new IllegalActionException(this,"Composite Actor " + actor.getName() +" should have Process Attribute");
                             }
                         }
@@ -552,8 +561,8 @@ public abstract class SequencedModelDirector extends Director {
             }
 
             else if (!sequenceAttributes.isEmpty()) {
-                _sequencedList.add((SequenceAttribute) sequenceAttributes
-                        .get(0));
+                _sequencedList
+                        .add((SequenceAttribute) sequenceAttributes.get(0));
             }
         }
     }
@@ -574,23 +583,23 @@ public abstract class SequencedModelDirector extends Director {
          *  with sequence numbers.  If there are, these sequence numbers are ignored.
         // FIXME:  Need to check for these though, since the upstream actor calculations
         // will not process something with a sequence attribute
-
-
+        
+        
         if ( isTransparentCompositeActor ) {
-
+        
             if ( !sequenceAttributes.isEmpty() ) {
                 if ( sequenceAttributes.get(0).getClass() == ProcessAttribute.class ) {
-
+        
                     System.out.println("Warning: " + actorEntity.getName() +"'s Process Attribute will be ignored");
                 } else if ( sequenceAttributes.get(0).getClass() == SequenceAttribute.class ) {
-
+        
                     System.out.println("Warning: " + actorEntity.getName() +"'s Sequence Attribute will be ignored");
                 }
-
+        
             }
-
+        
         }
-
+        
          */
         // Note that a ProcessAttribute is also a SequenceAttribute
 
@@ -598,13 +607,12 @@ public abstract class SequencedModelDirector extends Director {
         // but other actors cannot.
         if (!sequenceAttributes.isEmpty()) {
             if (sequenceAttributes.size() > 1
-                    && !(actor instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) actor)
-                            .numFireMethods() > 1)) {
-                throw new IllegalActionException(
-                        this,
-                        " Actor "
-                                + actor.getName()
-                                + " can have only one Sequence Attribute or Process Attribute");
+                    && !(actor instanceof MultipleFireMethodsInterface
+                            && ((MultipleFireMethodsInterface) actor)
+                                    .numFireMethods() > 1)) {
+                throw new IllegalActionException(this, " Actor "
+                        + actor.getName()
+                        + " can have only one Sequence Attribute or Process Attribute");
             }
         }
 
@@ -612,11 +620,9 @@ public abstract class SequencedModelDirector extends Director {
         else // else, if the sequence attribute list is empty
         {
             if (actor instanceof ControlActor) {
-                throw new IllegalActionException(
-                        this,
-                        " Control Actor "
-                                + actor.getName()
-                                + " must have a Sequence Attribute or Process Attribute");
+                throw new IllegalActionException(this, " Control Actor "
+                        + actor.getName()
+                        + " must have a Sequence Attribute or Process Attribute");
             }
 
             // Check for opaque composite actors that do not have sequence attributes
@@ -687,7 +693,7 @@ public abstract class SequencedModelDirector extends Director {
     public String[] suggestedModalModelDirectors() {
         return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
-        "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
+                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -773,10 +779,11 @@ public abstract class SequencedModelDirector extends Director {
             // If the actor is a MultipleFireMethodsInterface, set
             // its fire method before firing it.
             if (actor instanceof MultipleFireMethodsInterface
-                    && ((MultipleFireMethodsInterface) actor).numFireMethods() > 1) {
+                    && ((MultipleFireMethodsInterface) actor)
+                            .numFireMethods() > 1) {
                 String methodName = firing.getMethodName();
                 ((MultipleFireMethodsInterface) actor)
-                .setFireMethod(methodName);
+                        .setFireMethod(methodName);
             }
 
             int iterationCount = firing.getIterationCount();
@@ -791,8 +798,8 @@ public abstract class SequencedModelDirector extends Director {
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
             } else if (returnValue == NOT_READY) {
-                throw new IllegalActionException(this, actor, "Actor "
-                        + "is not ready to fire.");
+                throw new IllegalActionException(this, actor,
+                        "Actor " + "is not ready to fire.");
             }
 
             if (_debugging) {
@@ -814,8 +821,8 @@ public abstract class SequencedModelDirector extends Director {
      *  @exception NameDuplicationException If there is a problem instantiating
      *   the director's parameters.
      */
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
         // Create a new SequenceScheduler object
         // This sets the container at the same time
         SequenceScheduler scheduler = new SequenceScheduler(this,

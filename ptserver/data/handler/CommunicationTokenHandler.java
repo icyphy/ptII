@@ -55,8 +55,8 @@ import ptserver.data.TokenParser;
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
-public class CommunicationTokenHandler implements
-TokenHandler<CommunicationToken> {
+public class CommunicationTokenHandler
+        implements TokenHandler<CommunicationToken> {
 
     /** Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
      *  @param token Token to be converted to bytes.
@@ -67,8 +67,8 @@ TokenHandler<CommunicationToken> {
      */
     @Override
     public void convertToBytes(CommunicationToken token,
-            DataOutputStream outputStream) throws IOException,
-            IllegalActionException {
+            DataOutputStream outputStream)
+            throws IOException, IllegalActionException {
 
         outputStream.writeUTF(token.getTargetActorName());
         outputStream.writeShort(token.getPortChannelTokenMap().size());
@@ -102,8 +102,8 @@ TokenHandler<CommunicationToken> {
      */
     @Override
     public CommunicationToken convertToToken(DataInputStream inputStream,
-            Class<? extends CommunicationToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends CommunicationToken> tokenType)
+            throws IOException, IllegalActionException {
         CommunicationToken token = new CommunicationToken();
         token.setTargetActorName(inputStream.readUTF());
 

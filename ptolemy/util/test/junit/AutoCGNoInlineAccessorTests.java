@@ -95,7 +95,6 @@ public class AutoCGNoInlineAccessorTests extends AutoCGTests {
     public void runModelNoInlineDuktape(String fullPath) throws Throwable {
         runModel(fullPath, "accessor", false /* generateInSubdirectory */,
                 false /* inline */, 2500 /* maximumLinesPerBlock */,
-                false /*variablesAsArrays*/,
-                "generic.accessor");
+                false /*variablesAsArrays*/, "generic.accessor");
     }
 }

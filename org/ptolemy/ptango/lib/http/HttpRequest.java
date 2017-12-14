@@ -99,15 +99,15 @@ public class HttpRequest {
         try {
             _connection = (HttpURLConnection) _url.openConnection();
         } catch (IOException e) {
-            HttpResponse response = new HttpResponse("Error connecting to URL "
-                    + _url.toString());
+            HttpResponse response = new HttpResponse(
+                    "Error connecting to URL " + _url.toString());
             return response;
         }
 
         // Set all fields in the request header.
         for (String label : _properties.labelSet()) {
-            _connection.setRequestProperty(label, _properties.get(label)
-                    .toString());
+            _connection.setRequestProperty(label,
+                    _properties.get(label).toString());
         }
 
         // Specify request method (GET, POST, PUT...)
@@ -160,8 +160,8 @@ public class HttpRequest {
                 writer.close();
             }
         } catch (IOException e) {
-            HttpResponse response = new HttpResponse("Error closing writer for"
-                    + " URL " + _url.toString());
+            HttpResponse response = new HttpResponse(
+                    "Error closing writer for" + " URL " + _url.toString());
             return response;
         }
 

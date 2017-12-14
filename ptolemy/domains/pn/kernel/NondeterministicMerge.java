@@ -209,8 +209,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        NondeterministicMerge result = (NondeterministicMerge) super
-                .clone(workspace);
+        NondeterministicMerge result = (NondeterministicMerge) super.clone(
+                workspace);
         try {
             // Remove the old inner MergeDirector(s) that is(are) in the wrong workspace.
             String mergeDirectorName = null;
@@ -232,8 +232,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 mergeDirector.setName(mergeDirectorName);
             }
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone: " + throwable);
         }
         return result;
     }
@@ -242,8 +242,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
     ////                         private methods                   ////
 
     /** Construct a NondeterministicMerge. */
-    private void _constructor() throws NameDuplicationException,
-    IllegalActionException {
+    private void _constructor()
+            throws NameDuplicationException, IllegalActionException {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -260,9 +260,9 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 "_cardinal");
         channelCardinal.setExpression("SOUTH");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:red\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:red\"/>\n" + "</svg>\n");
 
         PNDirector director = new MergeDirector(workspace());
         director.setContainer(this);
@@ -348,8 +348,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
                         && input.hasToken(_channelIndex)) {
                     if (_debugging) {
                         NondeterministicMerge.this
-                        ._debug("Waiting for input from channel "
-                                + _channelIndex);
+                                ._debug("Waiting for input from channel "
+                                        + _channelIndex);
                     }
 
                     // NOTE: Writing to the port of the host actor.
@@ -368,9 +368,9 @@ public class NondeterministicMerge extends TypedCompositeActor {
                     }
 
                     if (_debugging) {
-                        NondeterministicMerge.this._debug("Sent " + result
-                                + " from channel " + _channelIndex
-                                + " to the output.");
+                        NondeterministicMerge.this
+                                ._debug("Sent " + result + " from channel "
+                                        + _channelIndex + " to the output.");
                     }
                 }
             } else {

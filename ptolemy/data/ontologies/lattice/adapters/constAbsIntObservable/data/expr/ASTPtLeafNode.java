@@ -59,7 +59,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *   throws it.
      */
     public ASTPtLeafNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
+            ptolemy.data.expr.ASTPtLeafNode node)
+            throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -80,46 +81,33 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             if (nodeToken != null) {
                 if (nodeToken instanceof BooleanToken) {
                     if (((BooleanToken) nodeToken).booleanValue()) {
-                        setAtLeast(
-                                node,
-                                getSolver().getOntology().getEntity(
-                                        "UnobservableConstTrue"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("UnobservableConstTrue"));
                     } else {
-                        setAtLeast(
-                                node,
-                                getSolver().getOntology().getEntity(
-                                        "UnobservableConstFalse"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("UnobservableConstFalse"));
                     }
                 } else if (nodeToken instanceof ScalarToken) {
                     if (((ScalarToken) nodeToken).isEqualTo(nodeToken.zero())
                             .booleanValue()) {
-                        setAtLeast(
-                                node,
-                                getSolver().getOntology().getEntity(
-                                        "UnobservableConstZero"));
-                    } else if (((ScalarToken) nodeToken).isGreaterThan(
-                            (ScalarToken) nodeToken.zero()).booleanValue()) {
-                        setAtLeast(
-                                node,
-                                getSolver().getOntology().getEntity(
-                                        "UnobservableConstPositive"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("UnobservableConstZero"));
+                    } else if (((ScalarToken) nodeToken)
+                            .isGreaterThan((ScalarToken) nodeToken.zero())
+                            .booleanValue()) {
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("UnobservableConstPositive"));
                     } else {
-                        setAtLeast(
-                                node,
-                                getSolver().getOntology().getEntity(
-                                        "UnobservableConstNegative"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getEntity("UnobservableConstNegative"));
                     }
                 } else {
-                    setAtLeast(
-                            node,
-                            getSolver().getOntology().getEntity(
-                                    "UnobservableConstUnknown"));
+                    setAtLeast(node, getSolver().getOntology()
+                            .getEntity("UnobservableConstUnknown"));
                 }
             } else {
-                setAtLeast(
-                        node,
-                        getSolver().getOntology().getEntity(
-                                "UnobservableConstUnknown"));
+                setAtLeast(node, getSolver().getOntology()
+                        .getEntity("UnobservableConstUnknown"));
             }
         }
 

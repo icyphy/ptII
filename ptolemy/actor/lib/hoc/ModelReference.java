@@ -192,8 +192,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class ModelReference extends TypedAtomicActor implements
-ExecutionListener {
+public class ModelReference extends TypedAtomicActor
+        implements ExecutionListener {
     /** Construct a ModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -240,7 +240,7 @@ ExecutionListener {
         spawnSeparateModels.setExpression("false");
         spawnSeparateModels.setPersistent(true);
 
-        _semaphore= new Semaphore(0);
+        _semaphore = new Semaphore(0);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -320,8 +320,8 @@ ExecutionListener {
                     File asFile = modelFileOrURL.asFile();
 
                     if (!asFile.isFile()) {
-                        throw new IllegalActionException(this, "Not a file: "
-                                + url);
+                        throw new IllegalActionException(this,
+                                "Not a file: " + url);
                     }
                 }
 
@@ -342,8 +342,7 @@ ExecutionListener {
                     // error. To prevent arcane stack overflow exceptions, catch this.
                     URI myURI = URIAttribute.getModelURI(this);
 
-                    if (myURI != null
-                            && myURI.toURL().toExternalForm()
+                    if (myURI != null && myURI.toURL().toExternalForm()
                             .equals(url.toExternalForm())) {
                         throw new IllegalActionException(this,
                                 "Cannot reference my own container.");
@@ -436,7 +435,8 @@ ExecutionListener {
      *  @param throwable The throwable to report.
      */
     @Override
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
         _throwable = throwable;
         _executing = false;
 
@@ -687,7 +687,8 @@ ExecutionListener {
                 //that way we avoid a race condition in fire
                 _semaphore.acquire(1);
             } catch (InterruptedException ex) {
-                Logger.getLogger(ModelReference.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ModelReference.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         }
 
@@ -708,7 +709,6 @@ ExecutionListener {
 
         // Test auto/ModelReference2.xml seems to end up here with
         _manager = null;
-
 
         return super.postfire();
     }
@@ -904,10 +904,8 @@ ExecutionListener {
                                 + port.getName());
                     }
 
-                    port.send(
-                            0,
-                            new StringToken(((Settable) attribute)
-                                    .getExpression()));
+                    port.send(0, new StringToken(
+                            ((Settable) attribute).getExpression()));
                 }
             }
         }

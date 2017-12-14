@@ -87,8 +87,8 @@ public class ActorGraphTableau extends Tableau {
      *  @exception NameDuplicationException If thrown by the superclass.
      */
     public ActorGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -125,8 +125,8 @@ public class ActorGraphTableau extends Tableau {
     @Override
     public boolean close() {
         if (_debugClosing) {
-            System.out.println("ActorGraphTableau.close() : "
-                    + getFrame().getName());
+            System.out.println(
+                    "ActorGraphTableau.close() : " + getFrame().getName());
         }
 
         return super.close();

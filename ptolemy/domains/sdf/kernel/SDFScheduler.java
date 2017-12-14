@@ -254,7 +254,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @param entity The entity that is being fired.
      *  @return The number of times that the given entity will fire
      *  @exception IllegalActionException If thrown by getSchedule().
-
+    
      */
     public int getFiringCount(Entity entity) throws IllegalActionException {
         getSchedule();
@@ -295,7 +295,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 .hasNext();) {
             Entity entity = (Entity) entities.next();
 
-            for (Iterator ports = entity.portList().iterator(); ports.hasNext();) {
+            for (Iterator ports = entity.portList().iterator(); ports
+                    .hasNext();) {
                 Port port = (Port) ports.next();
                 Set set = analysis.getNotConstVariables(port);
                 Variable variable;
@@ -518,8 +519,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     @Override
     @SuppressWarnings("unused")
-    protected Schedule _getSchedule() throws NotSchedulableException,
-    IllegalActionException {
+    protected Schedule _getSchedule()
+            throws NotSchedulableException, IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -555,7 +556,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         Map externalRates = new HashMap();
 
         // Initialize externalRates to zero.
-        for (Iterator ports = container.portList().iterator(); ports.hasNext();) {
+        for (Iterator ports = container.portList().iterator(); ports
+                .hasNext();) {
             IOPort port = (IOPort) ports.next();
             externalRates.put(port, Fraction.ZERO);
         }
@@ -622,8 +624,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @exception IllegalActionException If any called method throws it.
      */
     protected Map _solveBalanceEquations(CompositeActor container,
-            List actorList, Map externalRates) throws NotSchedulableException,
-            IllegalActionException {
+            List actorList, Map externalRates)
+            throws NotSchedulableException, IllegalActionException {
         // The map that we will return.
         // This will be populated with the fraction firing ratios for
         // each actor.
@@ -718,7 +720,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // of actors are only normalized within their cluster.
             int lcm = 1;
 
-            for (Iterator actors = clusteredActors.iterator(); actors.hasNext();) {
+            for (Iterator actors = clusteredActors.iterator(); actors
+                    .hasNext();) {
                 Actor currentActor = (Actor) actors.next();
                 Fraction fraction = (Fraction) entityToFiringsPerIteration
                         .get(currentActor);
@@ -729,7 +732,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // Got the normalizing factor.
             Fraction lcmFraction = new Fraction(lcm);
 
-            for (Iterator actors = clusteredActors.iterator(); actors.hasNext();) {
+            for (Iterator actors = clusteredActors.iterator(); actors
+                    .hasNext();) {
                 Actor currentActor = (Actor) actors.next();
                 Fraction repetitions = ((Fraction) entityToFiringsPerIteration
                         .get(currentActor)).multiply(lcmFraction);
@@ -743,8 +747,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 entityToFiringsPerIteration.put(currentActor, repetitions);
             }
 
-            for (Iterator externalPorts = clusteredExternalPorts.iterator(); externalPorts
-                    .hasNext();) {
+            for (Iterator externalPorts = clusteredExternalPorts
+                    .iterator(); externalPorts.hasNext();) {
                 IOPort port = (IOPort) externalPorts.next();
                 Fraction rate = ((Fraction) externalRates.get(port))
                         .multiply(lcmFraction);
@@ -802,8 +806,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         if (!portParametersFound.contains(portParameter)) {
                             portParametersFound.add(portParameter);
                             portParameterMessageBuffer
-                            .append(((PortParameter) portParameter)
-                                    .getFullName() + " ");
+                                    .append(((PortParameter) portParameter)
+                                            .getFullName() + " ");
                             if (count > 100) {
                                 break;
                             }
@@ -813,14 +817,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
             if (portParameterMessageBuffer.length() > 0) {
                 messageBuffer
-                .append("Note that some of the unreached actors are in "
-                        + "transparent composite actors that have PortParameters.  "
-                        + "A transparent composite actor is composite actor that has "
-                        + "no local director.  Transparent composite actors and "
-                        + "PortParameters are not compatible, the workaround is to "
-                        + "insert a director or remove the PortParameter.  "
-                        + "\nThe PortParameters:\n"
-                        + portParameterMessageBuffer.toString());
+                        .append("Note that some of the unreached actors are in "
+                                + "transparent composite actors that have PortParameters.  "
+                                + "A transparent composite actor is composite actor that has "
+                                + "no local director.  Transparent composite actors and "
+                                + "PortParameters are not compatible, the workaround is to "
+                                + "insert a director or remove the PortParameter.  "
+                                + "\nThe PortParameters:\n"
+                                + portParameterMessageBuffer.toString());
                 if (count >= 99) {
                     messageBuffer.append("...");
                 }
@@ -828,8 +832,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
             messageBuffer.append("\nUnreached Actors:\n");
             count = 0;
-            for (Iterator unreachedActors = remainingActors.iterator(); unreachedActors
-                    .hasNext() && count < 100; count++) {
+            for (Iterator unreachedActors = remainingActors
+                    .iterator(); unreachedActors.hasNext()
+                            && count < 100; count++) {
                 NamedObj unreachedActor = (NamedObj) unreachedActors.next();
                 messageBuffer.append(unreachedActor.getFullName() + " ");
             }
@@ -844,8 +849,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             reachedActorList.removeAll(remainingActors);
 
             count = 0;
-            for (Iterator actors = reachedActorList.iterator(); actors
-                    .hasNext() && count < 100; count++) {
+            for (Iterator actors = reachedActorList.iterator(); actors.hasNext()
+                    && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 messageBuffer.append(entity.getFullName() + " ");
             }
@@ -902,8 +907,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // Go through the ports and normalize the external production
         // and consumption rates by the same factor.
         // Use entrySet here for performance reasons.
-        for (Iterator portMapEntries = externalRates.entrySet().iterator(); portMapEntries
-                .hasNext();) {
+        for (Iterator portMapEntries = externalRates.entrySet()
+                .iterator(); portMapEntries.hasNext();) {
             Map.Entry ports = (Map.Entry) portMapEntries.next();
             Fraction rate = (Fraction) ports.getValue();
             rate = rate.multiply(lcmFraction);
@@ -935,7 +940,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         /* FIXME: This is bogus. It rules out perfectly legitimate models.
         Entity changeContext = analysis.getChangeContext(variable);
-
+        
         if (!((changeContext == model) || changeContext.deepContains(model))) {
             throw new IllegalActionException(variable,
                     "The SDF rate parameter changes during "
@@ -1076,7 +1081,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             ComponentEntity actor = (ComponentEntity) actors.next();
 
             // Check if this actor has any ports with rate of zero.
-            for (Iterator ports = actor.portList().iterator(); ports.hasNext();) {
+            for (Iterator ports = actor.portList().iterator(); ports
+                    .hasNext();) {
                 IOPort port = (IOPort) ports.next();
 
                 if (DFUtilities.getRate(port) == 0) {
@@ -1130,7 +1136,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Map entityToFiringsPerIteration, Map externalRates,
             LinkedList remainingActors, LinkedList pendingActors,
             Set clusteredActors, Set clusteredExternalPorts)
-                    throws NotSchedulableException, IllegalActionException {
+            throws NotSchedulableException, IllegalActionException {
         ComponentEntity currentActor = (ComponentEntity) currentPort
                 .getContainer();
 
@@ -1307,8 +1313,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             } else {
                 // Both the rates are non zero, so we can just do the
                 // regular actor propagation.
-                desiredFiring = currentFiring.multiply(new Fraction(
-                        currentRate, connectedRate));
+                desiredFiring = currentFiring
+                        .multiply(new Fraction(currentRate, connectedRate));
             }
 
             // Now, compare the firing ratio that was computed before
@@ -1339,8 +1345,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 entityToFiringsPerIteration.put(connectedActor, desiredFiring);
 
                 // Compute the external rate for this port.
-                Fraction rate = currentFiring.multiply(new Fraction(
-                        currentRate, 1));
+                Fraction rate = currentFiring
+                        .multiply(new Fraction(currentRate, 1));
                 Fraction previousRate = (Fraction) externalRates
                         .get(connectedPort);
 
@@ -1350,8 +1356,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // Give better error message than null pointer exception.
                     throw new InternalErrorException(
                             "Invalid connection found between ports "
-                                    + currentPort.getFullName()
-                                    + " and "
+                                    + currentPort.getFullName() + " and "
                                     + connectedPort.getFullName()
                                     + ". The rate of the "
                                     + connectedPort.getFullName()
@@ -1363,13 +1368,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                     + (((Entity) currentPort.getContainer())
                                             .isWithinClassDefinition() ? " is"
                                                     : " is not")
-                                                    + " within an actor oriented class definition. "
-                                                    + "The container of "
-                                                    + connectedPort.getFullName()
-                                                    + (((Entity) connectedPort.getContainer())
-                                                            .isWithinClassDefinition() ? " is"
-                                                                    : " is not")
-                                                                    + " within an actor oriented class definition.");
+                                    + " within an actor oriented class definition. "
+                                    + "The container of "
+                                    + connectedPort.getFullName()
+                                    + (((Entity) connectedPort.getContainer())
+                                            .isWithinClassDefinition() ? " is"
+                                                    : " is not")
+                                    + " within an actor oriented class definition.");
 
                 }
 
@@ -1384,12 +1389,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             clusteredExternalPorts);
                 } else if (!rate.equals(previousRate)) {
                     // The rates don't match.
-                    throw new NotSchedulableException(this, "No solution "
-                            + "exists for the balance equations.\n"
-                            + "Graph is not "
-                            + "consistent under the SDF domain "
-                            + "detected on external port "
-                            + connectedPort.getFullName());
+                    throw new NotSchedulableException(this,
+                            "No solution "
+                                    + "exists for the balance equations.\n"
+                                    + "Graph is not "
+                                    + "consistent under the SDF domain "
+                                    + "detected on external port "
+                                    + connectedPort.getFullName());
                 }
 
                 // _propagatePort(container, connectedPort,
@@ -1411,11 +1417,12 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             } else if (!presentFiring.equals(desiredFiring)) {
                 // So we've already propagated here, but the
                 // firingsPerIteration don't match.
-                throw new NotSchedulableException(this, "No solution "
-                        + "exists for the balance equations.\n"
-                        + "Graph is not " + "consistent under the SDF domain "
-                        + "detected on external port "
-                        + connectedPort.getFullName());
+                throw new NotSchedulableException(this,
+                        "No solution " + "exists for the balance equations.\n"
+                                + "Graph is not "
+                                + "consistent under the SDF domain "
+                                + "detected on external port "
+                                + connectedPort.getFullName());
             }
 
             if (_debugging && VERBOSE) {
@@ -1446,9 +1453,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *   scheduled.
      */
     @SuppressWarnings("unused")
-    private Schedule _scheduleConnectedActors(Map externalRates,
-            List actorList, CompositeActor container)
-                    throws NotSchedulableException {
+    private Schedule _scheduleConnectedActors(Map externalRates, List actorList,
+            CompositeActor container) throws NotSchedulableException {
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
 
@@ -1541,7 +1547,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     continue;
                 }
 
-                int inputCount = _countUnfulfilledInputs(actor, actorList, true);
+                int inputCount = _countUnfulfilledInputs(actor, actorList,
+                        true);
 
                 if (inputCount == 0) {
                     readyToScheduleActorList.addFirst(actor);
@@ -1602,8 +1609,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
             // Simulate a number of tokens initially present on each
             // external input port.
-            for (Iterator inputPorts = container.inputPortList().iterator(); inputPorts
-                    .hasNext();) {
+            for (Iterator inputPorts = container.inputPortList()
+                    .iterator(); inputPorts.hasNext();) {
                 IOPort port = (IOPort) inputPorts.next();
                 int count = ((Integer) externalRates.get(port)).intValue();
 
@@ -1621,8 +1628,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // tokens on its inside receiver ready to be transported
             // to the outside upon initialization. E.g., a publisher
             // port with initial tokens.
-            for (Iterator outputPorts = container.outputPortList().iterator(); outputPorts
-                    .hasNext();) {
+            for (Iterator outputPorts = container.outputPortList()
+                    .iterator(); outputPorts.hasNext();) {
                 IOPort port = (IOPort) outputPorts.next();
                 int count = DFUtilities.getTokenInitProduction(port);
                 if (count > 0) {
@@ -1844,7 +1851,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @SuppressWarnings("unused")
     protected void _simulateExternalInputs(IOPort port, int count,
             List actorList, LinkedList readyToScheduleActorList)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         Receiver[][] receivers = port.deepGetReceivers();
 
         if (_debugging && VERBOSE) {
@@ -1973,7 +1980,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @SuppressWarnings("unused")
     private void _simulateTokensCreated(IOPort outputPort, int createdTokens,
             List actorList, LinkedList readyToScheduleActorList)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: Why are the actor lists lists rather than sets?
         Receiver[][] receivers = outputPort.getRemoteReceivers();
 
@@ -2059,7 +2066,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     @SuppressWarnings("unused")
     private void _simulateInitialTokens(IOPort inputPort, int initialTokens,
             List actorList, LinkedList readyToScheduleActorList)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         Receiver[][] receivers = inputPort.getReceivers();
 
         if (_debugging && VERBOSE) {

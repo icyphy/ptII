@@ -74,10 +74,11 @@ public class TrueGate extends Transformer {
 
         input.setWidthEquals(output, true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-15\" y=\"-15\" " + "width=\"40\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-10\" y=\"4\""
-                + "style=\"font-size:14\">true?</text>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-15\" y=\"-15\" "
+                        + "width=\"40\" height=\"30\" "
+                        + "style=\"fill:white\"/>\n" + "<text x=\"-10\" y=\"4\""
+                        + "style=\"font-size:14\">true?</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

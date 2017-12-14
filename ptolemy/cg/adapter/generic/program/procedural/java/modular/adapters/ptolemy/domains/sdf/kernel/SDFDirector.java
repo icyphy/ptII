@@ -83,9 +83,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating red (daib)
  */
 
-public class SDFDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+public class SDFDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -111,8 +110,8 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "The firing of the StaticSchedulingDirector")));
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("The firing of the StaticSchedulingDirector")));
         boolean inline = ((BooleanToken) getCodeGenerator().inline.getToken())
                 .booleanValue();
 
@@ -139,7 +138,8 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                 String actorName = ModularCodeGenLazyTypedCompositeActor
                         .classToActorName(className);
 
-                NamedProgramCodeGeneratorAdapter codegeneratorAdaptor = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
+                NamedProgramCodeGeneratorAdapter codegeneratorAdaptor = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                        actor);
 
                 code.append("{" + _eol);
 
@@ -155,19 +155,12 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                     //                        type = "Token";
                     //                    }
                     for (int i = 0; i < inputPort.getWidth(); i++) {
-                        if (DFUtilities.getTokenConsumptionRate(inputPort) > 1) {
-                            code.append(type
-                                    + "[] "
-                                    + actorName
-                                    + "_"
-                                    + inputPort.getName()
-                                    + "_"
-                                    + i
-                                    + " = new "
-                                    + type
-                                    + "["
-                                    + DFUtilities
-                                    .getTokenConsumptionRate(inputPort)
+                        if (DFUtilities
+                                .getTokenConsumptionRate(inputPort) > 1) {
+                            code.append(type + "[] " + actorName + "_"
+                                    + inputPort.getName() + "_" + i + " = new "
+                                    + type + "[" + DFUtilities
+                                            .getTokenConsumptionRate(inputPort)
                                     + "];" + _eol);
                         } else {
                             code.append(type + " " + actorName + "_"
@@ -203,17 +196,18 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                                         code.append(codegeneratorAdaptor
                                                 .getReference(
                                                         portNameWithChannelNumber
-                                                        + "," + k, true));
+                                                                + "," + k,
+                                                        true));
                                         code.append(";" + _eol);
                                     }
                                 } else {
-                                    code.append(actorName + "_" + portName
-                                            + "_" + i);
+                                    code.append(actorName + "_" + portName + "_"
+                                            + i);
                                     code.append(" = "
-                                            + codegeneratorAdaptor
-                                            .getReference(
+                                            + codegeneratorAdaptor.getReference(
                                                     portNameWithChannelNumber,
-                                                    true) + ";" + _eol);
+                                                    true)
+                                            + ";" + _eol);
                                 }
 
                             }
@@ -259,24 +253,23 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                             if (rate <= 1) {
                                 code.append(codegeneratorAdaptor.getReference(
                                         outputPort.getName() + "#" + i, true)
-                                        + " = "
-                                        + actorName
-                                        + "."
-                                        + codegeneratorAdaptor.getReference("@"
-                                                + outputPort.getName() + "#"
-                                                + i, false) + ";" + _eol);
+                                        + " = " + actorName + "."
+                                        + codegeneratorAdaptor.getReference(
+                                                "@" + outputPort.getName() + "#"
+                                                        + i,
+                                                false)
+                                        + ";" + _eol);
                             } else {
                                 for (int k = 0; k < rate; k++) {
                                     code.append(codegeneratorAdaptor
                                             .getReference(outputPort.getName()
                                                     + "#" + i + "," + k, true)
-                                                    + " = "
-                                                    + actorName
-                                                    + "."
-                                                    + codegeneratorAdaptor.getReference(
-                                                            "@" + outputPort.getName()
+                                            + " = " + actorName + "."
+                                            + codegeneratorAdaptor.getReference(
+                                                    "@" + outputPort.getName()
                                                             + "#" + i + "," + k,
-                                                            false) + ";" + _eol);
+                                                    false)
+                                            + ";" + _eol);
                                 }
                             }
                         }
@@ -300,8 +293,8 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (int i = 0; i < " + count
-                                + " ; i++) {" + _eol);
+                        code.append("for (int i = 0; i < " + count + " ; i++) {"
+                                + _eol);
                     }
 
                     code.append(generateName((NamedObj) actor) + "();" + _eol);
@@ -326,8 +319,8 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
     @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(getCodeGenerator().comment(
-                "SDFDirector: " + "Transfer tokens to the inside.")));
+        code.append(CodeStream.indent(getCodeGenerator()
+                .comment("SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
@@ -352,14 +345,15 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                 }
                 if (rate > 1) {
                     for (int k = 0; k < rate; k++) {
-                        code.append(compositeActorAdapter.getReference("@"
-                                + portNameWithChannelNumber + "," + k, false));
+                        code.append(compositeActorAdapter.getReference(
+                                "@" + portNameWithChannelNumber + "," + k,
+                                false));
                         code.append(" = " + portName + "_" + i + "[" + k + "];"
                                 + _eol);
                     }
                 } else {
-                    code.append(compositeActorAdapter.getReference("@"
-                            + portNameWithChannelNumber, false));
+                    code.append(compositeActorAdapter.getReference(
+                            "@" + portNameWithChannelNumber, false));
                     code.append(" = " + portName + "_" + i + ";" + _eol);
                 }
 
@@ -380,8 +374,8 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     @Override
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code) throws IllegalActionException {
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
@@ -451,29 +445,31 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
             }
 
             if (outputPort.getWidthInside() > 0) {
-                code.append("tokensToAllOutputPorts ["
-                        + String.valueOf(_portNumber) + "] = "
-                        + tokensToThisPort + ";" + _eol);
+                code.append(
+                        "tokensToAllOutputPorts [" + String.valueOf(_portNumber)
+                                + "] = " + tokensToThisPort + ";" + _eol);
             }
 
             _portNumber++;
         } else {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
-                    String name = TemplateParser.escapePortName(outputPort
-                            .getName());
+                    String name = TemplateParser
+                            .escapePortName(outputPort.getName());
 
                     if (outputPort.isMultiport()) {
                         name = name + '#' + i;
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference(name + "," + k, true))
+                        code.append(CodeStream
+                                .indent(compositeActorAdapter
+                                        .getReference(name + "," + k, true))
                                 + " ="
-                                + CodeStream.indent(compositeActorAdapter
-                                        .getReference("@" + name + "," + k,
-                                                false)) + ";" + _eol);
+                                + CodeStream.indent(
+                                        compositeActorAdapter.getReference(
+                                                "@" + name + "," + k, false))
+                                + ";" + _eol);
                     }
                 }
             }
@@ -612,7 +608,7 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
@@ -658,8 +654,8 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
 
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
-                result.append(CodeGeneratorAdapter.generateName(target
-                        .getComponent()));
+                result.append(CodeGeneratorAdapter
+                        .generateName(target.getComponent()));
                 result.append("_");
                 result.append(port.getName());
                 return result.toString();
@@ -695,23 +691,22 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
 
                         if (dynamicReferencesAllowed && port.isInput()) {
                             if (channelAndOffset[1].trim().length() > 0) {
-                                result.append("[" + channelAndOffset[1].trim()
-                                        + "]");
+                                result.append(
+                                        "[" + channelAndOffset[1].trim() + "]");
                             } else {
-                                result.append("["
-                                        + _generateChannelOffset(port, isWrite,
-                                                channelAndOffset[0]) + "]");
+                                result.append("[" + _generateChannelOffset(port,
+                                        isWrite, channelAndOffset[0]) + "]");
                             }
                         } else {
-                            int rate = Math
-                                    .max(DFUtilities
-                                            .getTokenProductionRate(sourceChannel.port),
-                                            DFUtilities
-                                            .getTokenConsumptionRate(sourceChannel.port));
-                            if (rate > 1
-                                    && channelAndOffset[1].trim().length() > 0) {
-                                result.append("[" + channelAndOffset[1].trim()
-                                        + "]");
+                            int rate = Math.max(
+                                    DFUtilities.getTokenProductionRate(
+                                            sourceChannel.port),
+                                    DFUtilities.getTokenConsumptionRate(
+                                            sourceChannel.port));
+                            if (rate > 1 && channelAndOffset[1].trim()
+                                    .length() > 0) {
+                                result.append(
+                                        "[" + channelAndOffset[1].trim() + "]");
                             }
                         }
                         hasTypeConvertReference = true;
@@ -740,8 +735,9 @@ ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.
                             channelAndOffset[1], sinkChannelNumber, true);
                     if (res.equals("")) {
                         if (sinkPort.getContainer() instanceof CompositeActor) {
-                            SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor) sinkPort
-                                    .getContainer()).getDirector());
+                            SDFDirector directorAdapter = (SDFDirector) getAdapter(
+                                    ((CompositeActor) sinkPort.getContainer())
+                                            .getDirector());
                             result.append(directorAdapter.ports.generateOffset(
                                     sinkPort, channelAndOffset[1],
                                     sinkChannelNumber, true));

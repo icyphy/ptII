@@ -334,7 +334,8 @@ public class IOPortController extends AttributeController {
     private static Color _pubSubLabelColor = new Color(0.0f, 0.4f, 0.4f, 1.0f);
 
     /** Font for port labels. */
-    private static Font _pubSubLabelFont = new Font("SansSerif", Font.PLAIN, 10);
+    private static Font _pubSubLabelFont = new Font("SansSerif", Font.PLAIN,
+            10);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -438,7 +439,8 @@ public class IOPortController extends AttributeController {
                 fill = Color.lightGray;
             } else if (isPubSubPort) {
                 fill = Color.CYAN;
-            } else if (port instanceof IOPort && ((IOPort) port).isMultiport()) {
+            } else if (port instanceof IOPort
+                    && ((IOPort) port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
@@ -461,7 +463,8 @@ public class IOPortController extends AttributeController {
                         ColorAttribute color = null;
                         if (object != null) {
                             color = (ColorAttribute) ((NamedObj) object)
-                                    .getAttribute(CommunicationAspect.decoratorHighlightColorName);
+                                    .getAttribute(
+                                            CommunicationAspect.decoratorHighlightColorName);
                         }
                         if (color != null) {
                             fill = color.asColor();
@@ -486,8 +489,8 @@ public class IOPortController extends AttributeController {
                                 aspectsStringBuffer.append(namedObj.getName());
                             }
                         }
-                        info.setExpression("Aspects: "
-                                + aspectsStringBuffer.toString());
+                        info.setExpression(
+                                "Aspects: " + aspectsStringBuffer.toString());
                     } else {
                         // No CommunicationAspect in use anymore, clean up _showInfo
                         // string.
@@ -507,7 +510,7 @@ public class IOPortController extends AttributeController {
                                 infoString = infoString.replace(aspectInfo, "");
                                 infoString = infoString.trim();
                                 ((StringAttribute) info)
-                                .setExpression(infoString);
+                                        .setExpression(infoString);
                             }
                         }
                     }
@@ -551,8 +554,8 @@ public class IOPortController extends AttributeController {
 
             // Transform the port shape so it is facing the right way.
             double rotation = portRotation;
-            AffineTransform transform = AffineTransform.getRotateInstance(Math
-                    .toRadians(rotation));
+            AffineTransform transform = AffineTransform
+                    .getRotateInstance(Math.toRadians(rotation));
             shape = ShapeUtilities.transformModify(shape, transform);
 
             // Create a figure with a tooltip.
@@ -657,31 +660,31 @@ public class IOPortController extends AttributeController {
                         if (direction == SwingConstants.EAST) {
                             startX = x + width;
                             startY = y + height / 2;
-                            endX = startX + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    + extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY
+                                    + extent * MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.WEST) {
                             startX = x;
                             startY = y + height / 2;
-                            endX = startX - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    - extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY
+                                    - extent * MULTIPORT_CONNECTION_SPACING;
                         } else if (direction == SwingConstants.NORTH) {
                             startX = x + width / 2;
                             startY = y;
-                            endX = startX - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY - extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    - extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY
+                                    - extent * MULTIPORT_CONNECTION_SPACING;
                         } else {
                             startX = x + width / 2;
                             startY = y + height;
-                            endX = startX + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY + extent
-                                    * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    + extent * MULTIPORT_CONNECTION_SPACING;
+                            endY = startY
+                                    + extent * MULTIPORT_CONNECTION_SPACING;
                         }
 
                         Line2D line = new Line2D.Double(startX, startY, endX,

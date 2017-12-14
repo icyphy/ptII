@@ -90,10 +90,12 @@ public class FMUFile {
             if (file.getName().endsWith("modelDescription.xml")) {
                 modelDescriptionFile = file;
                 if (file.getParent().endsWith("sources")) {
-                    System.err.println("Warning, while looking for the shared library, \""
-                            + file + "\" was found in a sources/ directory.  "
-                            + "This is unusual, typically modelDescription.xml "
-                            + "is in the directory above sources/.");
+                    System.err.println(
+                            "Warning, while looking for the shared library, \""
+                                    + file
+                                    + "\" was found in a sources/ directory.  "
+                                    + "This is unusual, typically modelDescription.xml "
+                                    + "is in the directory above sources/.");
                 }
                 break;
             }
@@ -106,8 +108,8 @@ public class FMUFile {
 
         // Determine the path to the shared object.
         String topDirectory = modelDescriptionFile.getParent();
-        String osName = System.getProperty("os.name").toLowerCase(
-                Locale.getDefault());
+        String osName = System.getProperty("os.name")
+                .toLowerCase(Locale.getDefault());
         String extension = ".so";
         if (osName.startsWith("mac")) {
             // JModelica seems to use darwin as the binary name
@@ -131,18 +133,13 @@ public class FMUFile {
                 osName = "darwin-x86_";
                 extension = ".so";
                 library = topDirectory + File.separator + "binaries"
-                        + File.separator + osName + bitWidth
-                        + File.separator
+                        + File.separator + osName + bitWidth + File.separator
                         + fmiModelDescription.modelIdentifier + extension;
                 File canonicalFile2 = new File(library).getCanonicalFile();
                 if (canonicalFile2.exists()) {
-                    System.out
-                            .println("Could not find "
-                                    + canonicalFile
-                                    + " but "
-                                    + canonicalFile2
-                                    + "exists.  "
-                                    + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
+                    System.out.println("Could not find " + canonicalFile
+                            + " but " + canonicalFile2 + "exists.  "
+                            + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
                     canonicalFile = canonicalFile2;
                 } else {
                     // OpenModelica 1.9.2 uses x86_64-apple-darwin13.4.0
@@ -150,68 +147,59 @@ public class FMUFile {
                     osName = "x86_";
                     extension = ".dylib";
                     library = topDirectory + File.separator + "binaries"
-                        + File.separator + osName + bitWidth
-                        + "-apple-darwin13.4.0"
-                        + File.separator
-                        + fmiModelDescription.modelIdentifier + extension;
+                            + File.separator + osName + bitWidth
+                            + "-apple-darwin13.4.0" + File.separator
+                            + fmiModelDescription.modelIdentifier + extension;
                     File canonicalFile3 = new File(library).getCanonicalFile();
                     if (canonicalFile3.exists()) {
-                        System.out
-                            .println("Could not find "
-                                    + canonicalFile
-                                    + " or "
-                                    + canonicalFile2
-                                    + " but "
-                                    + canonicalFile3
-                                    + "exists.  "
-                                    + "This is probably OpenModelica 1.9.2, which uses x86_64-apple-darwin13.4.0");
+                        System.out.println("Could not find " + canonicalFile
+                                + " or " + canonicalFile2 + " but "
+                                + canonicalFile3 + "exists.  "
+                                + "This is probably OpenModelica 1.9.2, which uses x86_64-apple-darwin13.4.0");
                         canonicalFile = canonicalFile3;
                     } else {
-                        File binariesDirectory = new File(topDirectory + File.separator + "binaries");
+                        File binariesDirectory = new File(
+                                topDirectory + File.separator + "binaries");
                         File[] files = binariesDirectory.listFiles();
                         if (files != null) {
                             library = "";
                             for (File file : files) {
                                 if (file.isDirectory()) {
-                                    if (file.getName().matches(".*" + bitWidth + "-darwin.*")) {
+                                    if (file.getName().matches(
+                                            ".*" + bitWidth + "-darwin.*")) {
                                         library = file.getCanonicalFile()
-                                            + File.separator
-                                            + fmiModelDescription.modelIdentifier + extension;
-                                      break;
+                                                + File.separator
+                                                + fmiModelDescription.modelIdentifier
+                                                + extension;
+                                        break;
                                     }
                                 }
                             }
                             if (library.length() > 0) {
-                                File canonicalFile4 = new File(library).getCanonicalFile();
+                                File canonicalFile4 = new File(library)
+                                        .getCanonicalFile();
                                 if (canonicalFile4.exists()) {
-                                    System.out
-                                        .println("Could not find "
-                                                + canonicalFile
-                                                + " or "
-                                                + canonicalFile2
-                                                + " or "
-                                                + canonicalFile3
-                                                + " but "
-                                                + canonicalFile4
-                                                + "exists.  "
-                                                + "This is probably OpenModelica after 1.9.2, which uses x86_64-darwin13.4.0");
+                                    System.out.println("Could not find "
+                                            + canonicalFile + " or "
+                                            + canonicalFile2 + " or "
+                                            + canonicalFile3 + " but "
+                                            + canonicalFile4 + "exists.  "
+                                            + "This is probably OpenModelica after 1.9.2, which uses x86_64-darwin13.4.0");
                                     canonicalFile = canonicalFile4;
                                 } else {
-                                    System.out.println(canonicalFile + " does not exist"
-                                            + " also tried " + canonicalFile2
+                                    System.out.println(canonicalFile
+                                            + " does not exist" + " also tried "
+                                            + canonicalFile2
                                             + " for OpenModelica 1.8.1"
                                             + " and " + canonicalFile3
                                             + " for OpenModelica 1.9.2."
                                             + " and " + canonicalFile4 + ".");
                                 }
                             } else {
-                                System.out
-                                    .println("Could not find "
-                                            + canonicalFile
-                                            + " or "
-                                            + canonicalFile2
-                                            + " or "
-                                            + canonicalFile3 + ".");
+                                System.out.println("Could not find "
+                                        + canonicalFile + " or "
+                                        + canonicalFile2 + " or "
+                                        + canonicalFile3 + ".");
                             }
                         }
                     }
@@ -270,8 +258,8 @@ public class FMUFile {
             if (throwOriginalException) {
                 // Java 1.5 does not support IOException(String, Throwable).
                 // We sometimes compile this with gcj, which is Java 1.5
-                IOException exception = new IOException("Failed to unzip \""
-                                                        + fmuFileName + "\".");
+                IOException exception = new IOException(
+                        "Failed to unzip \"" + fmuFileName + "\".");
                 exception.initCause(ex);
                 throw exception;
             }
@@ -307,10 +295,9 @@ public class FMUFile {
             if (!fmuResourceFile.isDirectory()) {
                 if (fmuResourceFile.exists()) {
                     if (fmuResourceFile.delete()) {
-                        throw new IOException(
-                                "Could not delete file \""
-                                        + fmuResourceFile
-                                        + "\" before creating a directory with the same name.");
+                        throw new IOException("Could not delete file \""
+                                + fmuResourceFile
+                                + "\" before creating a directory with the same name.");
                     }
                 }
                 if (!fmuResourceFile.mkdirs()) {
@@ -327,11 +314,9 @@ public class FMUFile {
         }
 
         if (fmuResourceLocation.indexOf("%20") != -1) {
-            System.out
-                    .println("FMUFile: The fmuResourceLocation \""
-                            + fmuResourceLocation
-                            + "\" contains one or more \"%20\"."
-                            + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
+            System.out.println("FMUFile: The fmuResourceLocation \""
+                    + fmuResourceLocation + "\" contains one or more \"%20\"."
+                    + " Certain tools have problems with this, so we are converting \"%20\" to space \" \".");
             fmuResourceLocation = fmuResourceLocation.replace("%20", " ");
         }
 
@@ -348,8 +333,8 @@ public class FMUFile {
         } catch (Throwable throwable) {
             // Java 1.5 does not support IOException(String, Throwable).
             // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception = new IOException("Failed to parse \""
-                    + modelDescriptionFile + "\".");
+            IOException exception = new IOException(
+                    "Failed to parse \"" + modelDescriptionFile + "\".");
             exception.initCause(throwable);
             throw exception;
         }
@@ -375,10 +360,10 @@ public class FMUFile {
             try {
                 fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
             } catch (NumberFormatException ex) {
-                IOException exception = new IOException("Invalid fmiVersion \""
-                        + fmiModelDescription.fmiVersion
-                        + "\". Required to be of the form n.m, "
-                        + "where n and m are natural numbers.");
+                IOException exception = new IOException(
+                        "Invalid fmiVersion \"" + fmiModelDescription.fmiVersion
+                                + "\". Required to be of the form n.m, "
+                                + "where n and m are natural numbers.");
                 exception.initCause(ex);
                 throw exception;
             }
@@ -388,14 +373,12 @@ public class FMUFile {
 
             // fmiVersion 1.5 is not a legitimate version of the FMI standard, it
             // was used by the Ptolemy project for experimenting with FMI 2.0beta.
-            if (fmiVersion < 1.5
-                    && fmiModelDescription.fmuResourceLocation
-                            .endsWith("resources")) {
+            if (fmiVersion < 1.5 && fmiModelDescription.fmuResourceLocation
+                    .endsWith("resources")) {
                 fmiModelDescription.fmuResourceLocation = fmiModelDescription.fmuResourceLocation
-                        .substring(
-                                0,
-                                fmiModelDescription.fmuResourceLocation
-                                        .length() - "resources".length() - 1); // +1 is to get rid of the /
+                        .substring(0,
+                                fmiModelDescription.fmuResourceLocation.length()
+                                        - "resources".length() - 1); // +1 is to get rid of the /
             }
         }
         if (root.hasAttribute("modelIdentifier")) {
@@ -413,8 +396,8 @@ public class FMUFile {
                     .parseInt(root.getAttribute("numberOfContinuousStates"));
         }
         if (root.hasAttribute("numberOfEventIndicators")) {
-            fmiModelDescription.numberOfEventIndicators = Integer.parseInt(root
-                    .getAttribute("numberOfEventIndicators"));
+            fmiModelDescription.numberOfEventIndicators = Integer
+                    .parseInt(root.getAttribute("numberOfEventIndicators"));
         }
 
         // TypeDefinitions
@@ -472,8 +455,8 @@ public class FMUFile {
             NodeList implementation = document
                     .getElementsByTagName("CoSimulation");
             if (implementation.getLength() > 1) {
-                System.out
-                        .println("Warning: FMU modelDescription provides more than one CoSimulation element");
+                System.out.println(
+                        "Warning: FMU modelDescription provides more than one CoSimulation element");
             }
             if (implementation.getLength() == 1) {
                 Element cosimulation = (Element) implementation.item(0);
@@ -489,8 +472,8 @@ public class FMUFile {
                     fmiModelDescription.modelIdentifier = cosimulation
                             .getAttribute("modelIdentifier");
                 } else {
-                    System.out
-                            .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+                    System.out.println(
+                            "Warning: FMU CoSimulation element is missing a modelIdentifier.");
                 }
 
                 // FIXME: We should use the
@@ -524,13 +507,12 @@ public class FMUFile {
 
                 // precision, extension for FMI-HCS
                 if (fmiModelDescription.handleIntegerTime == true) {
-                        if (cosimulation.hasAttribute("precision")) {
-                        fmiModelDescription.precision = Integer
-                                .parseInt(cosimulation
-                                        .getAttribute("precision"));
+                    if (cosimulation.hasAttribute("precision")) {
+                        fmiModelDescription.precision = Integer.parseInt(
+                                cosimulation.getAttribute("precision"));
                     } else {
-                            System.out
-                        .println("Warning: FMU modelDescription provides Integer representation of time, but precision is not specified");
+                        System.out.println(
+                                "Warning: FMU modelDescription provides Integer representation of time, but precision is not specified");
                     }
                 }
 
@@ -546,8 +528,8 @@ public class FMUFile {
             }
 
             if (implementation.getLength() > 1) {
-                System.out
-                        .println("Warning: FMU modelDescription provides more than one ModelExchange element");
+                System.out.println(
+                        "Warning: FMU modelDescription provides more than one ModelExchange element");
             }
             if (implementation.getLength() == 1) {
                 Element modelExchange = (Element) implementation.item(0);
@@ -563,8 +545,8 @@ public class FMUFile {
                     fmiModelDescription.modelIdentifier = modelExchange
                             .getAttribute("modelIdentifier");
                 } else {
-                    System.out
-                            .println("Warning: FMU CoSimulation element is missing a modelIdentifier.");
+                    System.out.println(
+                            "Warning: FMU CoSimulation element is missing a modelIdentifier.");
                 }
                 // Get the providesDirectionalDerivative attribute if present.
                 // FIXME: Dymola has a typo and is using providesDirectionalDerivatives
@@ -572,17 +554,18 @@ public class FMUFile {
                 if (modelExchange
                         .hasAttribute("providesDirectionalDerivatives")) {
                     fmiModelDescription.providesDirectionalDerivative = Boolean
-                            .parseBoolean(modelExchange
-                                    .getAttribute("providesDirectionalDerivatives"));
+                            .parseBoolean(modelExchange.getAttribute(
+                                    "providesDirectionalDerivatives"));
                 }
                 // FIXME: This should be removed once fix in tools like Dymola 2015.
                 // providesDirectionalDerivative is the name specified in the standard.
                 // Some tools such as Dymola 2015 have typos which is the reason why we search
                 // for both providesDirectionalDerivatives and providesDirectionalDerivatives.
-                if (modelExchange.hasAttribute("providesDirectionalDerivative")) {
+                if (modelExchange
+                        .hasAttribute("providesDirectionalDerivative")) {
                     fmiModelDescription.providesDirectionalDerivative = Boolean
-                            .parseBoolean(modelExchange
-                                    .getAttribute("providesDirectionalDerivative"));
+                            .parseBoolean(modelExchange.getAttribute(
+                                    "providesDirectionalDerivative"));
                 }
             }
         }
@@ -595,8 +578,8 @@ public class FMUFile {
 
         for (int i = 0; i < scalarVariables.getLength(); i++) {
             Element element = (Element) scalarVariables.item(i);
-            fmiModelDescription.modelVariables.add(new FMIScalarVariable(
-                    fmiModelDescription, element));
+            fmiModelDescription.modelVariables
+                    .add(new FMIScalarVariable(fmiModelDescription, element));
             fmiModelDescription.modelVariablesNames
                     .add(fmiModelDescription.modelVariables.get(i).name);
         }
@@ -639,15 +622,15 @@ public class FMUFile {
                         current = unknowVariables.item(i);
                         if (current.getNodeName().equalsIgnoreCase("Unknown")) {
                             fmiModelDescription.continuousStateDerivatives
-                            .add(new FMI20ContinuousStateDerivative(
-                                    fmiModelDescription, current));
+                                    .add(new FMI20ContinuousStateDerivative(
+                                            fmiModelDescription, current));
                         }
                     }
                 }
 
             } else {
                 new Exception("Warning: ModelStructure element is missing.")
-                .printStackTrace();
+                        .printStackTrace();
             }
         }
         // Moved code so fmiModelDescription.parseDependenciese
@@ -703,12 +686,12 @@ public class FMUFile {
         // Unzip in a temporary directory.
         File topDirectoryFile = File.createTempFile("FMUFile", ".tmp");
         if (!topDirectoryFile.delete()) {
-            throw new IOException("Could not delete temporary file "
-                    + topDirectoryFile);
+            throw new IOException(
+                    "Could not delete temporary file " + topDirectoryFile);
         }
         if (!topDirectoryFile.mkdir()) {
-            throw new IOException("Could not create directory "
-                    + topDirectoryFile);
+            throw new IOException(
+                    "Could not create directory " + topDirectoryFile);
         }
         topDirectoryFile.deleteOnExit();
         String topDirectory = topDirectoryFile.getCanonicalPath();
@@ -719,8 +702,8 @@ public class FMUFile {
         File destinationFile = null;
         try {
             fileInputStream = new FileInputStream(zipFileName);
-            zipInputStream = new ZipInputStream(new BufferedInputStream(
-                    fileInputStream));
+            zipInputStream = new ZipInputStream(
+                    new BufferedInputStream(fileInputStream));
             ZipEntry entry;
             // Note that calling getNextEntry() could throw an error:
             // "java.util.zip.ZipException: invalid entry CRC (expected
@@ -737,8 +720,8 @@ public class FMUFile {
                 // If the directory does not exist, create it.
                 if (!destinationParent.isDirectory()
                         && !destinationParent.mkdirs()) {
-                    throw new IOException("Failed to create \""
-                            + destinationParent + "\".");
+                    throw new IOException(
+                            "Failed to create \"" + destinationParent + "\".");
                 }
                 // If the entry is not a directory, then write the file.
                 if (!entry.isDirectory()) {
@@ -748,7 +731,8 @@ public class FMUFile {
                                 destinationFile);
                         destination = new BufferedOutputStream(fos, BUFFER);
                         int count;
-                        while ((count = zipInputStream.read(data, 0, BUFFER)) != -1) {
+                        while ((count = zipInputStream.read(data, 0,
+                                BUFFER)) != -1) {
                             destination.write(data, 0, count);
                         }
                         files.add(destinationFile);
@@ -793,7 +777,8 @@ public class FMUFile {
         // FIXME: it is difficult to detect if we are under a
         // 64bit JVM. See
         // http://forums.sun.com/thread.jspa?threadID=5306174
-        if (dataModelProperty == null || dataModelProperty.indexOf("64") != -1) {
+        if (dataModelProperty == null
+                || dataModelProperty.indexOf("64") != -1) {
             return false;
         } else {
             String javaVmNameProperty = System.getProperty("java.vm.name");

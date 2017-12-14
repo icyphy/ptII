@@ -72,8 +72,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class HybridModalDirector extends FSMDirector implements
-ContinuousStatefulComponent, ContinuousStepSizeController {
+public class HybridModalDirector extends FSMDirector
+        implements ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -105,8 +105,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HybridModalDirector newObject = (HybridModalDirector) super
-                .clone(workspace);
+        HybridModalDirector newObject = (HybridModalDirector) super.clone(
+                workspace);
         newObject._enclosingContinuousDirector = null;
         newObject._enclosingContinuousDirectorVersion = -1;
         return newObject;
@@ -145,8 +145,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
                                     stateRefinements[i].getName());
                         }
                         stateRefinements[i].fire();
-                        _getStateRefinementsToPostfire().add(
-                                stateRefinements[i]);
+                        _getStateRefinementsToPostfire()
+                                .add(stateRefinements[i]);
                     }
                 }
             }
@@ -237,21 +237,21 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
             State currentState = controller.currentState();
             List transitionList = currentState.outgoingPort
                     .linkedRelationList();
-            List preemptiveEnabledTransitions = controller.enabledTransitions(
-                    transitionList, true, false);
+            List preemptiveEnabledTransitions = controller
+                    .enabledTransitions(transitionList, true, false);
 
             // Check whether there is any non-preemptive transition enabled.
             List nonpreemptiveEnabledTransitions = controller
                     .enabledTransitions(transitionList, false, false);
 
             // Check whether there is any event detected for preemptive transitions.
-            Transition preemptiveTrWithEvent = _checkEvent(currentState
-                    .preemptiveTransitionList());
+            Transition preemptiveTrWithEvent = _checkEvent(
+                    currentState.preemptiveTransitionList());
 
             // Check whether there is any event detected for
             // nonpreemptive transitions.
-            Transition nonPreemptiveTrWithEvent = _checkEvent(currentState
-                    .nonpreemptiveTransitionList());
+            Transition nonPreemptiveTrWithEvent = _checkEvent(
+                    currentState.nonpreemptiveTransitionList());
 
             if (_debugging && _verbose) {
                 if (preemptiveEnabledTransitions.size() != 0) {
@@ -366,8 +366,7 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
                 }
 
                 if (_debugging && _verbose) {
-                    _debug("The guard "
-                            + enabledTransition.getGuardExpression()
+                    _debug("The guard " + enabledTransition.getGuardExpression()
                             + " has the biggest difference to boundary as "
                             + _distanceToBoundary);
                 }
@@ -566,7 +565,7 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStatefulComponent) {
                 ((ContinuousStatefulComponent) actor)
-                .rollBackToCommittedState();
+                        .rollBackToCommittedState();
             } else if (actor instanceof CompositeActor) {
                 // Delegate to the director.
                 Director director = actor.getDirector();
@@ -589,7 +588,8 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
                 // possible side effects... "
 
                 if (director instanceof ContinuousStatefulComponent) {
-                    ((ContinuousStatefulComponent) director).rollBackToCommittedState();
+                    ((ContinuousStatefulComponent) director)
+                            .rollBackToCommittedState();
                 }
             }
         }

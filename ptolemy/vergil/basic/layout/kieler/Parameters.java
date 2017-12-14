@@ -87,8 +87,8 @@ public class Parameters {
      * @exception IllegalActionException
      *          if one of the parameters has the wrong type
      */
-    public void configureLayout(KShapeLayout parentLayout, GraphModel graphModel)
-            throws IllegalActionException {
+    public void configureLayout(KShapeLayout parentLayout,
+            GraphModel graphModel) throws IllegalActionException {
 
         // Configuration values specified by user.
         List<AbstractLayoutConfiguration> configAttributes = _compositeEntity
@@ -131,7 +131,8 @@ public class Parameters {
      * @param parentLayout
      *          the layout of the parent node
      */
-    private void _applyDefault(KLayoutData parentLayout) throws IllegalActionException {
+    private void _applyDefault(KLayoutData parentLayout)
+            throws IllegalActionException {
 
         // Set general default values.
         parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.RIGHT);
@@ -157,25 +158,26 @@ public class Parameters {
      */
     private void _applyAbstractConfiguration(KLayoutData parentLayout,
             AbstractLayoutConfiguration abstractConfiguration)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         if (abstractConfiguration != null) {
             // Whether decorations are to be laid out or left as they are
-            BooleanToken decorationsToken = BooleanToken
-                    .convert(abstractConfiguration.includeDecorations.getToken());
-            parentLayout.setProperty(DECORATIONS, decorationsToken.booleanValue());
+            BooleanToken decorationsToken = BooleanToken.convert(
+                    abstractConfiguration.includeDecorations.getToken());
+            parentLayout.setProperty(DECORATIONS,
+                    decorationsToken.booleanValue());
 
             // Spacing between diagram elements
             DoubleToken spacingToken = DoubleToken
                     .convert(abstractConfiguration.spacing.getToken());
-            parentLayout.setProperty(SPACING, (float) spacingToken.doubleValue());
+            parentLayout.setProperty(SPACING,
+                    (float) spacingToken.doubleValue());
 
             // Target aspect ratio for the diagram
             DoubleToken logAspectToken = DoubleToken
                     .convert(abstractConfiguration.logAspectRatio.getToken());
             parentLayout.setProperty(ASPECT_RATIO,
                     (float) Math.pow(10, logAspectToken.doubleValue()));
-
 
             // The interaction mode (constraints the layout according to what the
             // diagram currently looks like)
@@ -215,7 +217,7 @@ public class Parameters {
      */
     private void _applyActorConfiguration(KLayoutData parentLayout,
             ActorLayoutConfiguration actorConfiguration)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         // Set default values for actor models.
         parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
@@ -250,7 +252,7 @@ public class Parameters {
      */
     private void _applyModalConfiguration(KLayoutData parentLayout,
             ModalLayoutConfiguration modalConfiguration)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         // Set default values for modal models.
         parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
@@ -284,12 +286,13 @@ public class Parameters {
             } else {
                 // arc-style routing
                 parentLayout.setProperty(SPACING, spacing / 4f);
-                parentLayout.setProperty(
-                        Properties.OBJ_SPACING_IN_LAYER_FACTOR, 20f);
+                parentLayout.setProperty(Properties.OBJ_SPACING_IN_LAYER_FACTOR,
+                        20f);
             }
 
             // direction
-            Direction dir = (Direction) modalConfiguration.direction.getChosenValue();
+            Direction dir = (Direction) modalConfiguration.direction
+                    .getChosenValue();
             parentLayout.setProperty(LayoutOptions.DIRECTION, dir);
         }
     }
@@ -301,7 +304,8 @@ public class Parameters {
 
     /** Layout option for the overall spacing between elements. */
     public static final IProperty<Float> SPACING = new Property<Float>(
-            LayoutOptions.SPACING, (float) AbstractLayoutConfiguration.DEF_SPACING);
+            LayoutOptions.SPACING,
+            (float) AbstractLayoutConfiguration.DEF_SPACING);
 
     /** Layout option for the aspect ratio of connected components. */
     public static final IProperty<Float> ASPECT_RATIO = new Property<Float>(

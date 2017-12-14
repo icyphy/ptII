@@ -56,8 +56,8 @@ public abstract class ConceptFunctionDefinitionAttribute extends Attribute {
      *   actor with this name.
      */
     public ConceptFunctionDefinitionAttribute(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"20\" "

@@ -112,8 +112,8 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public LinearStateSpace(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public LinearStateSpace(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -298,8 +298,7 @@ public class LinearStateSpace extends TypedCompositeActor {
 
         DoubleMatrixToken d = (DoubleMatrixToken) D.getToken();
 
-        /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/initialStates
-        .getToken();
+        /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/initialStates.getToken();
 
         try {
             _workspace.getWriteAccess();
@@ -317,8 +316,8 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Integrators
             for (int i = 0; i < n; i++) {
                 integrators[i] = new Integrator(this, "state_" + i);
-                integrators[i].initialState.setExpression("initialStates(0,"
-                        + i + ")");
+                integrators[i].initialState
+                        .setExpression("initialStates(0," + i + ")");
                 states[i] = new TypedIORelation(this, "relation_state_" + i);
                 integrators[i].state.link(states[i]);
 
@@ -339,8 +338,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                         continue;
                     }
                     feedback[i][j] = new Scale(this, "feedback_" + i + "_" + j);
-                    feedback[i][j].factor.setExpression("A(" + i + ", " + j
-                            + ")");
+                    feedback[i][j].factor
+                            .setExpression("A(" + i + ", " + j + ")");
                     feedback[i][j].input.link(states[j]);
                     connect(feedback[i][j].output, stateAdders[i].plus);
                 }
@@ -361,8 +360,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                     // if the elements of A's in this row are also zero,
                     // then we will have an illegal topology.
                     inputScales[i][j] = new Scale(this, "b_" + i + "_" + j);
-                    inputScales[i][j].factor.setExpression("B(" + i + ", " + j
-                            + ")");
+                    inputScales[i][j].factor
+                            .setExpression("B(" + i + ", " + j + ")");
                     inputScales[i][j].input.link(inputs[j]);
                     connect(inputScales[i][j].output, stateAdders[i].plus);
                 }
@@ -382,10 +381,10 @@ public class LinearStateSpace extends TypedCompositeActor {
                     if (c.getElementAt(l, i) == 0.0) {
                         continue;
                     }
-                    outputScales[l][i] = new Scale(this, "outputScale_" + l
-                            + "_" + i);
-                    outputScales[l][i].factor.setExpression("C(" + l + ", " + i
-                            + ")");
+                    outputScales[l][i] = new Scale(this,
+                            "outputScale_" + l + "_" + i);
+                    outputScales[l][i].factor
+                            .setExpression("C(" + l + ", " + i + ")");
                     outputScales[l][i].input.link(states[i]);
                     connect(outputScales[l][i].output, outputAdders[l].plus);
                 }
@@ -400,10 +399,10 @@ public class LinearStateSpace extends TypedCompositeActor {
                     if (d.getElementAt(l, j) == 0.0) {
                         continue;
                     }
-                    feedThrough[l][j] = new Scale(this, "feedThrough_" + l
-                            + "_" + j);
-                    feedThrough[l][j].factor.setExpression("D(" + l + ", " + j
-                            + ")");
+                    feedThrough[l][j] = new Scale(this,
+                            "feedThrough_" + l + "_" + j);
+                    feedThrough[l][j].factor
+                            .setExpression("D(" + l + ", " + j + ")");
                     feedThrough[l][j].input.link(inputs[j]);
                     connect(feedThrough[l][j].output, outputAdders[l].plus);
                 }
@@ -465,8 +464,9 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (b.getRowCount() != n) {
             throw new IllegalActionException(this,
                     "The number of rows of the B matrix (" + b.getRowCount()
-                    + ") should be equal to "
-                    + "the number of rows of the A matrix (" + n + ").");
+                            + ") should be equal to "
+                            + "the number of rows of the A matrix (" + n
+                            + ").");
         }
 
         int m = b.getColumnCount();
@@ -475,8 +475,8 @@ public class LinearStateSpace extends TypedCompositeActor {
             throw new IllegalActionException(this,
                     "The number of columns of the B matrix ("
                             + b.getColumnCount() + ") should be equal to "
-                            + "the width of the input port ("
-                            + input.getWidth() + ").");
+                            + "the width of the input port (" + input.getWidth()
+                            + ").");
         }
 
         DoubleMatrixToken c = (DoubleMatrixToken) C.getToken();
@@ -485,7 +485,8 @@ public class LinearStateSpace extends TypedCompositeActor {
             throw new IllegalActionException(this,
                     "The number of columns of the C matrix ("
                             + c.getColumnCount() + ") should be equal to "
-                            + "the number of rows of the A matrix (" + n + ").");
+                            + "the number of rows of the A matrix (" + n
+                            + ").");
         }
 
         // The output width is not checked, since we may only want
@@ -495,17 +496,17 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (c.getRowCount() != d.getRowCount()) {
             throw new IllegalActionException(this,
                     "The number of rows of the D matrix (" + d.getRowCount()
-                    + ") should be equal to "
-                    + "the number of rows of the C matrix ("
-                    + c.getRowCount() + ").");
+                            + ") should be equal to "
+                            + "the number of rows of the C matrix ("
+                            + c.getRowCount() + ").");
         }
 
         if (d.getColumnCount() != input.getWidth()) {
             throw new IllegalActionException(this,
                     "The number of columns of the D matrix ("
                             + d.getColumnCount() + ") should be equal to "
-                            + "the width of the input port ("
-                            + input.getWidth() + ").");
+                            + "the width of the input port (" + input.getWidth()
+                            + ").");
         }
 
         DoubleMatrixToken x0 = (DoubleMatrixToken) initialStates.getToken();
@@ -513,15 +514,15 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (x0.getColumnCount() != n) {
             throw new IllegalActionException(this,
                     "The number of initial states (" + x0.getColumnCount()
-                    + ") should equal to "
-                    + "the number of columns of the A matrix (" + n
-                    + ").");
+                            + ") should equal to "
+                            + "the number of columns of the A matrix (" + n
+                            + ").");
         }
     }
 
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
@@ -552,12 +553,12 @@ public class LinearStateSpace extends TypedCompositeActor {
         setClassName("ptolemy.domains.ct.lib.LinearStateSpace");
 
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-30\" " + "width=\"100\" height=\"60\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
-                + "style=\"font-size:14\">\n" + "dx/dt=Ax+Bu " + "</text>\n"
-                + "<text x=\"-45\" y=\"10\" " + "style=\"font-size:14\">\n"
-                + "    y=Cx+Du" + "</text>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-50\" y=\"-30\" "
+                + "width=\"100\" height=\"60\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-45\" y=\"-10\" " + "style=\"font-size:14\">\n"
+                + "dx/dt=Ax+Bu " + "</text>\n" + "<text x=\"-45\" y=\"10\" "
+                + "style=\"font-size:14\">\n" + "    y=Cx+Du" + "</text>\n"
+                + "</svg>\n");
     }
 
     /** Set this composite actor to opaque and request for reinitialization

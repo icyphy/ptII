@@ -34,7 +34,6 @@ import java.util.HashSet;
 
 import org.eclipse.jetty.websocket.WebSocket.OnTextMessage;
 
-
 ///////////////////////////////////////////////////////////////////
 //// WebSocketEndpoint
 
@@ -56,11 +55,11 @@ public class WebSocketEndpoint implements OnTextMessage {
 
     /** Create a new WebSocketEndpoint.
     */
-   public WebSocketEndpoint() {
-       _connection = null;
-       _isOpen = false;
-       _subscribers = new HashSet();
-   }
+    public WebSocketEndpoint() {
+        _connection = null;
+        _isOpen = false;
+        _subscribers = new HashSet();
+    }
 
     /** Create a new WebSocketEndpoint with the given parent service.
      * @param service  The WebSocketService to be notified of messages.

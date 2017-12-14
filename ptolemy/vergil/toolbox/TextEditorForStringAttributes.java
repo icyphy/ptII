@@ -78,7 +78,8 @@ public class TextEditorForStringAttributes extends TextEditor {
         _factory = factory;
         _attributeToEdit = attributeToEdit;
         if (document == null) {
-            text.append(TextEditorTableauFactory.getTextToEdit(_attributeToEdit));
+            text.append(
+                    TextEditorTableauFactory.getTextToEdit(_attributeToEdit));
         }
         text.setColumns(columns);
         text.setRows(rows);

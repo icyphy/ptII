@@ -645,7 +645,8 @@ public class FloatMatrixMath {
      *  @param matrix2 The second matrix of floats.
      *  @return A new matrix of floats.
      */
-    public static final float[][] multiply(float[][] matrix1, float[][] matrix2) {
+    public static final float[][] multiply(float[][] matrix1,
+            float[][] matrix2) {
         float[][] returnValue = new float[_rows(matrix1)][matrix2[0].length];
 
         for (int i = 0; i < _rows(matrix1); i++) {
@@ -734,7 +735,8 @@ public class FloatMatrixMath {
      *  the output matrix will contain a column of zeros for all
      *  redundant input columns.
      */
-    public static final float[][] orthonormalizeColumns(final float[][] matrix) {
+    public static final float[][] orthonormalizeColumns(
+            final float[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
@@ -1165,7 +1167,8 @@ public class FloatMatrixMath {
      * </ol>
      *  Orthogonalization is done with the Gram-Schmidt process.
      */
-    protected static final Object[] _orthogonalizeRows(final float[][] rowArrays) {
+    protected static final Object[] _orthogonalizeRows(
+            final float[][] rowArrays) {
         int rows = rowArrays.length;
         int columns = rowArrays[0].length;
         int nullity = 0;
@@ -1194,10 +1197,9 @@ public class FloatMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = FloatArrayMath.subtract(
-                        rowArray,
-                        FloatArrayMath.scale(orthogonalMatrix[j], dotProduct
-                                * oneOverNormSquaredArray[j]));
+                rowArray = FloatArrayMath.subtract(rowArray,
+                        FloatArrayMath.scale(orthogonalMatrix[j],
+                                dotProduct * oneOverNormSquaredArray[j]));
             }
 
             // Compute the dot product between the input and output vector

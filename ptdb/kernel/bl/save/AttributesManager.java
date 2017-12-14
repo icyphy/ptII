@@ -151,8 +151,8 @@ public class AttributesManager {
      * the connection.
      *
      */
-    public List<XMLDBAttribute> getDBAttributes() throws DBExecutionException,
-    DBConnectionException {
+    public List<XMLDBAttribute> getDBAttributes()
+            throws DBExecutionException, DBConnectionException {
 
         List<XMLDBAttribute> attributesList = null;
 
@@ -172,8 +172,8 @@ public class AttributesManager {
             if (_dbConnection != null) {
                 _dbConnection.abortConnection();
             }
-            throw new DBExecutionException("Failed to fetch the attributes - "
-                    + e.getMessage(), e);
+            throw new DBExecutionException(
+                    "Failed to fetch the attributes - " + e.getMessage(), e);
 
         } finally {
             if (_dbConnection != null) {

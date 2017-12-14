@@ -147,8 +147,8 @@ import ptolemy.util.MessageHandler;
  */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
-public class EntityLibrary extends CompositeEntity implements LazyComposite,
-Librariable {
+public class EntityLibrary extends CompositeEntity
+        implements LazyComposite, Librariable {
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.

@@ -85,7 +85,8 @@ public class StuckAtFaultGenerator extends AtomicCommunicationAspect {
         _lastKnownHealthyTokens = new HashMap();
         _wrappedReceivers = new HashMap();
 
-        stuckAtFaultProbability = new Parameter(this, "stuckAtFaultProbability");
+        stuckAtFaultProbability = new Parameter(this,
+                "stuckAtFaultProbability");
         stuckAtFaultProbability.setExpression("0.1");
         stuckAtFaultProbability.setTypeEquals(BaseType.DOUBLE);
     }
@@ -158,8 +159,8 @@ public class StuckAtFaultGenerator extends AtomicCommunicationAspect {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StuckAtFaultGenerator newObject = (StuckAtFaultGenerator) super
-                .clone(workspace);
+        StuckAtFaultGenerator newObject = (StuckAtFaultGenerator) super.clone(
+                workspace);
         newObject._nextReceiver = null;
         newObject._nextTimeFree = null;
         newObject._receiversAndTokensToSendTo = new HashMap();
@@ -294,9 +295,8 @@ public class StuckAtFaultGenerator extends AtomicCommunicationAspect {
         }
         // if there was no token in the queue, schedule a refiring.
         // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) {
-        if (_tokens.size() > 0
-                && (_nextTimeFree == null || currentTime
-                .compareTo(_nextTimeFree) >= 0)) {
+        if (_tokens.size() > 0 && (_nextTimeFree == null
+                || currentTime.compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
             // FIXME:
             // Not only does this bus need to be fired
@@ -363,8 +363,9 @@ public class StuckAtFaultGenerator extends AtomicCommunicationAspect {
             } else {
                 _tokens.put(new Object[] { receiver, token });
                 _tokenCount++;
-                sendCommunicationEvent((Actor) source.getContainer()
-                        .getContainer(), 0, _tokenCount, EventType.RECEIVED);
+                sendCommunicationEvent(
+                        (Actor) source.getContainer().getContainer(), 0,
+                        _tokenCount, EventType.RECEIVED);
                 if (_tokens.size() == 1) { // no refiring has been scheduled
                     _scheduleRefire();
                 }

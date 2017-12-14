@@ -121,15 +121,15 @@ public class EditIconGraphController extends BasicGraphController {
             if (semanticObject instanceof Attribute) {
                 return _attributeController;
             } else {
-                throw new RuntimeException("Unrecognized object: "
-                        + semanticObject);
+                throw new RuntimeException(
+                        "Unrecognized object: " + semanticObject);
             }
         } else if (object == null) {
             return _attributeController;
         }
 
-        throw new RuntimeException("Node with unknown semantic object: "
-                + object);
+        throw new RuntimeException(
+                "Node with unknown semantic object: " + object);
     }
 
     /** Set the configuration.  The configuration is used when

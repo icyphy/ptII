@@ -31,6 +31,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 /**
 A  special decorator that defines a Gaussian measurement model.
 
@@ -41,7 +42,7 @@ A  special decorator that defines a Gaussian measurement model.
 @Pt.AcceptedRating
  */
 public class GaussianMeasurementModel extends MeasurementModel
-implements TrainableGaussianModel {
+        implements TrainableGaussianModel {
 
     /** Construct a GaussianMeasurementModel.
      *  @param container The container.
@@ -70,7 +71,8 @@ implements TrainableGaussianModel {
     /**
      * The measurement equation that will refer to the state space model.
      */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         noiseMean = new Parameter(this, "noiseMean");
         noiseMean.setExpression("0.0");

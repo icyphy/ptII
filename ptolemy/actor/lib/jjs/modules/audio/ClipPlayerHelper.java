@@ -79,7 +79,8 @@ public class ClipPlayerHelper extends HelperBase {
      * @param url The URL of the clip to load.
      */
     public void setURL(String url) {
-        if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+        if (_player != null
+                && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
             _player.stop();
         }
 
@@ -87,36 +88,40 @@ public class ClipPlayerHelper extends HelperBase {
         try {
             _player = new MediaPlayer(new Media(url));
         } catch (UnsupportedOperationException ex) {
-            throw new UnsupportedOperationException("Failed to create a Media or MediaPlayer based on \"" + url +
-                                                    "\". Note that Java 1.8.0 before 8u72 have a bug that prevent https from working." +
-                                                    "The solution is to update to a version of the Java Development Kit (JDK) after 1.8.0_72, " +
-                                                    "See https://bugs.openjdk.java.net/browse/JDK-8091132.", ex);
+            throw new UnsupportedOperationException(
+                    "Failed to create a Media or MediaPlayer based on \"" + url
+                            + "\". Note that Java 1.8.0 before 8u72 have a bug that prevent https from working."
+                            + "The solution is to update to a version of the Java Development Kit (JDK) after 1.8.0_72, "
+                            + "See https://bugs.openjdk.java.net/browse/JDK-8091132.",
+                    ex);
         }
         _player.setOnError(new Runnable() {
-                @Override
-                public void run() {
-                    if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
-                        _player.stop();
-                    }
-                    _error("Error in ClipPlayer: " + _player.getError().getMessage(), _player.getError());
+            @Override
+            public void run() {
+                if (_player != null && _player.getStatus()
+                        .equals(MediaPlayer.Status.PLAYING)) {
+                    _player.stop();
                 }
-            });
+                _error("Error in ClipPlayer: "
+                        + _player.getError().getMessage(), _player.getError());
+            }
+        });
 
         // Stop the player at the end of the clip so we can emit a "done" event on stop.
         _player.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    _player.stop();
-                }
-            });
+            @Override
+            public void run() {
+                _player.stop();
+            }
+        });
 
         // Emit a "done" event on stop.
         _player.setOnStopped(new Runnable() {
-                @Override
-                public void run() {
-                    _currentObj.callMember("emit", "done", true);
-                }
-            });
+            @Override
+            public void run() {
+                _currentObj.callMember("emit", "done", true);
+            }
+        });
 
         // For debugging.
         /*
@@ -125,7 +130,7 @@ public class ClipPlayerHelper extends HelperBase {
           public void run() {
           System.out.println("ClipPlayer is ready");
           }
-
+        
           });
         */
     }
@@ -133,7 +138,8 @@ public class ClipPlayerHelper extends HelperBase {
     /** Stop playback, if playing.
      */
     public void stop() {
-        if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+        if (_player != null
+                && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
             _player.stop();
         }
     }
@@ -152,8 +158,10 @@ public class ClipPlayerHelper extends HelperBase {
         try {
             _fxPanel = new JFXPanel();
         } catch (UnsupportedOperationException ex) {
-            System.out.println("ClipPlayerHelper: failed to instantiate a JFXPanel, "
-                    + "which can happen if a graphical display is not present: " + ex);
+            System.out.println(
+                    "ClipPlayerHelper: failed to instantiate a JFXPanel, "
+                            + "which can happen if a graphical display is not present: "
+                            + ex);
         }
     }
     /** The sound clip player. */

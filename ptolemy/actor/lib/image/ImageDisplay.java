@@ -106,8 +106,7 @@ public class ImageDisplay extends Sink implements Placeable {
         try {
             // See _getImplementation():
             if (PtolemyInjector.getInjector() == null) {
-                System.err
-                .println("Warning: main() did not call "
+                System.err.println("Warning: main() did not call "
                         + "ActorModuleInitializer.initializeInjector(), "
                         + "so ImageDisplayInterface.clone() is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
@@ -202,8 +201,8 @@ public class ImageDisplay extends Sink implements Placeable {
                         + "so ImageDisplay is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    ImageDisplayInterface.class);
+            _implementation = PtolemyInjector.getInjector()
+                    .getInstance(ImageDisplayInterface.class);
             try {
                 _implementation.init(this);
             } catch (NameDuplicationException e) {

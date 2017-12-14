@@ -135,8 +135,8 @@ public class WidgetPropertiesFrame extends JPanel {
                     if (enabledAttr instanceof Variable) {
                         Token token = ((Variable) enabledAttr).getToken();
                         if (token instanceof BooleanToken) {
-                            _enabled.setState(((BooleanToken) token)
-                                    .booleanValue());
+                            _enabled.setState(
+                                    ((BooleanToken) token).booleanValue());
                         }
                     }
                 } catch (IllegalActionException e) {
@@ -150,8 +150,8 @@ public class WidgetPropertiesFrame extends JPanel {
                     if (requiredAttr instanceof Variable) {
                         Token token = ((Variable) requiredAttr).getToken();
                         if (token instanceof BooleanToken) {
-                            _required.setState(((BooleanToken) token)
-                                    .booleanValue());
+                            _required.setState(
+                                    ((BooleanToken) token).booleanValue());
                         }
                     }
                 } catch (IllegalActionException e) {
@@ -179,17 +179,17 @@ public class WidgetPropertiesFrame extends JPanel {
         try {
             Point position = new Point(
                     ((SpinnerNumberModel) _xSpinner.getModel()).getNumber()
-                    .intValue(),
+                            .intValue(),
                     ((SpinnerNumberModel) _ySpinner.getModel()).getNumber()
-                    .intValue());
+                            .intValue());
             position.translate(-_widget.getPreferredLocation().x,
                     -_widget.getPreferredLocation().y);
 
             Dimension size = new Dimension(
                     ((SpinnerNumberModel) _widthSpinner.getModel()).getNumber()
-                    .intValue(),
-                    ((SpinnerNumberModel) _heightSpinner.getModel())
-                    .getNumber().intValue());
+                            .intValue(),
+                    ((SpinnerNumberModel) _heightSpinner.getModel()).getNumber()
+                            .intValue());
 
             bounds = new Rectangle(position, size);
         } catch (NumberFormatException e) {
@@ -271,18 +271,18 @@ public class WidgetPropertiesFrame extends JPanel {
 
     /** Width spinner UI element.
      */
-    private final JSpinner _widthSpinner = new JSpinner(new SpinnerNumberModel(
-            100, 5, 9999, 1));
+    private final JSpinner _widthSpinner = new JSpinner(
+            new SpinnerNumberModel(100, 5, 9999, 1));
 
     /** X position spinner UI element.
      */
-    private final JSpinner _xSpinner = new JSpinner(new SpinnerNumberModel(100,
-            0, 9999, 1));
+    private final JSpinner _xSpinner = new JSpinner(
+            new SpinnerNumberModel(100, 0, 9999, 1));
 
     /** Y position spinner UI element.
      */
-    private final JSpinner _ySpinner = new JSpinner(new SpinnerNumberModel(100,
-            0, 9999, 1));
+    private final JSpinner _ySpinner = new JSpinner(
+            new SpinnerNumberModel(100, 0, 9999, 1));
 
     /** Widget whose properties are being edited.
      */

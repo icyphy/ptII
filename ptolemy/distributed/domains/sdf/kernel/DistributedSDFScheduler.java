@@ -179,8 +179,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  external ports are not correct.
      */
     @SuppressWarnings("unused")
-    protected Schedule _getParallelSchedule() throws NotSchedulableException,
-    IllegalActionException {
+    protected Schedule _getParallelSchedule()
+            throws NotSchedulableException, IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -226,7 +226,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
         Map externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialize externalRates to zero.
-        for (Iterator ports = container.portList().iterator(); ports.hasNext();) {
+        for (Iterator ports = container.portList().iterator(); ports
+                .hasNext();) {
             IOPort port = (IOPort) ports.next();
             externalRates.put(port, Fraction.ZERO);
         }
@@ -338,8 +339,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  external ports are not correct.
      */
     @Override
-    protected Schedule _getSchedule() throws NotSchedulableException,
-    IllegalActionException {
+    protected Schedule _getSchedule()
+            throws NotSchedulableException, IllegalActionException {
         boolean parallelSchedule = false;
         Schedule schedule = null;
 
@@ -383,10 +384,9 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *
      */
     @SuppressWarnings("unused")
-    protected Schedule _scheduleInParallelConnectedActors(
-            Map minimumBufferSize, Map externalRates, LinkedList actorList,
-            CompositeActor container, LinkedList allActorList)
-                    throws NotSchedulableException {
+    protected Schedule _scheduleInParallelConnectedActors(Map minimumBufferSize,
+            Map externalRates, LinkedList actorList, CompositeActor container,
+            LinkedList allActorList) throws NotSchedulableException {
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
 
@@ -447,7 +447,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                     continue;
                 }
 
-                int inputCount = _countUnfulfilledInputs(actor, actorList, true);
+                int inputCount = _countUnfulfilledInputs(actor, actorList,
+                        true);
 
                 if (inputCount == 0) {
                     /**************************************************
@@ -490,8 +491,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                         /**************************************************
                          * > NEW!                                         *
                          **************************************************/
-                        _simulateTokensCreatedLast(outputPort, count,
-                                actorList, readyToScheduleActorList);
+                        _simulateTokensCreatedLast(outputPort, count, actorList,
+                                readyToScheduleActorList);
 
                         /**************************************************
                          * < NEW!                                         *
@@ -502,8 +503,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
             // Simulate a number of tokens initially present on each
             // external input port.
-            for (Iterator inputPorts = container.inputPortList().iterator(); inputPorts
-                    .hasNext();) {
+            for (Iterator inputPorts = container.inputPortList()
+                    .iterator(); inputPorts.hasNext();) {
                 IOPort port = (IOPort) inputPorts.next();
                 int count = ((Integer) externalRates.get(port)).intValue();
 
@@ -519,7 +520,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
             // We copy all the initial ready actors into the parallelLevel
             // to keep track of when we finalize processing every level.
-            for (actors = readyToScheduleActorList.iterator(); actors.hasNext();) {
+            for (actors = readyToScheduleActorList.iterator(); actors
+                    .hasNext();) {
                 // Changed from addFirst to addLast, this does not really
                 // matter since this is are all the sources that have
                 // no input requirements to be fired.
@@ -631,8 +633,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                      * > NEW!                                         *
                      **************************************************/
                     // First to Last
-                    _simulateTokensCreatedLast(outputPort, count
-                            * numberOfFirings, unscheduledActorList,
+                    _simulateTokensCreatedLast(outputPort,
+                            count * numberOfFirings, unscheduledActorList,
                             readyToScheduleActorList);
 
                     /**************************************************
@@ -707,8 +709,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                         // i.e. all its inputs are satisfied, and it
                         // appears in the unscheduled actors list
                         // then put it at the END of readyToScheduleActorList.
-                        if (inputCount <= 0
-                                && unscheduledActorList.contains(currentActor)) {
+                        if (inputCount <= 0 && unscheduledActorList
+                                .contains(currentActor)) {
                             readyToScheduleActorList.addFirst(currentActor);
                         }
                     }

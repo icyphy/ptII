@@ -237,7 +237,8 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @param dataset The data set that has been modified.
      */
     @Override
-    public synchronized void editDataModified(EditablePlot source, int dataset) {
+    public synchronized void editDataModified(EditablePlot source,
+            int dataset) {
         if (dataset == 0 && !_settingInitialTrace) {
             _dataModified = true;
             _data = ((EditablePlot) plot).getData(0);

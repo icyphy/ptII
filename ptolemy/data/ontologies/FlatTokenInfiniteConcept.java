@@ -76,7 +76,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             Ontology ontology, FlatTokenRepresentativeConcept representative,
             Token value) throws IllegalActionException {
         try {
-            return new FlatTokenInfiniteConcept(ontology, representative, value);
+            return new FlatTokenInfiniteConcept(ontology, representative,
+                    value);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(
                     "Name conflict with automatically generated infinite concept name.\n"
@@ -115,8 +116,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             return getOntology().getConceptGraph().compare(_representative,
                     concept);
         } else {
-            if (!_representative
-                    .equals(((FlatTokenInfiniteConcept) concept)._representative)) {
+            if (!_representative.equals(
+                    ((FlatTokenInfiniteConcept) concept)._representative)) {
                 return getOntology().getConceptGraph().compare(_representative,
                         ((FlatTokenInfiniteConcept) concept)._representative);
             } else {
@@ -252,7 +253,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      */
     protected FlatTokenInfiniteConcept(Ontology ontology,
             FlatTokenRepresentativeConcept representative, Token value)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(ontology);
         _representative = representative;
         _tokenValue = value;
@@ -344,12 +345,12 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
 
         switch (boundType) {
         case GREATESTLOWER:
-            conceptsAboveOrBelow = _representative.getCoverSetBelow().toArray(
-                    conceptsAboveOrBelow);
+            conceptsAboveOrBelow = _representative.getCoverSetBelow()
+                    .toArray(conceptsAboveOrBelow);
             break;
         case LEASTUPPER:
-            conceptsAboveOrBelow = _representative.getCoverSetAbove().toArray(
-                    conceptsAboveOrBelow);
+            conceptsAboveOrBelow = _representative.getCoverSetAbove()
+                    .toArray(conceptsAboveOrBelow);
             break;
         default:
             throw new IllegalArgumentException("Unrecognized bound type: "

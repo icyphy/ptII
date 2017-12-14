@@ -175,8 +175,8 @@ public class TestModel extends GTEvent {
             // Filter out any graphical classes.
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
             // Remove VersionAttributes.
-            removeGraphicalClasses.put(
-                    "ptolemy.kernel.attributes.VersionAttribute", null);
+            removeGraphicalClasses
+                    .put("ptolemy.kernel.attributes.VersionAttribute", null);
             MoMLParser.addMoMLFilter(removeGraphicalClasses);
             entity = (CompositeEntity) GTTools.cleanupModel(entity, _parser);
         } finally {
@@ -203,8 +203,8 @@ public class TestModel extends GTEvent {
             try {
                 moml = new StringToken(entity.exportMoML());
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex, "Failed to parse "
-                        + entity.exportMoML());
+                throw new IllegalActionException(this, ex,
+                        "Failed to parse " + entity.exportMoML());
 
             }
             _trainingTokens.add(moml);
@@ -226,19 +226,17 @@ public class TestModel extends GTEvent {
         try {
             token = new StringToken(entity.exportMoML());
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to parse "
-                    + entity.exportMoML());
+            throw new IllegalActionException(this, ex,
+                    "Failed to parse " + entity.exportMoML());
         }
         _numberOfInputTokensSeen++;
 
         if (!token.toString().equals(referenceToken.toString())) {
             String versionAttribute = "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"[^\"]\">";
             String replacement = "<!-- VersionAttribute -->";
-            if (token
-                    .toString()
-                    .replaceAll(versionAttribute, replacement)
-                    .equals(referenceToken.toString().replaceAll(
-                            versionAttribute, replacement))) {
+            if (token.toString().replaceAll(versionAttribute, replacement)
+                    .equals(referenceToken.toString()
+                            .replaceAll(versionAttribute, replacement))) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
                                 + "Value was: " + token
@@ -290,7 +288,8 @@ public class TestModel extends GTEvent {
                         + "starvation is occurring.";
                 String fireCompatProperty = "ptolemy.actor.lib.NonStrictTest.fire.compat";
 
-                if (StringUtilities.getProperty(fireCompatProperty).length() > 0) {
+                if (StringUtilities.getProperty(fireCompatProperty)
+                        .length() > 0) {
                     System.err.println("Warning: '" + getFullName() + "' "
                             + errorMessage
                             + "\nThis error is being ignored because " + "the "
@@ -313,8 +312,8 @@ public class TestModel extends GTEvent {
                     // FIXME: this produce a dialog for each failed test.
                     throw new IllegalActionException(this, errorMessage);
                 }
-                System.err.println("Warning: '" + getFullName() + "' "
-                        + errorMessage);
+                System.err.println(
+                        "Warning: '" + getFullName() + "' " + errorMessage);
             }
         }
 

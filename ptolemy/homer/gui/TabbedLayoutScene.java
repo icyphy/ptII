@@ -133,8 +133,9 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                     // For simple click, just select the tab
                     if (e.getClickCount() == 1) {
                         int selectedIndex = -1;
-                        if (_tabScenes.indexOfTabComponent(TabSceneButton.this) == _tabScenes
-                                .getTabCount() - 1) {
+                        if (_tabScenes.indexOfTabComponent(
+                                TabSceneButton.this) == _tabScenes.getTabCount()
+                                        - 1) {
                             selectedIndex = _tabScenes.getTabCount() - 2;
                         } else {
                             selectedIndex = _tabScenes

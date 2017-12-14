@@ -74,8 +74,8 @@ import ptolemy.moml.HandlesInternalLinks;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (neuendor)
  */
-public class MetroIIMirrorComposite extends MetroIICompositeActor implements
-HandlesInternalLinks {
+public class MetroIIMirrorComposite extends MetroIICompositeActor
+        implements HandlesInternalLinks {
 
     /**
      * Create an actor with a name and a container. The container argument must
@@ -138,8 +138,8 @@ HandlesInternalLinks {
      *                container.
      */
     public MetroIIMirrorComposite(CompositeEntity container, String name,
-            boolean mirrorParameterPorts) throws IllegalActionException,
-            NameDuplicationException {
+            boolean mirrorParameterPorts)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init(mirrorParameterPorts);
     }
@@ -161,8 +161,8 @@ HandlesInternalLinks {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIMirrorComposite result = (MetroIIMirrorComposite) super
-                .clone(workspace);
+        MetroIIMirrorComposite result = (MetroIIMirrorComposite) super.clone(
+                workspace);
 
         // Fix port associations.
         Iterator entities = result.entityList().iterator();
@@ -177,10 +177,10 @@ HandlesInternalLinks {
 
                 if (insidePort instanceof MirrorPort) {
                     ((MirrorPort) port)
-                    .setAssociatedPort((MirrorPort) insidePort);
+                            .setAssociatedPort((MirrorPort) insidePort);
                 } else if (insidePort instanceof ParameterMirrorPort) {
-                    ((ParameterMirrorPort) port)
-                    .setAssociatedPort((ParameterMirrorPort) insidePort);
+                    ((ParameterMirrorPort) port).setAssociatedPort(
+                            (ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -361,7 +361,8 @@ HandlesInternalLinks {
                                     .connectedPortList();
 
                             if (!connectedPorts.contains(newPort)) {
-                                ComponentRelation relation = newRelation(uniqueName("relation"));
+                                ComponentRelation relation = newRelation(
+                                        uniqueName("relation"));
                                 newPort.link(relation);
                                 insidePort.link(relation);
                             }
@@ -391,10 +392,11 @@ HandlesInternalLinks {
      *                actor.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
 
-        if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
+        if (!(port instanceof MirrorPort
+                || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
                     "MirrorComposite ports are required to be "
                             + "instances of MirrorPort");
@@ -457,30 +459,32 @@ HandlesInternalLinks {
                                 if (insidePort instanceof IOPort) {
                                     IOPort castInsidePort = (IOPort) insidePort;
                                     castInsidePort.setInput(castPort.isInput());
-                                    castInsidePort.setOutput(castPort
-                                            .isOutput());
-                                    castInsidePort.setMultiport(castPort
-                                            .isMultiport());
+                                    castInsidePort
+                                            .setOutput(castPort.isOutput());
+                                    castInsidePort.setMultiport(
+                                            castPort.isMultiport());
                                 }
                             }
 
                             if (insidePort instanceof MirrorPort) {
-                                ((MirrorPort) castPort)
-                                .setAssociatedPort((MirrorPort) insidePort);
+                                ((MirrorPort) castPort).setAssociatedPort(
+                                        (MirrorPort) insidePort);
                             } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                 ((ParameterMirrorPort) castPort)
-                                .setAssociatedPort((ParameterMirrorPort) insidePort);
+                                        .setAssociatedPort(
+                                                (ParameterMirrorPort) insidePort);
                             }
 
                             // FindBugs says: Possible null pointer dereference of insidePort.
                             if (insidePort != null) {
                                 // Create a link only if it doesn't already exist.
                                 List connectedPorts = insidePort
-                                    .connectedPortList();
+                                        .connectedPortList();
 
                                 if (!connectedPorts.contains(castPort)) {
                                     // There is no connection. Create one.
-                                    ComponentRelation newRelation = newRelation(uniqueName("relation"));
+                                    ComponentRelation newRelation = newRelation(
+                                            uniqueName("relation"));
                                     insidePort.link(newRelation);
                                     castPort.link(newRelation);
                                 }
@@ -648,10 +652,11 @@ HandlesInternalLinks {
      */
     private void _init(boolean mirrorParameterPorts) {
         setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
-                + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                        + "width=\"60\" height=\"40\" "
+                        + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
+                        + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
         _mirrorParameterPorts = mirrorParameterPorts;
     }
 
@@ -667,8 +672,8 @@ HandlesInternalLinks {
      * corresponding ports will be added or deleted in the container. That
      * addition will result in appropriate connections being made.
      */
-    public static class MetroIIMirrorCompositeContents extends
-    MetroIICompositeActor {
+    public static class MetroIIMirrorCompositeContents
+            extends MetroIICompositeActor {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -686,8 +691,8 @@ HandlesInternalLinks {
          *                container.
          */
         public MetroIIMirrorCompositeContents(CompositeEntity container,
-                String name) throws IllegalActionException,
-                NameDuplicationException {
+                String name)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -726,10 +731,11 @@ HandlesInternalLinks {
          *                actor.
          */
         @Override
-        protected void _addPort(final Port port) throws IllegalActionException,
-        NameDuplicationException {
+        protected void _addPort(final Port port)
+                throws IllegalActionException, NameDuplicationException {
 
-            if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
+            if (!(port instanceof MirrorPort
+                    || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,
                         "Ports in MirrorComposiMirrorCompositeContentsite must be MirrorPort.");
             }
@@ -772,15 +778,15 @@ HandlesInternalLinks {
                                     .getPort(port.getName());
 
                             if (newPort == null) {
-                                newPort = (MirrorPort) container.newPort(port
-                                        .getName());
+                                newPort = (MirrorPort) container
+                                        .newPort(port.getName());
                             }
 
                             if (port instanceof IOPort) {
                                 newPort.setInput(((IOPort) port).isInput());
                                 newPort.setOutput(((IOPort) port).isOutput());
-                                newPort.setMultiport(((IOPort) port)
-                                        .isMultiport());
+                                newPort.setMultiport(
+                                        ((IOPort) port).isMultiport());
                             }
                         }
                     } finally {

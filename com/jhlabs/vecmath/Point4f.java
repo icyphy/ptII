@@ -54,7 +54,8 @@ public class Point4f extends Tuple4f {
     }
 
     public float distanceL1(Point4f p) {
-        return Math.abs(x - p.x) + Math.abs(y - p.y) + Math.abs(z - p.z) + Math.abs(w - p.w);
+        return Math.abs(x - p.x) + Math.abs(y - p.y) + Math.abs(z - p.z)
+                + Math.abs(w - p.w);
     }
 
     public float distanceSquared(Point4f p) {

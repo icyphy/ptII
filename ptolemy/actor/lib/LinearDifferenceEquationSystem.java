@@ -88,7 +88,8 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public LinearDifferenceEquationSystem(CompositeEntity container, String name)
+    public LinearDifferenceEquationSystem(CompositeEntity container,
+            String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(false);
@@ -120,13 +121,12 @@ public class LinearDifferenceEquationSystem extends Transformer {
         _initialStateChanged = true;
 
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-75\" y=\"-30\" " + "width=\"150\" height=\"60\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-70\" y=\"-10\" "
-                + "style=\"font-size:14\">\n" + "x(k+1) = Ax(k) + Bu(k) "
-                + "</text>\n" + "<text x=\"-70\" y=\"10\" "
-                + "style=\"font-size:14\">\n" + "    y(k) = Cx(k) + Du(k)"
-                + "</text>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-75\" y=\"-30\" "
+                + "width=\"150\" height=\"60\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-70\" y=\"-10\" " + "style=\"font-size:14\">\n"
+                + "x(k+1) = Ax(k) + Bu(k) " + "</text>\n"
+                + "<text x=\"-70\" y=\"10\" " + "style=\"font-size:14\">\n"
+                + "    y(k) = Cx(k) + Du(k)" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

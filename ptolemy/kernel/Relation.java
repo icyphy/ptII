@@ -523,10 +523,10 @@ public class Relation extends NamedObj {
                 .getRelation(relativeName);
 
         if (candidate != null && !getClass().isInstance(candidate)) {
-            throw new IllegalActionException(this, "Expected "
-                    + candidate.getFullName() + " to be an instance of "
-                    + getClass().getName() + ", but it is "
-                    + candidate.getClass().getName());
+            throw new IllegalActionException(this,
+                    "Expected " + candidate.getFullName()
+                            + " to be an instance of " + getClass().getName()
+                            + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;

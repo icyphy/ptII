@@ -72,8 +72,8 @@ import ptolemy.kernel.util.Settable;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class AttributeStyleWidget extends GlassPaneWidget implements
-MinSizeInterface {
+public class AttributeStyleWidget extends GlassPaneWidget
+        implements MinSizeInterface {
 
     /**
      * Create a new instance visualizing the positionable element based on its style definitions.
@@ -124,8 +124,8 @@ MinSizeInterface {
             JTextField textField = new JTextField();
             _attributeComponent = textField;
         }
-        _attributeComponent.setBorder(new CompoundBorder(new EmptyBorder(1, 1,
-                1, 1), _attributeComponent.getBorder()));
+        _attributeComponent.setBorder(new CompoundBorder(
+                new EmptyBorder(1, 1, 1, 1), _attributeComponent.getBorder()));
         updateValue();
         _containerPanel.add(_attributeComponent, BorderLayout.CENTER);
         setGlassPaneSize(_attributeComponent.getPreferredSize());
@@ -163,8 +163,8 @@ MinSizeInterface {
             }
             comboBox.setModel(new DefaultComboBoxModel(values.toArray()));
             if (namedObject instanceof Settable) {
-                comboBox.setSelectedItem(((Settable) namedObject)
-                        .getExpression());
+                comboBox.setSelectedItem(
+                        ((Settable) namedObject).getExpression());
             }
         } else if (style instanceof NotEditableLineStyle) {
             JLabel label = (JLabel) _attributeComponent;

@@ -110,7 +110,7 @@ public class RExpression extends TypedAtomicActor {
      *                If the container already has an actor with this name.
      */
     public RExpression(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         expression = new StringAttribute(this, "expression");
@@ -120,7 +120,7 @@ public class RExpression extends TypedAtomicActor {
 
         // use the text editor when we "open" the actor
         TextEditorTableauFactory _editorFactory = new TextEditorTableauFactory(
-                                                                               this, "_editorFactory");
+                this, "_editorFactory");
         _editorFactory.attributeName.setExpression("expression");
 
         Rcwd = new StringParameter(this, "Rcwd");
@@ -179,7 +179,7 @@ public class RExpression extends TypedAtomicActor {
         numYPixels.setExpression("480");
 
         graphicsFileName = new TypedIOPort(this, "graphicsFileName", false,
-                                           true);
+                true);
         graphicsFileName.setTypeEquals(BaseType.STRING);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -258,6 +258,7 @@ public class RExpression extends TypedAtomicActor {
      *                If a derived class contains an attribute that cannot be
      *                cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RExpression newObject = (RExpression) super.clone(workspace);
         newObject.output.setTypeEquals(BaseType.STRING);
@@ -273,16 +274,17 @@ public class RExpression extends TypedAtomicActor {
      * the script in the expressions parameter. Then the R engine should be
      * started and run, with the output sent to the output port.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         String newline = System.getProperty("line.separator");
 
         super.fire();
 
         boolean graphicsOutputValue = ((BooleanToken) graphicsOutput.getToken())
-            .booleanValue();
+                .booleanValue();
 
         boolean displayGraphicsOutputValue = ((BooleanToken) displayGraphicsOutput
-                                              .getToken()).booleanValue();
+                .getToken()).booleanValue();
 
         _saveString = save_nosave.stringValue();
         // _restoreString = restore_norestore.stringValue();
@@ -331,50 +333,59 @@ public class RExpression extends TypedAtomicActor {
 
             if (graphicsFormatString.equals("pdf")) {
                 graphicsDevice = "pdf(file = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxd + ", height = " + nyd + ")";
-            } else if (graphicsFormatString.equals("jpeg") || graphicsFormatString.equals("jpg")) {
+                        + ", width = " + nxd + ", height = " + nyd + ")";
+            } else if (graphicsFormatString.equals("jpeg")
+                    || graphicsFormatString.equals("jpg")) {
                 graphicsDevice = "jpeg(filename = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxs + ", height = " + nys + ")";
+                        + ", width = " + nxs + ", height = " + nys + ")";
             } else if (graphicsFormatString.equals("png")) {
                 graphicsDevice = "png(file = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxs + ", height = " + nys + ")";
+                        + ", width = " + nxs + ", height = " + nys + ")";
             } else if (graphicsFormatString.equals("bmp")) {
                 graphicsDevice = "bmp(filename = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxs + ", height = " + nys + ")";
-            } else if (graphicsFormatString.equals("tiff") || graphicsFormatString.equals("tif")) {
+                        + ", width = " + nxs + ", height = " + nys + ")";
+            } else if (graphicsFormatString.equals("tiff")
+                    || graphicsFormatString.equals("tif")) {
                 graphicsDevice = "tiff(filename = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxs + ", height = " + nys + ")";
-            } else if (graphicsFormatString.equals("postscript") || graphicsFormatString.equals("ps")) {
+                        + ", width = " + nxs + ", height = " + nys + ")";
+            } else if (graphicsFormatString.equals("postscript")
+                    || graphicsFormatString.equals("ps")) {
                 _graphicsOutputFile = _getUniqueFileName("ps");
-                graphicsDevice = "postscript(file = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxd + ", height = " + nyd + ")";
+                graphicsDevice = "postscript(file = '" + _graphicsOutputFile
+                        + "'" + ", width = " + nxd + ", height = " + nyd + ")";
             } else if (graphicsFormatString.equals("eps")) {
                 graphicsDevice = "setEPS()\n";
-                graphicsDevice += "postscript(file = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxd + ", height = " + nyd + ")";
-            } else if (graphicsFormatString.equals("win.metafile") || graphicsFormatString.equals("wmf")) {
+                graphicsDevice += "postscript(file = '" + _graphicsOutputFile
+                        + "'" + ", width = " + nxd + ", height = " + nyd + ")";
+            } else if (graphicsFormatString.equals("win.metafile")
+                    || graphicsFormatString.equals("wmf")) {
                 _graphicsOutputFile = _getUniqueFileName("wmf");
-                graphicsDevice = "win.metafile(filename = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxd + ", height = " + nyd + ")";
+                graphicsDevice = "win.metafile(filename = '"
+                        + _graphicsOutputFile + "'" + ", width = " + nxd
+                        + ", height = " + nyd + ")";
             } else if (graphicsFormatString.equals("svg")) {
                 graphicsDevice = "svg(filename = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxd + ", height = " + nyd + ")";
-            } else if (graphicsFormatString.equals("xfig") || graphicsFormatString.equals("fig")) {
+                        + ", width = " + nxd + ", height = " + nyd + ")";
+            } else if (graphicsFormatString.equals("xfig")
+                    || graphicsFormatString.equals("fig")) {
                 _graphicsOutputFile = _getUniqueFileName("fig");
                 graphicsDevice = "xfig(file = '" + _graphicsOutputFile + "'"
-                    + ", width = " + nxd + ", height = " + nyd + ")";
-            } else if (graphicsFormatString.equals("ghostscript bitmap type pngalpha")) {
+                        + ", width = " + nxd + ", height = " + nyd + ")";
+            } else if (graphicsFormatString
+                    .equals("ghostscript bitmap type pngalpha")) {
                 graphicsDevice = "bitmap(file = '" + _graphicsOutputFile
-                    + "', type = \"pngalpha\", width = " + nxd
-                    + ", height = " + nyd + ")";
-            } else if (graphicsFormatString.equals("ghostscript bitmap type png16m")) {
+                        + "', type = \"pngalpha\", width = " + nxd
+                        + ", height = " + nyd + ")";
+            } else if (graphicsFormatString
+                    .equals("ghostscript bitmap type png16m")) {
                 graphicsDevice = "bitmap(file = '" + _graphicsOutputFile
-                    + "', type = \"png16m\", width = " + nxd
-                    + ", height = " + nyd + ")";
-            } else if (graphicsFormatString.equals("ghostscript bitmap type png256")) {
+                        + "', type = \"png16m\", width = " + nxd + ", height = "
+                        + nyd + ")";
+            } else if (graphicsFormatString
+                    .equals("ghostscript bitmap type png256")) {
                 graphicsDevice = "bitmap(file = '" + _graphicsOutputFile
-                    + "', type = \"png256\", width = " + nxd
-                    + ", height = " + nyd + ")";
+                        + "', type = \"png256\", width = " + nxd + ", height = "
+                        + nyd + ")";
             }
         }
         List ipList = inputPortList();
@@ -394,13 +405,13 @@ public class RExpression extends TypedAtomicActor {
                     if (tiop.hasToken(i)) {
                         String finalPortName = tiop.getName();
                         String sourcePortName = ((TypedIOPort) sourcePorts
-                                                 .get(i)).getName();
+                                .get(i)).getName();
                         String tempPortName = tiop.getName();
                         String temp = tiop.getName();
                         Token token = tiop.get(i);
                         String token_type_string = token.getType().toString();
                         String token_class_name = token.getType()
-                            .getTokenClass().getName();
+                                .getTokenClass().getName();
                         // if this is a multiport, use the upstream source for
                         // the variable name
                         if (tiop.isMultiport()) {
@@ -415,7 +426,7 @@ public class RExpression extends TypedAtomicActor {
                         if (token_type_string.equals("string")) {
                             // check for special strings that indicate dataframe
                             // file reference
-                            at = (Token) token;
+                            at = token;
                             temp1 = at.toString();
                             temp1 = temp1.substring(1, temp1.length() - 1); // remove
                             // quotes
@@ -429,10 +440,10 @@ public class RExpression extends TypedAtomicActor {
                                 // "read.table(file='"+temp1+"')";
                                 // RPortInfo = RPortInfo + temp + "\n";
                                 // use binary version that was serialized
-                                RPortInfo = RPortInfo + "conn <- file('"
-                                    + temp1 + "', 'rb');\n`" + temp
-                                    + "` <- unserialize(conn);\n"
-                                    + "close(conn);\n";
+                                RPortInfo = RPortInfo + "conn <- file('" + temp1
+                                        + "', 'rb');\n`" + temp
+                                        + "` <- unserialize(conn);\n"
+                                        + "close(conn);\n";
 
                                 // remove the transfer file when we are done
                                 // consuming it
@@ -450,10 +461,10 @@ public class RExpression extends TypedAtomicActor {
                                 temp1 = temp1.substring(9); // should be
                                 // filename
                                 // use binary version that was serialized
-                                RPortInfo = RPortInfo + "conn <- file('"
-                                    + temp1 + "', 'rb');\n`" + temp
-                                    + "` <- unserialize(conn);\n"
-                                    + "close(conn);\n";
+                                RPortInfo = RPortInfo + "conn <- file('" + temp1
+                                        + "', 'rb');\n`" + temp
+                                        + "` <- unserialize(conn);\n"
+                                        + "close(conn);\n";
                                 // remove the transfer file when we are done
                                 // consuming it
                                 // this is problematic when objects are output
@@ -467,17 +478,18 @@ public class RExpression extends TypedAtomicActor {
                         }
                         if (token instanceof RecordToken) {
                             String Rcommands = _recordToDataFrame(
-                                                                  (RecordToken) token, temp);
+                                    (RecordToken) token, temp);
                             Rcommands = _breakIntoLines(Rcommands);
                             RPortInfo = RPortInfo + Rcommands + "\n";
                         }
 
                         // convert Kepler matrices to R matrices
-                        else if ((token_class_name.indexOf("IntMatrixToken") > -1)
-                                 || (token_class_name
-                                     .indexOf("DoubleMatrixToken") > -1)
-                                 || (token_class_name
-                                     .indexOf("BooleanMatrixToken") > -1)) {
+                        else if ((token_class_name
+                                .indexOf("IntMatrixToken") > -1)
+                                || (token_class_name
+                                        .indexOf("DoubleMatrixToken") > -1)
+                                || (token_class_name
+                                        .indexOf("BooleanMatrixToken") > -1)) {
                             int rows = ((MatrixToken) token).getRowCount();
                             int cols = ((MatrixToken) token).getColumnCount();
                             temp1 = token.toString();
@@ -491,15 +503,15 @@ public class RExpression extends TypedAtomicActor {
                             temp1 = temp1.replaceAll("nil", "NA");
                             // TO DO:if string is long, should create a temp
                             // file for passing array data
-                            temp = "`" + temp + "` <- matrix(c" + temp1 +
-                                ", nrow=" + rows + ",ncol=" + cols + ")";
+                            temp = "`" + temp + "` <- matrix(c" + temp1
+                                    + ", nrow=" + rows + ",ncol=" + cols + ")";
                             temp = _breakIntoLines(temp);
                             RPortInfo = RPortInfo + temp + "\n";
                         } else if ((token_type_string.equals("double"))
-                                   || (token_type_string.equals("int"))
-                                   || (token_type_string.equals("string"))) {
+                                || (token_type_string.equals("int"))
+                                || (token_type_string.equals("string"))) {
 
-                            at = (Token) token;
+                            at = token;
                             temp1 = at.toString();
                             // we need to check here if we are passing a string
                             // like '/t' (tab)
@@ -520,7 +532,7 @@ public class RExpression extends TypedAtomicActor {
                             temp = "`" + temp + "` <- " + temp1;
                             RPortInfo = RPortInfo + temp + "\n";
                         } else if ((token_type_string.equals("boolean"))) {
-                            at = (Token) token;
+                            at = token;
                             temp1 = at.toString();
                             // ensure uppercase for boolean
                             temp1 = temp1.toUpperCase();
@@ -529,7 +541,7 @@ public class RExpression extends TypedAtomicActor {
                         } else if ((token_type_string.equals("float"))) {
                             FloatToken ft = (FloatToken) token;
                             DoubleToken dt = new DoubleToken(ft.doubleValue());
-                            at = (Token) token;
+                            at = token;
                             temp1 = dt.toString();
                             // we need to check here if we are passing a string
                             // like '/t' (tab)
@@ -550,14 +562,19 @@ public class RExpression extends TypedAtomicActor {
                             temp = "`" + temp + "` <- " + temp1;
                             RPortInfo = RPortInfo + temp + "\n";
                         } else if ((token_type_string.equals("{double}"))
-                                   || (token_type_string.equals("{int}"))
-                                   || (token_type_string.startsWith("arrayType(double"))
-                                   || (token_type_string.startsWith("arrayType(int"))
-                                   || (token_type_string.startsWith("arrayType(niltype"))
-                                   || (token_type_string.startsWith("arrayType(arrayType(double"))
-                                   || (token_type_string.startsWith("arrayType(arrayType(int"))) {
+                                || (token_type_string.equals("{int}"))
+                                || (token_type_string
+                                        .startsWith("arrayType(double"))
+                                || (token_type_string
+                                        .startsWith("arrayType(int"))
+                                || (token_type_string
+                                        .startsWith("arrayType(niltype"))
+                                || (token_type_string.startsWith(
+                                        "arrayType(arrayType(double"))
+                                || (token_type_string.startsWith(
+                                        "arrayType(arrayType(int"))) {
                             // token is an arrayToken !!!
-                            at = (Token) token;
+                            at = token;
                             temp1 = at.toString();
                             temp1 = temp1.replace('\\', '/');
                             temp1 = temp1.replaceFirst("\\{", "(");
@@ -570,19 +587,23 @@ public class RExpression extends TypedAtomicActor {
                             // if string is long, create a temp file for passing
                             // array data
                             if (temp1.length() > _maxCommandLineLength
-                                && (!token_type_string.startsWith("arrayType(arrayType(double"))
-                                && (!token_type_string.startsWith("arrayType(arrayType(int"))) {
+                                    && (!token_type_string.startsWith(
+                                            "arrayType(arrayType(double"))
+                                    && (!token_type_string.startsWith(
+                                            "arrayType(arrayType(int"))) {
                                 temp1 = temp1.replace('(', ' ');
                                 temp1 = temp1.replace(')', ' ');
                                 String filename = _writeDataFile(temp1);
                                 temp = "`" + temp + "` <- scan('" + filename
-                                    + "', sep=',')";
+                                        + "', sep=',')";
                                 temp = temp + "\n" + "file.remove('" + filename
-                                    + "')";
+                                        + "')";
                                 RPortInfo = RPortInfo + temp + "\n";
                             } else { // otherwise use the modified string
-                                if (token_type_string.startsWith("arrayType(arrayType(int")
-                                    || token_type_string.startsWith("arrayType(arrayType(double")) {
+                                if (token_type_string
+                                        .startsWith("arrayType(arrayType(int")
+                                        || token_type_string.startsWith(
+                                                "arrayType(arrayType(double")) {
                                     temp = "`" + temp + "` <- list" + temp1;
                                 } else {
                                     temp = "`" + temp + "` <- c" + temp1;
@@ -591,17 +612,18 @@ public class RExpression extends TypedAtomicActor {
                                 RPortInfo = RPortInfo + temp + "\n";
                             }
                         } else if ((token_type_string.equals("{float}"))
-                                   || (token_type_string
-                                       .startsWith("arrayType(float"))
-                                   || token_type_string.startsWith("arrayType(arrayType(float")) {
+                                || (token_type_string
+                                        .startsWith("arrayType(float"))
+                                || token_type_string.startsWith(
+                                        "arrayType(arrayType(float")) {
                             // token is an arrayToken !!!
                             ArrayToken arrtok = (ArrayToken) token;
                             StringBuffer buffer = new StringBuffer("{");
                             for (int j = 0; j < arrtok.length(); j++) {
                                 FloatToken ft = (FloatToken) arrtok
-                                    .getElement(j);
+                                        .getElement(j);
                                 buffer.append(new DoubleToken(ft.doubleValue())
-                                              .toString());
+                                        .toString());
                                 if (j < (arrtok.length() - 1)) {
                                     buffer.append(", ");
                                 }
@@ -620,17 +642,19 @@ public class RExpression extends TypedAtomicActor {
                             // if string is long, create a temp file for passing
                             // array data
                             if (temp1.length() > _maxCommandLineLength
-                                && (!token_type_string.startsWith("arrayType(arrayType(float"))) {
+                                    && (!token_type_string.startsWith(
+                                            "arrayType(arrayType(float"))) {
                                 temp1 = temp1.replace('(', ' ');
                                 temp1 = temp1.replace(')', ' ');
                                 String filename = _writeDataFile(temp1);
                                 temp = "`" + temp + "` <- scan('" + filename
-                                    + "', sep=',')";
+                                        + "', sep=',')";
                                 temp = temp + "\n" + "file.remove('" + filename
-                                    + "')";
+                                        + "')";
                                 RPortInfo = RPortInfo + temp + "\n";
                             } else { // otherwise use the modified string
-                                if (token_type_string.startsWith("arrayType(arrayType(float")) {
+                                if (token_type_string.startsWith(
+                                        "arrayType(arrayType(float")) {
                                     temp = "`" + temp + "` <- list" + temp1;
                                 } else {
                                     temp = "`" + temp + "` <- c" + temp1;
@@ -639,12 +663,12 @@ public class RExpression extends TypedAtomicActor {
                                 RPortInfo = RPortInfo + temp + "\n";
                             }
                         } else if ((token_type_string.equals("{string}"))
-                                   || (token_type_string
-                                       .startsWith("arrayType(string")
-                                       || (token_type_string
-                                           .startsWith("arrayType(arrayType(string")))) {
+                                || (token_type_string
+                                        .startsWith("arrayType(string")
+                                        || (token_type_string.startsWith(
+                                                "arrayType(arrayType(string")))) {
                             // token is an arrayToken !!!
-                            at = (Token) token;
+                            at = token;
                             temp1 = at.toString();
                             temp1 = temp1.replace('\\', '/');
                             temp1 = temp1.replaceFirst("\\{", "(");
@@ -657,30 +681,28 @@ public class RExpression extends TypedAtomicActor {
                             // if string is long, create a temp file for passing
                             // array data ONLY
                             if ((temp1.length() > _maxCommandLineLength)
-                                && (!token_type_string.startsWith("arrayType(arrayType(string"))) {
+                                    && (!token_type_string.startsWith(
+                                            "arrayType(arrayType(string"))) {
                                 temp1 = temp1.replace('(', ' ');
                                 temp1 = temp1.replace(')', ' ');
                                 String filename = _writeDataFile(temp1);
-                                temp = "`" + temp
-                                    + "` <- scan('"
-                                    + filename
-                                    + "', what='character', sep=',', strip.white=TRUE)";
+                                temp = "`" + temp + "` <- scan('" + filename
+                                        + "', what='character', sep=',', strip.white=TRUE)";
                                 temp = temp + "\n" + "file.remove('" + filename
-                                    + "')";
+                                        + "')";
                                 RPortInfo = RPortInfo + temp + "\n";
                             } else { // otherwise use the modified string
                                 //for arrays of arrays, use list()
-                                if (token_type_string.startsWith("arrayType(arrayType(string")) {
+                                if (token_type_string.startsWith(
+                                        "arrayType(arrayType(string")) {
                                     temp = "`" + temp + "` <- list" + temp1;
-                                }
-                                else {
+                                } else {
                                     temp = "`" + temp + "` <- c" + temp1;
                                 }
                                 temp = _breakIntoLines(temp);
                                 RPortInfo = RPortInfo + temp + "\n";
                             }
-                        }
-                        else if (token_type_string.equals("niltype")) {
+                        } else if (token_type_string.equals("niltype")) {
                             at = token;
                             temp1 = at.toString();
                             temp1 = temp1.replaceAll("nil", "NA");
@@ -693,12 +715,12 @@ public class RExpression extends TypedAtomicActor {
                             // set the metadata on each list item
                             // ("tempPortName") before adding it to the list
                             /* metadataCommand = */_createMetadataCommand(
-                                                                          tempPortName, "name", sourcePortName);
+                                    tempPortName, "name", sourcePortName);
                         } else {
                             // just set the metadata attribute for the final
                             // variable name
                             /* metadataCommand = */_createMetadataCommand(
-                                                                          finalPortName, "name", sourcePortName);
+                                    finalPortName, "name", sourcePortName);
                         }
                         // add the metadata attribute to the R object
                         // leinfelder, 4/14/2008:
@@ -714,12 +736,12 @@ public class RExpression extends TypedAtomicActor {
                             if (i == 0) {
                                 // create list
                                 commandList = "`" + finalPortName + "` <- list("
-                                    + tempPortName + ")";
+                                        + tempPortName + ")";
                             } else if (i > 0) {
                                 // append to list
                                 commandList = "`" + finalPortName + "` <- c("
-                                    + finalPortName + ", list("
-                                    + tempPortName + ") )";
+                                        + finalPortName + ", list("
+                                        + tempPortName + ") )";
                             }
                             RPortInfo = RPortInfo + commandList + "\n";
                         }
@@ -727,7 +749,7 @@ public class RExpression extends TypedAtomicActor {
                 } catch (IllegalActionException iae) {
                     // just continue (port is probably not connected)
                 }
-            }// for multiport
+            } // for multiport
         }
         // log.debug("RPortInfo: "+RPortInfo);
         // The following command casues R to output a series of 4 dashes which
@@ -747,36 +769,33 @@ public class RExpression extends TypedAtomicActor {
         // r_out = r_out +
         // "if (class(x)=='data.frame') {write.table(x,file='"+df_fn+"');cat('_dataframe_:"+df_fn+"')}\n";
         r_out.append("myput <- function(x, filename) {\n"
-            // I'm wrapping the serialization into the doserialize function
-            // because it's gotten big.  Unique filename generation is
-            // done here because this is where file creation is actually done.
-            // This code relies on the replaceAll code and the added - in the
-            // auto-generated .sav filename.  Remember that a \ in the regular
-            // expression is quadrupled for passing through both Java and R.
-            + "  doserialize <- function(x, filename) {\n"
-            + "    if (file.exists(filename)) {"
-            + "      path <- dirname(filename); "
-            + "      filename <- basename(filename); "
-            + "      base <- sub('^(.*-)([0-9*])\\\\.(.*)$', '\\\\1', filename); "
-            + "      ext <- sub('^(.*-)([0-9*])\\\\.(.*)$', '\\\\3', filename); "
-            + "      dir_base_ext <- dir(pattern = paste(base, '[0-9]*\\\\.', ext, sep = '')); "
-            + "      cnt <- max(as.numeric(sub('^(.*-)([0-9*])\\\\.(.*)$', '\\\\2', dir_base_ext)), na.rm = TRUE) + 1; "
-            + "      filename <- file.path(path, paste(base, cnt, '.', ext, sep = ''))"
-            + "    }\n"
-            + "    conn <- file(filename, 'wb');"
-            + "    serialize(x, conn);"
-            + "    close(conn);"
-            + "    filename"
-            + "  }\n"
-            // use a binary serialization for data frames
-            + "  if (class(x)=='data.frame') {cat('_dataframe_:', doserialize(x, filename), '\\n', sep = '')}\n"
-            + "  else if (class(x)=='matrix') {cat('_matrix_:',deparse(x, control=c('keepNA', 'showAttributes')), '\\n', sep = '') }\n"
-            + "  else if (mode(x)=='numeric' && substr(deparse(x)[1], 1, 9) != \"structure\") {dput(as.double(x), control = NULL)}\n"
-            + "  else if (mode(x)=='character' && substr(deparse(x)[1], 1, 9) != \"structure\") {dput(x)}\n"
-            + "  else if (mode(x)=='logical' && substr(deparse(x)[1], 1, 9) != \"structure\") {dput(x)}\n"
-            // use R serialization for other unknown objects
-            + "  else {cat('_object_:', doserialize(x, filename), '\\n', sep = '')}"
-            + "}\n");
+                // I'm wrapping the serialization into the doserialize function
+                // because it's gotten big.  Unique filename generation is
+                // done here because this is where file creation is actually done.
+                // This code relies on the replaceAll code and the added - in the
+                // auto-generated .sav filename.  Remember that a \ in the regular
+                // expression is quadrupled for passing through both Java and R.
+                + "  doserialize <- function(x, filename) {\n"
+                + "    if (file.exists(filename)) {"
+                + "      path <- dirname(filename); "
+                + "      filename <- basename(filename); "
+                + "      base <- sub('^(.*-)([0-9*])\\\\.(.*)$', '\\\\1', filename); "
+                + "      ext <- sub('^(.*-)([0-9*])\\\\.(.*)$', '\\\\3', filename); "
+                + "      dir_base_ext <- dir(pattern = paste(base, '[0-9]*\\\\.', ext, sep = '')); "
+                + "      cnt <- max(as.numeric(sub('^(.*-)([0-9*])\\\\.(.*)$', '\\\\2', dir_base_ext)), na.rm = TRUE) + 1; "
+                + "      filename <- file.path(path, paste(base, cnt, '.', ext, sep = ''))"
+                + "    }\n" + "    conn <- file(filename, 'wb');"
+                + "    serialize(x, conn);" + "    close(conn);"
+                + "    filename" + "  }\n"
+                // use a binary serialization for data frames
+                + "  if (class(x)=='data.frame') {cat('_dataframe_:', doserialize(x, filename), '\\n', sep = '')}\n"
+                + "  else if (class(x)=='matrix') {cat('_matrix_:',deparse(x, control=c('keepNA', 'showAttributes')), '\\n', sep = '') }\n"
+                + "  else if (mode(x)=='numeric' && substr(deparse(x)[1], 1, 9) != \"structure\") {dput(as.double(x), control = NULL)}\n"
+                + "  else if (mode(x)=='character' && substr(deparse(x)[1], 1, 9) != \"structure\") {dput(x)}\n"
+                + "  else if (mode(x)=='logical' && substr(deparse(x)[1], 1, 9) != \"structure\") {dput(x)}\n"
+                // use R serialization for other unknown objects
+                + "  else {cat('_object_:', doserialize(x, filename), '\\n', sep = '')}"
+                + "}\n");
 
         // Controlled newline test
         r_out.append("cat(\"before newline\\nafter newline\\n\")\n");
@@ -788,7 +807,7 @@ public class RExpression extends TypedAtomicActor {
             // object with the
             // port name for use in creating Kepler output object
             if ((!temp_o.equals("output"))
-                && (!temp_o.equals("graphicsFileName"))) {
+                    && (!temp_o.equals("graphicsFileName"))) {
                 String df_fn = _getUniqueFileName(temp_o, "sav");
                 String temp_o_escaped = temp_o;
                 // Doing some basic escaping for the exists statement,
@@ -796,11 +815,11 @@ public class RExpression extends TypedAtomicActor {
                 // might occur. --Oliver
                 temp_o_escaped = temp_o_escaped.replace("\\", "\\\\");
                 temp_o_escaped = temp_o_escaped.replace("'", "\'");
-                r_out.append("if (exists('" + temp_o_escaped + "', .GlobalEnv)) {"
-                    + "cat(\"portName: " + temp_o + "\\nvectorVal: \"); "
-                    + "myput(get(\"" + temp_o_escaped + "\", .GlobalEnv),'" + df_fn + "'); "
-                    + "cat(\"endVectorVal\\n\")"
-                    + "}\n");
+                r_out.append("if (exists('" + temp_o_escaped
+                        + "', .GlobalEnv)) {" + "cat(\"portName: " + temp_o
+                        + "\\nvectorVal: \"); " + "myput(get(\""
+                        + temp_o_escaped + "\", .GlobalEnv),'" + df_fn + "'); "
+                        + "cat(\"endVectorVal\\n\")" + "}\n");
             }
         }
 
@@ -815,11 +834,11 @@ public class RExpression extends TypedAtomicActor {
         String outputString = "";
         String errorString = "";
         String noRErrorMessage = "There has been a problem running the R script!\n"
-            + "It may be due to an error in your script, it may be that R is not\n"
-            + "installed on your system, or it may not be on your path and cannot\n"
-            + "be located by Kepler.  Please make sure R is installed and the\n"
-            + "R command line executable is in the path."
-            + "For more information, see \n section 8.2.2 of the Kepler User Manual.";
+                + "It may be due to an error in your script, it may be that R is not\n"
+                + "installed on your system, or it may not be on your path and cannot\n"
+                + "be located by Kepler.  Please make sure R is installed and the\n"
+                + "R command line executable is in the path."
+                + "For more information, see \n section 8.2.2 of the Kepler User Manual.";
         try {
             _inputBufferedWriter.write(script);
             _inputBufferedWriter.flush();
@@ -836,16 +855,19 @@ public class RExpression extends TypedAtomicActor {
             //        log.debug("R standard error: " + newline + errorString);
             //}
             throw new IllegalActionException(this, ex,
-                                             "Problem writing input. " + noRErrorMessage);
+                    "Problem writing input. " + noRErrorMessage);
         } catch (NullPointerException npe) {
             throw new IllegalActionException(this, npe, noRErrorMessage);
         }
         try {
             int result = _process.waitFor();
             log.debug("Process complete: " + result);
-            if (result != 0)
-                throw new IllegalActionException(this, "R returned with value " + result + ", likely caused "
-                                                 + newline + "by an error while executing the script.");
+            if (result != 0) {
+                throw new IllegalActionException(this,
+                        "R returned with value " + result + ", likely caused "
+                                + newline
+                                + "by an error while executing the script.");
+            }
         } catch (IllegalActionException e) {
             log.error(e.getMessage());
             while (outputString.equals("")) {
@@ -877,11 +899,12 @@ public class RExpression extends TypedAtomicActor {
                     loc = loc1;
                 }
                 outputStringDisp = outputString.substring(0, loc);
-                String rem = outputString.substring(loc1, outputString.length());
+                String rem = outputString.substring(loc1,
+                        outputString.length());
                 _getOutput(rem);
             }
-            output.send(0, new StringToken(outputStringDisp + "\n"
-                                           + errorString));
+            output.send(0,
+                    new StringToken(outputStringDisp + "\n" + errorString));
             if (displayGraphicsOutputValue && (!graphicsDevice.equals(""))) {
                 try {
                     File fout = new File(_home + _graphicsOutputFile);
@@ -891,13 +914,15 @@ public class RExpression extends TypedAtomicActor {
                     log.warn("problem launching browser:" + e);
                 }
             }
-            if (!graphicsDevice.equals(""))
-                graphicsFileName.send(0, new StringToken(_home
-                                                         + _graphicsOutputFile));
+            if (!graphicsDevice.equals("")) {
+                graphicsFileName.send(0,
+                        new StringToken(_home + _graphicsOutputFile));
+            }
 
         }
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         // reset the tempfile counter
@@ -909,14 +934,16 @@ public class RExpression extends TypedAtomicActor {
 
         // if not a directory, use 'home'
         if (!homeFile.isDirectory()) {
-            throw new IllegalActionException(this, "Rcwd = \"" + _home + "\", which is not a directory?");
+            throw new IllegalActionException(this,
+                    "Rcwd = \"" + _home + "\", which is not a directory?");
             //home = DotKeplerManager.getInstance()
             //.getTransientModuleDirectory("r").toString();
         }
 
         _home = _home.replace('\\', '/');
-        if (!_home.endsWith("/"))
+        if (!_home.endsWith("/")) {
             _home = _home + "/";
+        }
 
         // reset the name when workflow execution completes
         //this.getManager().addExecutionListener(
@@ -931,13 +958,16 @@ public class RExpression extends TypedAtomicActor {
         File dir = new File(execDir);
         if (!dir.exists()) {
             if (!dir.mkdir()) {
-                throw new IllegalActionException(null, this, "Failed to make directory " + dir);
-            };
+                throw new IllegalActionException(null, this,
+                        "Failed to make directory " + dir);
+            }
+            ;
         }
         _home = execDir + "/";
 
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_errorGobbler != null) {
             // If R was not in the path, then there is a chance that
@@ -951,6 +981,7 @@ public class RExpression extends TypedAtomicActor {
         return super.postfire();
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -964,7 +995,8 @@ public class RExpression extends TypedAtomicActor {
                 List connectedPorts = outputPort.connectedPortList();
                 Iterator connectedPortIter = connectedPorts.iterator();
                 while (connectedPortIter.hasNext()) {
-                    TypedIOPort connectedPort =  (TypedIOPort) connectedPortIter.next();
+                    TypedIOPort connectedPort = (TypedIOPort) connectedPortIter
+                            .next();
                     if (connectedPort.getType().equals(BaseType.UNKNOWN)) {
                         outputPort.setTypeEquals(BaseType.GENERAL);
                         break;
@@ -1027,7 +1059,8 @@ public class RExpression extends TypedAtomicActor {
         }
     }
 
-    private void _setOutputToken(String portName, String tokenValue) throws IllegalActionException {
+    private void _setOutputToken(String portName, String tokenValue)
+            throws IllegalActionException {
         _opList = outputPortList();
         _iterO = _opList.iterator();
         while (_iterO.hasNext()) {
@@ -1035,7 +1068,7 @@ public class RExpression extends TypedAtomicActor {
             String temp_o = tiop_o.getName();
             Token token = null;
             if ((!temp_o.equals("output"))
-                && (!temp_o.equals("graphicsFileName"))) {
+                    && (!temp_o.equals("graphicsFileName"))) {
                 if (temp_o.equals(portName)) {
                     try {
                         if (tokenValue.equals("TRUE")) {
@@ -1071,7 +1104,7 @@ public class RExpression extends TypedAtomicActor {
                             pos2 = tokenValue.indexOf(",", pos1);
                             String nrowS = tokenValue.substring(pos1 + 2, pos2);
                             String ncolS = tokenValue.substring(pos2 + 1,
-                                                                tokenValue.indexOf(")", pos2 + 1));
+                                    tokenValue.indexOf(")", pos2 + 1));
                             int nrows = Integer.parseInt(nrowS.trim());
                             int ncols = Integer.parseInt(ncolS.trim());
                             pos1 = "_matrix_:".length();
@@ -1085,7 +1118,7 @@ public class RExpression extends TypedAtomicActor {
                                     pos1 = pos2 + 1;
                                 }
                                 valS = valS.substring(0, pos1 - 1) + ";"
-                                    + valS.substring(pos1, valS.length());
+                                        + valS.substring(pos1, valS.length());
                             }
                             valS = "[" + valS + "]";
                             MatrixToken mt = null;
@@ -1102,10 +1135,11 @@ public class RExpression extends TypedAtomicActor {
                             tiop_o.setTypeEquals(mt.getType());
                         } else if (tokenValue.startsWith("\"")) { // these are strings
                             // now remove the start and end quotes
-                            tokenValue = tokenValue.substring(1, tokenValue
-                                                              .length() - 1);
+                            tokenValue = tokenValue.substring(1,
+                                    tokenValue.length() - 1);
                             //remove the escapes that dput() added
-                            tokenValue = StringEscapeUtils.unescapeJava(tokenValue);
+                            tokenValue = StringEscapeUtils
+                                    .unescapeJava(tokenValue);
                             StringToken st = new StringToken(tokenValue);
                             tiop_o.setTypeEquals(BaseType.STRING);
                             token = st;
@@ -1123,15 +1157,14 @@ public class RExpression extends TypedAtomicActor {
                         if (tokenValue.startsWith("c(")) { // handles R vectors
                             // hack alert! this does not support R's c(1:10)
                             // syntax for arrays
-                            String temp = "{"
-                                + tokenValue.substring(2, tokenValue
-                                                       .length());
+                            String temp = "{" + tokenValue.substring(2,
+                                    tokenValue.length());
                             temp = temp.replace(')', '}');
                             // convert NA values to 'nil'
                             temp = temp.replaceAll("NA", "nil");
                             ArrayToken at = new ArrayToken(temp);
-                            tiop_o.setTypeEquals(new ArrayType(at
-                                                               .getElementType()));//, at.length()));
+                            tiop_o.setTypeEquals(
+                                    new ArrayType(at.getElementType()));//, at.length()));
                             token = at;
                         }
 
@@ -1147,8 +1180,8 @@ public class RExpression extends TypedAtomicActor {
                         // verify that we have a token
                         if (token == null) {
                             log.warn("No token could be created on portName: "
-                                     + portName
-                                     + ", for tokenValue: " + tokenValue);
+                                    + portName + ", for tokenValue: "
+                                    + tokenValue);
                             return;
                         }
                         // send whatever token we happened to generate - all
@@ -1160,14 +1193,13 @@ public class RExpression extends TypedAtomicActor {
 
                         // check the types of the sink ports for compatibility
                         for (int channelIndex = 0; channelIndex < numSinkPorts; channelIndex++) {
-                            Type sinkType = ((TypedIOPort) tiop_o
-                                             .sinkPortList().get(channelIndex))
-                                .getType();
+                            Type sinkType = ((TypedIOPort) tiop_o.sinkPortList()
+                                    .get(channelIndex)).getType();
                             // if (!sinkType.isCompatible(token.getType())) {
                             // change to equals for bug #3451:
                             if (!sinkType.equals(token.getType())) {
                                 log.debug("[re]Setting sink type to: "
-                                          + token.getType().toString());
+                                        + token.getType().toString());
                                 // set the Type for the sinks
                                 // POSSIBLE BUG - not sure why the automatic
                                 // type resolution was failing for downstream
@@ -1178,10 +1210,13 @@ public class RExpression extends TypedAtomicActor {
                                 // in the next execution.
                                 Type tokenType = token.getType();
                                 if (tokenType instanceof ArrayType) {
-                                    tokenType = new ArrayType(((ArrayType) tokenType).getElementType());
+                                    tokenType = new ArrayType(
+                                            ((ArrayType) tokenType)
+                                                    .getElementType());
                                 }
-                                ((TypedIOPort) tiop_o.sinkPortList().get(
-                                                                         channelIndex)).setTypeEquals(tokenType);
+                                ((TypedIOPort) tiop_o.sinkPortList()
+                                        .get(channelIndex))
+                                                .setTypeEquals(tokenType);
                             }
                         }
 
@@ -1191,10 +1226,10 @@ public class RExpression extends TypedAtomicActor {
                         }
 
                     } catch (Exception w) {
-                        log.error("Problem sending to output port! "
-                                  + w);
+                        log.error("Problem sending to output port! " + w);
                         w.printStackTrace();
-                        throw new IllegalActionException(this, w, "Problem sending to output port.");
+                        throw new IllegalActionException(this, w,
+                                "Problem sending to output port.");
                     }
 
                     return;
@@ -1207,7 +1242,8 @@ public class RExpression extends TypedAtomicActor {
     // dataframe with the
     // portName as its R name. Should check that all the items in the record are
     // the same length
-    private String _recordToDataFrame(RecordToken recordToken, String portName) {
+    private String _recordToDataFrame(RecordToken recordToken,
+            String portName) {
         boolean isDataframe = true;
         String ret = "";
         String temp = "";
@@ -1222,21 +1258,22 @@ public class RExpression extends TypedAtomicActor {
             Token labelvaltoken = (recordToken).get(label);
             String token_type_string = labelvaltoken.getType().toString();
             if ((token_type_string.equals("{double}"))
-                || (token_type_string.equals("{int}"))
-                || (token_type_string.equals("{string}"))
-                || (token_type_string.startsWith("arrayType"))
-                || (token_type_string.equals("double"))
-                || (token_type_string.equals("int"))
-                || (token_type_string.equals("string"))) {
+                    || (token_type_string.equals("{int}"))
+                    || (token_type_string.equals("{string}"))
+                    || (token_type_string.startsWith("arrayType"))
+                    || (token_type_string.equals("double"))
+                    || (token_type_string.equals("int"))
+                    || (token_type_string.equals("string"))) {
                 labellist = labellist + "`" + label + "`,";
                 if (token_type_string.equals("double")
-                    || token_type_string.equals("int")
-                    || token_type_string.equals("string")) {
+                        || token_type_string.equals("int")
+                        || token_type_string.equals("string")) {
                     if (arrayLength == -1) {
                         arrayLength = 1;
                     } else {
                         if (arrayLength != 1) {
-                            log.warn("record elements are not all the same length!");
+                            log.warn(
+                                    "record elements are not all the same length!");
                             isDataframe = false;
                             //return "";
                         }
@@ -1247,7 +1284,8 @@ public class RExpression extends TypedAtomicActor {
                     } else {
                         int a_len = ((ArrayToken) labelvaltoken).length();
                         if (a_len != arrayLength) {
-                            log.warn("record elements are not all the same length!");
+                            log.warn(
+                                    "record elements are not all the same length!");
                             isDataframe = false;
                             //return "";
                         }
@@ -1255,8 +1293,8 @@ public class RExpression extends TypedAtomicActor {
                 }
                 temp = labelvaltoken.toString();
                 if (token_type_string.equals("double")
-                    || token_type_string.equals("int")
-                    || token_type_string.equals("string")) {
+                        || token_type_string.equals("int")
+                        || token_type_string.equals("string")) {
                     temp = "(" + temp + ")";
                 }
                 temp = temp.replace('{', '(');
@@ -1273,21 +1311,20 @@ public class RExpression extends TypedAtomicActor {
                 // record might have
                 int estimatedTotalLength = temp1.length() * labels.size();
                 log.debug("column length: " + temp1.length()
-                          + " * number of columns: " + labels.size()
-                          + " = estimated total record length: "
-                          + estimatedTotalLength + ", _maxCommandLineLength: "
-                          + _maxCommandLineLength);
+                        + " * number of columns: " + labels.size()
+                        + " = estimated total record length: "
+                        + estimatedTotalLength + ", _maxCommandLineLength: "
+                        + _maxCommandLineLength);
                 if (estimatedTotalLength > _maxCommandLineLength) {
                     temp1 = temp1.replace('(', ' ');
                     temp1 = temp1.replace(')', ' ');
                     String filename = _writeDataFile(temp1);
                     if (token_type_string.indexOf("string") > -1) {
-                        tempA = "`" + label
-                            + "` <- scan('"
-                            + filename
-                            + "', sep=',', strip.white=TRUE, what='character' )";
+                        tempA = "`" + label + "` <- scan('" + filename
+                                + "', sep=',', strip.white=TRUE, what='character' )";
                     } else {
-                        tempA = "`" + label + "` <- scan('" + filename + "', sep=',')";
+                        tempA = "`" + label + "` <- scan('" + filename
+                                + "', sep=',')";
                     }
                     tempA = tempA + "\n" + "file.remove('" + filename + "')";
                     ret = ret + tempA + "\n";
@@ -1302,8 +1339,7 @@ public class RExpression extends TypedAtomicActor {
         // last ','
         if (isDataframe) {
             ret = ret + "data.frame(" + labellist + ", check.names = FALSE)\n";
-        }
-        else {
+        } else {
             ret = ret + "list(" + labellist + ")\n";
         }
         ret += "})\n";
@@ -1320,13 +1356,13 @@ public class RExpression extends TypedAtomicActor {
 
     private String _breakIntoLines(String temp) {
         int size = 512;
-        int pieces = (int) temp.length() / size;
+        int pieces = temp.length() / size;
         int start = size;
         int indx = 0;
         for (int k = 0; k < pieces - 1; k++) {
             indx = temp.indexOf(",", start);
             temp = temp.substring(0, indx) + "\n"
-                + temp.substring(indx, temp.length());
+                    + temp.substring(indx, temp.length());
             start = start + size;
         }
         return temp;
@@ -1340,7 +1376,7 @@ public class RExpression extends TypedAtomicActor {
 
         String osName = System.getProperty("os.name");
         if (osName.equals("Windows NT") || osName.equals("Windows XP")
-            || osName.equals("Windows 2000")) {
+                || osName.equals("Windows 2000")) {
             // checkRLocation is commented out for now since it slows down the
             // first execution of a
             // workflow with an RExpression actor too much (>= 30 sec for a
@@ -1380,7 +1416,8 @@ public class RExpression extends TypedAtomicActor {
                 _debug("Process :" + _process);
             }
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Problem with creating process in RExpression!");
+            throw new IllegalActionException(this, ex,
+                    "Problem with creating process in RExpression!");
         }
         if (_debugging) {
             _debug("Ready to create threads");
@@ -1388,11 +1425,12 @@ public class RExpression extends TypedAtomicActor {
         // Create two threads to read from the subprocess.
         try {
             _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
-                                                 "Exec Stdout Gobbler-" + _streamReaderThreadCount++, this);
+                    "Exec Stdout Gobbler-" + _streamReaderThreadCount++, this);
             _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
-                                                "Exec Stderr Gobbler-" + _streamReaderThreadCount++, this);
+                    "Exec Stderr Gobbler-" + _streamReaderThreadCount++, this);
         } catch (UnsupportedEncodingException ex) {
-            throw new IllegalActionException(this, ex, "Failed to open exec process gobblers.");
+            throw new IllegalActionException(this, ex,
+                    "Failed to open exec process gobblers.");
         }
         _errorGobbler.start();
         _outputGobbler.start();
@@ -1403,11 +1441,12 @@ public class RExpression extends TypedAtomicActor {
         }
 
         try {
-            OutputStreamWriter inputStreamWriter = new OutputStreamWriter(_process
-                                                                      .getOutputStream(), "UTF-8");
+            OutputStreamWriter inputStreamWriter = new OutputStreamWriter(
+                    _process.getOutputStream(), "UTF-8");
             _inputBufferedWriter = new BufferedWriter(inputStreamWriter);
         } catch (UnsupportedEncodingException ex) {
-            throw new IllegalActionException(this, ex, "Failed to open the output stream: " + _process);
+            throw new IllegalActionException(this, ex,
+                    "Failed to open the output stream: " + _process);
         }
 
     }
@@ -1468,9 +1507,9 @@ public class RExpression extends TypedAtomicActor {
     }
 
     private String _createMetadataCommand(String objectName,
-                                          String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         String retVal = "attr(`" + objectName + "`, " + "\"" + attributeName
-            + "\"" + ") <- " + "\"" + attributeValue + "\"";
+                + "\"" + ") <- " + "\"" + attributeValue + "\"";
         return retVal;
     }
 
@@ -1484,7 +1523,8 @@ public class RExpression extends TypedAtomicActor {
             fn = home + "/" + _getUniqueFileName("dat") + _counter;
             stringReader = new StringReader(dat);
             File dataFile = new File(fn);
-            OutputStreamWriter w = new OutputStreamWriter(new FileOutputStream(dataFile), "UTF-8");
+            OutputStreamWriter w = new OutputStreamWriter(
+                    new FileOutputStream(dataFile), "UTF-8");
             printWriter = new PrintWriter(w);
             int c;
             while ((c = stringReader.read()) != -1) {
@@ -1510,8 +1550,9 @@ public class RExpression extends TypedAtomicActor {
     private void _findFile(File f, String name, List<File> r) {
         if (f.isDirectory()) {
             File[] files = f.listFiles();
-            if (files == null)
+            if (files == null) {
                 return;
+            }
             for (int i = 0; i < files.length; i++) {
                 // log.debug(files[i]+"");
                 _findFile(files[i], name, r);
@@ -1544,7 +1585,8 @@ public class RExpression extends TypedAtomicActor {
          *            The parent actor of this thread, which is used in error
          *            messages.
          */
-        _StreamReaderThread(InputStream inputStream, String name, Nameable actor) throws UnsupportedEncodingException {
+        _StreamReaderThread(InputStream inputStream, String name,
+                Nameable actor) throws UnsupportedEncodingException {
             super(name);
             _inputStream = inputStream;
             _inputStreamReader = new InputStreamReader(_inputStream, "UTF-8");
@@ -1587,6 +1629,7 @@ public class RExpression extends TypedAtomicActor {
         /**
          * Read lines from the inputStream and append them to the stringBuffer.
          */
+        @Override
         public void run() {
             while (_keepRunning) {
                 // log.debug("Starting read");
@@ -1622,10 +1665,9 @@ public class RExpression extends TypedAtomicActor {
                 if (_debugging) {
                     // Note that ready might be false here since
                     // we already read the data.
-                    _debug("_read(): Gobbler '" + getName()
-                           + "' Ready: " + _inputStreamReader.ready()
-                           + " Value: '" + String.valueOf(chars, 0, length)
-                           + "'");
+                    _debug("_read(): Gobbler '" + getName() + "' Ready: "
+                            + _inputStreamReader.ready() + " Value: '"
+                            + String.valueOf(chars, 0, length) + "'");
                 }
                 if (length > 0) {
                     String temp = String.valueOf(chars, 0, length);

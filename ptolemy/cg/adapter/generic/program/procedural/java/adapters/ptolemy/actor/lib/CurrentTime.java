@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class CurrentTime
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.CurrentTime {
+public class CurrentTime extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.CurrentTime {
     /**
      *  Construct a CurrentTime adapter.
      *  @param actor The given ptolemy.actor.lib.CurrentTime actor.

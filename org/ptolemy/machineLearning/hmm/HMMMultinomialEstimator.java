@@ -164,8 +164,8 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HMMMultinomialEstimator newObject = (HMMMultinomialEstimator) super
-                .clone(workspace);
+        HMMMultinomialEstimator newObject = (HMMMultinomialEstimator) super.clone(
+                workspace);
         newObject._B = new double[_nStates][_nStates];
         newObject._B0 = new double[_nStates][_nStates];
         return newObject;
@@ -237,7 +237,8 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         if (y.length == 1) {
             return _B[hiddenState][(int) y[0]];
         } else {
-            throw new IllegalActionException(this.getClassName() + " is only compatible with single dimensional distributions");
+            throw new IllegalActionException(this.getClassName()
+                    + " is only compatible with single dimensional distributions");
         }
     }
 

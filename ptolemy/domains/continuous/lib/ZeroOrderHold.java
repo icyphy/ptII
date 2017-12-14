@@ -79,9 +79,8 @@ public class ZeroOrderHold extends Transformer {
         super(container, name);
         defaultValue = new Parameter(this, "defaultValue");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-25,10 -15,10 -15,-10 5,-10\"/>\n"
                 + "<polyline points=\"5,-10 5,0 15,0 15,10 25,10\"/>\n"
                 + "</svg>\n");
@@ -170,8 +169,8 @@ public class ZeroOrderHold extends Transformer {
         try {
             // type of initialValue <= type of output
             if (defaultValue.getToken() != null) {
-                result.add(new Inequality(defaultValue.getTypeTerm(), output
-                        .getTypeTerm()));
+                result.add(new Inequality(defaultValue.getTypeTerm(),
+                        output.getTypeTerm()));
             }
         } catch (IllegalActionException ex) {
             // Errors in the defaultValue parameter should already

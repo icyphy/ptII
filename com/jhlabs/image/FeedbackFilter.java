@@ -48,7 +48,8 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
      * @param rotation the amount to rotate on each iteration
      * @param zoom the amount to scale on each iteration
      */
-    public FeedbackFilter(float distance, float angle, float rotation, float zoom) {
+    public FeedbackFilter(float distance, float angle, float rotation,
+            float zoom) {
         this.distance = distance;
         this.angle = angle;
         this.rotation = rotation;
@@ -238,8 +239,9 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         float cx = src.getWidth() * centreX;
         float cy = src.getHeight() * centreY;
         Math.sqrt(cx * cx + cy * cy);
@@ -258,15 +260,19 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
         Graphics2D g = dst.createGraphics();
         g.drawImage(src, null, null);
         for (int i = 0; i < iterations; i++) {
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                    ImageMath.lerp((float) i / (iterations - 1), startAlpha, endAlpha)));
+                    ImageMath.lerp((float) i / (iterations - 1), startAlpha,
+                            endAlpha)));
 
             g.translate(cx + translateX, cy + translateY);
             g.scale(scale, scale); // The .0001 works round a bug on Windows where drawImage throws an ArrayIndexOutofBoundException
-            if (rotation != 0)
+            if (rotation != 0) {
                 g.rotate(rotate);
+            }
             g.translate(-cx, -cy);
 
             g.drawImage(src, null, null);

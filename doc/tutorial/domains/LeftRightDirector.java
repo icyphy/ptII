@@ -127,8 +127,8 @@ public class LeftRightDirector extends StaticSchedulingDirector {
 
         /** Return a left-to-right schedule. */
         @Override
-        protected Schedule _getSchedule() throws IllegalActionException,
-        NotSchedulableException {
+        protected Schedule _getSchedule()
+                throws IllegalActionException, NotSchedulableException {
             // Get the director.
             NamedObj director = getContainer();
             // Get the container of the director.
@@ -138,7 +138,8 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             List<Actor> actors = compositeActor.deepEntityList();
             // Create a sorted list of actors, sorted by
             // a specialized comparator.
-            TreeSet<Actor> sortedActors = new TreeSet(new LeftRightComparator());
+            TreeSet<Actor> sortedActors = new TreeSet(
+                    new LeftRightComparator());
             sortedActors.addAll(actors);
             // Construct a Schedule from the sorted list.
             Schedule schedule = new Schedule();

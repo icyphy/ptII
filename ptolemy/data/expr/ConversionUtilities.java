@@ -319,16 +319,15 @@ public class ConversionUtilities {
                 return BaseType.LONG_MATRIX;
             } else if (tokenClass.equals(Class.forName("[[D"))) {
                 return BaseType.DOUBLE_MATRIX;
-            } else if (tokenClass.equals(Class
-                    .forName("[[Lptolemy.math.Complex;"))) {
+            } else if (tokenClass
+                    .equals(Class.forName("[[Lptolemy.math.Complex;"))) {
                 return BaseType.COMPLEX_MATRIX;
-            } else if (tokenClass.equals(Class
-                    .forName("[[Lptolemy.math.FixPoint;"))) {
+            } else if (tokenClass
+                    .equals(Class.forName("[[Lptolemy.math.FixPoint;"))) {
                 return BaseType.FIX_MATRIX;
             } else if (tokenClass.isArray()) {
-                return new ArrayType(
-                        convertJavaTypeToTokenType(tokenClass
-                                .getComponentType()));
+                return new ArrayType(convertJavaTypeToTokenType(
+                        tokenClass.getComponentType()));
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
                 return new ObjectType(tokenClass);
             } else if (tokenClass.isArray()) {
@@ -339,12 +338,12 @@ public class ConversionUtilities {
                 // This should really never happen, since every class
                 // should be caught by the isAssignable test above,
                 // but I don't like the dangling else if.
-                throw new InternalErrorException("type not found: "
-                        + tokenClass);
+                throw new InternalErrorException(
+                        "type not found: " + tokenClass);
             }
         } catch (ClassNotFoundException ex) {
-            throw new IllegalActionException(null, ex, "Could not find Class '"
-                    + tokenClass + "'");
+            throw new IllegalActionException(null, ex,
+                    "Could not find Class '" + tokenClass + "'");
         }
     }
 
@@ -435,7 +434,8 @@ public class ConversionUtilities {
                 }
 
                 returnValue = array;
-            } else if (((ArrayToken) token).getElement(0) instanceof LongToken) {
+            } else if (((ArrayToken) token)
+                    .getElement(0) instanceof LongToken) {
                 long[] array = new long[((ArrayToken) token).length()];
 
                 for (int j = 0; j < array.length; j++) {
@@ -444,7 +444,8 @@ public class ConversionUtilities {
                 }
 
                 returnValue = array;
-            } else if (((ArrayToken) token).getElement(0) instanceof DoubleToken) {
+            } else if (((ArrayToken) token)
+                    .getElement(0) instanceof DoubleToken) {
                 double[] array = new double[((ArrayToken) token).length()];
 
                 for (int j = 0; j < array.length; j++) {
@@ -453,7 +454,8 @@ public class ConversionUtilities {
                 }
 
                 returnValue = array;
-            } else if (((ArrayToken) token).getElement(0) instanceof ComplexToken) {
+            } else if (((ArrayToken) token)
+                    .getElement(0) instanceof ComplexToken) {
                 Complex[] array = new Complex[((ArrayToken) token).length()];
 
                 for (int j = 0; j < array.length; j++) {
@@ -462,7 +464,8 @@ public class ConversionUtilities {
                 }
 
                 returnValue = array;
-            } else if (((ArrayToken) token).getElement(0) instanceof StringToken) {
+            } else if (((ArrayToken) token)
+                    .getElement(0) instanceof StringToken) {
                 String[] array = new String[((ArrayToken) token).length()];
 
                 for (int j = 0; j < array.length; j++) {
@@ -471,7 +474,8 @@ public class ConversionUtilities {
                 }
 
                 returnValue = array;
-            } else if (((ArrayToken) token).getElement(0) instanceof BooleanToken) {
+            } else if (((ArrayToken) token)
+                    .getElement(0) instanceof BooleanToken) {
                 boolean[] array = new boolean[((ArrayToken) token).length()];
 
                 for (int j = 0; j < array.length; j++) {
@@ -481,12 +485,12 @@ public class ConversionUtilities {
 
                 returnValue = array;
             } else {
-                throw new InternalErrorException("token type not recognized: "
-                        + token);
+                throw new InternalErrorException(
+                        "token type not recognized: " + token);
             }
         } else {
-            throw new InternalErrorException("token type not recognized: "
-                    + token);
+            throw new InternalErrorException(
+                    "token type not recognized: " + token);
         }
 
         return returnValue;
@@ -554,10 +558,9 @@ public class ConversionUtilities {
                     return Class.forName("[Z");
                 } else {
                     return java.lang.reflect.Array
-                            .newInstance(
-                                    convertTokenTypeToJavaType(arrayType
-                                            .getElementType()),
-                                    0).getClass();
+                            .newInstance(convertTokenTypeToJavaType(
+                                    arrayType.getElementType()), 0)
+                            .getClass();
                 }
             } else {
                 // Bailout.  The type is not recognized, so defer to
@@ -565,8 +568,8 @@ public class ConversionUtilities {
                 return type.getTokenClass();
             }
         } catch (ClassNotFoundException ex) {
-            throw new IllegalActionException(null, ex, "Could not find Type '"
-                    + type + "'");
+            throw new IllegalActionException(null, ex,
+                    "Could not find Type '" + type + "'");
         }
     }
 }

@@ -53,9 +53,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating Red (jiazou)
  */
-public class PtidesBasicReceiver
-extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicReceiver {
+public class PtidesBasicReceiver extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicReceiver {
 
     /** Construct a ptides basic receiver.
      *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
@@ -64,13 +63,13 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
      */
     public PtidesBasicReceiver(
             ptolemy.domains.ptides.kernel.PtidesReceiver receiver)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         super(receiver);
     }
 
     @Override
-    public String generatePutCode(IOPort sourcePort, String offset, String token)
-            throws IllegalActionException {
+    public String generatePutCode(IOPort sourcePort, String offset,
+            String token) throws IllegalActionException {
         TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
 
         if (sinkPort.isOutput()) {
@@ -87,7 +86,8 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
             // we should put to the sink receivers (e.g., for SDF receivers,
             // we indeed want to put to this receiver, and generate transfer
             // output code to transfer tokens to the outside.
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(sinkPort);
+            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(
+                    sinkPort);
             for (int channel = 0; channel < sinkPort.getWidth(); channel++) {
                 code.append(portAdapter.generatePutCode(
                         Integer.toString(channel), offset, token));
@@ -100,9 +100,10 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
         Channel source = new Channel(sourcePort, 0);
         Channel sink = new Channel(sinkPort, sinkChannel);
 
-        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-                .getContainer().getContainer())).getTemplateParser()
-                .generateTypeConvertStatement(source, sink, 0, token);
+        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent().getContainer().getContainer()))
+                        .getTemplateParser()
+                        .generateTypeConvertStatement(source, sink, 0, token);
 
         token = _removeSink(token);
 
@@ -148,22 +149,23 @@ ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.
 
         String sourceTime;
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(sourcePort
-                .getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                sourcePort.getContainer());
 
         sourceTime = adapter.getSourceTimeString("sourceTime");
         if (sourceTime.equals("")) { // use default input output actor
             sourceTime = "sourceTime = &Event_Head_"
-                    + CodeGeneratorAdapter.generateName(sourcePort
-                            .getContainer()) + "_"
-                            + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
+                    + CodeGeneratorAdapter
+                            .generateName(sourcePort.getContainer())
+                    + "_" + adapter.getTimeSourcePortName()
+                    + "[0]->tag.timestamp";
         }
 
         // FIXME: not sure whether we should check if we are putting into an input port or
         // output port.
         // Generate a new event.
-        String sinkName = CodeGeneratorAdapter.generateName(sinkPort
-                .getContainer());
+        String sinkName = CodeGeneratorAdapter
+                .generateName(sinkPort.getContainer());
         List<String> args = new ArrayList<String>();
 
         args.add(sourceTime);

@@ -140,7 +140,8 @@ public class CircleGeometry implements Geometry {
     @Override
     public void setShape(Shape shape) {
         if (!(shape instanceof Rectangle2D)) {
-            throw new IllegalArgumentException("Argument must be a Rectangle2D");
+            throw new IllegalArgumentException(
+                    "Argument must be a Rectangle2D");
         }
 
         // Important: make a copy of it
@@ -306,8 +307,8 @@ public class CircleGeometry implements Geometry {
                 return piOver4 * 1;
             }
 
-            throw new IllegalArgumentException("Illegal direction: "
-                    + direction);
+            throw new IllegalArgumentException(
+                    "Illegal direction: " + direction);
         }
 
         /** Test if this site has a normal in the given direction.
@@ -352,12 +353,12 @@ public class CircleGeometry implements Geometry {
              double y1 = _rect.getY();
              double x2 = x1 + _rect.getWidth();
              double y2 = y1 + _rect.getHeight();
-
+            
              x1 += y;
              y1 += y;
              x2 -= y;
              y2 -= y;
-
+            
              // Check if below minimum allowable size.  If so, put the
              // coordinates back where they were.
              if (x2 - x1 < _minSize) {
@@ -368,7 +369,7 @@ public class CircleGeometry implements Geometry {
              y1 -= y;
              y2 += y;
              }
-
+            
              // Set the rectangle.
              _rect.setFrameFromDiagonal(x1,y1,x2,y2);
              */

@@ -78,8 +78,8 @@ public class GiottoReceiver extends Receiver {
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-                .getContainer().getContainer());
+        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent().getContainer().getContainer());
 
         return _getDirectorForReceiver().getReference(port,
                 new String[] { Integer.toString(channel), offset },
@@ -108,26 +108,28 @@ public class GiottoReceiver extends Receiver {
      *  getting the adapter, getting the director or getting the port reference.
      */
     @Override
-    public String generatePutCode(IOPort sourcePort, String offset, String token)
-            throws IllegalActionException {
+    public String generatePutCode(IOPort sourcePort, String offset,
+            String token) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-                .getContainer().getContainer());
+        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent().getContainer().getContainer());
 
         // The source's channel as well as the offsetis irrelevant here because
         // we use the token as the sourceRef instead.
         // The sink is actually also irrelevant, since we will get rid of it later.
         ProgramCodeGeneratorAdapter.Channel source = new Channel(sourcePort, 0);
         ProgramCodeGeneratorAdapter.Channel sink = new Channel(port, channel);
-        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-                .getContainer().getContainer())).getTemplateParser()
-                .generateTypeConvertStatement(source, sink, 0, token);
+        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent().getContainer().getContainer()))
+                        .getTemplateParser()
+                        .generateTypeConvertStatement(source, sink, 0, token);
 
         token = _removeSink(token);
 
         boolean forComposite = _forComposite;
-        if (getComponent().getContainer().getContainer() instanceof ModularCodeGenTypedCompositeActor
+        if (getComponent().getContainer()
+                .getContainer() instanceof ModularCodeGenTypedCompositeActor
                 && port.isInput()) {
             // If the container is a ModularCodeGenTypedCompositeActor
             // and the port is an input, then generate a reference
@@ -139,23 +141,22 @@ public class GiottoReceiver extends Receiver {
         }
         String result = null;
         if (!(sourcePort instanceof TypedIOPort)) {
-            throw new InternalErrorException(sourcePort, null,
-                    "Could not cast " + sourcePort.getFullName()
-                    + " to a TypedIOPort.");
+            throw new InternalErrorException(sourcePort, null, "Could not cast "
+                    + sourcePort.getFullName() + " to a TypedIOPort.");
         } else {
             //TypedIOPort sourceTypedIOPort = (TypedIOPort) sourcePort;
             try {
                 result = _getDirectorForReceiver().getReference(
                         (TypedIOPort) sourcePort,
                         new String[] { Integer.toString(channel), offset },
-                        forComposite, true, containingActorAdapter)
-                        + "=" + token + ";" + _eol;
+                        forComposite, true, containingActorAdapter) + "="
+                        + token + ";" + _eol;
             } catch (Throwable throwable) {
                 result = _getExecutiveDirectorForReceiver().getReference(
                         (TypedIOPort) sourcePort,
                         new String[] { Integer.toString(channel), offset },
-                        forComposite, true, containingActorAdapter)
-                        + "=" + token + ";" + _eol;
+                        forComposite, true, containingActorAdapter) + "="
+                        + token + ";" + _eol;
             }
         }
         return result;
@@ -201,8 +202,9 @@ public class GiottoReceiver extends Receiver {
      */
     protected StaticSchedulingDirector _getExecutiveDirectorForReceiver()
             throws IllegalActionException {
-        return (StaticSchedulingDirector) getAdapter(((Actor) getComponent()
-                .getContainer().getContainer()).getExecutiveDirector());
+        return (StaticSchedulingDirector) getAdapter(
+                ((Actor) getComponent().getContainer().getContainer())
+                        .getExecutiveDirector());
     }
 
     private boolean _forComposite;

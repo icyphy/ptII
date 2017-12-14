@@ -27,14 +27,13 @@
  */
 package ptolemy.actor.lib.net;
 
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import ptolemy.actor.lib.StringConst;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
 
 ///////////////////////////////////////////////////////////////////
 //// IPAddress
@@ -69,6 +68,7 @@ public class IPAddress extends StringConst {
      *  @exception IllegalActionException If thrown by the super class
      *  or while setting the value.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _updateValueWithIPAddress();
@@ -82,9 +82,10 @@ public class IPAddress extends StringConst {
      */
     private void _updateValueWithIPAddress() throws IllegalActionException {
         try {
-            value.setExpression(Inet4Address.getLocalHost().getHostAddress());
+            value.setExpression(InetAddress.getLocalHost().getHostAddress());
         } catch (UnknownHostException ex) {
-            throw new IllegalActionException(this, ex, "Could not get the local host?");
+            throw new IllegalActionException(this, ex,
+                    "Could not get the local host?");
         }
     }
 

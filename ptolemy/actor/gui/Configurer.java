@@ -258,12 +258,13 @@ public class Configurer extends JPanel implements CloseListener {
                     String newValue = parameter.getExpression();
                     String defaultValue = parameter.getDefaultExpression();
 
-                    if (defaultValue != null && !newValue.equals(defaultValue)) {
+                    if (defaultValue != null
+                            && !newValue.equals(defaultValue)) {
                         buffer.append("<property name=\"");
                         buffer.append(((NamedObj) parameter).getName(_object));
                         buffer.append("\" value=\"");
-                        buffer.append(StringUtilities
-                                .escapeForXML(defaultValue));
+                        buffer.append(
+                                StringUtilities.escapeForXML(defaultValue));
                         buffer.append("\"/>\n");
                         parametersReset.add(parameter);
                     }
@@ -300,7 +301,7 @@ public class Configurer extends JPanel implements CloseListener {
                                     // this object overrides some
                                     // inherited value.
                                     ((NamedObj) parameter)
-                                    .setDerivedLevel(derivedLevel);
+                                            .setDerivedLevel(derivedLevel);
                                 }
                             }
                         }

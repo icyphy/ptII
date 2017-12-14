@@ -85,8 +85,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class InteractiveDialog extends TypedAtomicActor implements Placeable,
-        ShellInterpreter, UsesInvokeAndWait {
+public class InteractiveDialog extends TypedAtomicActor
+        implements Placeable, ShellInterpreter, UsesInvokeAndWait {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -121,10 +121,10 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
         // of the window and save it.
         _windowProperties.setPersistent(true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-14\" y=\"-14\" "
-                + "width=\"28\" height=\"28\" " + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"-14\" y=\"-14\" " + "width=\"28\" height=\"28\" "
+                + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-10,-10, -5,-5, -10,0\" "
                 + "style=\"stroke:black\"/>\n"
                 + "<polyline points=\"-7,-10, -2,-5, -7,0\" "
@@ -164,7 +164,8 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        InteractiveDialog newObject = (InteractiveDialog) super.clone(workspace);
+        InteractiveDialog newObject = (InteractiveDialog) super.clone(
+                workspace);
         newObject.userDialog = null;
         newObject._container = null;
         newObject._frame = null;
@@ -203,7 +204,7 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
     public String evaluateCommand(String command) throws Exception {
         // NOTE: This method is typically called in the swing event thread.
         // Be careful to avoid locking up the UI.
-        synchronized(this) {
+        synchronized (this) {
             _outputValues.add(command);
         }
         // Request a firing.
@@ -246,12 +247,13 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
             }
         }
 
-        synchronized(this) {
+        synchronized (this) {
             // For some reason, getExpression() returns an escaped string, "\\n",
             // so I need to fix that here.
-            boolean terminate = ((BooleanToken)terminateWithNewline.getToken()).booleanValue();
-            String format = "%s" + (terminate? "\n" : "");
-            for (String command: _outputValues) {
+            boolean terminate = ((BooleanToken) terminateWithNewline.getToken())
+                    .booleanValue();
+            String format = "%s" + (terminate ? "\n" : "");
+            for (String command : _outputValues) {
                 String formatted = String.format(format, command);
                 output.broadcast(new StringToken(formatted));
             }
@@ -275,19 +277,21 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
                     // No container has been specified for the shell.
                     // Place the shell in its own frame.
                     // Need an effigy and a tableau so that menu ops work properly.
-                    Effigy containerEffigy = Configuration.findEffigy(toplevel());
+                    Effigy containerEffigy = Configuration
+                            .findEffigy(toplevel());
 
                     if (containerEffigy == null) {
-                        MessageHandler.error("Cannot find effigy for top level: "
-                                + toplevel().getFullName());
+                        MessageHandler
+                                .error("Cannot find effigy for top level: "
+                                        + toplevel().getFullName());
                         return;
                     }
 
                     try {
                         // Similar enough: use ExpressionShellEffigy.
                         ExpressionShellEffigy shellEffigy = new ExpressionShellEffigy(
-                                containerEffigy,
-                                containerEffigy.uniqueName("interactiveDialog"));
+                                containerEffigy, containerEffigy
+                                        .uniqueName("interactiveDialog"));
 
                         // The default identifier is "Unnamed", which is no good for
                         // two reasons: Wrong title bar label, and it causes a save-as
@@ -302,7 +306,7 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
                         MessageHandler.error(
                                 "Error creating effigy and tableau "
                                         + InteractiveDialog.this.getFullName(),
-                                        ex);
+                                ex);
                         return;
                     }
 
@@ -433,8 +437,8 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
      *  @see #getName(NamedObj)
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         if (_tableau != null) {
@@ -467,8 +471,8 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
         HashSet<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()
                 && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL),
+                    input.getTypeTerm()));
         }
         return result;
     }

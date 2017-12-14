@@ -69,7 +69,8 @@ public class DefaultModelAttribute extends FileParameter {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this,
+                "editorFactory");
     }
 
     /** Specify the container NamedObj, adding this attribute to the
@@ -102,8 +103,8 @@ public class DefaultModelAttribute extends FileParameter {
      *  @see #getContainer()
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, false);

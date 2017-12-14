@@ -120,12 +120,13 @@ public class PlotApplet extends JApplet {
                 { "background", "hexcolor value", "background color" },
                 { "foreground", "hexcolor value", "foreground color" },
                 { "dataurl", "url", "the URL of the data to plot" },
-                { "height", "integer", "100" }, { "width", "integer", "100" }, };
+                { "height", "integer", "100" },
+                { "width", "integer", "100" }, };
         return pinfo;
     }
 
     /** Initialize the applet.  Read the applet parameters.
-
+    
      *  Subclasses that extend this method and call Swing UI methods
      *  should do so in the Swing Event thread by calling
      *  SwingUtilities.invokeAndWait().
@@ -213,9 +214,8 @@ public class PlotApplet extends JApplet {
                     } catch (FileNotFoundException e) {
                         System.err.println("PlotApplet: file not found: " + e);
                     } catch (IOException e) {
-                        System.err
-                        .println("PlotApplet: error reading input file: "
-                                + e);
+                        System.err.println(
+                                "PlotApplet: error reading input file: " + e);
                     }
                 }
             }

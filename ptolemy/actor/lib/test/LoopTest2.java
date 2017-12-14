@@ -116,7 +116,7 @@ public class LoopTest2 extends TypedAtomicActor {
                 if (xmlResultsStr.equals("Results Found")) {
                     System.out.println("Got data, set to " + xmlResultsStr);
                     foundResultsOutput
-                    .broadcast(new StringToken(xmlResultsStr));
+                            .broadcast(new StringToken(xmlResultsStr));
                     continueLooping = false;
                 }
             } else {

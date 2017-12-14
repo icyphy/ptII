@@ -83,7 +83,8 @@ public class ManipulatorTutorial {
         canvas = new JCanvas();
         graphicsPane = (GraphicsPane) canvas.getCanvasPane();
 
-        BasicFrame frame = new BasicFrame("Manipulator canvas tutorial", canvas);
+        BasicFrame frame = new BasicFrame("Manipulator canvas tutorial",
+                canvas);
         frame.setSize(600, 400);
         frame.setVisible(true);
     }

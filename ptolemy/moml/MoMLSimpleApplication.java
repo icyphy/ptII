@@ -68,7 +68,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)
  */
-public class MoMLSimpleApplication implements ChangeListener, ExecutionListener {
+public class MoMLSimpleApplication
+        implements ChangeListener, ExecutionListener {
 
     /** Instantiate a MoMLSimpleApplication.  This constructor is
      * probably not useful by itself, it is for use by subclasses.
@@ -119,8 +120,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        _toplevel = (CompositeActor) _parser.parse(null, new File(xmlFileName)
-        .toURI().toURL());
+        _toplevel = (CompositeActor) _parser.parse(null,
+                new File(xmlFileName).toURI().toURL());
 
         // If the model is a top level, and a model error handler has not been set,
         // then set a BasicModelErrorHandler.
@@ -245,7 +246,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      */
     public static void closeVertx() {
         try {
-            Class clazz = Class.forName("ptolemy.actor.lib.jjs.VertxHelperBase");
+            Class clazz = Class
+                    .forName("ptolemy.actor.lib.jjs.VertxHelperBase");
             if (clazz != null) {
                 Method method = clazz.getMethod("closeVertx");
                 method.invoke(null);
@@ -253,7 +255,9 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         } catch (NoClassDefFoundError ex) {
             // Ignore this, it means that MoMLSimpleApplication was invoked without the Vert.x jar files.
         } catch (Throwable throwable) {
-            System.err.println("MoMLSimpleApplication: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: " + throwable);
+            System.err.println(
+                    "MoMLSimpleApplication: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: "
+                            + throwable);
         }
     }
 
@@ -272,7 +276,8 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param throwable The throwable to report.
      */
     @Override
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
         _sawThrowable = throwable;
         _executionFinishedOrError = true;
         _activeCount--;

@@ -88,7 +88,8 @@ public class TileImageFilter extends AbstractBufferedImageOp {
 
         if (dst == null) {
             ColorModel dstCM = src.getColorModel();
-            dst = new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(width, height),
+            dst = new BufferedImage(dstCM,
+                    dstCM.createCompatibleWritableRaster(width, height),
                     dstCM.isAlphaPremultiplied(), null);
         }
 

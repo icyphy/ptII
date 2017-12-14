@@ -61,9 +61,8 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
             // Ignore exceptions, which only result in the wrong look and feel.
-            System.err
-                    .println("Failed to set the look and feel? Exception was: "
-                            + ex);
+            System.err.println(
+                    "Failed to set the look and feel? Exception was: " + ex);
         }
     }
 
@@ -102,8 +101,8 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
 
         try {
-            _query.addFileChooser("fileChooser", "FileChooser", "default",
-                    null, null);
+            _query.addFileChooser("fileChooser", "FileChooser", "default", null,
+                    null);
         } catch (SecurityException security) {
             System.out.println("addFileChooser failed: " + security);
         }

@@ -83,7 +83,8 @@ public class WebSocketHelper extends VertxHelperBase {
     public void close() {
         synchronized (_actor) {
             if (!_actor.isExecuting()) {
-                _actor.log("Connection closed because model is no longer running.");
+                _actor.log(
+                        "Connection closed because model is no longer running.");
             } else {
                 _actor.log("Connection closed.");
             }
@@ -95,8 +96,9 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         // Defer the rest of the close to the associated verticle.
         submit(new Runnable() {
+            @Override
             public void run() {
-                synchronized(WebSocketHelper.this) {
+                synchronized (WebSocketHelper.this) {
                     if (_webSocket != null) {
                         if (_wsIsOpen) {
                             _webSocket.close();
@@ -133,24 +135,24 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createClientSocket(Object actor,
-            ScriptObjectMirror currentObj, String host, boolean sslTls, int port,
-            String receiveType, String sendType,
-            int connectTimeout,
-            int numberOfRetries, int timeBetweenRetries,
-            boolean trustAll, String trustedCACertPath,
-            boolean discardMessagesBeforeOpen, int throttleFactor) {
+            ScriptObjectMirror currentObj, String host, boolean sslTls,
+            int port, String receiveType, String sendType, int connectTimeout,
+            int numberOfRetries, int timeBetweenRetries, boolean trustAll,
+            String trustedCACertPath, boolean discardMessagesBeforeOpen,
+            int throttleFactor) {
 
         if (trustAll) {
             if (!MessageHandler.yesNoQuestion(
                     "The client is set to trust all certificates ('trustAll' option is true). "
-                    + "This means that the client can connect to any server with no "
-                    + "verification of the identity of the server. "
-                    + "Are you sure?")) {
+                            + "This means that the client can connect to any server with no "
+                            + "verification of the identity of the server. "
+                            + "Are you sure?")) {
                 return null;
             }
         }
-        return new WebSocketHelper(actor, currentObj, host, sslTls, port, receiveType, sendType,
-                connectTimeout, numberOfRetries, timeBetweenRetries, trustAll, trustedCACertPath,
+        return new WebSocketHelper(actor, currentObj, host, sslTls, port,
+                receiveType, sendType, connectTimeout, numberOfRetries,
+                timeBetweenRetries, trustAll, trustedCACertPath,
                 discardMessagesBeforeOpen, throttleFactor);
     }
 
@@ -166,10 +168,9 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public static WebSocketHelper createServerSocket(Object actor,
             ScriptObjectMirror currentObj, WebSocketBase serverWebSocket,
-            WebSocketServerHelper helper,
-            String receiveType, String sendType) {
-        return new WebSocketHelper(actor,
-                currentObj, serverWebSocket, helper, receiveType, sendType);
+            WebSocketServerHelper helper, String receiveType, String sendType) {
+        return new WebSocketHelper(actor, currentObj, serverWebSocket, helper,
+                receiveType, sendType);
     }
 
     /** Return whether the web socket is opened successfully.
@@ -190,7 +191,8 @@ public class WebSocketHelper extends VertxHelperBase {
         submit(() -> {
             _numberOfTries = 1;
             if (_DEBUG) {
-                _actor.log("### Requesting connection to server: " + _host + " at port " + _port);
+                _actor.log("### Requesting connection to server: " + _host
+                        + " at port " + _port);
             }
             _connectWebsocket(_host, _port, _client);
         });
@@ -210,30 +212,33 @@ public class WebSocketHelper extends VertxHelperBase {
         Object message = msg;
         if (!(msg instanceof String)) {
             if (msg instanceof ImageToken) {
-                Image image = ((ImageToken)msg).asAWTImage();
+                Image image = ((ImageToken) msg).asAWTImage();
                 if (!(image instanceof BufferedImage)) {
                     _error("Unsupported image token type: " + image.getClass());
                 }
                 if (!_sendType.startsWith("image/")) {
-                    _error("Trying to send an image, but sendType is " + _sendType);
+                    _error("Trying to send an image, but sendType is "
+                            + _sendType);
                 }
                 String imageType = _sendType.substring(6);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 try {
-                    ImageIO.write((BufferedImage)image, imageType, stream);
+                    ImageIO.write((BufferedImage) image, imageType, stream);
                 } catch (IOException e) {
-                    _error("Failed to convert image to byte array for sending: " + e.toString(), e);
+                    _error("Failed to convert image to byte array for sending: "
+                            + e.toString(), e);
                 }
                 message = Buffer.buffer(stream.toByteArray());
             }
         }
 
         boolean queuedMessage = false;
-        synchronized(WebSocketHelper.this) {
+        synchronized (WebSocketHelper.this) {
             if (!isOpen()) {
                 // Socket is not open.
                 if (_discardMessagesBeforeOpen) {
-                    _actor.log("WARNING: Data discarded because socket is not open.");
+                    _actor.log(
+                            "WARNING: Data discarded because socket is not open.");
                     return;
                 } else {
                     // Add the message to the queue of messages to be sent.
@@ -258,7 +263,7 @@ public class WebSocketHelper extends VertxHelperBase {
             if (_throttleFactor > 0) {
                 _issueResponse(() -> {
                     long sleepTime = 0L;
-                    synchronized(WebSocketHelper.this) {
+                    synchronized (WebSocketHelper.this) {
                         // NOTE that _pendingOutputs may have already been drained.
                         if (_pendingOutputs.size() > 0) {
                             // Coverity Scan: "Unintentional integer
@@ -272,12 +277,15 @@ public class WebSocketHelper extends VertxHelperBase {
                             // in a context that expects an expression
                             // of type long (64 bits, signed)."
                             // "To avoid overflow, cast either _throttleFactor or _pendingOutputs.size() - 1 to type long."
-                            sleepTime = _throttleFactor * (_pendingOutputs.size() - 1);
+                            sleepTime = _throttleFactor
+                                    * (_pendingOutputs.size() - 1);
                         }
                     }
                     if (sleepTime > 0L) {
                         if (_DEBUG) {
-                            _actor.log("Sleeping for " + sleepTime + " ms in thread " + Thread.currentThread());
+                            _actor.log("Sleeping for " + sleepTime
+                                    + " ms in thread "
+                                    + Thread.currentThread());
                         }
                         try {
                             Thread.sleep(sleepTime);
@@ -295,6 +303,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
         // First, create the task that will perform the send.
         final Runnable sendTask = new Runnable() {
+            @Override
             public void run() {
                 if (_wsFailed != null) {
                     _error("Failed to establish connection: "
@@ -306,8 +315,9 @@ public class WebSocketHelper extends VertxHelperBase {
                     }
                     _sendMessageOverSocket(finalMessage);
                 } else if (_discardMessagesBeforeOpen) {
-                    _actor.log("WARNING: Data discarded because socket is not open: "
-                            + finalMessage);
+                    _actor.log(
+                            "WARNING: Data discarded because socket is not open: "
+                                    + finalMessage);
                 } else {
                     // Add the message to the queue of messages to be sent.
                     // It is important that this be done in the verticle thread
@@ -315,9 +325,10 @@ public class WebSocketHelper extends VertxHelperBase {
                     // queue is drained in this thread.
                     // Synchronize to make sure we are not in the middle of draining
                     // the queue.
-                    synchronized(WebSocketHelper.this) {
+                    synchronized (WebSocketHelper.this) {
                         if (_DEBUG) {
-                            _actor.log("Adding message to pending messages queue (2).");
+                            _actor.log(
+                                    "Adding message to pending messages queue (2).");
                         }
                         _pendingOutputs.add(finalMessage);
                     }
@@ -337,14 +348,16 @@ public class WebSocketHelper extends VertxHelperBase {
             // If this is called outside the director thread, then defer to the
             // director thread.
             _issueResponse(() -> {
-                synchronized(this) {
+                synchronized (this) {
                     try {
                         if (isOpen() && _webSocket.writeQueueFull()) {
-                            _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
+                            _actor.log(
+                                    "WARNING: Send buffer is full. Stalling to allow it to drain.");
                             wait();
                         }
                     } catch (InterruptedException e) {
-                        _error("Buffer is full, and wait for draining was interrupted.", e);
+                        _error("Buffer is full, and wait for draining was interrupted.",
+                                e);
                     }
                 }
                 submit(sendTask);
@@ -371,7 +384,7 @@ public class WebSocketHelper extends VertxHelperBase {
         // Remove duplicates.  Prepend "image/" for proper MIME type.
         TreeSet<String> typeSet = new TreeSet<String>();
         for (int i = 0; i < imageTypes.length; i++) {
-                typeSet.add("image/" + imageTypes[i].toLowerCase());
+            typeSet.add("image/" + imageTypes[i].toLowerCase());
         }
         typeSet.add("application/json");
         typeSet.add("text/plain");
@@ -391,7 +404,7 @@ public class WebSocketHelper extends VertxHelperBase {
         // Remove duplicates.  Prepend "image/" for proper MIME type.
         TreeSet<String> typeSet = new TreeSet<String>();
         for (int i = 0; i < imageTypes.length; i++) {
-                typeSet.add("image/" + imageTypes[i].toLowerCase());
+            typeSet.add("image/" + imageTypes[i].toLowerCase());
         }
         typeSet.add("application/json");
         typeSet.add("text/plain");
@@ -407,11 +420,10 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     protected void _sendMessageOverSocket(Object message) {
         if (message instanceof String) {
-            message = Buffer.buffer((String)message);
+            message = Buffer.buffer((String) message);
         }
         if (!(message instanceof Buffer)) {
-            _error("Message type not recognized: "
-                    + message.getClass()
+            _error("Message type not recognized: " + message.getClass()
                     + ". Perhaps the sendType doesn't match the data type.");
             return;
         }
@@ -420,7 +432,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
         // FIXME: Spotbugs says that there is inconsistent synchronization here because
         // access to _webSocket is not locked.
-        _webSocket.writeBinaryMessage((Buffer)message);
+        _webSocket.writeBinaryMessage((Buffer) message);
 
         /* NOTE: Previously, we had a bug where we created two verticles, and the following
          * workaround _seemed_ to solve the problem. It was an illusion.
@@ -449,12 +461,10 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param throttleFactor The number of milliseconds to stall for each queued item
      *   waiting to be sent.
      */
-    private WebSocketHelper(Object actor,
-            ScriptObjectMirror currentObj, String host, boolean sslTls,
-            int port, String receiveType, String sendType,
-            int connectTimeout,
-            int numberOfRetries, long timeBetweenRetries,
-            boolean trustAll, String trustedCACertPath,
+    private WebSocketHelper(Object actor, ScriptObjectMirror currentObj,
+            String host, boolean sslTls, int port, String receiveType,
+            String sendType, int connectTimeout, int numberOfRetries,
+            long timeBetweenRetries, boolean trustAll, String trustedCACertPath,
             boolean discardMessagesBeforeOpen, long throttleFactor) {
         super(actor, currentObj);
 
@@ -475,32 +485,36 @@ public class WebSocketHelper extends VertxHelperBase {
         // all callbacks that are set up as a side effect will also
         // execute in that thread.
         submit(new Runnable() {
+            @Override
             public void run() {
                 HttpClientOptions clientOptions = new HttpClientOptions()
-                        .setDefaultHost(host)
-                        .setDefaultPort(port)
-                        .setKeepAlive(true)
-                        .setConnectTimeout(_connectTimeout)
-                        .setSsl(_sslTls)
-                        .setTrustAll(_trustAll);
+                        .setDefaultHost(host).setDefaultPort(port)
+                        .setKeepAlive(true).setConnectTimeout(_connectTimeout)
+                        .setSsl(_sslTls).setTrustAll(_trustAll);
 
                 // If SSL/TLS is enabled and trustAll is false, it has to be configured.
                 if (clientOptions.isSsl() && !clientOptions.isTrustAll()) {
                     PemTrustOptions pemTrustOptions = new PemTrustOptions();
 
                     String caCertPath = _trustedCACertPath;
-                    File caCertFile = FileUtilities.nameToFile(caCertPath, null);
+                    File caCertFile = FileUtilities.nameToFile(caCertPath,
+                            null);
 
                     if (caCertFile == null) {
-                        _error(currentObj, "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
+                        _error(currentObj,
+                                "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
                         return;
                     }
                     try {
-                        pemTrustOptions.addCertPath(caCertFile.getCanonicalPath());
+                        pemTrustOptions
+                                .addCertPath(caCertFile.getCanonicalPath());
 
                         clientOptions.setPemTrustOptions(pemTrustOptions);
                     } catch (IOException e) {
-                        _error(currentObj, "Failed to find the trusted CA certificate at " + caCertFile, e);
+                        _error(currentObj,
+                                "Failed to find the trusted CA certificate at "
+                                        + caCertFile,
+                                e);
                         return;
                     }
                 }
@@ -518,13 +532,9 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
      */
-    private WebSocketHelper(
-            Object actor,
-            ScriptObjectMirror currentObj,
-            WebSocketBase serverWebSocket,
-            WebSocketServerHelper helper,
-            String receiveType,
-            String sendType) {
+    private WebSocketHelper(Object actor, ScriptObjectMirror currentObj,
+            WebSocketBase serverWebSocket, WebSocketServerHelper helper,
+            String receiveType, String sendType) {
         super(actor, currentObj, helper);
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
@@ -560,12 +570,14 @@ public class WebSocketHelper extends VertxHelperBase {
             @Override
             public void handle(WebSocket websocket) {
                 if (_DEBUG) {
-                    _actor.log("Response to request for websocket received from server.");
+                    _actor.log(
+                            "Response to request for websocket received from server.");
                 }
                 if (_numberOfTries < 0) {
                     // close() has been called. Abort the connection.
                     if (_DEBUG) {
-                        _actor.log("close() has been called. Abort the connection.");
+                        _actor.log(
+                                "close() has been called. Abort the connection.");
                     }
                     websocket.close();
                     return;
@@ -573,7 +585,8 @@ public class WebSocketHelper extends VertxHelperBase {
                 if (!_actor.isExecuting()) {
                     // Actor is not executing.
                     if (_DEBUG) {
-                        _actor.log("Actor is not executing. Abort the connection.");
+                        _actor.log(
+                                "Actor is not executing. Abort the connection.");
                     }
                     websocket.close();
                     return;
@@ -595,21 +608,22 @@ public class WebSocketHelper extends VertxHelperBase {
                 // and we need to make sure that the "open" handler and a "toSend"
                 // input handler are not executed simultaneously (to preserve the
                 // integrity of the pendingSends queue).
-                synchronized(_actor) {
+                synchronized (_actor) {
                     _currentObj.callMember("emit", "open");
                 }
 
                 // Send any pending messages.
                 // Synchronize to make sure no pending outputs are added while
                 // we are iterating through the queue.
-                synchronized(WebSocketHelper.this) {
+                synchronized (WebSocketHelper.this) {
                     // Set this inside the synchronized block to ensure that
                     // after this block is executed, messages are not put
                     // on the pending queue.
                     _wsIsOpen = true;
                     if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
                         if (_DEBUG) {
-                            _actor.log("Sending " + _pendingOutputs.size() + " pending messages.");
+                            _actor.log("Sending " + _pendingOutputs.size()
+                                    + " pending messages.");
                         }
                         for (Object message : _pendingOutputs) {
                             _sendMessageOverSocket(message);
@@ -709,14 +723,18 @@ public class WebSocketHelper extends VertxHelperBase {
                     if (_receiveType.equals("application/json")
                             || _receiveType.startsWith("text/")) {
                         // This assumes the input is a string encoded in UTF-8.
-                        _currentObj.callMember("_notifyIncoming", buffer.toString());
+                        _currentObj.callMember("_notifyIncoming",
+                                buffer.toString());
                     } else if (_receiveType.startsWith("image/")) {
                         try {
-                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(buffer.getBytes()));
+                            BufferedImage image = ImageIO
+                                    .read(new ByteArrayInputStream(
+                                            buffer.getBytes()));
                             ImageToken token = new AWTImageToken(image);
                             _currentObj.callMember("_notifyIncoming", token);
                         } catch (IOException e) {
-                            _error("Failed to read incoming image: " + e.toString(), e);
+                            _error("Failed to read incoming image: "
+                                    + e.toString(), e);
                         }
                     } else {
                         _error("Unsupported receiveType: " + _receiveType);
@@ -729,9 +747,10 @@ public class WebSocketHelper extends VertxHelperBase {
     /** The event handler that is triggered when the web socket connection is closed.
      */
     private class EndHandler implements Handler<Void> {
+        @Override
         public void handle(Void event) {
             _currentObj.callMember("emit", "close", "Stream has ended.");
-            synchronized(WebSocketHelper.this) {
+            synchronized (WebSocketHelper.this) {
                 _wsIsOpen = false;
                 if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
                     _error("Unsent data remains in the queue.");
@@ -767,7 +786,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class WebSocketDrainHandler implements Handler<Void> {
         @Override
         public void handle(Void ignored) {
-            synchronized(WebSocketHelper.this) {
+            synchronized (WebSocketHelper.this) {
                 // This should unblock send(),
                 WebSocketHelper.this.notifyAll();
             }
@@ -787,19 +806,15 @@ public class WebSocketHelper extends VertxHelperBase {
                 cause = cause.getCause();
             }
             if (_numberOfTries >= _numberOfRetries + 1) {
-                _error("Connection failed after "
-                        + _numberOfTries
-                        + " tries: "
+                _error("Connection failed after " + _numberOfTries + " tries: "
                         + message);
                 _wsIsOpen = false;
                 _wsFailed = arg0;
             } else if (_numberOfTries < 0) {
-                _error("Connection closed while trying to connect: "
-                        + message);
+                _error("Connection closed while trying to connect: " + message);
                 _wsIsOpen = false;
             } else {
-                _actor.log("Connection failed. Will try again: "
-                        + message);
+                _actor.log("Connection failed. Will try again: " + message);
                 // Retry after some time.
                 _vertx.setTimer(_timeBetweenRetries, id -> {
                     // Check again the status of the number of tries.

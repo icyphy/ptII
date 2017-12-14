@@ -93,8 +93,9 @@ public class ScratchFilter extends AbstractBufferedImageOp {
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int width = src.getWidth();
         int height = src.getHeight();
@@ -102,13 +103,15 @@ public class ScratchFilter extends AbstractBufferedImageOp {
         float l = length * width;
         Random random = new Random(seed);
         Graphics2D g = dst.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(new Color(color));
         g.setStroke(new BasicStroke(this.width));
         for (int i = 0; i < numScratches; i++) {
             float x = width * random.nextFloat();
             float y = height * random.nextFloat();
-            float a = angle + ImageMath.TWO_PI * (angleVariation * (random.nextFloat() - 0.5f));
+            float a = angle + ImageMath.TWO_PI
+                    * (angleVariation * (random.nextFloat() - 0.5f));
             float s = (float) Math.sin(a) * l;
             float c = (float) Math.cos(a) * l;
             float x1 = x - c;

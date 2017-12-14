@@ -201,7 +201,8 @@ public class TransitionController extends BasicEdgeController {
                 }
 
                 try {
-                    if (transition.isPreemptive() && !transition.isImmediate()) {
+                    if (transition.isPreemptive()
+                            && !transition.isImmediate()) {
                         Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0,
                                 Color.red);
                         blob.setFilled(true);
@@ -219,7 +220,8 @@ public class TransitionController extends BasicEdgeController {
                         blob.setFilled(true);
                         c.setTailEnd(blob);
                     } else if (transition.isErrorTransition()) {
-                        Blob blob = new Blob(0, 0, 0, Blob.STAR, 5.0, Color.red);
+                        Blob blob = new Blob(0, 0, 0, Blob.STAR, 5.0,
+                                Color.red);
                         blob.setFilled(true);
                         c.setTailEnd(blob);
                     } else if (transition.isTermination()) {
@@ -242,8 +244,8 @@ public class TransitionController extends BasicEdgeController {
                         dashvalues[0] = (float) 2.0;
                         dashvalues[1] = (float) 2.0;
                         Stroke dashed = new BasicStroke(1.0f,
-                                BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
-                                0, dashvalues, 0);
+                                BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+                                dashvalues, 0);
                         c.setStroke(dashed);
                     }
                 } catch (IllegalActionException e) {
@@ -361,8 +363,8 @@ public class TransitionController extends BasicEdgeController {
      *  @see ptolemy.actor.gui.Configuration#openModel(NamedObj)
      */
     protected void _openInstanceOrModel(Configuration configuration,
-            NamedObj refinement) throws IllegalActionException,
-            NameDuplicationException {
+            NamedObj refinement)
+            throws IllegalActionException, NameDuplicationException {
         configuration.openModel(refinement);
     }
 
@@ -485,8 +487,8 @@ public class TransitionController extends BasicEdgeController {
                 // For some inexplicable reason, the I key doesn't work here.
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                        .getMenuShortcutKeyMask()));
+                        KeyEvent.VK_L,
+                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             }
         }
 
@@ -494,7 +496,7 @@ public class TransitionController extends BasicEdgeController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                .error("Cannot look inside without a configuration.");
+                        .error("Cannot look inside without a configuration.");
                 return;
             }
 

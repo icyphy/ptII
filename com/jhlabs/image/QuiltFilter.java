@@ -123,7 +123,8 @@ public class QuiltFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int[] outPixels = new int[width * height];
 
         int max = 0;
@@ -136,11 +137,13 @@ public class QuiltFilter extends WholeImageFilter {
             float my = ImageMath.PI * y;
             float smx2 = (float) Math.sin(2 * mx);
             float smy2 = (float) Math.sin(2 * my);
-            float x1 = (float) (a * smx2 + b * smx2 * Math.cos(2 * my) + c * Math.sin(4 * mx)
+            float x1 = (float) (a * smx2 + b * smx2 * Math.cos(2 * my)
+                    + c * Math.sin(4 * mx)
                     + d * Math.sin(6 * mx) * Math.cos(4 * my) + k * x);
             x1 = x1 >= 0 ? x1 - (int) x1 : x1 - (int) x1 + 1;
 
-            float y1 = (float) (a * smy2 + b * smy2 * Math.cos(2 * mx) + c * Math.sin(4 * my)
+            float y1 = (float) (a * smy2 + b * smy2 * Math.cos(2 * mx)
+                    + c * Math.sin(4 * my)
                     + d * Math.sin(6 * my) * Math.cos(4 * mx) + k * y);
             y1 = y1 >= 0 ? y1 - (int) y1 : y1 - (int) y1 + 1;
             x = x1;
@@ -150,11 +153,15 @@ public class QuiltFilter extends WholeImageFilter {
         for (int n = 0; n < iterations; n++) {
             float mx = ImageMath.PI * x;
             float my = ImageMath.PI * y;
-            float x1 = (float) (a * Math.sin(2 * mx) + b * Math.sin(2 * mx) * Math.cos(2 * my) + c * Math.sin(4 * mx)
+            float x1 = (float) (a * Math.sin(2 * mx)
+                    + b * Math.sin(2 * mx) * Math.cos(2 * my)
+                    + c * Math.sin(4 * mx)
                     + d * Math.sin(6 * mx) * Math.cos(4 * my) + k * x);
             x1 = x1 >= 0 ? x1 - (int) x1 : x1 - (int) x1 + 1;
 
-            float y1 = (float) (a * Math.sin(2 * my) + b * Math.sin(2 * my) * Math.cos(2 * mx) + c * Math.sin(4 * my)
+            float y1 = (float) (a * Math.sin(2 * my)
+                    + b * Math.sin(2 * my) * Math.cos(2 * mx)
+                    + c * Math.sin(4 * my)
                     + d * Math.sin(6 * my) * Math.cos(4 * mx) + k * y);
             y1 = y1 >= 0 ? y1 - (int) y1 : y1 - (int) y1 + 1;
             x = x1;
@@ -163,8 +170,9 @@ public class QuiltFilter extends WholeImageFilter {
             int iy = (int) (height * y);
             if (ix >= 0 && ix < width && iy >= 0 && iy < height) {
                 int t = outPixels[width * iy + ix]++;
-                if (t > max)
+                if (t > max) {
                     max = t;
+                }
             }
         }
 
@@ -172,7 +180,8 @@ public class QuiltFilter extends WholeImageFilter {
             int index = 0;
             for (y = 0; y < height; y++) {
                 for (x = 0; x < width; x++) {
-                    outPixels[index] = colormap.getColor(outPixels[index] / (float) max);
+                    outPixels[index] = colormap
+                            .getColor(outPixels[index] / (float) max);
                     index++;
                 }
             }

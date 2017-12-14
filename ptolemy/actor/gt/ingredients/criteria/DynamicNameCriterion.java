@@ -165,8 +165,8 @@ public class DynamicNameCriterion extends Criterion {
 
     /** The elements.
      */
-    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
-            "name", false, false, true) };
+    private static final CriterionElement[] _ELEMENTS = {
+            new StringCriterionElement("name", false, false, true) };
 
     /** Value of the name element.
      */

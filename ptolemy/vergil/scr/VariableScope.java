@@ -69,8 +69,8 @@ public class VariableScope extends ModelScope {
     @Override
     public Token get(String name) throws IllegalActionException {
         if (name.equals("time")) {
-            return new DoubleToken(_model.getDirector().getModelTime()
-                    .getDoubleValue());
+            return new DoubleToken(
+                    _model.getDirector().getModelTime().getDoubleValue());
         }
 
         Variable result = getScopedVariable(null, _model, name);

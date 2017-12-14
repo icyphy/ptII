@@ -60,7 +60,8 @@ public class TestWorkspace4 extends TestWorkspaceBase {
         actions.add(action);
         _accessThreads.add(new AccessThread("T1", actions, this));
         actions = new LinkedList();
-        action = new AccessAction(workspace, 500, 'R', 500, null, _record, "A2");
+        action = new AccessAction(workspace, 500, 'R', 500, null, _record,
+                "A2");
         actions.add(action);
         action = new AccessAction(workspace, 0, 'R', 0, null, _record, "A3");
         actions.add(action);

@@ -246,9 +246,9 @@ public class Graph implements Cloneable {
             throw new GraphElementException(edge, this,
                     "The sink node is not in the graph.");
         } else if (containsEdge(edge)) {
-            throw new GraphConstructionException("Attempt to add an edge that "
-                    + "is already in the graph."
-                    + GraphException.elementDump(edge, this));
+            throw new GraphConstructionException(
+                    "Attempt to add an edge that " + "is already in the graph."
+                            + GraphException.elementDump(edge, this));
         } else if (hidden(edge)) {
             throw new GraphConstructionException("Attempt to add an edge that "
                     + "is already hidden in the graph."
@@ -1231,7 +1231,8 @@ public class Graph implements Cloneable {
      *  @see #addEdges(Collection)
      *  @see #addNodes(Collection)
      */
-    public Graph subgraph(Collection nodeCollection, Collection edgeCollection) {
+    public Graph subgraph(Collection nodeCollection,
+            Collection edgeCollection) {
         Graph subgraph = _emptyGraph();
 
         Iterator nodes = nodeCollection.iterator();
@@ -1271,8 +1272,8 @@ public class Graph implements Cloneable {
      */
     @Override
     public String toString() {
-        StringBuffer result = new StringBuffer("{" + this.getClass().getName()
-                + "\n");
+        StringBuffer result = new StringBuffer(
+                "{" + this.getClass().getName() + "\n");
         result.append("Node Set:\n" + _nodes.toString("\n", true) + "\n");
         result.append("Edge Set:\n" + _edges.toString("\n", true) + "\n}\n");
         return result.toString();
@@ -1519,18 +1520,20 @@ public class Graph implements Cloneable {
                     element = (Element) elements.next();
 
                     if (element == null) {
-                        throw new NullPointerException("Null graph element "
-                                + "specified.\n");
+                        throw new NullPointerException(
+                                "Null graph element " + "specified.\n");
                     } else {
                         result[i] = element.getWeight();
                     }
                 }
             } catch (ClassCastException exception) {
-                throw new GraphElementException("Illegal graph element "
-                        + "(neither a Node nor an Edge) specified.\n"
-                        + "The element's type is: "
-                        + (element == null ? "null" : element.getClass()
-                                .getName()) + ".\n");
+                throw new GraphElementException(
+                        "Illegal graph element "
+                                + "(neither a Node nor an Edge) specified.\n"
+                                + "The element's type is: "
+                                + (element == null ? "null"
+                                        : element.getClass().getName())
+                                + ".\n");
             }
 
             return result;
@@ -1568,7 +1571,8 @@ public class Graph implements Cloneable {
         } else if (weighted && weight == null) {
             throw new NullPointerException("Attempt to assign a null "
                     + "weight to an edge. The first node:\n" + node1
-                    + "\nThe second node:\n" + node2 + "\nThe graph: \n" + this);
+                    + "\nThe second node:\n" + node2 + "\nThe graph: \n"
+                    + this);
         } else {
             Edge edge = null;
 

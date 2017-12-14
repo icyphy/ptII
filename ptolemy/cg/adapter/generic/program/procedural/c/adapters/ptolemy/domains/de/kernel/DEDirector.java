@@ -133,18 +133,18 @@ public class DEDirector extends PortDirector {
         result.append(_eol + _sanitizedDirectorName + "->binCountFactor = "
                 + ((IntToken) director.binCountFactor.getToken()).intValue()
                 + ";");
-        result.append(_eol
-                + _sanitizedDirectorName
-                + "->isCQAdaptive = "
+        result.append(_eol + _sanitizedDirectorName + "->isCQAdaptive = "
                 + ((BooleanToken) director.isCQAdaptive.getToken())
-                .booleanValue() + ";");
+                        .booleanValue()
+                + ";");
         result.append(_eol + _sanitizedDirectorName + "->minBinCount = "
-                + ((IntToken) director.minBinCount.getToken()).intValue() + ";");
-        result.append(_eol
-                + _sanitizedDirectorName
+                + ((IntToken) director.minBinCount.getToken()).intValue()
+                + ";");
+        result.append(_eol + _sanitizedDirectorName
                 + "->stopWhenQueueIsEmpty = "
                 + ((BooleanToken) director.stopWhenQueueIsEmpty.getToken())
-                .booleanValue() + ";");
+                        .booleanValue()
+                + ";");
         result.append(_eol + _sanitizedDirectorName
                 + "->localClock->container = (struct Director*)"
                 + _sanitizedDirectorName + ";");
@@ -200,7 +200,8 @@ public class DEDirector extends PortDirector {
                 }
                 result.append(_eol + "struct IOPort* " + sanitizedActorName
                         + "_" + port.getName() + " = (struct IOPort*)"
-                        + sanitizedActorName + "_get_" + port.getName() + "();");
+                        + sanitizedActorName + "_get_" + port.getName()
+                        + "();");
             }
             ports = actor.outputPortList().iterator();
             while (ports.hasNext()) {
@@ -210,7 +211,8 @@ public class DEDirector extends PortDirector {
                 }
                 result.append(_eol + "struct IOPort* " + sanitizedActorName
                         + "_" + port.getName() + " = (struct IOPort*)"
-                        + sanitizedActorName + "_get_" + port.getName() + "();");
+                        + sanitizedActorName + "_get_" + port.getName()
+                        + "();");
             }
         }
         // Second loop to link the ports and put the depths
@@ -291,16 +293,15 @@ public class DEDirector extends PortDirector {
                         if (foo == farReceiverss.length) {
                             throw new IllegalActionException(container,
                                     "Receiver not found in port : "
-                                            + port.getFullName()
-                                            + "in actor : "
+                                            + port.getFullName() + "in actor : "
                                             + sanitizedActorName);
                         }
 
                         result.append(_eol + "pblListAdd(pblListGet("
                                 + sanitizedActorName + "_" + port.getName()
                                 + "->_farReceivers, " + i + ")"
-                                + ", pblListGet(pblListGet(" + farPortName
-                                + foo + "), " + bar + "));");
+                                + ", pblListGet(pblListGet(" + farPortName + foo
+                                + "), " + bar + "));");
                     }
                 }
             }
@@ -384,12 +385,13 @@ public class DEDirector extends PortDirector {
         code.append(_eol + "Actor * " + _sanitizedDirectorName
                 + "_nextActorToFire();");
 
-        code.append(_eol + "void " + _sanitizedDirectorName
-                + "_Preinitialize();");
+        code.append(
+                _eol + "void " + _sanitizedDirectorName + "_Preinitialize();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize();");
         code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
-        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
+        code.append(
+                _eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
 
         return code.toString();
@@ -446,8 +448,8 @@ public class DEDirector extends PortDirector {
                 + _sanitizedDirectorName + ".cqueue));");
         code.append(_eol + "    if (result == 1) {");
         code.append(_eol + "        continue;");
-        code.append(_eol
-                + "    } else if (result == -1 || nextEvent == NULL) {");
+        code.append(
+                _eol + "    } else if (result == -1 || nextEvent == NULL) {");
         code.append(_eol + "                " + _sanitizedDirectorName
                 + ".noMoreActorToFire = true;");
         code.append(_eol + "        return;");
@@ -530,8 +532,8 @@ public class DEDirector extends PortDirector {
         code.append(_eol + _eol
                 + codeGenerator.comment("Initialization of the director"));
 
-        code.append(_eol + _sanitizedDirectorName
-                + ".noMoreActorToFire = false;");
+        code.append(
+                _eol + _sanitizedDirectorName + ".noMoreActorToFire = false;");
         code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = 0;");
 
         if (_director.isEmbedded()) {
@@ -541,11 +543,11 @@ public class DEDirector extends PortDirector {
             // as if they are at the top level even though they have an executive
             // director, so be sure to check _isTopLevel().
             if (executiveDirector instanceof SuperdenseTimeDirector) {
-                code.append(_eol
-                        + _sanitizedDirectorName
-                        + ".currentMicrostep = "
-                        + ((SuperdenseTimeDirector) executiveDirector)
-                        .getIndex() + ";");
+                code.append(
+                        _eol + _sanitizedDirectorName + ".currentMicrostep = "
+                                + ((SuperdenseTimeDirector) executiveDirector)
+                                        .getIndex()
+                                + ";");
             }
         }
 
@@ -582,8 +584,7 @@ public class DEDirector extends PortDirector {
         }
 
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
-        code.append(_eol
-                + codeGenerator
+        code.append(_eol + codeGenerator
                 .comment("End of the Initialization of the director"));
 
         return code.toString();
@@ -694,8 +695,8 @@ public class DEDirector extends PortDirector {
         code.append(generateFireAtFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append("Actor * " + _sanitizedDirectorName
-                + "_nextActorToFire() {" + _eol);
+        code.append("Actor * " + _sanitizedDirectorName + "_nextActorToFire() {"
+                + _eol);
         code.append(generateNextActorToFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
@@ -709,8 +710,8 @@ public class DEDirector extends PortDirector {
         code.append(generatePreFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append("boolean " + _sanitizedDirectorName + "_Postfire() {"
-                + _eol);
+        code.append(
+                "boolean " + _sanitizedDirectorName + "_Postfire() {" + _eol);
         code.append(generatePostFireFunctionCode());
         code.append(_eol + "}" + _eol);
 
@@ -723,8 +724,8 @@ public class DEDirector extends PortDirector {
         code.append(generateInitializeFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {"
-                + _eol);
+        code.append(
+                _eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
         code.append(generateWrapupCode());
         code.append(_eol + "}" + _eol);
 
@@ -758,9 +759,9 @@ public class DEDirector extends PortDirector {
         code.append(_eol + "if (CQueueIsEmpty(&(" + _sanitizedDirectorName
                 + ".cqueue))) {");
         code.append(_eol + "if (actorToFire != NULL");
-        code.append(_eol + "|| " + _sanitizedDirectorName
-                + ".currentModelTime >= " + _sanitizedDirectorName
-                + ".stopTime) {");
+        code.append(
+                _eol + "|| " + _sanitizedDirectorName + ".currentModelTime >= "
+                        + _sanitizedDirectorName + ".stopTime) {");
         code.append(_eol + "break;");
         code.append(_eol + "}");
         code.append(_eol + "else");
@@ -785,18 +786,18 @@ public class DEDirector extends PortDirector {
         code.append(_eol + "" + _sanitizedDirectorName
                 + ".currentMicrostep = lastFoundEvent->microstep;");
 
-        code.append(_eol + "if (" + _sanitizedDirectorName
-                + ".currentModelTime > " + _sanitizedDirectorName
-                + ".stopTime) {");
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".exceedStopTime = true;");
+        code.append(
+                _eol + "if (" + _sanitizedDirectorName + ".currentModelTime > "
+                        + _sanitizedDirectorName + ".stopTime) {");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".exceedStopTime = true;");
         code.append(_eol + "return NULL;");
         code.append(_eol + "}");
         code.append(_eol + "} else { ");
-        code.append(_eol
-                + "if (nextEvent->timestamp == lastFoundEvent->timestamp");
-        code.append(_eol
-                + "&& nextEvent->microstep == lastFoundEvent->microstep");
+        code.append(
+                _eol + "if (nextEvent->timestamp == lastFoundEvent->timestamp");
+        code.append(
+                _eol + "&& nextEvent->microstep == lastFoundEvent->microstep");
         code.append(_eol + "&& nextEvent->actor == actorToFire) {");
         code.append(_eol + " CQueueTake(&(" + _sanitizedDirectorName
                 + ".cqueue));");
@@ -870,8 +871,8 @@ public class DEDirector extends PortDirector {
                 + ".currentModelTime) {");
         code.append(_eol + "" + _sanitizedDirectorName
                 + ".currentModelTime = next->timestamp;");
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".currentMicrostep = 0;");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".currentMicrostep = 0;");
         code.append(_eol + "}");
         code.append(_eol + "}");
 
@@ -914,14 +915,10 @@ public class DEDirector extends PortDirector {
         }
 
         // Update the time
-        code.append(_eol
-                + _sanitizedDirectorName
-                + ".currentModelTime = "
+        code.append(_eol + _sanitizedDirectorName + ".currentModelTime = "
                 + _sanitizedDirectorName
                 + ".containerActor->actor.container->director->currentModelTime;");
-        code.append(_eol
-                + _sanitizedDirectorName
-                + ".currentMicrostep = "
+        code.append(_eol + _sanitizedDirectorName + ".currentMicrostep = "
                 + _sanitizedDirectorName
                 + ".containerActor->actor.container->director->currentMicrostep;");
 
@@ -980,7 +977,8 @@ public class DEDirector extends PortDirector {
                 + ".cqueue = *(newCQueue());" + _eol);
         code.append(_eol + "" + _sanitizedDirectorName + ".startTime ="
                 + _director.getModelStartTime() + ";");
-        if (_director.getModelStopTime().compareTo(Time.POSITIVE_INFINITY) == 0) {
+        if (_director.getModelStopTime()
+                .compareTo(Time.POSITIVE_INFINITY) == 0) {
             code.append(_eol + "" + _sanitizedDirectorName
                     + ".stopTime = Infinity;");
         } else {
@@ -988,12 +986,12 @@ public class DEDirector extends PortDirector {
                     + _director.getModelStopTime() + ";");
         }
 
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".preinitializeFunction = " + _sanitizedDirectorName
-                + "_Preinitialize;");
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".initializeFunction = " + _sanitizedDirectorName
-                + "_Initialize;");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".preinitializeFunction = "
+                        + _sanitizedDirectorName + "_Preinitialize;");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".initializeFunction = "
+                        + _sanitizedDirectorName + "_Initialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = "
                 + _sanitizedDirectorName + "_Prefire;");
         code.append(_eol + "" + _sanitizedDirectorName + ".postfireFunction = "
@@ -1125,18 +1123,18 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
 
         String name = CodeGeneratorAdapter.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
-        String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
+        String referencedParameterDeclaration = _generateReferencedParameterDeclaration(
+                target);
         if (referencedParameterDeclaration.length() > 1) {
-            code.append(_eol
-                    + codeGenerator.comment(name
-                            + "'s referenced parameter declarations."));
+            code.append(_eol + codeGenerator
+                    .comment(name + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
 
@@ -1182,7 +1180,7 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -1197,13 +1195,14 @@ public class DEDirector extends PortDirector {
             for (Parameter parameter : _referencedParameters.get(target)) {
                 try {
                     // avoid duplication.
-                    if (!codeGenerator.getModifiedVariables().contains(
-                            parameter)) {
+                    if (!codeGenerator.getModifiedVariables()
+                            .contains(parameter)) {
                         code.append(GenericCodeGenerator.INDENT1
                                 + codeGenerator.generateVariableName(parameter)
                                 + " = "
                                 + target.getParameterValue(parameter.getName(),
-                                        target.getComponent()) + ";" + _eol);
+                                        target.getComponent())
+                                + ";" + _eol);
                     }
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(target.getComponent(),
@@ -1228,7 +1227,7 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -1254,7 +1253,7 @@ public class DEDirector extends PortDirector {
             if (!(attribute instanceof Parameter)) {
                 throw new InternalErrorException(attribute, null,
                         "The attribute " + attribute.getFullName()
-                        + " is not a Parameter.");
+                                + " is not a Parameter.");
             } else {
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
@@ -1368,14 +1367,11 @@ public class DEDirector extends PortDirector {
         if (_referencedParameters.containsKey(target)) {
             for (Parameter parameter : _referencedParameters.get(target)) {
                 // avoid duplicate declaration.
-                if (!getCodeGenerator().getModifiedVariables().contains(
-                        parameter)) {
-                    code.append(""
-                            + targetType(parameter.getType())
-                            + " "
-                            + getCodeGenerator()
-                            .generateVariableName(parameter) + ";"
-                            + _eol);
+                if (!getCodeGenerator().getModifiedVariables()
+                        .contains(parameter)) {
+                    code.append("" + targetType(parameter.getType()) + " "
+                            + getCodeGenerator().generateVariableName(parameter)
+                            + ";" + _eol);
                 }
             }
         }

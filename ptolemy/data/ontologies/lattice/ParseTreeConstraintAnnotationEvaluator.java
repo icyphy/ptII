@@ -46,8 +46,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (mankit)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ParseTreeConstraintAnnotationEvaluator extends
-ParseTreeAnnotationEvaluator {
+public class ParseTreeConstraintAnnotationEvaluator
+        extends ParseTreeAnnotationEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -68,7 +68,8 @@ ParseTreeAnnotationEvaluator {
      *  component in the model
      */
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         try {
             super.visitLeafNode(node);
 
@@ -77,9 +78,9 @@ ParseTreeAnnotationEvaluator {
                     .getConceptByString(_getNodeLabel(node));
 
             if (_evaluatedObject == null) {
-                throw new IllegalActionException(_adapter.getSolver()
-                        .getOntology(), "Cannot resolve label: "
-                                + _getNodeLabel(node)
+                throw new IllegalActionException(
+                        _adapter.getSolver().getOntology(),
+                        "Cannot resolve label: " + _getNodeLabel(node)
                                 + ". There is no matching component in the model, "
                                 + "and there is no matching Concept in the Ontology.");
             }
@@ -109,8 +110,8 @@ ParseTreeAnnotationEvaluator {
 
         Token operator = node.getOperator();
         if (operator.kind == PtParserConstants.EQUALS) {
-            ((LatticeOntologyAdapter) _adapter)
-            .setSameAs(leftChild, rightChild);
+            ((LatticeOntologyAdapter) _adapter).setSameAs(leftChild,
+                    rightChild);
 
         } else if (operator.kind == PtParserConstants.GTE) {
             ((LatticeOntologyAdapter) _adapter).setAtLeast(leftChild,

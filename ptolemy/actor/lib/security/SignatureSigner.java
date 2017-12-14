@@ -136,9 +136,8 @@ public class SignatureSigner extends SignatureActor {
         if (input.hasToken(0)) {
             try {
                 // Process the input data to generate a signature.
-                byte[] dataBytes = ArrayToken
-                        .arrayTokenToUnsignedByteArray((ArrayToken) input
-                                .get(0));
+                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
+                        (ArrayToken) input.get(0));
 
                 _signature.initSign(_privateKey);
                 _signature.update(dataBytes);

@@ -75,10 +75,12 @@ public class OffsetFilter extends TransformFilter {
         this.width = src.getWidth();
         this.height = src.getHeight();
         if (wrap) {
-            while (xOffset < 0)
+            while (xOffset < 0) {
                 xOffset += width;
-            while (yOffset < 0)
+            }
+            while (yOffset < 0) {
                 yOffset += height;
+            }
             xOffset %= width;
             yOffset %= height;
         }

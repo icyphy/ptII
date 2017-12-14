@@ -169,7 +169,8 @@ public class TclShellEffigy extends Effigy {
         @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
-            return new TclShellEffigy(container, container.uniqueName("effigy"));
+            return new TclShellEffigy(container,
+                    container.uniqueName("effigy"));
         }
     }
 }

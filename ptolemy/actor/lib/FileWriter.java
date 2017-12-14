@@ -89,13 +89,12 @@ public class FileWriter extends Sink {
         filename.setExpression("");
         filename.setTypeEquals(BaseType.STRING);
         new SingletonParameter(filename.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
                 + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "</svg>\n");
@@ -206,8 +205,8 @@ public class FileWriter extends Sink {
                 _writer.flush();
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "wrapup(" + _writer
-                    + ") failed");
+            throw new IllegalActionException(this, ex,
+                    "wrapup(" + _writer + ") failed");
         }
 
         // To get the file to close.
@@ -234,8 +233,8 @@ public class FileWriter extends Sink {
                 _writer.close();
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "setWriter(" + writer
-                    + ") failed");
+            throw new IllegalActionException(this, ex,
+                    "setWriter(" + writer + ") failed");
         }
 
         if (writer != null) {

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (zgang)
  */
 public class TypedCompositeActor extends
-ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
 
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
@@ -108,8 +108,9 @@ ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) getComponent();
-        if (!(compositeActor instanceof CompiledCompositeActor && ((BooleanToken) ((ProceduralCodeGenerator) getCodeGenerator()).generateEmbeddedCode
-                .getToken()).booleanValue())) {
+        if (!(compositeActor instanceof CompiledCompositeActor
+                && ((BooleanToken) ((ProceduralCodeGenerator) getCodeGenerator()).generateEmbeddedCode
+                        .getToken()).booleanValue())) {
             // Generate the code for the TypedComposite before generating code for the director.
             // Needed by:
             // $PTII/bin/ptcg -language java  -inline false  -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/ActorOrientedClass.xml
@@ -119,8 +120,8 @@ ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
         }
 
         ptolemy.actor.Director director = compositeActor.getDirector();
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(
-                director);
+        Director directorAdapter = (Director) getCodeGenerator()
+                .getAdapter(director);
         code.append(directorAdapter.generateFireFunctionCode());
         return processCode(code.toString());
     }
@@ -536,10 +537,8 @@ ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
             }
         }
         if (tempCode.length() > 0) {
-            code.append(CodeStream.indent(getCodeGenerator()
-                    .comment(
-                            "Update " + getComponent().getName()
-                            + "'s port parameters")));
+            code.append(CodeStream.indent(getCodeGenerator().comment("Update "
+                    + getComponent().getName() + "'s port parameters")));
             code.append(tempCode);
         }
 
@@ -563,7 +562,7 @@ ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
 
         if (getComponent() instanceof ModularableComposite
                 && ((ptolemy.actor.CompositeActor) getComponent())
-                .outputPortList().size() > 0) {
+                        .outputPortList().size() > 0) {
             code.append("if (export) {" + _eol);
         }
 

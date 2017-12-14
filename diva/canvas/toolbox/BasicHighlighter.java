@@ -112,8 +112,9 @@ public class BasicHighlighter extends FigureDecorator {
     @Override
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
-        Rectangle2D bounds = new Rectangle2D.Double(b.getX() - _halo, b.getY()
-                - _halo, b.getWidth() + 2 * _halo, b.getHeight() + 2 * _halo);
+        Rectangle2D bounds = new Rectangle2D.Double(b.getX() - _halo,
+                b.getY() - _halo, b.getWidth() + 2 * _halo,
+                b.getHeight() + 2 * _halo);
 
         return bounds;
     }
@@ -213,8 +214,7 @@ public class BasicHighlighter extends FigureDecorator {
         double w = bounds.getWidth() + 2 * _halo;
         double h = bounds.getHeight() + 2 * _halo;
 
-        getParent().repaint(
-                DamageRegion.createDamageRegion(getTransformContext(), x, y, w,
-                        h));
+        getParent().repaint(DamageRegion
+                .createDamageRegion(getTransformContext(), x, y, w, h));
     }
 }

@@ -107,8 +107,8 @@ public class JAITIFFWriter extends JAIWriter {
         _imageEncoderName = "TIFF";
 
         TIFFEncodeParam tiffEncodeParam = new TIFFEncodeParam();
-        tiffEncodeParam.setWriteTiled(((BooleanToken) writeTiled.getToken())
-                .booleanValue());
+        tiffEncodeParam.setWriteTiled(
+                ((BooleanToken) writeTiled.getToken()).booleanValue());
 
         _imageEncodeParam = tiffEncodeParam;
         return super.postfire();

@@ -144,8 +144,8 @@ will simply result in the expression failing to evaluate.
  @Pt.AcceptedRating Red (rodiers)
  */
 
-public abstract class ModularCodeGenLazyTypedCompositeActor extends
-LazyTypedCompositeActor {
+public abstract class ModularCodeGenLazyTypedCompositeActor
+        extends LazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -188,8 +188,8 @@ LazyTypedCompositeActor {
      *   actor with this name.
      */
     public ModularCodeGenLazyTypedCompositeActor(CompositeEntity container,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
     }
@@ -323,8 +323,9 @@ LazyTypedCompositeActor {
             Type type = port.getType();
             Object tokenHolder = null;
 
-            int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
-                    .getWidth() : port.getWidthInside();
+            int numberOfChannels = port.getWidth() < port.getWidthInside()
+                    ? port.getWidth()
+                    : port.getWidthInside();
 
             if (type == BaseType.INT) {
                 tokenHolder = new int[numberOfChannels][];
@@ -425,8 +426,8 @@ LazyTypedCompositeActor {
         int portNumber = 0;
         for (Object port : outputPortList()) {
             IOPort iOPort = (IOPort) port;
-            ModularCodeGenLazyTypedCompositeActor._transferOutputs(this,
-                    iOPort, tokensToAllOutputPorts[portNumber++]);
+            ModularCodeGenLazyTypedCompositeActor._transferOutputs(this, iOPort,
+                    tokensToAllOutputPorts[portNumber++]);
         }
     }
 
@@ -453,8 +454,8 @@ LazyTypedCompositeActor {
      *  be returned.
      *  @return the name of the channel.
      */
-    abstract protected String _pubSubChannelName(IOPort port,
-            boolean publisher, boolean subscriber);
+    abstract protected String _pubSubChannelName(IOPort port, boolean publisher,
+            boolean subscriber);
 
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with
@@ -521,11 +522,13 @@ LazyTypedCompositeActor {
      *  getting the class or otherwise transferring the tokens.
      *  @deprecated Invoke CompiledCompositeActor._transferOutputs() directly
      */
+    @Deprecated
     protected static void _transferOutputs(TypedCompositeActor compositeActor,
             IOPort port, Object outputTokens) throws IllegalActionException {
         // The accessors code generator does not need
         // ModularCodeGenLazyTypedCompositeActor.
-        CompiledCompositeActor._transferOutputs(compositeActor, port, outputTokens);
+        CompiledCompositeActor._transferOutputs(compositeActor, port,
+                outputTokens);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -556,8 +559,8 @@ LazyTypedCompositeActor {
     ////                         private methods                   ////
 
     /** Initialize the parameters. */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         recompileHierarchy = new Parameter(this, "recompileHierarchy");
         recompileHierarchy.setExpression("true");
         recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);

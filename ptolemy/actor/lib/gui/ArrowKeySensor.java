@@ -373,14 +373,12 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
+            label.registerKeyboardAction(myLeftReleasedListener, "LeftReleased",
                     KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of right-arrow call-backs.
-            label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
+            label.registerKeyboardAction(myRightPressedListener, "RightPressed",
                     KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
@@ -394,8 +392,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
+            label.registerKeyboardAction(myDownReleasedListener, "DownReleased",
                     KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
@@ -483,8 +480,8 @@ public class ArrowKeySensor extends TypedAtomicActor {
         }
     }
 
-    private static class ActionListenerExceptionCatcher implements
-    ActionListener {
+    private static class ActionListenerExceptionCatcher
+            implements ActionListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

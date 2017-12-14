@@ -436,7 +436,8 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class JavaScript extends AbstractPlaceableActor implements AccessorOrchestrator {
+public class JavaScript extends AbstractPlaceableActor
+        implements AccessorOrchestrator {
 
     // This actor implements AbstractPlaceableActor so that if the script creates any
     // GUI (presumably in a helper class), the actor can remember placement and resizing
@@ -464,7 +465,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         error.setTypeEquals(BaseType.STRING);
         StringAttribute cardinal = new StringAttribute(error, "_cardinal");
         cardinal.setExpression("SOUTH");
-        SingletonParameter showName = new SingletonParameter(error, "_showName");
+        SingletonParameter showName = new SingletonParameter(error,
+                "_showName");
         showName.setExpression("true");
         showName.setPersistent(false);
 
@@ -518,6 +520,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If evaluating the script fails.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == script) {
@@ -553,7 +556,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // Use a change request so as to not create dependencies on vergil here.
         StringBuffer moml = new StringBuffer(
                 "<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
-        moml.append("<property name=\"author\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+        moml.append(
+                "<property name=\"author\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
         moml.append(StringUtilities.escapeForXML(author));
         moml.append("\"></property></property>");
         MoMLChangeRequest request = new MoMLChangeRequest(this, this,
@@ -567,6 +571,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @see #setTimeout(Runnable, int)
      *  @see #setInterval(Runnable, int)
      */
+    @Override
     public synchronized void clearInterval(Object handle) {
         // NOTE: The handle for this timeout remains in the
         // _pendingTimeoutIDs map, but it is more efficient to remove
@@ -580,6 +585,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @see #setTimeout(Runnable, int)
      *  @see #setInterval(Runnable, int)
      */
+    @Override
     public synchronized void clearTimeout(Object handle) {
         // NOTE: The handle for this timeout remains in the
         // _pendingTimeoutIDs map, but it is more efficient to remove
@@ -627,15 +633,14 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  engine cannot be found.  The Nashorn engine is only present in
      *  JDK 1.8 and later.
      */
-    public static ScriptEngine createEngine(JavaScript actor, boolean debugging, boolean restricted)
-        throws IllegalActionException {
+    public static ScriptEngine createEngine(JavaScript actor, boolean debugging,
+            boolean restricted) throws IllegalActionException {
         ScriptEngineManager factory = new ScriptEngineManager();
         // Create a Nashorn script engine
         ScriptEngine engine = factory.getEngineByName("nashorn");
         if (engine == null) {
             // Coverity Scan is happier if we check for null here.
-            throw new IllegalActionException(
-                    actor,
+            throw new IllegalActionException(actor,
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
         /* FIXME: The following should intercept errors, but if doesn't!
@@ -667,7 +672,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             engine.put("actor", actor);
         } else {
             if (actor == null) {
-                throw new IllegalArgumentException("Restricted JavaScript sandboxes only supported with JavaScript container actors.");
+                throw new IllegalArgumentException(
+                        "Restricted JavaScript sandboxes only supported with JavaScript container actors.");
             }
             RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
                     actor);
@@ -697,7 +703,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
 
         String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
         try {
-            engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
+            engine.eval(FileUtilities.openForReading(localFunctionsPath, null,
+                    null));
         } catch (Throwable throwable) {
             // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
 
@@ -713,14 +720,13 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[353] ptolemy/demo/Robot/RobotMonitor.xml
                 // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[360] ptolemy/demo/Robot/SmartIntruder6Teams.xml
 
-                String message =  "Parsing "
-                    + localFunctionsPath
-                    + " resulted in a ClassNotFoundException?"
-                    + " Checking ClassLoaders: "
-                    + " ClassLoader.getSystemClassLoader(): "
-                    + ClassLoader.getSystemClassLoader()
-                    + " Thread.currentThread().getContextClassLoader(): "
-                    + Thread.currentThread().getContextClassLoader();
+                String message = "Parsing " + localFunctionsPath
+                        + " resulted in a ClassNotFoundException?"
+                        + " Checking ClassLoaders: "
+                        + " ClassLoader.getSystemClassLoader(): "
+                        + ClassLoader.getSystemClassLoader()
+                        + " Thread.currentThread().getContextClassLoader(): "
+                        + Thread.currentThread().getContextClassLoader();
                 Class<?> clazz = null;
                 try {
                     clazz = Class.forName("ptolemy.data.ArrayToken");
@@ -742,7 +748,6 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         return engine;
     }
 
-
     /** Declare that any output that is marked as spontanous does does
      *  not depend on the input in a firing.
      *  @exception IllegalActionException If the causality interface
@@ -751,11 +756,12 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
     @Override
     public void declareDelayDependency() throws IllegalActionException {
         for (IOPort output : outputPortList()) {
-            SingletonParameter spontaneity = (SingletonParameter)output.getAttribute(_SPONTANEOUS);
+            SingletonParameter spontaneity = (SingletonParameter) output
+                    .getAttribute(_SPONTANEOUS);
             if (spontaneity != null) {
                 Token token = spontaneity.getToken();
                 if (token instanceof BooleanToken) {
-                    if (((BooleanToken)token).booleanValue()) {
+                    if (((BooleanToken) token).booleanValue()) {
                         for (IOPort input : inputPortList()) {
                             _declareDelayDependency(input, output, 0.0);
                         }
@@ -784,7 +790,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // Use a change request so as to not create dependencies on vergil here.
         StringBuffer moml = new StringBuffer(
                 "<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
-        moml.append("<property name=\"description\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+        moml.append(
+                "<property name=\"description\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
         moml.append(StringUtilities.escapeForXML(description));
         moml.append("\"></property></property>");
         MoMLChangeRequest request = new MoMLChangeRequest(this, this,
@@ -800,6 +807,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  _debug() method, and otherwise send it out to stderr.
      *  @param message The message
      */
+    @Override
     public void error(String message) {
         if (_debugging) {
             _debug(message);
@@ -854,15 +862,16 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @return The encodedString
      *  @exception IllegalActionException If the string cannot be escaped.
      */
-    public String escapeForJavaScript(String unescapedString) throws
-        IllegalActionException {
+    public String escapeForJavaScript(String unescapedString)
+            throws IllegalActionException {
         try {
             // escape() is deprecated, but encodeURIComponent() does not encode -_.!~*'()
             // https://stackoverflow.com/questions/75980/when-are-you-supposed-to-use-escape-instead-of-encodeuri-encodeuricomponent
-            return (String) ((Invocable)_engine).invokeFunction("escape", unescapedString);
+            return (String) ((Invocable) _engine).invokeFunction("escape",
+                    unescapedString);
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable, "Failed to escape: \""
-                                             + unescapedString + "\".");
+            throw new IllegalActionException(this, throwable,
+                    "Failed to escape: \"" + unescapedString + "\".");
         }
     }
 
@@ -926,9 +935,9 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                     .stringValue();
             try {
                 _engine.put("_topLevelCode", scriptValue);
-                _instance = ((Invocable)_engine).invokeFunction(
-                        "evaluateCode", getName(), scriptValue);
-                _exports = ((Map)_instance).get("exports");
+                _instance = ((Invocable) _engine).invokeFunction("evaluateCode",
+                        getName(), scriptValue);
+                _exports = ((Map) _instance).get("exports");
             } catch (Throwable throwable) {
                 if (error.getWidth() > 0) {
                     error.send(0, new StringToken(throwable.getMessage()));
@@ -1035,7 +1044,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 callbacks.add(callback);
                 callback = _pendingCallbacks.poll();
             }
-            synchronized(this) {
+            synchronized (this) {
                 // Now, holding a lock on this actor, invoke the pending callbacks.
                 for (Runnable callbackFunction : callbacks) {
                     callbackFunction.run();
@@ -1050,7 +1059,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                         // and will cause a concurrent modification exception otherwise.
                         List<Integer> copy = new LinkedList<Integer>(ids);
                         for (Integer id : copy) {
-                            Runnable function = _pendingTimeoutFunctions.get(id);
+                            Runnable function = _pendingTimeoutFunctions
+                                    .get(id);
                             if (function != null) {
                                 // Previously, we removed the id _before_ firing the function
                                 // because it may reschedule itself using the same id.
@@ -1106,11 +1116,13 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *   this JVM (probably utf-8).
      *  @exception IOException If the file cannot be read.
      */
-    public static String getFileFromClasspathAsString(String path) throws IOException {
+    public static String getFileFromClasspathAsString(String path)
+            throws IOException {
         URL url = FileUtilities.nameToURL(path, null, null);
         byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
         return new String(encoded, Charset.defaultCharset());
     }
+
     /** If this actor has been initialized, return the JavaScript engine,
      *  otherwise return null.
      *  @return The JavaScript engine for this actor.
@@ -1181,7 +1193,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public Object getResource(String uri, Object... arguments) throws IllegalActionException {
+    public Object getResource(String uri, Object... arguments)
+            throws IllegalActionException {
         // We need to use a varargs method because in JavaScript we
         // want the options and callback args to be optional.  See
         // https://stackoverflow.com/questions/25603191/nashorn-bug-when-calling-overloaded-method-with-varargs-parameter
@@ -1204,16 +1217,13 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         if (_restricted && colon >= 0
                 && !(uri.startsWith("http:") || uri.startsWith("https:"))) {
             throw new IllegalActionException(this, "Protocol not permitted: "
-                    + uri.substring(0, colon)
-                    + " in URI "
-                    + uri);
+                    + uri.substring(0, colon) + " in URI " + uri);
         }
-        if (_restricted && (uri.contains("$CWD")
-                || uri.contains("$HOME")
-                || uri.contains("$USERNAME")
-                || uri.contains("$USER")
+        if (_restricted && (uri.contains("$CWD") || uri.contains("$HOME")
+                || uri.contains("$USERNAME") || uri.contains("$USER")
                 || uri.contains("~"))) {
-            throw new IllegalActionException(this, "Illegal file name for resource: " + uri);
+            throw new IllegalActionException(this,
+                    "Illegal file name for resource: " + uri);
         }
 
         // If options is a String, then if it is a number, it is the
@@ -1221,35 +1231,39 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // Otherwise, it is a Map.
         int timeout = -1;
         String encoding = null;
-        Map<String,Object> optionsMap = null;
+        Map<String, Object> optionsMap = null;
         if (options instanceof Integer) {
             // This is tested by
             // $PTII/bin/capecode /Users/cxh/src/ptII11.0.devel/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
             // Which calls getResource() with an integer timeout.
             // FIXME: timeout is not yet used.
-            timeout = ((Integer)options).intValue();
+            timeout = ((Integer) options).intValue();
         } else if (options instanceof String) {
-            encoding = ((String)options).trim();
+            encoding = ((String) options).trim();
         } else if (options instanceof Map) {
-            optionsMap = (Map<String,Object>) options;
+            optionsMap = (Map<String, Object>) options;
         } else if (options != null) {
-            throw new IllegalActionException("options was a " + options.getClass() +
-                                             ", which is neither an Integer, String nor a Map<String,Object>");
+            throw new IllegalActionException("options was a "
+                    + options.getClass()
+                    + ", which is neither an Integer, String nor a Map<String,Object>");
         }
 
         if (callback != null) {
-            System.err.println("JavaScript.java: getResource() invoked with a callback of " + callback
-                       + ", which is not yet supported.");
+            System.err.println(
+                    "JavaScript.java: getResource() invoked with a callback of "
+                            + callback + ", which is not yet supported.");
         }
 
         if (colon < 0) {
             // Relative file name is given.
             if (_restricted && uri.startsWith("/")) {
-                throw new IllegalActionException(this, "Absolute file names not permitted: " + uri);
+                throw new IllegalActionException(this,
+                        "Absolute file names not permitted: " + uri);
             }
             if (_restricted && uri.contains("../")) {
                 throw new IllegalActionException(this,
-                        "Only file names at or within the model location are permitted: " + uri);
+                        "Only file names at or within the model location are permitted: "
+                                + uri);
             }
             baseDirectory = URIAttribute.getModelURI(this);
         }
@@ -1258,7 +1272,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // the directory and subsitute the name.
         // To test this code, try:
         // $PTII/bin/capecode $PTII/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
-        if ( uri.startsWith("$KEYSTORE")) {
+        if (uri.startsWith("$KEYSTORE")) {
             String home = System.getenv("HOME");
             if (home == null || home.length() == 0) {
                 home = System.getenv("USERHOME");
@@ -1268,7 +1282,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             if (!ptKeystore.isDirectory()) {
                 System.out.println("JavaScript.java: Creating " + ptKeystore);
                 if (!ptKeystore.mkdirs()) {
-                    System.err.println("JavaScript.java: Could not create " + ptKeystoreName);
+                    System.err.println("JavaScript.java: Could not create "
+                            + ptKeystoreName);
                 }
             }
             if (ptKeystore.isDirectory()) {
@@ -1281,14 +1296,18 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // file:, http: or https: URI to JavaFX MediaPlayer, which
         // can play mp3s.
         if (optionsMap != null && optionsMap.containsKey("returnURI")) {
-            String returnURI = (String)optionsMap.get("returnURI");
+            String returnURI = (String) optionsMap.get("returnURI");
             if (returnURI.toLowerCase().equals("true")) {
                 if (!uri.startsWith("http")) {
                     if (uri.startsWith("$CLASSPATH")) {
                         try {
-                            return FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader()).toURI();
+                            return FileUtilities
+                                    .nameToURL(uri, baseDirectory,
+                                            getClass().getClassLoader())
+                                    .toURI();
                         } catch (Throwable throwable) {
-                            throw new IllegalActionException(this, throwable, "Failed to resolve " + uri);
+                            throw new IllegalActionException(this, throwable,
+                                    "Failed to resolve " + uri);
                         }
                     }
                     return new File(uri).toURI().toString();
@@ -1301,11 +1320,14 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // read it as a raw binary.  Otherwise read it using the encoding as the
         // Charset.  If there is no encoding, use the default Charset.
         try {
-            URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
+            URL url = FileUtilities.nameToURL(uri, baseDirectory,
+                    getClass().getClassLoader());
             if (encoding != null && encoding.toLowerCase().equals("raw")) {
-                System.out.println("JavaScript.js: Reading raw data from " + url);
-                byte [] dataBytes = FileUtilities.binaryReadURLToByteArray(url);
-                System.out.println("JavaScript.js: read " + dataBytes.length + "bytes.");
+                System.out
+                        .println("JavaScript.js: Reading raw data from " + url);
+                byte[] dataBytes = FileUtilities.binaryReadURLToByteArray(url);
+                System.out.println(
+                        "JavaScript.js: read " + dataBytes.length + "bytes.");
                 return dataBytes;
             } else {
                 Charset charset = Charset.defaultCharset();
@@ -1313,13 +1335,15 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                     try {
                         charset = Charset.forName(encoding);
                     } catch (Throwable throwable) {
-                        throw new IllegalActionException(this, throwable, "\"" + encoding +
-                                                         "\" is not a legal Charset name.  Try UTF-8 or Raw.");
+                        throw new IllegalActionException(this, throwable, "\""
+                                + encoding
+                                + "\" is not a legal Charset name.  Try UTF-8 or Raw.");
                     }
                 }
                 BufferedReader in = null;
                 try {
-                    in = new BufferedReader(new InputStreamReader(url.openStream(), charset));
+                    in = new BufferedReader(
+                            new InputStreamReader(url.openStream(), charset));
                     StringBuffer contents = new StringBuffer();
                     String input;
                     while ((input = in.readLine()) != null) {
@@ -1334,7 +1358,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 }
             }
         } catch (IOException e) {
-            throw new IllegalActionException(this, e, "Failed to read URI: " + uri);
+            throw new IllegalActionException(this, e,
+                    "Failed to read URI: " + uri);
         }
     }
 
@@ -1407,8 +1432,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @return The previous value of this input, if it has one, and
      *   null otherwise.
      */
-    public Token input(String name) throws IllegalActionException,
-            NameDuplicationException {
+    public Token input(String name)
+            throws IllegalActionException, NameDuplicationException {
         return input(name, null);
     }
 
@@ -1443,7 +1468,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public Token input(String name, Map<String,Object> options)
+    public Token input(String name, Map<String, Object> options)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Should check whether the model is running and use a change
         // request if so.
@@ -1463,10 +1488,11 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             // remove it, but preserve its value.
             Attribute previous = getAttribute(name);
             if (previous instanceof Parameter) {
-                previousValue = ((Parameter)previous).getToken();
+                previousValue = ((Parameter) previous).getToken();
                 // Treat an empty string as no value.
                 if (previousValue instanceof StringToken
-                        && ((StringToken)previousValue).stringValue().trim().equals("")) {
+                        && ((StringToken) previousValue).stringValue().trim()
+                                .equals("")) {
                     previousValue = null;
                 }
                 previous.setContainer(null);
@@ -1485,7 +1511,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 }
             } else {
                 // No pre-existing port, and options are given.
-                Object value = ((Map<String,Object>) options).get("value");
+                Object value = options.get("value");
                 if (value == null && previousValue == null) {
                     // No value. Use an ordinary port.
                     port = (TypedIOPort) newPort(name);
@@ -1497,15 +1523,15 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         } else {
             // Pre-existing port.
             if (port == script.getPort() || port == error) {
-                throw new NameDuplicationException(this, "Name is reserved: "
-                        + name);
+                throw new NameDuplicationException(this,
+                        "Name is reserved: " + name);
             }
             if (port instanceof ParameterPort) {
                 parameter = ((ParameterPort) port).getParameter();
                 // Oddly, we need to initialize PortParameter so that its current
                 // value matches its previous value. Otherwise, the token
                 // retrieved here could be left over from a previous run.
-                ((PortParameter)parameter).initialize();
+                parameter.initialize();
                 previousValue = parameter.getToken();
                 previousExpression = parameter.getExpression();
             } else {
@@ -1513,7 +1539,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 // This might be a derived class that is adding a default
                 // value to a port that did not have one.
                 if (options != null) {
-                    Object value = ((Map<String,Object>) options).get("value");
+                    Object value = options.get("value");
                     if (value != null) {
                         // Sure enough, we need to replace the port
                         // with a PortParameter.
@@ -1534,9 +1560,9 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             // If the port has its own type already (a TypeAttribute),
             // do not override it.
             if (port.attributeList(TypeAttribute.class).isEmpty()
-                    && (parameter == null
-                    || parameter.attributeList(TypeAttribute.class).isEmpty())) {
-                Object type = ((Map<String,Object>) options).get("type");
+                    && (parameter == null || parameter
+                            .attributeList(TypeAttribute.class).isEmpty())) {
+                Object type = options.get("type");
                 if (type instanceof String) {
                     // The following will put the parameter in string mode,
                     // if appropriate.
@@ -1546,21 +1572,21 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                         parameter.setTypeEquals(ptType);
                     }
                 } else if (type != null) {
-                    throw new IllegalActionException(this, "Unsupported type: "
-                            + type);
+                    throw new IllegalActionException(this,
+                            "Unsupported type: " + type);
                 }
             }
             _setOptionsForSelect(port, options);
-            Object description = ((Map<String,Object>) options).get("description");
+            Object description = options.get("description");
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
-            Object value = ((Map<String,Object>) options).get("value");
+            Object value = options.get("value");
             if (value != null) {
                 // Convert value to a Ptolemy Token.
                 try {
-                    token = ((Invocable) _engine).invokeFunction(
-                            "convertToToken", value);
+                    token = ((Invocable) _engine)
+                            .invokeFunction("convertToToken", value);
                 } catch (Exception e) {
                     throw new IllegalActionException(this, e,
                             "Cannot convert value to a Ptolemy Token: "
@@ -1581,9 +1607,10 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             // the parameter already has a value that is an override,
             // in which case, allow that to prevail by doing nothing here.
             if (token != null && !parameter.isOverridden()) {
-                if (parameter.getAttribute("_JSON") != null && !(token instanceof StringToken)) {
+                if (parameter.getAttribute("_JSON") != null
+                        && !(token instanceof StringToken)) {
                     // Attempt to convert the token to a JSON string.
-                    String json = TokenToJSON.constructJSON((Token)token);
+                    String json = TokenToJSON.constructJSON((Token) token);
                     token = new StringToken(json);
                 }
                 parameter.setToken((Token) token);
@@ -1613,7 +1640,9 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @param function The function to invoke.
      *  @exception IllegalActionException If the director cannot respect the request.
      */
-    public void invokeCallback(final Runnable function) throws IllegalActionException {
+    @Override
+    public void invokeCallback(final Runnable function)
+            throws IllegalActionException {
         if (Thread.currentThread().equals(_directorThread)) {
             function.run();
         } else {
@@ -1679,8 +1708,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception UnknownHostException If the local host is not known.
      *  @exception SecurityException If this actor is in restricted mode.
      */
-    public String localHostAddress() throws UnknownHostException,
-            SecurityException {
+    public String localHostAddress()
+            throws UnknownHostException, SecurityException {
         if (_restricted) {
             throw new SecurityException(
                     "Actor is restricted. Cannot invoke localHostAddress().");
@@ -1692,11 +1721,13 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  _debug() method, and otherwise send it out to stdout.
      *  @param message The message
      */
+    @Override
     public void log(String message) {
         if (_debugging) {
             _debug(message);
         } else {
-            System.out.println(getName() + ": " + message + " (" + Thread.currentThread() + ")");
+            System.out.println(getName() + ": " + message + " ("
+                    + Thread.currentThread() + ")");
         }
     }
 
@@ -1706,8 +1737,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name) throws IllegalActionException,
-            NameDuplicationException {
+    public void output(String name)
+            throws IllegalActionException, NameDuplicationException {
         output(name, null);
     }
 
@@ -1725,7 +1756,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name, Map<String,Object> options)
+    public void output(String name, Map<String, Object> options)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Should check whether the model is running a use a change
         // request if so.
@@ -1738,27 +1769,28 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             port = (TypedIOPort) newPort(name);
         } else {
             if (port == script.getPort()) {
-                throw new NameDuplicationException(this, "Name is reserved: "
-                        + name);
+                throw new NameDuplicationException(this,
+                        "Name is reserved: " + name);
             }
         }
         if (options != null) {
             if (port.attributeList(TypeAttribute.class).isEmpty()) {
                 // Do not override the type if the port has a TypeAttribute.
-                Object type = ((Map<String,Object>) options).get("type");
+                Object type = options.get("type");
                 if (type instanceof String) {
-                    port.setTypeEquals(_typeAccessorToPtolemy((String) type, port));
+                    port.setTypeEquals(
+                            _typeAccessorToPtolemy((String) type, port));
                 } else {
                     if (type == null) {
                         port.setTypeEquals(BaseType.GENERAL);
                     } else {
-                        throw new IllegalActionException(this, "Unsupported type: "
-                                + type);
+                        throw new IllegalActionException(this,
+                                "Unsupported type: " + type);
                     }
                 }
             }
             _setOptionsForSelect(port, options);
-            Object description = ((Map<String,Object>) options).get("description");
+            Object description = options.get("description");
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
@@ -1782,8 +1814,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public Token parameter(String name) throws IllegalActionException,
-            NameDuplicationException {
+    public Token parameter(String name)
+            throws IllegalActionException, NameDuplicationException {
         return parameter(name, null);
     }
 
@@ -1805,7 +1837,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public Token parameter(String name, Map<String,Object> options)
+    public Token parameter(String name, Map<String, Object> options)
             throws IllegalActionException, NameDuplicationException {
         /* Don't constrain when this executes.
          * FIXME: Instead, we should use a ChangeRequest if we are executing.
@@ -1825,11 +1857,11 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         } else {
             if (parameter == script) {
                 // FIXME: Should instead do a name transformation?
-                throw new NameDuplicationException(this, "Name is reserved: "
-                        + name);
+                throw new NameDuplicationException(this,
+                        "Name is reserved: " + name);
             } else if (!(parameter instanceof Parameter)) {
-                throw new NameDuplicationException(this, "Name is taken: "
-                        + name);
+                throw new NameDuplicationException(this,
+                        "Name is taken: " + name);
             }
         }
         Token result = null;
@@ -1840,8 +1872,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             if (type instanceof String) {
                 ptType = _typeAccessorToPtolemy((String) type, parameter);
             } else if (type != null) {
-                throw new IllegalActionException(this, "Unsupported type: "
-                        + type);
+                throw new IllegalActionException(this,
+                        "Unsupported type: " + type);
             }
             if (ptType != null) {
                 ((Parameter) parameter).setTypeEquals(ptType);
@@ -1856,8 +1888,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 // Convert value to a Ptolemy Token.
                 Object token;
                 try {
-                    token = ((Invocable) _engine).invokeFunction(
-                            "convertToToken", value);
+                    token = ((Invocable) _engine)
+                            .invokeFunction("convertToToken", value);
                 } catch (Exception e) {
                     throw new IllegalActionException(this, e,
                             "Cannot convert value to a Ptolemy Token: "
@@ -1876,10 +1908,10 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 // when you save the model unless it is overridden.
             }
             if (parameter.isOverridden()) {
-                result = ((Parameter)parameter).getToken();
+                result = ((Parameter) parameter).getToken();
             }
 
-            Object visibility = ((Map<String,Object>) options).get("visibility");
+            Object visibility = options.get("visibility");
             if (visibility instanceof String) {
                 String generic = ((String) visibility).trim().toLowerCase();
                 switch (generic) {
@@ -1895,7 +1927,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                     break;
                 case "noteditable":
                     if (parameter instanceof Variable) {
-                        ((Variable) parameter).setVisibility(Settable.NOT_EDITABLE);
+                        ((Variable) parameter)
+                                .setVisibility(Settable.NOT_EDITABLE);
                     }
                     break;
                 default:
@@ -1921,6 +1954,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         }
         return result;
     }
+
     /** Place the interface for this actor in the specified container.
      *  This method does nothing because we expect any JavaScript actor
      *  that has a GUI to create that GUI in its own frame. This actor
@@ -1962,6 +1996,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception IOException If the stream cannot be read.
      *  @deprecated Invoke FileUtilities.readFromInputStream() directly.
      */
+    @Deprecated
     public static String readFromInputStream(InputStream stream)
             throws IOException {
         // This method was moved to FileUtilities
@@ -1984,8 +2019,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @see #clearTimeout(Object)
      */
     @Override
-    public synchronized Object setInterval(final Runnable function, final int milliseconds)
-            throws IllegalActionException {
+    public synchronized Object setInterval(final Runnable function,
+            final int milliseconds) throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         // Create a new function that invokes the specified function and then reschedules
         // itself.
@@ -2013,8 +2048,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @see #clearTimeout(Object)
      */
     @Override
-    public synchronized Object setTimeout(final Runnable function, final int milliseconds)
-            throws IllegalActionException {
+    public synchronized Object setTimeout(final Runnable function,
+            final int milliseconds) throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         _setTimeout(function, milliseconds, id);
         return id;
@@ -2036,7 +2071,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         try {
             // Sadly, nashorn can't pass arrays... It treats them as separate arguments.
             // Adding a second dummy argument (1 below) seems to solve this problem.
-            return ((Invocable) _engine).invokeFunction("convertToJSArray", array, 1);
+            return ((Invocable) _engine).invokeFunction("convertToJSArray",
+                    array, 1);
         } catch (Throwable e) {
             throw new IllegalActionException(this, e,
                     "Conversion to JavaScript array failed.");
@@ -2050,7 +2086,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // Use a change request so as to not create dependencies on vergil here.
         StringBuffer moml = new StringBuffer(
                 "<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
-        moml.append("<property name=\"version\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+        moml.append(
+                "<property name=\"version\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
         moml.append(StringUtilities.escapeForXML(version));
         moml.append("\"></property></property>");
         MoMLChangeRequest request = new MoMLChangeRequest(this, this,
@@ -2074,8 +2111,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             _invokeMethodInContext(_instance, "wrapup");
 
             if (_pendingTimeoutIDs.size() > 0) {
-                String message = "WARNING: "
-                        + getName()
+                String message = "WARNING: " + getName()
                         + ": Model stopped before executing actions (e.g. producing outputs)"
                         + " scheduled for execution at times "
                         + _pendingTimeoutIDs.keySet().toString();
@@ -2121,8 +2157,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         }
         if (isJavaScriptKeyword(name)) {
             try {
-                MessageHandler.warning("Port name is a JavaScript keyword: "
-                        + name);
+                MessageHandler
+                        .warning("Port name is a JavaScript keyword: " + name);
             } catch (CancelException e) {
                 throw new IllegalActionException(this, "Cancelled.");
             }
@@ -2151,8 +2187,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception IllegalActionException If the method does not exist in either
      *   context, or if an error occurs invoking the method.
      */
-    protected void _invokeMethodInContext(Object context, String methodName, Object... args)
-            throws IllegalActionException {
+    protected void _invokeMethodInContext(Object context, String methodName,
+            Object... args) throws IllegalActionException {
         try {
             ((Invocable) _engine).invokeMethod(context, methodName, args);
         } catch (NoSuchMethodException e) {
@@ -2201,7 +2237,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 "<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
         moml.append("<property name=\"");
         moml.append(portOrParameter.getName());
-        moml.append("\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+        moml.append(
+                "\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
         moml.append(StringUtilities.escapeForXML(description));
         moml.append("\"></property></property>");
         MoMLChangeRequest request = new MoMLChangeRequest(this, this,
@@ -2228,11 +2265,11 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
     /** Initial script as a token. */
     protected static final StringToken _INITIAL_SCRIPT = new StringToken(
             "// Put your JavaScript program here.\n"
-            + "// Add ports and parameters.\n"
-            + "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
-            + "// Refer to parameters in scope using dollar-sign{parameterName}.\n"
-            + "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
-            + "// Send to output ports using send(value, portName, channel).\n");
+                    + "// Add ports and parameters.\n"
+                    + "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
+                    + "// Refer to parameters in scope using dollar-sign{parameterName}.\n"
+                    + "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
+                    + "// Send to output ports using send(value, portName, channel).\n");
 
     /** The instance returned when evaluating the script. */
     protected Object _instance;
@@ -2278,25 +2315,24 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception IllegalActionException If conversion fails and the user
      *   responds "Cancel" to the warning.
      */
-    private Object _constructOptionsObject(NamedObj portOrParameter, Token valueToken)
-            throws IllegalActionException {
+    private Object _constructOptionsObject(NamedObj portOrParameter,
+            Token valueToken) throws IllegalActionException {
         // Song and dance to get JSON representation of the default value.
         PortOrParameterProxy proxy = _proxies.get(portOrParameter);
         if (proxy == null) {
             // Skip this. Probably PortParameter.
             return null;
         }
-        Map<String,Object> options = new HashMap<String,Object>();
+        Map<String, Object> options = new HashMap<String, Object>();
         try {
             Object converted = ((Invocable) _engine).invokeFunction(
                     "convertFromToken", valueToken, proxy.isJSON());
             options.put("value", converted);
         } catch (Exception ex) {
             try {
-                MessageHandler.warning(
-                        "Failed to specify default value for port "
-                                + portOrParameter.getName(),
-                        ex);
+                MessageHandler
+                        .warning("Failed to specify default value for port "
+                                + portOrParameter.getName(), ex);
             } catch (CancelException e) {
                 throw new IllegalActionException(this, ex,
                         "Failed to specify default value for port "
@@ -2366,9 +2402,9 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // Evaluate the script.
         String scriptValue = script.getValueAsString();
         try {
-            _instance = ((Invocable)_engine).invokeFunction(
-                    "evaluateCode", getName(), scriptValue);
-            _exports = ((Map)_instance).get("exports");
+            _instance = ((Invocable) _engine).invokeFunction("evaluateCode",
+                    getName(), scriptValue);
+            _exports = ((Map) _instance).get("exports");
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to evaluate script.");
@@ -2386,17 +2422,20 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         */
         // For backward compatibility, if there is no setup() function,
         // then define all inputs, outputs, and parameters.
-        if (((Map)_exports).get("setup") == null) {
+        if (((Map) _exports).get("setup") == null) {
             for (TypedIOPort port : portList()) {
                 // Do not handle the script or error ports to a JavaScript variable.
                 if (port == script.getPort() || port == error) {
                     continue;
                 }
                 if (port instanceof ParameterPort) {
-                    Token valueToken = ((ParameterPort)port).getParameter().getToken();
+                    Token valueToken = ((ParameterPort) port).getParameter()
+                            .getToken();
                     if (valueToken != null) {
-                        Object options = _constructOptionsObject(port, valueToken);
-                        _invokeMethodInContext(_instance, "input", port.getName(), options);
+                        Object options = _constructOptionsObject(port,
+                                valueToken);
+                        _invokeMethodInContext(_instance, "input",
+                                port.getName(), options);
                         continue;
                     }
                 }
@@ -2409,14 +2448,18 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 }
             }
             for (Attribute attribute : attributes) {
-                if (attribute instanceof Parameter && !(attribute instanceof PortParameter)) {
-                    Token valueToken = ((Parameter)attribute).getToken();
+                if (attribute instanceof Parameter
+                        && !(attribute instanceof PortParameter)) {
+                    Token valueToken = ((Parameter) attribute).getToken();
                     if (valueToken != null) {
-                        Object options = _constructOptionsObject(attribute, valueToken);
-                        _invokeMethodInContext(_instance, "parameter", attribute.getName(), options);
+                        Object options = _constructOptionsObject(attribute,
+                                valueToken);
+                        _invokeMethodInContext(_instance, "parameter",
+                                attribute.getName(), options);
                         continue;
                     } else {
-                        _invokeMethodInContext(_instance, "parameter", attribute.getName());
+                        _invokeMethodInContext(_instance, "parameter",
+                                attribute.getName());
                     }
                 }
             }
@@ -2451,14 +2494,15 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             throws NameDuplicationException, IllegalActionException {
         if (JSONmode) {
             // Put in a hint that the string value needs to be JSON.
-            /* SingletonAttribute mark = */ new SingletonAttribute(typeable, "_JSON");
+            /* SingletonAttribute mark = */ new SingletonAttribute(typeable,
+                    "_JSON");
             // Do not make this non-persistent, so when the model is saved and then
             // re-opened, it will give an error that it cannot evaluate the value
             // because it does not know to interpret it as an arbitrary string rather
             // an expression.
             // mark.setPersistent(false);
             if (typeable instanceof PortParameter) {
-                _markJSONmode(((PortParameter)typeable).getPort(), true);
+                _markJSONmode(((PortParameter) typeable).getPort(), true);
             }
         }
     }
@@ -2472,10 +2516,12 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
     private void _provideInput(String name, Token token)
             throws IllegalActionException {
         try {
-            Object converted = ((Invocable) _engine).invokeFunction("convertFromToken", token);
+            Object converted = ((Invocable) _engine)
+                    .invokeFunction("convertFromToken", token);
             _invokeMethodInContext(_instance, "provideInput", name, converted);
         } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Failed to provide input token.");
+            throw new IllegalActionException(this, e,
+                    "Failed to provide input token.");
         }
     }
 
@@ -2488,7 +2534,7 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      */
     private synchronized void _runThenReschedule(final Runnable function,
             final int milliseconds, final Integer id) {
-            // Invoke the function.
+        // Invoke the function.
         function.run();
 
         // If the above function does not cancel the interval, reschedule it.
@@ -2520,9 +2566,10 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @param typeable A Parameter or a ParameterPort. Other types are ignored.
      *  @param options The options argument for an input or parameter specification.
      */
-    private void _setOptionsForSelect(NamedObj typeable, Map<String,Object> options) {
+    private void _setOptionsForSelect(NamedObj typeable,
+            Map<String, Object> options) {
         if (options != null) {
-            Object possibilities = ((Map<String,Object>) options).get("options");
+            Object possibilities = options.get("options");
             if (possibilities != null) {
                 // Possibilities are specified.
                 Parameter parameter = null;
@@ -2542,28 +2589,33 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                     // It returns a list with one element, the array!
                     // choices = Arrays.asList(possibilities);
                     choices = new LinkedList<Object>();
-                    for (int i = 0; i < ((Object[])possibilities).length; i++) {
-                        if (((Object [])possibilities)[i] == null) {
+                    for (int i = 0; i < ((Object[]) possibilities).length; i++) {
+                        if (((Object[]) possibilities)[i] == null) {
                             // When SerialHelper was handling longs,
                             // we would get a NPE here, so we print a
                             // better message.
-                            new NullPointerException("possibility " + i + " was null?").printStackTrace();
-                            ((LinkedList<Object>)choices).add("null");
+                            new NullPointerException(
+                                    "possibility " + i + " was null?")
+                                            .printStackTrace();
+                            ((LinkedList<Object>) choices).add("null");
                         } else {
-                            ((LinkedList<Object>)choices).add(((Object[])possibilities)[i].toString());
+                            ((LinkedList<Object>) choices).add(
+                                    ((Object[]) possibilities)[i].toString());
                         }
                     }
                 } else if (possibilities instanceof int[]) {
                     choices = new LinkedList<Object>();
-                    for (int i = 0; i < ((int[])possibilities).length; i++) {
+                    for (int i = 0; i < ((int[]) possibilities).length; i++) {
                         // FindBugs says to use Integer.valueOf() instead of new Integer().
-                        ((LinkedList<Object>)choices).add(Integer.valueOf(((int[])possibilities)[i]));
+                        ((LinkedList<Object>) choices).add(
+                                Integer.valueOf(((int[]) possibilities)[i]));
                     }
                 } else if (possibilities instanceof double[]) {
                     choices = new LinkedList<Object>();
-                    for (int i = 0; i < ((double[])possibilities).length; i++) {
+                    for (int i = 0; i < ((double[]) possibilities).length; i++) {
                         // FindBugs says to use Double.valueOf() instead of new Double().
-                        ((LinkedList<Object>)choices).add(Double.valueOf(((double[])possibilities)[i]));
+                        ((LinkedList<Object>) choices).add(
+                                Double.valueOf(((double[]) possibilities)[i]));
                     }
                 }
                 if (choices != null) {
@@ -2572,8 +2624,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                             if (parameter.isStringMode()) {
                                 parameter.addChoice((String) possibility);
                             } else {
-                                parameter.addChoice("\"" + (String) possibility
-                                        + "\"");
+                                parameter.addChoice(
+                                        "\"" + (String) possibility + "\"");
                             }
                         }
                     }
@@ -2593,12 +2645,13 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  the spontaneous argument or setting the SingletonParameter.
      *  @exception NameDuplicationException Should not be thrown.
      */
-    private void _setPortSpontaneity(Map<String,Object> options, TypedIOPort port)
+    private void _setPortSpontaneity(Map<String, Object> options,
+            TypedIOPort port)
             throws IllegalActionException, NameDuplicationException {
-        Object spontaneity = ((Map<String,Object>) options).get("spontaneous");
+        Object spontaneity = options.get("spontaneous");
         if (spontaneity instanceof Boolean) {
             BooleanToken spontaneityToken = null;
-            if ((Boolean)spontaneity) {
+            if ((Boolean) spontaneity) {
                 spontaneityToken = BooleanToken.TRUE;
             } else {
                 spontaneityToken = BooleanToken.FALSE;
@@ -2616,10 +2669,10 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      *  @exception IllegalActionException If setting fails.
      *  @exception NameDuplicationException Should not be thrown.
      */
-    private void _setPortVisibility(Map<String,Object> options, TypedIOPort port,
-            PortParameter parameter) throws IllegalActionException,
-            NameDuplicationException {
-        Object visibility = ((Map<String,Object>) options).get("visibility");
+    private void _setPortVisibility(Map<String, Object> options,
+            TypedIOPort port, PortParameter parameter)
+            throws IllegalActionException, NameDuplicationException {
+        Object visibility = options.get("visibility");
         if (visibility instanceof String) {
             String generic = ((String) visibility).trim().toLowerCase();
             boolean hide = false;
@@ -2656,7 +2709,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 }
             }
             if (hide && port != null) {
-                SingletonParameter hideParam = new SingletonParameter(port, "_hide", BooleanToken.TRUE);
+                SingletonParameter hideParam = new SingletonParameter(port,
+                        "_hide", BooleanToken.TRUE);
                 // Prevent export.
                 hideParam.setPersistent(false);
             }
@@ -2674,9 +2728,9 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             throws NameDuplicationException, IllegalActionException {
         Parameter parameter = null;
         if (typeable instanceof Parameter) {
-            parameter = (Parameter)typeable;
+            parameter = (Parameter) typeable;
         } else if (typeable instanceof ParameterPort) {
-            parameter = ((ParameterPort)typeable).getParameter();
+            parameter = ((ParameterPort) typeable).getParameter();
             _markJSONmode(parameter, JSONmode);
         } else if (JSONmode) {
             // Argument must be a simple port.
@@ -2686,7 +2740,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             /** The following doesn't work. Not persistent.
             parameter.setStringMode(true);
             */
-            /* SingletonAttribute mark = */ new SingletonAttribute(parameter, "_stringMode");
+            /* SingletonAttribute mark = */ new SingletonAttribute(parameter,
+                    "_stringMode");
             // Mark this implied; otherwise it's existence forces moml export.
             // NO! This makes it non-persistent, so when the model is saved and then
             // re-opened, it will give an error that it cannot evaluate the value
@@ -2723,14 +2778,17 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         // value is true.
         Attribute sync = director.getAttribute("synchronizeToRealTime");
         if (sync instanceof Parameter) {
-            Token token = ((Parameter)sync).getToken();
-            if (token instanceof BooleanToken && !((BooleanToken)token).booleanValue()) {
+            Token token = ((Parameter) sync).getToken();
+            if (token instanceof BooleanToken
+                    && !((BooleanToken) token).booleanValue()) {
                 try {
-                    MessageHandler.warning("Using a timeout in JavaScript, but the director's"
-                            + " synchronizeToRealTime parameter is set to false."
-                            + " To get real-time behavior, set it to true.");
+                    MessageHandler.warning(
+                            "Using a timeout in JavaScript, but the director's"
+                                    + " synchronizeToRealTime parameter is set to false."
+                                    + " To get real-time behavior, set it to true.");
                 } catch (CancelException e) {
-                    throw new IllegalActionException(this, "Execution cancelled");
+                    throw new IllegalActionException(this,
+                            "Execution cancelled");
                 }
             }
         }
@@ -2793,9 +2851,9 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 types.add("JSON");
                 types.add("select");
                 Collections.sort(types);
-                throw new IllegalActionException(this, "Unsupported type: " + type
-                                                 + ".  Should be one of: "
-                                                 + Arrays.toString(types.toArray()));
+                throw new IllegalActionException(this,
+                        "Unsupported type: " + type + ".  Should be one of: "
+                                + Arrays.toString(types.toArray()));
             }
             return ptType;
         }
@@ -2905,8 +2963,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                 }
                 return token;
             }
-            throw new IllegalActionException(
-                    JavaScript.this, "Use provideInput() rather than get()");
+            throw new IllegalActionException(JavaScript.this,
+                    "Use provideInput() rather than get()");
         }
 
         /** Expose the send() method of the port.
@@ -2916,12 +2974,13 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
          *  @exception IllegalActionException If this is a proxy for a parameter or if sending fails.
          *  @exception NoRoomException If there is no room at the destination.
          */
-        public void send(int channelIndex, Token data, Object value) throws NoRoomException,
-                IllegalActionException {
+        public void send(int channelIndex, Token data, Object value)
+                throws NoRoomException, IllegalActionException {
             if (_port == null) {
                 throw new IllegalActionException(JavaScript.this,
                         "Cannot call send on a parameter: "
-                                + _parameter.getName() + ". Use setParameter().");
+                                + _parameter.getName()
+                                + ". Use setParameter().");
             }
             // If the model is not in a phase of execution where it can send (in initialize()
             // or during execution), then do not send the token. Instead, send messages
@@ -2945,11 +3004,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
             // when it calls this in DataHandler.
             if (!_executing) {
                 String message = "WARNING: Invoking send() too late (probably in a callback), so "
-                        + getName()
-                        + " is not able to send the token "
-                        + data
-                        + " to the output "
-                        + _port.getName()
+                        + getName() + " is not able to send the token " + data
+                        + " to the output " + _port.getName()
                         + ". Token is discarded.";
                 if (_debugging) {
                     _debug(message);
@@ -2994,7 +3050,8 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                     // works. Make sure the context is this, not the prototype.
                     // Do not do this if sending to my own input, however.
                     // The JavaScript actor handles that.
-                    _invokeMethodInContext(_instance, "superSend", _port.getName(), value, channelIndex);
+                    _invokeMethodInContext(_instance, "superSend",
+                            _port.getName(), value, channelIndex);
                 } else {
                     // Not currently firing.
                     // Enqueue runnable object to be invoked upon the next firing.
@@ -3009,9 +3066,11 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
                     // synchronized to real time, we want the firing to
                     // occur later than the current model time, at a time
                     // matching current real time.
-                    final Time now = getDirector().fireAtCurrentTime(JavaScript.this);
+                    final Time now = getDirector()
+                            .fireAtCurrentTime(JavaScript.this);
                     final Integer id = Integer.valueOf(_timeoutCount++);
-                    final Runnable function = new DeferredSend(this, channelIndex, data, value);
+                    final Runnable function = new DeferredSend(this,
+                            channelIndex, data, value);
 
                     // Record the callback function indexed by ID.
                     _pendingTimeoutFunctions.put(id, function);
@@ -3034,11 +3093,12 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
         public void set(Token token) throws IllegalActionException {
             if (_parameter == null) {
                 if (_port instanceof ParameterPort) {
-                    _parameter = ((ParameterPort)_port).getParameter();
+                    _parameter = ((ParameterPort) _port).getParameter();
                 } else {
                     if (!_port.isInput()) {
                         throw new IllegalActionException(JavaScript.this,
-                                "Cannot set the default value a port that is not an input: " + _port.getName());
+                                "Cannot set the default value a port that is not an input: "
+                                        + _port.getName());
                     }
                     // Ideally, we would change port from an ordinary port to a ParameterPort.
                     // Instead, we just set the default value of the port.
@@ -3079,32 +3139,32 @@ public class JavaScript extends AbstractPlaceableActor implements AccessorOrches
      */
     public class DeferredSend implements Runnable {
 
-            /** Construct an object that defers a send operation.
-             * @param proxy A proxy corresponding to the port or parameter.
-             * @param channelIndex The channel to send data on.
-             * @param data The data token to send through the port or update the parameter with.
-         * @param value The JavaScript value to pass back when the send actually occurs.
-             */
-        public DeferredSend(
-                PortOrParameterProxy proxy, int channelIndex, Token data, Object value) {
-           _proxy = proxy;
-           _channelIndex = channelIndex;
-           _token = data;
-           _value = value;
+        /** Construct an object that defers a send operation.
+         * @param proxy A proxy corresponding to the port or parameter.
+         * @param channelIndex The channel to send data on.
+         * @param data The data token to send through the port or update the parameter with.
+        * @param value The JavaScript value to pass back when the send actually occurs.
+         */
+        public DeferredSend(PortOrParameterProxy proxy, int channelIndex,
+                Token data, Object value) {
+            _proxy = proxy;
+            _channelIndex = channelIndex;
+            _token = data;
+            _value = value;
         }
 
         /** Invoke send on the port or parameter proxy.
          */
+        @Override
         public void run() {
             try {
                 _proxy.send(_channelIndex, _token, _value);
             } catch (KernelException e) {
-                error("Send to "
-                        + _proxy._port.getName()
-                        + " failed: "
+                error("Send to " + _proxy._port.getName() + " failed: "
                         + e.getMessage());
             }
         }
+
         /** The output channel on the port to send data on. */
         private int _channelIndex;
         /** The data to send. */

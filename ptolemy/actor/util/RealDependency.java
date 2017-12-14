@@ -204,7 +204,8 @@ public class RealDependency implements Dependency {
             Double.POSITIVE_INFINITY);
 
     /** The multiplicative identity. */
-    public static final RealDependency OTIMES_IDENTITY = new RealDependency(0.0);
+    public static final RealDependency OTIMES_IDENTITY = new RealDependency(
+            0.0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

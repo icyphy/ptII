@@ -92,8 +92,8 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
         currentState = new TypedIOPort(this, "currentState", false, true);
 
         // set direction of ports
-        StringAttribute sampleFactorCardinal = new StringAttribute(
-                sampleFactor, "_cardinal");
+        StringAttribute sampleFactorCardinal = new StringAttribute(sampleFactor,
+                "_cardinal");
         sampleFactorCardinal.setExpression("NORTH");
         StringAttribute sampleTimeCardinal = new StringAttribute(sampleTime,
                 "_cardinal");
@@ -251,8 +251,7 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
             stateVar.setToken(integratorState);
             output.send(0, integratorState);
         } else {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "Attempt to call the integrate method on a SequencedIntegrator, "
                             + "but there is not an input token available on each of the input, "
                             + "sampleFactor, and sampleTime input ports.");
@@ -271,8 +270,7 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
         if (setStateValue.hasToken(0)) {
             integratorState = (ScalarToken) setStateValue.get(0);
         } else {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "Attempt to call the setState method on a SequencedIntegrator, "
                             + "but there is no input token available on the setStateValue input.");
         }

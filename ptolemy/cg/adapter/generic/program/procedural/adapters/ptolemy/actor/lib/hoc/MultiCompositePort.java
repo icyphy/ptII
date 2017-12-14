@@ -44,7 +44,8 @@ public class MultiCompositePort extends IOPort {
      *  with the given RefinementPort.
      *  @param component The associated component.
      */
-    public MultiCompositePort(ptolemy.actor.lib.hoc.MultiCompositePort component) {
+    public MultiCompositePort(
+            ptolemy.actor.lib.hoc.MultiCompositePort component) {
         super(component);
     }
 }

@@ -101,9 +101,9 @@ public class UnionDisassembler extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"0\" y=\"0\" width=\"6\" "
-                + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                        + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,8 +123,8 @@ public class UnionDisassembler extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        UnionDisassembler newObject = (UnionDisassembler) super
-                .clone(workspace);
+        UnionDisassembler newObject = (UnionDisassembler) super.clone(
+                workspace);
         newObject._portMap = new HashMap<String, TypedIOPort>();
         return newObject;
     }
@@ -203,8 +203,8 @@ public class UnionDisassembler extends TypedAtomicActor {
         // constrain the fields in the input union to be greater than or
         // equal to the declared or resolved types of the output ports:
         // input >= {| x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
-        result.add(new Inequality(new ConstructAssociativeType(_portMap
-                .values(), UnionType.class), input.getTypeTerm()));
+        result.add(new Inequality(new ConstructAssociativeType(
+                _portMap.values(), UnionType.class), input.getTypeTerm()));
 
         for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
             String outputName = entry.getKey();

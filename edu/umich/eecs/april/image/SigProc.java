@@ -61,18 +61,19 @@ public class SigProc {
     public static final void convolveSymmetricCentered(float a[], int aoff,
             int alen, float f[], float r[], int roff) {
         if ((f.length & 1) == 0 && !warned) {
-            System.out
-                    .println("SigProc.convolveSymmetricCentered Warning: filter is not odd length");
+            System.out.println(
+                    "SigProc.convolveSymmetricCentered Warning: filter is not odd length");
             warned = true;
         }
 
         for (int i = f.length / 2; i < f.length; i++) {
             double acc = 0;
             for (int j = 0; j < f.length; j++) {
-                if ((i - j) < 0 || (i - j) >= alen)
+                if ((i - j) < 0 || (i - j) >= alen) {
                     acc += a[aoff] * f[j];
-                else
+                } else {
                     acc += a[aoff + i - j] * f[j];
+                }
             }
             r[roff + i - f.length / 2] = (float) acc;
         }
@@ -88,10 +89,11 @@ public class SigProc {
         for (int i = alen; i < alen + f.length / 2; i++) {
             double acc = 0;
             for (int j = 0; j < f.length; j++) {
-                if ((i - j) >= alen || (i - j) < 0)
+                if ((i - j) >= alen || (i - j) < 0) {
                     acc += a[aoff + alen - 1] * f[j];
-                else
+                } else {
                     acc += a[aoff + i - j] * f[j];
+                }
             }
             r[roff + i - f.length / 2] = (float) acc;
         }
@@ -100,18 +102,19 @@ public class SigProc {
     public static final void convolveSymmetricCenteredMax(float a[], int aoff,
             int alen, float f[], float r[], int roff) {
         if ((f.length & 1) == 0 && !warned) {
-            System.out
-                    .println("SigProc.convolveSymmetricCentered Warning: filter is not odd length");
+            System.out.println(
+                    "SigProc.convolveSymmetricCentered Warning: filter is not odd length");
             warned = true;
         }
 
         for (int i = f.length / 2; i < f.length; i++) {
             double acc = 0;
             for (int j = 0; j < f.length; j++) {
-                if ((i - j) < 0 || (i - j) >= alen)
+                if ((i - j) < 0 || (i - j) >= alen) {
                     acc = Math.max(acc, a[aoff] * f[j]);
-                else
+                } else {
                     acc = Math.max(acc, a[aoff + i - j] * f[j]);
+                }
             }
             r[roff + i - f.length / 2] = (float) acc;
         }
@@ -127,10 +130,11 @@ public class SigProc {
         for (int i = alen; i < alen + f.length / 2; i++) {
             double acc = 0;
             for (int j = 0; j < f.length; j++) {
-                if ((i - j) >= alen || (i - j) < 0)
+                if ((i - j) >= alen || (i - j) < 0) {
                     acc = Math.max(acc, a[aoff + alen - 1] * f[j]);
-                else
+                } else {
                     acc = Math.max(acc, a[aoff + i - j] * f[j]);
+                }
             }
             r[roff + i - f.length / 2] = (float) acc;
         }
@@ -155,8 +159,9 @@ public class SigProc {
                 double rad = Math.min(Math.min(c00_m, c01_m),
                         Math.min(c10_m, c11_m));
 
-                if (rad >= radius)
+                if (rad >= radius) {
                     continue;
+                }
 
                 int ymin = Math.max(0, 0 - k);
                 int ymax = Math.min(height, height - k);
@@ -181,8 +186,9 @@ public class SigProc {
         for (int k = -radius; k <= radius; k++) {
             for (int l = -radius; l <= radius; l++) {
                 // is it within the radius?
-                if (k * k + l * l > radius * radius)
+                if (k * k + l * l > radius * radius) {
                     continue;
+                }
 
                 int ymin = Math.max(0, 0 - k);
                 int ymax = Math.min(height, height - k);
@@ -207,8 +213,9 @@ public class SigProc {
         for (int k = -radius; k <= radius; k++) {
             for (int l = -radius; l <= radius; l++) {
                 // is it within the radius?
-                if (k * k + l * l > radius * radius)
+                if (k * k + l * l > radius * radius) {
                     continue;
+                }
 
                 int ymin = Math.max(0, 0 - k);
                 int ymax = Math.min(height, height - k);
@@ -229,28 +236,31 @@ public class SigProc {
     }
 
     static final byte clampByte(double v) {
-        if (v < 0)
+        if (v < 0) {
             return 0;
-        if (v > 255)
+        }
+        if (v > 255) {
             return (byte) 255;
+        }
         return (byte) v;
     }
 
     public static final void convolveSymmetricCenteredMax(byte a[], int aoff,
             int alen, float f[], byte r[], int roff) {
         if ((f.length & 1) == 0 && !warned) {
-            System.out
-                    .println("SigProc.convolveSymmetricCentered Warning: filter is not odd length");
+            System.out.println(
+                    "SigProc.convolveSymmetricCentered Warning: filter is not odd length");
             warned = true;
         }
 
         for (int i = f.length / 2; i < f.length; i++) {
             double acc = 0;
             for (int j = 0; j < f.length; j++) {
-                if ((i - j) < 0 || (i - j) >= alen)
+                if ((i - j) < 0 || (i - j) >= alen) {
                     acc = Math.max(acc, (a[aoff] & 0xff) * f[j]);
-                else
+                } else {
                     acc = Math.max(acc, (a[aoff + i - j] & 0xff) * f[j]);
+                }
             }
             r[roff + i - f.length / 2] = clampByte(acc);
         }
@@ -266,10 +276,11 @@ public class SigProc {
         for (int i = alen; i < alen + f.length / 2; i++) {
             double acc = 0;
             for (int j = 0; j < f.length; j++) {
-                if ((i - j) >= alen || (i - j) < 0)
+                if ((i - j) >= alen || (i - j) < 0) {
                     acc = Math.max(acc, (a[aoff + alen - 1] & 0xff) * f[j]);
-                else
+                } else {
                     acc = Math.max(acc, (a[aoff + i - j] & 0xff) * f[j]);
+                }
             }
             r[roff + i - f.length / 2] = clampByte(acc);
         }
@@ -280,8 +291,9 @@ public class SigProc {
         for (int i = 0; i < r.length; i++) {
             double acc = 0;
             for (int j = 0; j < b.length; j++) {
-                if (i - j < 0 || i - j >= a.length)
+                if (i - j < 0 || i - j >= a.length) {
                     continue;
+                }
                 acc += a[i - j] * b[j];
             }
             r[i] = (float) acc;

@@ -130,8 +130,9 @@ public class TagFamily {
 
                 wr = wr << 1;
 
-                if ((w & (1L << b)) != 0)
+                if ((w & (1L << b)) != 0) {
                     wr |= 1;
+                }
 
             }
         }
@@ -156,8 +157,9 @@ public class TagFamily {
     static final int popCountTableShift = 12;
     static final byte[] popCountTable = new byte[1 << popCountTableShift];
     static {
-        for (int i = 0; i < popCountTable.length; i++)
+        for (int i = 0; i < popCountTable.length; i++) {
             popCountTable[i] = (byte) popCountReal(i);
+        }
     }
 
     public static final int popCount(long w) {
@@ -226,22 +228,24 @@ public class TagFamily {
         for (int y = 0; y < width; y++) {
             for (int x = 0; x < height; x++) {
                 if (y < whiteBorder || y + whiteBorder >= height
-                        || x < whiteBorder || x + whiteBorder >= width)
+                        || x < whiteBorder || x + whiteBorder >= width) {
                     im.setRGB(x, y, 0xffffff);
-                else
+                } else {
                     im.setRGB(x, y, 0x000000);
+                }
             }
         }
 
         // Now, draw the payload.
         for (int y = 0; y < d; y++) {
             for (int x = 0; x < d; x++) {
-                if ((v & (1L << (bits - 1))) != 0)
-                    im.setRGB(x + whiteBorder + blackBorder, y + whiteBorder
-                            + blackBorder, 0xffffff);
-                else
-                    im.setRGB(x + whiteBorder + blackBorder, y + whiteBorder
-                            + blackBorder, 0x000000);
+                if ((v & (1L << (bits - 1))) != 0) {
+                    im.setRGB(x + whiteBorder + blackBorder,
+                            y + whiteBorder + blackBorder, 0xffffff);
+                } else {
+                    im.setRGB(x + whiteBorder + blackBorder,
+                            y + whiteBorder + blackBorder, 0x000000);
+                }
 
                 v = v << 1;
             }
@@ -290,8 +294,9 @@ public class TagFamily {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int id = y * width + x;
-                if (id >= codes.length)
+                if (id >= codes.length) {
                     continue;
+                }
 
                 g.drawImage(ims.get(id), x * dim, y * dim, null);
             }
@@ -317,17 +322,19 @@ public class TagFamily {
 
             for (int j = i + 1; j < codes.length; j++) {
 
-                int d = Math.min(Math.min(hammingDistance(r0, codes[j]),
-                        hammingDistance(r1, codes[j])), Math.min(
-                        hammingDistance(r2, codes[j]),
-                        hammingDistance(r3, codes[j])));
+                int d = Math.min(
+                        Math.min(hammingDistance(r0, codes[j]),
+                                hammingDistance(r1, codes[j])),
+                        Math.min(hammingDistance(r2, codes[j]),
+                                hammingDistance(r3, codes[j])));
 
                 hammings[d]++;
             }
         }
 
-        for (int i = 0; i < hammings.length; i++)
+        for (int i = 0; i < hammings.length; i++) {
             System.out.printf("%10d  %10d\n", i, hammings[i]);
+        }
     }
 
     public void writeAllImagesPostScript(String filepath) throws IOException {
@@ -408,13 +415,15 @@ public class TagFamily {
         String dirpath = args[1] + "/";
 
         TagFamily tagFamily = (TagFamily) ReflectUtil.createObject(cls);
-        if (tagFamily == null)
+        if (tagFamily == null) {
             return;
+        }
 
         try {
             File f = new File(dirpath);
-            if (!f.exists())
+            if (!f.exists()) {
                 f.mkdirs();
+            }
 
             tagFamily.writeAllImagesMosaic(dirpath + "mosaic.png");
             tagFamily.writeAllImages(dirpath);

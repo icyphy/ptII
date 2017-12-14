@@ -79,7 +79,8 @@ public class InvocationBinder extends SceneTransformer {
         System.out.println("InvocationBinder.internalTransform(" + phaseName
                 + ", " + options + ")");
 
-        Filter instanceInvokesFilter = new Filter(new InstanceInvokeEdgesPred());
+        Filter instanceInvokesFilter = new Filter(
+                new InstanceInvokeEdgesPred());
         String modifierOptions = "unsafe";
         //HashMap instanceToStaticMap = new HashMap();
 

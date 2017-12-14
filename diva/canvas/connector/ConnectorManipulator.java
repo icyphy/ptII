@@ -161,14 +161,14 @@ public class ConnectorManipulator extends Manipulator {
      */
     public void removeConnectorListener(ConnectorListener l) {
         ((ConnectorInteractor) getHandleInteractor())
-        .removeConnectorListener(l);
+                .removeConnectorListener(l);
     }
 
     /** Remove the given layer motion listener from this interactor.
      */
     public void removeLayerMotionListener(LayerMotionListener l) {
-        _layerMotionListener = LayerEventMulticaster.remove(
-                _layerMotionListener, l);
+        _layerMotionListener = LayerEventMulticaster
+                .remove(_layerMotionListener, l);
     }
 
     /** Refresh the geometry. Check that the sites that the handles

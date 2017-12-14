@@ -234,8 +234,8 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
             }
 
             // Add all the edges.
-            Iterator<?> i = GraphUtilities.partiallyContainedEdges(
-                    origComposite, model);
+            Iterator<?> i = GraphUtilities
+                    .partiallyContainedEdges(origComposite, model);
 
             while (i.hasNext()) {
                 Object origEdge = i.next();
@@ -282,8 +282,10 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                         }
                     }
 
-                    origTail = _getParentInGraph(model, origComposite, origTail);
-                    origHead = _getParentInGraph(model, origComposite, origHead);
+                    origTail = _getParentInGraph(model, origComposite,
+                            origTail);
+                    origHead = _getParentInGraph(model, origComposite,
+                            origHead);
 
                     Object copyTail = map.get(origTail);
                     Object copyHead = map.get(origHead);

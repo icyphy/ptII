@@ -69,6 +69,7 @@ public class TimedDisplay extends Display implements SequenceActor {
      *  value is returned.
      *  @exception IllegalActionException If reading the input fails.
      */
+    @Override
     protected String _getInputString(int i) throws IllegalActionException {
         String value = super._getInputString(i);
 

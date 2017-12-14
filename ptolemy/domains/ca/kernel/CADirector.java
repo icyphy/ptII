@@ -410,8 +410,8 @@ public class CADirector extends Director {
      * @exception NameDuplicationException If parameters already exist
      * with a specified name.
      */
-    protected void _initParameters() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _initParameters()
+            throws IllegalActionException, NameDuplicationException {
 
         // FIXME: we need an attributeChanged() method.  What happens
         // if one of these parameters changes while the model is running?
@@ -457,8 +457,8 @@ public class CADirector extends Director {
      */
     protected boolean _iterate() throws IllegalActionException {
         try {
-            Thread.sleep((int) (1000.0 * ((DoubleToken) delay.getToken())
-                    .doubleValue()));
+            Thread.sleep((int) (1000.0
+                    * ((DoubleToken) delay.getToken()).doubleValue()));
         } catch (Throwable throwable) {
             // Ignored.
         }

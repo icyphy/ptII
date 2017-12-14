@@ -138,14 +138,14 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
-            diva.gui.GUIUtilities
-            .addToolBarButton(toolbar, _newInputPortAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                    _newInputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newOutputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
-            diva.gui.GUIUtilities
-            .addToolBarButton(toolbar, _newInoutPortAction);
+            diva.gui.GUIUtilities.addToolBarButton(toolbar,
+                    _newInoutPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newInputMultiportAction);
@@ -291,15 +291,14 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     double width = halo * 2;
 
                     // The rectangle in which we search for a Figure.
-                    Rectangle2D region = new Rectangle2D.Double(x - halo, y
-                            - halo, width, width);
+                    Rectangle2D region = new Rectangle2D.Double(x - halo,
+                            y - halo, width, width);
 
                     // Iterate through figures within the region.
-                    Iterator<?> foregroundFigures = foregroundLayer
-                            .getFigures().getIntersectedFigures(region)
-                            .figuresFromFront();
-                    Iterator<?> pickFigures = CanvasUtilities.pickIter(
-                            foregroundFigures, region);
+                    Iterator<?> foregroundFigures = foregroundLayer.getFigures()
+                            .getIntersectedFigures(region).figuresFromFront();
+                    Iterator<?> pickFigures = CanvasUtilities
+                            .pickIter(foregroundFigures, region);
 
                     while (link == null && pickFigures.hasNext()) {
                         CanvasComponent possibleFigure = (CanvasComponent) pickFigures
@@ -416,8 +415,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     @Override
     protected void _createControllers() {
-        Configuration _config = (Configuration) Configuration.configurations()
-                .iterator().next();
+        Configuration _config = Configuration.configurations().iterator()
+                .next();
         String _alternateActorInstanceClassName = null;
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
@@ -430,7 +429,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
                 StringParameter actorInteractionAddonParameter;
                 actorInteractionAddonParameter = (StringParameter) _config
-                        .getAttribute("_actorInteractionAddon", Parameter.class);
+                        .getAttribute("_actorInteractionAddon",
+                                Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
                     String actorInteractionAddonClassName = actorInteractionAddonParameter
@@ -473,20 +473,19 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 // Try to load the alternate class.
                 Class _alternateActorInstanceClass = Class
                         .forName(_alternateActorInstanceClassName);
-                Class[] argsClass = new Class[] { diva.graph.GraphController.class };
+                Class[] argsClass = new Class[] {
+                        diva.graph.GraphController.class };
                 Object[] args = new Object[] { this };
                 Constructor alternateActorInstanceConstructor = _alternateActorInstanceClass
                         .getConstructor(argsClass);
                 _entityController = (ActorController) alternateActorInstanceConstructor
                         .newInstance(args);
             } catch (Exception e) {
-                System.out
-                .println("The configuration has "
+                System.out.println("The configuration has "
                         + "_alternateActorInstanceController set, but the class "
                         + _alternateActorInstanceClassName
                         + " is not found.  Defaulting "
-                        + " to ActorInstanceController: "
-                        + e.getMessage());
+                        + " to ActorInstanceController: " + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -522,8 +521,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // Anytime we add a port to an entity, we want to layout all the
         // ports within that entity.
         GlobalLayout layout = new EntityLayout();
-        addGraphViewListener(new IncrementalLayoutListener(
-                new IncrLayoutAdapter(layout) {
+        addGraphViewListener(
+                new IncrementalLayoutListener(new IncrLayoutAdapter(layout) {
                     @Override
                     public void nodeDrawn(Object node) {
                         layout(node);
@@ -604,30 +603,29 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _portController.getNodeInteractor())
-        .addInteractor(_linkCreator);
+                .addInteractor(_linkCreator);
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-        .addInteractor(_linkCreator);
+                .addInteractor(_linkCreator);
         ((CompositeInteractor) _relationController.getNodeInteractor())
-        .addInteractor(_linkCreator);
+                .addInteractor(_linkCreator);
 
         LinkCreator linkCreator2 = new LinkCreator();
         linkCreator2
-        .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
+                .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-        .addInteractor(linkCreator2);
+                .addInteractor(linkCreator2);
     }
 
     /** Action for creating a new relation. */
-    protected Action _newRelationAction = new NewRelationAction(
-            new String[][] {
-                    { "/ptolemy/vergil/actor/img/relation.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/relation_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/relation_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+    protected Action _newRelationAction = new NewRelationAction(new String[][] {
+            { "/ptolemy/vergil/actor/img/relation.gif",
+                    GUIUtilities.LARGE_ICON },
+            { "/ptolemy/vergil/actor/img/relation_o.gif",
+                    GUIUtilities.ROLLOVER_ICON },
+            { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+            { "/ptolemy/vergil/actor/img/relation_on.gif",
+                    GUIUtilities.SELECTED_ICON } });
 
     //   private LinkCreator _linkCreator2;  // For shift-click
 
@@ -723,80 +721,86 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     /** Action for creating a new inout multiport. */
     private Action _newInoutMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
-            "New input/output multiport", KeyEvent.VK_T, new String[][] {
+            "New input/output multiport", KeyEvent.VK_T,
+            new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_inout.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input/output port. */
     private Action _newInoutPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INOUT, "New input/output port",
-            KeyEvent.VK_P, new String[][] {
+            KeyEvent.VK_P,
+            new String[][] {
                     { "/ptolemy/vergil/actor/img/single_inout.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/single_inout_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/single_inout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/single_inout_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/single_inout_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input multiport. */
     private Action _newInputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
-            "New input multiport", KeyEvent.VK_N, new String[][] {
+            "New input multiport", KeyEvent.VK_N,
+            new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_in.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/multi_in_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_in_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/multi_in_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_in_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT, "New input port",
-            KeyEvent.VK_I, new String[][] {
+            KeyEvent.VK_I,
+            new String[][] {
                     { "/ptolemy/vergil/actor/img/single_in.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/single_in_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/single_in_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/single_in_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/single_in_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/actor/img/single_in_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/single_in_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new output multiport. */
     private Action _newOutputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
-            "New output multiport", KeyEvent.VK_U, new String[][] {
+            "New output multiport", KeyEvent.VK_U,
+            new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_out.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/multi_out_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_out_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/multi_out_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_out_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new output port. */
     private Action _newOutputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT, "New output port",
-            KeyEvent.VK_O, new String[][] {
+            KeyEvent.VK_O,
+            new String[][] {
                     { "/ptolemy/vergil/actor/img/single_out.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/actor/img/single_out_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/single_out_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/actor/img/single_out_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/actor/img/single_out_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/actor/img/single_out_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/single_out_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
     /** The port dialog factory. */
     private PortDialogAction _portDialogAction;
@@ -813,9 +817,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  passwd: archives
      */
     private MouseFilter _shortcutFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
-            .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
-            .getMenuShortcutKeyMask());
+            InputEvent.BUTTON1_MASK,
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

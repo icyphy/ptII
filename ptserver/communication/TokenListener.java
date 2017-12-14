@@ -99,8 +99,8 @@ public class TokenListener implements MqttSimpleCallback {
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
                 ProxySourceData data = _proxyModelInfrastructure
-                        .getProxySourceMap().get(
-                                communicationToken.getTargetActorName());
+                        .getProxySourceMap()
+                        .get(communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
 
                 //Notify remote sources to read from the queue.
@@ -110,12 +110,12 @@ public class TokenListener implements MqttSimpleCallback {
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
                 Settable remoteAttribute = _proxyModelInfrastructure
-                        .getRemoteAttributesMap().get(
-                                attributeChangeToken.getTargetSettableName());
+                        .getRemoteAttributesMap()
+                        .get(attributeChangeToken.getTargetSettableName());
 
                 ProxyValueListener listener = _proxyModelInfrastructure
-                        .getRemoteAttributeListenersMap().get(
-                                attributeChangeToken.getTargetSettableName());
+                        .getRemoteAttributeListenersMap()
+                        .get(attributeChangeToken.getTargetSettableName());
                 synchronized (listener) {
                     try {
                         listener.setEnabled(false);
@@ -124,8 +124,8 @@ public class TokenListener implements MqttSimpleCallback {
                         // write access needs to be obtained for setting the expression.
                         //                        ((Attribute) remoteAttribute).workspace()
                         //                                .getWriteAccess();
-                        remoteAttribute.setExpression(attributeChangeToken
-                                .getExpression());
+                        remoteAttribute.setExpression(
+                                attributeChangeToken.getExpression());
                         remoteAttribute.validate();
                     } finally {
                         //   ((Attribute) remoteAttribute).workspace().doneWriting();
@@ -134,16 +134,15 @@ public class TokenListener implements MqttSimpleCallback {
                 }
                 _LOGGER.info("Received attribute change token");
             } else if (token instanceof PingToken) {
-                _proxyModelInfrastructure.getExecutor().execute(
-                        new PongTask(new PongToken(((PingToken) token)
-                                .getTimestamp())));
+                _proxyModelInfrastructure.getExecutor().execute(new PongTask(
+                        new PongToken(((PingToken) token).getTimestamp())));
                 _LOGGER.info("Received ping token");
             } else if (token instanceof PongToken) {
                 _proxyModelInfrastructure.setLastPongToken((PongToken) token);
                 _LOGGER.info("Received pong token");
             } else if (token instanceof RemoteEventToken) {
                 _proxyModelInfrastructure
-                .fireServerEvent((RemoteEventToken) token);
+                        .fireServerEvent((RemoteEventToken) token);
             }
         }
     }

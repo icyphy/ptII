@@ -213,8 +213,7 @@ public class FmvAutomatonGraphController extends FSMGraphController {
             }
 
             if (moml == null) {
-                moml = "<entity name=\""
-                        + stateName
+                moml = "<entity name=\"" + stateName
                         + "\" class=\"ptolemy.domains.modal.kernel.fmv.FmvState\">\n"
                         + "<property name=\"" + locationName
                         + "\" class=\"ptolemy.kernel.util.Location\""

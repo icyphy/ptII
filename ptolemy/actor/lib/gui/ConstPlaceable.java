@@ -121,8 +121,8 @@ public class ConstPlaceable extends Const implements PortablePlaceable {
                         + "so Const is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    TextFieldContainerInterface.class);
+            _implementation = PtolemyInjector.getInjector()
+                    .getInstance(TextFieldContainerInterface.class);
         }
         return _implementation;
     }

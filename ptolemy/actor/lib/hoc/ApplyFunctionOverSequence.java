@@ -200,8 +200,8 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
         FunctionType type = (FunctionType) function.getType();
 
         if (type.getReturnType() instanceof ArrayType) {
-            output.setTypeEquals(((ArrayType) type.getReturnType())
-                    .getElementType());
+            output.setTypeEquals(
+                    ((ArrayType) type.getReturnType()).getElementType());
             _outputRate = DFUtilities.getTokenProductionRate(output);
         } else {
             output.setTypeEquals(type.getReturnType());

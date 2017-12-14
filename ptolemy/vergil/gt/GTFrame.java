@@ -161,9 +161,8 @@ public class GTFrame extends ExtendedGraphFrame {
         if (component == null) {
             if (entity instanceof TransformationRule
                     && ((TransformationRule) entity).mode.isMatchOnly()) {
-                component = super
-                        ._createRightComponent(((TransformationRule) entity)
-                                .getPattern());
+                component = super._createRightComponent(
+                        ((TransformationRule) entity).getPattern());
             } else {
                 component = super._createRightComponent(entity);
             }
@@ -187,8 +186,8 @@ public class GTFrame extends ExtendedGraphFrame {
         return _graphPanner;
     }
 
-    protected static class ConfigureCriteriaAction extends
-    ConfigureIngredientsAction {
+    protected static class ConfigureCriteriaAction
+            extends ConfigureIngredientsAction {
 
         @Override
         protected String _getAttributeName() {
@@ -200,8 +199,8 @@ public class GTFrame extends ExtendedGraphFrame {
         }
     }
 
-    protected static abstract class ConfigureIngredientsAction extends
-    FigureAction {
+    protected static abstract class ConfigureIngredientsAction
+            extends FigureAction {
 
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -232,8 +231,8 @@ public class GTFrame extends ExtendedGraphFrame {
                     List<?> ingredientsAttributes = target
                             .attributeList(GTIngredientsAttribute.class);
                     if (ingredientsAttributes.isEmpty()) {
-                        Attribute attribute = new GTIngredientsAttribute(
-                                target, target.uniqueName(_getAttributeName()));
+                        Attribute attribute = new GTIngredientsAttribute(target,
+                                target.uniqueName(_getAttributeName()));
                         attribute.setPersistent(false);
                     }
                 } catch (KernelException e) {
@@ -261,8 +260,8 @@ public class GTFrame extends ExtendedGraphFrame {
         }
     }
 
-    protected static class ConfigureOperationsAction extends
-    ConfigureIngredientsAction {
+    protected static class ConfigureOperationsAction
+            extends ConfigureIngredientsAction {
 
         @Override
         protected String _getAttributeName() {

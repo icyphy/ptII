@@ -70,8 +70,9 @@ public class SimpleErrorHandler implements ErrorHandler {
      *  @return Never returns.
      */
     @Override
-    public int handleError(String element, NamedObj context, Throwable exception) {
-        throw new InternalErrorException(context, exception, "Element "
-                + element + " caused an exception to be thrown.");
+    public int handleError(String element, NamedObj context,
+            Throwable exception) {
+        throw new InternalErrorException(context, exception,
+                "Element " + element + " caused an exception to be thrown.");
     }
 }

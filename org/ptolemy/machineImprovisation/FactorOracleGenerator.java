@@ -109,6 +109,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == repetitionProbability) {
@@ -159,6 +160,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -190,8 +192,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
                     try {
                         _constructNewFactorOracle();
                     } catch (NameDuplicationException e) {
-                        throw new IllegalActionException(
-                                this,
+                        throw new IllegalActionException(this,
                                 "Attempted to create object with duplicate name while creating new Factor Oracle");
                     }
                     this.reset();
@@ -248,6 +249,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
         _durationSequence.clear();
     }
 
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             if (_completeDurationOracle != null) {
@@ -265,8 +267,8 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
     }
 
-    private void _constructNewFactorOracle() throws NameDuplicationException,
-    IllegalActionException {
+    private void _constructNewFactorOracle()
+            throws NameDuplicationException, IllegalActionException {
         _addPitchFO(_pitchLicks);
         _addDurationFO(_durationSequence);
         _pitchLicks.clear();
@@ -374,8 +376,8 @@ public class FactorOracleGenerator extends TypedAtomicActor {
     private void _addDurationFO(final List<List> _durationSequences)
             throws NameDuplicationException, IllegalActionException {
         _completeDurationOracle = new FactorOracleTop(this.workspace(),
-                ((List) _durationSequences).toArray(), _repetitionFactor,
-                false, false);
+                ((List) _durationSequences).toArray(), _repetitionFactor, false,
+                false);
         _completeDurationOracle.setName(uniqueName("DurationOracle"));
         new ModalTableauFactory(_completeDurationOracle, "_tableauFactory");
 

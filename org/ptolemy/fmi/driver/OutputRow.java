@@ -168,8 +168,8 @@ public class OutputRow {
                         // separator is e.g. ';' or '\t'
                         // If the separator is not a comma, then replace the
                         // decimal place with a comma.
-                        file.format("%c%s", separator, Double.toString(result)
-                                .replace('.', ','));
+                        file.format("%c%s", separator,
+                                Double.toString(result).replace('.', ','));
                     }
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     String result = scalarVariable.getString(fmiComponent);

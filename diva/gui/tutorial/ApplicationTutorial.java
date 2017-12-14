@@ -116,8 +116,8 @@ public class ApplicationTutorial extends AbstractApplication {
         addViewListener(new ListDataListener() {
             @Override
             public void contentsChanged(ListDataEvent e) {
-                System.out.println("current document = "
-                        + getCurrentView().getDocument());
+                System.out.println(
+                        "current document = " + getCurrentView().getDocument());
                 setCurrentView(getCurrentView()); //FIXME
             }
 
@@ -152,15 +152,15 @@ public class ApplicationTutorial extends AbstractApplication {
      // only handle text documents.
      TextDocument document = (TextDocument) d;
      System.out.println("displaying");
-
+    
      if (_displayedDocument != null) {
      // Pull the text out of the editor and stuff it back into the
      // document.
      _displayedDocument.setText(_editorPane.getText());
      }
-
+    
      _displayedDocument = document;
-
+    
      if (document != null) {
      // Pull the text out of the new document and stuff it
      // into the editor.
@@ -234,8 +234,8 @@ public class ApplicationTutorial extends AbstractApplication {
 
         action = DefaultActions.openAction(this);
         addAction(action);
-        GUIUtilities
-        .addMenuItem(menuFile, action, 'O', "Open a graph document");
+        GUIUtilities.addMenuItem(menuFile, action, 'O',
+                "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);

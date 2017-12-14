@@ -117,11 +117,11 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
 
         actionMenu.setMnemonic('F');
         saveXML.setMnemonic('A');
-        saveXML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-                InputEvent.CTRL_MASK));
+        saveXML.setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
         viewCode.setMnemonic('V');
-        viewCode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-                InputEvent.CTRL_MASK));
+        viewCode.setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
         exit.setMnemonic('X');
         actionMenu.add(saveXML);
         actionMenu.add(viewCode);
@@ -168,10 +168,9 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
             Container container = constraintsManager
                     .getContainer(containerLayout);
             if (container == null) {
-                throw new RuntimeException(
-                        "A container with name "
-                                + containerLayout.getName()
-                                + " was found in the contstraints file but was not found in the container");
+                throw new RuntimeException("A container with name "
+                        + containerLayout.getName()
+                        + " was found in the contstraints file but was not found in the container");
             }
             addContainerLayout(containerLayout, container);
         }
@@ -204,12 +203,12 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                 HashSet<String> importSet = new HashSet<String>();
 
                 StringBuffer declBuffer = new StringBuffer();
-                declBuffer
-                .append("// here are declarations for the controls you created\n");
+                declBuffer.append(
+                        "// here are declarations for the controls you created\n");
 
                 StringBuffer addBuffer2 = new StringBuffer();
-                addBuffer2
-                .append("// here we add the controls to the container.\n");
+                addBuffer2.append(
+                        "// here we add the controls to the container.\n");
 
                 StringBuffer confBuffer = new StringBuffer();
                 confBuffer.append("// control configuration\n");
@@ -246,16 +245,15 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                                 + (String) textValue + "\"";
                                     }
                                 }
-                                _decl = component.getClass().getName()
-                                        + " "
-                                        + containerLayout
-                                        .getComponentName(component)
+                                _decl = component.getClass().getName() + " "
+                                        + containerLayout.getComponentName(
+                                                component)
                                         + " = new "
                                         + component.getClass().getName() + "("
                                         + constructorArg + ");\n";
                                 _add = containerLayout.getName() + ".add ("
-                                        + componentName + ", \""
-                                        + componentName + "\");\n";
+                                        + componentName + ", \"" + componentName
+                                        + "\");\n";
                             } else {
                                 // "new style"
                                 _import = cDef.getImports(componentName);
@@ -298,11 +296,9 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                     .getName()
                                     + " "
                                     + containerLayout
-                                    .getComponentName(component)
-                                    + " = new "
-                                    + component.getClass().getName()
-                                    + "("
-                                    + constructorArg + ");\n";
+                                            .getComponentName(component)
+                                    + " = new " + component.getClass().getName()
+                                    + "(" + constructorArg + ");\n";
                             declarationBuffer.append(newDeclaration);
                             addBuffer.append(containerLayout.getName()
                                     + ".add (" + componentName + ", \""
@@ -360,8 +356,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                     // KBR fix logged bug. If the user does not specify an XML extension,
                     // add one, UNLESS they specify the trailing period.
                     String filename = file.getAbsolutePath();
-                    if (!filename.endsWith(".xml")
-                            && !filename.endsWith(".XML")
+                    if (!filename.endsWith(".xml") && !filename.endsWith(".XML")
                             && !filename.endsWith(".")) {
                         file = new File(file.getAbsolutePath() + ".XML");
                     }
@@ -373,12 +368,10 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                             prefs.put("lastpath", pathString);
                         }
 
-                        int result = JOptionPane
-                                .showConfirmDialog(
-                                        LayoutFrame.this,
-                                        "The file you selected exists, ok to overwrite?",
-                                        "File Exists",
-                                        JOptionPane.YES_NO_OPTION);
+                        int result = JOptionPane.showConfirmDialog(
+                                LayoutFrame.this,
+                                "The file you selected exists, ok to overwrite?",
+                                "File Exists", JOptionPane.YES_NO_OPTION);
                         if (result != JOptionPane.YES_OPTION) {
                             return;
                         }
@@ -391,8 +384,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                 .getXML();
                         outStream.write(xml.getBytes());
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(
-                                LayoutFrame.this,
+                        JOptionPane.showMessageDialog(LayoutFrame.this,
                                 "Error writing to file. "
                                         + exception.getMessage());
                         exception.printStackTrace();
@@ -496,8 +488,8 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         // check to see if another panel with this name already exists
         ContainerLayout layout = constraintsManager.getContainerLayout(name);
         if (layout != null) {
-            throw new IllegalArgumentException("A container with name " + name
-                    + " already exists");
+            throw new IllegalArgumentException(
+                    "A container with name " + name + " already exists");
         }
 
         layout = new ContainerLayout(name, "pref", "pref");
@@ -510,7 +502,8 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
 
     private void addContainerLayout(ContainerLayout containerLayout,
             Container container) {
-        FormEditor formEditor = new FormEditor(this, containerLayout, container);
+        FormEditor formEditor = new FormEditor(this, containerLayout,
+                container);
         editors.put(containerLayout, formEditor);
         tabs.addTab(containerLayout.getName(), formEditor);
     }
@@ -541,8 +534,8 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
             addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    UserPrefs.getPrefs()
-                    .saveWinLoc("codeview", CodeDialog.this);
+                    UserPrefs.getPrefs().saveWinLoc("codeview",
+                            CodeDialog.this);
                 }
             });
         }
@@ -607,7 +600,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         lcm.setLayout("panel", fdp);
         debugFrame.getContentPane().add(fdp, BorderLayout.CENTER);
         debugFrame
-        .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         return debugFrame;
     }
 
@@ -626,7 +619,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         //    layoutFrame.setSize(r.width, r.height);
         layoutFrame.setVisible(true);
         layoutFrame
-        .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         layoutFrame.setPreviewFrame(constraintsManager, frame);
         layoutFrame.enableDebugPreview(UserPrefs.getPrefs().showDebugPanel());
     }

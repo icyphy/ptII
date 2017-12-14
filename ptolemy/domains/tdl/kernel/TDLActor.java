@@ -141,9 +141,8 @@ public class TDLActor extends FSMActor {
                             while (p.hasNewToken(i)) {
                                 Token t = p.get(i);
                                 if (_debugging) {
-                                    _debug(getName(),
-                                            "transferring input from "
-                                                    + p.getName());
+                                    _debug(getName(), "transferring input from "
+                                            + p.getName());
                                 }
                                 p.sendInside(i, t);
                                 return true;

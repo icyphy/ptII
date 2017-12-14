@@ -93,8 +93,8 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AnalyzeExceptionAttribute newObject = (AnalyzeExceptionAttribute) super
-                .clone(workspace);
+        AnalyzeExceptionAttribute newObject = (AnalyzeExceptionAttribute) super.clone(
+                workspace);
         newObject._annotations = new ArrayList<OntologyAnnotationAttribute>();
         return newObject;
     }
@@ -137,8 +137,8 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
             while (iterator.hasNext()) {
                 object = iterator.next();
                 if (object instanceof LatticeOntologySolver
-                        && ((NamedObj) object).getName().equals(
-                                "ErrorOntologySolver")) {
+                        && ((NamedObj) object).getName()
+                                .equals("ErrorOntologySolver")) {
                     solver = (LatticeOntologySolver) object;
                 }
             }
@@ -174,7 +174,8 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
 
                 // TODO:  Handle other objects that can be assigned ontology
                 // concepts, such as Parameter?
-                if (!((nameable1 != null && nameable1 instanceof Actor) || (nameable2 != null && nameable2 instanceof Actor))) {
+                if (!((nameable1 != null && nameable1 instanceof Actor)
+                        || (nameable2 != null && nameable2 instanceof Actor))) {
                     _writeMessage("Cannot analyze: No source actor identified");
                     return false;
                 }
@@ -274,9 +275,8 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                         // can be overwritten.  This can occur if the model
                         // is saved after an exception is caught.
                         OntologyAnnotationAttribute attribute = (OntologyAnnotationAttribute) toplevel()
-                                .getAttribute(
-                                        "ErrorOntologySolver::" + actorName
-                                                + "_" + port.getName());
+                                .getAttribute("ErrorOntologySolver::"
+                                        + actorName + "_" + port.getName());
 
                         if (attribute != null) {
                             try {
@@ -291,18 +291,18 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                                 return false;
                             }
                         } else {
-                            _writeMessage("Cannot analyze: "
-                                    + "Cannot annotate port "
-                                    + port.getContainer().getFullName() + "."
-                                    + port.getName());
+                            _writeMessage(
+                                    "Cannot analyze: " + "Cannot annotate port "
+                                            + port.getContainer().getFullName()
+                                            + "." + port.getName());
 
                             return false;
                         }
                     } catch (IllegalActionException e3) {
-                        _writeMessage("Cannot analyze: "
-                                + "Cannot annotate port "
-                                + port.getContainer().getFullName() + "."
-                                + port.getName());
+                        _writeMessage(
+                                "Cannot analyze: " + "Cannot annotate port "
+                                        + port.getContainer().getFullName()
+                                        + "." + port.getName());
                         return false;
                     }
                 }

@@ -74,8 +74,8 @@ public class VectorDisassembler extends NamedProgramCodeGeneratorAdapter {
         StringBuffer fireCode = new StringBuffer();
         ArrayList<String> args = new ArrayList<String>();
         args.add(Integer.toString(actor.output.getWidth()));
-        fireCode.append(getTemplateParser()
-                .generateBlockCode("fireBlock", args));
+        fireCode.append(
+                getTemplateParser().generateBlockCode("fireBlock", args));
 
         //         Type type = actor.output.getType();
         //         if (isPrimitive(type)) {
@@ -102,11 +102,11 @@ public class VectorDisassembler extends NamedProgramCodeGeneratorAdapter {
         Type type = actor.output.getType();
         if (getCodeGenerator().isPrimitive(type)) {
             args2.add(getCodeGenerator().codeGenType(type));
-            fireCode.append(getTemplateParser().generateBlockCode("fireBlock2",
-                    args2));
+            fireCode.append(
+                    getTemplateParser().generateBlockCode("fireBlock2", args2));
         } else {
-            fireCode.append(getTemplateParser().generateBlockCode("fireBlock2",
-                    args2));
+            fireCode.append(
+                    getTemplateParser().generateBlockCode("fireBlock2", args2));
         }
 
         ArrayList<String> args3 = new ArrayList<String>();
@@ -114,8 +114,8 @@ public class VectorDisassembler extends NamedProgramCodeGeneratorAdapter {
 
         for (int i = 0; i < actor.output.numberOfSinks(); i++) {
             args3.set(0, Integer.toString(i));
-            fireCode.append(getTemplateParser().generateBlockCode("fireBlock3",
-                    args3));
+            fireCode.append(
+                    getTemplateParser().generateBlockCode("fireBlock3", args3));
         }
         return processCode(fireCode.toString());
     }

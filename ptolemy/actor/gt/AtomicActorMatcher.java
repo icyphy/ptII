@@ -70,8 +70,8 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
-ValueListener {
+public class AtomicActorMatcher extends TypedAtomicActor
+        implements GTEntity, ValueListener {
 
     /** Construct an atomic actor matcher to be either contained in the pattern
      *  of a {@link TransformationRule} or in the replacement.

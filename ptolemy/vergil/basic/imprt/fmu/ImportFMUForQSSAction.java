@@ -96,7 +96,8 @@ public class ImportFMUForQSSAction extends AbstractAction {
     public ImportFMUForQSSAction(Top frame) {
         super("Import FMU as a Ptolemy Actor for QSS integration");
         _frame = frame;
-        putValue("tooltip", "Import a Functional Mock-up Unit (FMU) file as a Ptolemy actor for QSS integration.");
+        putValue("tooltip",
+                "Import a Functional Mock-up Unit (FMU) file as a Ptolemy actor for QSS integration.");
         //putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_X));
     }
 
@@ -104,6 +105,7 @@ public class ImportFMUForQSSAction extends AbstractAction {
     ////                         public methods                    ////
 
     /** Import a FMU. */
+    @Override
     public void actionPerformed(ActionEvent e) {
         _importFMU();
     }
@@ -127,8 +129,8 @@ public class ImportFMUForQSSAction extends AbstractAction {
                 throw new InternalErrorException(null, null,
                         "Could not find ptolemy.vergil.basic.BasicGraphFrame!");
             } else if (!basicGraphFrameClass.isInstance(_frame)) {
-                throw new InternalErrorException("Frame " + _frame
-                        + " is not a BasicGraphFrame?");
+                throw new InternalErrorException(
+                        "Frame " + _frame + " is not a BasicGraphFrame?");
             } else {
                 BasicGraphFrame basicGraphFrame = (BasicGraphFrame) _frame;
 
@@ -137,12 +139,10 @@ public class ImportFMUForQSSAction extends AbstractAction {
 
                 // Use this file chooser so that we can read URLs or files.
                 query.addFileChooser("location", "Location (URL)",
-                        _lastLocation,
-                        /* URI base */null,
+                        _lastLocation, /* URI base */null,
                         /* File startingDirectory */basicGraphFrame
                                 .getLastDirectory(),
-                        /* allowFiles */true,
-                        /* allowDirectories */false,
+                        /* allowFiles */true, /* allowDirectories */false,
                         /* Color background */
                         PtolemyQuery.preferredBackgroundColor(_frame),
                         PtolemyQuery.preferredForegroundColor(_frame));
@@ -188,8 +188,7 @@ public class ImportFMUForQSSAction extends AbstractAction {
                         fmuFileParameter.setPersistent(true);
                         fmuFileParameter.setVisibility(Settable.EXPERT);
 
-                        FMUQSS.importFMU(this, fmuFileParameter, context, x,
-                                y);
+                        FMUQSS.importFMU(this, fmuFileParameter, context, x, y);
                     } finally {
                         if (fmuFileParameter != null) {
                             // Avoid leaving a parameter in the model.

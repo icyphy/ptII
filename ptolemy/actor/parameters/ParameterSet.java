@@ -99,7 +99,8 @@ import ptolemy.kernel.util.Settable;
  @since Ptolemy II 5.2
  @see ptolemy.data.expr.Variable
  */
-public class ParameterSet extends ScopeExtendingAttribute implements Executable {
+public class ParameterSet extends ScopeExtendingAttribute
+        implements Executable {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -125,8 +126,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
 
         StringParameter initialDefaultContents = new StringParameter(this,
                 "initialDefaultContents");
-        initialDefaultContents
-        .setExpression("# This file defines parameters in the current container.\n# Each non-comment line in the file is interpreted as a separate assignment.\n# The lines are of the form:\n# attributeName = value\n# where variableName is the name of the attribute\n# in a format suitable for ptolemy.kernel.util.NamedObj.setName()\n# (i.e., does not contain periods) and value is\n# the expression in the Ptolemy expression language.\n# Comments are lines that begin with the # character.\n# FIXME: After saving, you need to update the fileOrURLParameter by hand.\n# Sample line (remove the leading #):\n# foo = \"bar\"\n");
+        initialDefaultContents.setExpression(
+                "# This file defines parameters in the current container.\n# Each non-comment line in the file is interpreted as a separate assignment.\n# The lines are of the form:\n# attributeName = value\n# where variableName is the name of the attribute\n# in a format suitable for ptolemy.kernel.util.NamedObj.setName()\n# (i.e., does not contain periods) and value is\n# the expression in the Ptolemy expression language.\n# Comments are lines that begin with the # character.\n# FIXME: After saving, you need to update the fileOrURLParameter by hand.\n# Sample line (remove the leading #):\n# foo = \"bar\"\n");
         initialDefaultContents.setPersistent(false);
         initialDefaultContents.setVisibility(Settable.EXPERT);
     }
@@ -190,7 +191,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
                     validate();
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(this, throwable,
-                            "Failed to read file: " + fileOrURL.getExpression());
+                            "Failed to read file: "
+                                    + fileOrURL.getExpression());
                 }
             }
         } else {
@@ -315,7 +317,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  a previous attribute or creating a new variable.
      */
     public void read() throws IllegalActionException, NameDuplicationException,
-    IOException {
+            IOException {
 
         _fileName = fileOrURL.getExpression();
 
@@ -419,8 +421,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *   an entity with the name of this entity.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         if (container != getContainer()) {
             // May need to unregister as a piggyback with the previous container.
             NamedObj previousContainer = getContainer();

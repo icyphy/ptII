@@ -221,20 +221,15 @@ public class PlotApplication extends PlotFrame {
     ////                         protected methods                 ////
     @Override
     protected void _about() {
-        JOptionPane
-        .showMessageDialog(
-                this,
-                "PlotApplication class\n"
-                        + "By: Edward A. Lee "
-                        + "and Christopher Brooks\n"
-                        + "Version "
-                        + PlotBox.PTPLOT_RELEASE
-                        + ", Build: $Id$\n\n"
-                        + "For more information, see\n"
-                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                        + "Copyright (c) 1997-2014, "
-                        + "The Regents of the University of California.",
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "PlotApplication class\n"
+                + "By: Edward A. Lee " + "and Christopher Brooks\n" + "Version "
+                + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                + "Copyright (c) 1997-2014, "
+                + "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Exit the application.
@@ -252,7 +247,7 @@ public class PlotApplication extends PlotFrame {
                 "PlotApplication is a standalone plot " + " application.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.\n\n" + _usage(),
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse the command-line
@@ -265,8 +260,8 @@ public class PlotApplication extends PlotFrame {
      *  @exception FileNotFoundException If an input file cannot be found.
      *  @exception IOException If there is a problem reading an input.
      */
-    protected int _parseArgs(String[] args) throws CmdLineArgException,
-    FileNotFoundException, IOException {
+    protected int _parseArgs(String[] args)
+            throws CmdLineArgException, FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -296,9 +291,7 @@ public class PlotApplication extends PlotFrame {
                 _test = true;
                 continue;
             } else if (arg.equals("-version")) {
-                System.out
-                .println("Version "
-                        + PlotBox.PTPLOT_RELEASE
+                System.out.println("Version " + PlotBox.PTPLOT_RELEASE
                         + ", Build $Id$");
                 StringUtilities.exit(0);
                 continue;

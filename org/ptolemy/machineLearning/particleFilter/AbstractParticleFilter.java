@@ -93,7 +93,8 @@ import ptolemy.math.SignalProcessing;
  @Pt.AcceptedRating Red (ilgea)
 
  */
-public abstract class AbstractParticleFilter extends TypedCompositeActor implements MapConstrained {
+public abstract class AbstractParticleFilter extends TypedCompositeActor
+        implements MapConstrained {
     /** Construct the composite actor with a name and a container.
      *  This constructor creates the ports, parameters, and the icon.
      * @param container The container.
@@ -118,8 +119,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public AbstractParticleFilter(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public AbstractParticleFilter(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -145,7 +146,6 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
      * Number of output particles.
      */
     public Parameter outputParticleCount;
-
 
     /** The output port that outputs the produced particles at each firing.
      */
@@ -308,19 +308,21 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             _particleTypes = new Type[_stateSpaceSize + 1];
             _stateLabels = new String[_stateSpaceSize];
             _stateTypes = new Type[_stateSpaceSize];
-            Token[] nameTokens = ((ArrayToken)_stateNames).arrayValue();
+            Token[] nameTokens = _stateNames.arrayValue();
             for (int i = 0; i < _stateSpaceSize; i++) {
-                String variableName = ((StringToken)nameTokens[i]).stringValue();
+                String variableName = ((StringToken) nameTokens[i])
+                        .stringValue();
 
                 try {
                     // add a hidden parameter for each state variable name
-                    Parameter varPar = (Parameter) this.getAttribute(variableName);
-                    if ( varPar == null) {
+                    Parameter varPar = (Parameter) this
+                            .getAttribute(variableName);
+                    if (varPar == null) {
                         varPar = new Parameter(this, variableName);
                         varPar.setTypeEquals(BaseType.DOUBLE);
                         varPar.setExpression("0.0");
                     }
-                    ((Parameter)varPar).setVisibility(Settable.NONE);
+                    varPar.setVisibility(Settable.NONE);
                 } catch (NameDuplicationException e) {
                     throw new InternalErrorException(e);
                 }
@@ -334,10 +336,10 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             _particleLabels[nameTokens.length] = "weight";
             _particleTypes[nameTokens.length] = BaseType.DOUBLE;
 
-            particleOutput.setTypeEquals(new RecordType(
-                    _particleLabels, _particleTypes));
-            stateEstimate.setTypeEquals(new RecordType(_stateLabels,
-                    _stateTypes));
+            particleOutput.setTypeEquals(
+                    new RecordType(_particleLabels, _particleTypes));
+            stateEstimate
+                    .setTypeEquals(new RecordType(_stateLabels, _stateTypes));
         }
 
         try {
@@ -397,18 +399,15 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             // Connect state feedback expressions.
             for (int i = 0; i < _stateVariables.length; i++) {
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec =
-                            (Parameter) getUserDefinedParameter(_stateVariables[i]
-                                    + UPDATE_POSTFIX);
+                    Parameter stateUpdateSpec = getUserDefinedParameter(
+                            _stateVariables[i] + UPDATE_POSTFIX);
                     Set<String> freeIdentifiers = stateUpdateSpec
                             .getFreeIdentifiers();
                     // Create an output port only if the expression references the input.
                     if (freeIdentifiers.contains(inputs[k])) {
                         TypedIOPort port = new TypedIOPort(
                                 _updateEquations.get(_stateVariables[i]),
-                                inputs[k],
-                                true,
-                                false);
+                                inputs[k], true, false);
 
                         port.link(_inputRelations[k]);
                     }
@@ -427,7 +426,6 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         super.preinitialize();
     }
 
-
     /**
      * Get input type by name reference
      * @param inputName The name of the input
@@ -440,7 +438,6 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         _firstIteration = true;
         super.wrapup();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -462,10 +459,11 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter "
-                    + parameterName + " value is null.");
+            throw new IllegalActionException(
+                    "Parameter " + parameterName + " value is null.");
         }
     }
+
     /**
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter
@@ -481,16 +479,16 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
      * @return A string expression
      * @exception IllegalActionException
      */
-    protected String getMeasurementParameterExpression(String fullName)  throws IllegalActionException {
+    protected String getMeasurementParameterExpression(String fullName)
+            throws IllegalActionException {
         Parameter param = getMeasurementParameter(fullName);
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter "
-                    + fullName + " value is null.");
+            throw new IllegalActionException(
+                    "Parameter " + fullName + " value is null.");
         }
     }
-
 
     /**
      * Returns a parameter value corresponding to a measurement.
@@ -509,7 +507,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
      * specific noise distribution
      * @exception IllegalActionException
      */
-    protected abstract Parameter getNoiseParameter(String inputName) throws IllegalActionException;
+    protected abstract Parameter getNoiseParameter(String inputName)
+            throws IllegalActionException;
 
     /** Flag indicating whether the contained model is up to date. */
     protected boolean _upToDate;
@@ -537,7 +536,6 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     /**
      * Constrain particles within a map region if applicable.
@@ -615,8 +613,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
     }
 
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         bootstrap = new Parameter(this, "bootstrap");
         bootstrap.setTypeEquals(BaseType.BOOLEAN);
@@ -652,12 +650,10 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         stateEstimate = new TypedIOPort(this, "stateEstimate", false, true);
         stateEstimate.setTypeEquals(RecordType.EMPTY_RECORD);
 
-
         t = new Parameter(this, "t");
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
         t.setExpression("0.0");
-
 
         _measurementParameters = new HashMap<String, Parameter>();
         _measurementValues = new HashMap<String, Token>();
@@ -682,20 +678,19 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         d.setPersistent(false);
         this.setDirector(d);
 
-
         //((Parameter)this.getAttribute("_isOpaque")).setExpression("true");
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-30\" " + "width=\"150\" height=\"60\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
-                + "style=\"font-size:14\">\n" + "x_{t+1}=f(x, u, t, w)"
-                + "</text>\n" + "<text x=\"-45\" y=\"10\" "
-                + "style=\"font-size:14\">\n" + "     y=g(x, u, t, v)"
-                + "</text>\n" + "style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-50\" y=\"-30\" "
+                + "width=\"150\" height=\"60\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-45\" y=\"-10\" " + "style=\"font-size:14\">\n"
+                + "x_{t+1}=f(x, u, t, w)" + "</text>\n"
+                + "<text x=\"-45\" y=\"10\" " + "style=\"font-size:14\">\n"
+                + "     y=g(x, u, t, v)" + "</text>\n"
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
-    private void _initializeParticles() throws IllegalActionException,
-    NameDuplicationException {
+    private void _initializeParticles()
+            throws IllegalActionException, NameDuplicationException {
         // let prior distribution be N(0,1) for now.
         for (int i = 0; i < particles.length; i++) {
             particles[i] = new Particle(_stateSpaceSize);
@@ -704,8 +699,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         }
     }
 
-    private void _normalizeWeights() throws IllegalActionException,
-    NameDuplicationException {
+    private void _normalizeWeights()
+            throws IllegalActionException, NameDuplicationException {
         // let prior distribution be N(0,1) for now.
         double sum = 0;
         for (int i = 0; i < particles.length; i++) {
@@ -718,8 +713,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
 
     /** Propagate particles according to the state update equations
      */
-    private void _propagate() throws IllegalActionException,
-    NameDuplicationException {
+    private void _propagate()
+            throws IllegalActionException, NameDuplicationException {
         for (int i = 0; i < Nparticles; i++) {
             particles[i].setNextParticle();
         }
@@ -744,18 +739,20 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         Particle[] previousParticles = new Particle[Nparticles];
         cumulativeSums[0] = 0;
         for (int i = 0; i < Nparticles; i++) {
-            cumulativeSums[i + 1] = cumulativeSums[i] + particles[i].getWeight();
+            cumulativeSums[i + 1] = cumulativeSums[i]
+                    + particles[i].getWeight();
             previousParticles[i] = particles[i];
         }
 
-        if (cumulativeSums[Nparticles ] < 1.0) {
-            double wt = 1.0/Nparticles;
-            for (Particle p: particles ) {
+        if (cumulativeSums[Nparticles] < 1.0) {
+            double wt = 1.0 / Nparticles;
+            for (Particle p : particles) {
                 p.setWeight(wt);
             }
             cumulativeSums = new double[Nparticles + 1];
             for (int i = 0; i < Nparticles; i++) {
-                cumulativeSums[i + 1] = cumulativeSums[i] + particles[i].getWeight();
+                cumulativeSums[i + 1] = cumulativeSums[i]
+                        + particles[i].getWeight();
                 previousParticles[i] = particles[i];
             }
         }
@@ -766,15 +763,15 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             double baseValue = _random.nextDouble() * (1.0 / Nparticles);
             for (int i = 0; i < Nparticles; i++) {
                 randomValue = baseValue + i * 1.0 / Nparticles;
-                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
-                        Nparticles);
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums,
+                        randomValue, 0, Nparticles);
                 //FIXME: check intervalIndex and remove the failure condition
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
                     System.out.println("Index does not exist!");
                 } else {
                     particles[i] = new Particle(particles[i].getSize());
-                    particles[i].setValue(previousParticles[intervalIndex]
-                            .getValue());
+                    particles[i].setValue(
+                            previousParticles[intervalIndex].getValue());
                     // the weights are equal at a result of resampling
                     particles[i].setWeight(1.0 / Nparticles);
                 }
@@ -787,14 +784,14 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
 
             for (int i = 0; i < Nparticles; i++) {
                 randomValue = _random.nextDouble() * cumulativeSums[Nparticles];
-                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
-                        Nparticles);
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums,
+                        randomValue, 0, Nparticles);
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
                     System.out.println("Index does not exist!");
                 } else {
                     particles[i] = new Particle(particles[i].getSize());
-                    particles[i].setValue(previousParticles[intervalIndex]
-                            .getValue());
+                    particles[i].setValue(
+                            previousParticles[intervalIndex].getValue());
                     // the weights are equal at a result of resampling
                     particles[i].setWeight(1.0 / Nparticles);
                 }
@@ -834,13 +831,13 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         // here, since we expect different names for the Decorated actors
         // and the others.
         measurementEquation.expression
-        .setExpression(getMeasurementParameterExpression(inputName));
-        _measurementEquations.put(inputName,measurementEquation);
+                .setExpression(getMeasurementParameterExpression(inputName));
+        _measurementEquations.put(inputName, measurementEquation);
 
         Expression measurementNoise = new Expression(this,
                 inputName + "_noise");
         measurementNoise.expression
-        .setExpression(getNoiseParameter(inputName).getExpression());
+                .setExpression(getNoiseParameter(inputName).getExpression());
         _noiseEquations.put(inputName, measurementNoise);
         _measurementTypes.put(inputName, measurementEquation.output.getType());
     }
@@ -851,30 +848,28 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             _stateVariables[i] = ((StringToken) _stateNames.getElement(i))
                     .stringValue().trim();
             // find the state update equation for the current state variable
-            Expression e = new Expression(this, _stateVariables[i]
-                    + UPDATE_POSTFIX);
+            Expression e = new Expression(this,
+                    _stateVariables[i] + UPDATE_POSTFIX);
             //e.setPersistent(false);
             String updateEqnName = _stateVariables[i] + UPDATE_POSTFIX;
-            e.expression
-            .setExpression(getUserDefinedParameterExpression(updateEqnName));
+            e.expression.setExpression(
+                    getUserDefinedParameterExpression(updateEqnName));
             if (_stateVariables[i] == null) {
-                System.err.println("One state variable is null at index "
-                        + i);
+                System.err.println("One state variable is null at index " + i);
             } else {
                 _updateEquations.put(_stateVariables[i], e);
-                _updateTrees.put(_stateVariables[i], new PtParser()
-                .generateParseTree(_updateEquations
-                        .get(_stateVariables[i]).expression
-                        .getExpression()));
+                _updateTrees.put(_stateVariables[i],
+                        new PtParser().generateParseTree(_updateEquations
+                                .get(_stateVariables[i]).expression
+                                        .getExpression()));
             }
         }
         // put an update tree for the process noise
-        _updateTrees.put(PROCESS_NOISE, new PtParser()
-        .generateParseTree(getUserDefinedParameterExpression(PROCESS_NOISE)));
+        _updateTrees.put(PROCESS_NOISE, new PtParser().generateParseTree(
+                getUserDefinedParameterExpression(PROCESS_NOISE)));
         // update tree for the prior distribution
-        _updateTrees.put(PRIOR_NAME,
-                new PtParser()
-        .generateParseTree(getUserDefinedParameterExpression(PRIOR_NAME)));
+        _updateTrees.put(PRIOR_NAME, new PtParser().generateParseTree(
+                getUserDefinedParameterExpression(PRIOR_NAME)));
     }
 
     /**
@@ -902,8 +897,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             double baseValue = _random.nextDouble() * (1.0 / Noutput);
             for (int i = 0; i < Noutput; i++) {
                 randomValue = baseValue + i * 1.0 / Noutput;
-                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
-                        Nparticles - 1);
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums,
+                        randomValue, 0, Nparticles - 1);
                 //FIXME: check intervalIndex and remove the failure condition
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
                     System.out.println("Index does not exist!");
@@ -918,8 +913,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             // resampling to set equal weights
             for (int i = 0; i < Noutput; i++) {
                 randomValue = _random.nextDouble() * cumulativeSums[Nparticles];
-                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums, randomValue, 0,
-                        Nparticles - 1);
+                intervalIndex = Algorithms._binaryIntervalSearch(cumulativeSums,
+                        randomValue, 0, Nparticles - 1);
                 if (intervalIndex < 0 || intervalIndex > Nparticles - 1) {
                     System.out.println("Index does not exist!");
                 } else {
@@ -942,10 +937,10 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
     /** Boolean choice to use a low-variance sampler for sampling particles */
     private boolean _lowVarianceSampler;
     /** List that holds the measurement equation expression objects */
-    private HashMap<String,Expression> _measurementEquations;
+    private HashMap<String, Expression> _measurementEquations;
 
     /** List that holds the measurement equation expression objects */
-    private HashMap<String,Expression> _noiseEquations;
+    private HashMap<String, Expression> _noiseEquations;
 
     /** Internal particle representation that has memory of 1 in time */
     private Particle[] particles;
@@ -987,8 +982,6 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
     // The values of the measurement inputs at the given iteration.
     private HashMap<String, Token> _measurementValues;
     private HashMap<String, Type> _measurementTypes;
-
-
 
     /** State Variable names identifier. */
     protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
@@ -1052,8 +1045,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
          * @exception IllegalActionException
          * @exception NameDuplicationException
          */
-        public void assignWeight() throws IllegalActionException,
-        NameDuplicationException {
+        public void assignWeight()
+                throws IllegalActionException, NameDuplicationException {
 
             Parameter p;
             if (this.getSize() != _stateVariables.length) {
@@ -1061,43 +1054,42 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
                         "Particle dimensions must be equal to the state space dimension");
             } else {
                 for (int i = 0; i < _stateVariables.length; i++) {
-                    if ((AbstractParticleFilter.this)
-                            .getUserDefinedParameter(_stateVariables[i]) == null) {
+                    if ((AbstractParticleFilter.this).getUserDefinedParameter(
+                            _stateVariables[i]) == null) {
                         p = new Parameter(AbstractParticleFilter.this,
                                 _stateVariables[i]);
                         p.setVisibility(Settable.EXPERT);
                     } else {
-                        p = (Parameter) (AbstractParticleFilter.this)
+                        p = (AbstractParticleFilter.this)
                                 .getUserDefinedParameter(_stateVariables[i]);
                     }
                     p.setExpression(((Double) _particleValue[i]).toString());
-                    _tokenMap.put(_stateVariables[i], new DoubleToken(
-                            _particleValue[i]));
+                    _tokenMap.put(_stateVariables[i],
+                            new DoubleToken(_particleValue[i]));
                 }
 
                 // initialize weight
                 _weight = 1.0;
                 // evaluate all equations given the particle value
-                for (String inputName: _measurementEquations.keySet()) {
-                    Expression measurementEquation = _measurementEquations.get(inputName);
-                    _parseTree = _parser
-                            .generateParseTree(measurementEquation.expression
-                                    .getExpression());
-                    Token e = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope);
+                for (String inputName : _measurementEquations.keySet()) {
+                    Expression measurementEquation = _measurementEquations
+                            .get(inputName);
+                    _parseTree = _parser.generateParseTree(
+                            measurementEquation.expression.getExpression());
+                    Token e = _parseTreeEvaluator.evaluateParseTree(_parseTree,
+                            _scope);
 
                     Expression noiseEq = _noiseEquations.get(inputName);
-                    _parseTree = _parser
-                            .generateParseTree(noiseEq.expression
-                                    .getExpression());
-                    Token n = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope);
+                    _parseTree = _parser.generateParseTree(
+                            noiseEq.expression.getExpression());
+                    Token n = _parseTreeEvaluator.evaluateParseTree(_parseTree,
+                            _scope);
 
                     if (e == null) {
                         throw new IllegalActionException(
                                 "Expression yields a null result: "
                                         + measurementEquation.expression
-                                        .getExpression());
+                                                .getExpression());
                     }
                     // TODO: Do not do this for every particle!
                     Type t = _measurementTypes.get(inputName);
@@ -1108,31 +1100,33 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
                     if (_measurementValues.containsKey(inputName)) {
                         if (t.equals(BaseType.DOUBLE)) {
                             // one-dimensional measurements
-                            double zt = ((DoubleToken)_measurementValues
-                                    .get(inputName))
-                                    .doubleValue();
+                            double zt = ((DoubleToken) _measurementValues
+                                    .get(inputName)).doubleValue();
                             double _mean = ((DoubleToken) e).doubleValue();
                             double _sigma = ((DoubleToken) n).doubleValue();
 
-                            _weight *= 1.0 / (Math.sqrt(2 * Math.PI) * _sigma*_sigma)
-                                    * Math.exp(-Math
-                                            .pow(zt - _mean, 2)
+                            _weight *= 1.0
+                                    / (Math.sqrt(2 * Math.PI) * _sigma * _sigma)
+                                    * Math.exp(-Math.pow(zt - _mean, 2)
                                             / (2 * Math.pow(_sigma, 2)));
 
                         } else {
                             MatrixToken zt = (MatrixToken) _measurementValues
                                     .get(inputName);
                             int k = zt.getRowCount();
-                            MatrixToken X = (DoubleMatrixToken) zt
-                                    .subtract(e);
+                            MatrixToken X = (DoubleMatrixToken) zt.subtract(e);
                             MatrixToken covariance = (DoubleMatrixToken) n;
-                            MatrixToken invCov = new DoubleMatrixToken(DoubleMatrixMath.inverse(covariance.doubleMatrix()));
+                            MatrixToken invCov = new DoubleMatrixToken(
+                                    DoubleMatrixMath.inverse(
+                                            covariance.doubleMatrix()));
                             MatrixToken Xt = new DoubleMatrixToken(
-                                    DoubleMatrixMath.transpose(X.doubleMatrix()));
+                                    DoubleMatrixMath
+                                            .transpose(X.doubleMatrix()));
                             double multiplier = Math.pow(2 * Math.PI, -0.5 * k)
-                                    * Math.pow(DoubleMatrixMath
-                                            .determinant(covariance
-                                                    .doubleMatrix()), -0.5);
+                                    * Math.pow(
+                                            DoubleMatrixMath.determinant(
+                                                    covariance.doubleMatrix()),
+                                            -0.5);
                             Token exponent = Xt.multiply(invCov);
                             exponent = exponent.multiply(X);
                             double value = ((DoubleMatrixToken) exponent)
@@ -1186,8 +1180,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
          */
         public void sampleFromPrior() throws IllegalActionException {
             _parseTree = _updateTrees.get(PRIOR_NAME);
-            Token priorSample = _parseTreeEvaluator.evaluateParseTree(
-                    _parseTree, _scope);
+            Token priorSample = _parseTreeEvaluator
+                    .evaluateParseTree(_parseTree, _scope);
 
             if (priorSample == null) {
                 throw new IllegalActionException(
@@ -1224,8 +1218,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
          * @exception NameDuplicationException
          * @exception IllegalActionException
          */
-        public void setNextParticle() throws NameDuplicationException,
-        IllegalActionException {
+        public void setNextParticle()
+                throws NameDuplicationException, IllegalActionException {
 
             Token _result;
             //FIXME: the noise sample does not have to be an arrayToken
@@ -1248,14 +1242,14 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
                             _stateVariables[i]);
                     p.setExpression(((Double) _particleValue[i]).toString());
                 }
-                _tokenMap.put(_stateVariables[i], new DoubleToken(
-                        _particleValue[i]));
+                _tokenMap.put(_stateVariables[i],
+                        new DoubleToken(_particleValue[i]));
                 // set the control input values in scope
             }
 
             _parseTree = _updateTrees.get(PROCESS_NOISE);
-            processNoiseSample = _parseTreeEvaluator.evaluateParseTree(
-                    _parseTree, _scope);
+            processNoiseSample = _parseTreeEvaluator
+                    .evaluateParseTree(_parseTree, _scope);
             if (processNoiseSample == null) {
                 throw new IllegalActionException(
                         "Expression processNoise yields a null result.");
@@ -1269,8 +1263,9 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
                 if (_result == null) {
                     throw new IllegalActionException(
                             "Expression yields a null result: "
-                                    + _updateEquations.get(_stateVariables[i]).expression
-                                    .getExpression());
+                                    + _updateEquations
+                                            .get(_stateVariables[i]).expression
+                                                    .getExpression());
                 }
                 double _meanEstimate = ((DoubleToken) _result
                         .add(new DoubleToken(0.0))).doubleValue();
@@ -1342,17 +1337,18 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
         @Override
         public Token get(String name) throws IllegalActionException {
             if (name.equals("time") || name.equals("t")) {
-                return new DoubleToken(getDirector().getModelTime()
-                        .getDoubleValue());
+                return new DoubleToken(
+                        getDirector().getModelTime().getDoubleValue());
             }
 
-            Token token = (Token)_tokenMap.get(name);
+            Token token = (Token) _tokenMap.get(name);
 
             if (token != null) {
                 return token;
             }
 
-            Variable result = getScopedVariable(null, AbstractParticleFilter.this, name);
+            Variable result = getScopedVariable(null,
+                    AbstractParticleFilter.this, name);
 
             if (result != null) {
                 return result.getToken();
@@ -1381,7 +1377,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
                 return port.getType();
             }
 
-            Variable result = getScopedVariable(null, AbstractParticleFilter.this, name);
+            Variable result = getScopedVariable(null,
+                    AbstractParticleFilter.this, name);
 
             if (result != null) {
                 return (Type) result.getTypeTerm().getValue();
@@ -1413,7 +1410,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
                 return port.getTypeTerm();
             }
 
-            Variable result = getScopedVariable(null, AbstractParticleFilter.this, name);
+            Variable result = getScopedVariable(null,
+                    AbstractParticleFilter.this, name);
 
             if (result != null) {
                 return result.getTypeTerm();

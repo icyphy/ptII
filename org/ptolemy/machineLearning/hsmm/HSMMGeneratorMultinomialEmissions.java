@@ -71,27 +71,27 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public HSMMGeneratorMultinomialEmissions(CompositeEntity container, String name)
+    public HSMMGeneratorMultinomialEmissions(CompositeEntity container,
+            String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        powerLowerBound = new PortParameter(this,"powerLowerBound");
+        powerLowerBound = new PortParameter(this, "powerLowerBound");
         new SingletonParameter(powerLowerBound.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
-        nCategories = new Parameter(this,"nCategories");
+        nCategories = new Parameter(this, "nCategories");
         nCategories.setExpression("{3,3}");
 
         multinomialEstimates = new PortParameter(this, "multinomialEstimates");
         multinomialEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
         multinomialEstimates.setExpression("[0.5,0.5,0.0;0.0,0.0,1.0]");
         new SingletonParameter(multinomialEstimates.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
 
     /**
      * Number of categories in the multinomial distribution.
@@ -111,8 +111,9 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == multinomialEstimates) {
-           _B = ((DoubleMatrixToken)multinomialEstimates.getToken()).doubleMatrix();
-           _nStates = _B.length;
+            _B = ((DoubleMatrixToken) multinomialEstimates.getToken())
+                    .doubleMatrix();
+            _nStates = _B.length;
 
         } else if (attribute == nCategories) {
             Token[] cat = ((ArrayToken) nCategories.getToken()).arrayValue();
@@ -121,8 +122,8 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
                         "Number of categories must be positive");
             } else {
                 _nCategories = new int[cat.length];
-                for (int i = 0 ; i <cat.length ; i++) {
-                    _nCategories[i] = ((IntToken)cat[i]).intValue();
+                for (int i = 0; i < cat.length; i++) {
+                    _nCategories[i] = ((IntToken) cat[i]).intValue();
                 }
 
                 // dynamically set output type according to how many categories
@@ -130,7 +131,8 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
                 if (cat.length == 1) {
                     observation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
                 } else {
-                    observation.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
+                    observation.setTypeEquals(
+                            new ArrayType(new ArrayType(BaseType.DOUBLE)));
                 }
             }
         } else {
@@ -140,8 +142,8 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMGeneratorMultinomialEmissions newObject = (HSMMGeneratorMultinomialEmissions) super
-                .clone(workspace);
+        HSMMGeneratorMultinomialEmissions newObject = (HSMMGeneratorMultinomialEmissions) super.clone(
+                workspace);
         newObject._B = null;
         newObject._nCategories = null;
 
@@ -159,10 +161,11 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
         powerUpperBound.update();
         powerLowerBound.update();
         multinomialEstimates.update();
-        _maxDuration = ((DoubleMatrixToken)durationProbabilities.getToken()).getColumnCount();
+        _maxDuration = ((DoubleMatrixToken) durationProbabilities.getToken())
+                .getColumnCount();
 
         if (trigger.hasToken(0)) {
-            _windowSize = ((IntToken)trigger.get(0)).intValue();
+            _windowSize = ((IntToken) trigger.get(0)).intValue();
 
             Token[] outputObservations = new ArrayToken[_windowSize];
 
@@ -174,10 +177,10 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
             boolean validSequenceFound = false;
             int trials = 0;
             double[][] ys = new double[_windowSize][_obsDimension];
-            int [] xs = new int [_windowSize];
+            int[] xs = new int[_windowSize];
             while (!validSequenceFound && trials < MAX_TRIALS) {
                 double totalPower = 0.0;
-                for (int i = 0; i < _windowSize; i ++ ) {
+                for (int i = 0; i < _windowSize; i++) {
                     if (_firstIteration) {
                         // sample hidden state from prior
                         _xt = _sampleHiddenStateFromPrior();
@@ -195,7 +198,7 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
                     }
                     double[] yt = _sampleObservation();
                     Token[] yArray = new Token[yt.length];
-                    for (int x= 0; x < yArray.length; x++) {
+                    for (int x = 0; x < yArray.length; x++) {
                         yArray[x] = new DoubleToken(yt[x]);
                         totalPower += yt[x];
                     }
@@ -205,19 +208,23 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
                     xs[i] = _xt;
                     ys[i] = yt;
                 }
-                if (totalPower <= ((DoubleToken)powerUpperBound.getToken()).doubleValue() &&
-                        totalPower >= ((DoubleToken)powerLowerBound.getToken()).doubleValue()) {
+                if (totalPower <= ((DoubleToken) powerUpperBound.getToken())
+                        .doubleValue()
+                        && totalPower >= ((DoubleToken) powerLowerBound
+                                .getToken()).doubleValue()) {
                     validSequenceFound = true;
                     break;
                 } else {
-                    System.out.println("Window Size = " +  _windowSize + " Total Power = " + totalPower);
+                    System.out.println("Window Size = " + _windowSize
+                            + " Total Power = " + totalPower);
                     trials++;
                 }
             }
-            System.out.println(trials + " sequences rejected until sequence found");
+            System.out.println(
+                    trials + " sequences rejected until sequence found");
             if (validSequenceFound) {
                 Token[] states = new IntToken[_windowSize];
-                for (int i = 0; i < _windowSize; i ++) {
+                for (int i = 0; i < _windowSize; i++) {
                     states[i] = new IntToken(xs[i]);
                 }
                 observation.send(0, new ArrayToken(outputObservations));
@@ -231,19 +238,20 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
         super.wrapup();
         _firstIteration = true;
     }
+
+    @Override
     protected double[] _sampleObservation() {
         int obsDimension = _nCategories.length;
         double[] result = new double[obsDimension];
-         for (int i = 0; i < obsDimension; i++) {
-             result[i] = _sampleSingleDimension(i);
-         }
-         return result;
+        for (int i = 0; i < obsDimension; i++) {
+            result[i] = _sampleSingleDimension(i);
+        }
+        return result;
     }
-
 
     private double _sampleSingleDimension(int dim) {
         //FIXME
-        double[] cumSums = new double[_nCategories[dim]+1];
+        double[] cumSums = new double[_nCategories[dim] + 1];
         int startIndex = 0;
         for (int i = 0; i < dim; i++) {
             startIndex += _nCategories[i];
@@ -251,12 +259,12 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
         for (int i = 0; i < _nCategories[dim]; i++) {
             cumSums[i + 1] = cumSums[i] + _B[_xt][startIndex + i];
         }
-     // generate a random value ( in theory, within 0 and 1,
+        // generate a random value ( in theory, within 0 and 1,
         // since this is a probability, however, should be
         // normalized to avoid any numerical errors
-        double randomValue = Math.random() * cumSums[cumSums.length-1];
+        double randomValue = Math.random() * cumSums[cumSums.length - 1];
         int bin = Algorithms._binaryIntervalSearch(cumSums, randomValue, 0,
-                cumSums.length-1);
+                cumSums.length - 1);
         return bin;
     }
 
@@ -294,10 +302,10 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
      * Sample state at this iteration from the state prior.
      * @return The hidden state at this iteration
      */
+    @Override
     protected int _sampleHiddenStateFromPrior() {
-        System.out.println("Sampling from prior. "
-                + "NumCategories:" + _nCategories.length +
-                "\nNumStates:" + _nStates);
+        System.out.println("Sampling from prior. " + "NumCategories:"
+                + _nCategories.length + "\nNumStates:" + _nStates);
 
         // calculate cumulative sums and sample from the CDF
         double[] cumSums = new double[_nStates + 1];

@@ -136,8 +136,9 @@ public class ShatterFilter extends AbstractBufferedImageOp {
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         float width = src.getWidth();
         float height = src.getHeight();
         float cx = src.getWidth() * centreX;

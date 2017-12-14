@@ -161,7 +161,8 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SRDirector() throws IllegalActionException, NameDuplicationException {
+    public SRDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -175,8 +176,8 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SRDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public SRDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -235,7 +236,8 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
             newObject._periodicDirectorHelper = new PeriodicDirectorHelper(
                     newObject);
         } catch (IllegalActionException e) {
-            throw new CloneNotSupportedException("Failed to clone helper: " + e);
+            throw new CloneNotSupportedException(
+                    "Failed to clone helper: " + e);
         }
         return newObject;
     }
@@ -424,8 +426,8 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  default scheduler of the class SDFScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         period = new Parameter(this, "period");
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");

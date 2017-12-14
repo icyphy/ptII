@@ -102,7 +102,7 @@ public class ClassUtilities {
     }
 
     /** Lookup a jar URL and return the resource.
-
+    
      *  A resource is a file such as a class file or image file that
      *  is found in the classpath.  A jar URL is a URL that refers to
      *  a resource in a jar file.  For example,
@@ -164,14 +164,14 @@ public class ClassUtilities {
             URL entryURL = refClass.getClassLoader().getResource(entry);
             if (entryURL == null && entry.indexOf("#") != -1) {
                 // If entry contains a #, then strip it off and try again.
-                entryURL = refClass.getClassLoader().getResource(
-                        entry.substring(0, entry.indexOf("#")));
+                entryURL = refClass.getClassLoader()
+                        .getResource(entry.substring(0, entry.indexOf("#")));
             }
             return entryURL;
         } catch (Exception ex) {
             // IOException constructor does not take a cause, so we add it.
-            IOException ioException = new IOException("Cannot find \""
-                    + jarURLString + "\".");
+            IOException ioException = new IOException(
+                    "Cannot find \"" + jarURLString + "\".");
             ioException.initCause(ex);
             throw ioException;
         }
@@ -193,7 +193,8 @@ public class ClassUtilities {
      *  to a URL.
      *  @see java.net.JarURLConnection
      */
-    public static URL sourceResource(String sourceURLString) throws IOException {
+    public static URL sourceResource(String sourceURLString)
+            throws IOException {
         // FIXME: Maybe only allow relative paths?
 
         // Hmm.  Might be Eclipse, where sadly the
@@ -257,7 +258,8 @@ public class ClassUtilities {
         // fail because the configuration could not be found.
         // So, we have our own getResource() that handles this.
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = Thread.currentThread()
+                .getContextClassLoader();
         if (classLoader != null) {
             url = classLoader.getResource(spec);
         } else {
@@ -266,12 +268,14 @@ public class ClassUtilities {
                 url = classLoader.getResource(spec);
             } else {
                 try {
-                    Class refClass = Class.forName(
-                            "ptolemy.util.ClassUtilities");
+                    Class refClass = Class
+                            .forName("ptolemy.util.ClassUtilities");
                     url = refClass.getClassLoader().getResource(spec);
                 } catch (Exception ex) {
-                    throw new RuntimeException("Failed to get system class loader"
-                            + " and failed to get the Class for ClassUtilities", ex);
+                    throw new RuntimeException(
+                            "Failed to get system class loader"
+                                    + " and failed to get the Class for ClassUtilities",
+                            ex);
                 }
             }
         }
@@ -328,8 +332,8 @@ public class ClassUtilities {
             File resourceFile = new File(resourceResults);
 
             // Convert backslashes
-            String sanitizedResourceName = StringUtilities.substitute(
-                    resourceFile.getPath(), "\\", "/");
+            String sanitizedResourceName = StringUtilities
+                    .substitute(resourceFile.getPath(), "\\", "/");
             return sanitizedResourceName;
         }
 

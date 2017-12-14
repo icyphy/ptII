@@ -48,9 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FSMActor
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMActor {
+public class FSMActor extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMActor {
 
     /** Construct the code generator adapter associated
      *  with the given FSMActor.
@@ -125,8 +124,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
-            codeStream.append(_eol + inputPort.getType() + " "
-                    + generateName(inputPort));
+            codeStream.append(
+                    _eol + inputPort.getType() + " " + generateName(inputPort));
             if (inputPort.isMultiport()) {
                 codeStream.append("[" + inputPort.getWidth() + "]");
             }

@@ -178,10 +178,10 @@ public class PerimeterSite extends AbstractSite {
                     x1 = polygon.getX(vertexPair);
                     y1 = polygon.getY(vertexPair);
 
-                    double A = (x0 - xCenter) * (py - yCenter) - (y0 - yCenter)
-                            * (px - xCenter);
-                    double B = (y1 - y0) * (px - xCenter) - (x1 - x0)
-                            * (py - yCenter);
+                    double A = (x0 - xCenter) * (py - yCenter)
+                            - (y0 - yCenter) * (px - xCenter);
+                    double B = (y1 - y0) * (px - xCenter)
+                            - (x1 - x0) * (py - yCenter);
                     double t = A / B;
 
                     // Must be between (x0,y0) and (x1,y1)

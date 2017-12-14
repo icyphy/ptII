@@ -85,8 +85,8 @@ public class SearchManager {
      *  database layer fails to execute the searching in the database.
      */
     public void search(SearchCriteria searchCriteria,
-            ResultHandler searchResultBuffer) throws DBConnectionException,
-            DBExecutionException {
+            ResultHandler searchResultBuffer)
+            throws DBConnectionException, DBExecutionException {
 
         // The search Manager will create all the searcher, and pass the search
         // criteria to them.

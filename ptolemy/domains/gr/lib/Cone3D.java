@@ -134,7 +134,8 @@ public class Cone3D extends GRShadedShape {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Check that a box has been previously created.
-        if (_changesAllowedNow && (attribute == radius || attribute == height)) {
+        if (_changesAllowedNow
+                && (attribute == radius || attribute == height)) {
             if (_scaleTransform != null) {
                 float radiusValue = (float) ((DoubleToken) radius.getToken())
                         .doubleValue();
@@ -142,8 +143,8 @@ public class Cone3D extends GRShadedShape {
                 float heightValue = (float) ((DoubleToken) height.getToken())
                         .doubleValue();
 
-                _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
-                        radiusValue));
+                _scaleTransform.setScale(
+                        new Vector3d(radiusValue, heightValue, radiusValue));
 
                 // The following seems to be needed so the new scale
                 // takes effect.
@@ -195,8 +196,8 @@ public class Cone3D extends GRShadedShape {
             TransformGroup scaler = new TransformGroup();
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
-            _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
-                    radiusValue));
+            _scaleTransform.setScale(
+                    new Vector3d(radiusValue, heightValue, radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(cone);
             _containedNode = scaler;

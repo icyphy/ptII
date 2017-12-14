@@ -173,8 +173,7 @@ public class CopyCatIcon extends XMLIcon {
                         if (description != null) {
                             // Look for an icon description in my container.
                             SingletonConfigurableAttribute myDescription = (SingletonConfigurableAttribute) myContainer
-                                    .getAttribute(
-                                            "_iconDescription",
+                                    .getAttribute("_iconDescription",
                                             SingletonConfigurableAttribute.class);
 
                             if (myDescription != null) {
@@ -228,10 +227,11 @@ public class CopyCatIcon extends XMLIcon {
         Rectangle2D bounds = result.getBounds();
         CompositeFigure composite = new CompositeFigure();
         for (int i = numberOfEchos; i > 0; i--) {
-            BasicRectangle rectangle = new BasicRectangle(bounds.getX() + 5.0
-                    * i - _MARGIN, bounds.getY() + 5.0 * i - _MARGIN,
-                    bounds.getWidth() + 2 * _MARGIN, bounds.getHeight() + 2
-                    * _MARGIN, echoBoxColor.asColor());
+            BasicRectangle rectangle = new BasicRectangle(
+                    bounds.getX() + 5.0 * i - _MARGIN,
+                    bounds.getY() + 5.0 * i - _MARGIN,
+                    bounds.getWidth() + 2 * _MARGIN,
+                    bounds.getHeight() + 2 * _MARGIN, echoBoxColor.asColor());
             composite.add(rectangle);
         }
         BasicRectangle rectangle3 = new BasicRectangle(bounds.getX() - _MARGIN,

@@ -134,8 +134,8 @@ public class DistributedSDFDirector extends SDFDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public DistributedSDFDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public DistributedSDFDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         init();
     }
@@ -225,7 +225,8 @@ public class DistributedSDFDirector extends SDFDirector {
         if (attribute == parallelExecution) {
             invalidateSchedule();
 
-            if ((BooleanToken) parallelExecution.getToken() == BooleanToken.FALSE) {
+            if ((BooleanToken) parallelExecution
+                    .getToken() == BooleanToken.FALSE) {
                 System.out.println("equals FALSE");
                 pipelining.setToken(BooleanToken.FALSE);
             }
@@ -255,7 +256,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  domain-specific operations.
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
-
+    
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -351,7 +352,7 @@ public class DistributedSDFDirector extends SDFDirector {
         if (VERBOSE) {
             System.out.println("parallelSchedule: "
                     + ((BooleanToken) parallelSchedule.getToken())
-                    .booleanValue());
+                            .booleanValue());
         }
 
         //System.out.println(getScheduler().getSchedule().toString());
@@ -406,8 +407,8 @@ public class DistributedSDFDirector extends SDFDirector {
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire "
-                    + "system with no scheduler");
+            throw new IllegalActionException(
+                    "Attempted to fire " + "system with no scheduler");
         }
 
         // This will throw IllegalActionException if this director
@@ -487,8 +488,8 @@ public class DistributedSDFDirector extends SDFDirector {
             System.out.println(">> Creating Ports Receivers Map: ");
         }
 
-        for (Iterator keysIterator = actorsThreadsMap.keySet().iterator(); keysIterator
-                .hasNext();) {
+        for (Iterator keysIterator = actorsThreadsMap.keySet()
+                .iterator(); keysIterator.hasNext();) {
             ComponentEntity actor = (ComponentEntity) keysIterator.next();
 
             HashMap portsReceiversMap = new HashMap();
@@ -515,11 +516,9 @@ public class DistributedSDFDirector extends SDFDirector {
 
                 if (receivers.length > 0) {
                     if (VERBOSE) {
-                        System.out.print("Port: "
-                                + currentPort.getFullName()
-                                + "\n"
-                                + DistributedUtilities
-                                .receiversArrayToString(receivers));
+                        System.out.print("Port: " + currentPort.getFullName()
+                                + "\n" + DistributedUtilities
+                                        .receiversArrayToString(receivers));
                     }
 
                     if (currentPort.isOutput()) {
@@ -530,7 +529,7 @@ public class DistributedSDFDirector extends SDFDirector {
                     if (currentPort.isInput()) {
                         portsReceiversMap.put(currentPort.getName(),
                                 DistributedUtilities
-                                .convertReceiversToIntegers(receivers));
+                                        .convertReceiversToIntegers(receivers));
                     }
                 }
             }
@@ -541,12 +540,12 @@ public class DistributedSDFDirector extends SDFDirector {
 
             try {
                 if (VERBOSE) {
-                    System.out.println("Setting connections to: "
-                            + actor.getFullName() + " in: "
-                            + server.serviceID.toString());
-                    System.out.println("Setting port Types: "
-                            + actor.getFullName() + " in: "
-                            + server.serviceID.toString());
+                    System.out.println(
+                            "Setting connections to: " + actor.getFullName()
+                                    + " in: " + server.serviceID.toString());
+                    System.out.println(
+                            "Setting port Types: " + actor.getFullName()
+                                    + " in: " + server.serviceID.toString());
                 }
 
                 distributedActor.setConnections(portsReceiversMap);
@@ -573,12 +572,13 @@ public class DistributedSDFDirector extends SDFDirector {
                     IOPort port = receiver[j].getContainer();
                     Actor actor = (Actor) port.getContainer();
 
-                    if (!servicesReceiversMap
-                            .containsKey(((ClientThread) actorsThreadsMap
-                                    .get(actor)).getService())) {
+                    if (!servicesReceiversMap.containsKey(
+                            ((ClientThread) actorsThreadsMap.get(actor))
+                                    .getService())) {
                         servicesReceiversMap.put(
                                 ((ClientThread) actorsThreadsMap.get(actor))
-                                .getService(), new LinkedList());
+                                        .getService(),
+                                new LinkedList());
                     }
 
                     LinkedList list = (LinkedList) servicesReceiversMap
@@ -601,8 +601,8 @@ public class DistributedSDFDirector extends SDFDirector {
             System.out.println("Distributing Actors Onto Servers");
         }
 
-        for (Iterator keysIterator = actorsThreadsMap.keySet().iterator(); keysIterator
-                .hasNext();) {
+        for (Iterator keysIterator = actorsThreadsMap.keySet()
+                .iterator(); keysIterator.hasNext();) {
             ComponentEntity actor = (ComponentEntity) keysIterator.next();
             ServiceItem server = ((ClientThread) actorsThreadsMap.get(actor))
                     .getService();
@@ -611,9 +611,9 @@ public class DistributedSDFDirector extends SDFDirector {
 
             try {
                 if (VERBOSE) {
-                    System.out.println("Loading class: "
-                            + actor.getClass().getName() + " in: "
-                            + server.serviceID.toString());
+                    System.out.println(
+                            "Loading class: " + actor.getClass().getName()
+                                    + " in: " + server.serviceID.toString());
                 }
 
                 distributedActor.loadMoML(actor.exportMoML());
@@ -636,8 +636,8 @@ public class DistributedSDFDirector extends SDFDirector {
     private void exitClientThreads() {
         HashMap commands = new HashMap();
 
-        for (Iterator actorsIterator = actorsThreadsMap.keySet().iterator(); actorsIterator
-                .hasNext();) {
+        for (Iterator actorsIterator = actorsThreadsMap.keySet()
+                .iterator(); actorsIterator.hasNext();) {
             Object auxActor = actorsIterator.next();
             commands.put(actorsThreadsMap.get(auxActor),
                     Integer.valueOf(ClientThread.EXIT));
@@ -697,7 +697,8 @@ public class DistributedSDFDirector extends SDFDirector {
      *  DistributedSDFScheduler, a parallelSchedule parameter, a
      *  pipelining parameter and parallelExecution parameter.
      */
-    private void init() throws IllegalActionException, NameDuplicationException {
+    private void init()
+            throws IllegalActionException, NameDuplicationException {
         /*DistributedSDFScheduler scheduler = */new DistributedSDFScheduler(
                 this, uniqueName("Scheduler"));
 
@@ -746,8 +747,8 @@ public class DistributedSDFDirector extends SDFDirector {
             CompositeEntity container = (CompositeEntity) getContainer();
 
             // Populate it.
-            for (Iterator entities = container.deepEntityList().iterator(); entities
-                    .hasNext();) {
+            for (Iterator entities = container.deepEntityList()
+                    .iterator(); entities.hasNext();) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
 
                 // Fill allActorList with the list of things that we
@@ -762,11 +763,12 @@ public class DistributedSDFDirector extends SDFDirector {
                 System.out.println("Required services: " + allActorList.size());
             }
 
-            clientServerInteractionManager.setRequiredServices(allActorList
-                    .size());
+            clientServerInteractionManager
+                    .setRequiredServices(allActorList.size());
 
-            clientServerInteractionManager.init(StringUtilities
-                    .getProperty("ptolemy.ptII.dir") + configFileName);
+            clientServerInteractionManager
+                    .init(StringUtilities.getProperty("ptolemy.ptII.dir")
+                            + configFileName);
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to initialize Jini");
@@ -827,8 +829,8 @@ public class DistributedSDFDirector extends SDFDirector {
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire "
-                    + "system with no scheduler");
+            throw new IllegalActionException(
+                    "Attempted to fire " + "system with no scheduler");
         }
 
         // This will throw IllegalActionException if this director
@@ -874,8 +876,8 @@ public class DistributedSDFDirector extends SDFDirector {
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
-            throw new IllegalActionException("Attempted to fire "
-                    + "system with no scheduler");
+            throw new IllegalActionException(
+                    "Attempted to fire " + "system with no scheduler");
         }
 
         // This will throw IllegalActionException if this director
@@ -912,8 +914,8 @@ public class DistributedSDFDirector extends SDFDirector {
     private void printActorsOntoServersMap() {
         System.out.println("Actors-Servers Map:");
 
-        for (Iterator keysIterator = actorsThreadsMap.keySet().iterator(); keysIterator
-                .hasNext();) {
+        for (Iterator keysIterator = actorsThreadsMap.keySet()
+                .iterator(); keysIterator.hasNext();) {
             ComponentEntity actor = (ComponentEntity) keysIterator.next();
             ServiceItem server = ((ClientThread) actorsThreadsMap.get(actor))
                     .getService();

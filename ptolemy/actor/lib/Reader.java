@@ -108,7 +108,8 @@ public class Reader extends Source {
         refresh.setTypeEquals(BaseType.BOOLEAN);
 
         if (_stdIn == null) {
-            _stdIn = new BufferedReader(new InputStreamReader(System.in, java.nio.charset.Charset.defaultCharset()));
+            _stdIn = new BufferedReader(new InputStreamReader(System.in,
+                    java.nio.charset.Charset.defaultCharset()));
         }
 
         setReader(_stdIn);
@@ -161,8 +162,8 @@ public class Reader extends Source {
                     }
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "attributeChanged("
-                        + attribute + ") failed");
+                throw new IllegalActionException(this, ex,
+                        "attributeChanged(" + attribute + ") failed");
             }
         }
 
@@ -241,8 +242,8 @@ public class Reader extends Source {
                 _reader.close();
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "setReader(" + reader
-                    + ") failed");
+            throw new IllegalActionException(this, ex,
+                    "setReader(" + reader + ") failed");
         }
 
         if (reader != null) {
@@ -262,8 +263,8 @@ public class Reader extends Source {
                 _reader.close();
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "wrapup(" + _reader
-                    + ") failed");
+            throw new IllegalActionException(this, ex,
+                    "wrapup(" + _reader + ") failed");
         }
     }
 

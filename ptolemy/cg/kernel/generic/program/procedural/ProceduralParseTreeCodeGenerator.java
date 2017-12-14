@@ -116,7 +116,7 @@ import ptolemy.util.StringUtilities;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
-implements ParseTreeCodeGenerator {
+        implements ParseTreeCodeGenerator {
 
     /**
      * Create a ProceduralParseTreeCodeGenerator that is used by
@@ -176,8 +176,8 @@ implements ParseTreeCodeGenerator {
      *   evaluation.
      */
     @Override
-    public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
-            throws IllegalActionException {
+    public String traceParseTreeEvaluation(ASTPtRootNode node,
+            ParserScope scope) throws IllegalActionException {
         _scope = scope;
         _trace = new StringBuffer();
         _depth = 0;
@@ -290,8 +290,8 @@ implements ParseTreeCodeGenerator {
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         //_fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
         //String[] elements = new String[numChildren];
-        StringBuffer result = new StringBuffer("$new(Array(" + numChildren
-                + ", " + numChildren);
+        StringBuffer result = new StringBuffer(
+                "$new(Array(" + numChildren + ", " + numChildren);
 
         // Convert up to LUB.
         // Assume UNKNOWN is the lower type.
@@ -386,8 +386,7 @@ implements ParseTreeCodeGenerator {
 
         if (!(childToken instanceof BitwiseOperationToken)) {
             throw new IllegalActionException("Operation "
-                    + node.getOperator().image + " not defined on "
-                    + childToken
+                    + node.getOperator().image + " not defined on " + childToken
                     + " which does not support bitwise operations.");
         }
 
@@ -649,9 +648,8 @@ implements ParseTreeCodeGenerator {
         }
         functionCode.append("\n}\n),\n new ptolemy.data.type.Type[] \n{\n");
         for (int i = 0; i < argumentTypes.length; i++) {
-            functionCode.append("ptolemy.data.type.BaseType."
-                    + argumentTypes[i].toString().toUpperCase(
-                            Locale.getDefault()));
+            functionCode.append("ptolemy.data.type.BaseType." + argumentTypes[i]
+                    .toString().toUpperCase(Locale.getDefault()));
             if (i < argumentTypes.length - 1) {
                 functionCode.append(", ");
             }
@@ -710,7 +708,7 @@ implements ParseTreeCodeGenerator {
 
         /*
          ptolemy.data.Token test = _evaluatedChildToken;
-
+        
          if (!(test instanceof BooleanToken)) {
          throw new IllegalActionException(
          "Functional-if must branch on a boolean, but instead test "
@@ -718,16 +716,16 @@ implements ParseTreeCodeGenerator {
          + test.toString() + "an instance of "
          + test.getClass().getName()));
          }
-
+        
          boolean value = ((BooleanToken) test).booleanValue();
-
+        
          // Choose the correct sub-expression to evaluate,
          // and type check the other.
          if (_typeInference == null) {
          _typeInference = new ParseTreeTypeInference();
          }
-
-
+        
+        
          if (value) {
          */
         //_fireCode.append(" ? ");
@@ -750,8 +748,8 @@ implements ParseTreeCodeGenerator {
         ptolemy.data.Token token1 = _evaluatedChildToken;
         ptolemy.data.Token token2 = _evaluatedChildToken;
 
-        Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(
-                token1.getType(), token2.getType());
+        Type conversionType = (Type) TypeLattice.lattice()
+                .leastUpperBound(token1.getType(), token2.getType());
 
         _evaluatedChildToken = conversionType.convert(token1);
 
@@ -768,7 +766,8 @@ implements ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an parse error occurs.
      */
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             if (_evaluatedChildToken instanceof ComplexToken) {
@@ -782,8 +781,8 @@ implements ParseTreeCodeGenerator {
 
                 //_fireCode.append(escapeForTargetLanguage(_evaluatedChildToken.toString()));
 
-                _childCode = escapeForTargetLanguage(_evaluatedChildToken
-                        .toString());
+                _childCode = escapeForTargetLanguage(
+                        _evaluatedChildToken.toString());
 
             } else if (_evaluatedChildToken instanceof LongToken) {
                 //_fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
@@ -843,8 +842,8 @@ implements ParseTreeCodeGenerator {
             return;
         }
 
-        throw new IllegalActionException("The ID " + node.getName()
-                + " is undefined.");
+        throw new IllegalActionException(
+                "The ID " + node.getName() + " is undefined.");
     }
 
     /** Evaluate a logical AND or OR on the children of the specified node.
@@ -914,10 +913,10 @@ implements ParseTreeCodeGenerator {
              + "operation on " + nextToken + " which is a "
              + result.getClass().getName());
              }
-
+            
              if (flag != ((BooleanToken) nextToken).booleanValue()) {
              _evaluatedChildToken = (BooleanToken.getInstance(!flag));
-
+            
              // Note short-circuit eval.
              return;
              }
@@ -954,8 +953,8 @@ implements ParseTreeCodeGenerator {
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[row * column];
 
         //_fireCode.append("((Token*) $new(Matrix(" + row + ", " + column);
-        StringBuffer result = new StringBuffer(row + ", " + column + ", " + row
-                * column);
+        StringBuffer result = new StringBuffer(
+                row + ", " + column + ", " + row * column);
 
         ptolemy.data.Token childToken = null;
         ptolemy.data.type.Type elementType = BaseType.UNKNOWN;
@@ -998,8 +997,8 @@ implements ParseTreeCodeGenerator {
                 result.append(", TYPE_" + codegenType);
             }
             //_fireCode.append(")))");
-            result = new StringBuffer("($new(" + /*codegenType + */"Matrix("
-                    + result.toString());
+            result = new StringBuffer(
+                    "($new(" + /*codegenType + */"Matrix(" + result.toString());
             _childCode = result.toString() + ")))";
 
             childToken = MatrixToken.arrayToMatrix(tokens, node.getRowCount(),
@@ -1025,14 +1024,13 @@ implements ParseTreeCodeGenerator {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                                                                           .getRowCount() * columnCount];
+                        .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
-                    ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i], tokens[3 * i + 1],
-                                    columnCount);
-                    System.arraycopy(newTokens, 0, matrixTokens, columnCount
-                            * i, columnCount);
+                    ptolemy.data.Token[] newTokens = MatrixToken.createSequence(
+                            tokens[3 * i], tokens[3 * i + 1], columnCount);
+                    System.arraycopy(newTokens, 0, matrixTokens,
+                            columnCount * i, columnCount);
                 }
 
                 childToken = MatrixToken.arrayToMatrix(matrixTokens,
@@ -1163,7 +1161,7 @@ implements ParseTreeCodeGenerator {
                                 + "unsigned byte meet these criteria.\n"
                                 + "Use pow(10, 3.5) for non-integer exponents");
             }
-
+            
             try {
                 times = ((ptolemy.data.ScalarToken) token).intValue();
             } catch (IllegalActionException ex) {
@@ -1240,10 +1238,10 @@ implements ParseTreeCodeGenerator {
                 }
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
-                    result = new StringBuffer("$divide_"
-                            + _codeGenType(resultType) + "_"
-                            + _codeGenType(type) + "(" + result + ", "
-                            + _childCode + ")");
+                    result = new StringBuffer(
+                            "$divide_" + _codeGenType(resultType) + "_"
+                                    + _codeGenType(type) + "(" + result + ", "
+                                    + _childCode + ")");
 
                     resultType = resultType.divide(type);
 
@@ -1312,8 +1310,8 @@ implements ParseTreeCodeGenerator {
                 "The number of labels and values does not "
                         + "match in parsing a record expression.");
 
-        String[] labels = (String[]) node.getFieldNames().toArray(
-                new String[numChildren]);
+        String[] labels = (String[]) node.getFieldNames()
+                .toArray(new String[numChildren]);
 
         if (node instanceof ASTPtOrderedRecordConstructNode) {
             _evaluatedChildToken = new OrderedRecordToken(labels, tokens);
@@ -1343,7 +1341,8 @@ implements ParseTreeCodeGenerator {
         StringBuffer result = new StringBuffer();
 
         int numChildren = node.jjtGetNumChildren();
-        _assert(numChildren == 2, node, "The number of child nodes must be two");
+        _assert(numChildren == 2, node,
+                "The number of child nodes must be two");
 
         Token operator = node.getOperator();
         ptolemy.data.Token leftToken = _evaluateChild(node, 0);
@@ -1384,10 +1383,10 @@ implements ParseTreeCodeGenerator {
                               throw new IllegalActionException("The " + operator.image
                               + " operator can only be applied between scalars.");
                               }
-
+                 
                               ScalarToken leftScalar = (ScalarToken) leftToken;
                               ScalarToken rightScalar = (ScalarToken) rightToken;
-         */
+                 */
 
             if (operator.kind == PtParserConstants.GTE) {
                 //result = leftScalar.isLessThan(rightScalar).not();
@@ -1398,10 +1397,10 @@ implements ParseTreeCodeGenerator {
             } else if (operator.kind == PtParserConstants.LT) {
                 //result = leftScalar.isLessThan(rightScalar);
             } else {
-                throw new IllegalActionException("Invalid operation "
-                        + operator.image + " between "
-                        + leftToken.getClass().getName() + " and "
-                        + rightToken.getClass().getName());
+                throw new IllegalActionException(
+                        "Invalid operation " + operator.image + " between "
+                                + leftToken.getClass().getName() + " and "
+                                + rightToken.getClass().getName());
             }
         }
 
@@ -1430,7 +1429,8 @@ implements ParseTreeCodeGenerator {
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
-        _assert(numChildren == 2, node, "The number of child nodes must be two");
+        _assert(numChildren == 2, node,
+                "The number of child nodes must be two");
 
         Token operator = node.getOperator();
 
@@ -1465,13 +1465,13 @@ implements ParseTreeCodeGenerator {
                     + " operator requires "
                     + "the left operand to be a scalar.");
         }
-
+        
         if (!(bitsToken instanceof ScalarToken)) {
             throw new IllegalActionException("The " + operator
                     + " operator requires "
                     + "the right operand to be a scalar.");
         }
-
+        
         // intValue() is used rather than testing for IntToken
         // because any token with an intValue() is OK.  However,
         // we need a try...catch to generate a proper error message.
@@ -1531,8 +1531,8 @@ implements ParseTreeCodeGenerator {
 
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
 
-        String childType = _codeGenType(((ASTPtRootNode) node.jjtGetChild(0))
-                .getType());
+        String childType = _codeGenType(
+                ((ASTPtRootNode) node.jjtGetChild(0)).getType());
 
         String nodeType = _codeGenType(node.getType());
 
@@ -1540,8 +1540,8 @@ implements ParseTreeCodeGenerator {
                 + _childCode + ")");
 
         for (int i = 1; i < numChildren; i++) {
-            childType = _codeGenType(((ASTPtRootNode) node.jjtGetChild(i))
-                    .getType());
+            childType = _codeGenType(
+                    ((ASTPtRootNode) node.jjtGetChild(i)).getType());
 
             Token operator = (Token) lexicalTokenList.get(i - 1);
 
@@ -1625,7 +1625,7 @@ implements ParseTreeCodeGenerator {
          + " not defined on " + result
          + " which does not support bitwise operations.");
          }
-
+        
          //result = (ptolemy.data.Token) ((BitwiseOperationToken) result)
          //        .bitwiseNot();
          } else {
@@ -1675,13 +1675,17 @@ implements ParseTreeCodeGenerator {
                         : ptType == BaseType.STRING ? "String"
                                 : ptType == BaseType.DOUBLE ? "Double"
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                : ptType == BaseType.UNSIGNED_BYTE
+                                                        ? "UnsignedByte"
                                                         //: ptType == PointerToken.POINTER ? "Pointer"
-                                                        : ptType == BaseType.COMPLEX ? "Complex"
+                                                        : ptType == BaseType.COMPLEX
+                                                                ? "Complex"
                                                                 // FIXME: Why do we have to use equals with BaseType.OBJECT
-                                                                : ptType.equals(BaseType.OBJECT) ? "Object"
-                                                                        //: ptType == BaseType.OBJECT ? "Object"
-                                                                        : null;
+                                                                : ptType.equals(
+                                                                        BaseType.OBJECT)
+                                                                                ? "Object"
+                                                                                //: ptType == BaseType.OBJECT ? "Object"
+                                                                                : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
@@ -1838,8 +1842,8 @@ implements ParseTreeCodeGenerator {
 
         if (function.equals("$arrayRepeat") && argumentIndex == 1) {
             if (_isPrimitive(argumentType)) {
-                return "$new(" + _codeGenType(argumentType) + "("
-                        + argumentCode + "))";
+                return "$new(" + _codeGenType(argumentType) + "(" + argumentCode
+                        + "))";
             }
         }
         return argumentCode;
@@ -1908,8 +1912,8 @@ implements ParseTreeCodeGenerator {
                 _trace.append("  ");
             }
 
-            _trace.append("Node " + node.getClass().getName()
-                    + " evaluated to " + _evaluatedChildToken + "\n");
+            _trace.append("Node " + node.getClass().getName() + " evaluated to "
+                    + _evaluatedChildToken + "\n");
         }
     }
 
@@ -1981,7 +1985,8 @@ implements ParseTreeCodeGenerator {
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "byte"
+                                                : ptType == BaseType.UNSIGNED_BYTE
+                                                        ? "byte"
                                                         //: ptType == PointerToken.POINTER ? "void*"
                                                         : "Token";
     }
@@ -1990,8 +1995,8 @@ implements ParseTreeCodeGenerator {
     ////                         private variables                 ////
 
     /** A static list of the primitive types supported by the code generator. */
-    private static final List _primitiveTypes = Arrays.asList(new String[] {
-            "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer", "Complex", "Object" });
+    private static final List _primitiveTypes = Arrays.asList(
+            new String[] { "Integer", "Double", "String", "Long", "Boolean",
+                    "UnsignedByte", "Pointer", "Complex", "Object" });
 
 }

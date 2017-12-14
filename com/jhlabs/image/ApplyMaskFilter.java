@@ -86,7 +86,8 @@ public class ApplyMaskFilter extends AbstractBufferedImageOp {
      * @param dst the destination raster
      * @param sel the mask raster
      */
-    public static void composeThroughMask(Raster src, WritableRaster dst, Raster sel) {
+    public static void composeThroughMask(Raster src, WritableRaster dst,
+            Raster sel) {
         int x = src.getMinX();
         int y = src.getMinY();
         int w = src.getWidth();
@@ -134,12 +135,15 @@ public class ApplyMaskFilter extends AbstractBufferedImageOp {
         src.getType();
         src.getRaster();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         dst.getRaster();
 
-        if (destination != null && maskImage != null)
-            composeThroughMask(src.getRaster(), dst.getRaster(), maskImage.getRaster());
+        if (destination != null && maskImage != null) {
+            composeThroughMask(src.getRaster(), dst.getRaster(),
+                    maskImage.getRaster());
+        }
 
         return dst;
     }

@@ -119,8 +119,8 @@ public class XMLParser {
             } else {
                 if (_localResources.containsKey(publicId)) {
                     String localFile = (String) _localResources.get(publicId);
-                    InputStream localStream = getClass().getResourceAsStream(
-                            localFile);
+                    InputStream localStream = getClass()
+                            .getResourceAsStream(localFile);
                     if (localStream != null) {
                         return new InputSource(localStream);
                     }

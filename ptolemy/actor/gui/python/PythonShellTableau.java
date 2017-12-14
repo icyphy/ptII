@@ -152,8 +152,8 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
         @Override
         protected void _help() {
             try {
-                URL doc = getClass().getClassLoader().getResource(
-                        "ptolemy/actor/gui/python/help.htm");
+                URL doc = getClass().getClassLoader()
+                        .getResource("ptolemy/actor/gui/python/help.htm");
                 getConfiguration().openModel(null, doc, doc.toExternalForm());
             } catch (Exception ex) {
                 System.out.println("PythonShellTableau._help(): " + ex);

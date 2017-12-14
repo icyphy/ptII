@@ -74,27 +74,33 @@ public class DateConstructor extends TypedAtomicActor {
         output.setTypeEquals(BaseType.DATE);
 
         year = new PortParameter(this, "year", new IntToken(0));
-        new SingletonParameter(year.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(year.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         month = new PortParameter(this, "month", new IntToken(0));
         month.setTypeEquals(BaseType.INT);
-        new SingletonParameter(month.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(month.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         day = new PortParameter(this, "day", new IntToken(1));
         day.setTypeEquals(BaseType.INT);
-        new SingletonParameter(day.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(day.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         hour = new PortParameter(this, "hour", new IntToken(0));
         hour.setTypeEquals(BaseType.INT);
-        new SingletonParameter(hour.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(hour.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         minute = new PortParameter(this, "minute", new IntToken(0));
         minute.setTypeEquals(BaseType.INT);
-        new SingletonParameter(minute.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(minute.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         second = new PortParameter(this, "second", new IntToken(0));
         second.setTypeEquals(BaseType.INT);
-        new SingletonParameter(second.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(second.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         millisecond = new PortParameter(this, "millisecond", new IntToken(0));
         millisecond.setTypeEquals(BaseType.INT);
@@ -116,7 +122,8 @@ public class DateConstructor extends TypedAtomicActor {
         new SingletonParameter(timeZoneOffset.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
 
-        useTimeInMillis = new Parameter(this, "useTimeInMillis", new BooleanToken(false));
+        useTimeInMillis = new Parameter(this, "useTimeInMillis",
+                new BooleanToken(false));
         useTimeInMillis.setTypeEquals(BaseType.BOOLEAN);
 
         timeInMillis = new PortParameter(this, "timeInMillis", new IntToken(0));
@@ -215,7 +222,8 @@ public class DateConstructor extends TypedAtomicActor {
         // is non-standard, default to milliseconds.
         // FIXME:This would be better off using final strings
         // in the constructor and here so as to avoid problems.
-        String precisionValue = ((StringToken) precision.getToken()).stringValue();
+        String precisionValue = ((StringToken) precision.getToken())
+                .stringValue();
         if (precisionValue.equals("second")) {
             datePrecision = DateToken.PRECISION_SECOND;
         } else if (precisionValue.equals("millisecond")) {
@@ -232,16 +240,16 @@ public class DateConstructor extends TypedAtomicActor {
         if (timeZoneValue != null) {
             // If offset is negative, it will already have a - sign
             // Just need to add + sign for positive offsets
-            timeZone = TimeZone.getTimeZone("GMT"
-                    + (timeZoneValue < 0 ? "" : "+")
-                    + String.format("%04d", timeZoneValue));
+            timeZone = TimeZone
+                    .getTimeZone("GMT" + (timeZoneValue < 0 ? "" : "+")
+                            + String.format("%04d", timeZoneValue));
         }
 
         long timeAsLongValue = _getLongValue(timeInMillis);
         int microsecondValue = _getIntValue(microsecond);
         int nanosecondValue = _getIntValue(nanosecond);
 
-        if (!((BooleanToken)useTimeInMillis.getToken()).booleanValue()) {
+        if (!((BooleanToken) useTimeInMillis.getToken()).booleanValue()) {
             int yearValue = _getIntValue(year);
             int monthValue = _getIntValue(month);
             int dayValue = _getIntValue(day);
@@ -270,8 +278,7 @@ public class DateConstructor extends TypedAtomicActor {
                 timeAsLongValue = timeAsLongValue * 1000 * 1000;
             }
         }
-        dateToken = new DateToken(timeAsLongValue, datePrecision,
-                timeZone);
+        dateToken = new DateToken(timeAsLongValue, datePrecision, timeZone);
         dateToken.addMicroseconds(microsecondValue);
         dateToken.addNanoseconds(nanosecondValue);
 
@@ -281,14 +288,15 @@ public class DateConstructor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private Integer _getIntValue(PortParameter portParameter) throws IllegalActionException {
+    private Integer _getIntValue(PortParameter portParameter)
+            throws IllegalActionException {
         Integer value = null;
         if (portParameter.getToken() != null) {
             value = ((IntToken) portParameter.getToken()).intValue();
         }
-        if (portParameter.getPort().connectedPortList().size() > 0 &&
-                portParameter.getPort().hasToken(0)) {
-            value = ((IntToken)portParameter.getPort().get(0)).intValue();
+        if (portParameter.getPort().connectedPortList().size() > 0
+                && portParameter.getPort().hasToken(0)) {
+            value = ((IntToken) portParameter.getPort().get(0)).intValue();
         }
         // // Coverity Scan reports that value could be null.
         // if (value == null) {
@@ -297,14 +305,15 @@ public class DateConstructor extends TypedAtomicActor {
         return value;
     }
 
-    private Long _getLongValue(PortParameter portParameter) throws IllegalActionException {
+    private Long _getLongValue(PortParameter portParameter)
+            throws IllegalActionException {
         Long value = null;
         if (portParameter.getToken() != null) {
             value = ((LongToken) portParameter.getToken()).longValue();
         }
-        if (portParameter.getPort().connectedPortList().size() > 0 &&
-                portParameter.getPort().hasToken(0)) {
-            value = ((LongToken)portParameter.getPort().get(0)).longValue();
+        if (portParameter.getPort().connectedPortList().size() > 0
+                && portParameter.getPort().hasToken(0)) {
+            value = ((LongToken) portParameter.getPort().get(0)).longValue();
         }
         // // Coverity Scan reports that value could be null.
         // if (value == null) {

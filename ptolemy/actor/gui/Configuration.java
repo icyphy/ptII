@@ -139,8 +139,8 @@ import ptolemy.util.StringUtilities;
  @see Tableau
  @see TextEditorTableau
  */
-public class Configuration extends CompositeEntity implements
-ApplicationConfigurer, InstanceOpener {
+public class Configuration extends CompositeEntity
+        implements ApplicationConfigurer, InstanceOpener {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -156,8 +156,8 @@ ApplicationConfigurer, InstanceOpener {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public Configuration(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public Configuration(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _configurations.add(this);
         classesToRemove = new Parameter(this, "_classesToRemove",
@@ -293,8 +293,8 @@ ApplicationConfigurer, InstanceOpener {
      */
     public String check() throws Exception {
         StringBuffer results = new StringBuffer();
-        Configuration cloneConfiguration = (Configuration) clone(new Workspace(
-                "clonedCheckWorkspace"));
+        Configuration cloneConfiguration = (Configuration) clone(
+                new Workspace("clonedCheckWorkspace"));
 
         // Check TypedAtomicActors and Attributes
         Iterator containedObjects = deepNamedObjList().iterator();
@@ -309,8 +309,8 @@ ApplicationConfigurer, InstanceOpener {
                     results.append(checkCloneFields(containedObject));
                 } catch (Throwable throwable) {
                     throw new InternalErrorException(containedObject, null,
-                            throwable, "The check for "
-                                    + "clone methods properly setting "
+                            throwable,
+                            "The check for " + "clone methods properly setting "
                                     + "the fields failed.");
                 }
             }
@@ -332,7 +332,8 @@ ApplicationConfigurer, InstanceOpener {
                         results.append(checkCloneFields(attribute));
                     } catch (Throwable throwable) {
                         throw new InternalErrorException(attribute, null,
-                                throwable, "The check for "
+                                throwable,
+                                "The check for "
                                         + "clone methods properly setting "
                                         + "the fields failed.");
                     }
@@ -347,8 +348,8 @@ ApplicationConfigurer, InstanceOpener {
                                 + composite.getFullName() + "\n"
                                 + clonedComposite.description());
                     } else {
-                        if (attribute.workspace().equals(
-                                clonedAttribute.workspace())) {
+                        if (attribute.workspace()
+                                .equals(clonedAttribute.workspace())) {
                             results.append("\nIn attribute "
                                     + attribute.getFullName()
                                     + ", the workspace is the same in the master and "
@@ -372,30 +373,35 @@ ApplicationConfigurer, InstanceOpener {
                                 thisZeroField.setAccessible(true);
 
                                 Object outer = thisZeroField.get(attribute);
-                                if (Class.forName(
-                                        "ptolemy.kernel.util.NamedObj")
+                                if (Class
+                                        .forName("ptolemy.kernel.util.NamedObj")
                                         .isAssignableFrom(outer.getClass())) {
                                     NamedObj outerNamedObj = (NamedObj) outer;
                                     NamedObj clonedOuterNamedObj = (NamedObj) thisZeroField
                                             .get(clonedAttribute);
                                     if (outerNamedObj.workspace().equals(
                                             clonedOuterNamedObj.workspace())) {
-                                        results.append("\nAn inner class instance has the same workspace in the outer "
-                                                + "class in both the original and the cloned attribute."
-                                                + "\n Attribute:        "
-                                                + attribute.getFullName()
-                                                + "\n Cloned attribute: "
-                                                + clonedAttribute.getFullName()
-                                                + "\n Outer Workspace:       "
-                                                + outerNamedObj.workspace()
-                                                + "\n ClonedOuter Workspace: "
-                                                + clonedOuterNamedObj
-                                                .workspace()
-                                                + "\n Outer Object:        "
-                                                + outerNamedObj.getFullName()
-                                                + "\n Cloned Outer Object: "
-                                                + clonedOuterNamedObj
-                                                .getFullName());
+                                        results.append(
+                                                "\nAn inner class instance has the same workspace in the outer "
+                                                        + "class in both the original and the cloned attribute."
+                                                        + "\n Attribute:        "
+                                                        + attribute
+                                                                .getFullName()
+                                                        + "\n Cloned attribute: "
+                                                        + clonedAttribute
+                                                                .getFullName()
+                                                        + "\n Outer Workspace:       "
+                                                        + outerNamedObj
+                                                                .workspace()
+                                                        + "\n ClonedOuter Workspace: "
+                                                        + clonedOuterNamedObj
+                                                                .workspace()
+                                                        + "\n Outer Object:        "
+                                                        + outerNamedObj
+                                                                .getFullName()
+                                                        + "\n Cloned Outer Object: "
+                                                        + clonedOuterNamedObj
+                                                                .getFullName());
                                     }
                                 }
                             }
@@ -416,8 +422,8 @@ ApplicationConfigurer, InstanceOpener {
                     results.append(checkCloneFields((TypedAtomicActor) entity));
                 } catch (Throwable throwable) {
                     throw new InternalErrorException((TypedAtomicActor) entity,
-                            null, throwable, "The check for "
-                                    + "clone methods properly setting "
+                            null, throwable,
+                            "The check for " + "clone methods properly setting "
                                     + "the fields failed.");
                 }
                 TypedAtomicActor actor = (TypedAtomicActor) entity;
@@ -480,12 +486,12 @@ ApplicationConfigurer, InstanceOpener {
                     while (cloneConstraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) cloneConstraintIterator
                                 .next();
-                        if (!constraintsDescription.contains(constraint
-                                .toString())) {
-                            results.append("Master object of "
-                                    + actor.getFullName()
-                                    + " is missing constraint:\n"
-                                    + constraint.toString() + ".\n");
+                        if (!constraintsDescription
+                                .contains(constraint.toString())) {
+                            results.append(
+                                    "Master object of " + actor.getFullName()
+                                            + " is missing constraint:\n"
+                                            + constraint.toString() + ".\n");
                         }
                     }
 
@@ -497,8 +503,8 @@ ApplicationConfigurer, InstanceOpener {
                         while (constraintIterator.hasNext()) {
                             Inequality constraint = (Inequality) constraintIterator
                                     .next();
-                            cloneConstraintsDescription.add(constraint
-                                    .toString());
+                            cloneConstraintsDescription
+                                    .add(constraint.toString());
                         }
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(actor, throwable,
@@ -510,8 +516,8 @@ ApplicationConfigurer, InstanceOpener {
                     while (constraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) constraintIterator
                                 .next();
-                        if (!cloneConstraintsDescription.contains(constraint
-                                .toString())) {
+                        if (!cloneConstraintsDescription
+                                .contains(constraint.toString())) {
                             results.append("Clone of " + actor.getFullName()
                                     + " is missing constraint:\n"
                                     + constraint.toString() + ".\n");
@@ -539,32 +545,31 @@ ApplicationConfigurer, InstanceOpener {
                             NamedObj greaterNamedObj = (NamedObj) greaterAssociatedObject;
                             NamedObj lesserNamedObj = (NamedObj) lesserAssociatedObject;
                             greaterNamedObj.getContainer().getClass().getName();
-                            if (lesserNamedObj != null
-                                    && greaterNamedObj.getContainer() != lesserNamedObj
-                                    .getContainer()
-                                    // actor.lib.qm.CompositeQM was causing false
-                                    // positives because the contstraints had different
-                                    // containers, but were contained within the Composite.
-                                    && greaterNamedObj.getContainer()
+                            if (lesserNamedObj != null && greaterNamedObj
                                     .getContainer() != lesserNamedObj
-                                    .getContainer()
+                                            .getContainer()
+                            // actor.lib.qm.CompositeQM was causing false
+                            // positives because the contstraints had different
+                            // containers, but were contained within the Composite.
+                                    && greaterNamedObj.getContainer()
+                                            .getContainer() != lesserNamedObj
+                                                    .getContainer()
                                     // PubSubPort that contains an
                                     // initialTokens that is used to
                                     // set the type.
-                                    && !(lesserNamedObj.getContainer() instanceof PubSubPort)) {
+                                    && !(lesserNamedObj
+                                            .getContainer() instanceof PubSubPort)) {
                                 results.append(clone.getFullName()
                                         + " has type constraints with "
                                         + "associated objects that don't have "
                                         + "the same container:\n"
                                         + greaterNamedObj.getFullName()
                                         + " has a container:\n"
-                                        + greaterNamedObj.getContainer()
-                                        + "\n"
+                                        + greaterNamedObj.getContainer() + "\n"
                                         + lesserNamedObj.getFullName()
                                         + " has a container:\n"
                                         + lesserNamedObj.getContainer()
-                                        + "\nThe constraint was: "
-                                        + constraint
+                                        + "\nThe constraint was: " + constraint
                                         + "\n"
                                         + "This can occur if the clone(Workspace) "
                                         + "method is not present or does not set "
@@ -616,7 +621,8 @@ ApplicationConfigurer, InstanceOpener {
             namedObjFields = clazz.getDeclaredFields();
             for (Field field : namedObjFields) {
                 field.setAccessible(true);
-                results.append(_checkCloneField(namedObj, namedObjClone, field));
+                results.append(
+                        _checkCloneField(namedObj, namedObjClone, field));
             }
         }
         return results.toString();
@@ -628,8 +634,8 @@ ApplicationConfigurer, InstanceOpener {
      */
     public static void closeAllTableaux() throws IllegalActionException {
         // Based on code by Chad Berkley.
-        Configuration configuration = (Configuration) Configuration
-                .configurations().iterator().next();
+        Configuration configuration = Configuration.configurations().iterator()
+                .next();
         // Get the directory from the configuration.
         ModelDirectory directory = configuration.getDirectory();
         if (directory == null) {
@@ -752,9 +758,11 @@ ApplicationConfigurer, InstanceOpener {
                 try {
                     if (effigy == null) {
                         // Coverity Scan 1352685 warned that effigy can be null.
-                        throw new InternalErrorException("createPrimaryTableau() "
-                                + "called with a null Effigy?");
-                    } else if (effigy.getContainer() instanceof ModelDirectory) {
+                        throw new InternalErrorException(
+                                "createPrimaryTableau() "
+                                        + "called with a null Effigy?");
+                    } else if (effigy
+                            .getContainer() instanceof ModelDirectory) {
                         // This is the master.
                         // Calling setContainer() = null will exit, so
                         // we display the error message here.
@@ -767,10 +775,11 @@ ApplicationConfigurer, InstanceOpener {
                             if (((PtolemyEffigy) effigy).getModel() != null) {
                                 MessageHandler.error("Failed to open "
                                         + ((PtolemyEffigy) effigy).getModel()
-                                        .getFullName(), ex);
+                                                .getFullName(),
+                                        ex);
                             } else {
-                                MessageHandler.error(
-                                        "Failed to open " + effigy, ex);
+                                MessageHandler.error("Failed to open " + effigy,
+                                        ex);
                             }
                             calledMessageHandler = true;
                         } else {
@@ -786,8 +795,10 @@ ApplicationConfigurer, InstanceOpener {
                             // from the exception.
                             // In addition, we cannot catch HeadlessExceptions.
 
-                            MessageHandler.error("Failed to open "
-                                    + effigy.identifier.getExpression(), ex);
+                            MessageHandler.error(
+                                    "Failed to open "
+                                            + effigy.identifier.getExpression(),
+                                    ex);
                             calledMessageHandler = true;
                         }
                     }
@@ -810,8 +821,8 @@ ApplicationConfigurer, InstanceOpener {
                             .objectToSourceFileName(object);
 
                     try {
-                        URL toRead = getClass().getClassLoader().getResource(
-                                filename);
+                        URL toRead = getClass().getClassLoader()
+                                .getResource(filename);
 
                         // If filename was not found in the classpath, then search
                         // each element in the classpath for a directory named
@@ -827,13 +838,13 @@ ApplicationConfigurer, InstanceOpener {
                             return openModel(null, toRead,
                                     toRead.toExternalForm());
                         } else {
-                            MessageHandler
-                            .error("Cannot find a tableau or the source code for "
-                                    + object.getFullName());
+                            MessageHandler.error(
+                                    "Cannot find a tableau or the source code for "
+                                            + object.getFullName());
                         }
                     } catch (Exception exception) {
-                        MessageHandler.error(
-                                "Failed to open the source code for "
+                        MessageHandler
+                                .error("Failed to open the source code for "
                                         + object.getFullName(), exception);
                     }
                 }
@@ -890,9 +901,9 @@ ApplicationConfigurer, InstanceOpener {
      */
     public Object getStringParameterAsClass(String parameterName,
             Class[] constructorParameterTypes,
-            Object[] constructorParameterClass) throws ClassNotFoundException,
-            IllegalAccessException, IllegalActionException,
-            InstantiationException,
+            Object[] constructorParameterClass)
+            throws ClassNotFoundException, IllegalAccessException,
+            IllegalActionException, InstantiationException,
             java.lang.reflect.InvocationTargetException, NoSuchMethodException {
         // Deal with the PDF Action first.
         StringParameter classNameParameter = (StringParameter) getAttribute(
@@ -954,8 +965,8 @@ ApplicationConfigurer, InstanceOpener {
      *   should not be thrown).
      */
     @Override
-    public void openAnInstance(NamedObj entity) throws IllegalActionException,
-    NameDuplicationException {
+    public void openAnInstance(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         // This could be called openInstance(), but we don't want to
         // have a dependency to Tableau in ModalController and ModalRefinement.
 
@@ -978,8 +989,8 @@ ApplicationConfigurer, InstanceOpener {
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public Tableau openInstance(NamedObj entity) throws IllegalActionException,
-    NameDuplicationException {
+    public Tableau openInstance(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         return openInstance(entity, null);
     }
 
@@ -1097,9 +1108,9 @@ ApplicationConfigurer, InstanceOpener {
             effigy = factory.createEffigy(directory, base, in);
 
             if (effigy == null) {
-                MessageHandler
-                .error("Unsupported file type or connection not available: "
-                        + in.toExternalForm());
+                MessageHandler.error(
+                        "Unsupported file type or connection not available: "
+                                + in.toExternalForm());
                 return null;
             }
 
@@ -1168,8 +1179,8 @@ ApplicationConfigurer, InstanceOpener {
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public Tableau openModel(NamedObj entity) throws IllegalActionException,
-    NameDuplicationException {
+    public Tableau openModel(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj container = entity.getContainer();
         Effigy containerEffigy = getEffigy(container);
         return openModel(entity, containerEffigy);
@@ -1237,7 +1248,8 @@ ApplicationConfigurer, InstanceOpener {
      *  and call show() on them.  If there is no directory, then do nothing.
      */
     public void showAll() {
-        final ModelDirectory directory = (ModelDirectory) getEntity(_DIRECTORY_NAME);
+        final ModelDirectory directory = (ModelDirectory) getEntity(
+                _DIRECTORY_NAME);
 
         if (directory == null) {
             return;
@@ -1309,56 +1321,55 @@ ApplicationConfigurer, InstanceOpener {
      */
     private static String _checkCloneField(NamedObj namedObj,
             NamedObj namedObjClone, Field field)
-                    throws CloneNotSupportedException, IllegalAccessException,
-                    ClassNotFoundException {
+            throws CloneNotSupportedException, IllegalAccessException,
+            ClassNotFoundException {
         Class namedObjClass = namedObj.getClass();
         StringBuffer results = new StringBuffer();
         // Tell the security manager we want to read private fields.
         // This will fail in an applet.
         field.setAccessible(true);
         Class fieldType = field.getType();
-        if (!fieldType.isPrimitive()
-                && field.get(namedObj) != null
+        if (!fieldType.isPrimitive() && field.get(namedObj) != null
                 && !Modifier.isStatic(field.getModifiers())
                 && !Modifier.isStatic(fieldType.getModifiers()) //matlab.Engine.ConversionParameters.
                 /*&& !fieldType.isArray()*/
                 // Skip fields introduced by javascope
                 && !fieldType.toString().equals(
                         "COM.sun.suntest.javascope.database.CoverageUnit")
-                        && !field.getName().equals("js$p")
-                        // Skip fields introduced by backtracking
-                        && !(field.getName().indexOf("$RECORD$") != -1)
-                        && !(field.getName().indexOf("$RECORDS") != -1)
-                        && !(field.getName().indexOf("$CHECKPOINT") != -1)
-                        // Skip dependency injection fields
-                        && !(field.getName().indexOf("_implementation") != -1)
-                        // Skip immutables
-                        && !fieldType.equals(java.net.InetAddress.class)
-                        && !fieldType.equals(java.util.regex.Pattern.class)
-                        // SharedParameter has a _containerClass field
-                        && !fieldType.equals(Boolean.class)
-                        && !fieldType.equals(Class.class)
-                        && !fieldType.equals(String.class)
-                        && !fieldType.equals(Token.class)
-                        // Variable has various type fields
-                        && !fieldType.equals(ptolemy.data.type.Type.class)
-                        && !fieldType.equals(Settable.Visibility.class)) {
+                && !field.getName().equals("js$p")
+                // Skip fields introduced by backtracking
+                && !(field.getName().indexOf("$RECORD$") != -1)
+                && !(field.getName().indexOf("$RECORDS") != -1)
+                && !(field.getName().indexOf("$CHECKPOINT") != -1)
+                // Skip dependency injection fields
+                && !(field.getName().indexOf("_implementation") != -1)
+                // Skip immutables
+                && !fieldType.equals(java.net.InetAddress.class)
+                && !fieldType.equals(java.util.regex.Pattern.class)
+                // SharedParameter has a _containerClass field
+                && !fieldType.equals(Boolean.class)
+                && !fieldType.equals(Class.class)
+                && !fieldType.equals(String.class)
+                && !fieldType.equals(Token.class)
+                // Variable has various type fields
+                && !fieldType.equals(ptolemy.data.type.Type.class)
+                && !fieldType.equals(Settable.Visibility.class)) {
 
             // If an object is equal and the default hashCode() from
             // Object is the same, then we have a problem.
             if (field.get(namedObj).equals(field.get(namedObjClone))
                     && System.identityHashCode(field.get(namedObj)) == System
-                    .identityHashCode(field.get(namedObjClone))) {
+                            .identityHashCode(field.get(namedObjClone))) {
 
                 String message = "";
                 if (Class.forName("ptolemy.kernel.util.NamedObj")
                         .isAssignableFrom(fieldType)) {
-                    NamedObj fieldNamedObj = (NamedObj) Class.forName(
-                            "ptolemy.kernel.util.NamedObj").cast(
-                                    field.get(namedObj));
-                    NamedObj cloneNamedObj = (NamedObj) Class.forName(
-                            "ptolemy.kernel.util.NamedObj").cast(
-                                    field.get(namedObjClone));
+                    NamedObj fieldNamedObj = (NamedObj) Class
+                            .forName("ptolemy.kernel.util.NamedObj")
+                            .cast(field.get(namedObj));
+                    NamedObj cloneNamedObj = (NamedObj) Class
+                            .forName("ptolemy.kernel.util.NamedObj")
+                            .cast(field.get(namedObjClone));
                     message = "Field: " + fieldNamedObj.workspace().getName()
                             + " Clone: " + cloneNamedObj.workspace().getName();
                 }
@@ -1366,8 +1377,8 @@ ApplicationConfigurer, InstanceOpener {
                 // Determine what code should go in clone(W)
                 String assignment = field.getName();
                 // FIXME: extend this to more types
-                if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(
-                        fieldType)) {
+                if (Class.forName("ptolemy.kernel.Port")
+                        .isAssignableFrom(fieldType)) {
                     assignment = ".getPort(\"" + assignment + "\")";
                     //                       } else if (fieldType.isInstance( new Attribute())) {
                 } else if (Class.forName("ptolemy.kernel.util.Attribute")
@@ -1393,11 +1404,8 @@ ApplicationConfigurer, InstanceOpener {
                             + "or null?  */ " + assignment;
                 }
 
-                String shortClassName = field
-                        .getType()
-                        .getName()
-                        .substring(
-                                field.getType().getName().lastIndexOf(".") + 1);
+                String shortClassName = field.getType().getName().substring(
+                        field.getType().getName().lastIndexOf(".") + 1);
 
                 //new Exception("Configuration._checkCloneField()").printStackTrace();
 
@@ -1523,8 +1531,8 @@ ApplicationConfigurer, InstanceOpener {
                 // the class Effigy always has a URI attribute, but
                 // the value might not get set.
                 if (uri == null) {
-                    effigy.identifier.setExpression(_effigyIdentifier(effigy,
-                            entity));
+                    effigy.identifier
+                            .setExpression(_effigyIdentifier(effigy, entity));
                 } else {
                     effigy.identifier.setExpression(uri.toString());
                 }
@@ -1587,8 +1595,8 @@ ApplicationConfigurer, InstanceOpener {
                     }
                 }
 
-                effigy.identifier.setExpression(_effigyIdentifier(effigy,
-                        entity));
+                effigy.identifier
+                        .setExpression(_effigyIdentifier(effigy, entity));
 
                 return createPrimaryTableau(effigy);
             }

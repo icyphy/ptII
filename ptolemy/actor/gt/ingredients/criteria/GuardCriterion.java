@@ -145,7 +145,7 @@ public class GuardCriterion extends Criterion {
                 } catch (Exception e) {
                     throw new InternalErrorException(
                             "Failed to set container of " + guardVariable
-                            + " to null");
+                                    + " to null");
                 }
             }
         }
@@ -191,8 +191,8 @@ public class GuardCriterion extends Criterion {
 
     /** The elements.
      */
-    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
-            "GuardValue", false, false, true) };
+    private static final CriterionElement[] _ELEMENTS = {
+            new StringCriterionElement("GuardValue", false, false, true) };
 
     /** Value of the guardValue element.
      */

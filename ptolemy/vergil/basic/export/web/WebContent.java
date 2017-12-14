@@ -57,8 +57,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class WebContent extends StringParameter implements
-WebExportable {
+public abstract class WebContent extends StringParameter
+        implements WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -144,8 +144,8 @@ WebExportable {
             newObject._icon.setTextColor(Color.RED);
             newObject._icon.setIconText("H");
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException(getFullName()
-                    + ": Failed to clone: " + throwable);
+            throw new CloneNotSupportedException(
+                    getFullName() + ": Failed to clone: " + throwable);
         }
         return newObject;
     }

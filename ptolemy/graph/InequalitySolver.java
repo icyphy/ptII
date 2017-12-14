@@ -138,17 +138,16 @@ public class InequalitySolver {
 
         for (int i = 0; i < _Ilist.size(); i++) {
             Info info = (Info) _Ilist.get(i);
-            results.append("{_ineq: " + info._ineq + " _inCvar: "
-                    + info._inCvar + " _inserted: " + info._inserted + "}\n  ");
+            results.append("{_ineq: " + info._ineq + " _inCvar: " + info._inCvar
+                    + " _inserted: " + info._inserted + "}\n  ");
         }
 
         results.append("}\n{Clist:\n ");
 
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
             InequalityTerm variable = (InequalityTerm) e.nextElement();
-            results.append("{"
-                    + (variable == null ? "variable == null" : variable
-                            .toString()) + "}\n ");
+            results.append("{" + (variable == null ? "variable == null"
+                    : variable.toString()) + "}\n ");
         }
 
         results.append("}\n");
@@ -438,8 +437,9 @@ public class InequalitySolver {
 
                 if (least) {
                     updateTerm = info._ineq.getGreaterTerm();
-                    value = _cpo.leastUpperBound(info._ineq.getLesserTerm()
-                            .getValue(), updateTerm.getValue());
+                    value = _cpo.leastUpperBound(
+                            info._ineq.getLesserTerm().getValue(),
+                            updateTerm.getValue());
                 } else {
                     updateTerm = info._ineq.getLesserTerm();
                     value = _cpo.greatestLowerBound(updateTerm.getValue(),

@@ -70,9 +70,9 @@ public class Synchronizer extends Transformer {
 
         input.setWidthEquals(output, true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:yellow\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:yellow\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,8 +92,8 @@ public class Synchronizer extends Transformer {
 
         if (inWidth != outWidth) {
             throw new IllegalActionException(this,
-                    "Unequal synchronizer channels: " + inWidth
-                    + " inputs and " + outWidth + " outputs.");
+                    "Unequal synchronizer channels: " + inWidth + " inputs and "
+                            + outWidth + " outputs.");
         } else {
             for (int i = 0; i < inWidth; i++) {
                 output.send(i, input.get(i));

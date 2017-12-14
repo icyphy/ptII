@@ -46,8 +46,8 @@ import ptolemy.homer.kernel.PositionableElement;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class NamedObjectImageWidget extends ResizableImageWidget implements
-NamedObjectWidgetInterface {
+public class NamedObjectImageWidget extends ResizableImageWidget
+        implements NamedObjectWidgetInterface {
     /**
      * Create a new instance of the widget.
      * @param scene The scene containing the widget.

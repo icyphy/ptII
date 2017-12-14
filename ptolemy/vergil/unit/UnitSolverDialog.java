@@ -94,8 +94,8 @@ import ptolemy.vergil.basic.BasicGraphFrame;
  @Pt.AcceptedRating Red (rowland)
  */
 @SuppressWarnings("serial")
-public class UnitSolverDialog extends PtolemyDialog implements
-ListSelectionListener, SelectionListener {
+public class UnitSolverDialog extends PtolemyDialog
+        implements ListSelectionListener, SelectionListener {
     /**
      * Construct a Unit Solver Dialog.
      * @param dialogTableau The DialogTableau.
@@ -154,8 +154,8 @@ ListSelectionListener, SelectionListener {
         _selectionModel.addSelectionListener(this);
 
         JPanel fullSolverPanel = new JPanel();
-        fullSolverPanel.setLayout(new BoxLayout(fullSolverPanel,
-                BoxLayout.Y_AXIS));
+        fullSolverPanel
+                .setLayout(new BoxLayout(fullSolverPanel, BoxLayout.Y_AXIS));
         fullSolverPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Full Solution"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -166,8 +166,8 @@ ListSelectionListener, SelectionListener {
         fullSolverPanel.add(_fullSolutionResult);
 
         JPanel componentsPanel = new JPanel();
-        componentsPanel.setLayout(new BoxLayout(componentsPanel,
-                BoxLayout.Y_AXIS));
+        componentsPanel
+                .setLayout(new BoxLayout(componentsPanel, BoxLayout.Y_AXIS));
         componentsPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Components"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -215,8 +215,8 @@ ListSelectionListener, SelectionListener {
         if (aEvent.getSource() == _runMinimalSpanSolverButton) {
             try {
                 // FIXME: UnitContstraint ctor should take args other than Vectors.
-                _uConstraints = new UnitConstraints(_model, new Vector(
-                        _entities), new Vector(_relations));
+                _uConstraints = new UnitConstraints(_model,
+                        new Vector(_entities), new Vector(_relations));
                 _solutions = _uConstraints.minimalSpanSolutions();
             } catch (IllegalActionException e) {
                 MessageHandler.error("Minimal Span Solver failed: ", e);
@@ -229,8 +229,8 @@ ListSelectionListener, SelectionListener {
             _solutionsList.clearSelection();
 
             try {
-                _uConstraints = new UnitConstraints(_model, new Vector(
-                        _entities), new Vector(_relations));
+                _uConstraints = new UnitConstraints(_model,
+                        new Vector(_entities), new Vector(_relations));
 
                 Solution solution = _uConstraints.completeSolution();
                 _fullSolutionResult.setText(solution.getShortStateDesc());
@@ -393,8 +393,8 @@ ListSelectionListener, SelectionListener {
 
     @Override
     protected URL _getHelpURL() {
-        URL helpURL = getClass().getClassLoader().getResource(
-                "ptolemy/actor/gui/doc/unitConstraintsSolver.htm");
+        URL helpURL = getClass().getClassLoader()
+                .getResource("ptolemy/actor/gui/doc/unitConstraintsSolver.htm");
         return helpURL;
     }
 

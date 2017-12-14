@@ -102,7 +102,8 @@ public class OctagonEventIcon extends NameIcon {
             height += _spacingValue * 2.0;
             cornerWidth += _spacingValue * 1.8 / cornerWidth;
             polygon = _createOctagon(width, height, cornerWidth);
-            Figure outerFigure = new BasicFigure(polygon, null, _getLineWidth());
+            Figure outerFigure = new BasicFigure(polygon, null,
+                    _getLineWidth());
             outerFigure.translate(-_spacingValue, -_spacingValue);
             compositeFigure.add(0, outerFigure);
             figure = compositeFigure;
@@ -188,13 +189,13 @@ public class OctagonEventIcon extends NameIcon {
                 if (array.length() == 4) {
                     Color color = new Color(
                             (float) ((ScalarToken) array.getElement(0))
-                            .doubleValue(),
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
-                            .doubleValue(),
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
-                            .doubleValue(),
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(3))
-                            .doubleValue());
+                                    .doubleValue());
                     return color;
                 }
             }
@@ -270,7 +271,8 @@ public class OctagonEventIcon extends NameIcon {
             height += _spacingValue * 2.0;
             cornerWidth += _spacingValue * 1.8 / cornerWidth;
             polygon = _createOctagon(width, height, cornerWidth);
-            Figure outerFigure = new BasicFigure(polygon, null, _getLineWidth());
+            Figure outerFigure = new BasicFigure(polygon, null,
+                    _getLineWidth());
             outerFigure.translate(-_spacingValue, -_spacingValue);
             compositeFigure.add(0, outerFigure);
             background = compositeFigure;
@@ -280,7 +282,7 @@ public class OctagonEventIcon extends NameIcon {
 
         label.translateTo(background.getBounds().getCenterX(),
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0
-                - _spacingValue);
+                        - _spacingValue);
         figure.add(label);
     }
 

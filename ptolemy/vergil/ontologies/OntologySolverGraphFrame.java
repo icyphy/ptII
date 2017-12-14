@@ -80,8 +80,8 @@ import ptolemy.vergil.basic.IconController;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 @SuppressWarnings("serial")
-public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
-ActionListener {
+public class OntologySolverGraphFrame extends ExtendedGraphFrame
+        implements ActionListener {
 
     /** Construct a frame associated with the specified ontology solver model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
@@ -134,8 +134,8 @@ ActionListener {
     @Override
     public void dispose() {
         if (_debugClosing) {
-            System.out.println("OntologySolverGraphFrame.dispose() : "
-                    + this.getName());
+            System.out.println(
+                    "OntologySolverGraphFrame.dispose() : " + this.getName());
         }
 
         KeyStroke[] keyStroke = _rightComponent.getRegisteredKeyStrokes();
@@ -199,8 +199,8 @@ ActionListener {
         GUIUtilities.addToolBarButton(_toolbar, _insertOntologyAction);
 
         // Add debug menu.
-        JMenuItem[] debugMenuItems = { new JMenuItem(
-                "Check Monotonicity of Concept Functions") };
+        JMenuItem[] debugMenuItems = {
+                new JMenuItem("Check Monotonicity of Concept Functions") };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -306,7 +306,8 @@ ActionListener {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
 
-            if (actionCommand.equals("Check Monotonicity of Concept Functions")) {
+            if (actionCommand
+                    .equals("Check Monotonicity of Concept Functions")) {
                 MessageHandler.message("This function is not implemented yet.");
             }
         }
@@ -338,8 +339,8 @@ ActionListener {
                     false);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, toolbarIcon);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_I, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_I,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
 
             // Initialize the default ontology directory to null in the
@@ -406,8 +407,8 @@ ActionListener {
                         + source + "><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></entity></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, context,
+                        moml);
                 context.requestChange(request);
             }
         }

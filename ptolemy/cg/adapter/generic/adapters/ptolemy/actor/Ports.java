@@ -238,12 +238,8 @@ public class Ports {
                     && getComponent().getContainer() != port.getContainer()
                             .getContainer()
                     && getComponent().getContainer() != port.getContainer()
-                    && getComponent()
-                            .getContainer()
-                            .getFullName()
-                            .startsWith(
-                                    port.getContainer().getContainer()
-                                            .getFullName())) {
+                    && getComponent().getContainer().getFullName().startsWith(
+                            port.getContainer().getContainer().getFullName())) {
                 while (container != null) {
                     if (container instanceof CompositeEntity) {
                         List entities = ((CompositeEntity) container)

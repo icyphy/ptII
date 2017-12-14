@@ -62,8 +62,9 @@ public class Normalize2D {
     }
 
     public void add(ArrayList<double[]> points) {
-        for (double p[] : points)
+        for (double p[] : points) {
             add(p[0], p[1]);
+        }
     }
 
     public double[][] getTransform() {

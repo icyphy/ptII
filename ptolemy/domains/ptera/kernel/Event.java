@@ -137,8 +137,8 @@ public class Event extends State implements Initializable {
                 uniqueName("refinementExtender"));
         refinementExtender.description.setExpression("Ptera Refinement");
         refinementExtender.setPersistent(false);
-        refinementExtender.className.setExpression("ptolemy.domains.ptera"
-                + ".kernel.PteraController");
+        refinementExtender.className.setExpression(
+                "ptolemy.domains.ptera" + ".kernel.PteraController");
 
         refinementName.setVisibility(Settable.NONE);
 
@@ -206,7 +206,8 @@ public class Event extends State implements Initializable {
         }
 
         if (attribute == parameters) {
-            List<EventParameter> eventParameters = attributeList(EventParameter.class);
+            List<EventParameter> eventParameters = attributeList(
+                    EventParameter.class);
             for (EventParameter parameter : eventParameters) {
                 try {
                     parameter.setContainer(null);
@@ -233,16 +234,12 @@ public class Event extends State implements Initializable {
                             }
                         }
                         if (!compatible) {
-                            throw new IllegalActionException(
-                                    this,
-                                    "An "
-                                            + "attribute named \""
-                                            + name
-                                            + "\" is "
-                                            + "found, but either it is not a variable, "
-                                            + "or its type is not compatible with the "
-                                            + "declared type of the parameter, which "
-                                            + "is " + type + ".");
+                            throw new IllegalActionException(this, "An "
+                                    + "attribute named \"" + name + "\" is "
+                                    + "found, but either it is not a variable, "
+                                    + "or its type is not compatible with the "
+                                    + "declared type of the parameter, which "
+                                    + "is " + type + ".");
                         }
                     } else {
                         try {
@@ -254,9 +251,9 @@ public class Event extends State implements Initializable {
                                 parameter.setToken(defaultToken);
                             }
                         } catch (NameDuplicationException e) {
-                            throw new IllegalActionException(this, "Unable "
-                                    + "to create a parameter named \"" + name
-                                    + "\".");
+                            throw new IllegalActionException(this,
+                                    "Unable " + "to create a parameter named \""
+                                            + name + "\".");
                         }
                     }
                 }
@@ -569,67 +566,67 @@ public class Event extends State implements Initializable {
                     int priority2 = priorities.get(relation2);
                     int priorityCompare = priority1 < priority2 ? -1
                             : priority1 > priority2 ? 1 : 0;
-                            if (priorityCompare != 0) {
-                                return lifo ? -priorityCompare : priorityCompare;
-                            } else {
-                                String name1 = relation1.destinationState().getName();
-                                String name2 = relation2.destinationState().getName();
-                                int eventCompare = name1.compareTo(name2);
-                                if (eventCompare != 0) {
-                                    // FIXME: FindBugs: "RV: Negating the result of
-                                    // compareTo()/compare()
-                                    // (RV_NEGATING_RESULT_OF_COMPARETO)
-                                    //
-                                    // "This code negatives the return value
-                                    // of a compareTo or compare method. This
-                                    // is a questionable or bad programming
-                                    // practice, since if the return value is
-                                    // Integer.MIN_VALUE, negating the return
-                                    // value won't negate the sign of the
-                                    // result. You can achieve the same
-                                    // intended result by reversing the order
-                                    // of the operands rather than by negating
-                                    // the results."
-                                    //return lifo ? -eventCompare : eventCompare;
-                                    if (lifo) {
-                                        if (eventCompare == Integer.MIN_VALUE) {
-                                            return Integer.MAX_VALUE;
-                                        } else {
-                                            return -eventCompare;
-                                        }
-                                    } else {
-                                        return eventCompare;
-                                    }
+                    if (priorityCompare != 0) {
+                        return lifo ? -priorityCompare : priorityCompare;
+                    } else {
+                        String name1 = relation1.destinationState().getName();
+                        String name2 = relation2.destinationState().getName();
+                        int eventCompare = name1.compareTo(name2);
+                        if (eventCompare != 0) {
+                            // FIXME: FindBugs: "RV: Negating the result of
+                            // compareTo()/compare()
+                            // (RV_NEGATING_RESULT_OF_COMPARETO)
+                            //
+                            // "This code negatives the return value
+                            // of a compareTo or compare method. This
+                            // is a questionable or bad programming
+                            // practice, since if the return value is
+                            // Integer.MIN_VALUE, negating the return
+                            // value won't negate the sign of the
+                            // result. You can achieve the same
+                            // intended result by reversing the order
+                            // of the operands rather than by negating
+                            // the results."
+                            //return lifo ? -eventCompare : eventCompare;
+                            if (lifo) {
+                                if (eventCompare == Integer.MIN_VALUE) {
+                                    return Integer.MAX_VALUE;
                                 } else {
-                                    name1 = relation1.getName();
-                                    name2 = relation2.getName();
-                                    int relationCompare = name1.compareTo(name2);
-                                    // FIXME: FindBugs: "RV: Negating the result of
-                                    // compareTo()/compare()
-                                    // (RV_NEGATING_RESULT_OF_COMPARETO)
-                                    //
-                                    // "This code negatives the return value
-                                    // of a compareTo or compare method. This
-                                    // is a questionable or bad programming
-                                    // practice, since if the return value is
-                                    // Integer.MIN_VALUE, negating the return
-                                    // value won't negate the sign of the
-                                    // result. You can achieve the same
-                                    // intended result by reversing the order
-                                    // of the operands rather than by negating
-                                    // the results."
-                                    //return lifo ? -relationCompare : relationCompare;
-                                    if (lifo) {
-                                        if (relationCompare == Integer.MIN_VALUE) {
-                                            return Integer.MAX_VALUE;
-                                        } else {
-                                            return -relationCompare;
-                                        }
-                                    } else {
-                                        return relationCompare;
-                                    }
+                                    return -eventCompare;
                                 }
+                            } else {
+                                return eventCompare;
                             }
+                        } else {
+                            name1 = relation1.getName();
+                            name2 = relation2.getName();
+                            int relationCompare = name1.compareTo(name2);
+                            // FIXME: FindBugs: "RV: Negating the result of
+                            // compareTo()/compare()
+                            // (RV_NEGATING_RESULT_OF_COMPARETO)
+                            //
+                            // "This code negatives the return value
+                            // of a compareTo or compare method. This
+                            // is a questionable or bad programming
+                            // practice, since if the return value is
+                            // Integer.MIN_VALUE, negating the return
+                            // value won't negate the sign of the
+                            // result. You can achieve the same
+                            // intended result by reversing the order
+                            // of the operands rather than by negating
+                            // the results."
+                            //return lifo ? -relationCompare : relationCompare;
+                            if (lifo) {
+                                if (relationCompare == Integer.MIN_VALUE) {
+                                    return Integer.MAX_VALUE;
+                                } else {
+                                    return -relationCompare;
+                                }
+                            } else {
+                                return relationCompare;
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -748,7 +745,7 @@ public class Event extends State implements Initializable {
     /**
      The parameter to store an argument passed on a scheduling relation to this
      event.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -784,7 +781,7 @@ public class Event extends State implements Initializable {
     /**
      A data structure to store the model time advance for the refire() method to
      be called. This data structure is returned by fire() and refire().
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -824,8 +821,8 @@ public class Event extends State implements Initializable {
     protected ParserScope _getParserScope() {
         if (_parserScope == null
                 || _parserScopeVersion != _workspace.getVersion()) {
-            _parserScope = new VariableScope(this, getController()
-                    .getPortScope());
+            _parserScope = new VariableScope(this,
+                    getController().getPortScope());
             TypedActor[] refinements;
             try {
                 refinements = getRefinement();

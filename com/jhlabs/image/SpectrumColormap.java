@@ -34,7 +34,8 @@ public class SpectrumColormap implements Colormap {
      */
     @Override
     public int getColor(float v) {
-        return Spectrum.wavelengthToRGB(380 + 400 * ImageMath.clamp(v, 0, 1.0f));
+        return Spectrum
+                .wavelengthToRGB(380 + 400 * ImageMath.clamp(v, 0, 1.0f));
     }
 
 }

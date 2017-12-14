@@ -155,8 +155,8 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HMMGaussianEstimator newObject = (HMMGaussianEstimator) super
-                .clone(workspace);
+        HMMGaussianEstimator newObject = (HMMGaussianEstimator) super.clone(
+                workspace);
         newObject._sigma0 = new double[_nStates];
         newObject._mu0 = new double[_nStates];
         return newObject;
@@ -224,7 +224,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 A_new = _A0;
                 prior_new = _priors;
                 System.out
-                .println("Expectation Maximization failed to converge");
+                        .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 // randomize means

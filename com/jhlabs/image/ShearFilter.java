@@ -66,13 +66,15 @@ public class ShearFilter extends TransformFilter {
     protected void transformSpace(Rectangle r) {
         float tangent = (float) Math.tan(xangle);
         xoffset = -r.height * tangent;
-        if (tangent < 0.0)
+        if (tangent < 0.0) {
             tangent = -tangent;
+        }
         r.width = (int) (r.height * tangent + r.width + 0.999999f);
         tangent = (float) Math.tan(yangle);
         yoffset = -r.width * tangent;
-        if (tangent < 0.0)
+        if (tangent < 0.0) {
             tangent = -tangent;
+        }
         r.height = (int) (r.width * tangent + r.height + 0.999999f);
     }
 
@@ -83,10 +85,10 @@ public class ShearFilter extends TransformFilter {
                             consumer.imageComplete(status);
                             return;
                     }
-
+    
                     int width = originalSpace.width;
                     int height = originalSpace.height;
-
+    
                     float tangent = Math.tan(angle);
                     if (tangent < 0.0)
                             tangent = -tangent;
@@ -103,7 +105,7 @@ public class ShearFilter extends TransformFilter {
                             int iNewCol = (int)newCol;
                             float f = newCol - iNewCol;
                             f = 1.0 - f;
-
+    
                             int outIndex = yOffset+iNewCol;
                             int lastRGB = inPixels[inIndex];
                             for (int x = 0; x < width; x++) {

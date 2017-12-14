@@ -88,8 +88,8 @@ public class SearchCriteriaManager {
      * the search criteria file.
      */
     public static SearchCriteria open(String searchCriteriaFileName,
-            Configuration configuration) throws SearchCriteriaParseException,
-            IOException {
+            Configuration configuration)
+            throws SearchCriteriaParseException, IOException {
 
         SearchCriteria storedSearchCriteria = new SearchCriteria();
 
@@ -125,10 +125,11 @@ public class SearchCriteriaManager {
                             criteriaFile);
                     BufferedReader bufferedReader = null;
                     try {
-                        bufferedReader = new BufferedReader(new InputStreamReader(
-                                        fileInputStream));
+                        bufferedReader = new BufferedReader(
+                                new InputStreamReader(fileInputStream));
 
-                        StringBuffer criteriaStringBuffer = new StringBuffer("");
+                        StringBuffer criteriaStringBuffer = new StringBuffer(
+                                "");
 
                         String line = bufferedReader.readLine();
 
@@ -143,12 +144,11 @@ public class SearchCriteriaManager {
                         }
                     }
 
-
                     int startIndex = criteriaString.indexOf("<pattern>");
                     int endIndex = criteriaString.indexOf("</pattern>");
 
-                    String patternMoml = criteriaString.substring(
-                            startIndex + 9, endIndex);
+                    String patternMoml = criteriaString
+                            .substring(startIndex + 9, endIndex);
 
                     storedSearchCriteria.setPatternMoML(patternMoml);
 
@@ -171,12 +171,12 @@ public class SearchCriteriaManager {
                                     .getAttributes();
 
                             StringParameter attribute = new StringParameter(
-                                    new NamedObj(), attributeInfoMap
-                                    .getNamedItem("name")
-                                    .getNodeValue());
+                                    new NamedObj(),
+                                    attributeInfoMap.getNamedItem("name")
+                                            .getNodeValue());
 
-                            attribute.setToken(attributeInfoMap.getNamedItem(
-                                    "value").getNodeValue());
+                            attribute.setToken(attributeInfoMap
+                                    .getNamedItem("value").getNodeValue());
 
                             attributesList.add(attribute);
                         }
@@ -204,7 +204,8 @@ public class SearchCriteriaManager {
         } catch (Exception e) {
             throw new SearchCriteriaParseException(
                     "Fail to parse the stored search criteria file in "
-                            + searchCriteriaFileName, e);
+                            + searchCriteriaFileName,
+                    e);
         }
 
         return storedSearchCriteria;
@@ -226,8 +227,8 @@ public class SearchCriteriaManager {
      *  search criteria information to the file.
      */
     public static boolean save(SearchCriteria searchCriteria,
-            String searchCriteriaFile) throws IllegalActionException,
-            IOException {
+            String searchCriteriaFile)
+            throws IllegalActionException, IOException {
 
         StringBuffer searchCriteriaStringBuffer = new StringBuffer();
 
@@ -283,7 +284,8 @@ public class SearchCriteriaManager {
         FileOutputStream fileOutputStream = new FileOutputStream(file);
 
         BufferedWriter bufferedWriter = new BufferedWriter(
-                new OutputStreamWriter(fileOutputStream, java.nio.charset.Charset.defaultCharset()));
+                new OutputStreamWriter(fileOutputStream,
+                        java.nio.charset.Charset.defaultCharset()));
 
         try {
 

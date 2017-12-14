@@ -51,8 +51,7 @@ public class HistogramApplet extends PlotApplet {
      */
     @Override
     public String getAppletInfo() {
-        return "Histogram 1.0: Demo of PlotApplet.\n"
-                + "By: Edward A. Lee\n "
+        return "Histogram 1.0: Demo of PlotApplet.\n" + "By: Edward A. Lee\n "
                 + "($Id$)";
     }
 

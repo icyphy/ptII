@@ -49,7 +49,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter {
+public abstract class ColtRandomSource
+        extends NamedProgramCodeGeneratorAdapter {
     /**
      *  Construct the ColtRandomSource adapter.
      *  @param actor the associated actor.
@@ -105,7 +106,8 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
 
         String generatorClassValue = ((StringToken) actor.generatorClass
                 .getToken()).stringValue();
-        if (generatorClassValue == null || generatorClassValue.equals("DRand")) {
+        if (generatorClassValue == null
+                || generatorClassValue.equals("DRand")) {
             codeStream.appendCodeBlock("setRandomNumberGeneratorDRand");
         } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
             codeStream.appendCodeBlock("setRandomNumberMersenneTwister");
@@ -136,7 +138,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
         files.add("edu.cornell.lassp.houle.RngPack.Ranmar;");
 
         ((ProceduralCodeGenerator) getCodeGenerator())
-        .addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
+                .addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
         return files;
     }
 

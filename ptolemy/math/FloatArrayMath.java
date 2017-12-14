@@ -71,7 +71,8 @@ public class FloatArrayMath {
      *  If the two arrays do not have the same length, throw an
      *  IllegalArgumentException.
      */
-    public static final float[] add(final float[] array1, final float[] array2) {
+    public static final float[] add(final float[] array1,
+            final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.add");
         float[] returnValue = new float[length];
 
@@ -286,7 +287,8 @@ public class FloatArrayMath {
         for (int i = 0; i < array.length; i++) {
             if (array[i] > top || array[i] == Float.POSITIVE_INFINITY) {
                 returnValue[i] = top;
-            } else if (array[i] < bottom || array[i] == Float.NEGATIVE_INFINITY) {
+            } else if (array[i] < bottom
+                    || array[i] == Float.NEGATIVE_INFINITY) {
                 returnValue[i] = bottom;
             } else {
                 returnValue[i] = array[i];
@@ -386,8 +388,8 @@ public class FloatArrayMath {
 
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array, halfLengthFloor, returnValue, newLength
-                - halfLengthCeil, halfLengthCeil);
+        System.arraycopy(array, halfLengthFloor, returnValue,
+                newLength - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -400,7 +402,8 @@ public class FloatArrayMath {
      *  @param newLength The desired length of the output array.
      *  @return A new array of floats of length newLength.
      */
-    public static final float[] resize(final float[] array, final int newLength) {
+    public static final float[] resize(final float[] array,
+            final int newLength) {
         return resize(array, newLength, 0);
     }
 
@@ -427,8 +430,7 @@ public class FloatArrayMath {
 
         if (startIdx >= array.length && copySize > 0) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx
-                    + "' is greater than equal to the array length '"
+                    + startIdx + "' is greater than equal to the array length '"
                     + array.length + "' and the number of items to be copied '"
                     + copySize + "' is greater than zero.");
         }
@@ -676,7 +678,8 @@ public class FloatArrayMath {
             throw new IllegalArgumentException("ptolemy.math." + methodName
                     + "() : input arrays must have the same length, "
                     + "but the first array has length " + array1.length
-                    + " and the second array has length " + array2.length + ".");
+                    + " and the second array has length " + array2.length
+                    + ".");
         }
 
         return array1.length;

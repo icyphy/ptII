@@ -58,8 +58,8 @@ import soot.SceneTransformer;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class InterpretedWriter extends SceneTransformer implements
-HasPhaseOptions {
+public class InterpretedWriter extends SceneTransformer
+        implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private InterpretedWriter(CompositeEntity model) {
@@ -128,23 +128,22 @@ HasPhaseOptions {
         File outputDirectoryFile = new File(_outputDirectory);
 
         if (outputDirectoryFile.isDirectory()) {
-            System.out.println(" Warning: '" + outputDirectoryFile
-                    + "' already exists.");
+            System.out.println(
+                    " Warning: '" + outputDirectoryFile + "' already exists.");
         }
 
         if (!outputDirectoryFile.isDirectory()) {
             if (!outputDirectoryFile.mkdirs()) {
-                throw new InternalErrorException(
-                        "Failed to create directory \"" + outputDirectoryFile
-                        + "\"");
+                throw new InternalErrorException("Failed to create directory \""
+                        + outputDirectoryFile + "\"");
             }
         }
 
         // Generate the .xml file.
         String modelFileName = _outputDirectory + "/" + _sanitizedModelName
                 + ".xml";
-        System.out.println("InterpretedWriter: about to write '"
-                + modelFileName + "'");
+        System.out.println(
+                "InterpretedWriter: about to write '" + modelFileName + "'");
 
         Writer modelFileWriter = null;
         try {
@@ -152,15 +151,15 @@ HasPhaseOptions {
                     new FileOutputStream(modelFileName)));
             _model.exportMoML(modelFileWriter);
         } catch (IOException ex) {
-            throw new InternalErrorException("Problem writing '"
-                    + modelFileName + "': " + ex);
+            throw new InternalErrorException(
+                    "Problem writing '" + modelFileName + "': " + ex);
         } finally {
             if (modelFileWriter != null) {
                 try {
                     modelFileWriter.close();
                 } catch (IOException ex) {
-                    throw new RuntimeException("Failed to close "
-                            + modelFileName, ex);
+                    throw new RuntimeException(
+                            "Failed to close " + modelFileName, ex);
                 }
             }
         }

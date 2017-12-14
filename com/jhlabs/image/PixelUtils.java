@@ -55,10 +55,12 @@ public class PixelUtils {
      * @return the clamped value.
      */
     public static int clamp(int c) {
-        if (c < 0)
+        if (c < 0) {
             return 0;
-        if (c > 255)
+        }
+        if (c > 255) {
             return 255;
+        }
         return c;
     }
 
@@ -97,7 +99,8 @@ public class PixelUtils {
         int r2 = (rgb2 >> 16) & 0xff;
         int g2 = (rgb2 >> 8) & 0xff;
         int b2 = rgb2 & 0xff;
-        return Math.abs(r1 - r2) <= tolerance && Math.abs(g1 - g2) <= tolerance && Math.abs(b1 - b2) <= tolerance;
+        return Math.abs(r1 - r2) <= tolerance && Math.abs(g1 - g2) <= tolerance
+                && Math.abs(b1 - b2) <= tolerance;
     }
 
     private final static float hsb1[] = new float[3];//FIXME-not thread safe
@@ -121,8 +124,10 @@ public class PixelUtils {
      *  @param channelMask The channel mask.
      *  @return the combined pixel.
      */
-    public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha, int channelMask) {
-        return (rgb2 & ~channelMask) | combinePixels(rgb1 & channelMask, rgb2, op, extraAlpha);
+    public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha,
+            int channelMask) {
+        return (rgb2 & ~channelMask)
+                | combinePixels(rgb1 & channelMask, rgb2, op, extraAlpha);
     }
 
     /** Return rgb1 painted onto rgb2.
@@ -132,9 +137,11 @@ public class PixelUtils {
      *  @param extraAlpha The extra alpha.
      *  @return the combined pixel.
      */
-    public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha) {
-        if (op == REPLACE)
+    public static int combinePixels(int rgb1, int rgb2, int op,
+            int extraAlpha) {
+        if (op == REPLACE) {
             return rgb1;
+        }
         int a1 = (rgb1 >> 24) & 0xff;
         int r1 = (rgb1 >> 16) & 0xff;
         int g1 = (rgb1 >> 8) & 0xff;

@@ -75,14 +75,14 @@ public class DoubleToken extends ScalarToken {
      */
     public DoubleToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(notSupportedNullNilStringMessage(
-                    "DoubleToken", init));
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("DoubleToken", init));
         }
         try {
             _value = Double.parseDouble(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(null, e, "Failed to parse \""
-                    + init + "\" as a number.");
+            throw new IllegalActionException(null, e,
+                    "Failed to parse \"" + init + "\" as a number.");
         }
     }
 
@@ -140,8 +140,7 @@ public class DoubleToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             FloatToken floatToken = FloatToken.convert(token);
             DoubleToken result = new DoubleToken(floatToken.doubleValue());
-            if (floatToken._unitCategoryExponents != null
-                    && !UnitUtilities
+            if (floatToken._unitCategoryExponents != null && !UnitUtilities
                     .isUnitless(floatToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = floatToken
                         ._copyOfCategoryExponents();
@@ -154,16 +153,15 @@ public class DoubleToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken intToken = IntToken.convert(token);
             DoubleToken result = new DoubleToken(intToken.doubleValue());
-            if (intToken._unitCategoryExponents != null
-                    && !UnitUtilities
+            if (intToken._unitCategoryExponents != null && !UnitUtilities
                     .isUnitless(intToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = intToken
                         ._copyOfCategoryExponents();
             }
             return result;
         } else {
-            throw new IllegalActionException(notSupportedConversionMessage(
-                    token, "double"));
+            throw new IllegalActionException(
+                    notSupportedConversionMessage(token, "double"));
         }
     }
 
@@ -341,7 +339,7 @@ public class DoubleToken extends ScalarToken {
         // If the right argument is a SmoothToken, then delegate to it so that
         // derivatives are preserved.
         if (rightArgument instanceof SmoothToken) {
-            return ((SmoothToken)rightArgument)._add(this);
+            return ((SmoothToken) rightArgument)._add(this);
         }
         double sum = _value + ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(sum);
@@ -356,8 +354,8 @@ public class DoubleToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseAnd", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -366,8 +364,8 @@ public class DoubleToken extends ScalarToken {
      */
     @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                this, this));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseNot", this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -379,8 +377,8 @@ public class DoubleToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseOr", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -392,8 +390,8 @@ public class DoubleToken extends ScalarToken {
     @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseXor", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -418,7 +416,8 @@ public class DoubleToken extends ScalarToken {
      *   to that of the argument.
      */
     @Override
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.DoubleMatrixMath.within(); if this
         // implementation changes, also change the corresponding
@@ -447,8 +446,8 @@ public class DoubleToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         DoubleToken convertedArgument = (DoubleToken) rightArgument;
-        return BooleanToken.getInstance(_value < convertedArgument
-                .doubleValue());
+        return BooleanToken
+                .getInstance(_value < convertedArgument.doubleValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -474,7 +473,7 @@ public class DoubleToken extends ScalarToken {
         // If the right argument is a SmoothToken, then delegate to it so that
         // derivatives are preserved.
         if (rightArgument instanceof SmoothToken) {
-            return ((SmoothToken)rightArgument)._multiply(this);
+            return ((SmoothToken) rightArgument)._multiply(this);
         }
         double product = _value * ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(product);
@@ -491,7 +490,7 @@ public class DoubleToken extends ScalarToken {
         // If the right argument is a SmoothToken, then delegate to it so that
         // derivatives are preserved.
         if (rightArgument instanceof SmoothToken) {
-            SmoothToken negative = ((SmoothToken)rightArgument).negate();
+            SmoothToken negative = ((SmoothToken) rightArgument).negate();
             return negative._add(this);
         }
         double difference = _value

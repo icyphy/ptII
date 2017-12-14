@@ -111,9 +111,10 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
         super.attributeChanged(attribute);
     }
 
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
-        sequenceNumber = new Parameter(this, "sequenceNumber", new IntToken(-1));
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
+        sequenceNumber = new Parameter(this, "sequenceNumber",
+                new IntToken(-1));
         sequenceNumber.setPersistent(true);
         sequenceNumber.setVisibility(Settable.EXPERT);
     }

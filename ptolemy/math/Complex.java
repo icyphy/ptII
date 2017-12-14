@@ -111,8 +111,8 @@ public class Complex {
      *  arc cosine of the given complex number.
      */
     public final Complex acos() {
-        Complex c1 = new Complex(1.0 - real * real + imag * imag, -2.0 * real
-                * imag);
+        Complex c1 = new Complex(1.0 - real * real + imag * imag,
+                -2.0 * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(real - c2.imag, imag + c2.real);
         Complex c4 = c3.log();
@@ -145,8 +145,8 @@ public class Complex {
      *  principal hyperbolic arc cosine of this complex number.
      */
     public final Complex acosh() {
-        Complex c1 = new Complex(real * real - imag * imag - 1.0, 2.0 * real
-                * imag);
+        Complex c1 = new Complex(real * real - imag * imag - 1.0,
+                2.0 * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -202,8 +202,8 @@ public class Complex {
      *  of this complex number.
      */
     public final Complex asin() {
-        Complex c1 = new Complex(1.0 - real * real + imag * imag, -2.0 * real
-                * imag);
+        Complex c1 = new Complex(1.0 - real * real + imag * imag,
+                -2.0 * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = new Complex(c2.real - imag, c2.imag + real);
         Complex c4 = c3.log();
@@ -236,8 +236,8 @@ public class Complex {
      *  hyperbolic arc sine of this complex number.
      */
     public final Complex asinh() {
-        Complex c1 = new Complex(1.0 + real * real - imag * imag, 2.0 * real
-                * imag);
+        Complex c1 = new Complex(1.0 + real * real - imag * imag,
+                2.0 * real * imag);
         Complex c2 = c1.sqrt();
         Complex c3 = add(c2);
         return c3.log();
@@ -270,8 +270,9 @@ public class Complex {
      */
     public final Complex atan() {
         double denominator = real * real + (imag + 1.0) * (imag + 1.0);
-        Complex c1 = new Complex((-real * real - imag * imag + 1.0)
-                / denominator, 2.0 * real / denominator);
+        Complex c1 = new Complex(
+                (-real * real - imag * imag + 1.0) / denominator,
+                2.0 * real / denominator);
         Complex c2 = c1.log();
         return new Complex(c2.imag * 0.5, -c2.real * 0.5);
     }
@@ -303,8 +304,9 @@ public class Complex {
      */
     public final Complex atanh() {
         double denominator = (1.0 - real) * (1.0 - real) + imag * imag;
-        Complex c1 = new Complex((-real * real - imag * imag + 1.0)
-                / denominator, 2.0 * imag / denominator);
+        Complex c1 = new Complex(
+                (-real * real - imag * imag + 1.0) / denominator,
+                2.0 * imag / denominator);
         Complex c2 = c1.log();
         return new Complex(c2.real * 0.5, c2.imag * 0.5);
     }
@@ -485,9 +487,9 @@ public class Complex {
     public final Complex divide(Complex divisor) {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
         double denominator = divisor.magnitudeSquared();
-        return new Complex((real * divisor.real + imag * divisor.imag)
-                / denominator, (imag * divisor.real - real * divisor.imag)
-                / denominator);
+        return new Complex(
+                (real * divisor.real + imag * divisor.imag) / denominator,
+                (imag * divisor.real - real * divisor.imag) / denominator);
     }
 
     /** Return true if the real and imaginary parts of this complex number
@@ -723,8 +725,8 @@ public class Complex {
      *  @see Complex#scale
      */
     public Complex multiply(Complex w) {
-        return new Complex(w.real * real - w.imag * imag, w.real * imag
-                + w.imag * real);
+        return new Complex(w.real * real - w.imag * imag,
+                w.real * imag + w.imag * real);
     }
 
     /** Negate this complex number.
@@ -765,8 +767,8 @@ public class Complex {
             return Complex.ZERO;
         }
 
-        return new Complex(magnitude * Math.cos(angle), magnitude
-                * Math.sin(angle));
+        return new Complex(magnitude * Math.cos(angle),
+                magnitude * Math.sin(angle));
     }
 
     /** Return a new complex number with value <em>z <sup>y</sup></em>

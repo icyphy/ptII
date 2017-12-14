@@ -133,7 +133,8 @@ public class NodeRendererTutorial {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                LevelLayout random = new LevelLayout(new BasicLayoutTarget(bgc));
+                LevelLayout random = new LevelLayout(
+                        new BasicLayoutTarget(bgc));
                 random.layout(model.getRoot());
             }
         });

@@ -62,8 +62,9 @@ public class BlockFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] pixels = new int[blockSize * blockSize];
         for (int y = 0; y < height; y += blockSize) {

@@ -52,9 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating Red (jiazou)
  */
-public class SDFReceiver
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
+public class SDFReceiver extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
     /** Construct an adapter for an SDF receiver.
      *  @param receiver The SDFReceiver for which an adapter is constructed.
      *  @exception IllegalActionException If thrown by the superclass.
@@ -63,8 +62,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             throws IllegalActionException {
         super(receiver);
         // FIXME: not sure if this is totally correct.
-        if (receiver != null
-                && receiver.getContainer().getContainer() instanceof CompositeActor) {
+        if (receiver != null && receiver.getContainer()
+                .getContainer() instanceof CompositeActor) {
             _forComposite = true;
         }
     }
@@ -93,8 +92,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         //        String result = _getDirectorForReceiver().getReference(port,
         //                new String[] { Integer.toString(channel), offset },
         //                _forComposite, false, containingActorAdapter);
-        String actorName = CodeGeneratorAdapter.generateName(port
-                .getContainer());
+        String actorName = CodeGeneratorAdapter
+                .generateName(port.getContainer());
         String type = getCodeGenerator().codeGenType(port.getType());
         //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
         String result;
@@ -132,25 +131,27 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
      *  getting the adapter, getting the director or getting the port reference.
      */
     @Override
-    public String generatePutCode(IOPort sourcePort, String offset, String token)
-            throws IllegalActionException {
+    public String generatePutCode(IOPort sourcePort, String offset,
+            String token) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-                .getContainer().getContainer());
+        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent().getContainer().getContainer());
 
         // The source's channel as well as the offsetis irrelevant here because
         // we use the token as the sourceRef instead.
         // The sink is actually also irrelevant, since we will get rid of it later.
         ProgramCodeGeneratorAdapter.Channel source = new Channel(sourcePort, 0);
         ProgramCodeGeneratorAdapter.Channel sink = new Channel(port, channel);
-        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
-                .getContainer().getContainer())).getTemplateParser()
-                .generateTypeConvertStatement(source, sink, 0, token);
+        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(
+                getComponent().getContainer().getContainer()))
+                        .getTemplateParser()
+                        .generateTypeConvertStatement(source, sink, 0, token);
         token = _removeSink(token);
 
         boolean forComposite = _forComposite;
-        if (getComponent().getContainer().getContainer() instanceof ModularCodeGenTypedCompositeActor
+        if (getComponent().getContainer()
+                .getContainer() instanceof ModularCodeGenTypedCompositeActor
                 && port.isInput()) {
             // If the container is a ModularCodeGenTypedCompositeActor
             // and the port is an input, then generate a reference
@@ -160,9 +161,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             // which has nested ModularCodegen.
             forComposite = false;
         }
-        if (port.isInput()
-                && ((Actor) sourcePort.getContainer()).getDirector() != ((Actor) port
-                        .getContainer()).getDirector()) {
+        if (port.isInput() && ((Actor) sourcePort.getContainer())
+                .getDirector() != ((Actor) port.getContainer()).getDirector()) {
             // Needed for $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_2_2e.xml
             forComposite = false;
         }
@@ -176,8 +176,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         try {
             String actorSourceName = CodeGeneratorAdapter
                     .generateName(sourcePort.getContainer());
-            String actorDestName = CodeGeneratorAdapter.generateName(port
-                    .getContainer());
+            String actorDestName = CodeGeneratorAdapter
+                    .generateName(port.getContainer());
             String nameInput = actorSourceName + ".ports[enum_"
                     + actorSourceName + "_" + sourcePort.getName()
                     + "].farReceivers[" + actorSourceName + "_"
@@ -187,8 +187,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
             //type = type.substring(0, 1).toUpperCase(Locale.getDefault()) + type.substring(1);
 
             if (port.getType() instanceof StructuredType) {
-                result = _eol + "ReceiverPut(" + nameInput + ", " + token
-                        + ");" + _eol;
+                result = _eol + "ReceiverPut(" + nameInput + ", " + token + ");"
+                        + _eol;
             } else {
                 result = _eol + "ReceiverPut(" + nameInput + ", $new(" + type
                         + "(" + token + ")));" + _eol;
@@ -201,8 +201,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
         } catch (Throwable throwable) {
             result = _getExecutiveDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
-                    forComposite, true, containingActorAdapter)
-                    + " = " + token + ";" + _eol;
+                    forComposite, true, containingActorAdapter) + " = " + token
+                    + ";" + _eol;
         }
         return result;
         //        adapter.processCode("$ref(" + port.getName() + "#" + channel
@@ -296,8 +296,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kerne
     @Override
     protected StaticSchedulingDirector _getExecutiveDirectorForReceiver()
             throws IllegalActionException {
-        return (StaticSchedulingDirector) getAdapter(((Actor) getComponent()
-                .getContainer().getContainer()).getExecutiveDirector());
+        return (StaticSchedulingDirector) getAdapter(
+                ((Actor) getComponent().getContainer().getContainer())
+                        .getExecutiveDirector());
     }
 
     //$send(port#channel) ==> port_channel[writeOffset]

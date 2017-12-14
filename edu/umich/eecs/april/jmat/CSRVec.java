@@ -67,6 +67,7 @@ public class CSRVec extends Vec {
         values = new double[capacity];
     }
 
+    @Override
     public final Vec copy() {
         CSRVec X = new CSRVec(length, indices.length);
         System.arraycopy(indices, 0, X.indices, 0, nz);
@@ -76,14 +77,17 @@ public class CSRVec extends Vec {
         return X;
     }
 
+    @Override
     public final double[] copyArray() {
         return getDoubles();
     }
 
+    @Override
     public final double[] getDoubles() {
         double v[] = new double[length];
-        for (int i = 0; i < nz; i++)
+        for (int i = 0; i < nz; i++) {
             v[indices[i]] = values[i];
+        }
         return v;
     }
 
@@ -121,11 +125,13 @@ public class CSRVec extends Vec {
     // anything after it as necessary. Position 'i' must be the
     // correct position for idx. 'idx' must not already be in the vec.
     final void insert(int i, int idx, double v) {
-        if (v == 0)
+        if (v == 0) {
             return;
+        }
 
-        if (nz == indices.length)
+        if (nz == indices.length) {
             grow();
+        }
 
         System.arraycopy(indices, i, indices, i + 1, nz - i);
         System.arraycopy(values, i, values, i + 1, nz - i);
@@ -135,6 +141,7 @@ public class CSRVec extends Vec {
         nz++;
     }
 
+    @Override
     public final void resize(int newlength) {
         if (length <= newlength) {
             length = newlength;
@@ -174,8 +181,9 @@ public class CSRVec extends Vec {
     }
 
     public final void ensureCapacity(int mincapacity) {
-        if (mincapacity > indices.length)
+        if (mincapacity > indices.length) {
             grow(mincapacity);
+        }
     }
 
     final void grow() {
@@ -184,8 +192,9 @@ public class CSRVec extends Vec {
 
     final void grow(int mincapacity) {
         int newcapacity = indices.length * 2;
-        while (newcapacity < mincapacity)
+        while (newcapacity < mincapacity) {
             newcapacity *= 2;
+        }
 
         int newindices[] = new int[newcapacity];
         double newvalues[] = new double[newcapacity];
@@ -197,18 +206,21 @@ public class CSRVec extends Vec {
         values = newvalues;
     }
 
+    @Override
     public final CSRVec copy(int i0, int i1) {
         CSRVec X = new CSRVec(i1 - i0 + 1);
 
         int low = 0;
-        while (low < nz && indices[low] < i0)
+        while (low < nz && indices[low] < i0) {
             low++;
+        }
 
         // XXX could be done with arraycopy by finding high.
         for (int i = low; i < nz && indices[i] <= i1; i++) {
 
-            if (X.nz == X.indices.length)
+            if (X.nz == X.indices.length) {
                 X.grow();
+            }
 
             X.indices[X.nz] = indices[i] - i0;
             X.values[X.nz] = values[i];
@@ -217,18 +229,21 @@ public class CSRVec extends Vec {
         return X;
     }
 
+    @Override
     public final Vec copyPart(int i0, int i1) {
         CSRVec X = new CSRVec(length);
 
         int low = 0;
-        while (low < nz && indices[low] < i0)
+        while (low < nz && indices[low] < i0) {
             low++;
+        }
 
         // XXX could be done with arraycopy by finding high.
         for (int i = low; i < nz && indices[i] <= i1; i++) {
 
-            if (X.nz == X.indices.length)
+            if (X.nz == X.indices.length) {
                 X.grow();
+            }
 
             X.indices[X.nz] = indices[i];
             X.values[X.nz] = values[i];
@@ -237,39 +252,48 @@ public class CSRVec extends Vec {
         return X;
     }
 
+    @Override
     public final int size() {
         return length;
     }
 
+    @Override
     public final int getNz() {
         return nz;
     }
 
     // not thread safe. Maintain a cursor to help consecutive
     // accesses.
+    @Override
     public final double get(int idx) {
-        if (nz == 0)
+        if (nz == 0) {
             return 0;
+        }
 
-        if (lastGetIdx >= nz || lastGetIdx < 0)
+        if (lastGetIdx >= nz || lastGetIdx < 0) {
             lastGetIdx = nz / 2;
+        }
 
         if (indices[lastGetIdx] < idx) {
             // search up
-            while (lastGetIdx + 1 < nz && indices[lastGetIdx + 1] <= idx)
+            while (lastGetIdx + 1 < nz && indices[lastGetIdx + 1] <= idx) {
                 lastGetIdx++;
+            }
 
-            if (indices[lastGetIdx] == idx)
+            if (indices[lastGetIdx] == idx) {
                 return values[lastGetIdx];
+            }
 
             return 0;
         } else {
             // search down
-            while (lastGetIdx - 1 >= 0 && indices[lastGetIdx - 1] >= idx)
+            while (lastGetIdx - 1 >= 0 && indices[lastGetIdx - 1] >= idx) {
                 lastGetIdx--;
+            }
 
-            if (indices[lastGetIdx] == idx)
+            if (indices[lastGetIdx] == idx) {
                 return values[lastGetIdx];
+            }
 
             return 0;
         }
@@ -277,19 +301,24 @@ public class CSRVec extends Vec {
 
     // reference version of "get", without the cursor caching.
     public final double getRef(int idx) {
-        for (int i = 0; i < nz && indices[i] <= idx; i++)
-            if (indices[i] == idx)
+        for (int i = 0; i < nz && indices[i] <= idx; i++) {
+            if (indices[i] == idx) {
                 return values[i];
+            }
+        }
         return 0;
     }
 
+    @Override
     public final void set(int idx, double v) {
-        if (lastSetIdx < 0 || lastSetIdx >= nz)
+        if (lastSetIdx < 0 || lastSetIdx >= nz) {
             lastSetIdx = nz / 2;
+        }
 
         if (nz == 0) {
-            if (v == 0)
+            if (v == 0) {
                 return;
+            }
             indices[0] = idx;
             values[0] = v;
             nz = 1;
@@ -304,8 +333,9 @@ public class CSRVec extends Vec {
         // search.
         if (indices[lastSetIdx] < idx) {
             // search up
-            while (lastSetIdx + 1 < nz && indices[lastSetIdx + 1] <= idx)
+            while (lastSetIdx + 1 < nz && indices[lastSetIdx + 1] <= idx) {
                 lastSetIdx++;
+            }
 
             if (indices[lastSetIdx] == idx) {
                 values[lastSetIdx] = v;
@@ -315,8 +345,9 @@ public class CSRVec extends Vec {
 
         } else {
             // search down
-            while (lastSetIdx - 1 >= 0 && indices[lastSetIdx - 1] >= idx)
+            while (lastSetIdx - 1 >= 0 && indices[lastSetIdx - 1] >= idx) {
                 lastSetIdx--;
+            }
 
             if (indices[lastSetIdx] == idx) {
                 values[lastSetIdx] = v;
@@ -335,11 +366,13 @@ public class CSRVec extends Vec {
             }
         }
 
-        if (v == 0)
+        if (v == 0) {
             return;
+        }
 
-        if (nz == indices.length)
+        if (nz == indices.length) {
             grow();
+        }
 
         indices[nz] = idx;
         values[nz] = v;
@@ -347,6 +380,7 @@ public class CSRVec extends Vec {
         sort();
     }
 
+    @Override
     public final double dotProduct(Vec r) {
         double acc = 0;
 
@@ -366,22 +400,25 @@ public class CSRVec extends Vec {
                     continue;
                 }
 
-                if (ai < bi)
+                if (ai < bi) {
                     aidx++;
-                else
+                } else {
                     bidx++;
+                }
             }
 
             return acc;
         }
 
         // default method
-        for (int i = 0; i < nz; i++)
+        for (int i = 0; i < nz; i++) {
             acc += values[i] * r.get(indices[i]);
+        }
 
         return acc;
     }
 
+    @Override
     public final double dotProduct(Vec r, int i0, int i1) {
         double acc = 0;
 
@@ -390,16 +427,19 @@ public class CSRVec extends Vec {
             CSRVec b = (CSRVec) r;
 
             int aidx = 0, bidx = 0;
-            while (aidx < a.nz && a.indices[aidx] < i0)
+            while (aidx < a.nz && a.indices[aidx] < i0) {
                 aidx++;
-            while (bidx < b.nz && b.indices[bidx] < i0)
+            }
+            while (bidx < b.nz && b.indices[bidx] < i0) {
                 bidx++;
+            }
 
             while (aidx < a.nz && bidx < b.nz) {
                 int ai = a.indices[aidx], bi = b.indices[bidx];
 
-                if (ai > i1 || bi > i1)
+                if (ai > i1 || bi > i1) {
                     break;
+                }
 
                 if (ai == bi) {
                     acc += a.values[aidx] * b.values[bidx];
@@ -408,10 +448,11 @@ public class CSRVec extends Vec {
                     continue;
                 }
 
-                if (ai < bi)
+                if (ai < bi) {
                     aidx++;
-                else
+                } else {
                     bidx++;
+                }
             }
 
             return acc;
@@ -419,41 +460,53 @@ public class CSRVec extends Vec {
 
         // default
         int low = 0;
-        while (low < nz && indices[low] < i0)
+        while (low < nz && indices[low] < i0) {
             low++;
+        }
 
-        for (int i = low; i < nz && indices[i] <= i1; i++)
+        for (int i = low; i < nz && indices[i] <= i1; i++) {
             acc += values[i] * r.get(indices[i]);
+        }
 
         return acc;
     }
 
+    @Override
     public final void timesEquals(double scale) {
-        for (int i = 0; i < nz; i++)
+        for (int i = 0; i < nz; i++) {
             values[i] *= scale;
+        }
     }
 
+    @Override
     public final void timesEquals(double scale, int i0, int i1) {
         int low = 0;
-        while (low < nz && indices[low] < i0)
+        while (low < nz && indices[low] < i0) {
             low++;
+        }
 
-        for (int i = low; i < nz && indices[i] <= i1; i++)
+        for (int i = low; i < nz && indices[i] <= i1; i++) {
             values[i] *= scale;
+        }
     }
 
+    @Override
     public final void transposeAsColumn(Matrix A, int col) {
-        for (int i = 0; i < nz; i++)
+        for (int i = 0; i < nz; i++) {
             A.set(indices[i], col, values[i]);
+        }
     }
 
+    @Override
     public final void transposeAsColumn(Matrix A, int col, int i0, int i1) {
         int low = 0;
-        while (low < nz && indices[low] < i0)
+        while (low < nz && indices[low] < i0) {
             low++;
+        }
 
-        for (int i = low; i < nz && indices[i] <= i1; i++)
+        for (int i = low; i < nz && indices[i] <= i1; i++) {
             A.set(indices[i], col, values[i]);
+        }
     }
 
     public static final void add(CSRVec csra, double ascale, CSRVec csrb,
@@ -464,10 +517,12 @@ public class CSRVec extends Vec {
 
         while (apos < csra.nz || bpos < csrb.nz) {
             int thisidx = Integer.MAX_VALUE;
-            if (apos < csra.nz)
+            if (apos < csra.nz) {
                 thisidx = csra.indices[apos];
-            if (bpos < csrb.nz)
+            }
+            if (bpos < csrb.nz) {
                 thisidx = Math.min(thisidx, csrb.indices[bpos]);
+            }
 
             double vala = 0;
             double valb = 0;
@@ -481,8 +536,9 @@ public class CSRVec extends Vec {
                 bpos++;
             }
 
-            if (thisidx < i0 || thisidx > i1)
+            if (thisidx < i0 || thisidx > i1) {
                 continue;
+            }
 
             double thisvalue = ascale * vala + valb;
             res.indices[res.nz] = thisidx;
@@ -491,6 +547,7 @@ public class CSRVec extends Vec {
         }
     }
 
+    @Override
     public final void addTo(Vec _r, double scale) {
         if (_r instanceof CSRVec) {
             CSRVec r = (CSRVec) _r;
@@ -498,8 +555,9 @@ public class CSRVec extends Vec {
             int ridx = 0;
 
             for (int i = 0; i < nz; i++) {
-                while (ridx < r.nz && r.indices[ridx] < indices[i])
+                while (ridx < r.nz && r.indices[ridx] < indices[i]) {
                     ridx++;
+                }
 
                 if (ridx < r.nz && r.indices[ridx] == indices[i]) {
                     r.values[ridx] += values[i] * scale;
@@ -510,24 +568,28 @@ public class CSRVec extends Vec {
 
         } else {
 
-            for (int i = 0; i < nz; i++)
+            for (int i = 0; i < nz; i++) {
                 _r.plusEquals(indices[i], values[i] * scale);
+            }
         }
     }
 
+    @Override
     public final void addTo(Vec _r, double scale, int i0, int i1) {
         if (_r instanceof CSRVec) {
             CSRVec r = (CSRVec) _r;
 
             int low = 0;
-            while (low < nz && indices[low] < i0)
+            while (low < nz && indices[low] < i0) {
                 low++;
+            }
 
             int ridx = 0;
 
             for (int i = low; i < nz && indices[i] <= i1; i++) {
-                while (ridx < r.nz && r.indices[ridx] < indices[i])
+                while (ridx < r.nz && r.indices[ridx] < indices[i]) {
                     ridx++;
+                }
 
                 if (ridx < r.nz && r.indices[ridx] == indices[i]) {
                     r.values[ridx] += values[i] * scale;
@@ -539,14 +601,17 @@ public class CSRVec extends Vec {
         } else {
 
             int low = 0;
-            while (low < nz && indices[low] < i0)
+            while (low < nz && indices[low] < i0) {
                 low++;
+            }
 
-            for (int i = low; i < nz && indices[i] <= i1; i++)
+            for (int i = low; i < nz && indices[i] <= i1; i++) {
                 _r.plusEquals(indices[i], values[i] * scale);
+            }
         }
     }
 
+    @Override
     public final void plusEquals(int idx, double v) {
         for (int i = 0; i < nz; i++) {
             if (indices[i] == idx) {
@@ -559,19 +624,23 @@ public class CSRVec extends Vec {
         set(idx, v);
     }
 
+    @Override
     public final void clear() {
         nz = 0;
     }
 
+    @Override
     public final double normF() {
         double acc = 0;
 
-        for (int i = 0; i < nz; i++)
+        for (int i = 0; i < nz; i++) {
             acc += values[i] * values[i];
+        }
 
         return acc;
     }
 
+    @Override
     public final Vec copyPermuteColumns(Permutation p) {
         // XXX
         CSRVec X = new CSRVec(length, indices.length);

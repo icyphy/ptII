@@ -66,7 +66,8 @@ public class OilFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int index = 0;
         int[] rHistogram = new int[levels];
         int[] gHistogram = new int[levels];
@@ -78,8 +79,9 @@ public class OilFilter extends WholeImageFilter {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                for (int i = 0; i < levels; i++)
+                for (int i = 0; i < levels; i++) {
                     rHistogram[i] = gHistogram[i] = bHistogram[i] = rTotal[i] = gTotal[i] = bTotal[i] = 0;
+                }
 
                 for (int row = -range; row <= range; row++) {
                     int iy = y + row;
@@ -109,17 +111,21 @@ public class OilFilter extends WholeImageFilter {
 
                 int r = 0, g = 0, b = 0;
                 for (int i = 1; i < levels; i++) {
-                    if (rHistogram[i] > rHistogram[r])
+                    if (rHistogram[i] > rHistogram[r]) {
                         r = i;
-                    if (gHistogram[i] > gHistogram[g])
+                    }
+                    if (gHistogram[i] > gHistogram[g]) {
                         g = i;
-                    if (bHistogram[i] > bHistogram[b])
+                    }
+                    if (bHistogram[i] > bHistogram[b]) {
                         b = i;
+                    }
                 }
                 r = rTotal[r] / rHistogram[r];
                 g = gTotal[g] / gHistogram[g];
                 b = bTotal[b] / bHistogram[b];
-                outPixels[index] = (inPixels[index] & 0xff000000) | (r << 16) | (g << 8) | b;
+                outPixels[index] = (inPixels[index] & 0xff000000) | (r << 16)
+                        | (g << 8) | b;
                 index++;
             }
         }

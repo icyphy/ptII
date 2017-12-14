@@ -245,10 +245,10 @@ public class LevelLayout extends AbstractGlobalLayout {
         /*
          _origComposite = g;
          _target = t;
-
+        
          if (g.getNodeCount() > 0) {
          _levelData._copyGraph = copyComposite(g, t);
-
+        
          //              if (isCyclic(_copyGraph)) {
          //                  String err = "Unable to perform levelizing layout on cyclic composites";
          //                  throw new IllegalArgumentException(err);
@@ -256,7 +256,7 @@ public class LevelLayout extends AbstractGlobalLayout {
          breakCycles(_levelData._copyGraph);
          //doLayout();
          copyLayout(_levelData._copyGraph, t);
-
+        
          cleanupStructures();
          }
          */
@@ -295,7 +295,8 @@ public class LevelLayout extends AbstractGlobalLayout {
 
             //POST all nodes have level greater than
             //     their incoming nodes
-            for (Iterator i = _local.nodes(levelData._copyGraph); i.hasNext();) {
+            for (Iterator i = _local.nodes(levelData._copyGraph); i
+                    .hasNext();) {
                 Object node = i.next();
                 int lvl = getLevel(node);
 
@@ -318,7 +319,8 @@ public class LevelLayout extends AbstractGlobalLayout {
             //     than their incoming nodes
             //POST all dummy nodes have one in-edge and
             //     one out-edge
-            for (Iterator i = _local.nodes(levelData._copyGraph); i.hasNext();) {
+            for (Iterator i = _local.nodes(levelData._copyGraph); i
+                    .hasNext();) {
                 Object node = i.next();
                 int lvl = getLevel(node);
 
@@ -326,12 +328,13 @@ public class LevelLayout extends AbstractGlobalLayout {
                         .hasNext();) {
                     Object n2 = j.next();
                     int lvl2 = getLevel(n2);
-                    ASSERT(lvl2 == lvl - 1, "Level equality error " + node
-                            + ", " + n2);
+                    ASSERT(lvl2 == lvl - 1,
+                            "Level equality error " + node + ", " + n2);
                 }
             }
 
-            for (Iterator i = _local.nodes(levelData._copyGraph); i.hasNext();) {
+            for (Iterator i = _local.nodes(levelData._copyGraph); i
+                    .hasNext();) {
                 Object node = i.next();
 
                 if (isDummy(node)) {
@@ -541,7 +544,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      private void doLayout() {
      //Assign level numbers to the nodes in the graph.
      computeLevels();
-
+    
      //POST all nodes have level greater than
      //     their incoming nodes
      for (Iterator i = _levelData._copyGraph.nodes(); i.hasNext(); ) {
@@ -555,11 +558,11 @@ public class LevelLayout extends AbstractGlobalLayout {
      }
      ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
      "Inconsistent post-computeLevels");
-
+    
      //Add dummies to edges that span multiple levels in the
      //graph.
      addDummies();
-
+    
      //POST all nodes have level one greater
      //     than their incoming nodes
      //POST all dummy nodes have one in-edge and
@@ -580,7 +583,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      ASSERT(outs.hasNext(), "Dummy w/ no out-edges");
      outs.next();
      ASSERT(!outs.hasNext(), "Dummy w/ multiple out edges");
-
+    
      Iterator ins = n.inEdges();
      ASSERT(ins.hasNext(), "Dummy w/ no in edges");
      ins.next();
@@ -589,11 +592,11 @@ public class LevelLayout extends AbstractGlobalLayout {
      }
      ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
      "Inconsistent post-addDummies");
-
+    
      //Create the _levels data structure which provides
      //convenient access to all the nodes in each level.
      makeLevels();
-
+    
      //POST no levels are empty, and for each
      //     node in a level it's level is appropriate
      for (int i  = 1; i < _levelData._levels.length; i++) {
@@ -602,13 +605,13 @@ public class LevelLayout extends AbstractGlobalLayout {
      }
      ASSERT(LayoutUtilities.checkContainment(_levelData._copyGraph, _target),
      "Inconsistent post-makeLevels");
-
+    
      //Place the nodes in the viewport according to their
      //levels and sorting order (note: sorting is not yet
      //implemented).
      Rectangle2D r = _target.getViewport(_origGraph);
      placeNodes(_levelData, r);
-
+    
      //POST no post per se because this step does not
      //     modify graph topology.
      }
@@ -698,7 +701,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      *
      private boolean checkCyclic(Object node) {
      ASSERT(n != null, "null tail: " + n);
-
+    
      if (n.isVisited()) {
      //          debug("CYCLE AT: " + n);
      return true;
@@ -850,7 +853,8 @@ public class LevelLayout extends AbstractGlobalLayout {
     private void addSubGraphReverseDFS(LevelData levelData, Object node) {
         setVisited(node, true);
 
-        for (Iterator ins = GraphUtilities.inNodes(node, _local); ins.hasNext();) {
+        for (Iterator ins = GraphUtilities.inNodes(node, _local); ins
+                .hasNext();) {
             Object in = ins.next();
             ASSERT(in != null, "NULL found, n = " + node);
 
@@ -895,7 +899,8 @@ public class LevelLayout extends AbstractGlobalLayout {
             y = vp.getY() + ystep / 2;
 
             //            int lnum=0;
-            for (Iterator i = new ArrayIterator(levelData._levels); i.hasNext();) {
+            for (Iterator i = new ArrayIterator(levelData._levels); i
+                    .hasNext();) {
                 ArrayList nodes = (ArrayList) i.next();
                 int levelWidth;
 
@@ -946,7 +951,8 @@ public class LevelLayout extends AbstractGlobalLayout {
             xstep = vp.getWidth() / nonEmptyLevels;
             x = vp.getX() + xstep / 2;
 
-            for (Iterator i = new ArrayIterator(levelData._levels); i.hasNext();) {
+            for (Iterator i = new ArrayIterator(levelData._levels); i
+                    .hasNext();) {
                 ArrayList nodes = (ArrayList) i.next();
                 int levelWidth;
 

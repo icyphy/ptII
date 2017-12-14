@@ -213,16 +213,16 @@ public class UserActorLibrary {
 
             // Set the attributes defined in the moml to the attributes of the
             // LibraryBuilder
-            libraryBuilder.addAttributes(alternateLibraryBuilderAttribute
-                    .attributeList());
+            libraryBuilder.addAttributes(
+                    alternateLibraryBuilderAttribute.attributeList());
 
             try {
-                library = libraryBuilder.buildLibrary(libraryContainer
-                        .workspace());
+                library = libraryBuilder
+                        .buildLibrary(libraryContainer.workspace());
             } catch (Exception ex) {
                 ex.printStackTrace();
-                throw new Exception("Cannot create library with "
-                        + "LibraryBuilder: ", ex);
+                throw new Exception(
+                        "Cannot create library with " + "LibraryBuilder: ", ex);
             }
         }
 
@@ -241,7 +241,8 @@ public class UserActorLibrary {
                 // No previous libraryEffigy exists that is identified
                 // by this URL. Parse the user library into the
                 // workspace of the actor library.
-                MoMLParser parser = new MoMLParser(libraryContainer.workspace());
+                MoMLParser parser = new MoMLParser(
+                        libraryContainer.workspace());
 
                 // Set the ErrorHandler so that if we have
                 // compatibility problems between devel and production
@@ -372,8 +373,8 @@ public class UserActorLibrary {
             final ModelDirectory directory, Configuration configuration,
             File file, final CompositeEntity libraryContainer,
             final PtolemyEffigy finalLibraryEffigy) throws Exception {
-        ChangeRequest request = new ChangeRequest(configuration, file.toURI()
-                .toURL().toString()) {
+        ChangeRequest request = new ChangeRequest(configuration,
+                file.toURI().toURL().toString()) {
             @Override
             protected void _execute() throws Exception {
                 // The library is a class!

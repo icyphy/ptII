@@ -110,8 +110,8 @@ public class JAIBMPWriter extends JAIWriter {
         // a parameter.
         BMPEncodeParam bmpEncodeParam = new BMPEncodeParam();
         bmpEncodeParam.setVersion(BMPEncodeParam.VERSION_3);
-        bmpEncodeParam.setTopDown(((BooleanToken) storeTopDown.getToken())
-                .booleanValue());
+        bmpEncodeParam.setTopDown(
+                ((BooleanToken) storeTopDown.getToken()).booleanValue());
         _imageEncodeParam = bmpEncodeParam;
         return super.postfire();
     }

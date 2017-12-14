@@ -42,8 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public class FlatTokenRepresentativeConcept extends
-InfiniteConceptRepresentative {
+public class FlatTokenRepresentativeConcept
+        extends InfiniteConceptRepresentative {
 
     /** Create a new FlatTokenRepresentativeConcept with the specified name and
      *  ontology.
@@ -95,7 +95,8 @@ InfiniteConceptRepresentative {
             Token tokenValue) throws IllegalActionException {
 
         String conceptString = getName() + "_" + tokenValue.toString();
-        return (FlatTokenInfiniteConcept) getInfiniteConceptByString(conceptString);
+        return (FlatTokenInfiniteConcept) getInfiniteConceptByString(
+                conceptString);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,8 +113,8 @@ InfiniteConceptRepresentative {
     protected FlatTokenInfiniteConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
         if (containsThisInfiniteConceptString(infiniteConceptString)) {
-            String expression = infiniteConceptString.substring(getName()
-                    .length() + 1);
+            String expression = infiniteConceptString
+                    .substring(getName().length() + 1);
             Variable tempTokenVariable = null;
             try {
                 // Use a temporary Variable object to parse the
@@ -121,8 +122,8 @@ InfiniteConceptRepresentative {
                 tempTokenVariable = new Variable(this, "_tempTokenVariable");
                 tempTokenVariable.setExpression(expression);
 
-                return _instantiateFlatTokenInfiniteConcept(tempTokenVariable
-                        .getToken());
+                return _instantiateFlatTokenInfiniteConcept(
+                        tempTokenVariable.getToken());
             } catch (NameDuplicationException nameDupEx) {
                 throw new IllegalActionException(this, nameDupEx,
                         "Could not instantiate "
@@ -134,10 +135,8 @@ InfiniteConceptRepresentative {
                         tempTokenVariable.setContainer(null);
                     }
                 } catch (NameDuplicationException nameDupExAfterSetContainerToNull) {
-                    throw new IllegalActionException(
-                            this,
-                            nameDupExAfterSetContainerToNull,
-                            "Could "
+                    throw new IllegalActionException(this,
+                            nameDupExAfterSetContainerToNull, "Could "
                                     + "not remove tempTokenVariable object from this "
                                     + "concept after it is no longer needed.");
                 }

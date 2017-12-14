@@ -81,8 +81,7 @@ public class CSPCondGet extends CSPGet {
         }
 
         if (_receiverCount != numReceivers) {
-            throw new IllegalActionException(getName()
-                    + ": Error in the number"
+            throw new IllegalActionException(getName() + ": Error in the number"
                     + " of receivers. Be sure constructor is properly"
                     + " instantiated.");
         }

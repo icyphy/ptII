@@ -81,14 +81,13 @@ public class Wire extends DETransformer {
         output.setTypeAtLeast(initialValue);
         initialValue.setExpression("0");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"2\" "
-                + "style=\"fill:black\"/>\n" + "<rect x=\"-20\" y=\"-10\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"2\" " + "style=\"fill:black\"/>\n"
-                + "<rect x=\"-20\" y=\"0\" " + "width=\"40\" height=\"2\" "
-                + "style=\"fill:black\"/>\n" + "<rect x=\"-20\" y=\"10\" "
+                + "<rect x=\"-20\" y=\"-10\" " + "width=\"40\" height=\"2\" "
+                + "style=\"fill:black\"/>\n" + "<rect x=\"-20\" y=\"0\" "
                 + "width=\"40\" height=\"2\" " + "style=\"fill:black\"/>\n"
-                + "</svg>\n");
+                + "<rect x=\"-20\" y=\"10\" " + "width=\"40\" height=\"2\" "
+                + "style=\"fill:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

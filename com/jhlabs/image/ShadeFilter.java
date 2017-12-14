@@ -115,29 +115,33 @@ public class ShadeFilter extends WholeImageFilter {
     protected final static float r255 = 1.0f / 255.0f;
 
     protected void setFromRGB(Color4f c, int argb) {
-        c.set(((argb >> 16) & 0xff) * r255, ((argb >> 8) & 0xff) * r255, (argb & 0xff) * r255,
-                ((argb >> 24) & 0xff) * r255);
+        c.set(((argb >> 16) & 0xff) * r255, ((argb >> 8) & 0xff) * r255,
+                (argb & 0xff) * r255, ((argb >> 24) & 0xff) * r255);
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int index = 0;
         int[] outPixels = new int[width * height];
         float width45 = Math.abs(6.0f * bumpHeight);
         boolean invertBumps = bumpHeight < 0;
         Vector3f position = new Vector3f(0.0f, 0.0f, 0.0f);
-        Vector3f viewpoint = new Vector3f(width / 2.0f, height / 2.0f, viewDistance);
+        Vector3f viewpoint = new Vector3f(width / 2.0f, height / 2.0f,
+                viewDistance);
         Vector3f normal = new Vector3f();
         Color4f c = new Color4f();
         Function2D bump = bumpFunction;
 
-        if (bumpSource == BUMPS_FROM_IMAGE || bumpSource == BUMPS_FROM_IMAGE_ALPHA || bumpSource == BUMPS_FROM_MAP
-                || bump == null) {
+        if (bumpSource == BUMPS_FROM_IMAGE
+                || bumpSource == BUMPS_FROM_IMAGE_ALPHA
+                || bumpSource == BUMPS_FROM_MAP || bump == null) {
             if (bumpSoftness != 0) {
                 int bumpWidth = width;
                 int bumpHeight = height;
                 int[] bumpPixels = inPixels;
-                if (bumpSource == BUMPS_FROM_MAP && bumpFunction instanceof ImageFunction2D) {
+                if (bumpSource == BUMPS_FROM_MAP
+                        && bumpFunction instanceof ImageFunction2D) {
                     ImageFunction2D if2d = (ImageFunction2D) bumpFunction;
                     bumpWidth = if2d.getWidth();
                     bumpHeight = if2d.getHeight();
@@ -146,15 +150,20 @@ public class ShadeFilter extends WholeImageFilter {
                 Kernel kernel = GaussianFilter.makeKernel(bumpSoftness);
                 int[] tmpPixels = new int[bumpWidth * bumpHeight];
                 int[] softPixels = new int[bumpWidth * bumpHeight];
-                GaussianFilter.convolveAndTranspose(kernel, bumpPixels, tmpPixels, bumpWidth, bumpHeight, true, false,
-                        false, ConvolveFilter.CLAMP_EDGES);
-                GaussianFilter.convolveAndTranspose(kernel, tmpPixels, softPixels, bumpHeight, bumpWidth, true, false,
-                        false, ConvolveFilter.CLAMP_EDGES);
-                bump = new ImageFunction2D(softPixels, bumpWidth, bumpHeight, ImageFunction2D.CLAMP,
+                GaussianFilter.convolveAndTranspose(kernel, bumpPixels,
+                        tmpPixels, bumpWidth, bumpHeight, true, false, false,
+                        ConvolveFilter.CLAMP_EDGES);
+                GaussianFilter.convolveAndTranspose(kernel, tmpPixels,
+                        softPixels, bumpHeight, bumpWidth, true, false, false,
+                        ConvolveFilter.CLAMP_EDGES);
+                bump = new ImageFunction2D(softPixels, bumpWidth, bumpHeight,
+                        ImageFunction2D.CLAMP,
                         bumpSource == BUMPS_FROM_IMAGE_ALPHA);
-            } else
-                bump = new ImageFunction2D(inPixels, width, height, ImageFunction2D.CLAMP,
+            } else {
+                bump = new ImageFunction2D(inPixels, width, height,
+                        ImageFunction2D.CLAMP,
                         bumpSource == BUMPS_FROM_IMAGE_ALPHA);
+            }
         }
 
         Vector3f v1 = new Vector3f();
@@ -175,10 +184,18 @@ public class ShadeFilter extends WholeImageFilter {
                     int count = 0;
                     normal.x = normal.y = normal.z = 0;
                     float m0 = width45 * bump.evaluate(nx, ny);
-                    float m1 = x > 0 ? width45 * bump.evaluate(nx - 1.0f, ny) - m0 : -2;
-                    float m2 = y > 0 ? width45 * bump.evaluate(nx, ny - 1.0f) - m0 : -2;
-                    float m3 = x < width - 1 ? width45 * bump.evaluate(nx + 1.0f, ny) - m0 : -2;
-                    float m4 = y < height - 1 ? width45 * bump.evaluate(nx, ny + 1.0f) - m0 : -2;
+                    float m1 = x > 0
+                            ? width45 * bump.evaluate(nx - 1.0f, ny) - m0
+                            : -2;
+                    float m2 = y > 0
+                            ? width45 * bump.evaluate(nx, ny - 1.0f) - m0
+                            : -2;
+                    float m3 = x < width - 1
+                            ? width45 * bump.evaluate(nx + 1.0f, ny) - m0
+                            : -2;
+                    float m4 = y < height - 1
+                            ? width45 * bump.evaluate(nx, ny + 1.0f) - m0
+                            : -2;
 
                     if (m1 != -2 && m4 != -2) {
                         v1.x = -1.0f;
@@ -189,8 +206,9 @@ public class ShadeFilter extends WholeImageFilter {
                         v2.z = m4;
                         n.cross(v1, v2);
                         n.normalize();
-                        if (n.z < 0.0)
+                        if (n.z < 0.0) {
                             n.z = -n.z;
+                        }
                         normal.add(n);
                         count++;
                     }
@@ -204,8 +222,9 @@ public class ShadeFilter extends WholeImageFilter {
                         v2.z = m2;
                         n.cross(v1, v2);
                         n.normalize();
-                        if (n.z < 0.0)
+                        if (n.z < 0.0) {
                             n.z = -n.z;
+                        }
                         normal.add(n);
                         count++;
                     }
@@ -219,8 +238,9 @@ public class ShadeFilter extends WholeImageFilter {
                         v2.z = m3;
                         n.cross(v1, v2);
                         n.normalize();
-                        if (n.z < 0.0)
+                        if (n.z < 0.0) {
                             n.z = -n.z;
+                        }
                         normal.add(n);
                         count++;
                     }
@@ -234,8 +254,9 @@ public class ShadeFilter extends WholeImageFilter {
                         v2.z = m4;
                         n.cross(v1, v2);
                         n.normalize();
-                        if (n.z < 0.0)
+                        if (n.z < 0.0) {
                             n.z = -n.z;
+                        }
                         normal.add(n);
                         count++;
                     }
@@ -286,20 +307,25 @@ public class ShadeFilter extends WholeImageFilter {
                         tmpv.sub(v);
 
                         tmpv.normalize();
-                        setFromRGB(c, getEnvironmentMapP(normal, inPixels, width, height));//FIXME-interpolate()
+                        setFromRGB(c, getEnvironmentMapP(normal, inPixels,
+                                width, height));//FIXME-interpolate()
                         int alpha = inPixels[index] & 0xff000000;
-                        int rgb = ((int) (c.x * 255) << 16) | ((int) (c.y * 255) << 8) | (int) (c.z * 255);
+                        int rgb = ((int) (c.x * 255) << 16)
+                                | ((int) (c.y * 255) << 8) | (int) (c.z * 255);
                         outPixels[index++] = alpha | rgb;
-                    } else
+                    } else {
                         outPixels[index++] = 0;
-                } else
+                    }
+                } else {
                     outPixels[index++] = 0;
+                }
             }
         }
         return outPixels;
     }
 
-    private int getEnvironmentMapP(Vector3f normal, int[] inPixels, int width, int height) {
+    private int getEnvironmentMapP(Vector3f normal, int[] inPixels, int width,
+            int height) {
         if (environmentMap != null) {
             float x = 0.5f * (1 + normal.x);
             float y = 0.5f * (1 + normal.y);
@@ -313,7 +339,8 @@ public class ShadeFilter extends WholeImageFilter {
             int i = envWidth * iy + ix;
             int dx = ix == envWidth - 1 ? 0 : 1;
             int dy = iy == envHeight - 1 ? 0 : envWidth;
-            return ImageMath.bilinearInterpolate(xWeight, yWeight, envPixels[i], envPixels[i + dx], envPixels[i + dy],
+            return ImageMath.bilinearInterpolate(xWeight, yWeight, envPixels[i],
+                    envPixels[i + dx], envPixels[i + dy],
                     envPixels[i + dx + dy]);
         }
         return 0;

@@ -39,8 +39,8 @@ public class EventDemo extends XmlApp {
      */
     @Override
     public Object resolveEntity(String publicId, String systemId) {
-        displayText("Resolving entity: pubid=" + publicId + ", sysid="
-                + systemId);
+        displayText(
+                "Resolving entity: pubid=" + publicId + ", sysid=" + systemId);
         return null;
     }
 

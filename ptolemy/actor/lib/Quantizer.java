@@ -202,10 +202,12 @@ public class Quantizer extends Transformer {
             double in = ((DoubleToken) input.get(0)).doubleValue();
             if (_thresholds != null) {
                 int index = _getQuantizationIndex(in);
-                output.send(0, ((ArrayToken) levels.getToken()).getElement(index));
+                output.send(0,
+                        ((ArrayToken) levels.getToken()).getElement(index));
             } else {
                 // Using delta parameter.
-                double deltaValue = ((DoubleToken)delta.getToken()).doubleValue();
+                double deltaValue = ((DoubleToken) delta.getToken())
+                        .doubleValue();
                 double result = deltaValue * Math.floor(in / deltaValue);
                 output.send(0, new DoubleToken(result));
             }

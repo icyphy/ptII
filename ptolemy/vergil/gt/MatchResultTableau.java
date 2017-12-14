@@ -85,8 +85,8 @@ public class MatchResultTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public MatchResultTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -153,7 +153,8 @@ public class MatchResultTableau extends Tableau {
             super(container, name);
 
             treeViewFactory = new TreeTableau.Factory(this, "Tree View");
-            xmlViewFactory = new TextEditorTableau.Factory(this, "XML View", "text/xml");
+            xmlViewFactory = new TextEditorTableau.Factory(this, "XML View",
+                    "text/xml");
             javaPropertiesFactory = new JVMTableau.Factory(this,
                     "JVM Properties");
         }

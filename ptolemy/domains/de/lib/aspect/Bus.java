@@ -296,14 +296,14 @@ public class Bus extends AtomicCommunicationAspect {
                 if (token != null) {
                     _tokens.put(new Object[] { receiver, token });
                     _tokenCount++;
-                    sendCommunicationEvent((Actor) receiver.getContainer()
-                            .getContainer(), 0, _tokenCount, EventType.RECEIVED);
+                    sendCommunicationEvent(
+                            (Actor) receiver.getContainer().getContainer(), 0,
+                            _tokenCount, EventType.RECEIVED);
                 }
             }
         }
-        if (_tokens.size() > 0
-                && (_nextTimeFree == null || currentTime
-                .compareTo(_nextTimeFree) >= 0)) {
+        if (_tokens.size() > 0 && (_nextTimeFree == null
+                || currentTime.compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
         }
         _receiversAndTokensToSendTo.clear();
@@ -366,8 +366,9 @@ public class Bus extends AtomicCommunicationAspect {
                 if (!(getDirector() instanceof FixedPointDirector)) {
                     _tokens.put(new Object[] { receiver, token });
                     _tokenCount++;
-                    sendCommunicationEvent((Actor) source.getContainer()
-                            .getContainer(), 0, _tokenCount, EventType.RECEIVED);
+                    sendCommunicationEvent(
+                            (Actor) source.getContainer().getContainer(), 0,
+                            _tokenCount, EventType.RECEIVED);
                     if (_tokens.size() == 1) { // no refiring has been scheduled
                         _scheduleRefire();
                     }
@@ -446,8 +447,8 @@ public class Bus extends AtomicCommunicationAspect {
             messageLength = 1.0;
         }
 
-        _nextTimeFree = currentTime.add(_serviceTimeMultiplicationFactorValue
-                * messageLength);
+        _nextTimeFree = currentTime
+                .add(_serviceTimeMultiplicationFactorValue * messageLength);
         _fireAt(_nextTimeFree);
     }
 
@@ -495,7 +496,7 @@ public class Bus extends AtomicCommunicationAspect {
          */
         public BusAttributes(NamedObj target,
                 AtomicCommunicationAspect decorator)
-                        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
         }

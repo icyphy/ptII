@@ -336,10 +336,10 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
                 CompositeEntity container = (CompositeEntity) getContainer();
                 Entity destNode = container.getEntity(destination);
-                Locatable destLocation = (Locatable) destNode.getAttribute(
-                        "_location", Locatable.class);
-                Locatable myLocation = (Locatable) this.getAttribute(
-                        "_location", Locatable.class);
+                Locatable destLocation = (Locatable) destNode
+                        .getAttribute("_location", Locatable.class);
+                Locatable myLocation = (Locatable) this
+                        .getAttribute("_location", Locatable.class);
 
                 if (destLocation == null || myLocation == null) {
                     throw new IllegalActionException(
@@ -358,8 +358,8 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
                 while (nodes.hasNext()) {
                     Entity node = (Entity) nodes.next();
-                    Locatable location = (Locatable) node.getAttribute(
-                            "_location", Locatable.class);
+                    Locatable location = (Locatable) node
+                            .getAttribute("_location", Locatable.class);
 
                     if (location == null) {
                         throw new IllegalActionException(
@@ -498,8 +498,8 @@ public class SmallWorldRouter extends TypedAtomicActor {
             throws IllegalActionException {
         double[] p1 = location1.getLocation();
         double[] p2 = location2.getLocation();
-        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1])
-                * (p1[1] - p2[1]));
+        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0])
+                + (p1[1] - p2[1]) * (p1[1] - p2[1]));
     }
 
     /** Return the list of nodes that can receive from the specified
@@ -513,8 +513,9 @@ public class SmallWorldRouter extends TypedAtomicActor {
             throws IllegalActionException {
         List nodesInRangeList = new LinkedList();
         CompositeEntity container = (CompositeEntity) getContainer();
-        Iterator ports = ModelTopology.listeningInputPorts(container,
-                outputChannelName.stringValue()).iterator();
+        Iterator ports = ModelTopology
+                .listeningInputPorts(container, outputChannelName.stringValue())
+                .iterator();
 
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort) ports.next();

@@ -136,15 +136,15 @@ public class OpenModelica extends TypedAtomicActor {
         outputFormat.addChoice("plt");
 
         parameter = new StringParameter(this, "parameter");
-        parameter
-                .setDisplayName("Initialized model parameter(s), seperate by '#'");
+        parameter.setDisplayName(
+                "Initialized model parameter(s), seperate by '#'");
 
         initialValue = new StringParameter(this, "initialValue");
         initialValue.setDisplayName("Initial value(s), seperate by ','");
 
         variableFilter = new StringParameter(this, "variableFilter");
-        variableFilter
-                .setDisplayName("Filter for displaying simulation result, seperate by '#'");
+        variableFilter.setDisplayName(
+                "Filter for displaying simulation result, seperate by '#'");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -234,8 +234,8 @@ public class OpenModelica extends TypedAtomicActor {
             newObject._omcLogger = OMCLogger.getInstance();
             newObject._omcCommand = OMCCommand.getInstance();
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone "
-                    + getFullName() + ": " + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone " + getFullName() + ": " + throwable);
         }
         return newObject;
     }
@@ -262,8 +262,8 @@ public class OpenModelica extends TypedAtomicActor {
             // If the model is inherited from a base model,
             // that base model should be loaded in advance to the derived model.
             // Otherwise, the derived one could not be built.
-            if (!(dependencies.getExpression().isEmpty() && baseModel
-                    .getExpression().isEmpty())) {
+            if (!(dependencies.getExpression().isEmpty()
+                    && baseModel.getExpression().isEmpty())) {
                 _omcCommand.loadModelicaFile(dependencies.getExpression(),
                         baseModel.getExpression());
             }
@@ -278,8 +278,8 @@ public class OpenModelica extends TypedAtomicActor {
             IntToken inputPort = (IntToken) input.get(0);
             try {
                 // Modify components of the Modelica model prior to running the model.
-                if (!(parameter.getExpression().isEmpty() && initialValue
-                        .getExpression().isEmpty())) {
+                if (!(parameter.getExpression().isEmpty()
+                        && initialValue.getExpression().isEmpty())) {
                     if (!(baseModel.getExpression().isEmpty())) {
                         _omcCommand.modifyComponents(inputPort.toString(),
                                 baseModel.getExpression(),
@@ -290,18 +290,19 @@ public class OpenModelica extends TypedAtomicActor {
                                 parameter.getExpression());
                     }
                 } else {
-                    _omcLogger
-                            .getInfo("There is no component to modify prior to running the model!");
+                    _omcLogger.getInfo(
+                            "There is no component to modify prior to running the model!");
                 }
             } catch (ConnectException e) {
                 throw new IllegalActionException(
-                        "Unable to modify components' values!" + e.getMessage());
+                        "Unable to modify components' values!"
+                                + e.getMessage());
             }
             // There is no value to be passed to the OpenModelica actor's port and the new value is set by
             // actors' parameters.
         } else if (!(input.getWidth() > 0)) {
-            if (!(parameter.getExpression().isEmpty() && initialValue
-                    .getExpression().isEmpty())) {
+            if (!(parameter.getExpression().isEmpty()
+                    && initialValue.getExpression().isEmpty())) {
                 try {
                     if (baseModel.getExpression().isEmpty()) {
                         _omcCommand.modifyComponents(
@@ -321,16 +322,16 @@ public class OpenModelica extends TypedAtomicActor {
                                     + e.getMessage());
                 }
             } else {
-                _omcLogger
-                        .getInfo("There is no components to modify prior to running the model!");
+                _omcLogger.getInfo(
+                        "There is no components to modify prior to running the model!");
             }
         }
 
         // Build the Modelica model and run the executable result file.
         // Plot the result file of the simulation that is generated in plt format.
         try {
-            if (!(dependencies.getExpression().isEmpty() && baseModel
-                    .getExpression().isEmpty())) {
+            if (!(dependencies.getExpression().isEmpty()
+                    && baseModel.getExpression().isEmpty())) {
                 _omcCommand.runModel(dependencies.getExpression(),
                         baseModel.getExpression(),
                         simulationStartTime.getExpression(),
@@ -340,8 +341,8 @@ public class OpenModelica extends TypedAtomicActor {
                         processingMode.getExpression());
 
                 if (outputFormat.getExpression().equalsIgnoreCase("plt")
-                        && processingMode.getExpression().equalsIgnoreCase(
-                                "non-interactive")) {
+                        && processingMode.getExpression()
+                                .equalsIgnoreCase("non-interactive")) {
                     _omcCommand.plotPltFile(baseModel.getExpression());
                 }
             } else {
@@ -354,8 +355,8 @@ public class OpenModelica extends TypedAtomicActor {
                         processingMode.getExpression());
 
                 if (outputFormat.getExpression().equalsIgnoreCase("plt")
-                        && processingMode.getExpression().equalsIgnoreCase(
-                                "non-interactive")) {
+                        && processingMode.getExpression()
+                                .equalsIgnoreCase("non-interactive")) {
                     _omcCommand.plotPltFile(subModel.getExpression());
                 }
             }
@@ -365,7 +366,8 @@ public class OpenModelica extends TypedAtomicActor {
             // client and servers are set up all in the constructor of the thread.
             // Through starting the thread, the simulation result is sent from the server to the
             // Ptolemy II in the string format.
-            if (processingMode.getExpression().equalsIgnoreCase("interactive")) {
+            if (processingMode.getExpression()
+                    .equalsIgnoreCase("interactive")) {
                 _omiThread = new OMIThread(variableFilter.getExpression(),
                         simulationStopTime.getExpression(), output);
                 // FIXME: This method explicitly invokes run() on an object.  In general, classes implement the Runnable
@@ -375,12 +377,12 @@ public class OpenModelica extends TypedAtomicActor {
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
-            throw new IllegalActionException("Host Exception: "
-                    + e.getMessage());
+            throw new IllegalActionException(
+                    "Host Exception: " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new IllegalActionException("Socket Connection Error: "
-                    + e.getMessage());
+            throw new IllegalActionException(
+                    "Socket Connection Error: " + e.getMessage());
         } catch (ConnectException e) {
             e.printStackTrace();
             throw new IllegalActionException("ServerError: " + e.getMessage());

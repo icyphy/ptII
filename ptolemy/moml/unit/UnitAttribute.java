@@ -62,8 +62,8 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  @exception NameDuplicationException If the name coincides with
      *  an attribute already in the container.
      */
-    public UnitAttribute() throws IllegalActionException,
-    NameDuplicationException {
+    public UnitAttribute()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -200,15 +200,15 @@ public class UnitAttribute extends AbstractSettableAttribute {
 
         try {
             if (getName().equals("_unitConstraints")) {
-                Vector uEquations = UnitLibrary.getParser().parseEquations(
-                        expression);
+                Vector uEquations = UnitLibrary.getParser()
+                        .parseEquations(expression);
                 // Coverity: UParser.parseEquations() could return null.
                 if (uEquations != null) {
                     UnitConstraints uConstraints = new UnitConstraints();
 
                     for (int i = 0; i < uEquations.size(); i++) {
-                        uConstraints.addConstraint((UnitEquation) uEquations
-                                .elementAt(i));
+                        uConstraints.addConstraint(
+                                (UnitEquation) uEquations.elementAt(i));
                     }
                     setUnitConstraints(uConstraints);
                 }

@@ -110,8 +110,8 @@ public class Token {
         if (isNil() || rightArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("add", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("add", this, rightArgument));
     }
 
     /** Return a new token whose value is the sum of this token
@@ -128,8 +128,8 @@ public class Token {
         if (isNil() || leftArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("addReverse",
-                this, leftArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("addReverse", this, leftArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -146,8 +146,8 @@ public class Token {
         if (isNil() || rightArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("divide", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("divide", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -164,8 +164,8 @@ public class Token {
         if (isNil() || leftArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("divideReverse",
-                this, leftArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("divideReverse", this, leftArgument));
     }
 
     /** Return the type of this token.
@@ -217,8 +217,8 @@ public class Token {
         if (isNil() || token.isNil()) {
             return BooleanToken.FALSE;
         }
-        throw new IllegalActionException(notSupportedMessage("isCloseTo", this,
-                token));
+        throw new IllegalActionException(
+                notSupportedMessage("isCloseTo", this, token));
     }
 
     /** Test for equality of the values of this Token and the argument
@@ -236,8 +236,8 @@ public class Token {
         if (isNil() || rightArgument.isNil()) {
             return BooleanToken.FALSE;
         }
-        throw new IllegalActionException(notSupportedMessage("isEqualTo", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("isEqualTo", this, rightArgument));
     }
 
     /** Return true if the token is nil, (aka null or missing).
@@ -265,8 +265,8 @@ public class Token {
         if (isNil() || rightArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("modulo", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -285,8 +285,8 @@ public class Token {
         if (isNil() || leftArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("moduloReverse",
-                this, leftArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("moduloReverse", this, leftArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -303,8 +303,8 @@ public class Token {
         if (isNil() || rightArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("multiply", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("multiply", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -321,8 +321,8 @@ public class Token {
         if (isNil() || leftArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("multiplyReverse",
-                this, leftArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("multiplyReverse", this, leftArgument));
     }
 
     /** Return a string with an error message that states that
@@ -369,11 +369,10 @@ public class Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " method not supported between "
-        + firstToken.getClass().getName() + " '"
-        + firstToken.toString() + "' and "
-        + secondToken.getClass().getName() + " '"
-        + secondToken.toString()
-        + "' because the types are incomparable.";
+                + firstToken.getClass().getName() + " '" + firstToken.toString()
+                + "' and " + secondToken.getClass().getName() + " '"
+                + secondToken.toString()
+                + "' because the types are incomparable.";
     }
 
     /** Return a string with an error message that states that the
@@ -384,14 +383,13 @@ public class Token {
      *  @param secondToken The second token in the message.
      *  @return A string error message.
      */
-    public static String notSupportedMessage(String operation,
-            Token firstToken, Token secondToken) {
+    public static String notSupportedMessage(String operation, Token firstToken,
+            Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " operation not supported between "
-        + firstToken.getClass().getName() + " '"
-        + firstToken.toString() + "' and "
-        + secondToken.getClass().getName() + " '"
-        + secondToken.toString() + "'";
+                + firstToken.getClass().getName() + " '" + firstToken.toString()
+                + "' and " + secondToken.getClass().getName() + " '"
+                + secondToken.toString() + "'";
     }
 
     /** Returns a new Token representing the multiplicative identity.
@@ -472,8 +470,8 @@ public class Token {
         if (isNil() || rightArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("subtract", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -491,8 +489,8 @@ public class Token {
         if (isNil() || leftArgument.isNil()) {
             return Token.NIL;
         }
-        throw new IllegalActionException(notSupportedMessage("subtractReverse",
-                this, leftArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("subtractReverse", this, leftArgument));
     }
 
     /** Return the value of this token as a string that can be parsed

@@ -94,7 +94,8 @@ public abstract class ContinuousODESolver {
      *  @param integrator The integrator that calls this method.
      *  @return True if the integrator finds the step accurate.
      */
-    public abstract boolean integratorIsAccurate(ContinuousIntegrator integrator);
+    public abstract boolean integratorIsAccurate(
+            ContinuousIntegrator integrator);
 
     /** The suggestedStepSize() method of the integrator delegates to this
      *  method. Derived classes need to implement the details.

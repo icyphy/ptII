@@ -51,8 +51,8 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 @SuppressWarnings("serial")
-public class OntologyGraphFrame extends ExtendedGraphFrame implements
-ActionListener {
+public class OntologyGraphFrame extends ExtendedGraphFrame
+        implements ActionListener {
 
     /** Construct a frame associated with the specified ontology model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
@@ -230,8 +230,8 @@ ActionListener {
             if (actionCommand.equals(CHECK_LATTICE)) {
                 Ontology ontologyModel = (Ontology) getModel();
                 ReportOntologyLatticeStatus
-                .showStatusAndHighlightCounterExample(ontologyModel,
-                        _controller);
+                        .showStatusAndHighlightCounterExample(ontologyModel,
+                                _controller);
             } else if (actionCommand.equals(CLEAR_LATTICE_ERRORS)) {
                 _controller.clearAllErrorHighlights();
             }

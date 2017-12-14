@@ -45,7 +45,7 @@ public class ObjectiveFunctionWithSoftConstraints extends ObjectiveFunction {
         super(a_source.currentX.length, 0);
         _source = a_source;
 
-        for (int i=0; i<_source.currentX.length; i++) {
+        for (int i = 0; i < _source.currentX.length; i++) {
             currentX[i] = _source.currentX[i];
         }
     }
@@ -54,53 +54,62 @@ public class ObjectiveFunctionWithSoftConstraints extends ObjectiveFunction {
     public boolean calcFunction(double[] x) {
         return false;
     }
+
     /**
      * Objective function called in optimization class.
      * @param x input variables
      */
+    @Override
     public void calcFuncInternal(double[] x) {
         if (_source.stopRequested) {
             stopRequested = true;
             return;
         }
-        for (int i=0; i<currentX.length; i++) {
+        for (int i = 0; i < currentX.length; i++) {
             currentX[i] = x[i];
         }
         _source.calcFuncInternal(x);
         iterationCounter = _source.iterationCounter;
         //objective function: f(X,S) = sum(conditional_fi^2)
         f0Result = 0;
-        for (int i=0; i<_source.fiResults.length; i++) {
-            if (_source.fiResults[i] <= 0.0) continue;
+        for (int i = 0; i < _source.fiResults.length; i++) {
+            if (_source.fiResults[i] <= 0.0) {
+                continue;
+            }
             f0Result += (_source.fiResults[i] * _source.fiResults[i]);
         }
 
         //df(X,S) = sum(2 * conditional_fi * dfi/dx)
-        for (int col=0; col<f0Gradient.length; col++) {
+        for (int col = 0; col < f0Gradient.length; col++) {
             f0Gradient[col] = 0;
         }
-        for (int i=0; i<_source.fiResults.length; i++) {
-            if (_source.fiResults[i]<=0.0) continue;
+        for (int i = 0; i < _source.fiResults.length; i++) {
+            if (_source.fiResults[i] <= 0.0) {
+                continue;
+            }
             double scaler = 2.0 * _source.fiResults[i];
-            for (int col=0; col<f0Gradient.length; col++) {
+            for (int col = 0; col < f0Gradient.length; col++) {
                 f0Gradient[col] += scaler * _source.fiGradients[i][col];
             }
         }
 
         // Hessian = sum(2 * dfi/dxT * dfi/dx + 2 * conditional_fi * Hess_i)
         clearMatrix(f0Hessian);
-        for (int i=0; i<_source.fiResults.length; i++) {
-            if (_source.fiResults[i]<=0.0) continue;
+        for (int i = 0; i < _source.fiResults.length; i++) {
+            if (_source.fiResults[i] <= 0.0) {
+                continue;
+            }
             double scaler = 2.0 * _source.fiResults[i];
-            for (int row=0; row < f0Hessian.length; row++) {
-                for (int col=0; col < f0Hessian[0].length; col++) {
-                    f0Hessian[row][col] += 2.0 * _source.fiGradients[i][row] * _source.fiGradients[i][col];
-                    f0Hessian[row][col] += scaler * _source.fiHessians[i][row][col];
+            for (int row = 0; row < f0Hessian.length; row++) {
+                for (int col = 0; col < f0Hessian[0].length; col++) {
+                    f0Hessian[row][col] += 2.0 * _source.fiGradients[i][row]
+                            * _source.fiGradients[i][col];
+                    f0Hessian[row][col] += scaler
+                            * _source.fiHessians[i][row][col];
                 }
             }
         }
     }
-
 
     /*
      * Private variables

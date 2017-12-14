@@ -60,6 +60,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)
  */
+@Deprecated
 public class EventButton extends Source implements Placeable {
     // FIXME: This actor is almost identitcal to the SR ButtonTime actor.
     // There is no need to have a copy here. An alternative design is to

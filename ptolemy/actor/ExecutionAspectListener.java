@@ -64,7 +64,8 @@ public interface ExecutionAspectListener {
      * @param actors Actors to be scheduled.
      * @param scheduler Resource scheduler scheduling actors.
      */
-    public void initialize(List<NamedObj> actors, ActorExecutionAspect scheduler);
+    public void initialize(List<NamedObj> actors,
+            ActorExecutionAspect scheduler);
 
     /** Plot a new execution event for an actor (i.e. an actor
      *  started/finished execution, was preempted or resumed).

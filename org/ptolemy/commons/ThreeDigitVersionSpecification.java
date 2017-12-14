@@ -53,7 +53,8 @@ import java.util.Arrays;
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
-public class ThreeDigitVersionSpecification extends VersionSpecification implements Comparable<VersionSpecification> {
+public class ThreeDigitVersionSpecification extends VersionSpecification
+        implements Comparable<VersionSpecification> {
     private static final long serialVersionUID = -383837397410414307L;
 
     /** Construct a three digit version specification.
@@ -62,7 +63,8 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
      * @param micro The micro version number.
      * @param qualifiers An optional array of arbitrary version qualifiers.
      */
-    public ThreeDigitVersionSpecification(int major, int minor, int micro, String... qualifiers) {
+    public ThreeDigitVersionSpecification(int major, int minor, int micro,
+            String... qualifiers) {
         _major = major;
         _minor = minor;
         _micro = micro;
@@ -105,7 +107,8 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
                 return result;
             } else if (_qualifiers.length > 0) {
                 if (other._qualifiers.length > 0) {
-                    int maxQualifierCount = Math.max(_qualifiers.length, other._qualifiers.length);
+                    int maxQualifierCount = Math.max(_qualifiers.length,
+                            other._qualifiers.length);
                     for (int i = 0; i < maxQualifierCount; ++i) {
                         String myQualifier = "";
                         String otherQualifier = "";
@@ -132,7 +135,8 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
                 return 0;
             }
         } else {
-            return this._versionString.compareTo(otherVersionSpecification._versionString);
+            return this._versionString
+                    .compareTo(otherVersionSpecification._versionString);
         }
     }
 
@@ -246,7 +250,8 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
     @Override
     public String toString() {
         if (_versionString == null) {
-            StringBuilder versionStrBldr = new StringBuilder(_major + "." + _minor + "." + _micro);
+            StringBuilder versionStrBldr = new StringBuilder(
+                    _major + "." + _minor + "." + _micro);
             for (String qualifier : _qualifiers) {
                 versionStrBldr.append("-" + qualifier);
             }

@@ -217,8 +217,8 @@ public class FactorOracle extends ModalController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    private void _buildFactorOracle() throws NameDuplicationException,
-            IllegalActionException {
+    private void _buildFactorOracle()
+            throws NameDuplicationException, IllegalActionException {
 
         // create factor oracle transitions including the suffix links.
         _stateList = new HashMap();
@@ -230,8 +230,8 @@ public class FactorOracle extends ModalController {
         }
     }
 
-    private void _createNewState(final int i) throws IllegalActionException,
-            NameDuplicationException {
+    private void _createNewState(final int i)
+            throws IllegalActionException, NameDuplicationException {
         final Double horizontal = i * HORIZONTAL_SPACING_PIXELS;
         final Double vertical = i * VERTICAL_SPACING_PIXELS;
         try {
@@ -284,8 +284,8 @@ public class FactorOracle extends ModalController {
             int l = (Integer) _suffixLinks.get(i - 1);
             // while previous node DOES exist and there is no w[i]-son of state l...
             Object wiSon = _inputSequence[i - 1];
-            while (l != -1
-                    && ((List) _adjacencyListSymbols.get(l)).contains(wiSon) == false) {
+            while (l != -1 && ((List) _adjacencyListSymbols.get(l))
+                    .contains(wiSon) == false) {
                 List prevList = _getTransitionsFrom(l);
                 prevList.add(i);
                 List prevSymbols = (List<Character>) _adjacencyListSymbols
@@ -307,8 +307,8 @@ public class FactorOracle extends ModalController {
         }
     }
 
-    private void _setTransitions() throws IllegalActionException,
-            NameDuplicationException {
+    private void _setTransitions()
+            throws IllegalActionException, NameDuplicationException {
 
         String exitAngle;
         String outputExpression;
@@ -341,8 +341,8 @@ public class FactorOracle extends ModalController {
                     int numberOfBranches = nTransitions - (1 - suffixCount);
                     _probability = (1.0 - _repetitionFactor) / numberOfBranches;
                     // lose the higher digits to avoid overflow probability
-                    _probability = (Math.round(_probability * precisionFactor
-                            - 1))
+                    _probability = (Math
+                            .round(_probability * precisionFactor - 1))
                             / precisionFactor;
                     exitAngle = SKIP_EXIT_ANGLE;
                 }
@@ -534,6 +534,7 @@ public class FactorOracle extends ModalController {
             return function instanceof ChordFunction;
         }
 
+        @Override
         public String toString() {
             return "function(t:string, s:string) boolean";
         }

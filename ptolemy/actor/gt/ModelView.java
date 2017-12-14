@@ -190,8 +190,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                     try {
                         StringWriter writer = new StringWriter();
                         token.getMoML(writer);
-                        model = (Entity) parser.parse(writer.getBuffer()
-                                .toString());
+                        model = (Entity) parser
+                                .parse(writer.getBuffer().toString());
                     } catch (Exception e) {
                         throw new IllegalActionException(this, e,
                                 "Unable to reparse model.");
@@ -228,9 +228,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         boolean reopen = ((BooleanToken) reopenWindow
                                 .getToken()).booleanValue();
                         boolean modelChanged;
-                        if (tableau == null
-                                || reopen
-                                || !(tableau.getFrame() instanceof BasicGraphFrame)) {
+                        if (tableau == null || reopen || !(tableau
+                                .getFrame() instanceof BasicGraphFrame)) {
                             if (tableau != null) {
                                 tableau.close();
                             }
@@ -301,7 +300,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         // and then close the optimized model.  You should not be
                         // prompted for save.
                         ((Effigy) tableau.getContainer())
-                        .setPersistent(isPersistentValue);
+                                .setPersistent(isPersistentValue);
                         model.setDeferringChangeRequests(false);
                         output.send(i, token);
                     } catch (NameDuplicationException e) {

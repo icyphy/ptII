@@ -95,8 +95,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class AtomicWirelessChannel extends TypedAtomicActor implements
-WirelessChannel, ValueListener {
+public class AtomicWirelessChannel extends TypedAtomicActor
+        implements WirelessChannel, ValueListener {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -198,8 +198,8 @@ WirelessChannel, ValueListener {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AtomicWirelessChannel newObject = (AtomicWirelessChannel) super
-                .clone(workspace);
+        AtomicWirelessChannel newObject = (AtomicWirelessChannel) super.clone(
+                workspace);
         newObject._receiversInRangeCacheValid = false;
         newObject._listeningInputPorts = null;
         newObject._listeningInputPortsVersion = -1L;
@@ -524,7 +524,7 @@ WirelessChannel, ValueListener {
     @Override
     public RecordToken transformProperties(RecordToken properties,
             WirelessIOPort source, WirelessIOPort destination)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         RecordToken result = properties;
         Token defaultPropertiesValue = defaultProperties.getToken();
 
@@ -700,12 +700,12 @@ WirelessChannel, ValueListener {
      *  @exception IllegalActionException If the distance
      *   cannot be determined.
      */
-    protected double _distanceBetween(WirelessIOPort port1, WirelessIOPort port2)
-            throws IllegalActionException {
+    protected double _distanceBetween(WirelessIOPort port1,
+            WirelessIOPort port2) throws IllegalActionException {
         double[] p1 = _locationOf(port1);
         double[] p2 = _locationOf(port2);
-        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1])
-                * (p1[1] - p2[1]));
+        return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0])
+                + (p1[1] - p2[1]) * (p1[1] - p2[1]));
     }
 
     /** Return true if the specified destination port is in range of the
@@ -727,7 +727,7 @@ WirelessChannel, ValueListener {
      */
     protected boolean _isInRange(WirelessIOPort source,
             WirelessIOPort destination, RecordToken properties)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         return true;
     }
 
@@ -755,14 +755,14 @@ WirelessChannel, ValueListener {
             location = (Locatable) port.getAttribute(LOCATION_ATTRIBUTE_NAME,
                     Locatable.class);
         } else {
-            location = (Locatable) container.getAttribute(
-                    LOCATION_ATTRIBUTE_NAME, Locatable.class);
+            location = (Locatable) container
+                    .getAttribute(LOCATION_ATTRIBUTE_NAME, Locatable.class);
         }
 
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                    + " with container\n" + container + ".");
+                            + " with container\n" + container + ".");
         }
 
         // NOTE: We assume here that the implementation
@@ -807,7 +807,7 @@ WirelessChannel, ValueListener {
         if (_receiversInRangeCache != null
                 && _receiversInRangeCache.containsKey(sourcePort)
                 && ((Long) _receiversInRangeCacheVersion.get(sourcePort))
-                .longValue() == workspace().getVersion()
+                        .longValue() == workspace().getVersion()
                 && _receiversInRangeCacheValid) {
             // Cached list is valid. Return that.
             return (List) _receiversInRangeCache.get(sourcePort);
@@ -877,7 +877,7 @@ WirelessChannel, ValueListener {
      */
     protected void _transmitTo(Token token, WirelessIOPort sender,
             WirelessReceiver receiver, RecordToken properties)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug(" * transmitting to: "
                     + receiver.getContainer().getFullName());

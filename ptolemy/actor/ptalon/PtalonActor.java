@@ -153,7 +153,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }*/
 
                     // Check if the parameter was not previously assigned.
-                    if (!_assignedPtalonParametersCopy.containsKey(p.getName())) {
+                    if (!_assignedPtalonParametersCopy
+                            .containsKey(p.getName())) {
                         // The value of the parameter was not
                         // previously assigned, so add it to
                         // _assignedPtalonParameters and save a copy
@@ -200,8 +201,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
                     if (ready) {
                         PtalonPopulator populator = new PtalonPopulator();
-                        populator
-                                .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+                        populator.setASTNodeClass(
+                                "ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
@@ -304,8 +305,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             PtalonParameter param = (PtalonParameter) getAttribute(uniqueName);
             return param;
         } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access parameter "
-                    + name, ex);
+            throw new PtalonRuntimeException(
+                    "Unable to access parameter " + name, ex);
         }
     }
 
@@ -459,8 +460,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
             // Strip postfix.
             if (!filename.toLowerCase(Locale.getDefault()).endsWith(".ptln")) {
-                throw new IOException("Ptalon file does not end with "
-                        + "postfix .ptln.");
+                throw new IOException(
+                        "Ptalon file does not end with " + "postfix .ptln.");
             }
             filename = filename.substring(0, filename.length() - 5);
 
@@ -477,8 +478,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 prefix = prefix.substring(5);
             }
             String displayName;
-            if (filename.toLowerCase(Locale.getDefault()).startsWith(
-                    prefix.toLowerCase(Locale.getDefault()))) {
+            if (filename.toLowerCase(Locale.getDefault())
+                    .startsWith(prefix.toLowerCase(Locale.getDefault()))) {
                 int i = 0;
                 while (filename.startsWith("/")) {
                     filename = filename.substring(1);
@@ -555,7 +556,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 }
             } catch (IllegalActionException ex) {
                 // We might be under WebStart, try it as a jar URL
-                inputURL = ClassUtilities.getResource(ptalonCodeLocation.getExpression());
+                inputURL = ClassUtilities
+                        .getResource(ptalonCodeLocation.getExpression());
                 if (inputURL == null) {
                     throw new IllegalActionException(this, ex,
                             "Failed to open " + "\""
@@ -572,8 +574,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 rec.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                 rec.actor_definition();
             } catch (IOException ex2) {
-                throw new IllegalActionException(this, ex2, "Failed to open \""
-                        + inputURL + "\".");
+                throw new IllegalActionException(this, ex2,
+                        "Failed to open \"" + inputURL + "\".");
             } finally {
                 if (inputStream != null) {
                     try {
@@ -647,16 +649,16 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         } else if (_assignedPtalonParametersCopy.containsKey(p.getName())) {
             // The value of the parameter was previously assigned.
             // Check to see if value has actually changed.
-            PtalonParameter oldParameter = _assignedPtalonParametersCopy.get(p
-                    .getName());
+            PtalonParameter oldParameter = _assignedPtalonParametersCopy
+                    .get(p.getName());
             if (!oldParameter.getExpression().equals(p.getExpression())) {
                 // The parameter expressions are different.
                 return true;
             } else {
                 // The parameter expressions are the same.  Check to
                 // see if the token values are the same.
-                Token oldToken = _assignedPtalonParametersCopyValues.get(p
-                        .getName());
+                Token oldToken = _assignedPtalonParametersCopyValues
+                        .get(p.getName());
                 if (oldToken == null) {
                     // The old token value of the parameter is null
                     // because the token value has not yet been

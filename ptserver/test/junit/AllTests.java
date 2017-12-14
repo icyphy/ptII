@@ -52,16 +52,16 @@ import ptolemy.util.StreamExec;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TokenParserTest.class, ServletTest.class,
-    RemoteModelTest.class, FileDownloadTest.class, TypeParserTest.class,
-    RESTGetHandlerTest.class })
+        RemoteModelTest.class, FileDownloadTest.class, TypeParserTest.class,
+        RESTGetHandlerTest.class })
 public class AllTests {
 
     /** Copy ptserver/PtolemyServerConfig.properties.default and start
      * the mosquitto process.
      */
     @BeforeClass
-    public static void startMosquitto() throws IllegalActionException,
-    IOException {
+    public static void startMosquitto()
+            throws IllegalActionException, IOException {
         System.out.println("AllTests.startMosquitto()");
 
         URL defaultConfigURL = FileUtilities.nameToURL(

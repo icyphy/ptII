@@ -126,8 +126,8 @@ public class Writer extends Sink {
                 _writer.close();
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "setWriter(" + writer
-                    + ") failed");
+            throw new IllegalActionException(this, ex,
+                    "setWriter(" + writer + ") failed");
         }
 
         if (writer != null) {
@@ -150,8 +150,8 @@ public class Writer extends Sink {
                 _writer.flush();
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "wrapup(" + _writer
-                    + ") failed");
+            throw new IllegalActionException(this, ex,
+                    "wrapup(" + _writer + ") failed");
         }
     }
 

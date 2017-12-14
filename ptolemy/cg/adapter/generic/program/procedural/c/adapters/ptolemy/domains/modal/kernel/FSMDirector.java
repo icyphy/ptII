@@ -55,9 +55,8 @@ is also associated with a code generator.
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)
  */
-public class FSMDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+public class FSMDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -96,12 +95,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
                 + _sanitizedDirectorName + ";");
         result.append(_eol + _sanitizedDirectorName + "->makeTransitions = "
                 + sanitizedContainerName + "_makeTransitions;");
-        result.append(_eol + _sanitizedDirectorName
-                + "->transferModalInputs = " + sanitizedContainerName
-                + "_transferModalInputs;");
-        result.append(_eol + _sanitizedDirectorName
-                + "->transferModalOutputs = " + sanitizedContainerName
-                + "_transferModalOutputs;");
+        result.append(_eol + _sanitizedDirectorName + "->transferModalInputs = "
+                + sanitizedContainerName + "_transferModalInputs;");
+        result.append(
+                _eol + _sanitizedDirectorName + "->transferModalOutputs = "
+                        + sanitizedContainerName + "_transferModalOutputs;");
 
         List<?> containedActors = container.deepEntityList();
         Iterator<?> actors = containedActors.iterator();
@@ -121,7 +119,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
                 }
                 result.append(_eol + "struct IOPort* " + sanitizedActorName
                         + "_" + port.getName() + " = (struct IOPort*)"
-                        + sanitizedActorName + "_get_" + port.getName() + "();");
+                        + sanitizedActorName + "_get_" + port.getName()
+                        + "();");
             }
             ports = actor.outputPortList().iterator();
             while (ports.hasNext()) {
@@ -131,7 +130,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
                 }
                 result.append(_eol + "struct IOPort* " + sanitizedActorName
                         + "_" + port.getName() + " = (struct IOPort*)"
-                        + sanitizedActorName + "_get_" + port.getName() + "();");
+                        + sanitizedActorName + "_get_" + port.getName()
+                        + "();");
             }
         }
         // Second loop to link the ports and put the depths
@@ -194,16 +194,15 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
                         if (foo == farReceiverss.length) {
                             throw new IllegalActionException(container,
                                     "Receiver not found in port : "
-                                            + port.getFullName()
-                                            + "in actor : "
+                                            + port.getFullName() + "in actor : "
                                             + sanitizedActorName);
                         }
 
                         result.append(_eol + "pblListAdd(pblListGet("
                                 + sanitizedActorName + "_" + port.getName()
                                 + "->_farReceivers, " + i + ")"
-                                + ", pblListGet(pblListGet(" + farPortName
-                                + foo + "), " + bar + "));");
+                                + ", pblListGet(pblListGet(" + farPortName + foo
+                                + "), " + bar + "));");
                     }
                 }
             }
@@ -273,12 +272,13 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
 
-        code.append(_eol + "void " + _sanitizedDirectorName
-                + "_Preinitialize();");
+        code.append(
+                _eol + "void " + _sanitizedDirectorName + "_Preinitialize();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Initialize();");
         code.append(_eol + "boolean " + _sanitizedDirectorName + "_Prefire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Fire();");
-        code.append(_eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
+        code.append(
+                _eol + "boolean " + _sanitizedDirectorName + "_Postfire();");
         code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup();");
 
         return code.toString();
@@ -310,11 +310,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
             // as if they are at the top level even though they have an executive
             // director, so be sure to check _isTopLevel().
             if (executiveDirector instanceof SuperdenseTimeDirector) {
-                code.append(_eol
-                        + _sanitizedDirectorName
-                        + ".currentMicrostep = "
-                        + ((SuperdenseTimeDirector) executiveDirector)
-                        .getIndex() + ";");
+                code.append(
+                        _eol + _sanitizedDirectorName + ".currentMicrostep = "
+                                + ((SuperdenseTimeDirector) executiveDirector)
+                                        .getIndex()
+                                + ";");
             }
         }
 
@@ -336,8 +336,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
         code.append(_eol + _sanitizedDirectorName + ".exceedStopTime = false;");
 
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
-        code.append(_eol
-                + codeGenerator
+        code.append(_eol + codeGenerator
                 .comment("End of the Initialization of the director"));
 
         return code.toString();
@@ -365,8 +364,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
         code.append(generatePrefireCode());
         code.append(_eol + "}" + _eol);
 
-        code.append("boolean " + _sanitizedDirectorName + "_Postfire() {"
-                + _eol);
+        code.append(
+                "boolean " + _sanitizedDirectorName + "_Postfire() {" + _eol);
         code.append(generatePostfireCode());
         code.append(_eol + "}" + _eol);
 
@@ -379,8 +378,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
         code.append(generateInitializeFunctionCode());
         code.append(_eol + "}" + _eol);
 
-        code.append(_eol + "void " + _sanitizedDirectorName + "_Wrapup() {"
-                + _eol);
+        code.append(
+                _eol + "void " + _sanitizedDirectorName + "_Wrapup() {" + _eol);
         code.append(generateWrapupCode());
         code.append(_eol + "}" + _eol);
 
@@ -422,9 +421,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol
-                + getCodeGenerator()
-                .comment(0, "The postfire of the director."));
+        code.append(_eol + getCodeGenerator().comment(0,
+                "The postfire of the director."));
 
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -476,12 +474,12 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
 
         getSanitizedDirectorName();
 
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".preinitializeFunction = " + _sanitizedDirectorName
-                + "_Preinitialize;");
-        code.append(_eol + "" + _sanitizedDirectorName
-                + ".initializeFunction = " + _sanitizedDirectorName
-                + "_Initialize;");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".preinitializeFunction = "
+                        + _sanitizedDirectorName + "_Preinitialize;");
+        code.append(
+                _eol + "" + _sanitizedDirectorName + ".initializeFunction = "
+                        + _sanitizedDirectorName + "_Initialize;");
         code.append(_eol + "" + _sanitizedDirectorName + ".prefireFunction = "
                 + _sanitizedDirectorName + "_Prefire;");
         code.append(_eol + "" + _sanitizedDirectorName + ".postfireFunction = "
@@ -658,16 +656,16 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.ker
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if (!port.getFullName().contains("_Controller")) {
-                code.append(_eol + "static struct IOPort* " + port.getName()
-                        + ";");
+                code.append(
+                        _eol + "static struct IOPort* " + port.getName() + ";");
             }
         }
         ports = container.outputPortList().iterator();
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             if (!port.getFullName().contains("_Controller")) {
-                code.append(_eol + "static struct IOPort* " + port.getName()
-                        + ";");
+                code.append(
+                        _eol + "static struct IOPort* " + port.getName() + ";");
             }
         }
 

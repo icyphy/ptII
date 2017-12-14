@@ -89,10 +89,11 @@ public class ArrayColormap implements Colormap, Cloneable {
                         return ImageMath.mixColors(f, map[n], map[n+1]);
         */
         int n = (int) (v * 255);
-        if (n < 0)
+        if (n < 0) {
             n = 0;
-        else if (n > 255)
+        } else if (n > 255) {
             n = 255;
+        }
         return map[n];
     }
 
@@ -105,13 +106,20 @@ public class ArrayColormap implements Colormap, Cloneable {
      * @param lastIndex the position of the second color from which to interpolate
      * @param color the color to set
      */
-    public void setColorInterpolated(int index, int firstIndex, int lastIndex, int color) {
+    public void setColorInterpolated(int index, int firstIndex, int lastIndex,
+            int color) {
         int firstColor = map[firstIndex];
         int lastColor = map[lastIndex];
-        for (int i = firstIndex; i <= index; i++)
-            map[i] = ImageMath.mixColors((float) (i - firstIndex) / (index - firstIndex), firstColor, color);
-        for (int i = index; i < lastIndex; i++)
-            map[i] = ImageMath.mixColors((float) (i - index) / (lastIndex - index), color, lastColor);
+        for (int i = firstIndex; i <= index; i++) {
+            map[i] = ImageMath.mixColors(
+                    (float) (i - firstIndex) / (index - firstIndex), firstColor,
+                    color);
+        }
+        for (int i = index; i < lastIndex; i++) {
+            map[i] = ImageMath.mixColors(
+                    (float) (i - index) / (lastIndex - index), color,
+                    lastColor);
+        }
     }
 
     /**
@@ -121,9 +129,13 @@ public class ArrayColormap implements Colormap, Cloneable {
      * @param color1 the first color
      * @param color2 the second color
      */
-    public void setColorRange(int firstIndex, int lastIndex, int color1, int color2) {
-        for (int i = firstIndex; i <= lastIndex; i++)
-            map[i] = ImageMath.mixColors((float) (i - firstIndex) / (lastIndex - firstIndex), color1, color2);
+    public void setColorRange(int firstIndex, int lastIndex, int color1,
+            int color2) {
+        for (int i = firstIndex; i <= lastIndex; i++) {
+            map[i] = ImageMath.mixColors(
+                    (float) (i - firstIndex) / (lastIndex - firstIndex), color1,
+                    color2);
+        }
     }
 
     /**
@@ -133,8 +145,9 @@ public class ArrayColormap implements Colormap, Cloneable {
      * @param color the color
      */
     public void setColorRange(int firstIndex, int lastIndex, int color) {
-        for (int i = firstIndex; i <= lastIndex; i++)
+        for (int i = firstIndex; i <= lastIndex; i++) {
             map[i] = color;
+        }
     }
 
     /**

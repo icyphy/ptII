@@ -185,10 +185,10 @@ public class FigureTest extends TestSuite {
             public void check() throws TestFailedException {
                 assertExpr(at1.equals(at2),
                         "Graphics2D transform changed from:\n    " + at1
-                        + " \nto:\n    " + at2);
+                                + " \nto:\n    " + at2);
                 assertExpr(at2.equals(at3),
                         "Graphics2D transform changed from:\n    " + at2
-                        + " \nto:\n    " + at3);
+                                + " \nto:\n    " + at3);
             }
         });
 
@@ -233,17 +233,21 @@ public class FigureTest extends TestSuite {
 
             @Override
             public void check() throws TestFailedException {
-                assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
-                        0.01), "Shape not transformed: " + shape + " != "
+                assertExpr(
+                        TestUtilities.shapeEquals(shape, figure.getShape(),
+                                0.01),
+                        "Shape not transformed: " + shape + " != "
                                 + figure.getShape());
 
                 // For the bounds, we need to allow a large error,
                 // because bounds don't necessarily transform correctly!
                 // So this test is only useful for catching the most
                 // gross errors
-                assertExpr(TestUtilities.shapeEquals(bounds,
-                        figure.getBounds(), 2.0), "Bounds not transformed: "
-                                + bounds + " != " + figure.getBounds());
+                assertExpr(
+                        TestUtilities.shapeEquals(bounds, figure.getBounds(),
+                                2.0),
+                        "Bounds not transformed: " + bounds + " != "
+                                + figure.getBounds());
             }
         });
     }
@@ -278,13 +282,17 @@ public class FigureTest extends TestSuite {
 
             @Override
             public void check() throws TestFailedException {
-                assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
-                        0.01), "Shape not translated: " + shape + " != "
+                assertExpr(
+                        TestUtilities.shapeEquals(shape, figure.getShape(),
+                                0.01),
+                        "Shape not translated: " + shape + " != "
                                 + figure.getShape());
 
-                assertExpr(TestUtilities.shapeEquals(bounds,
-                        figure.getBounds(), 0.01), "Bounds not translated: "
-                                + bounds + " != " + figure.getBounds());
+                assertExpr(
+                        TestUtilities.shapeEquals(bounds, figure.getBounds(),
+                                0.01),
+                        "Bounds not translated: " + bounds + " != "
+                                + figure.getBounds());
             }
         });
     }
@@ -328,8 +336,8 @@ public class FigureTest extends TestSuite {
         @Override
         public void check() throws TestFailedException {
             assertExpr(TestUtilities.shapeEquals(region, copy, 0.01),
-                    "The region was changed from:\n    " + copy
-                    + " \nto:\n    " + region);
+                    "The region was changed from:\n    " + copy + " \nto:\n    "
+                            + region);
         }
     }
 }

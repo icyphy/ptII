@@ -99,8 +99,8 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "add", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("add", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.addReverse(this);
@@ -112,8 +112,9 @@ public abstract class AbstractConvertibleToken extends Token {
             if (rightArgument instanceof AbstractNotConvertibleToken) {
                 return rightArgument.addReverse(this);
             } else {
-                throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "add", this, rightArgument));
+                throw new IllegalActionException(
+                        notSupportedIncomparableMessage("add", this,
+                                rightArgument));
             }
         }
     }
@@ -151,8 +152,8 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "addReverse", this, leftArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("addReverse", this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((AbstractConvertibleToken) leftArgument)._add(this);
@@ -200,8 +201,8 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "divide", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("divide", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.divideReverse(this);
@@ -303,14 +304,14 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isCloseTo", this, token));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isCloseTo", this, token));
             }
         } else if (typeInfo == CPO.LOWER) {
             return token.isCloseTo(this, epsilon);
         } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "isCloseTo", this, token));
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("isCloseTo", this, token));
         }
     }
 
@@ -347,8 +348,8 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isEqualTo", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isEqualTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isEqualTo(this);
@@ -392,8 +393,8 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "modulo", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("modulo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.moduloReverse(this);
@@ -488,8 +489,8 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "multiply", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("multiply", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.multiplyReverse(this);
@@ -584,8 +585,8 @@ public abstract class AbstractConvertibleToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "subtract", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("subtract", this, rightArgument));
             }
 
         } else if (typeInfo == CPO.LOWER) {

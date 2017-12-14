@@ -75,8 +75,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class LevelCrossingDetector extends TypedAtomicActor implements
-ContinuousStepSizeController {
+public class LevelCrossingDetector extends TypedAtomicActor
+        implements ContinuousStepSizeController {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -118,8 +118,8 @@ ContinuousStepSizeController {
         output.setTypeAtLeast(value);
 
         _errorTolerance = 1e-4;
-        errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
-                _errorTolerance));
+        errorTolerance = new Parameter(this, "errorTolerance",
+                new DoubleToken(_errorTolerance));
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -197,8 +197,8 @@ ContinuousStepSizeController {
                 _detectFallingCrossing = true;
                 _detectRisingCrossing = true;
             } else {
-                throw new IllegalActionException("Unknown direction: "
-                        + crossingDirections);
+                throw new IllegalActionException(
+                        "Unknown direction: " + crossingDirections);
             }
         } else if (attribute == level) {
             _level = ((DoubleToken) level.getToken()).doubleValue();
@@ -215,8 +215,8 @@ ContinuousStepSizeController {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        LevelCrossingDetector newObject = (LevelCrossingDetector) super
-                .clone(workspace);
+        LevelCrossingDetector newObject = (LevelCrossingDetector) super.clone(
+                workspace);
 
         // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.value);
@@ -274,7 +274,8 @@ ContinuousStepSizeController {
         }
 
         // If the trigger input is available, record it.
-        if (trigger.getWidth() > 0 && trigger.isKnown(0) && trigger.hasToken(0)) {
+        if (trigger.getWidth() > 0 && trigger.isKnown(0)
+                && trigger.hasToken(0)) {
             _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
             if (_debugging) {
                 _debug("-- Consumed a trigger input: " + _thisTrigger);
@@ -309,8 +310,8 @@ ContinuousStepSizeController {
                     // current input is not close enough, then we
                     // have missed an event and the step size will need
                     // to be adjusted.
-                    if (currentStepSize != 0.0
-                            && Math.abs(_thisTrigger - _level) >= _errorTolerance) {
+                    if (currentStepSize != 0.0 && Math
+                            .abs(_thisTrigger - _level) >= _errorTolerance) {
                         // Step size is nonzero and the current input is not
                         // close enough. We have missed an event.
                         if (_debugging) {
@@ -421,8 +422,8 @@ ContinuousStepSizeController {
             // NOTE: we always to get a little overshoot to make sure the
             // level crossing happens. The little overshoot chosen here
             // is half of the error tolerance.
-            refinedStep = (Math.abs(_lastTrigger - _level) + _errorTolerance / 2)
-                    * dir.getCurrentStepSize()
+            refinedStep = (Math.abs(_lastTrigger - _level)
+                    + _errorTolerance / 2) * dir.getCurrentStepSize()
                     / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {

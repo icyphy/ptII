@@ -113,8 +113,8 @@ public class ArrayElement extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayElement newObject = (ArrayElement) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.input));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.input));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);
@@ -129,8 +129,8 @@ public class ArrayElement extends Transformer {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()) {
-            result.add(new Inequality(new ArrayTypeFunction(output), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new ArrayTypeFunction(output),
+                    input.getTypeTerm()));
         }
         return result;
     }
@@ -155,9 +155,10 @@ public class ArrayElement extends Transformer {
             ArrayToken token = (ArrayToken) input.get(0);
 
             if (indexValue < 0 || indexValue >= token.length()) {
-                throw new IllegalActionException(this, "index " + indexValue
-                        + " is out of range for the input "
-                        + "array, which has length " + token.length());
+                throw new IllegalActionException(this,
+                        "index " + indexValue
+                                + " is out of range for the input "
+                                + "array, which has length " + token.length());
             }
 
             output.send(0, token.getElement(indexValue));

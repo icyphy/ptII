@@ -286,8 +286,8 @@ public class SoundCapture {
 
             if (_isRealTime == true) {
                 // Real-time capture.
-                numBytesRead = _targetLine.read(_data, 0, _productionRate
-                        * _frameSizeInBytes);
+                numBytesRead = _targetLine.read(_data, 0,
+                        _productionRate * _frameSizeInBytes);
             } else {
                 // Capture audio from file.
                 numBytesRead = _properFormatAudioInputStream.read(_data);
@@ -372,8 +372,8 @@ public class SoundCapture {
 
             if (_isRealTime == true) {
                 // Real-time capture.
-                numBytesRead = _targetLine.read(_data, 0, _productionRate
-                        * _frameSizeInBytes);
+                numBytesRead = _targetLine.read(_data, 0,
+                        _productionRate * _frameSizeInBytes);
             } else {
                 // Capture audio from file.
                 numBytesRead = _properFormatAudioInputStream.read(_data);
@@ -662,7 +662,7 @@ public class SoundCapture {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
                     _b[i] = byteArray[currSamp * bytesPerSample * channels
-                                      + bytesPerSample * currChannel + i];
+                            + bytesPerSample * currChannel + i];
                 }
 
                 int result = _b[0] >> 7;
@@ -717,7 +717,7 @@ public class SoundCapture {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
                     _b[i] = byteArray[currSamp * bytesPerSample * channels
-                                      + bytesPerSample * currChannel + i];
+                            + bytesPerSample * currChannel + i];
                 }
 
                 int result = _b[0] >> 7;

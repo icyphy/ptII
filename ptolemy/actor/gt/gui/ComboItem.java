@@ -80,8 +80,8 @@ public class ComboItem extends Item {
      *   an attribute already in the container.
      */
     @Override
-    protected GUIAction _createAction() throws IllegalActionException,
-    NameDuplicationException {
+    protected GUIAction _createAction()
+            throws IllegalActionException, NameDuplicationException {
         return new GTGUIAction(this, "_actionHandler");
     }
 }

@@ -62,7 +62,7 @@ public class ImageMath {
     public static float gain(float a, float b) {
         /*
                         float p = (float)Math.log(1.0 - b) / (float)Math.log(0.5);
-
+        
                         if (a < .001)
                                 return 0.0f;
                         else if (a > .999)
@@ -73,10 +73,11 @@ public class ImageMath {
                                 return 1.0f - (float)Math.pow(2 * (1. - a), p) / 2;
         */
         float c = (1.0f / b - 2.0f) * (1.0f - 2.0f * a);
-        if (a < 0.5)
+        if (a < 0.5) {
             return a / (c + 1.0f);
-        else
+        } else {
             return (c - a) / (c - 1.0f);
+        }
     }
 
     /**
@@ -109,12 +110,15 @@ public class ImageMath {
      * @param x the input parameter
      * @return the output value
      */
-    public static float smoothPulse(float a1, float a2, float b1, float b2, float x) {
-        if (x < a1 || x >= b2)
+    public static float smoothPulse(float a1, float a2, float b1, float b2,
+            float x) {
+        if (x < a1 || x >= b2) {
             return 0;
+        }
         if (x >= a2) {
-            if (x < b1)
+            if (x < b1) {
                 return 1.0f;
+            }
             x = (x - b1) / (b2 - b1);
             return 1.0f - (x * x * (3.0f - 2.0f * x));
         }
@@ -130,10 +134,12 @@ public class ImageMath {
      * @return the output value
      */
     public static float smoothStep(float a, float b, float x) {
-        if (x < a)
+        if (x < a) {
             return 0;
-        if (x >= b)
+        }
+        if (x >= b) {
             return 1;
+        }
         x = (x - a) / (b - a);
         return x * x * (3 - 2 * x);
     }
@@ -189,8 +195,9 @@ public class ImageMath {
         int n = (int) (a / b);
 
         a -= n * b;
-        if (a < 0)
+        if (a < 0) {
             return a + b;
+        }
         return a;
     }
 
@@ -204,8 +211,9 @@ public class ImageMath {
         int n = (int) (a / b);
 
         a -= n * b;
-        if (a < 0)
+        if (a < 0) {
             return a + b;
+        }
         return a;
     }
 
@@ -219,8 +227,9 @@ public class ImageMath {
         int n = a / b;
 
         a -= n * b;
-        if (a < 0)
+        if (a < 0) {
             return a + b;
+        }
         return a;
     }
 
@@ -289,7 +298,8 @@ public class ImageMath {
      * @param se The ARGB southeast value
      * @return the interpolated value
      */
-    public static int bilinearInterpolate(float x, float y, int nw, int ne, int sw, int se) {
+    public static int bilinearInterpolate(float x, float y, int nw, int ne,
+            int sw, int se) {
         float m0, m1;
         int a0 = (nw >> 24) & 0xff;
         int r0 = (nw >> 16) & 0xff;
@@ -373,13 +383,15 @@ public class ImageMath {
         float k0, k1, k2, k3;
         float c0, c1, c2, c3;
 
-        if (numSpans < 1)
+        if (numSpans < 1) {
             throw new IllegalArgumentException("Too few knots in spline");
+        }
 
         x = clamp(x, 0, 1) * numSpans;
         span = (int) x;
-        if (span > numKnots - 4)
+        if (span > numKnots - 4) {
             span = numKnots - 4;
+        }
         x -= span;
 
         k0 = knots[span];
@@ -403,20 +415,25 @@ public class ImageMath {
      * @param yknots the array of knot y values
      * @return the spline value
      */
-    public static float spline(float x, int numKnots, int[] xknots, int[] yknots) {
+    public static float spline(float x, int numKnots, int[] xknots,
+            int[] yknots) {
         int span;
         int numSpans = numKnots - 3;
         float k0, k1, k2, k3;
         float c0, c1, c2, c3;
 
-        if (numSpans < 1)
+        if (numSpans < 1) {
             throw new IllegalArgumentException("Too few knots in spline");
+        }
 
-        for (span = 0; span < numSpans; span++)
-            if (xknots[span + 1] > x)
+        for (span = 0; span < numSpans; span++) {
+            if (xknots[span + 1] > x) {
                 break;
-        if (span > numKnots - 3)
+            }
+        }
+        if (span > numKnots - 3) {
             span = numKnots - 3;
+        }
         float t = (x - xknots[span]) / (xknots[span + 1] - xknots[span]);
         span--;
         if (span < 0) {
@@ -450,13 +467,15 @@ public class ImageMath {
         float k0, k1, k2, k3;
         float c0, c1, c2, c3;
 
-        if (numSpans < 1)
+        if (numSpans < 1) {
             throw new IllegalArgumentException("Too few knots in spline");
+        }
 
         x = clamp(x, 0, 1) * numSpans;
         span = (int) x;
-        if (span > numKnots - 4)
+        if (span > numKnots - 4) {
             span = numKnots - 4;
+        }
         x -= span;
 
         int v = 0;
@@ -473,10 +492,11 @@ public class ImageMath {
             c1 = m20 * k0 + m21 * k1 + m22 * k2 + m23 * k3;
             c0 = m30 * k0 + m31 * k1 + m32 * k2 + m33 * k3;
             int n = (int) (((c3 * x + c2) * x + c1) * x + c0);
-            if (n < 0)
+            if (n < 0) {
                 n = 0;
-            else if (n > 255)
+            } else if (n > 255) {
                 n = 255;
+            }
             v |= n << shift;
         }
 
@@ -491,21 +511,27 @@ public class ImageMath {
      * @param yknots the array of knot y values
      * @return the spline value
      */
-    public static int colorSpline(int x, int numKnots, int[] xknots, int[] yknots) {
+    public static int colorSpline(int x, int numKnots, int[] xknots,
+            int[] yknots) {
         int span;
         int numSpans = numKnots - 3;
         float k0, k1, k2, k3;
         float c0, c1, c2, c3;
 
-        if (numSpans < 1)
+        if (numSpans < 1) {
             throw new IllegalArgumentException("Too few knots in spline");
+        }
 
-        for (span = 0; span < numSpans; span++)
-            if (xknots[span + 1] > x)
+        for (span = 0; span < numSpans; span++) {
+            if (xknots[span + 1] > x) {
                 break;
-        if (span > numKnots - 3)
+            }
+        }
+        if (span > numKnots - 3) {
             span = numKnots - 3;
-        float t = (float) (x - xknots[span]) / (xknots[span + 1] - xknots[span]);
+        }
+        float t = (float) (x - xknots[span])
+                / (xknots[span + 1] - xknots[span]);
         span--;
         if (span < 0) {
             span = 0;
@@ -526,10 +552,11 @@ public class ImageMath {
             c1 = m20 * k0 + m21 * k1 + m22 * k2 + m23 * k3;
             c0 = m30 * k0 + m31 * k1 + m32 * k2 + m33 * k3;
             int n = (int) (((c3 * t + c2) * t + c1) * t + c0);
-            if (n < 0)
+            if (n < 0) {
                 n = 0;
-            else if (n > 255)
+            } else if (n > 255) {
                 n = 255;
+            }
             v |= n << shift;
         }
 
@@ -545,7 +572,8 @@ public class ImageMath {
      * @param stride the offset between pixels in consecutive rows
      * @param out an array of output positions for each pixel
      */
-    public static void resample(int[] source, int[] dest, int length, int offset, int stride, float[] out) {
+    public static void resample(int[] source, int[] dest, int length,
+            int offset, int stride, float[] out) {
         int i, j;
         float sizfac;
         float inSegment;
@@ -561,8 +589,9 @@ public class ImageMath {
         in = new float[length + 2];
         i = 0;
         for (j = 0; j < length; j++) {
-            while (out[i + 1] < j)
+            while (out[i + 1] < j) {
                 i++;
+            }
             in[j] = i + (j - out[i]) / (out[i + 1] - out[i]);
             //                        in[j] = ImageMath.clamp( in[j], 0, length-1 );
         }
@@ -603,8 +632,9 @@ public class ImageMath {
                 r = nextR;
                 g = nextG;
                 b = nextB;
-                if (srcIndex < lastIndex)
+                if (srcIndex < lastIndex) {
                     rgb = source[srcIndex];
+                }
                 nextA = (rgb >> 24) & 0xff;
                 nextR = (rgb >> 16) & 0xff;
                 nextG = (rgb >> 8) & 0xff;
@@ -616,7 +646,8 @@ public class ImageMath {
                 gSum += (gIntensity * outSegment);
                 bSum += (bIntensity * outSegment);
                 dest[destIndex] = ((int) Math.min(aSum / sizfac, 255) << 24)
-                        | ((int) Math.min(rSum / sizfac, 255) << 16) | ((int) Math.min(gSum / sizfac, 255) << 8)
+                        | ((int) Math.min(rSum / sizfac, 255) << 16)
+                        | ((int) Math.min(gSum / sizfac, 255) << 8)
                         | (int) Math.min(bSum / sizfac, 255);
                 destIndex += stride;
                 aSum = rSum = gSum = bSum = 0.0f;
@@ -669,12 +700,15 @@ public class ImageMath {
                 r *= f;
                 g *= f;
                 b *= f;
-                if (r > 255)
+                if (r > 255) {
                     r = 255;
-                if (g > 255)
+                }
+                if (g > 255) {
                     g = 255;
-                if (b > 255)
+                }
+                if (b > 255) {
                     b = 255;
+                }
                 p[i] = (a << 24) | (r << 16) | (g << 8) | b;
             }
         }

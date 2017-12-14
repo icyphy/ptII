@@ -108,8 +108,8 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception NameDuplicationException If creating the parameters
      *  of this port throws it.
      */
-    public WirelessIOPort(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public WirelessIOPort(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         outsideChannel = new StringParameter(this, "outsideChannel");
         outsideChannel.setExpression("");
@@ -155,8 +155,8 @@ public class WirelessIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public WirelessIOPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
+            boolean isInput, boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
 
         outsideChannel = new StringParameter(this, "outsideChannel");
@@ -825,7 +825,8 @@ public class WirelessIOPort extends TypedIOPort {
      *   clear().
      */
     @Override
-    public void sendClearInside(int channelIndex) throws IllegalActionException {
+    public void sendClearInside(int channelIndex)
+            throws IllegalActionException {
         WirelessChannel channel = getInsideChannel();
 
         if (channel != null) {

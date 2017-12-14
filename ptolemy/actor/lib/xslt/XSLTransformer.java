@@ -94,8 +94,8 @@ public class XSLTransformer extends Transformer {
         output.setTypeEquals(BaseType.STRING);
 
         styleSheetParameters = new PortParameter(this, "styleSheetParameters");
-        styleSheetParameters.setTypeAtMost(new RecordType(new String[0],
-                new Type[0]));
+        styleSheetParameters
+                .setTypeAtMost(new RecordType(new String[0], new Type[0]));
         styleSheetParameters.setExpression("emptyRecord()");
         styleSheetFile = new FileParameter(this, "styleSheetFile");
 
@@ -298,7 +298,8 @@ public class XSLTransformer extends Transformer {
                 _transformer = _transformerFactory.newTransformer(_xsltSource);
 
                 if (_debugging) {
-                    _debug("1 processing xsltSource change in " + getFullName());
+                    _debug("1 processing xsltSource change in "
+                            + getFullName());
                 }
             } else {
                 _transformer = null;

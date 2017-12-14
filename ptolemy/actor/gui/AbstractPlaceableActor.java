@@ -55,8 +55,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
-Placeable {
+public abstract class AbstractPlaceableActor extends TypedAtomicActor
+        implements Placeable {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -94,8 +94,8 @@ Placeable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractPlaceableActor newObject = (AbstractPlaceableActor) super
-                .clone(workspace);
+        AbstractPlaceableActor newObject = (AbstractPlaceableActor) super.clone(
+                workspace);
         try {
             newObject._windowProperties = (WindowPropertiesAttribute) newObject
                     .getAttribute("_windowProperties");
@@ -106,8 +106,8 @@ Placeable {
             newObject._paneSize.setPersistent(true);
 
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException(getFullName()
-                    + ": Failed to clone: " + throwable);
+            throw new CloneNotSupportedException(
+                    getFullName() + ": Failed to clone: " + throwable);
         }
         return newObject;
     }

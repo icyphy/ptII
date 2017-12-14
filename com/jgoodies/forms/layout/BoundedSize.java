@@ -140,10 +140,12 @@ final class BoundedSize implements Size, Serializable {
         }
         BoundedSize size = (BoundedSize) object;
         return basis.equals(size.basis)
-                && (lowerBound == null && size.lowerBound == null || lowerBound != null
-                && lowerBound.equals(size.lowerBound))
-                && (upperBound == null && size.upperBound == null || upperBound != null
-                && upperBound.equals(size.upperBound));
+                && (lowerBound == null && size.lowerBound == null
+                        || lowerBound != null
+                                && lowerBound.equals(size.lowerBound))
+                && (upperBound == null && size.upperBound == null
+                        || upperBound != null
+                                && upperBound.equals(size.upperBound));
     }
 
     /**
@@ -181,7 +183,7 @@ final class BoundedSize implements Size, Serializable {
         if (lowerBound != null) {
             return upperBound == null ? "max(" + basis + ';' + lowerBound + ')'
                     : "max(" + lowerBound + ';' + "min(" + basis + ';'
-                    + upperBound + "))";
+                            + upperBound + "))";
         } else if (upperBound != null) {
             return "min(" + basis + ';' + upperBound + ')';
         } else {

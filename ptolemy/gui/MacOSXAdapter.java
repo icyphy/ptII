@@ -106,9 +106,9 @@ public class MacOSXAdapter implements InvocationHandler {
         } catch (SecurityException ex) {
             if (!_printedSecurityExceptionMessage) {
                 _printedSecurityExceptionMessage = true;
-                System.out.println("Warning: Failed to enable "
-                        + "the about menu. "
-                        + "(applets and -sandbox always causes this)");
+                System.out.println(
+                        "Warning: Failed to enable " + "the about menu. "
+                                + "(applets and -sandbox always causes this)");
             }
         } catch (Exception ex) {
             top.report("The about menu could not be set.", ex);
@@ -177,20 +177,17 @@ public class MacOSXAdapter implements InvocationHandler {
             } else {
                 if (_macOSXApplication == null) {
                     try {
-                        _macOSXApplication = applicationClass.getConstructor(
-                                (Class[]) null).newInstance((Object[]) null);
+                        _macOSXApplication = applicationClass
+                                .getConstructor((Class[]) null)
+                                .newInstance((Object[]) null);
                     } catch (java.lang.reflect.InvocationTargetException ex) {
                         if (ex.getCause() instanceof SecurityException) {
                             if (!_printedSecurityExceptionMessage) {
-                                System.out
-                                        .println("Warning: Failed to get the"
-                                                + "constructor of \""
-                                                + applicationClassName
-                                                + "\" ("
-                                                + applicationClass
-                                                + "): "
-                                                + ex
-                                                + "(applets and -sandbox always causes this)");
+                                System.out.println("Warning: Failed to get the"
+                                        + "constructor of \""
+                                        + applicationClassName + "\" ("
+                                        + applicationClass + "): " + ex
+                                        + "(applets and -sandbox always causes this)");
                             }
                         }
                         return;

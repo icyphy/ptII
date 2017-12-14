@@ -85,7 +85,8 @@ public class MatlabUtilities {
      *  a Token.
      */
     public static ptolemy.data.Token evaluate(String expression,
-            Set variableNames, ParserScope scope) throws IllegalActionException {
+            Set variableNames, ParserScope scope)
+            throws IllegalActionException {
         try {
             if (_engineClass == null) {
                 _initialize();
@@ -137,15 +138,13 @@ public class MatlabUtilities {
                         cellFormat.append("{");
 
                         if (dirs.hasMoreTokens()) {
-                            cellFormat.append("'"
-                                    + UtilityFunctions.findFile(dirs
-                                            .nextToken()) + "'");
+                            cellFormat.append("'" + UtilityFunctions
+                                    .findFile(dirs.nextToken()) + "'");
                         }
 
                         while (dirs.hasMoreTokens()) {
-                            cellFormat.append(",'"
-                                    + UtilityFunctions.findFile(dirs
-                                            .nextToken()) + "'");
+                            cellFormat.append(",'" + UtilityFunctions
+                                    .findFile(dirs.nextToken()) + "'");
                         }
 
                         cellFormat.append("}");
@@ -176,8 +175,8 @@ public class MatlabUtilities {
 
                     if (addPathCommand != null) {
                         // matlabEngine.evalString(engine, addPathCommand);
-                        _engineEvalString.invoke(matlabEngine, new Object[] {
-                                _engine, addPathCommand });
+                        _engineEvalString.invoke(matlabEngine,
+                                new Object[] { _engine, addPathCommand });
                     }
 
                     // Set matlab variables required for evaluating the
@@ -192,16 +191,16 @@ public class MatlabUtilities {
                             if (token != null) {
                                 //matlabEngine.put
                                 //    (engine, name, token);
-                                _enginePut.invoke(matlabEngine, new Object[] {
-                                        _engine, name, token });
+                                _enginePut.invoke(matlabEngine,
+                                        new Object[] { _engine, name, token });
                             }
                         }
                     }
 
                     //matlabEngine.evalString(engine,
                     //        "result__=" + expression);
-                    _engineEvalString.invoke(matlabEngine, new Object[] {
-                            _engine, "result__=" + expression });
+                    _engineEvalString.invoke(matlabEngine,
+                            new Object[] { _engine, "result__=" + expression });
 
                     //result = matlabEngine.get(engine, "result__");
                     result = (ptolemy.data.Token) _engineGet.invoke(
@@ -260,8 +259,8 @@ public class MatlabUtilities {
             _engineEvalString = _engineClass.getMethod("evalString",
                     new Class[] { long[].class, String.class });
 
-            _engineGet = _engineClass.getMethod("get", new Class[] {
-                    long[].class, String.class });
+            _engineGet = _engineClass.getMethod("get",
+                    new Class[] { long[].class, String.class });
 
             _engineOpen = _engineClass.getMethod("open", new Class[0]);
 

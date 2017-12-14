@@ -53,8 +53,8 @@ import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
  @author Shahrooz Shahparnia based on an initial implementation by Ming Yung Ko.
  @version $Id$
  */
-public class FloydWarshallTransitiveClosureStrategy extends
-FloydWarshallStrategy implements TransitiveClosureAnalyzer {
+public class FloydWarshallTransitiveClosureStrategy
+        extends FloydWarshallStrategy implements TransitiveClosureAnalyzer {
     /** Construct a transitive closure analysis for a given directed graph.
      *  @param graph The given directed graph.
      */
@@ -75,7 +75,7 @@ FloydWarshallStrategy implements TransitiveClosureAnalyzer {
     @Override
     public boolean pathExistence(Node startNode, Node endNode) {
         return _transitiveClosure[graph().nodeLabel(startNode)][graph()
-                                                                .nodeLabel(endNode)];
+                .nodeLabel(endNode)];
     }
 
     /** Return a description of the analyzer.

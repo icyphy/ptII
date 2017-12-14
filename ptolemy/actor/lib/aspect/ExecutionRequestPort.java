@@ -65,9 +65,9 @@ public class ExecutionRequestPort extends CommunicationRequestPort {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        RecordType type = new RecordType(new String[] { "actor",
-        "executionTime" }, new Type[] { BaseType.OBJECT,
-                BaseType.DOUBLE });
+        RecordType type = new RecordType(
+                new String[] { "actor", "executionTime" },
+                new Type[] { BaseType.OBJECT, BaseType.DOUBLE });
         value.setTypeEquals(type);
     }
 

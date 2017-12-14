@@ -98,7 +98,7 @@ public class GTParameter extends Parameter {
      model is returned, regardless of whether the same name exists in the
      pattern or not (even if this evaluator is used to evaluate a parameter
      specified in the pattern).
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -159,8 +159,8 @@ public class GTParameter extends Parameter {
                         if (patternObject != null) {
                             String methodName = node.getMethodName();
                             NamedObj patternChild = GTTools.getChild(
-                                    patternObject, methodName, true, true,
-                                    true, true);
+                                    patternObject, methodName, true, true, true,
+                                    true);
                             if (patternChild != null
                                     && _matchResult.containsKey(patternChild)) {
                                 Object hostChild = _matchResult
@@ -205,7 +205,7 @@ public class GTParameter extends Parameter {
     /**
      A scope to be used in {@link Evaluator} to resolve names with a pattern and
      a match result.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -241,7 +241,8 @@ public class GTParameter extends Parameter {
             // Resolve ports, entities and relations in the pattern.
             NamedObj patternChild = GTTools.getChild(_pattern, name, false,
                     true, true, true);
-            if (patternChild != null && _matchResult.containsKey(patternChild)) {
+            if (patternChild != null
+                    && _matchResult.containsKey(patternChild)) {
                 // If found and there is a match (patternChild has not been
                 // ignored), return the matching object in the host.
                 NamedObj child = (NamedObj) _matchResult.get(patternChild);
@@ -358,7 +359,7 @@ public class GTParameter extends Parameter {
     /**
      The type inference used to infer types of names in the host model and in
      the pattern, which is used in {@link Evaluator}.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -389,8 +390,8 @@ public class GTParameter extends Parameter {
         @Override
         public Type inferTypes(ASTPtRootNode node, ParserScope scope)
                 throws IllegalActionException {
-            return super.inferTypes(node, new Scope(_pattern, _matchResult,
-                    scope));
+            return super.inferTypes(node,
+                    new Scope(_pattern, _matchResult, scope));
         }
 
         /** Set the type of the given node to be the return type of the
@@ -413,8 +414,8 @@ public class GTParameter extends Parameter {
                         if (patternObject != null) {
                             String methodName = node.getMethodName();
                             NamedObj patternChild = GTTools.getChild(
-                                    patternObject, methodName, true, true,
-                                    true, true);
+                                    patternObject, methodName, true, true, true,
+                                    true);
                             if (patternChild != null
                                     && _matchResult.containsKey(patternChild)) {
                                 Object hostChild = _matchResult

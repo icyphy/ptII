@@ -107,7 +107,8 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
      *   or null to specify to add the circle to the source image.
      */
     @Override
-    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+    public BufferedImage filter(BufferedImage source,
+            BufferedImage destination) {
         if (destination == null) {
             // If no destination is provided, overwrite the source.
             destination = source;
@@ -171,8 +172,8 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
                 g.drawOval(_cog.x - 5, _cog.y - 5, 10, 10);
             } else {
                 /* Original would put a green rectangle in the center. Don't do this.
-            g.setColor(Color.GREEN);
-            g.drawRect(_cog.x - 5, _cog.y - 5, 10, 10);
+                g.setColor(Color.GREEN);
+                g.drawRect(_cog.x - 5, _cog.y - 5, 10, 10);
                  */
             }
             g.dispose();
@@ -243,10 +244,12 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
      */
     public void setAreaThreshold(double threshold) {
         if (threshold < 0) {
-            throw new IllegalArgumentException("Area fraction threshold cannot be negative!");
+            throw new IllegalArgumentException(
+                    "Area fraction threshold cannot be negative!");
         }
         if (threshold > 100) {
-            throw new IllegalArgumentException("Area fraction threshold cannot be higher than 100!");
+            throw new IllegalArgumentException(
+                    "Area fraction threshold cannot be higher than 100!");
         }
         _areaThreshold = threshold;
     }
@@ -268,10 +271,12 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
      */
     public void setPixelThreshold(int threshold) {
         if (threshold < 0) {
-            throw new IllegalArgumentException("Pixel intensity threshold cannot be negative!");
+            throw new IllegalArgumentException(
+                    "Pixel intensity threshold cannot be negative!");
         }
         if (threshold > 255) {
-            throw new IllegalArgumentException("Pixel intensity threshold cannot be higher than 255!");
+            throw new IllegalArgumentException(
+                    "Pixel intensity threshold cannot be higher than 255!");
         }
         _pixelThreshold = threshold;
     }

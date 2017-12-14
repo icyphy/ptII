@@ -84,13 +84,11 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      */
     @Override
     public BooleanToken isEqualTo(Token rightArgument) {
-        if (this != null
-                && rightArgument != null
+        if (this != null && rightArgument != null
                 && rightArgument instanceof ConceptToken
                 && ((ConceptToken) rightArgument).conceptValue() != null
-                && conceptValue() != null
-                && ((ConceptToken) rightArgument).conceptValue().equals(
-                        conceptValue())) {
+                && conceptValue() != null && ((ConceptToken) rightArgument)
+                        .conceptValue().equals(conceptValue())) {
             return BooleanToken.TRUE;
         } else {
             return BooleanToken.FALSE;

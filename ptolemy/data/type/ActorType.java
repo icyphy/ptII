@@ -88,8 +88,8 @@ public class ActorType implements Type, Cloneable {
         if (token instanceof ActorToken) {
             return token;
         } else {
-            throw new IllegalActionException("Attempt to convert token "
-                    + token + " into a test token, which is not possible.");
+            throw new IllegalActionException("Attempt to convert token " + token
+                    + " into a test token, which is not possible.");
         }
     }
 

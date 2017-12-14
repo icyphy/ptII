@@ -233,8 +233,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "add", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("add", this, rightArgument));
         }
     }
 
@@ -257,34 +257,33 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
             // Wrap base type argument in array in order to do expansion.
             if ((typeInfo == CPO.LOWER || typeInfo == CPO.SAME)) {
-                Token[] arr = {leftArgument};
+                Token[] arr = { leftArgument };
                 return new ArrayToken(arr).add(this);
-            }
-            else if (getClass() == leftArgument.getClass()) {
-                return ((ArrayToken)leftArgument).add(this);
+            } else if (getClass() == leftArgument.getClass()) {
+                return ((ArrayToken) leftArgument).add(this);
             } else {
-                throw new IllegalActionException(null, notSupportedMessage(
-                        "addReverse", this, leftArgument));
+                throw new IllegalActionException(null,
+                        notSupportedMessage("addReverse", this, leftArgument));
             }
         } catch (IllegalActionException ex) {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "addReverse", this, leftArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("addReverse", this, leftArgument));
         }
     }
 
-     /** Append the given array to the end of this array, and return the
-     *   resulting array. For example, if this array is {1, 2, 3} and the
-     *   given array is {4, 5, 6}, then the result would be {1, 2, 3, 4, 5, 6}.
-     *   If both arrays are empty, then an empty array is returned.
-     *
-     *  @param token The array to be appended to the end of this array.
-     *  @return The result array.
-     *  @exception IllegalActionException If an array token cannot be created.
-     *  @since Ptolemy II 7.1
-     */
+    /** Append the given array to the end of this array, and return the
+    *   resulting array. For example, if this array is {1, 2, 3} and the
+    *   given array is {4, 5, 6}, then the result would be {1, 2, 3, 4, 5, 6}.
+    *   If both arrays are empty, then an empty array is returned.
+    *
+    *  @param token The array to be appended to the end of this array.
+    *  @return The result array.
+    *  @exception IllegalActionException If an array token cannot be created.
+    *  @since Ptolemy II 7.1
+    */
     public ArrayToken append(ArrayToken token) throws IllegalActionException {
         // FIXME: This should probably create an instance of a subclass the
         // preserves and refers to the two subarrays.
@@ -380,7 +379,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      * @return dataBytes the resulting unsigned byte array.
      * @see #unsignedByteArrayToArrayToken(byte[])
      */
-    public static byte[] arrayTokenToUnsignedByteArray(ArrayToken dataArrayToken) {
+    public static byte[] arrayTokenToUnsignedByteArray(
+            ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
 
         for (int j = 0; j < dataArrayToken.length(); j++) {
@@ -449,8 +449,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "divide", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("divide", this, rightArgument));
         }
     }
 
@@ -475,8 +475,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "divide", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("divide", this, rightArgument));
         }
     }
 
@@ -497,8 +497,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "elementAdd", this, token));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementAdd", this, token));
         }
 
         return new ArrayToken(result);
@@ -521,8 +521,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "elementDivide", this, token));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementDivide", this, token));
         }
 
         return new ArrayToken(result);
@@ -545,8 +545,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "elementModulo", this, token));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementModulo", this, token));
         }
 
         return new ArrayToken(result);
@@ -570,8 +570,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "elementMultiply", this, token));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementMultiply", this, token));
         }
 
         return new ArrayToken(result);
@@ -615,8 +615,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "elementSubtract", this, token));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementSubtract", this, token));
         }
 
         return new ArrayToken(result);
@@ -792,8 +792,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "isCloseTo", this, token));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("isCloseTo", this, token));
         }
     }
 
@@ -833,8 +833,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "modulo", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("modulo", this, rightArgument));
         }
     }
 
@@ -856,8 +856,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "modulo", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("modulo", this, rightArgument));
         }
     }
 
@@ -881,8 +881,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "multiply", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("multiply", this, rightArgument));
         }
     }
 
@@ -907,8 +907,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "multiplyReverse", this, leftArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("multiplyReverse", this, leftArgument));
         }
     }
 
@@ -1021,8 +1021,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "subtract", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("subtract", this, rightArgument));
         }
     }
 
@@ -1047,8 +1047,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
             // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "divide", this, rightArgument));
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("divide", this, rightArgument));
         }
     }
 
@@ -1313,8 +1313,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // Here is where isCloseTo() differs from isEqualTo().
             // Note that we return false the first time we hit an
             // element token that is not close to our current element token.
-            BooleanToken result = getElement(i).isCloseTo(
-                    rightArray.getElement(i), epsilon);
+            BooleanToken result = getElement(i)
+                    .isCloseTo(rightArray.getElement(i), epsilon);
 
             if (result.booleanValue() == false) {
                 return BooleanToken.FALSE;
@@ -1344,8 +1344,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         ArrayToken rightArray = (ArrayToken) token;
 
         for (int i = 0; i < length(); i++) {
-            BooleanToken result = getElement(i).isEqualTo(
-                    rightArray.getElement(i));
+            BooleanToken result = getElement(i)
+                    .isEqualTo(rightArray.getElement(i));
 
             if (result.booleanValue() == false) {
                 return BooleanToken.FALSE;
@@ -1578,8 +1578,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         if (length() != length) {
             throw new IllegalActionException("The length of the argument ("
-                    + length
-                    + ") is not the same as the length of this token ("
+                    + length + ") is not the same as the length of this token ("
                     + length() + ").");
         }
     }

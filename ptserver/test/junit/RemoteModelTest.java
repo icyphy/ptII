@@ -85,8 +85,8 @@ public class RemoteModelTest {
         // or create a proper initializer for it
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
-        modules.add(new PtolemyModule(ResourceBundle
-                .getBundle("ptserver.util.PTServerModule")));
+        modules.add(new PtolemyModule(
+                ResourceBundle.getBundle("ptserver.util.PTServerModule")));
         PtolemyInjector.createInjector(modules);
     }
 
@@ -121,11 +121,10 @@ public class RemoteModelTest {
         factory.setUser("guest");
         factory.setPassword("guest");
 
-        _proxy = (IServerManager) factory.create(
-                IServerManager.class,
+        _proxy = (IServerManager) factory.create(IServerManager.class,
                 String.format("http://%s:%s%s", "localhost",
-                        CONFIG.getString("SERVLET_PORT"), "/"
-                                + PtolemyServer.SERVLET_NAME));
+                        CONFIG.getString("SERVLET_PORT"),
+                        "/" + PtolemyServer.SERVLET_NAME));
         counter = 0;
         isWaiting = true;
     }
@@ -139,8 +138,8 @@ public class RemoteModelTest {
         ProxyModelResponse response = _openRemoteModel();
         ProxyModelInfrastructure model = _setUpClientModel(response);
         // Set the delegate for a returned token.
-        SysOutActor actor = (SysOutActor) model.getTopLevelActor().getEntity(
-                "Display");
+        SysOutActor actor = (SysOutActor) model.getTopLevelActor()
+                .getEntity("Display");
         assertNotNull(actor);
         actor.setDelegator(new TokenDelegator() {
 
@@ -148,7 +147,8 @@ public class RemoteModelTest {
             public void getToken(Token token) {
                 if (counter < 10) {
                     if (token instanceof IntToken) {
-                        assertEquals(counter, ((IntToken) token).intValue() / 2);
+                        assertEquals(counter,
+                                ((IntToken) token).intValue() / 2);
                         counter++;
                     }
                 } else {
@@ -178,7 +178,8 @@ public class RemoteModelTest {
         assertEquals(10, counter);
     }
 
-    private ProxyModelResponse _openRemoteModel() throws IllegalActionException {
+    private ProxyModelResponse _openRemoteModel()
+            throws IllegalActionException {
         String[] modelUrls = _proxy.getModelListing();
         assertNotNull(modelUrls);
         assertTrue(modelUrls.length > 0);
@@ -198,8 +199,8 @@ public class RemoteModelTest {
         Ticket ticket = response.getTicket();
         assertNotNull(ticket);
         // Just to keep the test output clean.
-        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
-                response.getTicket());
+        SimulationTask task = PtolemyServer.getInstance()
+                .getSimulationTask(response.getTicket());
         SysOutActor actor2 = (SysOutActor) task.getProxyModelInfrastructure()
                 .getTopLevelActor().getEntity("Display2");
         actor2.setDelegator(new TokenDelegator() {
@@ -216,8 +217,9 @@ public class RemoteModelTest {
             ProxyModelResponse response) throws Exception {
         Ticket ticket = response.getTicket();
         ProxyModelInfrastructure model = new ProxyModelInfrastructure(
-                ProxyModelType.CLIENT, (CompositeActor) ServerUtility
-                        .createMoMLParser().parse(response.getModelXML()),
+                ProxyModelType.CLIENT,
+                (CompositeActor) ServerUtility.createMoMLParser()
+                        .parse(response.getModelXML()),
                 response.getModelTypes());
         model.setUpInfrastructure(ticket, _server.getBrokerUrl());
 
@@ -268,7 +270,8 @@ public class RemoteModelTest {
             public void getToken(Token token) {
                 if (counter < 10) {
                     if (token instanceof IntToken) {
-                        assertEquals(counter, ((IntToken) token).intValue() / 2);
+                        assertEquals(counter,
+                                ((IntToken) token).intValue() / 2);
                         assertEquals(1, ((IntToken) token).intValue() % 2);
                         counter++;
                     }
@@ -281,8 +284,8 @@ public class RemoteModelTest {
             }
         });
         // Just to keep the test output clean.
-        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
-                response.getTicket());
+        SimulationTask task = PtolemyServer.getInstance()
+                .getSimulationTask(response.getTicket());
         SysOutActor actor2 = (SysOutActor) task.getProxyModelInfrastructure()
                 .getTopLevelActor().getEntity("Display2");
         actor2.setDelegator(new TokenDelegator() {
@@ -298,7 +301,8 @@ public class RemoteModelTest {
             public void getToken(Token token) {
                 if (counter < 10) {
                     if (token instanceof IntToken) {
-                        assertEquals(counter, ((IntToken) token).intValue() / 2);
+                        assertEquals(counter,
+                                ((IntToken) token).intValue() / 2);
                         assertEquals(1, ((IntToken) token).intValue() % 2);
                         counter++;
                     }
@@ -334,21 +338,22 @@ public class RemoteModelTest {
     public void testModelTimeout() throws Exception {
         ProxyModelResponse response = _openRemoteModel();
         // Wait for a roundtrip response from the server.
-        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
-                response.getTicket());
+        SimulationTask task = PtolemyServer.getInstance()
+                .getSimulationTask(response.getTicket());
         final int timeoutPeriod = 1000;
         task.getProxyModelInfrastructure().setTimeoutPeriod(timeoutPeriod);
         final long time = System.currentTimeMillis();
-        task.getProxyModelInfrastructure().addProxyModelListener(
-                new ProxyModelAdapter() {
+        task.getProxyModelInfrastructure()
+                .addProxyModelListener(new ProxyModelAdapter() {
 
                     @Override
                     public void modelConnectionExpired(
                             ProxyModelInfrastructure remoteModel) {
                         synchronized (RemoteModelTest.this) {
                             long diff = System.currentTimeMillis() - time;
-                            assertTrue("Timeout period " + timeoutPeriod
-                                    + " diff " + diff,
+                            assertTrue(
+                                    "Timeout period " + timeoutPeriod + " diff "
+                                            + diff,
                                     diff < 2 * timeoutPeriod * 1.05);
                             isWaiting = false;
                             RemoteModelTest.this.notifyAll();

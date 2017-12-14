@@ -111,9 +111,9 @@ public class UnionMerge extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:green\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -200,8 +200,8 @@ public class UnionMerge extends TypedAtomicActor {
         // constrain the fields in the output union to be greater than or
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..|}
-        result.add(new Inequality(new ConstructAssociativeType(_portMap
-                .values(), UnionType.class), output.getTypeTerm()));
+        result.add(new Inequality(new ConstructAssociativeType(
+                _portMap.values(), UnionType.class), output.getTypeTerm()));
 
         for (Entry<String, TypedIOPort> entry : _portMap.entrySet()) {
             String inputName = entry.getKey();

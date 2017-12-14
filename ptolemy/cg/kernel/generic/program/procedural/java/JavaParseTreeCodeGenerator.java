@@ -57,8 +57,8 @@ import ptolemy.cg.kernel.generic.program.procedural.ProceduralParseTreeCodeGener
  @Pt.AcceptedRating Red
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class JavaParseTreeCodeGenerator extends
-        ProceduralParseTreeCodeGenerator {
+public class JavaParseTreeCodeGenerator
+        extends ProceduralParseTreeCodeGenerator {
 
     /**
      * Create a JavaParseTreeCodeGenerator that is used by

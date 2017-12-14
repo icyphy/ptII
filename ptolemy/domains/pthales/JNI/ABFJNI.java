@@ -100,8 +100,8 @@ class ABFJNI {
 
     public final static native void AddJam(int jarg1, int jarg2, int jarg3,
             float[] jarg4, int jarg5, int jarg6, int jarg7, float[] jarg8,
-            float jarg9, float jarg10, float jarg11, float jarg12,
-            float jarg13, float jarg14);
+            float jarg9, float jarg10, float jarg11, float jarg12, float jarg13,
+            float jarg14);
 
     public final static native void Slid_Filter(int jarg1, float[] jarg2,
             int jarg3, float[] jarg4, int jarg5, float[] jarg6);

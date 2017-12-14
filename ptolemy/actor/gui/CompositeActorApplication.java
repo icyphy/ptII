@@ -116,8 +116,8 @@ public class CompositeActorApplication extends CompositeActorSimpleApplication {
             Iterator models = _models.iterator();
 
             while (models.hasNext()) {
-                _frames.add((ModelFrame) startRun((CompositeActor) models
-                        .next()));
+                _frames.add(
+                        (ModelFrame) startRun((CompositeActor) models.next()));
             }
         }
     }

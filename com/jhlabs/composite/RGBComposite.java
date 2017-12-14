@@ -31,8 +31,10 @@ public abstract class RGBComposite implements Composite {
     }
 
     public RGBComposite(float alpha) {
-        if (alpha < 0.0f || alpha > 1.0f)
-            throw new IllegalArgumentException("RGBComposite: alpha must be between 0 and 1");
+        if (alpha < 0.0f || alpha > 1.0f) {
+            throw new IllegalArgumentException(
+                    "RGBComposite: alpha must be between 0 and 1");
+        }
         this.extraAlpha = alpha;
     }
 
@@ -47,20 +49,24 @@ public abstract class RGBComposite implements Composite {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof RGBComposite))
+        if (!(o instanceof RGBComposite)) {
             return false;
+        }
         RGBComposite c = (RGBComposite) o;
 
-        if (extraAlpha != c.extraAlpha)
+        if (extraAlpha != c.extraAlpha) {
             return false;
+        }
         return true;
     }
 
-    public abstract static class RGBCompositeContext implements CompositeContext {
+    public abstract static class RGBCompositeContext
+            implements CompositeContext {
 
         private float alpha;
 
-        public RGBCompositeContext(float alpha, ColorModel srcColorModel, ColorModel dstColorModel) {
+        public RGBCompositeContext(float alpha, ColorModel srcColorModel,
+                ColorModel dstColorModel) {
             this.alpha = alpha;
         }
 

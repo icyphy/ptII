@@ -56,8 +56,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cshelton)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ExpressionConceptFunctionParseTreeEvaluator extends
-ParseTreeEvaluator {
+public class ExpressionConceptFunctionParseTreeEvaluator
+        extends ParseTreeEvaluator {
 
     /** Construct an ExpressionConceptFunctionParseTreeEvaluator for
      *  evaluating expressions that represent concept functions.
@@ -104,7 +104,7 @@ ParseTreeEvaluator {
     public ExpressionConceptFunctionParseTreeEvaluator(
             Map<String, Concept> arguments, OntologySolverModel solverModel,
             List<Ontology> domainOntologies, Ontology outputRangeOntology)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         _solverModel = solverModel;
         _scopeOntologies = new LinkedList<Ontology>(domainOntologies);
         _scopeOntologies.add(outputRangeOntology);
@@ -154,7 +154,7 @@ ParseTreeEvaluator {
             return (ConceptToken) evaluatedToken;
         } else if (evaluatedToken instanceof ObjectToken
                 && ((ObjectToken) evaluatedToken).getValueClass()
-                .isAssignableFrom(Concept.class)) {
+                        .isAssignableFrom(Concept.class)) {
             return new ConceptToken(
                     (Concept) ((ObjectToken) evaluatedToken).getValue());
         } else {
@@ -203,8 +203,8 @@ ParseTreeEvaluator {
         if (node.getFunctionName().compareTo("lub") == 0) {
             CPO cpo = ((Ontology) argValues.get(0).getContainer())
                     .getConceptGraph();
-            Concept bound = (Concept) cpo.leastUpperBound(new HashSet<Concept>(
-                    argValues));
+            Concept bound = (Concept) cpo
+                    .leastUpperBound(new HashSet<Concept>(argValues));
             _evaluatedChildToken = new ConceptToken(bound);
             return;
         } else if (node.getFunctionName().compareTo("projectLeft") == 0) {
@@ -217,22 +217,22 @@ ParseTreeEvaluator {
             Concept c = argValues.get(0);
             ProductLatticeConcept p = (ProductLatticeConcept) c;
             List<Concept> tuple = p.getConceptTuple();
-            _evaluatedChildToken = new ConceptToken(tuple.get(tuple.size() - 1));
+            _evaluatedChildToken = new ConceptToken(
+                    tuple.get(tuple.size() - 1));
             return;
         }
 
         if (function == null) {
             throw new IllegalActionException(
                     "Unrecognized concept function name: " + functionName
-                    + " in the concept function expression string.");
+                            + " in the concept function expression string.");
         }
 
         if (function.isNumberOfArgumentsFixed()
                 && argCount != function.getNumberOfArguments()) {
             throw new IllegalActionException("The concept function "
                     + functionName + " has the wrong number of arguments. "
-                    + "Expected # arguments: "
-                    + function.getNumberOfArguments()
+                    + "Expected # arguments: " + function.getNumberOfArguments()
                     + ", actual # arguments: " + argCount);
         }
 
@@ -253,7 +253,8 @@ ParseTreeEvaluator {
      *   resolved to a concept.
      */
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         _evaluatedChildToken = null;
         String nodeLabel = _getNodeLabel(node);
 
@@ -281,7 +282,8 @@ ParseTreeEvaluator {
 
         // If the node is not an argument, it must be a name of a concept itself.
         if (_evaluatedChildToken == null) {
-            _evaluatedChildToken = new ConceptToken(_getNamedConcept(nodeLabel));
+            _evaluatedChildToken = new ConceptToken(
+                    _getNamedConcept(nodeLabel));
         }
     }
 

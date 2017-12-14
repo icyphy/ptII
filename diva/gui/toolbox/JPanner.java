@@ -193,8 +193,9 @@ public class JPanner extends JPanel {
             try {
                 canvas = (JCanvas) _target.getView();
             } catch (ClassCastException ex) {
-                throw new RuntimeException("Failed to cast "
-                        + _target.getView() + " to JCanvas.", ex);
+                throw new RuntimeException(
+                        "Failed to cast " + _target.getView() + " to JCanvas.",
+                        ex);
             }
             Dimension viewSize = canvas.getSize();
             Rectangle viewRect = new Rectangle(0, 0, viewSize.width,
@@ -202,8 +203,8 @@ public class JPanner extends JPanel {
 
             Rectangle myRect = _getInsetBounds();
 
-            AffineTransform forward = CanvasUtilities.computeFitTransform(
-                    viewRect, myRect);
+            AffineTransform forward = CanvasUtilities
+                    .computeFitTransform(viewRect, myRect);
 
             // Also invert the current transform on the canvas.
             AffineTransform current = canvas.getCanvasPane()
@@ -242,9 +243,9 @@ public class JPanner extends JPanel {
     private Rectangle _getInsetBounds() {
         Dimension mySize = getSize();
         Insets insets = getInsets();
-        Rectangle myRect = new Rectangle(insets.left, insets.top, mySize.width
-                - insets.top - insets.bottom, mySize.height - insets.left
-                - insets.right);
+        Rectangle myRect = new Rectangle(insets.left, insets.top,
+                mySize.width - insets.top - insets.bottom,
+                mySize.height - insets.left - insets.right);
         return myRect;
     }
 
@@ -256,8 +257,8 @@ public class JPanner extends JPanel {
         }
     }
 
-    private class PanMouseListener extends MouseAdapter implements
-    MouseMotionListener {
+    private class PanMouseListener extends MouseAdapter
+            implements MouseMotionListener {
         @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null
@@ -279,8 +280,8 @@ public class JPanner extends JPanel {
         }
     }
 
-    private class ScaleMouseListener extends MouseAdapter implements
-    MouseMotionListener {
+    private class ScaleMouseListener extends MouseAdapter
+            implements MouseMotionListener {
         public Point2D origin = null;
 
         public Point2D scaled = null;
@@ -344,8 +345,8 @@ public class JPanner extends JPanel {
                         viewSize.height);
                 Rectangle myRect = _getInsetBounds();
 
-                AffineTransform forward = CanvasUtilities.computeFitTransform(
-                        viewRect, myRect);
+                AffineTransform forward = CanvasUtilities
+                        .computeFitTransform(viewRect, myRect);
 
                 double xScaled = (origin.getX() - myRect.getX())
                         / forward.getScaleX();
@@ -388,7 +389,7 @@ public class JPanner extends JPanel {
                                 "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
                                 "twoooooooooooooooooooooooooooooooooooooooo",
                                 "threeeeeeeeeeeeeeeee",
-                        "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
+                                "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
                         JList dataList = new JList(data);
                         JScrollPane p = new JScrollPane(dataList);
                         p.setSize(200, 200);

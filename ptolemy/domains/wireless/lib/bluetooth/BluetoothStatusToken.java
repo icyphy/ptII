@@ -87,37 +87,34 @@ public class BluetoothStatusToken<T> extends BluetoothToken {
             BluetoothStatusToken right = (BluetoothStatusToken) rightArgument;
             if (this._status == right.getStatusValue()) {
                 return new BooleanToken(true);
-            }
-            else {
+            } else {
                 return new BooleanToken(false);
             }
-        }
-        else {
-            throw new IllegalActionException("The argument must be of type BluetoothStatusToken");
+        } else {
+            throw new IllegalActionException(
+                    "The argument must be of type BluetoothStatusToken");
         }
     }
-
 
     @Override
     public String toString() {
         if (_data instanceof String || _data instanceof StringToken) {
             switch (_status) {
-                case STATUS_ERROR:
-                    return ("ERROR," + this._data);
-                case STATUS_OK:
-                    return ("OK,"+ this._data);
-                default:
-                    return ("nil,"+ this._data);
+            case STATUS_ERROR:
+                return ("ERROR," + this._data);
+            case STATUS_OK:
+                return ("OK," + this._data);
+            default:
+                return ("nil," + this._data);
             }
-        }
-        else {
+        } else {
             switch (_status) {
-                case STATUS_ERROR:
-                    return "ERROR";
-                case STATUS_OK:
-                    return "OK";
-                default:
-                    return "nil";
+            case STATUS_ERROR:
+                return "ERROR";
+            case STATUS_OK:
+                return "OK";
+            default:
+                return "nil";
             }
         }
     }

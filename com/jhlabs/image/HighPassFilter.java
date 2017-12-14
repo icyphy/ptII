@@ -33,18 +33,19 @@ public class HighPassFilter extends GaussianFilter {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] inPixels = new int[width * height];
         int[] outPixels = new int[width * height];
         src.getRGB(0, 0, width, height, inPixels, 0, width);
 
         if (radius > 0) {
-            convolveAndTranspose(kernel, inPixels, outPixels, width, height, alpha, alpha && premultiplyAlpha, false,
-                    CLAMP_EDGES);
-            convolveAndTranspose(kernel, outPixels, inPixels, height, width, alpha, false, alpha && premultiplyAlpha,
-                    CLAMP_EDGES);
+            convolveAndTranspose(kernel, inPixels, outPixels, width, height,
+                    alpha, alpha && premultiplyAlpha, false, CLAMP_EDGES);
+            convolveAndTranspose(kernel, outPixels, inPixels, height, width,
+                    alpha, false, alpha && premultiplyAlpha, CLAMP_EDGES);
         }
 
         src.getRGB(0, 0, width, height, outPixels, 0, width);
@@ -66,7 +67,8 @@ public class HighPassFilter extends GaussianFilter {
                 g1 = (g1 + 255 - g2) / 2;
                 b1 = (b1 + 255 - b2) / 2;
 
-                inPixels[index] = (rgb1 & 0xff000000) | (r1 << 16) | (g1 << 8) | b1;
+                inPixels[index] = (rgb1 & 0xff000000) | (r1 << 16) | (g1 << 8)
+                        | b1;
                 index++;
             }
         }

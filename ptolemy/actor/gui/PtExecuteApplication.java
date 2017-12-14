@@ -118,7 +118,8 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @param throwable The Throwable to be displayed.
      */
     @Override
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
 
         // If you modify this code, make sure that the following command
         // prints a meaningful message to stdout:
@@ -183,14 +184,15 @@ public class PtExecuteApplication extends MoMLApplication {
      *  If there is an _applicationInitializer parameter, then
      *  construct it.  The _applicationInitializer parameter contains
      *  a string that names a class to be initialized.
-
+    
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
     @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
         if (_configurationURL == null) {
-            _configurationURL = specToURL("ptolemy/configs/runConfiguration.xml");
+            _configurationURL = specToURL(
+                    "ptolemy/configs/runConfiguration.xml");
         }
 
         _configuration = readConfiguration(_configurationURL);
@@ -269,7 +271,7 @@ public class PtExecuteApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String[][] _localCommandOptions = { { "-config",
-    "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>" }, };
+            "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>" }, };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

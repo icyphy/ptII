@@ -273,7 +273,8 @@ public class PeriodicDirectorHelper {
                         .getContainer();
                 while (container.getContainer() != null) {
                     container = (CompositeActor) container.getContainer();
-                    if (container.getDirector().getName().startsWith("Ptides")) {
+                    if (container.getDirector().getName()
+                            .startsWith("Ptides")) {
                         return true;
                     }
                 }

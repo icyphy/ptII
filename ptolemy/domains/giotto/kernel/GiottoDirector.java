@@ -85,8 +85,8 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoScheduler
  @see GiottoReceiver
  */
-public class GiottoDirector extends StaticSchedulingDirector implements
-Decorator {
+public class GiottoDirector extends StaticSchedulingDirector
+        implements Decorator {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -96,8 +96,8 @@ Decorator {
      *  @exception NameDuplicationException If the container already contains
      *  an entity with the specified name.
      */
-    public GiottoDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public GiottoDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -131,8 +131,8 @@ Decorator {
      *  @exception NameDuplicationException If the container reports an entity
      *  that duplicates an existing name during initialization.
      */
-    public GiottoDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public GiottoDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -251,7 +251,8 @@ Decorator {
                 long elapsedTime = elapsedTimeSinceStart();
                 double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
-                if (_expectedNextIterationTime.getDoubleValue() > elapsedTimeInSeconds) {
+                if (_expectedNextIterationTime
+                        .getDoubleValue() > elapsedTimeInSeconds) {
                     long timeToWait = (long) ((_expectedNextIterationTime
                             .getDoubleValue() - elapsedTimeInSeconds) * 1000.0);
 
@@ -325,8 +326,7 @@ Decorator {
                     }
                 }
                 if (_debugging) {
-                    _debug("Done firing actor "
-                            + actor
+                    _debug("Done firing actor " + actor
                             + " now going to check to see if it went over time.");
                 }
 
@@ -358,8 +358,8 @@ Decorator {
                     .add(_unitTimeIncrement);
             //this compensates for rounding errors that may occur
             if (_unitIndex == _lcm) {
-                _expectedNextIterationTime = new Time(this, _iterationCount
-                        + _periodValue * _unitIndex);
+                _expectedNextIterationTime = new Time(this,
+                        _iterationCount + _periodValue * _unitIndex);
                 if (_debugging) {
                     _debug("unit index is equal to lcm");
                     _debug("iteration count is: " + _iterationCount);
@@ -410,7 +410,8 @@ Decorator {
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         if (_debugging) {
-            _debug("fireAt method was called for actor: " + actor.getFullName());
+            _debug("fireAt method was called for actor: "
+                    + actor.getFullName());
         }
         // No executive director. Return current time plus the period divided
         // by the frequency of the specified actor,
@@ -694,13 +695,14 @@ Decorator {
     public boolean prefire() throws IllegalActionException {
         if (isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
-            Time outsideCurrentTime = ((Actor) container)
-                    .getExecutiveDirector().getModelTime();
+            Time outsideCurrentTime = ((Actor) container).getExecutiveDirector()
+                    .getModelTime();
 
             if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
                 // not the scheduled time to fire.
                 _readyToFire = false;
-            } else if (outsideCurrentTime.compareTo(_expectedNextIterationTime) == 0) {
+            } else if (outsideCurrentTime
+                    .compareTo(_expectedNextIterationTime) == 0) {
                 // the outside time is equal to the expected
                 // next iteration time...
                 setModelTime(outsideCurrentTime);
@@ -784,8 +786,8 @@ Decorator {
      *  @see #getContainer()
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
@@ -841,9 +843,8 @@ Decorator {
 
                 if (insideReceivers != null && insideReceivers[i] != null) {
                     if (_debugging) {
-                        _debug(getName(),
-                                "transferring input from " + port.getName()
-                                + " channel " + i);
+                        _debug(getName(), "transferring input from "
+                                + port.getName() + " channel " + i);
                     }
 
                     for (int j = 0; j < insideReceivers[i].length; j++) {
@@ -961,8 +962,8 @@ Decorator {
      *  to set to null a variable that has value dependents, or if the
      *  container rejects the change.
      */
-    private void _init() throws NameDuplicationException,
-    IllegalActionException {
+    private void _init()
+            throws NameDuplicationException, IllegalActionException {
         GiottoScheduler scheduler = new GiottoScheduler(workspace());
         setScheduler(scheduler);
 

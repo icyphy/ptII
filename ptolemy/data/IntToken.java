@@ -73,14 +73,14 @@ public class IntToken extends ScalarToken {
      */
     public IntToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(notSupportedNullNilStringMessage(
-                    "IntToken", init));
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("IntToken", init));
         }
         try {
             _value = Integer.parseInt(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(null, e, "Failed to parse \""
-                    + init + "\" as a number.");
+            throw new IllegalActionException(null, e,
+                    "Failed to parse \"" + init + "\" as a number.");
         }
     }
 
@@ -133,8 +133,7 @@ public class IntToken extends ScalarToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             ShortToken shortToken = ShortToken.convert(token);
             IntToken result = new IntToken(shortToken.intValue());
-            if (shortToken._unitCategoryExponents != null
-                    && !UnitUtilities
+            if (shortToken._unitCategoryExponents != null && !UnitUtilities
                     .isUnitless(shortToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = shortToken
                         ._copyOfCategoryExponents();
@@ -144,8 +143,8 @@ public class IntToken extends ScalarToken {
 
         // The argument is below ShortToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "int"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "int"));
     }
 
     /** Return the value in the token as a double.
@@ -444,7 +443,8 @@ public class IntToken extends ScalarToken {
      *   argument is close to the value of this token.
      */
     @Override
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.IntegerMatrixMath.within(); if this
         // implementation changes, also change the corresponding

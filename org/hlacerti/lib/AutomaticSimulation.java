@@ -48,6 +48,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -94,7 +95,8 @@ public class AutomaticSimulation extends VergilApplication
         ArrayList<String> lines = new ArrayList<String>();
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(file), "UTF-8"));
             content = bufferedReader.readLine();
             while (content != null) {
                 lines.add(content);
@@ -790,7 +792,8 @@ public class AutomaticSimulation extends VergilApplication
             @Override
             public void run() {
                 try {
-                    model[0] = VergilApplication.openModelOrEntity(modelPath);
+                    model[0] = ConfigurationApplication
+                            .openModelOrEntity(modelPath);
                     model[0].setPersistent(false);
                     System.out.println("The model " + model[0].getDisplayName()
                             + " is ready.");
@@ -824,7 +827,7 @@ public class AutomaticSimulation extends VergilApplication
 
         while (models.hasNext()) {
             if (!_wait) {
-                model = (NamedObj) models.next();
+                model = models.next();
                 if (model instanceof CompositeActor) {
                     CompositeActor actor = (CompositeActor) model;
 
@@ -880,7 +883,8 @@ public class AutomaticSimulation extends VergilApplication
 
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(file, true), "UTF-8"));
             writer.write(data);
             writer.flush();
         } catch (IOException e) {

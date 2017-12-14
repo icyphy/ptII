@@ -101,8 +101,8 @@ public class KielerLayoutArcConnector extends ArcConnector {
                 LayoutHint layoutHint = (LayoutHint) relation
                         .getAttribute("_layoutHint");
                 if (layoutHint != null) {
-                    layoutHintItem = layoutHint.getLayoutHintItem(
-                            link.getHead(), link.getTail());
+                    layoutHintItem = layoutHint
+                            .getLayoutHintItem(link.getHead(), link.getTail());
                     if (layoutHintItem != null) {
                         // Bend points are always considered while a layout operation is
                         // in progress to keep them from being removed. This is not quite
@@ -151,8 +151,8 @@ public class KielerLayoutArcConnector extends ArcConnector {
             Site headSite = getHeadSite();
             Site tailSite = getTailSite();
 
-            Point2D[] headTail = KielerLayoutUtil
-                    .getHeadTailPoints(this, bendPointList);
+            Point2D[] headTail = KielerLayoutUtil.getHeadTailPoints(this,
+                    bendPointList);
             Point2D headCenter = headTail[0];
             Point2D tailCenter = headTail[1];
 
@@ -206,7 +206,8 @@ public class KielerLayoutArcConnector extends ArcConnector {
             }
 
             // We can now create a path object for the spline points
-            Point2D[] pts = bendPointList.toArray(new Point2D[bendPointList.size()]);
+            Point2D[] pts = bendPointList
+                    .toArray(new Point2D[bendPointList.size()]);
 
             GeneralPath path = _createSplinePath(null, pts);
 
@@ -247,7 +248,8 @@ public class KielerLayoutArcConnector extends ArcConnector {
             if (_labelLocation != null) {
 
                 Point2D pos = (Point2D) _labelLocation.clone();
-                CanvasUtilities.translate(pos, label.getPadding(), SwingConstants.NORTH_WEST);
+                CanvasUtilities.translate(pos, label.getPadding(),
+                        SwingConstants.NORTH_WEST);
                 label.translateTo(pos);
 
                 // the positions calculated by KIELER are always for the top-left corner of an element
@@ -302,7 +304,8 @@ public class KielerLayoutArcConnector extends ArcConnector {
      *            an array of AWT Geometry {@link Point2D Point2Ds}
      * @return the path object containing the required segments
      */
-    private GeneralPath _createSplinePath(final GeneralPath thePath, final Point2D[] points) {
+    private GeneralPath _createSplinePath(final GeneralPath thePath,
+            final Point2D[] points) {
 
         final GeneralPath path = thePath != null ? thePath : new GeneralPath();
 

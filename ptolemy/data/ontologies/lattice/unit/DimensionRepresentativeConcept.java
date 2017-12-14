@@ -60,8 +60,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
  */
-public abstract class DimensionRepresentativeConcept extends
-FlatTokenRepresentativeConcept {
+public abstract class DimensionRepresentativeConcept
+        extends FlatTokenRepresentativeConcept {
 
     /** Create a new DimensionRepresentativeConcept with the specified name and
      *  ontology.
@@ -129,16 +129,16 @@ FlatTokenRepresentativeConcept {
             _unitList = _getAllUserDefinedUnits();
 
             // Find the given unitName in the list of pre-specified parameters.
-            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
+            List<UnitConversionInfo> unitParameterList = attributeList(
+                    UnitConversionInfo.class);
             for (UnitConversionInfo unitParameter : unitParameterList) {
                 try {
                     String unitConceptString = getName() + "_"
                             + unitParameter.getName();
-                    Concept unitConcept = getOntology().getConceptByString(
-                            unitConceptString);
-                    if (unitConcept instanceof UnitConcept
-                            && this.equals(((UnitConcept) unitConcept)
-                                    .getDimension())) {
+                    Concept unitConcept = getOntology()
+                            .getConceptByString(unitConceptString);
+                    if (unitConcept instanceof UnitConcept && this.equals(
+                            ((UnitConcept) unitConcept).getDimension())) {
                         _unitList.add((UnitConcept) unitConcept);
                     }
                 } catch (IllegalActionException ex) {
@@ -178,11 +178,13 @@ FlatTokenRepresentativeConcept {
      */
     protected RecordToken _findUnitRecordByName(String unitName)
             throws IllegalActionException {
-        RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(unitName);
+        RecordToken userDefinedRecord = _findUserDefinedUnitRecordByName(
+                unitName);
         if (userDefinedRecord == null) {
 
             // Find the given unitName in the list of pre-specified parameters.
-            List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
+            List<UnitConversionInfo> unitParameterList = attributeList(
+                    UnitConversionInfo.class);
             for (UnitConversionInfo unitParameter : unitParameterList) {
                 if (unitName.equals(unitParameter.getName())) {
                     RecordToken unitConversionInfoRecord = (RecordToken) unitParameter
@@ -193,7 +195,8 @@ FlatTokenRepresentativeConcept {
                                         + unitParameter);
                     } else {
                         RecordToken unitNameRecord = new RecordToken(
-                                new String[] { UnitConversionInfo.unitNameLabel },
+                                new String[] {
+                                        UnitConversionInfo.unitNameLabel },
                                 new Token[] { new StringToken(unitName) });
                         return RecordToken.merge(unitNameRecord,
                                 unitConversionInfoRecord);
@@ -224,9 +227,8 @@ FlatTokenRepresentativeConcept {
             for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
                 Token unitNameToken = unitRecordToken
                         .get(UnitConversionInfo.unitNameLabel);
-                if (unitNameToken instanceof StringToken
-                        && unitName.equals(((StringToken) unitNameToken)
-                                .stringValue())) {
+                if (unitNameToken instanceof StringToken && unitName
+                        .equals(((StringToken) unitNameToken).stringValue())) {
                     return unitRecordToken;
                 }
             }
@@ -254,8 +256,8 @@ FlatTokenRepresentativeConcept {
                 if (unitNameToken instanceof StringToken) {
                     String unitName = ((StringToken) unitNameToken)
                             .stringValue();
-                    Concept unit = getOntology().getConceptByString(
-                            getName() + "_" + unitName);
+                    Concept unit = getOntology()
+                            .getConceptByString(getName() + "_" + unitName);
                     if (unit instanceof DerivedUnitConcept) {
                         result.add((DerivedUnitConcept) unit);
                     }

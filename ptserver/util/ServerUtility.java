@@ -132,8 +132,8 @@ public class ServerUtility {
             if (isRemoteAttribute instanceof Parameter) {
                 System.out.println("isRemoteAttribute(): " + attribute + " "
                         + isRemoteAttribute);
-                if (((Parameter) isRemoteAttribute).getExpression().equals(
-                        ServerUtility.REMOTE_ATTRIBUTE)) {
+                if (((Parameter) isRemoteAttribute).getExpression()
+                        .equals(ServerUtility.REMOTE_ATTRIBUTE)) {
                     return true;
                 }
             }
@@ -155,16 +155,16 @@ public class ServerUtility {
                     + parameter.getExpression() + " ==? "
                     + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
 
-            if (parameter.getExpression().equals(
-                    ServerUtility.PROXY_SINK_ATTRIBUTE)) {
+            if (parameter.getExpression()
+                    .equals(ServerUtility.PROXY_SINK_ATTRIBUTE)) {
                 System.out.println(" TRUE");
                 return true;
             } else {
                 System.out.println(" FALSE");
             }
         }
-        System.out.println("isTargetProxySink(): " + targetEntityAttribute
-                + " FALSE");
+        System.out.println(
+                "isTargetProxySink(): " + targetEntityAttribute + " FALSE");
         return false;
     }
 
@@ -181,16 +181,16 @@ public class ServerUtility {
                     + parameter.getExpression() + " ==? "
                     + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
 
-            if (parameter.getExpression().equals(
-                    ServerUtility.PROXY_SOURCE_ATTRIBUTE)) {
+            if (parameter.getExpression()
+                    .equals(ServerUtility.PROXY_SOURCE_ATTRIBUTE)) {
                 System.out.println(" TRUE");
                 return true;
             } else {
                 System.out.println(" TRUE");
             }
         }
-        System.out.println("isTargetProxySource(): " + targetEntityAttribute
-                + "FALSE");
+        System.out.println(
+                "isTargetProxySource(): " + targetEntityAttribute + "FALSE");
         return false;
     }
 
@@ -257,9 +257,9 @@ public class ServerUtility {
     public static CompositeEntity mergeModelWithLayout(String modelURL,
             String layoutURL,
             HashSet<Class<? extends Attribute>> classesToMerge,
-            HashSet<String> namedObjectsToMerge) throws MalformedURLException,
-            IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+            HashSet<String> namedObjectsToMerge)
+            throws MalformedURLException, IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
         return mergeModelWithLayout(new URL(modelURL), new URL(layoutURL),
                 classesToMerge, namedObjectsToMerge);
     }
@@ -278,8 +278,8 @@ public class ServerUtility {
         try {
             return (CompositeEntity) parser.parse(null, url);
         } catch (Exception e) {
-            throw new IllegalActionException(null, e, "Unable to parse url: "
-                    + url);
+            throw new IllegalActionException(null, e,
+                    "Unable to parse url: " + url);
         }
     }
 
@@ -344,14 +344,14 @@ public class ServerUtility {
             // Check if any of the proxy actors have them as targets and pther proxy
             // properties.
             for (ProxyActor proxy : layout.entityList(ProxyActor.class)) {
-                if (proxy.getTargetEntityName().equals(
-                        entityToCheck.getFullName())) {
+                if (proxy.getTargetEntityName()
+                        .equals(entityToCheck.getFullName())) {
                     found = true;
                     break;
                 } else {
                     // Proxy entity's targets are invalid/not in the model.
-                    ComponentEntity target = model.getEntity(proxy
-                            .getTargetEntityName());
+                    ComponentEntity target = model
+                            .getEntity(proxy.getTargetEntityName());
                     if (target == null) {
                         validation.addProxyWithInvalidTarget(proxy);
                     }
@@ -390,8 +390,8 @@ public class ServerUtility {
                 found = true;
             } else {
                 for (TabDefinition tabDefinition : tabs) {
-                    if (tabDefinition.getTag().equals(
-                            ((Settable) tab).getExpression())) {
+                    if (tabDefinition.getTag()
+                            .equals(((Settable) tab).getExpression())) {
                         found = true;
                         break;
                     }
@@ -454,8 +454,8 @@ public class ServerUtility {
     private static void _mergeElements(NamedObj source,
             CompositeEntity targetModel,
             HashSet<Class<? extends Attribute>> classesToMerge,
-            HashSet<String> namedObjectsToMerge) throws IllegalActionException,
-            CloneNotSupportedException {
+            HashSet<String> namedObjectsToMerge)
+            throws IllegalActionException, CloneNotSupportedException {
         //System.out.println("_mergeElement(" + source.getFullName() + ", " + targetModel.getFullName() + ", " + classesToMerge + ", " + namedObjectsToMerge);
         // Check if source and model is available.
         if (source == null || targetModel == null) {
@@ -473,7 +473,8 @@ public class ServerUtility {
         // Note: This holds for any child entity but does not hold for the top level container.
         // Added a check to allow merging of top level container's attributes.
         if (source instanceof Entity
-                && targetModel.getEntity(stripFullName(source.getFullName())) == null
+                && targetModel
+                        .getEntity(stripFullName(source.getFullName())) == null
                 && source.getContainer() != null) {
             return;
         }
@@ -484,18 +485,14 @@ public class ServerUtility {
         // not present in the target model.
         List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
         for (Attribute attribute : attributeList) {
-            System.out
-                    .println("_mergeElements() looping "
-                            + attribute.getClass()
-                            + " "
-                            + attribute.getName()
-                            + " "
-                            + (classesToMerge == null ? "null" : classesToMerge
-                                    .contains(attribute.getClass()))
-                            + " "
-                            + (namedObjectsToMerge == null ? "null"
-                                    : namedObjectsToMerge.contains(attribute
-                                            .getName())));
+            System.out.println("_mergeElements() looping "
+                    + attribute.getClass() + " " + attribute.getName() + " "
+                    + (classesToMerge == null ? "null"
+                            : classesToMerge.contains(attribute.getClass()))
+                    + " "
+                    + (namedObjectsToMerge == null ? "null"
+                            : namedObjectsToMerge
+                                    .contains(attribute.getName())));
             if (classesToMerge == null
                     || classesToMerge.contains(attribute.getClass())
                     || namedObjectsToMerge == null
@@ -512,14 +509,13 @@ public class ServerUtility {
                     NamedObj targetParent = null;
                     if (attribute.getContainer().getContainer() == null) {
                         targetParent = targetModel;
-                    } else if (attribute.getContainer() instanceof ComponentEntity) {
-                        targetParent = targetModel
-                                .getEntity(stripFullName(attribute
-                                        .getContainer().getFullName()));
+                    } else if (attribute
+                            .getContainer() instanceof ComponentEntity) {
+                        targetParent = targetModel.getEntity(stripFullName(
+                                attribute.getContainer().getFullName()));
                     } else if (attribute.getContainer() instanceof Attribute) {
-                        targetParent = targetModel
-                                .getAttribute(stripFullName(attribute
-                                        .getContainer().getFullName()));
+                        targetParent = targetModel.getAttribute(stripFullName(
+                                attribute.getContainer().getFullName()));
                     }
 
                     if (targetParent != null) {
@@ -535,7 +531,7 @@ public class ServerUtility {
                     clonedAttribute.setPersistent(true);
                     if (clonedAttribute instanceof Settable) {
                         ((Settable) clonedAttribute)
-                        .setVisibility(Settable.NONE);
+                                .setVisibility(Settable.NONE);
                     }
                 } catch (NameDuplicationException e) {
                     // The attribute already exists. Since deepAttributeList returns all deeply

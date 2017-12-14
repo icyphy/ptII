@@ -223,8 +223,10 @@ public class Histogram extends PlotBox {
     public synchronized void exportToPlot(PrintWriter output, String dtd) {
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
-            output.println("<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
-            output.println("    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+            output.println(
+                    "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+            output.println(
+                    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
@@ -243,8 +245,8 @@ public class Histogram extends PlotBox {
             String legend = getLegend(dataset);
 
             if (legend != null) {
-                output.println("<dataset name=\"" + legend
-                        + "\" connected=\"no\">");
+                output.println(
+                        "<dataset name=\"" + legend + "\" connected=\"no\">");
             } else {
                 output.println("<dataset connected=\"no\">");
             }
@@ -258,8 +260,8 @@ public class Histogram extends PlotBox {
 
                 // The X axis value is a bit complex to get.
                 int xValue = (int) (bin.intValue() * _binWidth + _binOffset);
-                output.println("<p x=\"" + xValue + "\" y=\""
-                        + count.intValue() + "\"/>");
+                output.println("<p x=\"" + xValue + "\" y=\"" + count.intValue()
+                        + "\"/>");
             }
 
             output.println("</dataset>");
@@ -426,8 +428,8 @@ public class Histogram extends PlotBox {
         output.println("<barGraph width=\"" + _barwidth + "\" offset=\""
                 + _baroffset + "\"/>");
 
-        output.println("<bin width=\"" + _binWidth + "\" offset=\""
-                + _binOffset + "\"/>");
+        output.println("<bin width=\"" + _binWidth + "\" offset=\"" + _binOffset
+                + "\"/>");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -443,9 +445,8 @@ public class Histogram extends PlotBox {
      */
     protected void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
-            throw new IllegalArgumentException(
-                    "Plot._checkDatasetIndex: Cannot"
-                            + " give a negative number for the data set index.");
+            throw new IllegalArgumentException("Plot._checkDatasetIndex: Cannot"
+                    + " give a negative number for the data set index.");
         }
 
         while (dataset >= _points.size()) {
@@ -480,8 +481,8 @@ public class Histogram extends PlotBox {
 
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
-            int barlx = (int) (xpos - _barwidth * _binWidth * _xscale / 2 + dataset
-                    * _baroffset * _binWidth * _xscale);
+            int barlx = (int) (xpos - _barwidth * _binWidth * _xscale / 2
+                    + dataset * _baroffset * _binWidth * _xscale);
 
             // right x position of bar
             int barrx = (int) (barlx + _barwidth * _binWidth * _xscale);
@@ -535,8 +536,8 @@ public class Histogram extends PlotBox {
      *  @param drawRect A specification of the size.
      */
     @Override
-    protected synchronized void _drawPlot(Graphics graphics,
-            boolean clearfirst, Rectangle drawRect) {
+    protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst,
+            Rectangle drawRect) {
         // This method called when images are exported.
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
@@ -721,8 +722,8 @@ public class Histogram extends PlotBox {
                     ArrayList<HashSet<Integer>> scheduledBinsToAdd = new ArrayList<HashSet<Integer>>();
                     for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {
                         HashSet<Integer> element = _scheduledBinsToAdd.get(i);
-                        scheduledBinsToAdd.add((HashSet<Integer>) element
-                                .clone());
+                        scheduledBinsToAdd
+                                .add((HashSet<Integer>) element.clone());
                         element.clear();
                     }
                     _needBinRedraw = false;

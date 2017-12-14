@@ -78,8 +78,8 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        InfiniteConceptRepresentative newObject = (InfiniteConceptRepresentative) super
-                .clone(workspace);
+        InfiniteConceptRepresentative newObject = (InfiniteConceptRepresentative) super.clone(
+                workspace);
         newObject._instantiatedInfiniteConcepts = new HashSet<InfiniteConcept>();
         return newObject;
     }
@@ -96,7 +96,8 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      */
     public InfiniteConcept getInfiniteConceptByString(
             String infiniteConceptString) throws IllegalActionException {
-        InfiniteConcept result = _findInstantiatedInfiniteConcept(infiniteConceptString);
+        InfiniteConcept result = _findInstantiatedInfiniteConcept(
+                infiniteConceptString);
 
         if (result == null) {
             result = _createInfiniteConceptInstance(infiniteConceptString);
@@ -140,9 +141,9 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
             try {
                 infiniteConcept.setContainer(null);
             } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(this, ex, "Could not set "
-                        + "the container for infinite concept "
-                        + infiniteConcept + " to null.");
+                throw new IllegalActionException(this, ex,
+                        "Could not set " + "the container for infinite concept "
+                                + infiniteConcept + " to null.");
             }
         }
         _instantiatedInfiniteConcepts.clear();

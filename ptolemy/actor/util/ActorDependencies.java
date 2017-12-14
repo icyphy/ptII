@@ -260,8 +260,8 @@ public class ActorDependencies {
                                 IOPort remotePort2 = receiver[j].getContainer();
                                 if (remotePort2 != null) {
                                     //System.out.println("ActorDependencies._dependents: rempotePort2: " + remotePort2.getFullName());
-                                    results.addAll(_dependents(remotePort2,
-                                            filter));
+                                    results.addAll(
+                                            _dependents(remotePort2, filter));
                                 }
                             }
                         }

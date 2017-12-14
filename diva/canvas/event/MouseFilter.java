@@ -197,8 +197,7 @@ public class MouseFilter {
     public String toString() {
         StringBuffer result = new StringBuffer();
         result.append(super.toString() + "; Button "
-                + MouseEvent.getMouseModifiersText(_buttonMask)
-                + "; Modifiers "
+                + MouseEvent.getMouseModifiersText(_buttonMask) + "; Modifiers "
                 + MouseEvent.getMouseModifiersText(_modifierFlags)
                 + "; Modifier mask "
                 + MouseEvent.getMouseModifiersText(_modifierMask)

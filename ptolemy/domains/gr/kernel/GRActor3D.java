@@ -95,9 +95,9 @@ abstract public class GRActor3D extends GRActor {
         if (actor instanceof ViewScreen3D) {
             _viewScreen = (ViewScreen3D) actor;
         } else {
-            throw new IllegalActionException(this, "Actor of class "
-                    + actor.getClass().getName()
-                    + " must be an instance of ViewScreen3D");
+            throw new IllegalActionException(this,
+                    "Actor of class " + actor.getClass().getName()
+                            + " must be an instance of ViewScreen3D");
         }
     }
 

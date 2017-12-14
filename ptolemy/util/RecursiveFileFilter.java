@@ -187,11 +187,11 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  @return The array of all the files and directories found.
      */
     public static File[] listFiles(File directory, boolean recursive,
-            boolean includeFiles, boolean includeDirectories, String fileFilter) {
+            boolean includeFiles, boolean includeDirectories,
+            String fileFilter) {
         // gt uses this method.
-        return RecursiveFileFilter.listFiles(directory, recursive,
-                includeFiles, includeDirectories, false, false, fileFilter,
-                true);
+        return RecursiveFileFilter.listFiles(directory, recursive, includeFiles,
+                includeDirectories, false, false, fileFilter, true);
     }
 
     /** List all the files and directories within the given directory.
@@ -210,58 +210,56 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  @return The array of all the files and directories found.
      */
     public static File[] listFiles(File directory, boolean recursive,
-            boolean includeFiles, boolean includeDirectories,
-            String fileFilter, boolean escape) {
-        // DirectoryListing uses this method.
-        return RecursiveFileFilter.listFiles(directory, recursive,
-                includeFiles, includeDirectories, false, false, fileFilter,
-                escape);
-    }
-
-    /** List all the files and directories within the given directory.
-     *  This method has four parameters to control whether
-     *  files and directories are included.  Not all combinations make sense.
-     *  @param directory The directory.
-     *  @param recursive Whether the filter should recursively list
-     *   subdirectories.
-     *  @param includeFiles Whether files should be included.
-     *  @param includeDirectories Whether directories should be included.
-     *  @param filesOnly Whether only files should be included
-     *  @param directoriesOnly Whether only directories should be included.
-     *  @param fileFilter The filter (with ? and * as wildcards) to filter
-     *   the accepted file names.
-     *  @return The array of all the files and directories found.
-     */
-    public static File[] listFiles(File directory, boolean recursive,
-            boolean includeFiles, boolean includeDirectories,
-            boolean filesOnly, boolean directoriesOnly, String fileFilter) {
-        return RecursiveFileFilter.listFiles(directory, recursive,
-                includeFiles, includeDirectories, filesOnly, directoriesOnly,
-                fileFilter, true);
-
-    }
-
-    /** List all the files and directories within the given directory.
-     *  This method has four parameters to control whether
-     *  files and directories are included.  Not all combinations make sense.
-     *  @param directory The directory.
-     *  @param recursive Whether the filter should recursively list
-     *   subdirectories.
-     *  @param includeFiles Whether files should be included.
-     *  @param includeDirectories Whether directories should be included.
-     *  @param filesOnly Whether only files should be included
-     *  @param directoriesOnly Whether only directories should be included.
-     *  @param fileFilter The filter (with ? and * as wildcards) to filter
-     *   the accepted file names.
-     *  @param escape True if a string with ? and * as wildcards is to
-     *  be converted into a Java regular expression.  The DirectoryListing
-     *  actor calls this with a false value.
-     *  @return The array of all the files and directories found.
-     */
-    public static File[] listFiles(File directory, boolean recursive,
-            boolean includeFiles, boolean includeDirectories,
-            boolean filesOnly, boolean directoriesOnly, String fileFilter,
+            boolean includeFiles, boolean includeDirectories, String fileFilter,
             boolean escape) {
+        // DirectoryListing uses this method.
+        return RecursiveFileFilter.listFiles(directory, recursive, includeFiles,
+                includeDirectories, false, false, fileFilter, escape);
+    }
+
+    /** List all the files and directories within the given directory.
+     *  This method has four parameters to control whether
+     *  files and directories are included.  Not all combinations make sense.
+     *  @param directory The directory.
+     *  @param recursive Whether the filter should recursively list
+     *   subdirectories.
+     *  @param includeFiles Whether files should be included.
+     *  @param includeDirectories Whether directories should be included.
+     *  @param filesOnly Whether only files should be included
+     *  @param directoriesOnly Whether only directories should be included.
+     *  @param fileFilter The filter (with ? and * as wildcards) to filter
+     *   the accepted file names.
+     *  @return The array of all the files and directories found.
+     */
+    public static File[] listFiles(File directory, boolean recursive,
+            boolean includeFiles, boolean includeDirectories, boolean filesOnly,
+            boolean directoriesOnly, String fileFilter) {
+        return RecursiveFileFilter.listFiles(directory, recursive, includeFiles,
+                includeDirectories, filesOnly, directoriesOnly, fileFilter,
+                true);
+
+    }
+
+    /** List all the files and directories within the given directory.
+     *  This method has four parameters to control whether
+     *  files and directories are included.  Not all combinations make sense.
+     *  @param directory The directory.
+     *  @param recursive Whether the filter should recursively list
+     *   subdirectories.
+     *  @param includeFiles Whether files should be included.
+     *  @param includeDirectories Whether directories should be included.
+     *  @param filesOnly Whether only files should be included
+     *  @param directoriesOnly Whether only directories should be included.
+     *  @param fileFilter The filter (with ? and * as wildcards) to filter
+     *   the accepted file names.
+     *  @param escape True if a string with ? and * as wildcards is to
+     *  be converted into a Java regular expression.  The DirectoryListing
+     *  actor calls this with a false value.
+     *  @return The array of all the files and directories found.
+     */
+    public static File[] listFiles(File directory, boolean recursive,
+            boolean includeFiles, boolean includeDirectories, boolean filesOnly,
+            boolean directoriesOnly, String fileFilter, boolean escape) {
         RecursiveFileFilter filter = new RecursiveFileFilter(recursive,
                 includeFiles, includeDirectories, filesOnly, directoriesOnly,
                 fileFilter, escape);
@@ -290,8 +288,10 @@ public class RecursiveFileFilter implements FilenameFilter {
      */
     private boolean _match(boolean isDirectory, boolean isFile, String name,
             File file) {
-        if (((!_directoriesOnly && !_filesOnly) && ((isFile && _includeFiles) || (isDirectory && _includeDirectories)))
-                || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
+        if (((!_directoriesOnly && !_filesOnly) && ((isFile && _includeFiles)
+                || (isDirectory && _includeDirectories)))
+                || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory)
+                        || (!_directoriesOnly && !_filesOnly))) {
             // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
             // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
 
@@ -348,7 +348,7 @@ public class RecursiveFileFilter implements FilenameFilter {
 
     /**
        A comparator to sort file names.
-
+    
        @author Thomas Huining Feng
        @version $Id$
        @since Ptolemy II 10.0

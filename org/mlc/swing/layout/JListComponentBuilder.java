@@ -54,8 +54,7 @@ public class JListComponentBuilder implements ComponentBuilder {
 
     @Override
     public String getDeclaration(String name, Map<String, Object> properties) {
-        return "javax.swing.JList "
-                + name
+        return "javax.swing.JList " + name
                 + "Control = new javax.swing.JList();\njavax.swing.JScrollPane "
                 + name + " = new javax.swing.JScrollPane(" + name
                 + "Control);\n";

@@ -15,6 +15,7 @@
  */
 
 package ptolemy.util;
+
 // Remove the dependency on google classes.
 //import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.Double.MAX_EXPONENT;
@@ -106,7 +107,7 @@ public final class DoubleUtilities {
          * >= 0.5 and signifFloor is odd (which is true if both the 0.5 bit and the 1 bit are set).
          */
         boolean increment = (twiceSignifFloor & 1) != 0
-            && ((signifFloor & 1) != 0 || absX.getLowestSetBit() < shift);
+                && ((signifFloor & 1) != 0 || absX.getLowestSetBit() < shift);
         long signifRounded = increment ? signifFloor + 1 : signifFloor;
         long bits = (long) ((exponent + EXPONENT_BIAS)) << SIGNIFICAND_BITS;
         bits += signifRounded;

@@ -86,8 +86,8 @@ public class ExpressionShellEffigy extends Effigy {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ExpressionShellEffigy newObject = (ExpressionShellEffigy) super
-                .clone(workspace);
+        ExpressionShellEffigy newObject = (ExpressionShellEffigy) super.clone(
+                workspace);
 
         if (_model != null) {
             newObject._model = (NamedObj) _model.clone(new Workspace());

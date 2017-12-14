@@ -83,6 +83,7 @@ public class AutoNameArchTests extends AutoTests {
      * @exception Throwable
      *                If thrown while executing the model.
      */
+    @Override
     @Test(timeout = 900000)
     @Parameters(method = "modelValues")
     public void RunModel(String fullPath) throws Throwable {
@@ -143,9 +144,10 @@ public class AutoNameArchTests extends AutoTests {
         // and Ubuntu. A better version number would include the
         // version of GLIBC.
 
-        String osName = System.getProperty("os.name").replaceAll("\\s","").toLowerCase();
+        String osName = System.getProperty("os.name").replaceAll("\\s", "")
+                .toLowerCase();
         String osArch = System.getProperty("os.arch");
         String autoNameArch = "auto/" + osName + "-" + osArch + "/";
-        return modelValues(autoNameArch , THERE_ARE_NO_AUTO_TESTS);
+        return modelValues(autoNameArch, THERE_ARE_NO_AUTO_TESTS);
     }
 }

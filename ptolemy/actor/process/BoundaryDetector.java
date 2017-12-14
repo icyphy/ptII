@@ -98,7 +98,8 @@ public class BoundaryDetector {
                         .getContainer();
 
                 if (connectedEntity == contEntity.getContainer()
-                        && connectedPort.isInput() && connectedPort.isOpaque()) {
+                        && connectedPort.isInput()
+                        && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
@@ -151,8 +152,8 @@ public class BoundaryDetector {
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-    IllegalActionException {
+    public boolean isConnectedToBoundaryInside()
+            throws InvalidStateException, IllegalActionException {
         if (_connectedInsideOfBoundaryCacheIsOn) {
             return _isConnectedInsideOfBoundaryValue;
         } else {
@@ -177,7 +178,8 @@ public class BoundaryDetector {
                         .getContainer();
 
                 if (connectedEntity == contEntity.getContainer()
-                        && connectedPort.isInput() && connectedPort.isOpaque()) {
+                        && connectedPort.isInput()
+                        && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
@@ -213,7 +215,8 @@ public class BoundaryDetector {
      *  outside of a boundary port; return false otherwise.
      * @exception IllegalActionException
      */
-    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
+    public boolean isConnectedToBoundaryOutside()
+            throws IllegalActionException {
         if (_connectedOutsideOfBoundaryCacheIsOn) {
             return _isConnectedOutsideOfBoundaryValue;
         } else {

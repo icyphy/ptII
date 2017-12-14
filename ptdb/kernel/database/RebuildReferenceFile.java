@@ -92,9 +92,9 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
      * @exception DBExecutionException If thrown while executing database queries.
      * @exception XMLDBModelParsingException If thrown while parsing a model.
      */
-    public static void main(String[] args) throws IOException,
-    DBConnectionException, DBExecutionException,
-    XMLDBModelParsingException {
+    public static void main(String[] args)
+            throws IOException, DBConnectionException, DBExecutionException,
+            XMLDBModelParsingException {
 
         System.out.println("This process will take some time to complete. "
                 + "Are you sure you want to continue?(Y/N)");
@@ -154,8 +154,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         }
 
         referenceBuilder.append("<entity DBModelId=\"").append(modelId)
-        .append("\" name=\"").append(modelName).append("\" >")
-        .append("\n");
+                .append("\" name=\"").append(modelName).append("\" >")
+                .append("\n");
 
         /* Retrieve the model content from the database.*/
         GetModelTask task = new GetModelTask(modelName);
@@ -209,16 +209,16 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                         if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
                                 && !dbModelIdFound) {
 
-                            referencedModelId = Utilities.getValueForAttribute(
-                                    parameter, "value");
+                            referencedModelId = Utilities
+                                    .getValueForAttribute(parameter, "value");
 
                             dbModelIdFound = true;
 
                         } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
                                 && !isReferencedFound) {
 
-                            String value = Utilities.getValueForAttribute(
-                                    parameter, "value");
+                            String value = Utilities
+                                    .getValueForAttribute(parameter, "value");
                             isReferenced = "TRUE".equals(value);
 
                             isReferencedFound = true;
@@ -231,11 +231,12 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                 }
 
                 if (isReferenced && referencedModelId != null) {
-                    String referencedModelName = _getModelNameFromModelId(referencedModelId);
-                    referenceBuilder.append(
-                            _buildReferenceString(new XMLDBModel(
+                    String referencedModelName = _getModelNameFromModelId(
+                            referencedModelId);
+                    referenceBuilder
+                            .append(_buildReferenceString(new XMLDBModel(
                                     referencedModelName, referencedModelId)))
-                                    .append("\n");
+                            .append("\n");
                 }
             }
         }
@@ -284,8 +285,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
             throws XmlException {
         String modelId = null;
 
-        String query = "for $prop in doc (\"" + _params.getContainerName()
-                + "/" + modelName
+        String query = "for $prop in doc (\"" + _params.getContainerName() + "/"
+                + modelName
                 + "\")/entity/property where $prop/@name = \"DBModelId\" "
                 + "return data($prop/@value)";
 
@@ -308,11 +309,11 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
      * @return Model name for the given model id, null if not found.
      * @exception XmlException
      */
-    private String _getModelNameFromModelId(String modelId) throws XmlException {
+    private String _getModelNameFromModelId(String modelId)
+            throws XmlException {
         String modelName = null;
 
-        String query = "for $prop in collection(\""
-                + _params.getContainerName()
+        String query = "for $prop in collection(\"" + _params.getContainerName()
                 + "\")/entity/property where $prop/@name = \"DBModelId\" "
                 + " and $prop/@value = \"" + modelId + "\""
                 + " return base-uri($prop)";
@@ -350,7 +351,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         }
 
         if (xmlDBModel.getModelId() == null) {
-            String modelId = _getModelIdFromModelName(xmlDBModel.getModelName());
+            String modelId = _getModelIdFromModelName(
+                    xmlDBModel.getModelName());
             if (modelId == null) {
                 throw new DBExecutionException(
                         "Invalid model has no model id - "
@@ -358,7 +360,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
             }
             xmlDBModel.setModelId(modelId);
         } else if (xmlDBModel.getModelName() == null) {
-            String modelName = _getModelNameFromModelId(xmlDBModel.getModelId());
+            String modelName = _getModelNameFromModelId(
+                    xmlDBModel.getModelId());
             if (modelName == null) {
                 throw new DBExecutionException(
                         "Invalid model has no model name - "
@@ -376,15 +379,15 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
      * @exception DBConnectionException If thrown while connecting to the database.
      */
     private void _rebuildReferenceFile() throws DBExecutionException,
-    XMLDBModelParsingException, DBConnectionException {
+            XMLDBModelParsingException, DBConnectionException {
 
         try {
 
             System.out.println("Get list of all models...");
             List<XMLDBModel> allModelsList = _getAllModelNames();
 
-            System.out.println("Processing " + allModelsList.size()
-                    + " models.");
+            System.out
+                    .println("Processing " + allModelsList.size() + " models.");
             int count = 1;
             for (XMLDBModel model : allModelsList) {
                 System.out.println("Processing " + count++ + " of "
@@ -392,7 +395,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                 _buildReferenceString(model);
             }
             System.out
-            .println("Starting transaction to update ReferenceFile...");
+                    .println("Starting transaction to update ReferenceFile...");
             TransactionConfig transactionConfig = new TransactionConfig();
             /*
              * Open the transaction and enable committed reads. All
@@ -448,7 +451,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
      * @exception IOException If thrown while reading input from the console.
      */
     private static String _readInput() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in, java.nio.charset.Charset.defaultCharset()));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in,
+                java.nio.charset.Charset.defaultCharset()));
 
         String userInput = null;
         try {

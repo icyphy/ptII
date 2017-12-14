@@ -181,9 +181,11 @@ public class ShapeUtilitiesTest extends TestSuite {
             @Override
             public void check() throws TestFailedException {
                 for (int i = 0; i < n; i++) {
-                    assertExpr(TestUtilities.shapeEquals(modified[i],
-                            xforms[i], 0.01), "Shape not transformed: "
-                                    + modified[i] + " != " + xforms[i]);
+                    assertExpr(
+                            TestUtilities.shapeEquals(modified[i], xforms[i],
+                                    0.01),
+                            "Shape not transformed: " + modified[i] + " != "
+                                    + xforms[i]);
 
                     if (i < 3) {
                         assertExpr(shapes[i] != modified[i],
@@ -296,9 +298,11 @@ public class ShapeUtilitiesTest extends TestSuite {
             @Override
             public void check() throws TestFailedException {
                 for (int i = 0; i < n; i++) {
-                    assertExpr(TestUtilities.shapeEquals(modified[i],
-                            xforms[i], 0.01), "Shape not translated: "
-                                    + modified[i] + " != " + xforms[i]);
+                    assertExpr(
+                            TestUtilities.shapeEquals(modified[i], xforms[i],
+                                    0.01),
+                            "Shape not translated: " + modified[i] + " != "
+                                    + xforms[i]);
 
                     if (i < 1) {
                         assertExpr(shapes[i] != modified[i],

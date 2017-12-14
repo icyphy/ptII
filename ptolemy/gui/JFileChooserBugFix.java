@@ -134,8 +134,8 @@ public class JFileChooserBugFix {
             // Get the background color of the HTML widget.
             Style style = styleSheet.getStyle("body");
             if (style != null) {
-                AttributeSet bodyAttribute = (AttributeSet) style
-                        .getAttribute(javax.swing.text.StyleConstants.ResolveAttribute);
+                AttributeSet bodyAttribute = (AttributeSet) style.getAttribute(
+                        javax.swing.text.StyleConstants.ResolveAttribute);
                 if (bodyAttribute != null) {
                     background = styleSheet.getBackground(bodyAttribute);
                 }
@@ -143,9 +143,9 @@ public class JFileChooserBugFix {
         } catch (Exception ex) {
             if (!_printedMessage) {
                 _printedMessage = true;
-                System.out
-                .println("Failed to set the background of the file dialog:"
-                        + ex);
+                System.out.println(
+                        "Failed to set the background of the file dialog:"
+                                + ex);
 
             }
         }
@@ -154,8 +154,8 @@ public class JFileChooserBugFix {
             // Get the color of the ToolBar shadow and use it.
             Color shadow = UIManager.getColor("ToolBar.shadow");
             String rgb = Integer.toHexString(shadow.getRGB());
-            String rule = "body {background: #"
-                    + rgb.substring(2, rgb.length()) + ";}";
+            String rule = "body {background: #" + rgb.substring(2, rgb.length())
+                    + ";}";
             styleSheet.addRule(rule);
             _HTMLEditorKit.setStyleSheet(styleSheet);
         } catch (Exception ex) {

@@ -98,8 +98,8 @@ import ptolemy.kernel.util.Workspace;
  @see Transition
  @see FSMActor
  */
-public abstract class AbstractActionsAttribute extends Action implements
-HasTypeConstraints {
+public abstract class AbstractActionsAttribute extends Action
+        implements HasTypeConstraints {
     /** Construct an action with the given name contained
      *  by the specified container (which should be a Transition when used in
      *  the FSM domain, and an Event in the Ptera domain). The <i>container</i>
@@ -145,8 +145,8 @@ HasTypeConstraints {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractActionsAttribute newObject = (AbstractActionsAttribute) super
-                .clone(workspace);
+        AbstractActionsAttribute newObject = (AbstractActionsAttribute) super.clone(
+                workspace);
         newObject._destinations = null;
         newObject._destinationsListVersion = -1;
         newObject._numbers = null;
@@ -193,7 +193,7 @@ HasTypeConstraints {
      *  @exception IllegalActionException If thrown while evaluating
      *  the channel numbers.
      */
-    public List getChannelNumberList()  throws IllegalActionException {
+    public List getChannelNumberList() throws IllegalActionException {
         List list = new LinkedList();
         if (_numbers != null) {
             Iterator iterator = _numbers.iterator();
@@ -291,8 +291,8 @@ HasTypeConstraints {
      *  @return true If a channel was specified.
      */
     public boolean isChannelSpecified(String name) {
-        Integer integer = (Integer) _numbers.get(_destinationNames
-                .indexOf(name));
+        Integer integer = (Integer) _numbers
+                .get(_destinationNames.indexOf(name));
         return integer != null;
     }
 
@@ -350,11 +350,11 @@ HasTypeConstraints {
                                     + completeDestinationSpec);
                 }
 
-                _destinationNames.add(completeDestinationSpec.substring(0,
-                        openParen).trim());
+                _destinationNames.add(
+                        completeDestinationSpec.substring(0, openParen).trim());
 
-                String channelSpec = completeDestinationSpec.substring(
-                        openParen + 1, closeParen);
+                String channelSpec = completeDestinationSpec
+                        .substring(openParen + 1, closeParen);
 
                 try {
                     _numbers.add(Integer.valueOf(channelSpec));
@@ -546,11 +546,11 @@ HasTypeConstraints {
                         && ((Entity) container).getPort(_name) == null) {
                     // Not a port, then it must be a variable.
                     if (_numbers.get(index) != null &&
-                            // If the destination is not a variable, it should
-                            // be a port, and port(i) refers to the i-th channel
-                            // of the port, which has the same type as the port
-                            // itself.
-                            // -- tfeng (11/26/2008)
+                    // If the destination is not a variable, it should
+                    // be a port, and port(i) refers to the i-th channel
+                    // of the port, which has the same type as the port
+                    // itself.
+                    // -- tfeng (11/26/2008)
                             getDestination(_name) instanceof Variable) {
                         // Has a number in parentheses following the name.
                         ArrayType arrayType = new ArrayType(type);

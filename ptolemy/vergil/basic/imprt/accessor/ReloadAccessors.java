@@ -38,7 +38,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ReloadAccessors
 
@@ -68,7 +67,7 @@ public class ReloadAccessors {
      *
      *  @param args The file names of the Ptolemy models.
      */
-    public static void main(String [] args) {
+    public static void main(String[] args) {
         try {
             for (int i = 0; i < args.length; i++) {
                 System.out.println("ReloadAccessors: " + args[i]);
@@ -79,55 +78,60 @@ public class ReloadAccessors {
         }
     }
 
-
     /** Reload the accessors in a file and save the updated model.
      *  @param modelFileName The file name of the model.
      *  @exception Throwable If the model cannot be opened, accessors
      *  cannot be reloaded or the model saved.
      */
-    public static void reloadAccessors(final String modelFileName) throws Throwable {
+    public static void reloadAccessors(final String modelFileName)
+            throws Throwable {
         String oldValue = StringUtilities.getProperty("ptolemy.ptII.doNotExit");
         System.setProperty("ptolemy.ptII.doNotExit", "true");
         Runnable reloadAccessorsAction = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        // Open the model.
-                        CompositeEntity model = ConfigurationApplication
+            @Override
+            public void run() {
+                try {
+                    // Open the model.
+                    CompositeEntity model = ConfigurationApplication
                             .openModelOrEntity(modelFileName);
 
-                        // Reload the accessors and don't reload
-                        // accessors that have local modifications.
-                        _accessorReloader.invoke(null, model, false);
+                    // Reload the accessors and don't reload
+                    // accessors that have local modifications.
+                    _accessorReloader.invoke(null, model, false);
 
-                        // Save the model.
-                        BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model);
-                        // Coverity Scan suggests that getBasicGraphFrame() could return null.
-                        if (basicGraphFrame == null) {
-                            throw new NullPointerException("The BasicGraphFrame for " + model + " is null?");
-                        }
-                            ((PtolemyEffigy) basicGraphFrame.getTableau()
-                                .getContainer()).writeFile(new File(
-                                                modelFileName));
+                    // Save the model.
+                    BasicGraphFrame basicGraphFrame = BasicGraphFrame
+                            .getBasicGraphFrame(model);
+                    // Coverity Scan suggests that getBasicGraphFrame() could return null.
+                    if (basicGraphFrame == null) {
+                        throw new NullPointerException(
+                                "The BasicGraphFrame for " + model
+                                        + " is null?");
+                    }
+                    ((PtolemyEffigy) basicGraphFrame.getTableau()
+                            .getContainer()).writeFile(new File(modelFileName));
 
-                        // Close the model.
-                        ConfigurationApplication
+                    // Close the model.
+                    ConfigurationApplication
                             .closeModelWithoutSavingOrExiting(model);
 
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                        throw new RuntimeException(throwable);
-                    }
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    throw new RuntimeException(throwable);
                 }
-            };
+            }
+        };
         SwingUtilities.invokeAndWait(reloadAccessorsAction);
         System.setProperty("ptolemy.ptII.doNotExit", oldValue);
     }
 
     static {
         try {
-            Class accessorClass = Class.forName("org.terraswarm.accessor.JSAccessor");
-            _accessorReloader = accessorClass.getDeclaredMethod("reloadAllAccessors", new Class [] {CompositeEntity.class, boolean.class});
+            Class accessorClass = Class
+                    .forName("org.terraswarm.accessor.JSAccessor");
+            _accessorReloader = accessorClass.getDeclaredMethod(
+                    "reloadAllAccessors",
+                    new Class[] { CompositeEntity.class, boolean.class });
         } catch (ClassNotFoundException ex) {
             throw new ExceptionInInitializerError(ex);
         } catch (NoSuchMethodException ex2) {
@@ -142,5 +146,5 @@ public class ReloadAccessors {
      * org.terraswarm.accessor.JSAccessor.reloadAllAccesors(CompositeEntity)
      * method.
      */
-    protected static final Method _accessorReloader; }
-
+    protected static final Method _accessorReloader;
+}

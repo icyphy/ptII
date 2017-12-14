@@ -53,7 +53,8 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
  * @Pt.ProposedRating red (cxh)
  * @Pt.AcceptedRating red (cxh)
  */
-public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener {
+public class XBeeHelper extends VertxHelperBase
+        implements IDataReceiveListener {
 
     /** Create an XBee device.
      *  The first argument is an instance of the JavaScript XBee object.
@@ -65,15 +66,11 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
      *  is in use, if there are too many listeners or if we can't get
      *  an input or output stream for the port.
      */
-    public XBeeHelper(
-            Object actor,
-            ScriptObjectMirror helping,
-            String portName,
-            Map<String,Object> options)
-                    throws XBeeException {
+    public XBeeHelper(Object actor, ScriptObjectMirror helping, String portName,
+            Map<String, Object> options) throws XBeeException {
         super(actor, helping);
 
-        Integer baudRate = (Integer)options.get("baudRate");
+        Integer baudRate = (Integer) options.get("baudRate");
 
         // FIXME: Configure using SerialPortParameters argument.
         _device = new XBeeDevice(portName, baudRate);
@@ -85,19 +82,23 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
         supportedSendTypes();
         supportedReceiveTypes();
         // Next, get the option values.
-        String receiveTypeName = (String)options.get("receiveType");
-        String sendTypeName = (String)options.get("sendType");
+        String receiveTypeName = (String) options.get("receiveType");
+        String sendTypeName = (String) options.get("sendType");
         // Next, map these names to data types.
         try {
-            _sendType = Enum.valueOf(DATA_TYPE.class, sendTypeName.trim().toUpperCase());
+            _sendType = Enum.valueOf(DATA_TYPE.class,
+                    sendTypeName.trim().toUpperCase());
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Invalid send data type: " + sendTypeName);
+            throw new IllegalArgumentException(
+                    "Invalid send data type: " + sendTypeName);
         }
         // Finally, do the receive type.
         try {
-            _receiveType = Enum.valueOf(DATA_TYPE.class, receiveTypeName.trim().toUpperCase());
+            _receiveType = Enum.valueOf(DATA_TYPE.class,
+                    receiveTypeName.trim().toUpperCase());
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Invalid receive data type: " + receiveTypeName);
+            throw new IllegalArgumentException(
+                    "Invalid receive data type: " + receiveTypeName);
         }
     }
 
@@ -126,13 +127,15 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
                 numberOfElements = length / size;
             }
             if (numberOfElements == 1) {
-                _currentObj.callMember("emit", "data", _extractFromBuffer(buffer, _receiveType, 0));
+                _currentObj.callMember("emit", "data",
+                        _extractFromBuffer(buffer, _receiveType, 0));
             } else if (numberOfElements > 1) {
                 // Output a single array.
                 Object[] result = new Object[numberOfElements];
                 int position = 0;
                 for (int i = 0; i < result.length; i++) {
-                    result[i] = _extractFromBuffer(buffer, _receiveType, position);
+                    result[i] = _extractFromBuffer(buffer, _receiveType,
+                            position);
                     position += size;
                 }
                 // NOTE: If we return result, then the emitter will not
@@ -140,15 +143,15 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
                 // dance here which is probably very inefficient (almost
                 // certainly... the array gets copied).
                 try {
-                    _currentObj.callMember("emit", "data", _actor.toJSArray(result));
+                    _currentObj.callMember("emit", "data",
+                            _actor.toJSArray(result));
                 } catch (Exception e) {
                     _error("Failed to convert to a JavaScript array: " + e, e);
                     _currentObj.callMember("emit", "data", result);
                 }
             } else {
-                _error("Expect to receive type "
-                        + _receiveType
-                        + ", of size " + size
+                _error("Expect to receive type " + _receiveType + ", of size "
+                        + size
                         + ", but received an insufficient number of bytes: "
                         + buffer.length());
             }
@@ -179,7 +182,8 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
             try {
                 _device.open();
             } catch (XBeeException e) {
-                _error(_actor.getFullName() + ": Failed to open XBee device.", e);
+                _error(_actor.getFullName() + ": Failed to open XBee device.",
+                        e);
             }
         }
         try {

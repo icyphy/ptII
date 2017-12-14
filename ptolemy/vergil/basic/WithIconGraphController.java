@@ -99,17 +99,17 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
         double[] p;
         if (_prototype.isInput() && _prototype.isOutput()) {
-            p = _offsetFigure(
-                    center.getX(),
+            p = _offsetFigure(center.getX(),
                     visiblePart.getY() + visiblePart.getHeight() - _PORT_OFFSET,
                     FigureAction.PASTE_OFFSET * 2, 0, pane, frame);
         } else if (_prototype.isInput()) {
             p = _offsetFigure(visiblePart.getX() + _PORT_OFFSET, center.getY(),
                     0, FigureAction.PASTE_OFFSET * 2, pane, frame);
         } else if (_prototype.isOutput()) {
-            p = _offsetFigure(visiblePart.getX() + visiblePart.getWidth()
-                    - _PORT_OFFSET, center.getY(), 0,
-                    FigureAction.PASTE_OFFSET * 2, pane, frame);
+            p = _offsetFigure(
+                    visiblePart.getX() + visiblePart.getWidth() - _PORT_OFFSET,
+                    center.getY(), 0, FigureAction.PASTE_OFFSET * 2, pane,
+                    frame);
         } else {
             p = _offsetFigure(center.getX(), center.getY(),
                     FigureAction.PASTE_OFFSET * 2,
@@ -165,7 +165,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
         //GraphPane pane = getGraphPane();
         _menuFactory.addMenuItemFactory(new MenuActionFactory(_editIconAction));
         _menuFactory
-        .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
+                .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -310,7 +310,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 if (frame != null) {
                     if (_prototype != null) {
                         // Put in the middle of the visible part.
-                        double[] p = getNewPortLocation(pane, frame, _prototype);
+                        double[] p = getNewPortLocation(pane, frame,
+                                _prototype);
                         x = p[0];
                         y = p[1];
 
@@ -387,7 +388,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 if (_prototype.isMultiport()) {
                     // Set the width of the multiport to -1 so that the width is inferred.
                     // See ptolemy/actor/lib/test/auto/VectorDisassemblerComposite.xml
-                    moml.append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"-1\"/>");
+                    moml.append(
+                            "<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"-1\"/>");
                     moml.append("<property name=\"multiport\"/>");
                 }
             }

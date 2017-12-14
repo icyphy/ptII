@@ -75,8 +75,8 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
         super(container, name);
         priority = new Parameter(this, "priority", new IntToken(10));
         priority.setTypeEquals(BaseType.INT);
-        executionTime = new Parameter(this, "executionTime", new DoubleToken(
-                0.0));
+        executionTime = new Parameter(this, "executionTime",
+                new DoubleToken(0.0));
         executionTime.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -173,7 +173,8 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
      *  @exception IllegalActionException If the director throws it
      *  while transferring inputs.
      */
-    protected synchronized void _transferInputs() throws IllegalActionException {
+    protected synchronized void _transferInputs()
+            throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {

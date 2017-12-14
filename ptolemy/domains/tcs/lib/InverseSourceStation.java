@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.tcs.lib;
 
-
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -44,7 +42,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @version $Id$
  *  @since Ptolemy II 11.0
  */
-public class InverseSourceStation extends AbstractSourceStation{
+public class InverseSourceStation extends AbstractSourceStation {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -58,14 +56,14 @@ public class InverseSourceStation extends AbstractSourceStation{
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-   public InverseSourceStation(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
-       super(container, name);
+    public InverseSourceStation(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-       StringAttribute cardinality = new StringAttribute(input, "_cardinal");
-       cardinality.setExpression("EAST");
+        StringAttribute cardinality = new StringAttribute(input, "_cardinal");
+        cardinality.setExpression("EAST");
 
-       cardinality = new StringAttribute(output, "_cardinal");
-       cardinality.setExpression("WEST");
-   }
+        cardinality = new StringAttribute(output, "_cardinal");
+        cardinality.setExpression("WEST");
+    }
 }

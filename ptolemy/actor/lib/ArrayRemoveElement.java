@@ -110,11 +110,11 @@ public class ArrayRemoveElement extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayRemoveElement newObject = (ArrayRemoveElement) super
-                .clone(workspace);
+        ArrayRemoveElement newObject = (ArrayRemoveElement) super.clone(
+                workspace);
         try {
             newObject.array
-            .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
+                    .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
             newObject.output.setTypeAtLeast(newObject.array);
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException("Clone failed: " + e);

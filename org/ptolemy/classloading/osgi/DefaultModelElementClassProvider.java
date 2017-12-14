@@ -44,7 +44,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (erwinDL)
  *  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class DefaultModelElementClassProvider implements ModelElementClassProvider {
+public class DefaultModelElementClassProvider
+        implements ModelElementClassProvider {
 
     /**
      * Create a provider that does not care about class versions,
@@ -54,7 +55,8 @@ public class DefaultModelElementClassProvider implements ModelElementClassProvid
      * @param knownClasses The known classes
      */
     @SafeVarargs
-    public DefaultModelElementClassProvider(Class<? extends NamedObj>... knownClasses) {
+    public DefaultModelElementClassProvider(
+            Class<? extends NamedObj>... knownClasses) {
         this(null, knownClasses);
     }
 
@@ -67,7 +69,8 @@ public class DefaultModelElementClassProvider implements ModelElementClassProvid
      * @param knownClasses The known classes
      */
     @SafeVarargs
-    public DefaultModelElementClassProvider(VersionSpecification version, Class<? extends NamedObj>... knownClasses) {
+    public DefaultModelElementClassProvider(VersionSpecification version,
+            Class<? extends NamedObj>... knownClasses) {
         _knownClasses = knownClasses;
         _versionSpec = version;
     }
@@ -81,8 +84,8 @@ public class DefaultModelElementClassProvider implements ModelElementClassProvid
      *  @exception ClassNotFoundException If the class is not found.
      */
     @Override
-    public Class<? extends NamedObj> getClass(String className, VersionSpecification versionSpec)
-            throws ClassNotFoundException {
+    public Class<? extends NamedObj> getClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException {
         if (_versionSpec != null && _versionSpec.compareTo(versionSpec) < 0) {
             throw new ClassNotFoundException(className + " " + versionSpec);
         } else {

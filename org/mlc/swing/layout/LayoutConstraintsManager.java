@@ -232,8 +232,8 @@ public class LayoutConstraintsManager {
             xml.append("    <container name=\"" + layout.getName() + "\"\n");
             xml.append("               columnSpecs=\""
                     + layout.getColumnSpecsString() + "\"\n");
-            xml.append("               rowSpecs=\""
-                    + layout.getRowSpecsString() + "\">\n");
+            xml.append("               rowSpecs=\"" + layout.getRowSpecsString()
+                    + "\">\n");
 
             for (Object element : constraintMap.keySet()) {
                 String componentName = (String) element;
@@ -249,7 +249,8 @@ public class LayoutConstraintsManager {
                 xml.append("verticalAlignment=\""
                         + getAlignment(constraints.vAlign) + "\" ");
                 xml.append("topInset=\"" + constraints.insets.top + "\" ");
-                xml.append("bottomInset=\"" + constraints.insets.bottom + "\" ");
+                xml.append(
+                        "bottomInset=\"" + constraints.insets.bottom + "\" ");
                 xml.append("rightInset=\"" + constraints.insets.right + "\" ");
                 xml.append("leftInset=\"" + constraints.insets.left + "\"/>\n");
             }
@@ -289,7 +290,8 @@ public class LayoutConstraintsManager {
                                 + componentName + "\">\n");
                         for (String propertyName : customProperties.keySet()) {
 
-                            if (isTextComponent && propertyName.equals("text")) {
+                            if (isTextComponent
+                                    && propertyName.equals("text")) {
                                 break;
                             }
 
@@ -298,13 +300,14 @@ public class LayoutConstraintsManager {
                             xmlEncoder.setOwner(component);
 
                             String methodName = "set"
-                                    + propertyName.substring(0, 1).toUpperCase(
-                                            Locale.getDefault())
-                                            + (propertyName.length() > 1 ? propertyName
-                                                    .substring(1) : "");
+                                    + propertyName.substring(0, 1)
+                                            .toUpperCase(Locale.getDefault())
+                                    + (propertyName.length() > 1
+                                            ? propertyName.substring(1)
+                                            : "");
                             xmlEncoder.writeStatement(new Statement(xmlEncoder,
                                     methodName, new Object[] { customProperties
-                                    .get(propertyName) }));
+                                            .get(propertyName) }));
                             xmlEncoder.close();
 
                             String propertyXml = new String(
@@ -312,12 +315,11 @@ public class LayoutConstraintsManager {
                             int voidStart = propertyXml.indexOf("<void");
                             int voidEnd = propertyXml.indexOf(">", voidStart);
                             int end = propertyXml.lastIndexOf("</void>");
-                            String xmlWithoutDec = propertyXml.substring(
-                                    voidEnd + 1, end);
+                            String xmlWithoutDec = propertyXml
+                                    .substring(voidEnd + 1, end);
                             xmlWithoutDec = xmlWithoutDec.trim();
-                            String indented = "          "
-                                    + xmlWithoutDec.replaceAll("\n",
-                                            "\n        ");
+                            String indented = "          " + xmlWithoutDec
+                                    .replaceAll("\n", "\n        ");
                             xml.append("         <property name=\""
                                     + propertyName + "\">");
                             xml.append(indented);
@@ -475,145 +477,152 @@ public class LayoutConstraintsManager {
         Node[] containerNodes = getNodesNamed(containersNode, "container");
 
         for (Node containerNode : containerNodes) {
-            Map<String, String> containerAttributes = getAttributeMap(containerNode);
+            Map<String, String> containerAttributes = getAttributeMap(
+                    containerNode);
             String containerName = containerAttributes.get("name");
             if (containerName == null) {
                 throw new RuntimeException(
                         "Container must have a name attribute");
             }
-            String columnSpecs = containerAttributes.get("columnSpecs") != null ? containerAttributes
-                    .get("columnSpecs") : "";
-                    String rowSpecs = containerAttributes.get("rowSpecs") != null ? containerAttributes
-                            .get("rowSpecs") : "";
+            String columnSpecs = containerAttributes.get("columnSpecs") != null
+                    ? containerAttributes.get("columnSpecs")
+                    : "";
+            String rowSpecs = containerAttributes.get("rowSpecs") != null
+                    ? containerAttributes.get("rowSpecs")
+                    : "";
 
-                            final ContainerLayout containerLayout = new ContainerLayout(
-                                    containerName, columnSpecs, rowSpecs);
+            final ContainerLayout containerLayout = new ContainerLayout(
+                    containerName, columnSpecs, rowSpecs);
 
-                            Node[] cellConstraints = getNodesNamed(containerNode,
-                                    "cellconstraints");
-                            for (Node cellConstraint : cellConstraints) {
-                                Map<String, String> constraintAttributes = getAttributeMap(cellConstraint);
+            Node[] cellConstraints = getNodesNamed(containerNode,
+                    "cellconstraints");
+            for (Node cellConstraint : cellConstraints) {
+                Map<String, String> constraintAttributes = getAttributeMap(
+                        cellConstraint);
 
-                                String name = null;
-                                CellConstraints.Alignment horizontalAlignment = CellConstraints.DEFAULT;
-                                CellConstraints.Alignment verticalAlignment = CellConstraints.DEFAULT;
-                                int gridX = 1;
-                                int gridY = 1;
-                                int gridWidth = 1;
-                                int gridHeight = 1;
-                                int topInset = 0;
-                                int bottomInset = 0;
-                                int rightInset = 0;
-                                int leftInset = 0;
+                String name = null;
+                CellConstraints.Alignment horizontalAlignment = CellConstraints.DEFAULT;
+                CellConstraints.Alignment verticalAlignment = CellConstraints.DEFAULT;
+                int gridX = 1;
+                int gridY = 1;
+                int gridWidth = 1;
+                int gridHeight = 1;
+                int topInset = 0;
+                int bottomInset = 0;
+                int rightInset = 0;
+                int leftInset = 0;
 
-                                if (constraintAttributes.get("name") == null) {
-                                    throw new RuntimeException(
-                                            "cellconstraints attribute name cannot be null for container "
-                                                    + containerName);
-                                }
-                                name = constraintAttributes.get("name");
-                                if (constraintAttributes.get("horizontalAlignment") != null) {
-                                    horizontalAlignment = getAlignment(constraintAttributes
-                                            .get("horizontalAlignment"));
-                                }
-                                if (constraintAttributes.get("verticalAlignment") != null) {
-                                    verticalAlignment = getAlignment(constraintAttributes
-                                            .get("verticalAlignment"));
-                                }
-                                if (constraintAttributes.get("gridX") != null) {
-                                    gridX = Integer.parseInt(constraintAttributes.get("gridX"));
-                                }
-                                if (constraintAttributes.get("gridY") != null) {
-                                    gridY = Integer.parseInt(constraintAttributes.get("gridY"));
-                                }
-                                if (constraintAttributes.get("gridWidth") != null) {
-                                    gridWidth = Integer.parseInt(constraintAttributes
-                                            .get("gridWidth"));
-                                }
-                                if (constraintAttributes.get("gridHeight") != null) {
-                                    gridHeight = Integer.parseInt(constraintAttributes
-                                            .get("gridHeight"));
-                                }
-                                if (constraintAttributes.get("topInset") != null) {
-                                    topInset = Integer.parseInt(constraintAttributes
-                                            .get("topInset"));
-                                }
-                                if (constraintAttributes.get("bottomInset") != null) {
-                                    bottomInset = Integer.parseInt(constraintAttributes
-                                            .get("bottomInset"));
-                                }
-                                if (constraintAttributes.get("rightInset") != null) {
-                                    rightInset = Integer.parseInt(constraintAttributes
-                                            .get("rightInset"));
-                                }
-                                if (constraintAttributes.get("leftInset") != null) {
-                                    leftInset = Integer.parseInt(constraintAttributes
-                                            .get("leftInset"));
-                                }
+                if (constraintAttributes.get("name") == null) {
+                    throw new RuntimeException(
+                            "cellconstraints attribute name cannot be null for container "
+                                    + containerName);
+                }
+                name = constraintAttributes.get("name");
+                if (constraintAttributes.get("horizontalAlignment") != null) {
+                    horizontalAlignment = getAlignment(
+                            constraintAttributes.get("horizontalAlignment"));
+                }
+                if (constraintAttributes.get("verticalAlignment") != null) {
+                    verticalAlignment = getAlignment(
+                            constraintAttributes.get("verticalAlignment"));
+                }
+                if (constraintAttributes.get("gridX") != null) {
+                    gridX = Integer.parseInt(constraintAttributes.get("gridX"));
+                }
+                if (constraintAttributes.get("gridY") != null) {
+                    gridY = Integer.parseInt(constraintAttributes.get("gridY"));
+                }
+                if (constraintAttributes.get("gridWidth") != null) {
+                    gridWidth = Integer
+                            .parseInt(constraintAttributes.get("gridWidth"));
+                }
+                if (constraintAttributes.get("gridHeight") != null) {
+                    gridHeight = Integer
+                            .parseInt(constraintAttributes.get("gridHeight"));
+                }
+                if (constraintAttributes.get("topInset") != null) {
+                    topInset = Integer
+                            .parseInt(constraintAttributes.get("topInset"));
+                }
+                if (constraintAttributes.get("bottomInset") != null) {
+                    bottomInset = Integer
+                            .parseInt(constraintAttributes.get("bottomInset"));
+                }
+                if (constraintAttributes.get("rightInset") != null) {
+                    rightInset = Integer
+                            .parseInt(constraintAttributes.get("rightInset"));
+                }
+                if (constraintAttributes.get("leftInset") != null) {
+                    leftInset = Integer
+                            .parseInt(constraintAttributes.get("leftInset"));
+                }
 
-                                CellConstraints constraints = new CellConstraints(gridX, gridY,
-                                        gridWidth, gridHeight, horizontalAlignment,
-                                        verticalAlignment, new Insets(topInset, leftInset,
-                                                bottomInset, rightInset));
+                CellConstraints constraints = new CellConstraints(gridX, gridY,
+                        gridWidth, gridHeight, horizontalAlignment,
+                        verticalAlignment, new Insets(topInset, leftInset,
+                                bottomInset, rightInset));
 
-                                containerLayout.addCellConstraints(name, constraints);
-                            }
+                containerLayout.addCellConstraints(name, constraints);
+            }
 
-                            Node[] propertiesNodes = getNodesNamed(containerNode, "properties");
+            Node[] propertiesNodes = getNodesNamed(containerNode, "properties");
 
-                            // this is sooooo lame. we now how to construct a fake xml doc
-                            // so the parser can read it. i'm starting to think it would have
-                            // been easier to just do the whole damn thing by hand. arggg..
-                            String fakeDoc = "<java version=\"1.4.0\" class=\"java.beans.XMLDecoder\">";
-                            fakeDoc += "<void id=\"controller\" property=\"owner\"/>\n";
-                            fakeDoc += "<object idref=\"controller\">";
+            // this is sooooo lame. we now how to construct a fake xml doc
+            // so the parser can read it. i'm starting to think it would have
+            // been easier to just do the whole damn thing by hand. arggg..
+            String fakeDoc = "<java version=\"1.4.0\" class=\"java.beans.XMLDecoder\">";
+            fakeDoc += "<void id=\"controller\" property=\"owner\"/>\n";
+            fakeDoc += "<object idref=\"controller\">";
 
-                            for (Node propertiesNode : propertiesNodes) {
-                                Map<String, String> propertyAttributes = getAttributeMap(propertiesNode);
-                                String componentName = propertyAttributes.get("component");
-                                if (componentName == null) {
-                                    throw new RuntimeException(
-                                            "propertyset must have an attribute called component");
-                                }
+            for (Node propertiesNode : propertiesNodes) {
+                Map<String, String> propertyAttributes = getAttributeMap(
+                        propertiesNode);
+                String componentName = propertyAttributes.get("component");
+                if (componentName == null) {
+                    throw new RuntimeException(
+                            "propertyset must have an attribute called component");
+                }
 
-                                Node[] propertyNodes = getNodesNamed(propertiesNode, "property");
-                                for (Node propertyNode : propertyNodes) {
-                                    Map<String, String> voidAttributes = getAttributeMap(propertyNode);
-                                    String property = voidAttributes.get("name");
-                                    if (property == null) {
-                                        throw new RuntimeException(
-                                                "property element must have a name");
-                                    }
-                                    fakeDoc += "<void method=\"setProperty\"><string>"
-                                            + componentName + "</string>";
-                                    fakeDoc += "<string>" + property + "</string>";
-                                    fakeDoc += createString(propertyNode.getChildNodes());
-                                    fakeDoc += "</void>\n";
+                Node[] propertyNodes = getNodesNamed(propertiesNode,
+                        "property");
+                for (Node propertyNode : propertyNodes) {
+                    Map<String, String> voidAttributes = getAttributeMap(
+                            propertyNode);
+                    String property = voidAttributes.get("name");
+                    if (property == null) {
+                        throw new RuntimeException(
+                                "property element must have a name");
+                    }
+                    fakeDoc += "<void method=\"setProperty\"><string>"
+                            + componentName + "</string>";
+                    fakeDoc += "<string>" + property + "</string>";
+                    fakeDoc += createString(propertyNode.getChildNodes());
+                    fakeDoc += "</void>\n";
 
-                                }
-                            }
+                }
+            }
 
-                            fakeDoc += "</object></java>";
+            fakeDoc += "</object></java>";
 
-                            if (propertiesNodes.length > 0) {
+            if (propertiesNodes.length > 0) {
 
-                                //        Object controller = new Object()
-                                //        {
-                                //          public void configureProperty(String componentName, String property,
-                                //              Object value)
-                                //          {
-                                //            containerLayout.setProperty(componentName, property, value);
-                                //          }
-                                //        };
+                //        Object controller = new Object()
+                //        {
+                //          public void configureProperty(String componentName, String property,
+                //              Object value)
+                //          {
+                //            containerLayout.setProperty(componentName, property, value);
+                //          }
+                //        };
 
-                                XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(
-                                        fakeDoc.getBytes()));
-                                decoder.setOwner(containerLayout);
-                                decoder.readObject();
-                                decoder.close();
-                            }
+                XMLDecoder decoder = new XMLDecoder(
+                        new ByteArrayInputStream(fakeDoc.getBytes()));
+                decoder.setOwner(containerLayout);
+                decoder.readObject();
+                decoder.close();
+            }
 
-                            layoutConstraintsManager.addLayout(containerLayout);
+            layoutConstraintsManager.addLayout(containerLayout);
         }
 
         return layoutConstraintsManager;

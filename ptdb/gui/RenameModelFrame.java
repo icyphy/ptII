@@ -259,10 +259,10 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
             try {
 
-                ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
-                        newName, false);
-                ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
-                        oldName, true);
+                ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(newName,
+                        false);
+                ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(oldName,
+                        true);
 
             } catch (IOException e) {
                 // Ignore if recent files are not updated.

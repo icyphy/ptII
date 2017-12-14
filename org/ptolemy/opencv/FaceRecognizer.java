@@ -146,7 +146,8 @@ public class FaceRecognizer {
         String trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_frontalface_default.xml";
         URL url = FileUtilities.nameToURL(trainingFile, null, null);
         if (url == null) {
-            throw new IOException("Could not find the face training file: " + trainingFile);
+            throw new IOException(
+                    "Could not find the face training file: " + trainingFile);
         }
 
         // If the training file was found in a jar file, then copy it
@@ -154,47 +155,56 @@ public class FaceRecognizer {
         // it.
         File temporaryTrainingFile;
         if (url.toString().indexOf("!/") != -1) {
-            temporaryTrainingFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(url.toString());
+            temporaryTrainingFile = JNLPUtilities
+                    .getResourceSaveJarURLAsTempFile(url.toString());
             url = temporaryTrainingFile.toURI().toURL();
             if (url == null) {
-                throw new IOException("Could not load " + url + ", which was found as " + temporaryTrainingFile);
+                throw new IOException("Could not load " + url
+                        + ", which was found as " + temporaryTrainingFile);
             }
         }
 
         boolean loaded = _faceCascade.load(url.getPath());
         if (!loaded) {
             // Try without leading / on Windows.
-            loaded = _faceCascade.load(url.getPath().substring(1, url.getPath().length()));
+            loaded = _faceCascade
+                    .load(url.getPath().substring(1, url.getPath().length()));
             if (!loaded) {
-                throw new IOException("Could not load the face file: " + url.getPath());
+                throw new IOException(
+                        "Could not load the face file: " + url.getPath());
             }
         }
-
 
         _eyeCascade = new CascadeClassifier();
         trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_eye.xml";
         url = FileUtilities.nameToURL(trainingFile, null, null);
         if (url == null) {
-            throw new IOException("Could not find the eye training file in the $CLASSPATH:  " + trainingFile);
+            throw new IOException(
+                    "Could not find the eye training file in the $CLASSPATH:  "
+                            + trainingFile);
         }
 
         // If the training file was found in a jar file, then copy it
         // to a location in the classpath so that _cascade.load() can find
         // it.
         if (url.toString().indexOf("!/") != -1) {
-            temporaryTrainingFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(url.toString());
+            temporaryTrainingFile = JNLPUtilities
+                    .getResourceSaveJarURLAsTempFile(url.toString());
             url = temporaryTrainingFile.toURI().toURL();
             if (url == null) {
-                throw new IOException("Could not load " + url + ", which was found as " + temporaryTrainingFile);
+                throw new IOException("Could not load " + url
+                        + ", which was found as " + temporaryTrainingFile);
             }
         }
 
         loaded = _eyeCascade.load(url.getPath());
         if (!loaded) {
             // Try without leading / on Windows.
-            loaded = _eyeCascade.load(url.getPath().substring(1, url.getPath().length()));
+            loaded = _eyeCascade
+                    .load(url.getPath().substring(1, url.getPath().length()));
             if (!loaded) {
-                throw new IOException("Could not load the eye training file: " + url.getPath());
+                throw new IOException("Could not load the eye training file: "
+                        + url.getPath());
             }
         }
     }
@@ -206,30 +216,35 @@ public class FaceRecognizer {
      *  @exception IllegalActionException If the filter is anything other
      *  than "eyes" or "faces".
      */
-   public BufferedImage filter(BufferedImage source, String filterName)
-           throws IllegalActionException {
+    public BufferedImage filter(BufferedImage source, String filterName)
+            throws IllegalActionException {
 
-       switch (filterName) {
-           case "eyes" : return _eyes.filter(source, null);
-           case "faces" : return _faces.filter(source,  null);
-           default: throw new IllegalActionException("FaceDetector: No filter found for " + filterName);
-       }
-   }
+        switch (filterName) {
+        case "eyes":
+            return _eyes.filter(source, null);
+        case "faces":
+            return _faces.filter(source, null);
+        default:
+            throw new IllegalActionException(
+                    "FaceDetector: No filter found for " + filterName);
+        }
+    }
 
     /**
      * Convert a BufferedImage object to OpenCV's Mat representation.
      * @param source BufferedImage input
      * @return Mat matrix
      */
-    public Mat bufferedImage2Mat( BufferedImage source) {
+    public Mat bufferedImage2Mat(BufferedImage source) {
         int w = source.getWidth();
         int h = source.getHeight();
         Mat outputImage = new Mat(h, w, CvType.CV_8UC3);
-        byte [] pixels = null;
+        byte[] pixels = null;
         DataBuffer dataBuffer = source.getRaster().getDataBuffer();
         if (dataBuffer instanceof DataBufferByte) {
             // Most of the time we get bytes.
-            pixels = ((DataBufferByte) source.getRaster().getDataBuffer()).getData();
+            pixels = ((DataBufferByte) source.getRaster().getDataBuffer())
+                    .getData();
         } else {
             // The WebcamDummyDriver will emit a TYPE_INT_RGB which
             // uses a DataBufferInt so we convert the BufferImage to a
@@ -237,13 +252,13 @@ public class FaceRecognizer {
 
             // See http://stackoverflow.com/questions/33403526/how-to-match-the-color-models-of-bufferedimage-and-mat
             BufferedImage greyImage = new BufferedImage(source.getWidth(),
-                                                        source.getHeight(),
-                                                        BufferedImage.TYPE_3BYTE_BGR);
+                    source.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
             Graphics g = greyImage.getGraphics();
             g.drawImage(source, 0, 0, null);
             g.dispose();
 
-            pixels = ((DataBufferByte) greyImage.getRaster().getDataBuffer()).getData();
+            pixels = ((DataBufferByte) greyImage.getRaster().getDataBuffer())
+                    .getData();
         }
         outputImage.put(0, 0, pixels);
         return outputImage;
@@ -259,17 +274,20 @@ public class FaceRecognizer {
         int h = matrix.height();
         int w = matrix.width();
 
-        BufferedImage destination = new BufferedImage(w,h,BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage destination = new BufferedImage(w, h,
+                BufferedImage.TYPE_3BYTE_BGR);
 
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
                 double[] color = matrix.get(x, y);
-                if ( color.length  > 1 ) {
-                    int r = (int) color[0]; int g = (int) color[1]; int b = (int) color[2];
-                    destination.setRGB(y, x, new Color(r,g,b).getRGB());
+                if (color.length > 1) {
+                    int r = (int) color[0];
+                    int g = (int) color[1];
+                    int b = (int) color[2];
+                    destination.setRGB(y, x, new Color(r, g, b).getRGB());
                 } else {
                     int c = (int) color[0];
-                    destination.setRGB(y, x, new Color(c,c,c).getRGB());
+                    destination.setRGB(y, x, new Color(c, c, c).getRGB());
                 }
             }
         }
@@ -286,8 +304,9 @@ public class FaceRecognizer {
         Imgproc.cvtColor(img, gray, Imgproc.COLOR_RGB2GRAY);
 
         MatOfRect faces = new MatOfRect();
-        _faceCascade.detectMultiScale(gray, faces, 1.1, 5, 0, new Size(_minFaceSize,_minFaceSize),
-                new Size(_maxFaceSize,_maxFaceSize));
+        _faceCascade.detectMultiScale(gray, faces, 1.1, 5, 0,
+                new Size(_minFaceSize, _minFaceSize),
+                new Size(_maxFaceSize, _maxFaceSize));
         Rect[] fbox = faces.toArray();
         _facesRectDetected = fbox;
         _facesDetected = fbox.length;
@@ -312,11 +331,12 @@ public class FaceRecognizer {
      *  @param size the minimum face size, which must be positive.
      *  @exception IllegalActionException If the value of the size parameter is less than 0.
      */
-    public void setMinFaceSize( int size ) throws IllegalActionException {
-        if ( size > 0) {
+    public void setMinFaceSize(int size) throws IllegalActionException {
+        if (size > 0) {
             _minFaceSize = size;
         } else {
-            throw new IllegalActionException("Minimum face size must be positive.");
+            throw new IllegalActionException(
+                    "Minimum face size must be positive.");
         }
     }
 
@@ -324,11 +344,12 @@ public class FaceRecognizer {
      *  @param size the maximum face size, which must be positive.
      *  @exception IllegalActionException If the value of the size parameter is less than 0.
      */
-    public void setMaxFaceSize( int size ) throws IllegalActionException {
-        if ( size > 0) {
+    public void setMaxFaceSize(int size) throws IllegalActionException {
+        if (size > 0) {
             _maxFaceSize = size;
         } else {
-            throw new IllegalActionException("Maximum face size must be positive.");
+            throw new IllegalActionException(
+                    "Maximum face size must be positive.");
         }
     }
 
@@ -352,7 +373,8 @@ public class FaceRecognizer {
          *  @return The image with squares around any eyes and faces.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             // Get OpenCV image.
             Mat inputImage = bufferedImage2Mat(source);
             Mat converted = new Mat();
@@ -361,9 +383,9 @@ public class FaceRecognizer {
             // Images loaded from files are type 5: Type_3BYTE_BGR
             // We might need to handle other types in the future.
             if (source.getType() != 0) {
-                    Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+                Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
             } else {
-                    converted = inputImage;
+                converted = inputImage;
             }
             // Detect faces in image.
             Rect[] faceRectangles;
@@ -375,11 +397,12 @@ public class FaceRecognizer {
             }
 
             // Draw rectangles around each detected face.
-            for (int i= 0; i < faceRectangles.length; i++) {
+            for (int i = 0; i < faceRectangles.length; i++) {
                 Rect rect = faceRectangles[i];
                 // Draw bounding rectangle around face.
-                Imgproc.rectangle(converted, new Point(rect.x,rect.y),
-                        new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(255,0,0), 2);
+                Imgproc.rectangle(converted, new Point(rect.x, rect.y),
+                        new Point(rect.x + rect.width, rect.y + rect.height),
+                        new Scalar(255, 0, 0), 2);
             }
 
             _facesRectDetected = faceRectangles;
@@ -392,30 +415,31 @@ public class FaceRecognizer {
                 int w = faceRect.width;
                 int h = faceRect.height;
                 Point p1 = new Point(x, y);
-                Point p2 = new Point(x+w,y+h);
+                Point p2 = new Point(x + w, y + h);
 
-                Scalar color = new Scalar(255,0,0);
-                Scalar gcolor = new Scalar(0,255,0);
+                Scalar color = new Scalar(255, 0, 0);
+                Scalar gcolor = new Scalar(0, 255, 0);
 
-                Imgproc.rectangle(converted, p1 , p2 , color ,2, 8, 0);
+                Imgproc.rectangle(converted, p1, p2, color, 2, 8, 0);
 
-                Rect roiRect = new Rect(x,y,w,h) ;
+                Rect roiRect = new Rect(x, y, w, h);
                 Mat roi_gray = inputImage.submat(roiRect).clone();
 
-                Size s1 = new Size(0,0);
-                Size s2 = new Size(0,0);
+                Size s1 = new Size(0, 0);
+                Size s2 = new Size(0, 0);
 
                 MatOfRect eyes = new MatOfRect();
 
                 _eyeCascade.detectMultiScale(roi_gray, eyes, 1.2, 3, 0, s1, s2);
                 Rect[] eyeRectangles = eyes.toArray();
 
-                for (int j = 0;j < eyeRectangles.length; j++) {
+                for (int j = 0; j < eyeRectangles.length; j++) {
                     Rect eyeRect = eyeRectangles[j];
-                    p1 = new Point(x+eyeRect.x,y+eyeRect.y);
-                    p2 = new Point(x+eyeRect.x+eyeRect.width,y+eyeRect.y+eyeRect.height);
+                    p1 = new Point(x + eyeRect.x, y + eyeRect.y);
+                    p2 = new Point(x + eyeRect.x + eyeRect.width,
+                            y + eyeRect.y + eyeRect.height);
 
-                    Imgproc.rectangle(converted, p1 , p2 , gcolor ,2, 8, 0);
+                    Imgproc.rectangle(converted, p1, p2, gcolor, 2, 8, 0);
                 }
             }
 
@@ -432,7 +456,8 @@ public class FaceRecognizer {
          *  @return The image with squares around any eyes and faces.
          */
         @Override
-        public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        public BufferedImage filter(BufferedImage source,
+                BufferedImage destination) {
             // Get OpenCV image.
             Mat inputImage = bufferedImage2Mat(source);
             Mat converted = new Mat();
@@ -441,9 +466,9 @@ public class FaceRecognizer {
             // Images loaded from files are type 5: Type_3BYTE_BGR
             // We might need to handle other types in the future.
             if (source.getType() != 0) {
-                    Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+                Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
             } else {
-                    converted = inputImage;
+                converted = inputImage;
             }
 
             // Detect faces in image.
@@ -456,11 +481,12 @@ public class FaceRecognizer {
             }
 
             // Draw rectangles around each detected face.
-            for (int i= 0; i < faceRectangles.length; i++) {
+            for (int i = 0; i < faceRectangles.length; i++) {
                 Rect rect = faceRectangles[i];
                 // Draw bounding rectangle around face.
-                Imgproc.rectangle(converted, new Point(rect.x,rect.y),
-                        new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(255,0,0), 2);
+                Imgproc.rectangle(converted, new Point(rect.x, rect.y),
+                        new Point(rect.x + rect.width, rect.y + rect.height),
+                        new Scalar(255, 0, 0), 2);
             }
 
             _facesDetected = faceRectangles.length;

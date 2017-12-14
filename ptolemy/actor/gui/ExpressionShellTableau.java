@@ -59,7 +59,8 @@ import ptolemy.kernel.util.NamedObj;
  @see ShellTextArea
  @see ExpressionShellEffigy
  */
-public class ExpressionShellTableau extends Tableau implements ShellInterpreter {
+public class ExpressionShellTableau extends Tableau
+        implements ShellInterpreter {
     /** Create a new tableau.
      *  The tableau is itself an entity contained by the effigy
      *  and having the specified name.  The frame is not made visible

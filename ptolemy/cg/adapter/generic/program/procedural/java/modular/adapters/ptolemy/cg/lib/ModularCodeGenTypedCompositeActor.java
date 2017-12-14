@@ -43,9 +43,8 @@ Code generator adapter for typed composite actor.
 @Pt.AcceptedRating Red (daib)
  */
 
-public class ModularCodeGenTypedCompositeActor
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
+public class ModularCodeGenTypedCompositeActor extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
 
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.

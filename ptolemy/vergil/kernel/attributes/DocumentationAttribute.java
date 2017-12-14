@@ -133,8 +133,8 @@ public class DocumentationAttribute extends VisibleAttribute {
             try {
                 FileParameter docAttribute = null;
                 if (!(parent instanceof TableauFrame)) {
-                    throw new InternalErrorException("Frame \"" + parent
-                            + "\" is not a TableauFrame");
+                    throw new InternalErrorException(
+                            "Frame \"" + parent + "\" is not a TableauFrame");
                 }
                 Configuration configuration = ((TableauFrame) parent)
                         .getConfiguration();
@@ -142,7 +142,8 @@ public class DocumentationAttribute extends VisibleAttribute {
 
                 while (documentedObject != null) {
                     docAttribute = (FileParameter) documentedObject
-                            .getAttribute("_documentation", FileParameter.class);
+                            .getAttribute("_documentation",
+                                    FileParameter.class);
 
                     if (docAttribute != null) {
                         break;
@@ -152,8 +153,8 @@ public class DocumentationAttribute extends VisibleAttribute {
                 }
 
                 if (docAttribute != null) {
-                    URL doc = ConfigurationApplication.specToURL(docAttribute
-                            .getExpression());
+                    URL doc = ConfigurationApplication
+                            .specToURL(docAttribute.getExpression());
                     configuration.openModel(doc, doc, doc.toExternalForm());
                 } else {
                     NamedObj container = object.getContainer();
@@ -170,7 +171,7 @@ public class DocumentationAttribute extends VisibleAttribute {
                         background = jFileChooserBugFix.saveBackground();
                         JFileChooser fileDialog = new JFileChooser();
                         fileDialog
-                        .setDialogTitle("Select a documentation file.");
+                                .setDialogTitle("Select a documentation file.");
 
                         //File _directory = null;
 
@@ -180,7 +181,8 @@ public class DocumentationAttribute extends VisibleAttribute {
                             fileDialog.setCurrentDirectory(new File(cwd));
                         }
 
-                        if (fileDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                        if (fileDialog.showOpenDialog(
+                                parent) == JFileChooser.APPROVE_OPTION) {
                             // FIXME: why is this ignored?
                             //_directory = fileDialog.getCurrentDirectory();
 

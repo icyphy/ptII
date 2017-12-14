@@ -37,9 +37,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy
 @version $Id$
 @since Ptolemy II 10.0
  */
-public class TimeGap
-extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib.TimeGap {
+public class TimeGap extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib.TimeGap {
     /**
      *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.

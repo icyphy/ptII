@@ -109,8 +109,8 @@ public class DistributedReceiver extends AbstractReceiver {
             System.out.println("Forwarding token: " + token.toString());
         }
 
-        for (Iterator services = servicesReceiversListMap.keySet().iterator(); services
-                .hasNext();) {
+        for (Iterator services = servicesReceiversListMap.keySet()
+                .iterator(); services.hasNext();) {
             ServiceItem server = (ServiceItem) services.next();
             LinkedList ids = (LinkedList) servicesReceiversListMap.get(server);
             HashMap hashMap = new HashMap();
@@ -133,8 +133,8 @@ public class DistributedReceiver extends AbstractReceiver {
      */
     public void setServicesReceiversListMap(HashMap servRecListMap) {
         if (VERBOSE) {
-            System.out.println("> DistributedReceiver."
-                    + "setServicesReceiversListMap()");
+            System.out.println(
+                    "> DistributedReceiver." + "setServicesReceiversListMap()");
         }
 
         servicesReceiversListMap = servRecListMap;

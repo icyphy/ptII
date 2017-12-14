@@ -161,8 +161,8 @@ public class ArrayOfRecordsRecorder extends Sink {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayOfRecordsRecorder newObject = (ArrayOfRecordsRecorder) super
-                .clone(workspace);
+        ArrayOfRecordsRecorder newObject = (ArrayOfRecordsRecorder) super.clone(
+                workspace);
         newObject.input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
         return newObject;
     }

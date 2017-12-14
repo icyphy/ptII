@@ -97,7 +97,7 @@ import ptolemy.vergil.unit.UnitSolverDialog;
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class BasicGraphController extends AbstractGraphController
-implements DebugListener, ValueListener {
+        implements DebugListener, ValueListener {
     /** Create a new basic controller.
      */
     public BasicGraphController() {
@@ -119,7 +119,8 @@ implements DebugListener, ValueListener {
      */
     public void highlightError(final Nameable culprit) {
         if (culprit instanceof NamedObj) {
-            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
+            ChangeRequest request = new ChangeRequest(this,
+                    "Error Highlighter") {
                 @Override
                 protected void _execute() throws Exception {
                     _addErrorHighlightIfNeeded(culprit);
@@ -249,7 +250,7 @@ implements DebugListener, ValueListener {
      *  is called with argument 0, then no delay is introduced.
      *  @param time Time to sleep, in milliseconds.
      *  @see #getAnimationDelay()
-
+    
      */
     public void setAnimationDelay(long time) {
         _animationDelay = time;
@@ -294,8 +295,8 @@ implements DebugListener, ValueListener {
         if (_configuration != null && _menuFactory != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _openBaseClassAction));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_openBaseClassAction));
         }
     }
 
@@ -385,7 +386,8 @@ implements DebugListener, ValueListener {
                                 Iterator inEdges = model.inEdges(userObject);
 
                                 while (inEdges.hasNext()) {
-                                    Figure connector = getFigure(inEdges.next());
+                                    Figure connector = getFigure(
+                                            inEdges.next());
 
                                     if (connector instanceof Connector) {
                                         ((Connector) connector).reroute();
@@ -395,8 +397,8 @@ implements DebugListener, ValueListener {
                                 Iterator outEdges = model.outEdges(userObject);
 
                                 while (outEdges.hasNext()) {
-                                    Figure connector = getFigure(outEdges
-                                            .next());
+                                    Figure connector = getFigure(
+                                            outEdges.next());
 
                                     if (connector instanceof Connector) {
                                         ((Connector) connector).reroute();
@@ -405,12 +407,12 @@ implements DebugListener, ValueListener {
 
                                 if (model.isComposite(userObject)) {
                                     Iterator edges = GraphUtilities
-                                            .partiallyContainedEdges(
-                                                    userObject, model);
+                                            .partiallyContainedEdges(userObject,
+                                                    model);
 
                                     while (edges.hasNext()) {
-                                        Figure connector = getFigure(edges
-                                                .next());
+                                        Figure connector = getFigure(
+                                                edges.next());
 
                                         if (connector instanceof Connector) {
                                             ((Connector) connector).reroute();
@@ -572,16 +574,16 @@ implements DebugListener, ValueListener {
         Action[] actions = { _getDocumentationAction,
                 new CustomizeDocumentationAction(),
                 new RemoveCustomDocumentationAction() };
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
-                "Documentation"));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(actions, "Documentation"));
 
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _openBaseClassAction));
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _unitSolverDialogAction));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_openBaseClassAction));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_unitSolverDialogAction));
         }
     }
 
@@ -632,7 +634,7 @@ implements DebugListener, ValueListener {
             highlightColor = new ColorAttribute((NamedObj) culprit,
                     "_highlightColor");
             ((ColorAttribute) highlightColor)
-            .setExpression("{1.0, 0.0, 0.0, 1.0}");
+                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
             highlightColor.setPersistent(false);
             ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
             _errorHighlights.add(highlightColor);
@@ -692,8 +694,8 @@ implements DebugListener, ValueListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler
-                .error("Cannot open base class without a configuration.");
+                MessageHandler.error(
+                        "Cannot open base class without a configuration.");
                 return;
             }
 
@@ -763,9 +765,8 @@ implements DebugListener, ValueListener {
         public void actionPerformed(ActionEvent e) {
             // Only makes sense if this is an ActorGraphFrame.
             if (_frame instanceof ActorGraphFrame) {
-                DialogTableau dialogTableau = DialogTableau.createDialog(
-                        _frame, _configuration,
-                        ((ActorGraphFrame) _frame).getEffigy(),
+                DialogTableau dialogTableau = DialogTableau.createDialog(_frame,
+                        _configuration, ((ActorGraphFrame) _frame).getEffigy(),
                         UnitSolverDialog.class,
                         (Entity) ((ActorGraphFrame) _frame).getModel());
 

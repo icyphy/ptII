@@ -369,8 +369,8 @@ public class Solution {
         retv.append("Header\nVariables\n");
 
         for (int j = 0; j < _numVariables; j++) {
-            retv.append("   " + _vNumFormat.format(j) + " " + _variables[j]
-                    + "\n");
+            retv.append(
+                    "   " + _vNumFormat.format(j) + " " + _variables[j] + "\n");
         }
 
         retv.append("\n");
@@ -378,13 +378,11 @@ public class Solution {
 
         for (int i = 0; i < _numConstraints; i++) {
             NamedObj source = _source[i];
-            retv.append(""
-                    + _vNumFormat.format(i)
-                    + "         "
-                    + source.toString()
-                    + " "
-                    + ((UnitEquation) _constraints.elementAt(i))
-                    .descriptiveForm() + "\n");
+            retv.append(
+                    "" + _vNumFormat.format(i) + "         " + source.toString()
+                            + " " + ((UnitEquation) _constraints.elementAt(i))
+                                    .descriptiveForm()
+                            + "\n");
         }
 
         retv.append("\\Header\n");
@@ -481,8 +479,7 @@ public class Solution {
             }
 
             retv.append("" + _vectorA[i] + " " + _vectorA[i].descriptiveForm());
-            retv.append(" "
-                    + ((UnitEquation) _constraints.elementAt(i))
+            retv.append(" " + ((UnitEquation) _constraints.elementAt(i))
                     .descriptiveForm());
             retv.append("\n");
         }
@@ -599,12 +596,12 @@ public class Solution {
                 } else if (source instanceof ComponentEntity) {
                     sourceName = ((ComponentEntity) source).getName();
                 } else if (source instanceof TypedIOPort) {
-                    sourceName = source.getName(source.getContainer()
-                            .getContainer());
+                    sourceName = source
+                            .getName(source.getContainer().getContainer());
                 }
 
-                inconsistencyDesc.append(" " + sourceName + " "
-                        + _constraintExplanations[i]);
+                inconsistencyDesc.append(
+                        " " + sourceName + " " + _constraintExplanations[i]);
                 break;
             }
 
@@ -622,8 +619,8 @@ public class Solution {
         for (int j = 0; j < _numVariables; j++) {
             if (_varState[j] == _INCONSISTENT) {
                 stateInconsistent = true;
-                inconsistencyDesc.append(" " + _variables[j] + "="
-                        + _varBindings[j]);
+                inconsistencyDesc
+                        .append(" " + _variables[j] + "=" + _varBindings[j]);
             }
         }
 
@@ -847,7 +844,7 @@ public class Solution {
         } else {
             float[] colorArray = colorValue.getRGBComponents(null);
             return "{ " + colorArray[0] + ", " + colorArray[1] + ", "
-            + colorArray[2] + ", " + colorArray[3] + " }";
+                    + colorArray[2] + ", " + colorArray[3] + " }";
         }
     }
 
@@ -871,8 +868,8 @@ public class Solution {
                 + "\" class=\"" + entity.getClassName() + "\">" + colorProperty
                 + "<property name=\"_explanation\" "
                 + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                + "value = \"" + expression + "\"/></"
-                + entity.getElementName() + ">";
+                + "value = \"" + expression + "\"/></" + entity.getElementName()
+                + ">";
     }
 
     private Vector _partialSolveRecursively(int level, Index g) {

@@ -44,9 +44,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
-
 
 /**
 The class for calculation of constraints of Swarm-Robots.
@@ -83,39 +83,51 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
         trajectory = new TypedIOPort(this, "trajectory", true, false);
         {
             ArrayToken namesOfTrajectory = new ArrayToken("{\"x\",\"y\"}");
-            String[] labelsOfTrajectory = new String[namesOfTrajectory.length()];
+            String[] labelsOfTrajectory = new String[namesOfTrajectory
+                    .length()];
             Type[] typesOfTrajectory = new Type[namesOfTrajectory.length()];
             for (int i = 0; i < namesOfTrajectory.length(); i++) {
-                labelsOfTrajectory[i] = ((StringToken) namesOfTrajectory.getElement(i)).stringValue();
+                labelsOfTrajectory[i] = ((StringToken) namesOfTrajectory
+                        .getElement(i)).stringValue();
                 typesOfTrajectory[i] = BaseType.DOUBLE; // preset to be double
             }
-            trajectory.setTypeEquals(new ArrayType(new RecordType(labelsOfTrajectory, typesOfTrajectory)));
+            trajectory.setTypeEquals(new ArrayType(
+                    new RecordType(labelsOfTrajectory, typesOfTrajectory)));
         }
         // an array of jacobian of robot locations
-        jacobianOfTrajectory = new TypedIOPort(this, "jacobianOftrajectory", true, false);
-        jacobianOfTrajectory.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+        jacobianOfTrajectory = new TypedIOPort(this, "jacobianOftrajectory",
+                true, false);
+        jacobianOfTrajectory
+                .setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
 
         //estimated position of target
-        referenceTrajectories = new TypedIOPort(this, "referenceTrajectories", true, false);
+        referenceTrajectories = new TypedIOPort(this, "referenceTrajectories",
+                true, false);
         {
-            ArrayToken namesOfRS = new ArrayToken("{\"x\",\"y\",\"covariance\"}");
+            ArrayToken namesOfRS = new ArrayToken(
+                    "{\"x\",\"y\",\"covariance\"}");
             String[] labelsOfRS = new String[namesOfRS.length()];
             Type[] typesOfRS = new Type[namesOfRS.length()];
             for (int i = 0; i < namesOfRS.length(); i++) {
-                labelsOfRS[i] = ((StringToken) namesOfRS.getElement(i)).stringValue();
+                labelsOfRS[i] = ((StringToken) namesOfRS.getElement(i))
+                        .stringValue();
             }
             typesOfRS[0] = BaseType.DOUBLE; // x : preset to be double
             typesOfRS[1] = BaseType.DOUBLE; // y : preset to be double
             typesOfRS[2] = BaseType.DOUBLE_MATRIX; //covariance : preset to be double matrix
-            referenceTrajectories.setTypeEquals(new ArrayType(new ArrayType(new RecordType(labelsOfRS, typesOfRS))));
+            referenceTrajectories.setTypeEquals(new ArrayType(
+                    new ArrayType(new RecordType(labelsOfRS, typesOfRS))));
         }
 
         //instantiate output ports.
-        positionConstraints = new TypedIOPort(this, "positionConstraints", false, true);
+        positionConstraints = new TypedIOPort(this, "positionConstraints",
+                false, true);
         positionConstraints.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-        gradientOfConstraints = new TypedIOPort(this, "gradientOfConstraints", false, true);
-        gradientOfConstraints.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+        gradientOfConstraints = new TypedIOPort(this, "gradientOfConstraints",
+                false, true);
+        gradientOfConstraints
+                .setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
 
         _distanceLimit = 1;
         DistanceLimit = new Parameter(this, "distance limit");
@@ -123,26 +135,29 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
         DistanceLimit.setTypeEquals(BaseType.DOUBLE);
 
         _scalefactorOfStdDeviation = 0.0; //scale factor for standard deviation of constraints
-        ScalefactorOfVariance = new Parameter(this, "scale factor for robustness");
+        ScalefactorOfVariance = new Parameter(this,
+                "scale factor for robustness");
         ScalefactorOfVariance.setExpression("0.0");
         ScalefactorOfVariance.setTypeEquals(BaseType.DOUBLE);
-        ScalefactorOfVariance.setVisibility(Parameter.EXPERT);
+        ScalefactorOfVariance.setVisibility(Settable.EXPERT);
 
         //the index of the robot in referenceTrajectories array.
         _robotId = -1;
         RobotId = new Parameter(this, "robot id");
         RobotId.setExpression("-1");
         RobotId.setTypeEquals(BaseType.INT);
-        RobotId.setVisibility(Parameter.EXPERT);
+        RobotId.setVisibility(Settable.EXPERT);
     }
 
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == DistanceLimit) {
-            _distanceLimit = ((DoubleToken) DistanceLimit.getToken()).doubleValue();
+            _distanceLimit = ((DoubleToken) DistanceLimit.getToken())
+                    .doubleValue();
         } else if (attribute == ScalefactorOfVariance) {
-            _scalefactorOfStdDeviation = ((DoubleToken) ScalefactorOfVariance.getToken()).doubleValue();
+            _scalefactorOfStdDeviation = ((DoubleToken) ScalefactorOfVariance
+                    .getToken()).doubleValue();
         } else if (attribute == RobotId) {
             _robotId = ((IntToken) RobotId.getToken()).intValue();
         } else {
@@ -180,13 +195,20 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
             for (int j = 0; j < objArrays.length(); j++) {
                 objArray = (ArrayToken) objArrays.getElement(j);
                 for (int i = 0; i < _robotX.length; i++) {
-                    RecordToken objectState = (RecordToken) objArray.getElement(Math.min(i, objArray.length() - 1));
-                    _objectX[i + j*_robotX.length] = ((DoubleToken) objectState.get("x")).doubleValue();
-                    _objectY[i + j*_robotX.length] = ((DoubleToken) objectState.get("y")).doubleValue();
-                    double[][] matrix = ((DoubleMatrixToken) objectState.get("covariance")).doubleMatrix();
-                    for (int row=0; row<2; row++) {
-                        for (int col=0; col<2; col++) {
-                            _objectCovariances[i + j*_robotX.length][row][col] = matrix[row][col];
+                    RecordToken objectState = (RecordToken) objArray
+                            .getElement(Math.min(i, objArray.length() - 1));
+                    _objectX[i
+                            + j * _robotX.length] = ((DoubleToken) objectState
+                                    .get("x")).doubleValue();
+                    _objectY[i
+                            + j * _robotX.length] = ((DoubleToken) objectState
+                                    .get("y")).doubleValue();
+                    double[][] matrix = ((DoubleMatrixToken) objectState
+                            .get("covariance")).doubleMatrix();
+                    for (int row = 0; row < 2; row++) {
+                        for (int col = 0; col < 2; col++) {
+                            _objectCovariances[i + j
+                                    * _robotX.length][row][col] = matrix[row][col];
                         }
                     }
                 }
@@ -195,13 +217,16 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
 
         if (jacobianOfTrajectory.hasToken(0)) {
             ArrayToken jacobiArray = ((ArrayToken) jacobianOfTrajectory.get(0));
-            DoubleMatrixToken firstOne = (DoubleMatrixToken) jacobiArray.getElement(0);
-            _jacobianOfTrajectory = new double[jacobiArray.length()][2][firstOne.getColumnCount()];
+            DoubleMatrixToken firstOne = (DoubleMatrixToken) jacobiArray
+                    .getElement(0);
+            _jacobianOfTrajectory = new double[jacobiArray.length()][2][firstOne
+                    .getColumnCount()];
             for (int i = 0; i < jacobiArray.length(); i++) {
-                DoubleMatrixToken jacobian = (DoubleMatrixToken) jacobiArray.getElement(i);
+                DoubleMatrixToken jacobian = (DoubleMatrixToken) jacobiArray
+                        .getElement(i);
                 double[][] matrix = jacobian.doubleMatrix();
-                for (int row=0; row<_jacobianOfTrajectory[0].length; row++) {
-                    for (int col=0; col<_jacobianOfTrajectory[0][0].length; col++) {
+                for (int row = 0; row < _jacobianOfTrajectory[0].length; row++) {
+                    for (int col = 0; col < _jacobianOfTrajectory[0][0].length; col++) {
                         _jacobianOfTrajectory[i][row][col] = matrix[row][col];
                     }
                 }
@@ -219,12 +244,8 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
-        if (
-                (trajectory.hasToken(0))
-                && (referenceTrajectories.hasToken(0))
-                && (jacobianOfTrajectory.hasToken(0))
-                )
-        {
+        if ((trajectory.hasToken(0)) && (referenceTrajectories.hasToken(0))
+                && (jacobianOfTrajectory.hasToken(0))) {
             return true;
         } else {
             return false;
@@ -249,57 +270,73 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
         _gradientOfConstraints = new DoubleMatrixToken[numOfConstraints];
         for (int objIt = 0; objIt < _objectNum; objIt++) {
             for (int k = 0; k < predictTimeHorizon; k++) {
-                int indexOfObject = k + objIt*predictTimeHorizon;
+                int indexOfObject = k + objIt * predictTimeHorizon;
                 double[] dP = new double[2];
                 dP[0] = _robotX[k] - _objectX[indexOfObject];
                 dP[1] = _robotY[k] - _objectY[indexOfObject];
                 if (_robotId == objIt) {
                     //constraint function is fi_t = - dpT * CovP^-1 * dp + sigmaScale > 0
-                    double[][] inverseCov = DoubleMatrixMath.inverse(_objectCovariances[indexOfObject]); //inverse of covariance
-                    double[] invC_dP = DoubleMatrixMath.multiply(dP, inverseCov);
-                    double sigmaScale = Math.max(_scalefactorOfStdDeviation, 1.0);
-                    double fi = sigmaScale - DoubleArrayMath.dotProduct(dP, invC_dP);
-                    double[] jacobianOfFi = DoubleArrayMath.multiply(invC_dP, -2.0); // Jacobian is -2 * dP * C^-1 * dPx/dx
+                    double[][] inverseCov = DoubleMatrixMath
+                            .inverse(_objectCovariances[indexOfObject]); //inverse of covariance
+                    double[] invC_dP = DoubleMatrixMath.multiply(dP,
+                            inverseCov);
+                    double sigmaScale = Math.max(_scalefactorOfStdDeviation,
+                            1.0);
+                    double fi = sigmaScale
+                            - DoubleArrayMath.dotProduct(dP, invC_dP);
+                    double[] jacobianOfFi = DoubleArrayMath.multiply(invC_dP,
+                            -2.0); // Jacobian is -2 * dP * C^-1 * dPx/dx
 
                     _positionConstraints[indexOfObject] = new DoubleToken(fi);
                     double[][] gradient = new double[1][2];
-                    for (int i=0; i<2; i++) {
+                    for (int i = 0; i < 2; i++) {
                         gradient[0][i] = jacobianOfFi[i];
                     }
-                    _gradientOfConstraints[indexOfObject]
-                            = new DoubleMatrixToken(DoubleMatrixMath.multiply(gradient, _jacobianOfTrajectory[k]));
+                    _gradientOfConstraints[indexOfObject] = new DoubleMatrixToken(
+                            DoubleMatrixMath.multiply(gradient,
+                                    _jacobianOfTrajectory[k]));
                 } else {
                     // Constraint function is
                     // fi_t = g(Pi) - sqrt(CovR) = |Px_t - Pi_t|^2 - D^2 - sqrt(CovR) > 0,
                     // CovR = (dg/dPi) * CovPi * (dg/dPi)T
-                    double gXk = dP[0] * dP[0] + dP[1] * dP[1] - _distanceLimit*_distanceLimit;
+                    double gXk = dP[0] * dP[0] + dP[1] * dP[1]
+                            - _distanceLimit * _distanceLimit;
                     double[] jacobianOfGXk = DoubleArrayMath.multiply(dP, -2.0); // Jacobian of g(Pi) = dg/dPi
                     // calculate J x Covariance
-                    double[] jacobian_covariance = DoubleMatrixMath.multiply(_objectCovariances[indexOfObject], jacobianOfGXk);
+                    double[] jacobian_covariance = DoubleMatrixMath.multiply(
+                            _objectCovariances[indexOfObject], jacobianOfGXk);
                     // caluculate J x C x JT
-                    double covarianceOfGXk = DoubleArrayMath.dotProduct(jacobian_covariance, jacobianOfGXk);
-                    double fi = gXk - _scalefactorOfStdDeviation * Math.sqrt(covarianceOfGXk);
+                    double covarianceOfGXk = DoubleArrayMath
+                            .dotProduct(jacobian_covariance, jacobianOfGXk);
+                    double fi = gXk - _scalefactorOfStdDeviation
+                            * Math.sqrt(covarianceOfGXk);
 
                     //calculate dfi/dPx
                     /// dg/drob = 2*dP
-                    double[] jacobianOfG_Rob = DoubleArrayMath.multiply(dP, 2.0);
+                    double[] jacobianOfG_Rob = DoubleArrayMath.multiply(dP,
+                            2.0);
                     /// d(-sqrt(CovR))/drob = - factor/sqrt(cov) * J*C*dJ/dx
-                    double invSqrtCov = - _scalefactorOfStdDeviation / Math.sqrt(covarianceOfGXk);
+                    double invSqrtCov = -_scalefactorOfStdDeviation
+                            / Math.sqrt(covarianceOfGXk);
                     double[] jacobianOfCov_Rob = new double[2];
-                    jacobianOfCov_Rob[0] = invSqrtCov * (jacobian_covariance[0] * -2.0); // Note that dJ/dx = (-2, 0)
-                    jacobianOfCov_Rob[1] = invSqrtCov * (jacobian_covariance[1] * -2.0); // Note that dJ/dy = (0, -2)
+                    jacobianOfCov_Rob[0] = invSqrtCov
+                            * (jacobian_covariance[0] * -2.0); // Note that dJ/dx = (-2, 0)
+                    jacobianOfCov_Rob[1] = invSqrtCov
+                            * (jacobian_covariance[1] * -2.0); // Note that dJ/dy = (0, -2)
 
                     //dfi/dPx = dg/drob + d(-sqrt(CovR))/drob
-                    double[] jacobianOfFi = DoubleArrayMath.add(jacobianOfG_Rob, jacobianOfCov_Rob);
+                    double[] jacobianOfFi = DoubleArrayMath.add(jacobianOfG_Rob,
+                            jacobianOfCov_Rob);
 
                     _positionConstraints[indexOfObject] = new DoubleToken(fi);
 
                     double[][] gradient = new double[1][2];
-                    for (int i=0; i<2; i++) {
+                    for (int i = 0; i < 2; i++) {
                         gradient[0][i] = jacobianOfFi[i];
                     }
-                    _gradientOfConstraints[indexOfObject]
-                            = new DoubleMatrixToken(DoubleMatrixMath.multiply(gradient, _jacobianOfTrajectory[k]));
+                    _gradientOfConstraints[indexOfObject] = new DoubleMatrixToken(
+                            DoubleMatrixMath.multiply(gradient,
+                                    _jacobianOfTrajectory[k]));
                 }
             }
         }

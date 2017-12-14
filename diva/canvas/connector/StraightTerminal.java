@@ -214,8 +214,8 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      */
     @Override
     public void relocate() {
-        translate(_attachSite.getX() - _line.getX1(), _attachSite.getY()
-                - _line.getY1());
+        translate(_attachSite.getX() - _line.getX1(),
+                _attachSite.getY() - _line.getY1());
     }
 
     /** Set the site to which the terminal is attached.

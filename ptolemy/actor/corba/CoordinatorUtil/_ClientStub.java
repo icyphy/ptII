@@ -9,8 +9,8 @@ package ptolemy.actor.corba.CoordinatorUtil;
 
 /* A CORBA compatible interface for a consumer.
  */
-public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements
-ptolemy.actor.corba.CoordinatorUtil.Client {
+public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl
+        implements ptolemy.actor.corba.CoordinatorUtil.Client {
     /* this method is intended to be called remotely to
      * send data to it.
      */
@@ -29,9 +29,10 @@ ptolemy.actor.corba.CoordinatorUtil.Client {
 
             String _id = $ex.getId();
 
-            if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
+            if (_id.equals(
+                    "IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                .read($in);
+                        .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }

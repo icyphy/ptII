@@ -116,28 +116,33 @@ public class JavaScriptThisUpdate extends MoMLFilterSimple {
         if (container != null && container.getName().equals("script")) {
             NamedObj actor = container.getContainer();
 
-            if (actor != null
-                    && actor.getClass().getName()
+            if (actor != null && actor.getClass().getName()
                     .startsWith("ptolemy.actor.lib.jjs.JavaScript")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 // Prepend "this." to keywords that have leading whitespace.
                 for (int i = 0; i < _keywords.length; i++) {
-                    value = value.replaceAll(" " + _keywords[i] + "\\(", " this." + _keywords[i] +"(");
-                    value = value.replaceAll("\t" + _keywords[i] + "\\(", "\tthis." + _keywords[i] +"(");
+                    value = value.replaceAll(" " + _keywords[i] + "\\(",
+                            " this." + _keywords[i] + "(");
+                    value = value.replaceAll("\t" + _keywords[i] + "\\(",
+                            "\tthis." + _keywords[i] + "(");
                 }
 
                 // If the old and new values are different, then print them out
                 // and mark the container as modified.
-                String previousValue = ((Settable) container).getExpression().trim();
+                String previousValue = ((Settable) container).getExpression()
+                        .trim();
                 if (!value.equals(previousValue)) {
-                    System.out.println("JavaScriptThisUpdate: " + actor.getFullName() + " has a script:\n" + previousValue);
+                    System.out.println(
+                            "JavaScriptThisUpdate: " + actor.getFullName()
+                                    + " has a script:\n" + previousValue);
                     System.out.println("That has been updated to:\n" + value);
                     // $PTII/ptolemy/util/test/Diff.java is not necessarily present.
                     if (_diff != null) {
                         System.out.println("The diff is:\n");
-                        System.out.println(_diff.invoke(null, ((Settable) container).getExpression().trim(),
-                                    value));
+                        System.out.println(_diff.invoke(null,
+                                ((Settable) container).getExpression().trim(),
+                                value));
                     }
                     ((Settable) container).setExpression(value);
                     MoMLParser.setModified(true);
@@ -152,37 +157,28 @@ public class JavaScriptThisUpdate extends MoMLFilterSimple {
     @Override
     public String toString() {
         return getClass().getName()
-            + ": Update script parameter of the JavaScript actor "
-            + "by adding \"this.\" to certain locations";
+                + ": Update script parameter of the JavaScript actor "
+                + "by adding \"this.\" to certain locations";
     }
 
     // Keywords that get "this." prepended if the have leading
     // whitespace.
-    private static String [] _keywords = {
-        "addInputHandler",
-        "connect",
-        "extend",
-        "get",
-        "getParameter",
-        "getResource",
-        "implement",
-        "input",
-        "instantiate",
-        "output",
-        "parameter",
-        "removeInputHandler",
-        "send",
-        "setDefault",
-        "setParameter"};
+    private static String[] _keywords = { "addInputHandler", "connect",
+            "extend", "get", "getParameter", "getResource", "implement",
+            "input", "instantiate", "output", "parameter", "removeInputHandler",
+            "send", "setDefault", "setParameter" };
 
     static {
         try {
             Class diffClass = Class.forName("ptolemy.util.test.Diff");
-            _diff = diffClass.getDeclaredMethod("diff", new Class [] {String.class, String.class});
+            _diff = diffClass.getDeclaredMethod("diff",
+                    new Class[] { String.class, String.class });
         } catch (ClassNotFoundException ex) {
-            System.err.println("JavaScriptThisUpdated could not find ptolemy.util.test.Diff, so diffs will not be printed.");
+            System.err.println(
+                    "JavaScriptThisUpdated could not find ptolemy.util.test.Diff, so diffs will not be printed.");
         } catch (NoSuchMethodException ex2) {
-            System.err.println("JavaScriptThisUpdated could not find ptolemy.util.test.Diff.diff(String, String), so diffs will not be printed.");
+            System.err.println(
+                    "JavaScriptThisUpdated could not find ptolemy.util.test.Diff.diff(String, String), so diffs will not be printed.");
         }
 
     }

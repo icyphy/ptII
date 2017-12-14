@@ -91,8 +91,8 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
             System.out.flush();
             return;
         }
-        System.out.println("----------------- testing (KnownFailure) "
-                + fullPath);
+        System.out.println(
+                "----------------- testing (KnownFailure) " + fullPath);
         System.out.flush();
         try {
             if (_applicationConstructor == null) {

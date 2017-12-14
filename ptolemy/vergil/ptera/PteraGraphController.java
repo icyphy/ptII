@@ -211,8 +211,8 @@ public class PteraGraphController extends FSMGraphController {
 
             if (frame == null) {
                 // Findbugs points out NP: Null pointer dereference
-                throw new NullPointerException(PteraGraphController.this
-                        + ": frame is null?");
+                throw new NullPointerException(
+                        PteraGraphController.this + ": frame is null?");
             } else {
                 // Create the state.
                 String moml = "<group name=\"auto\">"
@@ -232,7 +232,8 @@ public class PteraGraphController extends FSMGraphController {
                                     .getAttribute("_location");
                             if (location == null) {
                                 try {
-                                    location = new Location(object, "_location");
+                                    location = new Location(object,
+                                            "_location");
                                 } catch (KernelException e) {
                                     // Ignore.
                                 }

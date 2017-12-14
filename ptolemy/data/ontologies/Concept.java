@@ -55,7 +55,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public abstract class Concept extends ComponentEntity implements InequalityTerm {
+public abstract class Concept extends ComponentEntity
+        implements InequalityTerm {
 
     /** Create a new concept with the specified name and the specified
      *  ontology.

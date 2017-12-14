@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class Round
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.Round {
+public class Round extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.Round {
     /**
      *  Construct a Round adapter.
      *  @param actor The given ptolemy.actor.lib.Round actor.

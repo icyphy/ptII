@@ -261,8 +261,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 integrators[i] = new Integrator(this, states[i]);
                 integrators[i].setPersistent(false);
                 integrators[i].initialState.setExpression(states[i]);
-                stateRelations[i] = new TypedIORelation(this, "relation_"
-                        + states[i]);
+                stateRelations[i] = new TypedIORelation(this,
+                        "relation_" + states[i]);
                 stateRelations[i].setPersistent(false);
 
                 integrators[i].state.link(stateRelations[i]);
@@ -270,9 +270,9 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // One Expression actor per integrator.
                 equations[i] = new Expression(this, states[i] + "_dot");
                 equations[i].setPersistent(false);
-                equations[i].expression
-                .setExpression(((Parameter) getAttribute(states[i]
-                        + "_dot")).getExpression());
+                equations[i].expression.setExpression(
+                        ((Parameter) getAttribute(states[i] + "_dot"))
+                                .getExpression());
 
                 connect(equations[i].output, integrators[i].derivative);
             }
@@ -300,13 +300,13 @@ public class DifferentialSystem extends TypedCompositeActor {
 
             while (outputPorts.hasNext()) {
                 outputs[outIndex] = ((NamedObj) outputPorts.next()).getName();
-                maps[outIndex] = new Expression(this, "output_"
-                        + outputs[outIndex]);
+                maps[outIndex] = new Expression(this,
+                        "output_" + outputs[outIndex]);
                 maps[outIndex].setPersistent(false);
 
-                maps[outIndex].expression
-                .setExpression(((Parameter) getAttribute(outputs[outIndex]))
-                        .getExpression());
+                maps[outIndex].expression.setExpression(
+                        ((Parameter) getAttribute(outputs[outIndex]))
+                                .getExpression());
                 maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
                 connect(maps[outIndex].output,
                         (TypedIOPort) getPort(outputs[outIndex]));
@@ -329,8 +329,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // Create and connect the port only if the input
                 // is used.
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec = (Parameter) getAttribute(states[i]
-                            + "_dot");
+                    Parameter stateUpdateSpec = (Parameter) getAttribute(
+                            states[i] + "_dot");
                     Set<String> freeIdentifiers = stateUpdateSpec
                             .getFreeIdentifiers();
                     // Create an output port only if the expression references the input.
@@ -350,8 +350,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // and connect them.
                 // One port for each state variable.
                 for (int k = 0; k < n; k++) {
-                    TypedIOPort port = new TypedIOPort(maps[l], states[k],
-                            true, false);
+                    TypedIOPort port = new TypedIOPort(maps[l], states[k], true,
+                            false);
                     port.setTypeEquals(BaseType.DOUBLE);
                     port.link(stateRelations[k]);
                 }
@@ -400,8 +400,8 @@ public class DifferentialSystem extends TypedCompositeActor {
      *   name already in the actor.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         super._addPort(port);
 
         // Add the parameter, if it does not already exist.
@@ -430,8 +430,8 @@ public class DifferentialSystem extends TypedCompositeActor {
 
         // Check if any of the state variable names is an empty string.
         for (int i = 0; i < n; i++) {
-            String name = ((StringToken) stateNames.getElement(i))
-                    .stringValue().trim();
+            String name = ((StringToken) stateNames.getElement(i)).stringValue()
+                    .trim();
 
             if (name.equals("")) {
                 throw new IllegalActionException(this, "A state variable "
@@ -442,9 +442,9 @@ public class DifferentialSystem extends TypedCompositeActor {
             String equation = name + "_dot";
 
             if (getAttribute(equation) == null) {
-                throw new IllegalActionException(this, "Please add a "
-                        + "parameter with name \"" + equation
-                        + "\" that gives the state update expression.");
+                throw new IllegalActionException(this,
+                        "Please add a " + "parameter with name \"" + equation
+                                + "\" that gives the state update expression.");
             }
         }
 
@@ -465,16 +465,16 @@ public class DifferentialSystem extends TypedCompositeActor {
 
             // Check output maps.
             if (getAttribute(name) == null) {
-                throw new IllegalActionException(this, "Please add a "
-                        + "parameter with name \"" + name
-                        + "\" to specify the output map.");
+                throw new IllegalActionException(this,
+                        "Please add a " + "parameter with name \"" + name
+                                + "\" to specify the output map.");
             }
         }
     }
 
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
@@ -494,11 +494,10 @@ public class DifferentialSystem extends TypedCompositeActor {
         new ContinuousDirector(this, "ContinuousDirector").setPersistent(false);
 
         // icon
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-30\" " + "width=\"100\" height=\"60\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-45\" y=\"-10\" "
-                + "style=\"font-size:14\">\n" + "dx/dt=f(x, u, t)"
-                + "</text>\n" + "<text x=\"-45\" y=\"10\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-50\" y=\"-30\" "
+                + "width=\"100\" height=\"60\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-45\" y=\"-10\" " + "style=\"font-size:14\">\n"
+                + "dx/dt=f(x, u, t)" + "</text>\n" + "<text x=\"-45\" y=\"10\" "
                 + "style=\"font-size:14\">\n" + "     y=g(x, u, t)"
                 + "</text>\n" + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }

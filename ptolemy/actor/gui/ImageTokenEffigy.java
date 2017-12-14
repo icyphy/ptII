@@ -143,7 +143,8 @@ public class ImageTokenEffigy extends Effigy {
             Iterator tableaux = entityList(ImageTableau.class).iterator();
             while (tableaux.hasNext()) {
                 try {
-                    ((ImageTableau) tableaux.next()).append(new AWTImageToken(image));
+                    ((ImageTableau) tableaux.next())
+                            .append(new AWTImageToken(image));
                 } catch (IllegalActionException e) {
                     throw new IOException(e.getMessage());
                 }
@@ -184,14 +185,15 @@ public class ImageTokenEffigy extends Effigy {
             String extension = name.substring(index + 1).toLowerCase();
             if (extension.equals("jpeg")) {
                 extension = "jpg";
-            } else if (!extension.equals("jpg")
-                    && !extension.equals("png")
+            } else if (!extension.equals("jpg") && !extension.equals("png")
                     && !extension.equals("gif")) {
-                throw new IOException("Unrecognized file extension: " + extension
-                        + ". Should be one of jpg, png, or gif.");
+                throw new IOException("Unrecognized file extension: "
+                        + extension + ". Should be one of jpg, png, or gif.");
             }
-            if (!ImageIO.write((BufferedImage)_token.asAWTImage(), extension, file)) {
-                throw new IOException("No writer found for file type: " + extension);
+            if (!ImageIO.write((BufferedImage) _token.asAWTImage(), extension,
+                    file)) {
+                throw new IOException(
+                        "No writer found for file type: " + extension);
             }
         }
     }
@@ -251,10 +253,8 @@ public class ImageTokenEffigy extends Effigy {
             if (input != null) {
                 String extension = getExtension(input).toLowerCase();
 
-                if (extension.equals("jpg")
-                        || extension.equals("jpeg")
-                        || extension.equals("png")
-                        || extension.equals("gif")) {
+                if (extension.equals("jpg") || extension.equals("jpeg")
+                        || extension.equals("png") || extension.equals("gif")) {
                     ImageTokenEffigy effigy = new ImageTokenEffigy(container,
                             container.uniqueName("effigy"));
                     effigy.uri.setURL(input);

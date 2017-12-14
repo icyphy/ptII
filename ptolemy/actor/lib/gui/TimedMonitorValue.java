@@ -88,6 +88,7 @@ public class TimedMonitorValue extends MonitorValue {
      *   nothing to display.
      *  @exception IllegalActionException If reading the input fails.
      */
+    @Override
     protected Token _getInputToken(int i) throws IllegalActionException {
         if (input.hasToken(i)) {
             Token token = input.get(i);

@@ -68,7 +68,8 @@ public class AttributeWithIconController extends AttributeController {
      *  @param controller The associated graph controller.
      *  @param access The access level.
      */
-    public AttributeWithIconController(GraphController controller, Access access) {
+    public AttributeWithIconController(GraphController controller,
+            Access access) {
         super(controller, access);
         _appearanceMenuActionFactory.addAction(_editIconAction);
         _appearanceMenuActionFactory.addAction(_removeIconAction);
@@ -105,8 +106,8 @@ public class AttributeWithIconController extends AttributeController {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
-                MessageHandler.error("Cannot edit icon without a "
-                        + "configuration.");
+                MessageHandler.error(
+                        "Cannot edit icon without a " + "configuration.");
                 return;
             }
 
@@ -116,7 +117,8 @@ public class AttributeWithIconController extends AttributeController {
             final NamedObj object = getTarget();
 
             // Do this as a change request since it may add a new icon.
-            ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
+            ChangeRequest request = new ChangeRequest(this,
+                    "Edit Custom Icon") {
                 @Override
                 protected void _execute() throws Exception {
                     EditorIcon icon = null;
@@ -133,7 +135,8 @@ public class AttributeWithIconController extends AttributeController {
                         icon = new EditorIcon(object, "_icon");
                         Parameter hideName = (Parameter) object
                                 .getAttribute("_hideName");
-                        if (((BooleanToken) hideName.getToken()).booleanValue()) {
+                        if (((BooleanToken) hideName.getToken())
+                                .booleanValue()) {
                             hideName.setToken(BooleanToken.FALSE);
                         }
                     }

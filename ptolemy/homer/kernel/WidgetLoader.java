@@ -81,8 +81,8 @@ public class WidgetLoader {
      * @exception NameDuplicationException if there is a problem loading an icon.
      */
     public static Widget loadWidget(Scene scene, PositionableElement element,
-            Class<?> targetType) throws IllegalActionException,
-            NameDuplicationException {
+            Class<?> targetType)
+            throws IllegalActionException, NameDuplicationException {
         Widget widget = _getObjectWidget(scene, element, targetType);
         if (widget != null) {
             return widget;
@@ -111,20 +111,21 @@ public class WidgetLoader {
      */
     private static Widget _getObjectWidget(Scene scene,
             PositionableElement element, Class<?> targetType)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (targetType == null) {
             return null;
         }
         if (!_OBJECT_WIDGET_BUNDLE.containsKey(targetType.getName())) {
             return _getObjectWidget(scene, element, targetType.getSuperclass());
         }
-        String widgetTypeName = _OBJECT_WIDGET_BUNDLE.getString(targetType
-                .getName());
+        String widgetTypeName = _OBJECT_WIDGET_BUNDLE
+                .getString(targetType.getName());
         try {
             Class<NamedObjectWidget> widgetType = (Class<NamedObjectWidget>) WidgetLoader.class
                     .getClassLoader().loadClass(widgetTypeName);
-            return widgetType.getConstructor(Scene.class,
-                    PositionableElement.class).newInstance(scene, element);
+            return widgetType
+                    .getConstructor(Scene.class, PositionableElement.class)
+                    .newInstance(scene, element);
         } catch (ClassNotFoundException e) {
             throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);

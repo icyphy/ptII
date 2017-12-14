@@ -40,16 +40,16 @@ import diva.util.Filter;
  * @author John Reekie
  * @Pt.AcceptedRating Yellow
  */
-public abstract class AbstractFigureContainer extends AbstractFigure implements
-FigureContainer {
+public abstract class AbstractFigureContainer extends AbstractFigure
+        implements FigureContainer {
     /** Decorate a child figure, replacing the reference to the
      * child figure with the decorator.
      */
     @Override
     public void decorate(Figure child, FigureDecorator decorator) {
         if (child.getParent() != this) {
-            throw new IllegalArgumentException("The object " + child
-                    + " is not a child of " + this);
+            throw new IllegalArgumentException(
+                    "The object " + child + " is not a child of " + this);
         }
 
         child.repaint();
@@ -187,8 +187,8 @@ FigureContainer {
     @Override
     public void undecorate(FigureDecorator decorator) {
         if (decorator.getParent() != this) {
-            throw new IllegalArgumentException("The object " + decorator
-                    + " is not a child of " + this);
+            throw new IllegalArgumentException(
+                    "The object " + decorator + " is not a child of " + this);
         }
 
         decorator.repaint();

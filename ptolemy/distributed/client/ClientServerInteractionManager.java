@@ -72,8 +72,8 @@ import ptolemy.kernel.util.KernelException;
  @Pt.AcceptedRating Red (cxh)
  @see "Jini Documentation"
  */
-public class ClientServerInteractionManager implements DiscoveryListener,
-ServiceDiscoveryListener {
+public class ClientServerInteractionManager
+        implements DiscoveryListener, ServiceDiscoveryListener {
     /** Construct a ClientServerInteractionManager initializing it with a given
      *  VERBOSE option.
      *
@@ -149,8 +149,8 @@ ServiceDiscoveryListener {
     public void init(String configFileName) {
         if (VERBOSE) {
             try {
-                System.out.println("Starting ClientServerInteractionManager "
-                        + "in: ");
+                System.out.println(
+                        "Starting ClientServerInteractionManager " + "in: ");
                 System.out.println("    "
                         + InetAddress.getLocalHost().getHostName() + " ("
                         + InetAddress.getLocalHost().getHostAddress() + ")");
@@ -173,8 +173,8 @@ ServiceDiscoveryListener {
                     new LeaseRenewalManager());
         } catch (Exception ex) {
             throw new RuntimeException("Failed to initialize "
-                    + "ClientServerInteractionManager using \""
-                    + configFileName + "\"", ex);
+                    + "ClientServerInteractionManager using \"" + configFileName
+                    + "\"", ex);
         }
 
         // This is the class of the service we are looking for...
@@ -250,9 +250,9 @@ ServiceDiscoveryListener {
         ServiceItem postItem = evt.getPostEventServiceItem();
 
         if (VERBOSE) {
-            System.out.println("Service changed: "
-                    + postItem.service.getClass().toString() + " with ID: "
-                    + postItem.serviceID.toString());
+            System.out.println(
+                    "Service changed: " + postItem.service.getClass().toString()
+                            + " with ID: " + postItem.serviceID.toString());
         }
     }
 
@@ -274,9 +274,9 @@ ServiceDiscoveryListener {
         ServiceItem preItem = evt.getPreEventServiceItem();
 
         if (VERBOSE) {
-            System.out.println("Service removed: "
-                    + preItem.service.getClass().toString() + " with ID: "
-                    + preItem.serviceID.toString());
+            System.out.println(
+                    "Service removed: " + preItem.service.getClass().toString()
+                            + " with ID: " + preItem.serviceID.toString());
         }
     }
 
@@ -347,8 +347,7 @@ ServiceDiscoveryListener {
 
         if (configuration == null) {
             throw new InternalErrorException(null, null,
-                    "Failed to get configuration from "
-                    + configFileName);
+                    "Failed to get configuration from " + configFileName);
         }
 
         // The config file must have an exporter, a service and a codebase

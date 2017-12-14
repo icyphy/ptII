@@ -120,9 +120,10 @@ public class ReadModel extends GTEvent {
             _debug(new PteraDebugEvent(this, "Read file " + url));
         } catch (Exception e) {
             _debug(new PteraErrorEvent(this, "Unable to read file " + url));
-            throw new IllegalActionException(this, e, "Unable to parse the "
-                    + "model from file \"" + modelFile.stringValue().trim()
-                    + "\" as a CompositeEntity.");
+            throw new IllegalActionException(this, e,
+                    "Unable to parse the " + "model from file \""
+                            + modelFile.stringValue().trim()
+                            + "\" as a CompositeEntity.");
         } finally {
             MoMLParser.purgeModelRecord(url);
         }

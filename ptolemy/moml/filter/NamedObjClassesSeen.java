@@ -88,28 +88,29 @@ public class NamedObjClassesSeen extends MoMLFilterSimple {
             if (!_classesSeen.contains(attributeValue)) {
                 _classesSeen.add(attributeValue);
                 Set models = null;
-                if ((models = (Set) _classesToBeIndexed.get(attributeValue)) != null) {
+                if ((models = (Set) _classesToBeIndexed
+                        .get(attributeValue)) != null) {
                     Class theClass = null;
                     try {
                         theClass = Class.forName(attributeValue);
                     } catch (Throwable ex) {
                         // Print a message and move on.
                         // FIXME: Use the doclet error handling mechanism
-                        System.err.println("Failed to process "
-                                + attributeValue + "\n" + ex);
+                        System.err.println("Failed to process " + attributeValue
+                                + "\n" + ex);
                     }
                     if (theClass != null
                             && _namedObjClass.isAssignableFrom(theClass)) {
                         if (container != null
                                 && container instanceof TypedCompositeActor
-                                && container.getFullName().indexOf(".", 1) != -1) {
+                                && container.getFullName().indexOf(".",
+                                        1) != -1) {
                             // If the container is not a top level, then
                             // link to the inner part
-                            String compositePath = _modelPath
-                                    + "#"
-                                    + container.getFullName().substring(
-                                            container.getFullName().indexOf(
-                                                    ".", 1) + 1);
+                            String compositePath = _modelPath + "#"
+                                    + container.getFullName()
+                                            .substring(container.getFullName()
+                                                    .indexOf(".", 1) + 1);
                             //                             System.out.println("NamedObjClasssesSeen: ("
                             //                                                + compositePath
                             //                                                + ") container: " + container

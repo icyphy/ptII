@@ -84,8 +84,8 @@ public class RecordTokenHandler implements TokenHandler<RecordToken> {
      */
     @Override
     public RecordToken convertToToken(DataInputStream inputStream,
-            Class<? extends RecordToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends RecordToken> tokenType)
+            throws IOException, IllegalActionException {
 
         int size = inputStream.readInt();
         String[] labels = new String[size];
@@ -93,8 +93,8 @@ public class RecordTokenHandler implements TokenHandler<RecordToken> {
 
         for (int index = 0; index < size; index++) {
             labels[index] = inputStream.readUTF();
-            tokens[index] = TokenParser.getInstance().convertToToken(
-                    inputStream);
+            tokens[index] = TokenParser.getInstance()
+                    .convertToToken(inputStream);
         }
 
         return new RecordToken(labels, tokens);

@@ -84,8 +84,8 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (eal)
  */
 @SuppressWarnings("serial")
-public class SearchResultsDialog extends PtolemyDialog implements
-ListSelectionListener, QueryListener {
+public class SearchResultsDialog extends PtolemyDialog
+        implements ListSelectionListener, QueryListener {
 
     /** Construct a dialog for search results.
      *  @param tableau The DialogTableau.
@@ -108,8 +108,8 @@ ListSelectionListener, QueryListener {
      *  @param configuration The configuration to use to open the help screen
      *   (or null if help is not supported).
      */
-    public SearchResultsDialog(String title, DialogTableau tableau,
-            Frame owner, Entity target, Configuration configuration) {
+    public SearchResultsDialog(String title, DialogTableau tableau, Frame owner,
+            Entity target, Configuration configuration) {
         super(title, tableau, owner, target, configuration);
 
         _owner = owner;
@@ -124,13 +124,13 @@ ListSelectionListener, QueryListener {
 
         _resultsTableModel = new ResultsTableModel();
         _resultsTable = new JTable(_resultsTableModel);
-        _resultsTable
-        .setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
+        _resultsTable.setDefaultRenderer(NamedObj.class,
+                new NamedObjRenderer());
 
         // If you change the height, then check that a few rows can be added.
         // Also, check the setRowHeight call below.
         _resultsTable
-        .setPreferredScrollableViewportSize(new Dimension(300, 300));
+                .setPreferredScrollableViewportSize(new Dimension(300, 300));
 
         ListSelectionModel selectionModel = _resultsTable.getSelectionModel();
         selectionModel.addListSelectionListener(this);
@@ -215,8 +215,8 @@ ListSelectionListener, QueryListener {
         // Highlight new selection.
         int[] selected = _resultsTable.getSelectedRows();
         for (int element : selected) {
-            NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(
-                    element, 0);
+            NamedObj selectedObject = (NamedObj) _resultsTableModel
+                    .getValueAt(element, 0);
             _highlightResult(selectedObject);
         }
     }
@@ -287,8 +287,8 @@ ListSelectionListener, QueryListener {
         boolean caseSensitive = _query.getBooleanValue("case");
         Pattern pattern = null;
         try {
-            pattern = Pattern.compile(findText, caseSensitive ? 0
-                    : Pattern.CASE_INSENSITIVE);
+            pattern = Pattern.compile(findText,
+                    caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
         } catch (PatternSyntaxException ex) {
             BasicGraphFrame.report(_owner, "Problem with " + findText
                     + " as a regular expression: " + ex);
@@ -489,8 +489,8 @@ ListSelectionListener, QueryListener {
         public void setValue(Object value) {
             String fullName = ((NamedObj) value).getFullName();
             // Strip the name of the model name and the leading and trailing period.
-            String strippedName = fullName.substring(_target.toplevel()
-                    .getName().length() + 2);
+            String strippedName = fullName
+                    .substring(_target.toplevel().getName().length() + 2);
             setText(strippedName);
         }
     }

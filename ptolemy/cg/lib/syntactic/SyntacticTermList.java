@@ -51,8 +51,8 @@ import java.util.List;
  @Pt.AcceptedRating Red
  */
 @SuppressWarnings("serial")
-public class SyntacticTermList extends LinkedList<SyntacticTerm> implements
-SyntacticTerm {
+public class SyntacticTermList extends LinkedList<SyntacticTerm>
+        implements SyntacticTerm {
 
     /** Constructs an empty term list with no rank information. */
     public SyntacticTermList() {

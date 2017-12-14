@@ -79,8 +79,8 @@ import ptolemy.util.MessageHandler;
  */
 
 @SuppressWarnings("serial")
-public class SearchResultsFrame extends JFrame implements Observer,
-PTDBBasicFrame {
+public class SearchResultsFrame extends JFrame
+        implements Observer, PTDBBasicFrame {
 
     /**
      * Construct a panel associated with a search result.
@@ -341,8 +341,9 @@ PTDBBasicFrame {
 
                 } catch (Exception e) {
 
-                    MessageHandler.error("Cannot import the model - '"
-                            + modelName + "'.", e);
+                    MessageHandler.error(
+                            "Cannot import the model - '" + modelName + "'.",
+                            e);
 
                 }
 

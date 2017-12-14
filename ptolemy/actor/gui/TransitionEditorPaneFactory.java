@@ -73,8 +73,8 @@ public class TransitionEditorPaneFactory extends EditorPaneFactory {
 
         if (object instanceof FSMTransitionParameter
                 && ((FSMTransitionParameter) object).getTransition() != null) {
-            return super.createEditorPane(((FSMTransitionParameter) object)
-                    .getTransition());
+            return super.createEditorPane(
+                    ((FSMTransitionParameter) object).getTransition());
         }
 
         return super.createEditorPane(object);

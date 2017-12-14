@@ -86,9 +86,8 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
             }
             codeStream.appendCodeBlock("ifReset");
 
-            codeStream
-            .appendCodeBlock(targetType.equals("String") ? "StringInitSum"
-                    : "InitSum");
+            codeStream.appendCodeBlock(
+                    targetType.equals("String") ? "StringInitSum" : "InitSum");
             codeStream.append("}");
         }
 
@@ -119,9 +118,9 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
 
         CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream
-        .appendCodeBlock(actor.output.getType() == BaseType.STRING ? "StringInitSum"
-                : "InitSum");
+        codeStream.appendCodeBlock(
+                actor.output.getType() == BaseType.STRING ? "StringInitSum"
+                        : "InitSum");
 
         return processCode(codeStream.toString());
     }

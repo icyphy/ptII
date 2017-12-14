@@ -52,12 +52,14 @@ public class BicubicScaleFilter extends AbstractBufferedImageOp {
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
         if (dst == null) {
             ColorModel dstCM = src.getColorModel();
-            dst = new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(width, height),
+            dst = new BufferedImage(dstCM,
+                    dstCM.createCompatibleWritableRaster(width, height),
                     dstCM.isAlphaPremultiplied(), null);
         }
 
         Graphics2D g = dst.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         g.drawImage(src, 0, 0, width, height, null);
         g.dispose();
 

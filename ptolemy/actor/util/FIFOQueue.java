@@ -359,8 +359,8 @@ public class FIFOQueue implements Cloneable {
                 str = " contained by " + _container.getFullName();
             }
 
-            throw new NoSuchElementException("The FIFOQueue" + str
-                    + " is empty!");
+            throw new NoSuchElementException(
+                    "The FIFOQueue" + str + " is empty!");
         }
 
         if (_historyCapacity != 0) {

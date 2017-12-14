@@ -154,8 +154,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIDEDirector newObject = (MetroIIDEDirector) super
-                .clone(workspace);
+        MetroIIDEDirector newObject = (MetroIIDEDirector) super.clone(
+                workspace);
         newObject._nameToActor = (Hashtable<String, Actor>) _nameToActor
                 .clone();
         newObject._actorDictionary = (Hashtable<String, FireMachine>) _actorDictionary
@@ -351,7 +351,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                 return new Pair(null, 0);
             }
 
-            _debug(new FiringEvent(this, actorToFire, FiringEvent.AFTER_PREFIRE));
+            _debug(new FiringEvent(this, actorToFire,
+                    FiringEvent.AFTER_PREFIRE));
 
             _debug(new FiringEvent(this, actorToFire, FiringEvent.BEFORE_FIRE));
 
@@ -498,10 +499,10 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                         || next.microstep() < _microstep) {
                     throw new IllegalActionException(
                             "The tag of the next event (" + next.timeStamp()
-                            + "." + next.microstep()
-                            + ") can not be less than"
-                            + " the current tag (" + getModelTime()
-                            + "." + _microstep + ") !");
+                                    + "." + next.microstep()
+                                    + ") can not be less than"
+                                    + " the current tag (" + getModelTime()
+                                    + "." + _microstep + ") !");
                 } else {
                     // The next event has the same tag as the current tag,
                     // indicating that at least one actor is going to be
@@ -756,8 +757,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                             if (port.hasToken(i)) {
                                 if (_debugging) {
                                     _debug("Port named " + port.getName()
-                                            + " still has input on channel "
-                                            + i + ". Refire the actor.");
+                                            + " still has input on channel " + i
+                                            + ". Refire the actor.");
                                 }
                                 // refire only if can be scheduled.
                                 if (!_aspectsPresent
@@ -787,7 +788,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                 break;
                 // return;
             } // else if 0, keep executing
-            //if (!actorList.contains(actorAndState.first)) {
+              //if (!actorList.contains(actorAndState.first)) {
             if (actorAndState.getFirst() != null) {
                 // System.out.println(_eventQueue);
                 Actor actor = actorAndState.getFirst();
@@ -800,8 +801,9 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                     actorList.add(actorAndState.getFirst());
 
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
-                        System.out.println(actorAndState.getFirst()
-                                .getFullName() + " is added");
+                        System.out
+                                .println(actorAndState.getFirst().getFullName()
+                                        + " is added");
                     }
 
                     if (((BooleanToken) printTrace.getToken()).booleanValue()) {
@@ -821,9 +823,9 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
         }
 
-        Event.Builder afterFunctionEvent = MetroIIEventBuilder
-                .newProposedEvent(getFullName() + ".afterFunctionEvent",
-                        getModelTime().getLongValue(), getTimeResolution());
+        Event.Builder afterFunctionEvent = MetroIIEventBuilder.newProposedEvent(
+                getFullName() + ".afterFunctionEvent",
+                getModelTime().getLongValue(), getTimeResolution());
 
         processMappableActorEventsUntil(resultHandler, afterFunctionEvent);
 
@@ -832,10 +834,12 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
         synchronized (_eventQueueLock) {
             if (!_eventQueue.isEmpty()
                     && !_eventQueue.get().timeStamp().isNegative()) {
-                idleEventTimeStamp = _eventQueue.get().timeStamp().getLongValue();
+                idleEventTimeStamp = _eventQueue.get().timeStamp()
+                        .getLongValue();
             }
-            idleEvent = MetroIIEventBuilder.newProposedEvent(getFullName()
-                    + ".Idle", idleEventTimeStamp, getTimeResolution());
+            idleEvent = MetroIIEventBuilder.newProposedEvent(
+                    getFullName() + ".Idle", idleEventTimeStamp,
+                    getTimeResolution());
 
             _events.clear();
             _events.add(idleEvent);
@@ -846,9 +850,9 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
             resultHandler.handleResult(_events);
         }
 
-        long timeValue = EventTimeComparator.convert(idleEvent.getTime()
-                .getValue(), idleEvent.getTime().getResolution(), this
-                .getTimeResolution());
+        long timeValue = EventTimeComparator.convert(
+                idleEvent.getTime().getValue(),
+                idleEvent.getTime().getResolution(), this.getTimeResolution());
 
         Time tmpTime = new Time(this, timeValue);
         if (tmpTime.compareTo(this.getModelTime()) > 0) {
@@ -893,8 +897,8 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * @exception NameDuplicationException If thrown while creating
      * the printTrace parameter.
      */
-    private void _initializeParameters() throws IllegalActionException,
-    NameDuplicationException {
+    private void _initializeParameters()
+            throws IllegalActionException, NameDuplicationException {
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
         printTrace.setExpression("false");

@@ -122,11 +122,11 @@ public class DiscoveryHelper {
                     for (int i = 0; i <= 255; i++) {
                         try {
                             Process process = Runtime.getRuntime().exec(
-                                _pingWindowsCommand + baseIP + "." + i);
+                                    _pingWindowsCommand + baseIP + "." + i);
                             _processes.add(process);
                         } catch (IOException e) {
-                            System.err.println("Error executing ping for " +
-                                    baseIP + "." + i);
+                            System.err.println("Error executing ping for "
+                                    + baseIP + "." + i);
                         }
                     }
 
@@ -148,8 +148,8 @@ public class DiscoveryHelper {
 
                 } else {
                     if (_debugging) {
-                        System.out
-                                .println("Discovery: Run pings concurrently, in separate threads. baseIP: "
+                        System.out.println(
+                                "Discovery: Run pings concurrently, in separate threads. baseIP: "
                                         + baseIP);
                     }
                     // Run pings concurrently, in separate processes
@@ -157,12 +157,12 @@ public class DiscoveryHelper {
 
                     for (int i = 0; i <= 255; i++) {
                         try {
-                            Process process = Runtime.getRuntime().exec(
-                                _pingLinuxCommand + baseIP + "." + i);
+                            Process process = Runtime.getRuntime()
+                                    .exec(_pingLinuxCommand + baseIP + "." + i);
                             _processes.add(process);
                         } catch (IOException e) {
-                            System.err.println("Error executing ping for " +
-                                    baseIP + "." + i);
+                            System.err.println("Error executing ping for "
+                                    + baseIP + "." + i);
                         }
                     }
 
@@ -183,8 +183,8 @@ public class DiscoveryHelper {
                 }
             }
         } else {
-            System.err.println("DiscoveryHelper.discover(" + IPAddress
-                    + "): \"" + IPAddress + "\" does not have a period?");
+            System.err.println("DiscoveryHelper.discover(" + IPAddress + "): \""
+                    + IPAddress + "\" does not have a period?");
 
             // TODO:  Return error message?  What should accessors do in case
             // of error?
@@ -220,7 +220,6 @@ public class DiscoveryHelper {
         return hostAddress;
     }
 
-
     /** Get the MAC (Media Access Control) address
      *  of the first non-loopback, non-multicast address.
      *  @return the MAC address
@@ -228,12 +227,14 @@ public class DiscoveryHelper {
      */
     public /*static*/ String getMacAddress() throws SocketException {
         InetAddress address = _getUsefulAddress();
-        NetworkInterface networkInterface = NetworkInterface.getByInetAddress(address);
-        byte [] macAddress = networkInterface.getHardwareAddress();
+        NetworkInterface networkInterface = NetworkInterface
+                .getByInetAddress(address);
+        byte[] macAddress = networkInterface.getHardwareAddress();
 
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < macAddress.length; i++) {
-            buffer.append(String.format("%02X%s", macAddress[i], (i < macAddress.length - 1) ? "-" : ""));
+            buffer.append(String.format("%02X%s", macAddress[i],
+                    (i < macAddress.length - 1) ? "-" : ""));
         }
         return buffer.toString();
     }
@@ -246,8 +247,8 @@ public class DiscoveryHelper {
      */
     private void _arpLinux() {
         if (_ipMap.size() == 0) {
-            System.err
-                    .println("Warning, no devices were found.  Perhaps the format returned by "
+            System.err.println(
+                    "Warning, no devices were found.  Perhaps the format returned by "
                             + _pingLinuxCommand + " is different?");
         }
         try {
@@ -256,13 +257,13 @@ public class DiscoveryHelper {
             BufferedReader stdOut = null;
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
-                                                                  process.getInputStream(), "UTF-8"));
+                        process.getInputStream(), "UTF-8"));
                 String line;
 
                 while ((line = stdOut.readLine()) != null) {
                     if (_debugging) {
-                        System.out.println("Discovery: arp returns \"" + line
-                                + "\"");
+                        System.out.println(
+                                "Discovery: arp returns \"" + line + "\"");
                     }
                     StringTokenizer tokenizer = new StringTokenizer(line, " ");
                     String token, name, ip;
@@ -288,7 +289,8 @@ public class DiscoveryHelper {
                                     + ", mac: " + token + " ,ip: " + ip);
                         }
                         JSONObject object;
-                        for (Entry<String, JSONObject> entry : _ipMap.entrySet()) {
+                        for (Entry<String, JSONObject> entry : _ipMap
+                                .entrySet()) {
                             object = entry.getValue();
                             if (object.get("IPAddress").toString()
                                     .equalsIgnoreCase(ip)) {
@@ -324,8 +326,8 @@ public class DiscoveryHelper {
      */
     private void _arpWindows() {
         if (_ipMap.size() == 0) {
-            System.err
-                    .println("Warning, no devices were found.  Perhaps the format returned by "
+            System.err.println(
+                    "Warning, no devices were found.  Perhaps the format returned by "
                             + _pingWindowsCommand + " is different?");
         }
         try {
@@ -334,7 +336,7 @@ public class DiscoveryHelper {
             BufferedReader stdOut = null;
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
-                                                                  process.getInputStream(), "UTF-8"));
+                        process.getInputStream(), "UTF-8"));
                 String line;
                 int index;
                 JSONObject object;
@@ -388,8 +390,8 @@ public class DiscoveryHelper {
 
         try {
             // Coverity Scan: "getNetworkInterfaces returns null".
-            Enumeration<NetworkInterface> interfaces =
-                NetworkInterface.getNetworkInterfaces();
+            Enumeration<NetworkInterface> interfaces = NetworkInterface
+                    .getNetworkInterfaces();
             if (interfaces == null) {
                 return null;
             }
@@ -402,8 +404,8 @@ public class DiscoveryHelper {
                     address = addresses.nextElement();
                     hostAddress = address.getHostAddress();
                     // Break at first non-loopback, non-multicast address
-                    if (!address.isLoopbackAddress() &&
-                            !address.isMulticastAddress() &&
+                    if (!address.isLoopbackAddress()
+                            && !address.isMulticastAddress() &&
                             // Avoid addresses such as fe80:0:0:0:0:5efe:c0a8:3801%net3
                             // Assumes IPv4 address
                             !hostAddress.contains(":")) {
@@ -411,7 +413,7 @@ public class DiscoveryHelper {
                     }
                 }
             }
-        } catch(SocketException e) {
+        } catch (SocketException e) {
             return null;
         }
         return null;
@@ -433,12 +435,11 @@ public class DiscoveryHelper {
             }
             Process process = Runtime.getRuntime().exec(command);
 
-
             BufferedReader stdOut = null;
 
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
-                                                                  process.getInputStream(), "UTF-8"));
+                        process.getInputStream(), "UTF-8"));
 
                 String line;
 
@@ -487,7 +488,8 @@ public class DiscoveryHelper {
 
                 while ((line = stdOut.readLine()) != null) {
                     if (_debugging) {
-                        System.out.println("pingLinux(" + testIP + "): " + line);
+                        System.out
+                                .println("pingLinux(" + testIP + "): " + line);
                     }
                     // Example reply from a device that's on and available
                     // PING 192.168.5.6 (192.168.5.6) 56(84) bytes of data.
@@ -529,12 +531,13 @@ public class DiscoveryHelper {
                         }
                         try {
                             if (testIP.equalsIgnoreCase(_hostIP)) {
-                                device = new JSONObject("{\"IPAddress\": " + testIP
-                                        + "," + "\"name\": \"Host machine\""
+                                device = new JSONObject("{\"IPAddress\": "
+                                        + testIP + ","
+                                        + "\"name\": \"Host machine\""
                                         + ", \"mac\": \"Host machine\"}");
                             } else {
-                                device = new JSONObject("{\"IPAddress\": " + testIP
-                                        + "," + "\"name\": \"Unknown\""
+                                device = new JSONObject("{\"IPAddress\": "
+                                        + testIP + "," + "\"name\": \"Unknown\""
                                         + ", \"mac\": \"Unknown\"}");
                             }
 
@@ -570,8 +573,8 @@ public class DiscoveryHelper {
 
         BufferedReader stdOut = null;
         try {
-            stdOut = new BufferedReader(new InputStreamReader(
-                                                              process.getInputStream(), "UTF-8"));
+            stdOut = new BufferedReader(
+                    new InputStreamReader(process.getInputStream(), "UTF-8"));
 
             StringBuffer data = new StringBuffer();
             String line;
@@ -596,13 +599,13 @@ public class DiscoveryHelper {
                     String name = data.substring(8, bracket - 1);
 
                     if (_debugging) {
-                        System.out.println("Device " + name + " available at "
-                                + testIP);
+                        System.out.println(
+                                "Device " + name + " available at " + testIP);
                     }
                     try {
-                        device = new JSONObject("{\"IPAddress\": " + testIP
-                                + "," + "\"name\": " + name
-                                + ", \"mac\": \"Unknown\"}");
+                        device = new JSONObject(
+                                "{\"IPAddress\": " + testIP + "," + "\"name\": "
+                                        + name + ", \"mac\": \"Unknown\"}");
                     } catch (JSONException e) {
                         // If error, assume problem with name
                         System.err.println("Device name " + name + " is not "
@@ -612,13 +615,15 @@ public class DiscoveryHelper {
             }
             process.destroy();
         } catch (IOException ex) {
-            System.err.println("Error executing ping for " + testIP + ": " + ex);
+            System.err
+                    .println("Error executing ping for " + testIP + ": " + ex);
         } finally {
             if (stdOut != null) {
                 try {
                     stdOut.close();
                 } catch (IOException ex2) {
-                    System.err.println("Error closing stdout for " + testIP + ": " + ex2);
+                    System.err.println(
+                            "Error closing stdout for " + testIP + ": " + ex2);
                 }
             }
         }
@@ -628,7 +633,6 @@ public class DiscoveryHelper {
         if (device != null) {
             _ipMap.put(testIP, device);
         }
-
 
     }
 
@@ -683,9 +687,9 @@ public class DiscoveryHelper {
                                 + ", mac: " + mac + " , ip: " + ip);
                     }
 
-                    JSONObject device = new JSONObject("{ \"IPAddress\": " + ip
-                            + ", " + "\"name\": " + name
-                            + ", \"mac\": Unknown }");
+                    JSONObject device = new JSONObject(
+                            "{ \"IPAddress\": " + ip + ", " + "\"name\": "
+                                    + name + ", \"mac\": Unknown }");
                     // Have to put MAC separately due to colons in MAC
                     device.put("mac", mac);
 

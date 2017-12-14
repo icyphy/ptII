@@ -37,9 +37,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 @version $Id$
 @since Ptolemy II 10.0
  */
-public class Differential
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Differential {
+public class Differential extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Differential {
     /**
      *  Construct a Differential adapter.
      *  @param actor The given ptolemy.actor.lib.Differential actor.

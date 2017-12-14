@@ -65,8 +65,8 @@ import ptolemy.kernel.util.Workspace;
  * @see ptolemy.actor.TypedCompositeActor
  * @see ptolemy.actor.TypedIOPort
  */
-public class TypeOpaqueCompositeActor extends CompositeActor implements
-TypedActor {
+public class TypeOpaqueCompositeActor extends CompositeActor
+        implements TypedActor {
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
@@ -169,8 +169,8 @@ TypedActor {
      *   the name of another port already in the actor.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
         // added. In that case, the type system just ignores instances of
         // IOPort during type checking. Since there is no intended application

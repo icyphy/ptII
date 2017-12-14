@@ -54,8 +54,8 @@ public class JSONTokener {
      * @param reader     A reader.
      */
     public JSONTokener(Reader reader) {
-        this.reader = reader.markSupported() ? reader : new BufferedReader(
-                reader);
+        this.reader = reader.markSupported() ? reader
+                : new BufferedReader(reader);
         this.eof = false;
         this.usePrevious = false;
         this.previous = 0;
@@ -171,8 +171,8 @@ public class JSONTokener {
     public char next(char c) throws JSONException {
         char n = next();
         if (n != c) {
-            throw syntaxError("Expected '" + c + "' and instead saw '" + n
-                    + "'");
+            throw syntaxError(
+                    "Expected '" + c + "' and instead saw '" + n + "'");
         }
         return n;
     }
@@ -310,7 +310,8 @@ public class JSONTokener {
         StringBuffer sb = new StringBuffer();
         for (;;) {
             c = next();
-            if (delimiters.indexOf(c) >= 0 || c == 0 || c == '\n' || c == '\r') {
+            if (delimiters.indexOf(c) >= 0 || c == 0 || c == '\n'
+                    || c == '\r') {
                 if (c != 0) {
                     back();
                 }

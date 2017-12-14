@@ -760,7 +760,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
     // This method is called by the constructor.
     private void _initialize(String[] labels, Token[] values)
             throws IllegalActionException {
-        if (labels == null || values == null || labels.length != values.length) {
+        if (labels == null || values == null
+                || labels.length != values.length) {
             throw new IllegalActionException("RecordToken: the labels or "
                     + "the values array do not have the same length, "
                     + "or is null.");

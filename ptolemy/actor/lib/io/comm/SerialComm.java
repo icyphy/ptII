@@ -403,9 +403,11 @@ public class SerialComm extends TypedAtomicActor {
                                 "Thread interrupted waiting for serial port data.");
                     }
                 }
-                if (bytesAvailable >= _minimumOutputSize && bytesAvailable > 0) {
+                if (bytesAvailable >= _minimumOutputSize
+                        && bytesAvailable > 0) {
                     // Read only if at least desired amount of data is present.
-                    if (_discardOldData && bytesAvailable > _maximumOutputSize) {
+                    if (_discardOldData
+                            && bytesAvailable > _maximumOutputSize) {
                         // Skip excess bytes.
                         int excess = bytesAvailable - _maximumOutputSize;
 
@@ -432,9 +434,9 @@ public class SerialComm extends TypedAtomicActor {
                     int bytesRead = in.read(dataBytes, 0, outputSize);
                     // FindBugs asks us to check the return value of in.read().
                     if (bytesRead != outputSize) {
-                        throw new IllegalActionException(this, "Read only "
-                                + bytesRead + " bytes, expecting" + outputSize
-                                + " bytes.");
+                        throw new IllegalActionException(this,
+                                "Read only " + bytesRead + " bytes, expecting"
+                                        + outputSize + " bytes.");
                     }
 
                     Token[] dataTokens = new Token[outputSize];
@@ -447,8 +449,8 @@ public class SerialComm extends TypedAtomicActor {
                         _debug("Producing byte array on the output port.");
                     }
 
-                    dataReceived.broadcast(new ArrayToken(
-                            BaseType.UNSIGNED_BYTE, dataTokens));
+                    dataReceived.broadcast(
+                            new ArrayToken(BaseType.UNSIGNED_BYTE, dataTokens));
 
                 }
                 // If there are still enough bytes available to run again,
@@ -485,15 +487,13 @@ public class SerialComm extends TypedAtomicActor {
             CommPortIdentifier portID = CommPortIdentifier
                     .getPortIdentifier(serialPortNameValue);
             synchronized (PortListener.class) {
-                if (_serialPort == null
-                        || !toplevel().getName().equals(
-                                portID.getCurrentOwner())) {
+                if (_serialPort == null || !toplevel().getName()
+                        .equals(portID.getCurrentOwner())) {
                     // NOTE: Do not do this in a static initializer so that
                     // we don't initialize the port if there is no actor using it.
                     // This is synchronized on the SerialComm class to prevent multiple actors
                     // from trying to do this simultaneously.
-                    _serialPort = (SerialPort) portID.open(
-                            toplevel().getName(), 2000);
+                    _serialPort = portID.open(toplevel().getName(), 2000);
                     if (_serialPortListener == null) {
                         // This should only be done once.
                         _serialPortListener = new PortListener(this);
@@ -609,6 +609,7 @@ public class SerialComm extends TypedAtomicActor {
         public PortListener(SerialComm actor) {
             _actor = actor;
         }
+
         /** React to an event from the serial port.  This is the one and
          *  only method required to implement SerialPortEventListener
          *  (which this class implements).  Notifies all threads that
@@ -619,7 +620,8 @@ public class SerialComm extends TypedAtomicActor {
             synchronized (PortListener.class) {
                 if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                     if (_actor._debugging) {
-                        _actor._debug("Received serial event indicating that data is available.");
+                        _actor._debug(
+                                "Received serial event indicating that data is available.");
                     }
                     if (!_actor._firingRequested) {
                         try {
@@ -629,7 +631,9 @@ public class SerialComm extends TypedAtomicActor {
                             _actor.getDirector().fireAtCurrentTime(_actor);
                             _actor._firingRequested = true;
                         } catch (IllegalActionException e1) {
-                            MessageHandler.error("Director is uanble to respond to a firing request.", e1);
+                            MessageHandler.error(
+                                    "Director is uanble to respond to a firing request.",
+                                    e1);
                         }
                     }
                     // In case the actor is blocked waiting for data.
@@ -637,6 +641,7 @@ public class SerialComm extends TypedAtomicActor {
                 }
             }
         }
+
         private SerialComm _actor;
     }
 }

@@ -215,7 +215,8 @@ public class PtolemyPlatform implements Platform {
                     BooleanToken b = (BooleanToken) args[1];
                     return a.or(b);
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$or", args[0], args[1], ex);
+                    throw new FunctionCallException("$or", args[0], args[1],
+                            ex);
                 }
             }
 
@@ -233,7 +234,8 @@ public class PtolemyPlatform implements Platform {
                     Token b = (Token) args[1];
                     return a.isEqualTo(b);
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$eq", args[0], args[1], ex);
+                    throw new FunctionCallException("$eq", args[0], args[1],
+                            ex);
                 }
             }
 
@@ -251,7 +253,8 @@ public class PtolemyPlatform implements Platform {
                     Token b = (Token) args[1];
                     return a.isEqualTo(b).not();
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$ne", args[0], args[1], ex);
+                    throw new FunctionCallException("$ne", args[0], args[1],
+                            ex);
                 }
             }
 
@@ -269,7 +272,8 @@ public class PtolemyPlatform implements Platform {
                     ScalarToken b = (ScalarToken) args[1];
                     return a.isLessThan(b);
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$lt", args[0], args[1], ex);
+                    throw new FunctionCallException("$lt", args[0], args[1],
+                            ex);
                 }
             }
 
@@ -287,7 +291,8 @@ public class PtolemyPlatform implements Platform {
                     ScalarToken b = (ScalarToken) args[1];
                     return a.isGreaterThan(b).not();
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$le", args[0], args[1], ex);
+                    throw new FunctionCallException("$le", args[0], args[1],
+                            ex);
                 }
             }
 
@@ -305,7 +310,8 @@ public class PtolemyPlatform implements Platform {
                     ScalarToken b = (ScalarToken) args[1];
                     return a.isGreaterThan(b);
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$gt", args[0], args[1], ex);
+                    throw new FunctionCallException("$gt", args[0], args[1],
+                            ex);
                 }
             }
 
@@ -323,7 +329,8 @@ public class PtolemyPlatform implements Platform {
                     ScalarToken b = (ScalarToken) args[1];
                     return a.isLessThan(b).not();
                 } catch (Exception ex) {
-                    throw new FunctionCallException("$ge", args[0], args[1], ex);
+                    throw new FunctionCallException("$ge", args[0], args[1],
+                            ex);
                 }
             }
 
@@ -538,8 +545,8 @@ public class PtolemyPlatform implements Platform {
                                     "Unknown object type: expected Collection.");
                         }
                     } else if (a instanceof ArrayToken) {
-                        return _theContext.createInteger(((ArrayToken) a)
-                                .length());
+                        return _theContext
+                                .createInteger(((ArrayToken) a).length());
                     } else {
                         throw new InterpreterException(
                                 "Unknown type: expected Array, Set, or List");
@@ -808,7 +815,8 @@ public class PtolemyPlatform implements Platform {
                                 .getValue();
                         return _theContext.createInteger(s.read());
                     } else {
-                        throw new InterpreterException("readByte needs a file.");
+                        throw new InterpreterException(
+                                "readByte needs a file.");
                     }
                 } catch (Exception ex) {
                     throw new InterpreterException(
@@ -829,8 +837,8 @@ public class PtolemyPlatform implements Platform {
                     Token a = (Token) args[0];
 
                     if (a instanceof StringToken) {
-                        InputStream s = new FileInputStream(((StringToken) a)
-                                .stringValue());
+                        InputStream s = new FileInputStream(
+                                ((StringToken) a).stringValue());
                         return new ObjectToken(s);
                     } else {
                         throw new InterpreterException(
@@ -931,7 +939,8 @@ public class PtolemyPlatform implements Platform {
             } catch (IllegalActionException ex) {
                 throw new InterpreterException(
                         "Failed to create integer value from string: '" + s
-                        + "'.", ex);
+                                + "'.",
+                        ex);
             }
         }
 
@@ -981,8 +990,8 @@ public class PtolemyPlatform implements Platform {
             try {
                 return ((DoubleToken) o).doubleValue();
             } catch (Exception ex) {
-                throw new InterpreterException(
-                        "Failed to retrieve real value.", ex);
+                throw new InterpreterException("Failed to retrieve real value.",
+                        ex);
             }
         }
 
@@ -1115,14 +1124,15 @@ public class PtolemyPlatform implements Platform {
                 argTypes[i] = BaseType.UNKNOWN;
             }
 
-            return new FunctionToken(new PtCalFunction(f), new FunctionType(
-                    argTypes, BaseType.UNKNOWN));
+            return new FunctionToken(new PtCalFunction(f),
+                    new FunctionType(argTypes, BaseType.UNKNOWN));
         }
 
         @Override
         public boolean isFunction(Object a) {
-            return a instanceof FunctionToken || a instanceof ObjectToken
-                    && ((ObjectToken) a).getValue() instanceof Function
+            return a instanceof FunctionToken
+                    || a instanceof ObjectToken
+                            && ((ObjectToken) a).getValue() instanceof Function
                     || a instanceof Function;
         }
 
@@ -1179,7 +1189,8 @@ public class PtolemyPlatform implements Platform {
             try {
                 return new ObjectToken(new ClassObject(c, this));
             } catch (IllegalActionException ex) {
-                throw new InterpreterException("Cannot create class token.", ex);
+                throw new InterpreterException("Cannot create class token.",
+                        ex);
             }
         }
 
@@ -1199,12 +1210,15 @@ public class PtolemyPlatform implements Platform {
                     throw new RuntimeException(
                             "Expected ClassObject, got instance of '"
                                     + ((ObjectToken) o).getValue().getClass()
-                                    .getName() + "'.", e);
+                                            .getName()
+                                    + "'.",
+                            e);
                 } else {
                     throw new RuntimeException(
                             "Expected ClassObject inside ObjectToken, got instance of '"
                                     + o.getClass().getName()
-                                    + "' as a token, with value: " + o + ".", e);
+                                    + "' as a token, with value: " + o + ".",
+                            e);
                 }
             }
         }
@@ -1245,8 +1259,8 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
-            throw new RuntimeException("Failed to index into structure:"
-                    + structure);
+            throw new RuntimeException(
+                    "Failed to index into structure:" + structure);
         }
 
         @Override
@@ -1271,7 +1285,8 @@ public class PtolemyPlatform implements Platform {
                     } catch (Exception ex) {
                         throw new RuntimeException(
                                 "Failed to assign at index into structure:"
-                                        + structure, ex);
+                                        + structure,
+                                ex);
                     }
                 }
             }
@@ -1362,7 +1377,8 @@ public class PtolemyPlatform implements Platform {
             } catch (IllegalActionException ex) {
                 throw new InterpreterException(
                         "Couldn't create ObjectToken from Java Object "
-                                + o.toString(), ex);
+                                + o.toString(),
+                        ex);
             }
         }
 

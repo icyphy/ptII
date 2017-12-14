@@ -126,7 +126,7 @@ public abstract class PortDirector extends Director {
     @Override
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         name = processCode(name);
         String castType = _getCastType(name);
         String refName = _getRefName(name);
@@ -150,8 +150,8 @@ public abstract class PortDirector extends Director {
 
                 String refType = getCodeGenerator().codeGenType(port.getType());
 
-                String returnValue = _templateParser.generateTypeConvertMethod(
-                        result, castType, refType);
+                String returnValue = _templateParser
+                        .generateTypeConvertMethod(result, castType, refType);
                 return returnValue;
             }
         }
@@ -163,8 +163,8 @@ public abstract class PortDirector extends Director {
 
             String result = _getParameter(target, attribute, channelAndOffset);
 
-            result = _templateParser.generateTypeConvertMethod(result,
-                    castType, refType);
+            result = _templateParser.generateTypeConvertMethod(result, castType,
+                    refType);
 
             return result;
         }
@@ -193,7 +193,7 @@ public abstract class PortDirector extends Director {
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
 
         int channelNumber = 0;
@@ -278,23 +278,22 @@ public abstract class PortDirector extends Director {
 
                         if (dynamicReferencesAllowed && port.isInput()) {
                             if (channelAndOffset[1].trim().length() > 0) {
-                                result.append("[" + channelAndOffset[1].trim()
-                                        + "]");
+                                result.append(
+                                        "[" + channelAndOffset[1].trim() + "]");
                             } else {
-                                result.append("["
-                                        + _generateChannelOffset(port, isWrite,
-                                                channelAndOffset[0]) + "]");
+                                result.append("[" + _generateChannelOffset(port,
+                                        isWrite, channelAndOffset[0]) + "]");
                             }
                         } else {
-                            int rate = Math
-                                    .max(DFUtilities
-                                            .getTokenProductionRate(sourceChannel.port),
-                                            DFUtilities
-                                            .getTokenConsumptionRate(sourceChannel.port));
-                            if (rate > 1
-                                    && channelAndOffset[1].trim().length() > 0) {
-                                result.append("[" + channelAndOffset[1].trim()
-                                        + "]");
+                            int rate = Math.max(
+                                    DFUtilities.getTokenProductionRate(
+                                            sourceChannel.port),
+                                    DFUtilities.getTokenConsumptionRate(
+                                            sourceChannel.port));
+                            if (rate > 1 && channelAndOffset[1].trim()
+                                    .length() > 0) {
+                                result.append(
+                                        "[" + channelAndOffset[1].trim() + "]");
                             }
                         }
                         hasTypeConvertReference = true;
@@ -329,7 +328,8 @@ public abstract class PortDirector extends Director {
 
         if (_checkLocal(forComposite, port)) {
 
-            result.append(/*NamedProgramCodeGeneratorAdapter.*/generatePortName(port));
+            result.append(/*NamedProgramCodeGeneratorAdapter.*/generatePortName(
+                    port));
 
             //if (!channelAndOffset[0].equals("")) {
             if (port.isMultiport()) {
@@ -386,8 +386,8 @@ public abstract class PortDirector extends Director {
      *  or the port is an input and this is for a composite.
      */
     static protected boolean _checkRemote(boolean forComposite, IOPort port) {
-        return port.isOutput() && !forComposite || port.isInput()
-                && forComposite;
+        return port.isOutput() && !forComposite
+                || port.isInput() && forComposite;
     }
 
     /**
@@ -402,7 +402,7 @@ public abstract class PortDirector extends Director {
      */
     protected/*static*/String _generateChannelOffset(TypedIOPort port,
             boolean isWrite, String channelString)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // By default, return the channel offset for the first channel.
         if (channelString.equals("")) {
             channelString = "0";
@@ -426,7 +426,7 @@ public abstract class PortDirector extends Director {
      */
     protected String _generatePortReference(TypedIOPort port,
             String[] channelAndOffset, boolean isWrite)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         String channelOffset;
@@ -558,8 +558,8 @@ public abstract class PortDirector extends Director {
      */
     protected String _getRefType(Attribute attribute) {
         if (attribute instanceof Parameter) {
-            return getCodeGenerator().codeGenType(
-                    ((Parameter) attribute).getType());
+            return getCodeGenerator()
+                    .codeGenType(((Parameter) attribute).getType());
         }
         return null;
     }

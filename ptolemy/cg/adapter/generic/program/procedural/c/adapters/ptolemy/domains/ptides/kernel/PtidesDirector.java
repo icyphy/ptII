@@ -96,16 +96,16 @@ public class PtidesDirector extends DEDirector {
             for (TypedIOPort port2 : value.keySet()) {
                 SuperdenseDependency dependency = value.get(port2);
 
-                code.append(_eol + "tempEntry->time = "
-                        + dependency.timeValue() + ";");
+                code.append(_eol + "tempEntry->time = " + dependency.timeValue()
+                        + ";");
                 code.append(_eol + "tempEntry->microstep = "
                         + dependency.indexValue() + ";");
                 String port2Name;
                 if (port2.getContainer().equals(director.getContainer())) {
                     port2Name = port2.getName();
                 } else {
-                    port2Name = CodeGeneratorAdapter.generateName(port2
-                            .getContainer()) + "_" + port2.getName();
+                    port2Name = CodeGeneratorAdapter.generateName(
+                            port2.getContainer()) + "_" + port2.getName();
                 }
                 code.append(_eol + "pblMapAdd(tempMap, &" + port2Name
                         + ", sizeof(struct TypedIOPort*), tempEntry"
@@ -115,8 +115,8 @@ public class PtidesDirector extends DEDirector {
             if (port1.getContainer().equals(director.getContainer())) {
                 port1Name = port1.getName();
             } else {
-                port1Name = CodeGeneratorAdapter.generateName(port1
-                        .getContainer()) + "_" + port1.getName();
+                port1Name = CodeGeneratorAdapter.generateName(
+                        port1.getContainer()) + "_" + port1.getName();
             }
             code.append(_eol + "pblMapAdd(" + _sanitizedDirectorName
                     + "->_superdenseDependencyPair, &" + port1Name

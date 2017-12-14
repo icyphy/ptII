@@ -81,8 +81,8 @@ public class BasicJApplet extends JApplet {
      */
     @Override
     public String[][] getParameterInfo() {
-        String[][] pinfo = { { "background", "#RRGGBB",
-        "color of the background" }, };
+        String[][] pinfo = {
+                { "background", "#RRGGBB", "color of the background" }, };
         return pinfo;
     }
 
@@ -182,7 +182,8 @@ public class BasicJApplet extends JApplet {
      *  @param second The second string array.
      *  @return A concatenated string array.
      */
-    protected String[][] _concatStringArrays(String[][] first, String[][] second) {
+    protected String[][] _concatStringArrays(String[][] first,
+            String[][] second) {
         String[][] newInfo = new String[first.length + second.length][];
         System.arraycopy(first, 0, newInfo, 0, first.length);
         System.arraycopy(second, 0, newInfo, first.length, second.length);

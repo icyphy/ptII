@@ -256,8 +256,8 @@ public abstract class OntologyAdapter {
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
                 //                try {
-                List<OntologyAdapter> adapters = collector.collectAdapters(
-                        root, getSolver());
+                List<OntologyAdapter> adapters = collector.collectAdapters(root,
+                        getSolver());
                 astAdapters.addAll(adapters);
                 //                } catch (IllegalActionException ex) {
                 //                    // This means the expression is not parse-able.
@@ -321,13 +321,14 @@ public abstract class OntologyAdapter {
             Attribute attribute = (Attribute) attributes.next();
 
             // only consider StringAttributes, ignore all subclasses
-            if (attribute.getClass().equals(
-                    ptolemy.kernel.util.StringAttribute.class)) {
-                if (((StringAttribute) attribute).getName().equalsIgnoreCase(
-                        "guardTransition")
-                        || ((StringAttribute) attribute).getContainer() instanceof Expression
-                        && ((StringAttribute) attribute).getName()
-                        .equalsIgnoreCase("expression")) {
+            if (attribute.getClass()
+                    .equals(ptolemy.kernel.util.StringAttribute.class)) {
+                if (((StringAttribute) attribute).getName()
+                        .equalsIgnoreCase("guardTransition")
+                        || ((StringAttribute) attribute)
+                                .getContainer() instanceof Expression
+                                && ((StringAttribute) attribute).getName()
+                                        .equalsIgnoreCase("expression")) {
 
                     result.add(attribute);
                 }
@@ -338,8 +339,8 @@ public abstract class OntologyAdapter {
                     // subclasses
                     if (attribute instanceof PortParameter) {
                         result.add(attribute);
-                    } else if (attribute.getClass().equals(
-                            ptolemy.data.expr.Parameter.class)
+                    } else if (attribute.getClass()
+                            .equals(ptolemy.data.expr.Parameter.class)
                             || attribute.getClass().equals(
                                     ptolemy.data.expr.StringParameter.class)) {
 
@@ -348,24 +349,24 @@ public abstract class OntologyAdapter {
                         // need to be filtered (either by name or by class)
                         // Currently all filtered attributes need to be
                         // specified here
-                        if (((Parameter) attribute).getName().equals(
-                                "firingCountLimit")
-                                || ((Parameter) attribute).getName().equals(
-                                        "NONE")
-                                        || ((Parameter) attribute).getName().equals(
-                                                "_hideName")
-                                                || ((Parameter) attribute).getName().equals(
-                                                        "_showName")
-                                                        || ((Parameter) attribute).getName().equals(
-                                                                "conservativeAnalysis")
-                                                                || ((Parameter) attribute).getName().equals(
-                                                                        "directorClass")
-                                                                        || ((Parameter) attribute).getName().equals(
-                                                                                "stateDependentCausality")
-                                                                                || ((Parameter) attribute).getName().equals(
-                                                                                        "delayed")
-                                                                                        || ((Parameter) attribute).getName().equals(
-                                                                                                "displayWidth")) {
+                        if (((Parameter) attribute).getName()
+                                .equals("firingCountLimit")
+                                || ((Parameter) attribute).getName()
+                                        .equals("NONE")
+                                || ((Parameter) attribute).getName()
+                                        .equals("_hideName")
+                                || ((Parameter) attribute).getName()
+                                        .equals("_showName")
+                                || ((Parameter) attribute).getName()
+                                        .equals("conservativeAnalysis")
+                                || ((Parameter) attribute).getName()
+                                        .equals("directorClass")
+                                || ((Parameter) attribute).getName()
+                                        .equals("stateDependentCausality")
+                                || ((Parameter) attribute).getName()
+                                        .equals("delayed")
+                                || ((Parameter) attribute).getName()
+                                        .equals("displayWidth")) {
 
                             // do nothing, ignore the parameter
                         } else {
@@ -393,14 +394,14 @@ public abstract class OntologyAdapter {
 
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = connectedPort.getContainer() instanceof CompositeEntity
-                    && !isInput
+            boolean isCompositeOutput = connectedPort
+                    .getContainer() instanceof CompositeEntity && !isInput
                     && port.depthInHierarchy() > connectedPort
-                    .depthInHierarchy();
+                            .depthInHierarchy();
 
-                    if (isInput || isCompositeOutput) {
-                        result.add(connectedPort);
-                    }
+            if (isInput || isCompositeOutput) {
+                result.add(connectedPort);
+            }
         }
         return result;
     }
@@ -419,14 +420,14 @@ public abstract class OntologyAdapter {
 
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = connectedPort.getContainer() instanceof CompositeEntity
-                    && isInput
+            boolean isCompositeInput = connectedPort
+                    .getContainer() instanceof CompositeEntity && isInput
                     && port.depthInHierarchy() > connectedPort
-                    .depthInHierarchy();
+                            .depthInHierarchy();
 
-                    if (!isInput || isCompositeInput) {
-                        result.add(connectedPort);
-                    }
+            if (!isInput || isCompositeInput) {
+                result.add(connectedPort);
+            }
         }
         return result;
     }
@@ -502,8 +503,8 @@ public abstract class OntologyAdapter {
             map = new HashMap();
             map.put(parseTree, parseTree);
         } catch (IllegalActionException ex) {
-            map = getSolver().getParser().generateAssignmentMap(
-                    annotation.getExpression());
+            map = getSolver().getParser()
+                    .generateAssignmentMap(annotation.getExpression());
 
         }
 

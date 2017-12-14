@@ -189,28 +189,31 @@ public class WelcomeWindow extends HTMLViewer {
     @Override
     protected boolean _close() {
         Configuration configuration = getConfiguration();
-        if (_showWelcomeWindowAtStartup == null
-                && !_startupCheck.isSelected()
+        if (_showWelcomeWindowAtStartup == null && !_startupCheck.isSelected()
                 || _showWelcomeWindowAtStartup != null
-                && _showWelcomeWindowAtStartup.booleanValue() != _startupCheck
-                .isSelected()) {
+                        && _showWelcomeWindowAtStartup
+                                .booleanValue() != _startupCheck.isSelected()) {
             // Update the preferences if there is no preference and
             // the user unchecked the "Show this dialog on startup"
             // or if the value of the preference and the checkbox differ.
             try {
                 PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                        .getPtolemyPreferencesWithinConfiguration(
+                                configuration);
                 // FIXME: is ok to create a new parameter each time?
                 SingletonParameter showWelcomeWindowAtStartupParameter = new SingletonParameter(
                         preferences, "_showWelcomeWindowAtStartup");
 
                 // FIXME: is there a better way to set a BooleanToken?
-                showWelcomeWindowAtStartupParameter.setToken(_startupCheck
-                        .isSelected() ? BooleanToken.TRUE : BooleanToken.FALSE);
+                showWelcomeWindowAtStartupParameter
+                        .setToken(_startupCheck.isSelected() ? BooleanToken.TRUE
+                                : BooleanToken.FALSE);
                 preferences.save();
             } catch (Exception ex) {
-                MessageHandler.error("Failed to update preferences and"
-                        + "save _showWelcomeWindowAtStarupPreferences", ex);
+                MessageHandler.error(
+                        "Failed to update preferences and"
+                                + "save _showWelcomeWindowAtStarupPreferences",
+                        ex);
             }
         }
         return super._close();

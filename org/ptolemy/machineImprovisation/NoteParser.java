@@ -83,8 +83,8 @@ public class NoteParser extends TypedAtomicActor {
         notes = new TypedIOPort(this, "notes", false, true);
         notes.setTypeEquals(BaseType.OBJECT);
 
-        replicationProbability = new TypedIOPort(this,
-                "replicationProbability", false, true);
+        replicationProbability = new TypedIOPort(this, "replicationProbability",
+                false, true);
         replicationProbability.setTypeEquals(BaseType.DOUBLE);
 
         bars = new TypedIOPort(this, "bars", false, true);
@@ -148,6 +148,7 @@ public class NoteParser extends TypedAtomicActor {
      */
     public TypedIOPort dur;
 
+    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -177,8 +178,8 @@ public class NoteParser extends TypedAtomicActor {
             _terminate = true;
             _terminateLength = ((IntToken) endTraining.get(0)).intValue();
             // insert a termination note at the end of the list
-            _orderedNotes.put(_terminateLength + 1, new Note(
-                    MusicSpecs.TERMINATION_NOTE_SYMBOL, -100));
+            _orderedNotes.put(_terminateLength + 1,
+                    new Note(MusicSpecs.TERMINATION_NOTE_SYMBOL, -100));
         }
 
         if (_notes.size() == _durations.size()
@@ -189,10 +190,11 @@ public class NoteParser extends TypedAtomicActor {
                 int index = _timestamps.get(i);
                 if (index < _durations.size() && index < _notes.size()) {
                     double duration = _durations.get(index);
-                    _orderedNotes.put(
-                            index,
-                            new Note(MusicSpecs.translateKeyToLetterNote(
-                                    _notes.get(index), true), duration));
+                    _orderedNotes.put(index,
+                            new Note(
+                                    MusicSpecs.translateKeyToLetterNote(
+                                            _notes.get(index), true),
+                                    duration));
                     _nBeats += duration;
                     _timestamps.remove(i);
                 }
@@ -220,8 +222,8 @@ public class NoteParser extends TypedAtomicActor {
             if (_replicationProbability <= 0) {
                 _replicationProbability = 0.1;
             }
-            replicationProbability.send(0, new DoubleToken(
-                    _replicationProbability));
+            replicationProbability.send(0,
+                    new DoubleToken(_replicationProbability));
         }
     }
 

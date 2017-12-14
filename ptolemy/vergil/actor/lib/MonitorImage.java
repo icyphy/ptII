@@ -71,7 +71,8 @@ public class MonitorImage extends Sink {
         _icon = new ImageIcon(this, "_icon");
         _icon.setPersistent(false);
         FileParameter source = new FileParameter(this, "source");
-        source.setExpression("$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
+        source.setExpression(
+                "$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
         URL url = source.asURL();
         Toolkit tk = Toolkit.getDefaultToolkit();
         Image image = tk.getImage(url);

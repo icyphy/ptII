@@ -135,8 +135,7 @@ public class WebApplicationInfo {
         } else if (_servletInfo.containsKey(path)
                 || _websocketInfo.containsKey(path)
                 || _resourceInfo.keySet().contains(path)) {
-            throw new Exception("Duplicate path requested by a servlet, "
-                    + path
+            throw new Exception("Duplicate path requested by a servlet, " + path
                     + " . Please check other servlet, socket and resource "
                     + "paths for matches.");
         }
@@ -308,16 +307,16 @@ public class WebApplicationInfo {
 
         // Check for a matching handler path
         for (URI servletPath : _servletInfo.keySet()) {
-            if (servletPath != null
-                    && path.equalsIgnoreCase(appPath + servletPath.toString())) {
+            if (servletPath != null && path
+                    .equalsIgnoreCase(appPath + servletPath.toString())) {
                 return true;
             }
         }
 
         // Check for a matching resource path
         for (URI resourcePath : _resourceInfo.keySet()) {
-            if (resourcePath != null
-                    && path.equalsIgnoreCase(appPath + resourcePath.toString())) {
+            if (resourcePath != null && path
+                    .equalsIgnoreCase(appPath + resourcePath.toString())) {
                 return true;
             }
         }
@@ -358,8 +357,8 @@ public class WebApplicationInfo {
 
         // Check for a matching resource path
         for (URI resourcePath : _resourceInfo.keySet()) {
-            if (resourcePath != null
-                    && path.equalsIgnoreCase(appPath + resourcePath.toString())) {
+            if (resourcePath != null && path
+                    .equalsIgnoreCase(appPath + resourcePath.toString())) {
                 return true;
             }
         }

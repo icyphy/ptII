@@ -222,8 +222,8 @@ public class ExtendedMath {
      *  where m is the number of bits for the significand. M is 52 for
      *  a double precision floating point number.
      */
-    public static final double DOUBLE_PRECISION_SIGNIFICAND_ONLY = 2.0 - Math
-            .pow(2.0, -52);
+    public static final double DOUBLE_PRECISION_SIGNIFICAND_ONLY = 2.0
+            - Math.pow(2.0, -52);
 
     /** The constant value of a double representation that has all bits as
      *  1 except the sign bit, where only the significand contributes to the
@@ -231,8 +231,8 @@ public class ExtendedMath {
      *  where m is the number of bits for the significand. M is 23 for
      *  a single precision floating point number.
      */
-    public static final double SINGLE_PRECISION_SIGNIFICAND_ONLY = 2.0 - Math
-            .pow(2.0, -23);
+    public static final double SINGLE_PRECISION_SIGNIFICAND_ONLY = 2.0
+            - Math.pow(2.0, -23);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -122,8 +122,8 @@ public class FCFSScheduler extends AtomicExecutionAspect {
         } else { //has been scheduled
             Time lasttime = _lastTimeScheduled.get(currentlyExecuting);
             Time timePassed = currentPlatformTime.subtract(lasttime);
-            remainingTime = _remainingTimes.get(currentlyExecuting).subtract(
-                    timePassed);
+            remainingTime = _remainingTimes.get(currentlyExecuting)
+                    .subtract(timePassed);
             _remainingTimes.put(currentlyExecuting, remainingTime);
         }
 

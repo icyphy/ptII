@@ -165,21 +165,21 @@ public class SubclassCriterion extends Criterion {
     @Override
     public void validate() throws ValidationException {
         if (_superclass.equals("")) {
-            throw new ValidationException("Superclass name must not be "
-                    + "empty.");
+            throw new ValidationException(
+                    "Superclass name must not be " + "empty.");
         }
         try {
             Class.forName(_superclass);
         } catch (Throwable t) {
-            throw new ValidationException("Cannot load class \"" + _superclass
-                    + "\".", t);
+            throw new ValidationException(
+                    "Cannot load class \"" + _superclass + "\".", t);
         }
     }
 
     /** The elements.
      */
-    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
-            "superclass", false) };
+    private static final CriterionElement[] _ELEMENTS = {
+            new StringCriterionElement("superclass", false) };
 
     /** Value of the superclass element.
      */

@@ -42,8 +42,8 @@ package ptolemy.caltrop;
  @Pt.AcceptedRating Red (cxh)
  */
 @SuppressWarnings("serial")
-public class FunctionCallException extends
-caltrop.interpreter.InterpreterException {
+public class FunctionCallException
+        extends caltrop.interpreter.InterpreterException {
     /**
      * Create a FunctionCallException for an exception
      * in a function with the given cause.

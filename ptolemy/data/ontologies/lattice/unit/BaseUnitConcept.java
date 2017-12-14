@@ -129,8 +129,8 @@ public class BaseUnitConcept extends UnitConcept {
      */
     protected BaseUnitConcept(Ontology ontology,
             BaseDimensionRepresentativeConcept representative,
-            RecordToken unitInfo) throws IllegalActionException,
-            NameDuplicationException {
+            RecordToken unitInfo)
+            throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
 
         Token unitFactor = unitInfo.get(UnitConversionInfo.unitFactorLabel);

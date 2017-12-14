@@ -71,8 +71,8 @@ import ptolemy.math.FixPoint;
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Green (yuhong)
  */
-public abstract class ScalarToken extends Token implements
-BitwiseOperationToken, PartiallyOrderedToken {
+public abstract class ScalarToken extends Token
+        implements BitwiseOperationToken, PartiallyOrderedToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -122,8 +122,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doAdd(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doAdd(convertedArgument);
@@ -131,8 +131,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "add", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("add", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER
                 || rightArgument instanceof MatrixToken) {
@@ -144,8 +144,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             // However, addition may still be possible because
             // the LUB of the types might support it. E.g., [double]+complex,
             // where the LUB is [complex].
-            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
-                    getType(), rightArgument.getType());
+            Type lubType = (Type) TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
 
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
@@ -186,8 +186,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         // We would normally expect this to be LOWER, since this will almost
         // always be called by add, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    leftArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(leftArgument);
 
             try {
                 return convertedArgument._doAdd(this);
@@ -195,8 +195,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "addReverse", this, leftArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("addReverse", this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             return ((ScalarToken) leftArgument)._doAdd(this);
@@ -224,8 +224,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME) {
             return _doBitwiseAnd(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doBitwiseAnd(convertedArgument);
@@ -233,13 +233,13 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "bitwiseAnd", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("bitwiseAnd", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
-                throw new IllegalActionException(notSupportedMessage(
-                        "bitwiseAnd", this, rightArgument));
+                throw new IllegalActionException(
+                        notSupportedMessage("bitwiseAnd", this, rightArgument));
             } else {
                 // This code uses the fact that bitwise AND is always
                 // commutative, there is no need to add a bitwiseAndReverse
@@ -283,8 +283,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME) {
             return _doBitwiseOr(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doBitwiseOr(convertedArgument);
@@ -292,13 +292,13 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "bitwiseOr", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("bitwiseOr", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
-                throw new IllegalActionException(notSupportedMessage(
-                        "bitwiseOr", this, rightArgument));
+                throw new IllegalActionException(
+                        notSupportedMessage("bitwiseOr", this, rightArgument));
             } else {
                 // This code uses the fact that bitwise OR is always
                 // commutative, there is no need to add a bitwiseOrReverse
@@ -327,8 +327,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME) {
             return _doBitwiseXor(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doBitwiseXor(convertedArgument);
@@ -336,13 +336,13 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "bitwiseXor", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("bitwiseXor", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             if (!(rightArgument instanceof BitwiseOperationToken)) {
-                throw new IllegalActionException(notSupportedMessage(
-                        "bitwiseXor", this, rightArgument));
+                throw new IllegalActionException(
+                        notSupportedMessage("bitwiseXor", this, rightArgument));
             } else {
                 // This code uses the fact that bitwise XOR is always
                 // commutative, there is no need to add a bitwiseXorReverse
@@ -377,8 +377,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown.
      */
     public byte byteValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "byte"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "byte"));
     }
 
     /** Return the value of this token as a Complex.
@@ -387,8 +387,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown.
      */
     public Complex complexValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "Complex"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "Complex"));
     }
 
     /** Return a new token whose value is the value of this token
@@ -414,8 +414,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doDivide(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doDivide(convertedArgument);
@@ -423,8 +423,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "divide", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("divide", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.divideReverse(this);
@@ -433,8 +433,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             // However, division may still be possible because
             // the LUB of the types might support it. E.g., [double]/complex,
             // where the LUB is [complex].
-            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
-                    getType(), rightArgument.getType());
+            Type lubType = (Type) TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
 
             // If the LUB is a new type, try it.
             if (lubType != null && !lubType.equals(getType())) {
@@ -480,8 +480,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         // We would normally expect this to be LOWER, since this will almost
         // always be called by divide, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    leftArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(leftArgument);
 
             try {
                 return convertedArgument._doDivide(this);
@@ -508,8 +508,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown
      */
     public double doubleValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "double"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "double"));
     }
 
     /** Return the value of this token as a FixPoint.
@@ -518,8 +518,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown.
      */
     public FixPoint fixValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "fixedpoint"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "fixedpoint"));
     }
 
     /** Return the value of this token as a float
@@ -528,8 +528,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown
      */
     public float floatValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "float"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "float"));
     }
 
     /** Return the type of this token.  Subclasses must implement this method
@@ -551,8 +551,9 @@ BitwiseOperationToken, PartiallyOrderedToken {
     public ScalarToken inUnitsOf(ScalarToken units)
             throws IllegalActionException {
         if (!_areUnitsEqual(units)) {
-            throw new IllegalActionException(notSupportedMessage("inUnitsOf",
-                    this, units) + " because the units are not the same.");
+            throw new IllegalActionException(
+                    notSupportedMessage("inUnitsOf", this, units)
+                            + " because the units are not the same.");
         }
 
         return (ScalarToken) this.divide(units);
@@ -564,8 +565,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown.
      */
     public int intValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "int"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "int"));
     }
 
     /** Test whether the value of this Token is close to the argument
@@ -599,8 +600,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doIsCloseTo(rightArgument, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doIsCloseTo(convertedArgument, epsilon);
@@ -608,8 +609,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isCloseTo", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isCloseTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isCloseTo(this, epsilon);
@@ -643,8 +644,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doIsEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doIsEqualTo(convertedArgument);
@@ -652,8 +653,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isEqualTo", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isEqualTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isEqualTo(this);
@@ -687,8 +688,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME) {
             return rightArgument._doIsLessThan(this);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return convertedArgument._doIsLessThan(this);
@@ -725,8 +726,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             //throw new IllegalActionException(null, ex, notSupportedMessage(
             //        "isLessThan", this, rightArgument))
             //// and must do this instead:
-            throw new IllegalActionException("Cannot compare ScalarToken with "
-                    + rightArgument);
+            throw new IllegalActionException(
+                    "Cannot compare ScalarToken with " + rightArgument);
         }
         return isLessThan((ScalarToken) rightArgument);
     }
@@ -755,8 +756,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME) {
             return _doIsLessThan(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doIsLessThan(convertedArgument);
@@ -764,8 +765,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isLessThan", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isLessThan", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isGreaterThan(this);
@@ -785,8 +786,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  sense for this type.
      */
     public ScalarToken leftShift(int bits) throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("leftShift", this,
-                new IntToken(bits)));
+        throw new IllegalActionException(
+                notSupportedMessage("leftShift", this, new IntToken(bits)));
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -812,8 +813,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown.
      */
     public long longValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "long"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "long"));
     }
 
     /** Return a new token whose value is the value of this token
@@ -838,8 +839,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doModulo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doModulo(convertedArgument);
@@ -847,8 +848,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "modulo", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("modulo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.moduloReverse(this);
@@ -857,8 +858,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             // may still be possible because the LUB of the types
             // might support it. E.g., int mod arrayType(int, 2),
             // where the LUB is arrayType(int).
-            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
-                    getType(), rightArgument.getType());
+            Type lubType = (Type) TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
 
             // If the LUB is a new type, try it.
             if (lubType != null && !lubType.equals(getType())) {
@@ -903,8 +904,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         // We would normally expect this to be LOWER, since this will almost
         // always be called by modulo, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    leftArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(leftArgument);
 
             try {
                 return convertedArgument._doModulo(this);
@@ -948,8 +949,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doMultiply(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doMultiply(convertedArgument);
@@ -957,8 +958,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "multiply", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("multiply", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER
                 || rightArgument instanceof MatrixToken) {
@@ -970,8 +971,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             // However, multiplication may still be possible because
             // the LUB of the types might support it. E.g., [double]*complex,
             // where the LUB is [complex].
-            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
-                    getType(), rightArgument.getType());
+            Type lubType = (Type) TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
 
             // If the LUB is a new type, try it.
             if (lubType != null && !lubType.equals(getType())) {
@@ -1017,8 +1018,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         // We would normally expect this to be LOWER, since this will almost
         // always be called by multiply, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    leftArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(leftArgument);
 
             try {
                 return convertedArgument._doMultiply(this);
@@ -1041,8 +1042,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             // However, multiplication may still be possible because
             // the LUB of the types might support it. E.g., [double]*complex,
             // where the LUB is [complex].
-            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
-                    getType(), leftArgument.getType());
+            Type lubType = (Type) TypeLattice.lattice()
+                    .leastUpperBound(getType(), leftArgument.getType());
 
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
@@ -1072,8 +1073,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  sense for this type.
      */
     public ScalarToken rightShift(int bits) throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("rightShift",
-                this, new IntToken(bits)));
+        throw new IllegalActionException(
+                notSupportedMessage("rightShift", this, new IntToken(bits)));
     }
 
     /** Set the unit category this token belongs to.  This method is
@@ -1098,8 +1099,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
      *  @exception IllegalActionException Always thrown
      */
     public short shortValue() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "short"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "short"));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -1125,8 +1126,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         if (typeInfo == CPO.SAME || getClass() == rightArgument.getClass()) {
             return _doSubtract(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    rightArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(rightArgument);
 
             try {
                 return _doSubtract(convertedArgument);
@@ -1134,8 +1135,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "subtract", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("subtract", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER
                 || rightArgument instanceof MatrixToken) {
@@ -1147,8 +1148,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             // However, addition may still be possible because
             // the LUB of the types might support it. E.g., [double]-complex,
             // where the LUB is [complex].
-            Type lubType = (Type) TypeLattice.lattice().leastUpperBound(
-                    getType(), rightArgument.getType());
+            Type lubType = (Type) TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
 
             // If the LUB is a new type, try it.
             if (!lubType.equals(getType())) {
@@ -1190,8 +1191,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            ScalarToken convertedArgument = (ScalarToken) getType().convert(
-                    leftArgument);
+            ScalarToken convertedArgument = (ScalarToken) getType()
+                    .convert(leftArgument);
 
             try {
                 return convertedArgument._doSubtract(this);
@@ -1489,8 +1490,9 @@ BitwiseOperationToken, PartiallyOrderedToken {
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("add", this,
-                    rightArgument) + " because the units are not the same.");
+            throw new IllegalActionException(
+                    notSupportedMessage("add", this, rightArgument)
+                            + " because the units are not the same.");
         }
 
         ScalarToken result = _add(convertedArgument);
@@ -1523,12 +1525,12 @@ BitwiseOperationToken, PartiallyOrderedToken {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                    this, rightArgument)
-                    + " because the units of this token: "
-                    + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+            throw new IllegalActionException(
+                    notSupportedMessage("bitwiseAnd", this, rightArgument)
+                            + " because the units of this token: "
+                            + unitsString()
+                            + " are not the same as those of the argument: "
+                            + convertedArgument.unitsString());
         }
 
         ScalarToken result = _bitwiseAnd(convertedArgument);
@@ -1562,12 +1564,12 @@ BitwiseOperationToken, PartiallyOrderedToken {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("bitwiseOr",
-                    this, rightArgument)
-                    + " because the units of this token: "
-                    + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+            throw new IllegalActionException(
+                    notSupportedMessage("bitwiseOr", this, rightArgument)
+                            + " because the units of this token: "
+                            + unitsString()
+                            + " are not the same as those of the argument: "
+                            + convertedArgument.unitsString());
         }
 
         ScalarToken result = _bitwiseOr(convertedArgument);
@@ -1601,12 +1603,12 @@ BitwiseOperationToken, PartiallyOrderedToken {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                    this, rightArgument)
-                    + " because the units of this token: "
-                    + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+            throw new IllegalActionException(
+                    notSupportedMessage("bitwiseXor", this, rightArgument)
+                            + " because the units of this token: "
+                            + unitsString()
+                            + " are not the same as those of the argument: "
+                            + convertedArgument.unitsString());
         }
 
         ScalarToken result = _bitwiseXor(convertedArgument);
@@ -1643,8 +1645,9 @@ BitwiseOperationToken, PartiallyOrderedToken {
         // compute units
         if (_unitCategoryExponents != null && !_isUnitless()
                 || convertedArgument._unitCategoryExponents != null
-                && !convertedArgument._isUnitless()) {
-            result._unitCategoryExponents = _subtractCategoryExponents(convertedArgument);
+                        && !convertedArgument._isUnitless()) {
+            result._unitCategoryExponents = _subtractCategoryExponents(
+                    convertedArgument);
         }
         return result;
     }
@@ -1672,9 +1675,9 @@ BitwiseOperationToken, PartiallyOrderedToken {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("isCloseTo",
-                    this, rightArgument)
-                    + " because the units are not the same.");
+            throw new IllegalActionException(
+                    notSupportedMessage("isCloseTo", this, rightArgument)
+                            + " because the units are not the same.");
         }
 
         return _isCloseTo(convertedArgument, epsilon);
@@ -1726,16 +1729,17 @@ BitwiseOperationToken, PartiallyOrderedToken {
     private BooleanToken _doIsLessThan(Token rightArgument)
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            throw new IllegalActionException(notSupportedMessage("isLessThan",
-                    this, rightArgument) + " because one or the other is nil");
+            throw new IllegalActionException(
+                    notSupportedMessage("isLessThan", this, rightArgument)
+                            + " because one or the other is nil");
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("isLessThan",
-                    this, rightArgument)
-                    + " because the units are not the same.");
+            throw new IllegalActionException(
+                    notSupportedMessage("isLessThan", this, rightArgument)
+                            + " because the units are not the same.");
         }
 
         return _isLessThan(convertedArgument);
@@ -1764,9 +1768,9 @@ BitwiseOperationToken, PartiallyOrderedToken {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("modulo",
-                    this, rightArgument)
-                    + " because the units are not the same.");
+            throw new IllegalActionException(
+                    notSupportedMessage("modulo", this, rightArgument)
+                            + " because the units are not the same.");
         }
 
         ScalarToken result = _modulo(convertedArgument);
@@ -1803,8 +1807,9 @@ BitwiseOperationToken, PartiallyOrderedToken {
         // compute units
         if (_unitCategoryExponents != null && !_isUnitless()
                 || convertedArgument._unitCategoryExponents != null
-                && !convertedArgument._isUnitless()) {
-            result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
+                        && !convertedArgument._isUnitless()) {
+            result._unitCategoryExponents = _addCategoryExponents(
+                    convertedArgument);
 
         }
         return result;
@@ -1834,9 +1839,9 @@ BitwiseOperationToken, PartiallyOrderedToken {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
-            throw new IllegalActionException(notSupportedMessage("subtract",
-                    this, rightArgument)
-                    + " because the units are not the same.");
+            throw new IllegalActionException(
+                    notSupportedMessage("subtract", this, rightArgument)
+                            + " because the units are not the same.");
         }
 
         ScalarToken result = _subtract(convertedArgument);

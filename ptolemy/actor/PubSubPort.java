@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public abstract class PubSubPort extends TypedIOPort implements
-HierarchyListener, Initializable {
+public abstract class PubSubPort extends TypedIOPort
+        implements HierarchyListener, Initializable {
 
     /** Construct a subscriber port with a containing actor and a name.
      *  This is always an input port.
@@ -144,8 +144,8 @@ HierarchyListener, Initializable {
 
         // Set the type constraints.
         try {
-            newObject.setTypeAtLeast(ArrayType
-                    .elementType(newObject.initialTokens));
+            newObject.setTypeAtLeast(
+                    ArrayType.elementType(newObject.initialTokens));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -215,8 +215,8 @@ HierarchyListener, Initializable {
      *   an entity with the name of this entity.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         if (previousContainer != container) {
@@ -227,7 +227,7 @@ HierarchyListener, Initializable {
                 if (previousInitializableContainer != newInitializableContainer) {
                     if (previousInitializableContainer != null) {
                         previousInitializableContainer
-                        .removeInitializable(this);
+                                .removeInitializable(this);
                     }
                     if (newInitializableContainer != null) {
                         newInitializableContainer.addInitializable(this);

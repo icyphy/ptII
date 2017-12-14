@@ -53,7 +53,8 @@ public class DistributedUtilities {
      *  @param receiversIntegers A bidimensional array of Integers.
      *  @return LinkedList A list.
      */
-    public static LinkedList convertIntegersToList(Integer[][] receiversIntegers) {
+    public static LinkedList convertIntegersToList(
+            Integer[][] receiversIntegers) {
         // System.out.println("convertIntegersToList: \n" +
         // integersArrayToString(receiversIntegers));
         LinkedList list = new LinkedList();
@@ -75,7 +76,8 @@ public class DistributedUtilities {
      *  @param receivers A bidimensional array of receivers.
      *  @return Integer[][] A bidimensional array of receivers IDs.
      */
-    public static Integer[][] convertReceiversToIntegers(Receiver[][] receivers) {
+    public static Integer[][] convertReceiversToIntegers(
+            Receiver[][] receivers) {
         Integer[][] receiversIntegers = new Integer[receivers.length][];
 
         for (int i = 0; i < receivers.length; i++) {
@@ -133,8 +135,8 @@ public class DistributedUtilities {
 
         for (Receiver[] element : array) {
             for (int j = 0; j < element.length; j++) {
-                print.append(((DistributedSDFReceiver) element[j]).getID()
-                        + " ");
+                print.append(
+                        ((DistributedSDFReceiver) element[j]).getID() + " ");
             }
 
             print.append("\n");

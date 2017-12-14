@@ -73,7 +73,8 @@ public class HandlerBase implements XmlHandler {
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
     @Override
-    public void startExternalEntity(String systemId) throws java.lang.Exception {
+    public void startExternalEntity(String systemId)
+            throws java.lang.Exception {
     }
 
     /**

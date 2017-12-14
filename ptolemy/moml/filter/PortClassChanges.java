@@ -84,7 +84,8 @@ public class PortClassChanges extends MoMLFilterSimple {
             // by the portMap, find the class mapping and record the
             // name of the port.
             if (_currentlyProcessingActorWithPortClassChanges
-                    && _portMap != null && _portMap.containsKey(attributeValue)) {
+                    && _portMap != null
+                    && _portMap.containsKey(attributeValue)) {
                 _classMap = (HashMap) _portMap.get(attributeValue);
 
                 _portName = attributeValue;
@@ -168,8 +169,8 @@ public class PortClassChanges extends MoMLFilterSimple {
                             .next();
                     String oldClass = (String) classChanges.getKey();
                     String newClass = (String) classChanges.getValue();
-                    results.append("\t\t" + oldClass + "\t -> " + newClass
-                            + "\n");
+                    results.append(
+                            "\t\t" + oldClass + "\t -> " + newClass + "\n");
                 }
             }
         }
@@ -252,8 +253,7 @@ public class PortClassChanges extends MoMLFilterSimple {
                 inputOutputTypedIOPortClassChanges);
 
         // HTVQEncode
-        _actorsWithPortClassChanges.put(
-                "ptolemy.domains.sdf.lib.vq.HTVQEncode",
+        _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
                 inputOutputTypedIOPortClassChanges);
 
         // VQDecode

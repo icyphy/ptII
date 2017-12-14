@@ -183,8 +183,8 @@ public class Noise extends Gaussian {
             if (interval == 0.0) {
                 _current = _valueAtStart;
             } else {
-                double timeGapBetweenValues = _timeOfValueAtEnd.subtract(
-                        iterationBeginTime).getDoubleValue();
+                double timeGapBetweenValues = _timeOfValueAtEnd
+                        .subtract(iterationBeginTime).getDoubleValue();
                 _current = _valueAtStart + (_valueAtEnd - _valueAtStart)
                         * interval / timeGapBetweenValues;
             }

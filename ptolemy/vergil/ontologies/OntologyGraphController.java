@@ -148,8 +148,8 @@ public class OntologyGraphController extends WithIconGraphController {
             }
         }
 
-        throw new RuntimeException("Node with unknown semantic object: "
-                + object);
+        throw new RuntimeException(
+                "Node with unknown semantic object: " + object);
     }
 
     /** Set the configuration.  This is used by some of the controllers
@@ -228,7 +228,7 @@ public class OntologyGraphController extends WithIconGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _conceptController.getNodeInteractor())
-        .addInteractor(_relationCreator);
+                .addInteractor(_relationCreator);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -246,7 +246,7 @@ public class OntologyGraphController extends WithIconGraphController {
 
             if (interactor instanceof CompositeInteractor) {
                 ((CompositeInteractor) interactor)
-                .addInteractor(_relationCreator);
+                        .addInteractor(_relationCreator);
             }
         }
     }
@@ -284,8 +284,8 @@ public class OntologyGraphController extends WithIconGraphController {
      *  passwd: archives
      */
     private MouseFilter _shortcutFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
-            .getMenuShortcutKeyMask());
+            InputEvent.BUTTON1_MASK,
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner classes             ////
@@ -362,7 +362,7 @@ public class OntologyGraphController extends WithIconGraphController {
                             newConceptLocation = new Location(prototype,
                                     locationName);
                             newConceptLocation
-                            .setLocation(new double[] { x, y });
+                                    .setLocation(new double[] { x, y });
                         }
                         newConceptLocation.setLocation(new double[] { x, y });
                         moml = prototype.exportMoML(conceptName);
@@ -375,8 +375,7 @@ public class OntologyGraphController extends WithIconGraphController {
             }
 
             if (moml == null) {
-                moml = "<entity name=\""
-                        + conceptName
+                moml = "<entity name=\"" + conceptName
                         + "\" class=\"ptolemy.data.ontologies.FiniteConcept\">\n"
                         + "<property name=\"solutionColor\" "
                         + "class=\"ptolemy.actor.gui.ColorAttribute\" "
@@ -437,8 +436,8 @@ public class OntologyGraphController extends WithIconGraphController {
                         event.getLayerY());
 
                 // Render the edge.
-                Connector c = getEdgeController(relationLink).render(
-                        relationLink, layer, tailSite, headSite);
+                Connector c = getEdgeController(relationLink)
+                        .render(relationLink, layer, tailSite, headSite);
 
                 // get the actual attach site.
                 tailSite = getEdgeController(relationLink).getConnectorTarget()

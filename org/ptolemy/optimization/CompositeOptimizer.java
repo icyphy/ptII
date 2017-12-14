@@ -182,7 +182,8 @@ public class CompositeOptimizer extends ReflectComposite {
             double rho = ((DoubleToken) rhoEnd.getToken()).doubleValue();
             _rhoend = rho;
         } else if (attribute == reusePreviousResult) {
-            _reusePreviousResult = ((BooleanToken) reusePreviousResult.getToken()).booleanValue();
+            _reusePreviousResult = ((BooleanToken) reusePreviousResult
+                    .getToken()).booleanValue();
         } else if (attribute == timeHorizon) {
             int th = ((IntToken) timeHorizon.getToken()).intValue();
             if (th > 0) {
@@ -235,14 +236,14 @@ public class CompositeOptimizer extends ReflectComposite {
             directorNew.setContainer(result);
             directorNew.setName(directorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone: " + throwable);
         }
         return result;
     }
 
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         setClassName("org.ptolemy.optimization.CompositeOptimizer");
         OptimizerDirector director = new OptimizerDirector(workspace());
         director.setContainer(this);
@@ -308,6 +309,7 @@ public class CompositeOptimizer extends ReflectComposite {
         _tokenMap = new HashMap<IOPort, Token>();
         _firstIteration = true;
     }
+
     @Override
     public void wrapup() throws IllegalActionException {
         // TODO Auto-generated method stub
@@ -323,8 +325,8 @@ public class CompositeOptimizer extends ReflectComposite {
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class OptimizerComposite extends
-            ReflectComposite.ReflectCompositeContents {
+    public static class OptimizerComposite
+            extends ReflectComposite.ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -346,8 +348,8 @@ public class CompositeOptimizer extends ReflectComposite {
 
         }
 
-        private void _init() throws IllegalActionException,
-                NameDuplicationException {
+        private void _init()
+                throws IllegalActionException, NameDuplicationException {
 
             MirrorPort intermediate = new MirrorPort(workspace());
             intermediate.setContainer(this);
@@ -534,7 +536,8 @@ public class CompositeOptimizer extends ReflectComposite {
             };
 
             if (_reusePreviousResult) {
-                if (_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
+                if (_firstStep || (_optInput == null)
+                        || (_optInput.length != _dimension)) {
                     _optInput = new double[_dimension];
                     _firstStep = false; //Keeping the optimized values for next step.
                 }
@@ -561,8 +564,8 @@ public class CompositeOptimizer extends ReflectComposite {
             }
             ArrayToken outputArrayToken = new ArrayToken(outTokens);
             ((TypedIOPort) ((CompositeOptimizer) getContainer())
-                    .getPort(OPTIMAL_VALUE_PORT_NAME))
-                    .send(0, outputArrayToken);
+                    .getPort(OPTIMAL_VALUE_PORT_NAME)).send(0,
+                            outputArrayToken);
 
             // this is a post-result warning.
             switch (status) {

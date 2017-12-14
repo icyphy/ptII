@@ -103,8 +103,7 @@ public class MarbleFilter extends TransformFilter {
     * @return the turbulence of the effect.
     * @see #setTurbulence(float)
     */
-    public float getTurbulence()
- {
+    public float getTurbulence() {
         return turbulence;
     }
 
@@ -119,7 +118,8 @@ public class MarbleFilter extends TransformFilter {
     }
 
     private int displacementMap(int x, int y) {
-        return PixelUtils.clamp((int) (127 * (1 + Noise.noise2(x / xScale, y / xScale))));
+        return PixelUtils.clamp(
+                (int) (127 * (1 + Noise.noise2(x / xScale, y / xScale))));
     }
 
     @Override

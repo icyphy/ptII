@@ -317,14 +317,14 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                 }
             }
         } else if (address.hasToken(0)) {
-            System.out.println(getName()
-                    + "WARNING: address port does not have a token!");
+            System.out.println(
+                    getName() + "WARNING: address port does not have a token!");
         } else if (data.hasToken(0)) {
-            System.out.println(getName()
-                    + "WARNING: data port does not have a token!");
+            System.out.println(
+                    getName() + "WARNING: data port does not have a token!");
         } else {
-            System.out.println(getName()
-                    + "WARNING: neither data port has a token!");
+            System.out.println(
+                    getName() + "WARNING: neither data port has a token!");
         }
     }
 
@@ -367,8 +367,8 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 
                 _soundWriter.closeFile();
             } catch (IOException ex) {
-                throw new IllegalActionException(this, "Error closing file:\n"
-                        + ex.getMessage());
+                throw new IllegalActionException(this,
+                        "Error closing file:\n" + ex.getMessage());
             }
         }
 
@@ -387,15 +387,16 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  @exception IllegalActionException If there is a problem
      *   initializing the SoundWriter object.
      */
-    private synchronized void _initializeWriter() throws IllegalActionException {
+    private synchronized void _initializeWriter()
+            throws IllegalActionException {
         // Close any open sound files. Free
         // up audio system resources.
         if (_soundWriter != null) {
             try {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
-                throw new IllegalActionException(this, "Cannot write audio: \n"
-                        + ex.getMessage());
+                throw new IllegalActionException(this,
+                        "Cannot write audio: \n" + ex.getMessage());
             }
         }
 

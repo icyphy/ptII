@@ -67,8 +67,7 @@ public class ThreadSynchronizer {
         while (!notReadyMap.isEmpty()) {
             try {
                 if (VERBOSE) {
-                    System.out
-                    .println("commandsEmpty: waiting for readyMap to "
+                    System.out.println("commandsEmpty: waiting for readyMap to "
                             + "be empty");
                 }
 

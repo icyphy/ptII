@@ -105,8 +105,8 @@ public class MirrorComposite extends ReflectComposite {
      *   an actor already in the container.
      */
     public MirrorComposite(CompositeEntity container, String name,
-            boolean mirrorParameterPorts) throws IllegalActionException,
-            NameDuplicationException {
+            boolean mirrorParameterPorts)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, mirrorParameterPorts);
         _init();
     }
@@ -124,10 +124,11 @@ public class MirrorComposite extends ReflectComposite {
      *   name already in the actor.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
 
-        if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
+        if (!(port instanceof MirrorPort
+                || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
                     "MirrorComposite ports are required to be "
                             + "instances of MirrorPort");
@@ -147,6 +148,7 @@ public class MirrorComposite extends ReflectComposite {
      *  @param insidePort The port that may be mirrored.
      *  @return True if the inside port should be mirrored.
      */
+    @Override
     protected boolean _mirrorPort(ComponentPort insidePort) {
         // do not mirror ports that are not instances of MirrorPort
         if (!_mirrorParameterPorts && insidePort instanceof ParameterPort) {
@@ -167,8 +169,8 @@ public class MirrorComposite extends ReflectComposite {
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class MirrorCompositeContents extends
-            ReflectCompositeContents {
+    public static class MirrorCompositeContents
+            extends ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -195,10 +197,11 @@ public class MirrorComposite extends ReflectComposite {
          *  collides with a name already in the actor.
          */
         @Override
-        protected void _addPort(final Port port) throws IllegalActionException,
-        NameDuplicationException {
+        protected void _addPort(final Port port)
+                throws IllegalActionException, NameDuplicationException {
 
-            if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
+            if (!(port instanceof MirrorPort
+                    || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,
                         "Ports in MirrorComposiMirrorCompositeContentsite must be MirrorPort.");
             }

@@ -145,35 +145,26 @@ public class PlotMLApplication extends PlotApplication {
     ////                         protected methods                 ////
     @Override
     protected void _about() {
-        JOptionPane
-        .showMessageDialog(
-                this,
-                "PlotMLApplication class\n"
-                        + "By: Edward A. Lee "
-                        + "and Christopher Hylands\n"
-                        + "Version "
-                        + PlotBox.PTPLOT_RELEASE
-                        + ", Build: $Id$\n\n"
-                        + "For more information, see\n"
-                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                        + "Copyright (c) 1997-2016, "
-                        + "The Regents of the University of California.",
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "PlotMLApplication class\n"
+                + "By: Edward A. Lee " + "and Christopher Hylands\n"
+                + "Version " + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                + "Copyright (c) 1997-2016, "
+                + "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     @Override
     protected void _help() {
-        JOptionPane
-        .showMessageDialog(
-                this,
-                "PlotMLApplication is a standalone plot "
-                        + " application.\n"
+        JOptionPane.showMessageDialog(this,
+                "PlotMLApplication is a standalone plot " + " application.\n"
                         + "  File formats understood: PlotML and Ptplot ASCII.\n"
-                        + "  Left mouse button: Zooming.\n\n"
-                        + _usage(), "About Ptolemy Plot",
-                        JOptionPane.INFORMATION_MESSAGE);
+                        + "  Left mouse button: Zooming.\n\n" + _usage(),
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -197,8 +188,8 @@ public class PlotMLApplication extends PlotApplication {
         byte[] peek = new byte[8];
         int bytesRead = bin.read(peek);
         if (bytesRead != peek.length) {
-            throw new IOException("Read only " + bytesRead
-                    + "bytes, expecting " + peek.length);
+            throw new IOException("Read only " + bytesRead + "bytes, expecting "
+                    + peek.length);
         }
         bin.reset();
 

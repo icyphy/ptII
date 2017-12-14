@@ -68,7 +68,7 @@ import ptolemy.moml.MoMLModelAttribute;
  */
 
 public class ExceptionManager extends MoMLModelAttribute implements
-ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
+        ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
 
     /** Create a model attribute with the specified container and name.
      *  @param container The specified container.
@@ -196,8 +196,8 @@ ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
                         + "Manager.startRun() failed.");
             }
 
-            statusMessage.setExpression("Model restarted at "
-                    + dateFormat.format(date));
+            statusMessage.setExpression(
+                    "Model restarted at " + dateFormat.format(date));
 
             // Do NOT reset messages in the event of a restart
             // This way, user can see that model was restarted
@@ -379,10 +379,9 @@ ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
                 _restartDesired = true;
 
             } else {
-                statusMessage
-                        .setExpression("Cannot restart model since "
-                                + "there is no model Manager.  Perhaps the model has no "
-                                + "actors?");
+                statusMessage.setExpression("Cannot restart model since "
+                        + "there is no model Manager.  Perhaps the model has no "
+                        + "actors?");
                 for (ExceptionSubscriber subscriber : _subscribers) {
                     subscriber.exceptionHandled(false, policyValue);
                 }
@@ -390,8 +389,8 @@ ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
             }
 
         } else if (policyValue.equals(CatchExceptionAttribute.STOP)) {
-            statusMessage.setExpression("Model stopped at "
-                    + dateFormat.format(date));
+            statusMessage.setExpression(
+                    "Model stopped at " + dateFormat.format(date));
 
             // Call validate() to notify listeners of these changes
             exceptionMessage.validate();
@@ -400,8 +399,8 @@ ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
             // wrapup() is automatically called prior to handleException(),
             // so don't need to call it again
         } else if (policyValue.equals(CatchExceptionAttribute.THROW)) {
-            statusMessage.setExpression("Exception thrown at "
-                    + dateFormat.format(date));
+            statusMessage.setExpression(
+                    "Exception thrown at " + dateFormat.format(date));
 
             // Return false if an exception is thrown, since this attribute
             // did not resolve the exception.
@@ -529,8 +528,8 @@ ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
      *   @see AbstractInitializableAttribute
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         super.setContainer(container);
@@ -557,6 +556,7 @@ ExceptionHandler, ExecutionListener, Initializable, HierarchyListener {
      *  @exception IllegalActionException If thrown by a subclass.
      *  @see AbstractInitializableAttribute
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {

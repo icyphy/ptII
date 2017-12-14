@@ -114,8 +114,8 @@ public class LookupTable extends Transformer {
         LookupTable newObject = (LookupTable) super.clone(workspace);
 
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.table));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.table));
         } catch (IllegalActionException e) {
             // Should have been caught before this.
             throw new InternalErrorException(e);

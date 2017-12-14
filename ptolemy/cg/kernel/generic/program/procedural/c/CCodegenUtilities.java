@@ -59,7 +59,8 @@ public class CCodegenUtilities {
      * @param targetCpp Boolean indicating whether the target language is C or C++.
      * @return A string containing code to delete a jni local reference.
      */
-    public static String jniDeleteLocalRef(String reference, boolean targetCpp) {
+    public static String jniDeleteLocalRef(String reference,
+            boolean targetCpp) {
         if (targetCpp) {
             return "env->DeleteLocalRef(" + reference + ")";
         } else {
@@ -143,7 +144,8 @@ public class CCodegenUtilities {
      * @param targetCpp Boolean indicating whether the target language is C or C++.
      * @return A string containing code to create a new jni element.
      */
-    public static String jniNewArray(String type, String size, boolean targetCpp) {
+    public static String jniNewArray(String type, String size,
+            boolean targetCpp) {
         if (targetCpp) {
             return "env->New" + type + "Array(" + size + ")";
         } else {
@@ -220,13 +222,14 @@ public class CCodegenUtilities {
      * @return A string containing code to set selements in a jni array.
      */
     public static String jniSetArrayRegion(String type, String arrayName,
-            String index, String length, String valuePointer, boolean targetCpp) {
+            String index, String length, String valuePointer,
+            boolean targetCpp) {
         if (targetCpp) {
-            return "env->Set" + type + "ArrayRegion(" + arrayName + ", "
-                    + index + ", " + length + ", " + valuePointer + ")";
+            return "env->Set" + type + "ArrayRegion(" + arrayName + ", " + index
+                    + ", " + length + ", " + valuePointer + ")";
         } else {
-            return "(*env)->Set" + type + "ArrayRegion(env, " + arrayName
-                    + ", " + index + ", " + length + ", " + valuePointer + ")";
+            return "(*env)->Set" + type + "ArrayRegion(env, " + arrayName + ", "
+                    + index + ", " + length + ", " + valuePointer + ")";
         }
     }
 

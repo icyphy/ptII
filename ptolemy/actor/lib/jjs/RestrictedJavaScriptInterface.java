@@ -137,7 +137,8 @@ public class RestrictedJavaScriptInterface {
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
-    public Object getResource(String uri, Object... arguments) throws IllegalActionException {
+    public Object getResource(String uri, Object... arguments)
+            throws IllegalActionException {
         return _actor.getResource(uri, arguments);
     }
 
@@ -149,8 +150,8 @@ public class RestrictedJavaScriptInterface {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public Token input(String name) throws IllegalActionException,
-            NameDuplicationException {
+    public Token input(String name)
+            throws IllegalActionException, NameDuplicationException {
         return _actor.input(name, null);
     }
 
@@ -171,8 +172,8 @@ public class RestrictedJavaScriptInterface {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public Token input(String name, Map options) throws IllegalActionException,
-            NameDuplicationException {
+    public Token input(String name, Map options)
+            throws IllegalActionException, NameDuplicationException {
         return _actor.input(name, options);
     }
 
@@ -200,8 +201,8 @@ public class RestrictedJavaScriptInterface {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name) throws IllegalActionException,
-            NameDuplicationException {
+    public void output(String name)
+            throws IllegalActionException, NameDuplicationException {
         _actor.output(name, null);
     }
 
@@ -232,8 +233,8 @@ public class RestrictedJavaScriptInterface {
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public Token parameter(String name) throws IllegalActionException,
-            NameDuplicationException {
+    public Token parameter(String name)
+            throws IllegalActionException, NameDuplicationException {
         return _actor.parameter(name);
     }
 

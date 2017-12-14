@@ -55,8 +55,6 @@ import ptolemy.data.ImageToken;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 
-
-
 ///////////////////////////////////////////////////////////////////
 //// SocketHelper
 
@@ -121,17 +119,14 @@ public class SocketHelper extends VertxHelperBase {
      *  @param host The remote host to connect to.
      *  @param options The options (see the socket.js JavaScript module).
      */
-    public void openClientSocket(
-            final ScriptObjectMirror socketClient,
-            final int port,
-            final String host,
-            Map<String,Object> options) {
-        if ((Boolean)options.get("trustAll")) {
+    public void openClientSocket(final ScriptObjectMirror socketClient,
+            final int port, final String host, Map<String, Object> options) {
+        if ((Boolean) options.get("trustAll")) {
             if (!MessageHandler.yesNoQuestion(
                     "The client is set to trust all certificates ('trustAll' option is true). "
-                    + "This means that the client can connect to any server with no "
-                    + "verification of the identity of the server. "
-                    + "Are you sure?")) {
+                            + "This means that the client can connect to any server with no "
+                            + "verification of the identity of the server. "
+                            + "Are you sure?")) {
                 return;
             }
         }
@@ -139,26 +134,30 @@ public class SocketHelper extends VertxHelperBase {
         // NOTE: The following assumes all the options are defined.
         // This is handled in the associated JavaScript socket.js module.
         final NetClientOptions clientOptions = new NetClientOptions()
-                .setConnectTimeout((Integer)options.get("connectTimeout"))
-                .setIdleTimeout((Integer)options.get("idleTimeout"))
-                .setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
-                .setReconnectAttempts((Integer)options.get("reconnectAttempts"))
-                .setReconnectInterval((Integer)options.get("reconnectInterval"))
-                .setSendBufferSize((Integer)options.get("sendBufferSize"))
-                .setSsl((Boolean)options.get("sslTls"))
-                .setTcpKeepAlive((Boolean)options.get("keepAlive"))
-                .setTcpNoDelay((Boolean)options.get("noDelay"))
-                .setTrustAll((Boolean)options.get("trustAll"));
+                .setConnectTimeout((Integer) options.get("connectTimeout"))
+                .setIdleTimeout((Integer) options.get("idleTimeout"))
+                .setReceiveBufferSize(
+                        (Integer) options.get("receiveBufferSize"))
+                .setReconnectAttempts(
+                        (Integer) options.get("reconnectAttempts"))
+                .setReconnectInterval(
+                        (Integer) options.get("reconnectInterval"))
+                .setSendBufferSize((Integer) options.get("sendBufferSize"))
+                .setSsl((Boolean) options.get("sslTls"))
+                .setTcpKeepAlive((Boolean) options.get("keepAlive"))
+                .setTcpNoDelay((Boolean) options.get("noDelay"))
+                .setTrustAll((Boolean) options.get("trustAll"));
 
         // If SSL/TLS is enabled and trustAll is false, it has to be configured.
         if (clientOptions.isSsl() && !clientOptions.isTrustAll()) {
             PemTrustOptions pemTrustOptions = new PemTrustOptions();
 
-            String caCertPath = (String)options.get("trustedCACertPath");
+            String caCertPath = (String) options.get("trustedCACertPath");
             File caCertFile = FileUtilities.nameToFile(caCertPath, null);
 
             if (caCertFile == null) {
-                _error(socketClient, "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
+                _error(socketClient,
+                        "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
                 return;
             }
             try {
@@ -166,12 +165,15 @@ public class SocketHelper extends VertxHelperBase {
 
                 clientOptions.setPemTrustOptions(pemTrustOptions);
             } catch (IOException e) {
-                _error(socketClient, "Failed to find the trusted CA certificate at " + caCertFile, e);
+                _error(socketClient,
+                        "Failed to find the trusted CA certificate at "
+                                + caCertFile,
+                        e);
                 return;
             }
         }
 
-        String pfxKeyCertPath = (String)options.get("pfxKeyCertPath");
+        String pfxKeyCertPath = (String) options.get("pfxKeyCertPath");
         File pfxKeyCertFile = FileUtilities.nameToFile(pfxKeyCertPath, null);
 
         // If the client has its own certificate
@@ -181,10 +183,14 @@ public class SocketHelper extends VertxHelperBase {
             try {
                 pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
             } catch (IOException e) {
-                _error(socketClient, "Failed to find the server key-certificate at " + pfxKeyCertFile, e);
+                _error(socketClient,
+                        "Failed to find the server key-certificate at "
+                                + pfxKeyCertFile,
+                        e);
                 return;
             }
-            String pfxKeyCertPassword = (String)options.get("pfxKeyCertPassword");
+            String pfxKeyCertPassword = (String) options
+                    .get("pfxKeyCertPassword");
 
             pfxOptions.setPassword(pfxKeyCertPassword);
             clientOptions.setPfxKeyCertOptions(pfxOptions);
@@ -209,7 +215,7 @@ public class SocketHelper extends VertxHelperBase {
                     // it may drain pending messages that have been queued in an input handler,
                     // and we have to ensure that the input handler doesn't get invoked while
                     // we are halfway through draining it.
-                    synchronized(_actor) {
+                    synchronized (_actor) {
                         socketClient.callMember("_opened", socket, client);
                     }
                 } else {
@@ -236,7 +242,8 @@ public class SocketHelper extends VertxHelperBase {
      *  @param helping The JavaScript object that this is helping.
      *  @return The SocketHelper.
      */
-    public static SocketHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
+    public static SocketHelper getOrCreateHelper(Object actor,
+            ScriptObjectMirror helping) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
         if (helper instanceof SocketHelper && helper.getHelping() == helping) {
             return (SocketHelper) helper;
@@ -288,13 +295,12 @@ public class SocketHelper extends VertxHelperBase {
      *  @param socketServer The JavaScript SocketServer instance.
      *  @param options The options (see the socket.js JavaScript module).
      */
-    public void startServer(
-            final ScriptObjectMirror socketServer,
-            final Map<String,Object> options) {
+    public void startServer(final ScriptObjectMirror socketServer,
+            final Map<String, Object> options) {
 
         // Translate clientAuth option to an enum.
         ClientAuth auth = ClientAuth.NONE;
-        String authSpec = (String)options.get("clientAuth");
+        String authSpec = (String) options.get("clientAuth");
         if (authSpec.toLowerCase().trim().equals("request")) {
             auth = ClientAuth.REQUEST;
         } else if (authSpec.toLowerCase().trim().equals("required")) {
@@ -305,35 +311,41 @@ public class SocketHelper extends VertxHelperBase {
         // This is handled in the associated JavaScript socket.js module.
         final NetServerOptions serverOptions = new NetServerOptions()
                 .setClientAuth(auth)
-                .setHost((String)options.get("hostInterface"))
-                .setIdleTimeout((Integer)options.get("idleTimeout"))
-                .setTcpKeepAlive((Boolean)options.get("keepAlive"))
-                .setPort((Integer)options.get("port"))
-                .setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
-                .setSendBufferSize((Integer)options.get("sendBufferSize"))
-                .setSsl((Boolean)options.get("sslTls"))
-                .setTcpNoDelay((Boolean)options.get("noDelay"));
-
+                .setHost((String) options.get("hostInterface"))
+                .setIdleTimeout((Integer) options.get("idleTimeout"))
+                .setTcpKeepAlive((Boolean) options.get("keepAlive"))
+                .setPort((Integer) options.get("port"))
+                .setReceiveBufferSize(
+                        (Integer) options.get("receiveBufferSize"))
+                .setSendBufferSize((Integer) options.get("sendBufferSize"))
+                .setSsl((Boolean) options.get("sslTls"))
+                .setTcpNoDelay((Boolean) options.get("noDelay"));
 
         // If SSL/TLS is enabled, it has to be configured.
         if (serverOptions.isSsl()) {
             PfxOptions pfxOptions = new PfxOptions();
 
-            String pfxKeyCertPath = (String)options.get("pfxKeyCertPath");
-            File pfxKeyCertFile = FileUtilities.nameToFile(pfxKeyCertPath, null);
+            String pfxKeyCertPath = (String) options.get("pfxKeyCertPath");
+            File pfxKeyCertFile = FileUtilities.nameToFile(pfxKeyCertPath,
+                    null);
 
             if (pfxKeyCertFile == null) {
-                _error(socketServer, "Empty pemCertPath option. Can't find the server key-certificate.");
+                _error(socketServer,
+                        "Empty pemCertPath option. Can't find the server key-certificate.");
                 return;
             }
             try {
                 pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
             } catch (IOException e) {
-                _error(socketServer, "Failed to find the server key-certificate at " + pfxKeyCertFile, e);
+                _error(socketServer,
+                        "Failed to find the server key-certificate at "
+                                + pfxKeyCertFile,
+                        e);
                 return;
             }
 
-            String pfxKeyCertPassword = (String)options.get("pfxKeyCertPassword");
+            String pfxKeyCertPassword = (String) options
+                    .get("pfxKeyCertPassword");
 
             pfxOptions.setPassword(pfxKeyCertPassword);
             serverOptions.setPfxKeyCertOptions(pfxOptions);
@@ -342,11 +354,12 @@ public class SocketHelper extends VertxHelperBase {
             if (serverOptions.getClientAuth() != ClientAuth.NONE) {
                 PemTrustOptions pemTrustOptions = new PemTrustOptions();
 
-                String caCertPath = (String)options.get("trustedCACertPath");
+                String caCertPath = (String) options.get("trustedCACertPath");
                 File caCertFile = FileUtilities.nameToFile(caCertPath, null);
 
                 if (caCertFile == null) {
-                    _error(socketServer, "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
+                    _error(socketServer,
+                            "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
                     return;
                 }
                 try {
@@ -354,7 +367,10 @@ public class SocketHelper extends VertxHelperBase {
 
                     serverOptions.setPemTrustOptions(pemTrustOptions);
                 } catch (IOException e) {
-                    _error(socketServer, "Failed to find the trusted CA certificate at " + caCertFile, e);
+                    _error(socketServer,
+                            "Failed to find the trusted CA certificate at "
+                                    + caCertFile,
+                            e);
                     return;
                 }
             }
@@ -382,7 +398,8 @@ public class SocketHelper extends VertxHelperBase {
                 server.listen(result -> {
                     if (result.succeeded()) {
                         // Do not defer to the director thread.
-                        socketServer.callMember("emit", "listening", server.actualPort());
+                        socketServer.callMember("emit", "listening",
+                                server.actualPort());
                     } else {
                         _error("Failed to start server listening: " + result);
                     }
@@ -433,7 +450,8 @@ public class SocketHelper extends VertxHelperBase {
         }
 
         @Override
-        public int read(byte[] bytes, int offset, int length) throws IOException {
+        public int read(byte[] bytes, int offset, int length)
+                throws IOException {
             if (_array >= _list.size()) {
                 return -1;
             }
@@ -448,7 +466,8 @@ public class SocketHelper extends VertxHelperBase {
                 }
             }
             int firstCopyLength = Math.min(length, current.length - _position);
-            System.arraycopy(current, _position, bytes, offset, firstCopyLength);
+            System.arraycopy(current, _position, bytes, offset,
+                    firstCopyLength);
 
             _position += firstCopyLength;
             if (_position >= current.length) {
@@ -465,9 +484,7 @@ public class SocketHelper extends VertxHelperBase {
                 // Read is complete.
                 return firstCopyLength;
             }
-            int nextCopyLength = read(
-                    bytes,
-                    offset + firstCopyLength,
+            int nextCopyLength = read(bytes, offset + firstCopyLength,
                     length - firstCopyLength);
             if (nextCopyLength >= 0) {
                 return firstCopyLength + nextCopyLength;
@@ -528,35 +545,35 @@ public class SocketHelper extends VertxHelperBase {
          *    Set this true only when the TCP stream is going to be handled by upper layer protocols
          *    to avoid non-deterministic behavior.
          */
-        public SocketWrapper(
-                ScriptObjectMirror eventEmitter,
-                Object socket,
-                String sendType,
-                String receiveType,
-                boolean rawBytes,
+        public SocketWrapper(ScriptObjectMirror eventEmitter, Object socket,
+                String sendType, String receiveType, boolean rawBytes,
                 boolean emitBatchDataAsAvailable) {
             _eventEmitter = eventEmitter;
             // System.out.println("SocketHelper.SocketWrapper(): _eventEmitter: " +  _eventEmitter.get("iama"));
             _rawBytes = rawBytes;
             _emitBatchDataAsAvailable = emitBatchDataAsAvailable;
-            _socket = (NetSocket)socket;
+            _socket = (NetSocket) socket;
 
             try {
-                _sendType = Enum.valueOf(DATA_TYPE.class, sendType.trim().toUpperCase());
+                _sendType = Enum.valueOf(DATA_TYPE.class,
+                        sendType.trim().toUpperCase());
             } catch (Exception ex) {
                 // It might be an image type.
                 if (getImageTypes().contains(sendType)) {
                     _sendImageType = sendType;
                     _sendType = DATA_TYPE.IMAGE;
                 } else {
-                    throw new IllegalArgumentException("Invalid send data type: " + sendType);
+                    throw new IllegalArgumentException(
+                            "Invalid send data type: " + sendType);
                 }
             }
 
             try {
-                _receiveType = Enum.valueOf(DATA_TYPE.class, receiveType.trim().toUpperCase());
+                _receiveType = Enum.valueOf(DATA_TYPE.class,
+                        receiveType.trim().toUpperCase());
             } catch (Exception ex) {
-                throw new IllegalArgumentException("Invalid receive data type: " + receiveType);
+                throw new IllegalArgumentException(
+                        "Invalid receive data type: " + receiveType);
             }
 
             // System.out.println("registering _socket.handler");
@@ -568,7 +585,7 @@ public class SocketHelper extends VertxHelperBase {
                 // This ensures that handling of the close event occurs after
                 // handling of any data that arrives before the close.
                 _issueResponse(() -> {
-                    synchronized(SocketWrapper.this) {
+                    synchronized (SocketWrapper.this) {
                         if (_closed) {
                             // Nothing to do. Socket is already closed.
                             return;
@@ -580,26 +597,27 @@ public class SocketHelper extends VertxHelperBase {
                 });
             });
             _socket.drainHandler((Void) -> {
-                synchronized(SocketWrapper.this) {
+                synchronized (SocketWrapper.this) {
                     // This should unblock send(), if it is blocked.
                     SocketWrapper.this.notifyAll();
                 }
             });
             _socket.exceptionHandler(throwable -> {
-                    _error(_eventEmitter, throwable.toString(), throwable);
+                _error(_eventEmitter, throwable.toString(), throwable);
             });
             // Handler for received data.
             _socket.handler(buffer -> {
-                    // System.out.println("SocketHelper.SocketWrapper(): _eventEmitter: " +  _eventEmitter.get("iama") + " _socket.handler()");
-                    _processBuffer(buffer);
+                // System.out.println("SocketHelper.SocketWrapper(): _eventEmitter: " +  _eventEmitter.get("iama") + " _socket.handler()");
+                _processBuffer(buffer);
             });
         }
+
         /** Close the socket and remove all event listeners on the associated
          *  event emitter. This will be done asynchronously in the vertx thread.
          */
         public void close() {
             submit(() -> {
-                synchronized(SocketWrapper.this) {
+                synchronized (SocketWrapper.this) {
                     if (_closed) {
                         // Nothing to do. Socket is already closed.
                         return;
@@ -611,6 +629,7 @@ public class SocketHelper extends VertxHelperBase {
                 }
             });
         }
+
         /** Send data over the socket.
          *  @param data The data to send.
          */
@@ -619,9 +638,10 @@ public class SocketHelper extends VertxHelperBase {
             // NOTE: This might be called in a vert.x thread, which can cause a deadlock.
             // In particular, the wait() below will block draining the socket if it is
             // called in the same thread. Hence, the wait is deferred to the director thread.
-            synchronized(SocketWrapper.this) {
+            synchronized (SocketWrapper.this) {
                 if (_closed) {
-                    _error(_eventEmitter, "Socket is closed. Cannot send data.");
+                    _error(_eventEmitter,
+                            "Socket is closed. Cannot send data.");
                     return;
                 }
                 if (_socket.writeQueueFull()) {
@@ -633,15 +653,17 @@ public class SocketHelper extends VertxHelperBase {
                     // in the director thread and will stall. Otherwise, it will defer it to the
                     // next firing.
                     _issueResponse(() -> {
-                        synchronized(SocketWrapper.this) {
+                        synchronized (SocketWrapper.this) {
                             // Check whether it is still full. Don't want to wait if it is not.
                             if (_socket.writeQueueFull()) {
-                                _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
+                                _actor.log(
+                                        "WARNING: Send buffer is full. Stalling to allow it to drain.");
                                 try {
                                     SocketWrapper.this.wait();
                                 } catch (InterruptedException e) {
                                     _error(_eventEmitter,
-                                           "Buffer is full, and wait for draining was interrupted", e);
+                                            "Buffer is full, and wait for draining was interrupted",
+                                            e);
                                 }
                             }
                             send(data);
@@ -667,10 +689,12 @@ public class SocketHelper extends VertxHelperBase {
                         // it seems that Nashorn's Java.to() function creates
                         // a bigger array than needed with trailing null elements.
                         if (element != null) {
-                            _appendToBuffer(element, _sendType, _sendImageType, buffer);
-                            byte [] bytes = buffer.getBytes();
-                            StringBuilder builder = new StringBuilder(bytes.length * 2);
-                            for (byte b: bytes) {
+                            _appendToBuffer(element, _sendType, _sendImageType,
+                                    buffer);
+                            byte[] bytes = buffer.getBytes();
+                            StringBuilder builder = new StringBuilder(
+                                    bytes.length * 2);
+                            for (byte b : bytes) {
                                 builder.append(String.format("%02x", b));
                             }
                             // System.out.println("SocketHelper.SocketWrapper.send(" + data +"): added element " + element + " to buffer: 0x" + builder) ;
@@ -693,9 +717,9 @@ public class SocketHelper extends VertxHelperBase {
                         // Note that the appended byte is interpreted by Java as
                         // being signed, but this does matter, because on the
                         // receiving end we will interpret it as unsigned.
-                        newBuffer.appendByte((byte)length);
+                        newBuffer.appendByte((byte) length);
                     } else {
-                        newBuffer.appendByte((byte)0xFF);
+                        newBuffer.appendByte((byte) 0xFF);
                         newBuffer.appendInt(length);
                     }
                     newBuffer.appendBuffer(buffer);
@@ -713,6 +737,7 @@ public class SocketHelper extends VertxHelperBase {
                 // System.out.println("SocketHelper.SocketWrapper.send(" + data +"): after write() on socket " + _socket + ".");
             });
         }
+
         /** Extract a length from the head of the buffer. Return the number of
          *  bytes encoding the length (1 or 5) or -1 if there are not enough bytes
          *  in the buffer yet to encode a length. As a side effect, this will set
@@ -736,6 +761,7 @@ public class SocketHelper extends VertxHelperBase {
             }
             return 1;
         }
+
         /** Process new buffer data.
          *  @param buffer The buffer, or null to process previously received data.
          */
@@ -756,7 +782,8 @@ public class SocketHelper extends VertxHelperBase {
                         // It is not documented in Vertx, but apparently a sliced buffer
                         // cannot be appended to, despite being a Buffer.
                         _partialBuffer = Buffer.buffer();
-                        _partialBuffer.appendBuffer(buffer.slice(bytesEncodingLength, buffer.length()));
+                        _partialBuffer.appendBuffer(buffer
+                                .slice(bytesEncodingLength, buffer.length()));
                     } else {
                         // The length is not yet known.
                         _partialBuffer = buffer;
@@ -778,12 +805,15 @@ public class SocketHelper extends VertxHelperBase {
                             // Nothing to do.
                             return;
                         }
-                        int bytesEncodingLength = _extractLength(temporaryBuffer);
+                        int bytesEncodingLength = _extractLength(
+                                temporaryBuffer);
                         if (bytesEncodingLength > 0) {
                             // The length is now known.
                             // The length encoding must be 5 bytes long, some of which is in _partialBuffer.
-                            int additionalLengthInfo = 5 - _partialBuffer.length();
-                            buffer = buffer.slice(additionalLengthInfo, buffer.length());
+                            int additionalLengthInfo = 5
+                                    - _partialBuffer.length();
+                            buffer = buffer.slice(additionalLengthInfo,
+                                    buffer.length());
                             // No longer need any prior bytes.
                             _partialBuffer = Buffer.buffer();
                         } else {
@@ -808,7 +838,8 @@ public class SocketHelper extends VertxHelperBase {
                             // NOTE: This assumes that the second argument to slice() is the index
                             // of the byte AFTER the one in the slice. This is not documented
                             // in Vert.x.
-                            _partialBuffer.appendBuffer(buffer.slice(0, contributing));
+                            _partialBuffer.appendBuffer(
+                                    buffer.slice(0, contributing));
                             // Put the unused data in the residual buffer.
                             int bufferLength = buffer.length();
                             residual = buffer.slice(contributing, bufferLength);
@@ -819,8 +850,10 @@ public class SocketHelper extends VertxHelperBase {
                         // Since buffer == null, this is being called recursively to
                         // process additional messages in the buffer.
                         // Note that stillNeed can be negative.
-                        residual = _partialBuffer.slice(_expectedLength, _partialBuffer.length());
-                        _partialBuffer = _partialBuffer.slice(0, _expectedLength);
+                        residual = _partialBuffer.slice(_expectedLength,
+                                _partialBuffer.length());
+                        _partialBuffer = _partialBuffer.slice(0,
+                                _expectedLength);
                     }
                 }
                 // At this point, _partialBuffer has all received data contributing to the
@@ -841,7 +874,8 @@ public class SocketHelper extends VertxHelperBase {
                     _partialBuffer = Buffer.buffer();
                     if (bytesEncodingLength > 0) {
                         // The length is known.
-                        _partialBuffer.appendBuffer(residual.slice(bytesEncodingLength, residual.length()));
+                        _partialBuffer.appendBuffer(residual
+                                .slice(bytesEncodingLength, residual.length()));
                     } else {
                         // The length is not yet known.
                         _partialBuffer.appendBuffer(residual);
@@ -860,7 +894,8 @@ public class SocketHelper extends VertxHelperBase {
             _issueResponse(() -> {
                 if (_receiveType == DATA_TYPE.STRING) {
                     // System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: String emit");
-                    _eventEmitter.callMember("emit", "data", finalBuffer.getString(0, finalBuffer.length()));
+                    _eventEmitter.callMember("emit", "data",
+                            finalBuffer.getString(0, finalBuffer.length()));
                 } else if (_receiveType == DATA_TYPE.IMAGE) {
                     try {
                         byte[] bytes = finalBuffer.getBytes();
@@ -869,8 +904,9 @@ public class SocketHelper extends VertxHelperBase {
                             _bufferCount = 0;
                         } else {
                             _bufferCount++;
-                            _actor.log("WARNING: Cannot parse image from data received. Waiting for more data:"
-                                    + _bufferCount);
+                            _actor.log(
+                                    "WARNING: Cannot parse image from data received. Waiting for more data:"
+                                            + _bufferCount);
                             // Append the current buffer to previously received buffer(s).
                             _byteStream.append(bytes);
                         }
@@ -883,20 +919,24 @@ public class SocketHelper extends VertxHelperBase {
                         } else {
                             BufferedImage image = ImageIO.read(_byteStream);
                             _byteStream = null;
-                            if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
+                            if (image != null && image.getHeight() > 0
+                                    && image.getWidth() > 0) {
                                 if (_bufferCount > 1) {
-                                    _actor.log("Image received over " + _bufferCount
+                                    _actor.log("Image received over "
+                                            + _bufferCount
                                             + " buffers. Consider increasing buffer size.");
                                 }
                                 ImageToken token = new AWTImageToken(image);
                                 // System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: !_rawBytes emit");
                                 _eventEmitter.callMember("emit", "data", token);
                             } else {
-                                _error(_eventEmitter, "Received corrupted image.");
+                                _error(_eventEmitter,
+                                        "Received corrupted image.");
                             }
                         }
                     } catch (IOException e) {
-                        _error(_eventEmitter, "Failed to read incoming image: " + e.toString(), e);
+                        _error(_eventEmitter, "Failed to read incoming image: "
+                                + e.toString(), e);
                     }
                 } else {
                     // Assume a numeric type.
@@ -905,7 +945,9 @@ public class SocketHelper extends VertxHelperBase {
                     int numberOfElements = length / size;
                     if (numberOfElements == 1) {
                         // System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric numberOfElements == 1 emit");
-                        _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, 0));
+                        _eventEmitter.callMember("emit", "data",
+                                _extractFromBuffer(finalBuffer, _receiveType,
+                                        0));
                     } else if (numberOfElements > 1) {
                         if (_rawBytes && !_emitBatchDataAsAvailable) {
                             int position = 0;
@@ -913,7 +955,9 @@ public class SocketHelper extends VertxHelperBase {
                             for (int i = 0; i < numberOfElements; i++) {
                                 // System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric A: numberOfElements > 1 emit: " + _eventEmitter.get("iama") + " Reading: " + _extractFromBuffer(finalBuffer, _receiveType, position));
 
-                                _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, position));
+                                _eventEmitter.callMember("emit", "data",
+                                        _extractFromBuffer(finalBuffer,
+                                                _receiveType, position));
                                 position += size;
                             }
                         } else {
@@ -921,7 +965,8 @@ public class SocketHelper extends VertxHelperBase {
                             Object[] result = new Object[numberOfElements];
                             int position = 0;
                             for (int i = 0; i < result.length; i++) {
-                                result[i] = _extractFromBuffer(finalBuffer, _receiveType, position);
+                                result[i] = _extractFromBuffer(finalBuffer,
+                                        _receiveType, position);
                                 position += size;
                             }
                             // NOTE: If we return result, then the emitter will not
@@ -930,12 +975,16 @@ public class SocketHelper extends VertxHelperBase {
                             // certainly... the array gets copied).
                             try {
                                 // System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric B: numberOfElements > 1 emit");
-                                _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
+                                _eventEmitter.callMember("emit", "data",
+                                        _actor.toJSArray(result));
                             } catch (Exception e) {
-                                _error(_eventEmitter, "Failed to convert to a JavaScript array: "
-                                       + e, e);
+                                _error(_eventEmitter,
+                                        "Failed to convert to a JavaScript array: "
+                                                + e,
+                                        e);
                                 // System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric failed emit");
-                                _eventEmitter.callMember("emit", "data", result);
+                                _eventEmitter.callMember("emit", "data",
+                                        result);
                             }
                         }
                     } else if (numberOfElements <= 0) {
@@ -946,8 +995,7 @@ public class SocketHelper extends VertxHelperBase {
                     }
                 }
             });
-            if (_partialBuffer != null
-                    && _expectedLength > 0
+            if (_partialBuffer != null && _expectedLength > 0
                     && _partialBuffer.length() >= _expectedLength) {
                 // There is at least one more complete message in the buffer.
                 // In the following, the null argument indicates that there no
@@ -955,6 +1003,7 @@ public class SocketHelper extends VertxHelperBase {
                 _processBuffer(null);
             }
         }
+
         private int _bufferCount = 0;
         private boolean _closed = false;
         private boolean _emitBatchDataAsAvailable;

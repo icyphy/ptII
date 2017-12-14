@@ -108,8 +108,8 @@ public class ObjectToken extends Token {
             return (ObjectToken) token;
         }
 
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "object"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "object"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,8 +133,8 @@ public class ObjectToken extends Token {
         }
 
         ObjectToken objectToken = (ObjectToken) object;
-        if (_class == null && objectToken._class == null || _class != null
-                && _class.equals(objectToken._class)) {
+        if (_class == null && objectToken._class == null
+                || _class != null && _class.equals(objectToken._class)) {
             return _value == null && objectToken._value == null
                     || _value != null && _value.equals(objectToken._value);
         } else {
@@ -235,14 +235,14 @@ public class ObjectToken extends Token {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isCloseTo", this, token));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isCloseTo", this, token));
             }
         } else if (typeInfo == CPO.LOWER) {
             return token.isCloseTo(this, epsilon);
         } else {
-            throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "isCloseTo", this, token));
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("isCloseTo", this, token));
         }
     }
 
@@ -276,8 +276,8 @@ public class ObjectToken extends Token {
             Class objectClass = Class.forName(className);
             return new ObjectToken(null, objectClass);
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(null, e, "Unable to load class "
-                    + className);
+            throw new IllegalActionException(null, e,
+                    "Unable to load class " + className);
         }
     }
 
@@ -327,8 +327,8 @@ public class ObjectToken extends Token {
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         ObjectToken convertedArgument = (ObjectToken) rightArgument;
-        return BooleanToken.getInstance(toString().compareTo(
-                convertedArgument.toString()) == 0);
+        return BooleanToken.getInstance(
+                toString().compareTo(convertedArgument.toString()) == 0);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -76,8 +76,8 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class ModalRefinement extends ModalModel implements DropTargetHandler,
-RefinementActor {
+public class ModalRefinement extends ModalModel
+        implements DropTargetHandler, RefinementActor {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -156,8 +156,8 @@ RefinementActor {
             TypedActor refinement = null;
             if (refinements != null) {
                 for (TypedActor actor : refinements) {
-                    if (((NamedObj) actor).getClassName().equals(
-                            refinementClass)) {
+                    if (((NamedObj) actor).getClassName()
+                            .equals(refinementClass)) {
                         refinement = actor;
                         break;
                     }
@@ -316,11 +316,11 @@ RefinementActor {
                             if (entity.getPort(name) == null) {
                                 try {
                                     ((RefinementActor) entity)
-                                    .setMirrorDisable(1);
+                                            .setMirrorDisable(1);
                                     entity.newPort(name);
                                 } finally {
                                     ((RefinementActor) entity)
-                                    .setMirrorDisable(0);
+                                            .setMirrorDisable(0);
                                 }
                             }
                         }
@@ -410,7 +410,7 @@ RefinementActor {
     @Override
     public void addRefinement(State state, final String name, Entity template,
             String className, final InstanceOpener instanceOpener)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         ModalRefinement.addRefinement(state, name, template, className,
                 instanceOpener, (CompositeEntity) getContainer());
     }
@@ -433,15 +433,15 @@ RefinementActor {
      */
     public static void addRefinement(State state, final String name,
             Entity template, String className,
-            final InstanceOpener instanceOpener, final CompositeEntity container)
-            throws IllegalActionException {
+            final InstanceOpener instanceOpener,
+            final CompositeEntity container) throws IllegalActionException {
 
         // This method is static so that ModalController can call it
         // and avoid code duplication.
 
         if (container == null) {
-            throw new IllegalActionException(state, "State container has no "
-                    + "container!");
+            throw new IllegalActionException(state,
+                    "State container has no " + "container!");
         }
 
         if (container.getEntity(name) != null) {
@@ -452,9 +452,9 @@ RefinementActor {
         Attribute allowRefinement = state.getAttribute("_allowRefinement");
         if (allowRefinement instanceof Parameter
                 && !((BooleanToken) ((Parameter) allowRefinement).getToken())
-                .booleanValue()) {
-            throw new IllegalActionException(state, "State does not support "
-                    + "refinement.");
+                        .booleanValue()) {
+            throw new IllegalActionException(state,
+                    "State does not support " + "refinement.");
         }
 
         String currentRefinements = state.refinementName.getExpression();
@@ -482,7 +482,8 @@ RefinementActor {
                     + currentRefinements + "\"/></entity></group>";
         }
 
-        MoMLChangeRequest change = new MoMLChangeRequest(state, container, moml) {
+        MoMLChangeRequest change = new MoMLChangeRequest(state, container,
+                moml) {
             @Override
             protected void _execute() throws Exception {
                 super._execute();
@@ -518,7 +519,7 @@ RefinementActor {
                                 && port instanceof IOPort) {
                             try {
                                 ((RefinementPort) newPort)
-                                .setMirrorDisable(true);
+                                        .setMirrorDisable(true);
 
                                 if (((IOPort) port).isInput()) {
                                     ((RefinementPort) newPort).setInput(true);
@@ -530,7 +531,7 @@ RefinementActor {
 
                                 if (((IOPort) port).isMultiport()) {
                                     ((RefinementPort) newPort)
-                                    .setMultiport(true);
+                                            .setMultiport(true);
                                 }
 
                                 // Copy the location to the new port if any.
@@ -557,7 +558,7 @@ RefinementActor {
                                 }
                             } finally {
                                 ((RefinementPort) newPort)
-                                .setMirrorDisable(false);
+                                        .setMirrorDisable(false);
                             }
                         }
                     } finally {

@@ -61,7 +61,8 @@ public interface ClassLoadingStrategy {
      * @exception ClassNotFoundException If the class is not found.
      */
     @SuppressWarnings("rawtypes")
-    Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException;
+    Class loadJavaClass(String className, VersionSpecification versionSpec)
+            throws ClassNotFoundException;
 
     /**
      *  Load an actor-oriented class, which is typically a .moml file.
@@ -70,6 +71,6 @@ public interface ClassLoadingStrategy {
      * @return the Class for the given name.
      * @exception ClassNotFoundException If the class is not found.
      */
-    CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec)
-            throws ClassNotFoundException;
+    CompositeEntity loadActorOrientedClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException;
 }

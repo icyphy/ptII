@@ -124,8 +124,8 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                     List<IOPort> mirrorInputs = causality.getActor()
                             .inputPortList();
                     for (IOPort mirrorInput : mirrorInputs) {
-                        Port localInput = ((Entity) _actor).getPort(mirrorInput
-                                .getName());
+                        Port localInput = ((Entity) _actor)
+                                .getPort(mirrorInput.getName());
                         if (!(localInput instanceof IOPort)) {
                             throw new IllegalActionException(_actor,
                                     mirrorInput.getContainer(),
@@ -190,13 +190,12 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                         IOPort mirrorInput = (IOPort) ((Entity) causality
                                 .getActor()).getPort(localInput.getName());
                         if (mirrorInput == null) {
-                            throw new IllegalActionException(_actor,
-                                    localInput, "Expected matching port in "
-                                            + causality.getActor()
-                                            .getFullName());
+                            throw new IllegalActionException(_actor, localInput,
+                                    "Expected matching port in " + causality
+                                            .getActor().getFullName());
                         }
-                        equivalences.addAll(_localMirrors(causality
-                                .equivalentPorts(mirrorInput)));
+                        equivalences.addAll(_localMirrors(
+                                causality.equivalentPorts(mirrorInput)));
                     }
                     // Set the equivalence class for all ports in the set.
                     for (IOPort equivalentPort : equivalences) {
@@ -236,8 +235,8 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
             throws IllegalActionException {
         Set<IOPort> result = new HashSet<IOPort>();
         for (IOPort port : ports) {
-            IOPort localPort = (IOPort) ((Entity) _actor).getPort(port
-                    .getName());
+            IOPort localPort = (IOPort) ((Entity) _actor)
+                    .getPort(port.getName());
             if (localPort == null) {
                 throw new IllegalActionException(port.getContainer(), port,
                         "Expected matching port in " + _actor.getFullName());

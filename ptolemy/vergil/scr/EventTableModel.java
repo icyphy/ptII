@@ -161,8 +161,8 @@ public class EventTableModel extends AbstractTableModel {
      *  @exception IllegalActionException  If thrown while saving the model.
      *  @exception NameDuplicationException  If thrown while saving the model.
      */
-    public void saveModel() throws IllegalActionException,
-            NameDuplicationException {
+    public void saveModel()
+            throws IllegalActionException, NameDuplicationException {
         for (int i = 0; i < getRowCount() - 1; i++) {
             StringBuffer insideModeExpression = new StringBuffer();
             StringBuffer enterModeExpression = new StringBuffer();
@@ -193,10 +193,10 @@ public class EventTableModel extends AbstractTableModel {
                 if (enterModeCondition.equals("")) {
                     enterModeCondition = "false";
                 }
-                insideModeExpression = insideModeExpression.append("("
-                        + condition + " ? " + value + " : ");
-                enterModeExpression = enterModeExpression.append("("
-                        + enterModeCondition + " ? " + value + " : ");
+                insideModeExpression = insideModeExpression
+                        .append("(" + condition + " ? " + value + " : ");
+                enterModeExpression = enterModeExpression.append(
+                        "(" + enterModeCondition + " ? " + value + " : ");
             }
             // if no condition was true use
             // - nil ?
@@ -222,20 +222,22 @@ public class EventTableModel extends AbstractTableModel {
                 if (transition == null) {
                     try {
                         transition = new Transition(_model,
-                                ((CompositeEntity) _model).uniqueName(state
-                                        .getName() + "_transition"));
+                                ((CompositeEntity) _model).uniqueName(
+                                        state.getName() + "_transition"));
                         state.outgoingPort.link(transition);
                         state.incomingPort.link(transition);
                     } catch (KernelException e) {
-                        throw new IllegalActionException(_model, "Failed to create "
-                                + state.getName() + "_transition");
+                        throw new IllegalActionException(_model,
+                                "Failed to create " + state.getName()
+                                        + "_transition");
                     }
                 }
                 if (transition == null) {
-                    throw new InternalErrorException(_model, null, "transition is null?");
+                    throw new InternalErrorException(_model, null,
+                            "transition is null?");
                 }
-                transition.setActions.setExpression(_parameter.getName()
-                        + " = " + insideModeExpression);
+                transition.setActions.setExpression(
+                        _parameter.getName() + " = " + insideModeExpression);
                 transition.guardExpression.setExpression(guard);
             }
 
@@ -311,17 +313,17 @@ public class EventTableModel extends AbstractTableModel {
             // set inmodeExpression/enter mode expression
             for (Object intoModeTransition : state.incomingPort
                     .linkedRelationList()) {
-                if (!state.outgoingPort.linkedRelationList().contains(
-                        intoModeTransition)) {
+                if (!state.outgoingPort.linkedRelationList()
+                        .contains(intoModeTransition)) {
                     transition = (Transition) intoModeTransition;
                     String newExpression = _parameter.getName() + " = "
                             + enterModeExpression;
                     String expression = transition.setActions.getExpression();
                     try {
-                        if (transition.setActions.getDestinations().contains(
-                                _parameter)) {
-                            int index = expression.indexOf(_parameter.getName()
-                                    + " =");
+                        if (transition.setActions.getDestinations()
+                                .contains(_parameter)) {
+                            int index = expression
+                                    .indexOf(_parameter.getName() + " =");
                             String before = expression.substring(0, index);
                             int afterIdx = expression.indexOf(";", index + 1);
                             String after = "";
@@ -334,11 +336,12 @@ public class EventTableModel extends AbstractTableModel {
                             expression = before + after;
                             expression = expression.trim();
                         }
-                        if (!expression.equals("") && !expression.endsWith(";")) {
+                        if (!expression.equals("")
+                                && !expression.endsWith(";")) {
                             expression = expression + "; ";
                         }
-                        transition.setActions.setExpression(expression
-                                + newExpression);
+                        transition.setActions
+                                .setExpression(expression + newExpression);
                         transition.setActions.setPersistent(true);
                         noSetActionSet = false;
                     } catch (IllegalActionException e) {
@@ -385,11 +388,10 @@ public class EventTableModel extends AbstractTableModel {
                 // condition ? value : (...
 
                 int endOfCondition = expression.indexOf("?");
-                if (expression.contains("(")
-                        && (expression.indexOf("(") < expression.indexOf("?"))) {
-                    endOfCondition = SCRTableHelper
-                            .indexOfMatchingCloseBracket(expression,
-                                    expression.indexOf("("));
+                if (expression.contains("(") && (expression
+                        .indexOf("(") < expression.indexOf("?"))) {
+                    endOfCondition = SCRTableHelper.indexOfMatchingCloseBracket(
+                            expression, expression.indexOf("("));
                 }
                 condition = expression.substring(0, endOfCondition).trim();
 
@@ -401,8 +403,8 @@ public class EventTableModel extends AbstractTableModel {
                 // value : (...
 
                 int endOfValue = expression.indexOf(":");
-                if (expression.contains("(")
-                        && (expression.indexOf("(") < expression.indexOf(":"))) {
+                if (expression.contains("(") && (expression
+                        .indexOf("(") < expression.indexOf(":"))) {
                     endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(
                             expression, expression.indexOf("("));
                 }
@@ -448,13 +450,14 @@ public class EventTableModel extends AbstractTableModel {
     private void _initializeTableContent() {
         if (_tableContent == null) {
             _tableContent = new ArrayList();
-            for (int i = 0; i < (getColumnCount() - 1) * (getRowCount() + 1); i++) {
+            for (int i = 0; i < (getColumnCount() - 1)
+                    * (getRowCount() + 1); i++) {
                 _tableContent.add("false");
             }
             for (int rowIndex = 0; rowIndex < getRowCount() - 1; rowIndex++) {
 
-                State state = (State) _model.getEntity((String) getValueAt(
-                        rowIndex, 0));
+                State state = (State) _model
+                        .getEntity((String) getValueAt(rowIndex, 0));
                 boolean parsedInmode = false;
                 if (state.incomingPort.linkedRelationList().size() > 0) {
                     for (Object object : state.incomingPort
@@ -519,8 +522,8 @@ public class EventTableModel extends AbstractTableModel {
             // the transition
             String before = expression.substring(0,
                     expression.indexOf("@T(Inmode)"));
-            String after = expression.substring(expression
-                    .indexOf("@T(Inmode)") + 10);
+            String after = expression
+                    .substring(expression.indexOf("@T(Inmode)") + 10);
             before = before.trim();
             after = after.trim();
             while (before.endsWith("&")) {
@@ -531,8 +534,8 @@ public class EventTableModel extends AbstractTableModel {
                     if (!inmodeExpression.toString().equals("")) {
                         inmodeExpression = inmodeExpression.append(" & ");
                     }
-                    inmodeExpression = inmodeExpression.append(" "
-                            + before.substring(index));
+                    inmodeExpression = inmodeExpression
+                            .append(" " + before.substring(index));
                     before = before.substring(0, index - 1).trim();
                 }
             }
@@ -540,13 +543,13 @@ public class EventTableModel extends AbstractTableModel {
             while (after.startsWith("||")) {
                 after = after.substring(2).trim();
                 if (after.startsWith("(")) {
-                    int index = SCRTableHelper.indexOfMatchingCloseBracket(
-                            after, 0);
+                    int index = SCRTableHelper
+                            .indexOfMatchingCloseBracket(after, 0);
                     if (!inmodeExpression.toString().equals("")) {
                         inmodeExpression = inmodeExpression.append(" & ");
                     }
-                    inmodeExpression = inmodeExpression.append(" "
-                            + after.substring(0, index));
+                    inmodeExpression = inmodeExpression
+                            .append(" " + after.substring(0, index));
                     if (index < after.length()) {
                         after = after.substring(index + 1).trim();
                     }

@@ -42,8 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class GestureRecognition
-extends NamedProgramCodeGeneratorAdapter {
+public class GestureRecognition extends NamedProgramCodeGeneratorAdapter {
 
     /**
      *  Construct the GestureRecognition adapter.

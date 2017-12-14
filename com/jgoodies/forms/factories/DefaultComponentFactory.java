@@ -215,8 +215,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
             throw new NullPointerException("The label must not be null.");
         }
 
-        JPanel panel = new JPanel(new TitledSeparatorLayout(
-                !Utilities.isLafAqua()));
+        JPanel panel = new JPanel(
+                new TitledSeparatorLayout(!Utilities.isLafAqua()));
         panel.setOpaque(false);
         panel.add(label);
         panel.add(new JSeparator());
@@ -239,7 +239,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * @param label             the label that gets a mnemonic
      * @param textWithMnemonic  the text with optional mnemonic marker
      */
-    private static void setTextAndMnemonic(JLabel label, String textWithMnemonic) {
+    private static void setTextAndMnemonic(JLabel label,
+            String textWithMnemonic) {
         int markerIndex = textWithMnemonic.indexOf(MNEMONIC_MARKER);
         // No marker at all
         if (markerIndex == -1) {
@@ -254,8 +255,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
         StringBuffer buffer = new StringBuffer();
         do {
             // Check whether the next index has a mnemonic marker, too
-            if (markerIndex + 1 < length
-                    && textWithMnemonic.charAt(markerIndex + 1) == MNEMONIC_MARKER) {
+            if (markerIndex + 1 < length && textWithMnemonic
+                    .charAt(markerIndex + 1) == MNEMONIC_MARKER) {
                 end = markerIndex + 1;
                 quotedMarkers++;
             } else {
@@ -266,8 +267,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
             }
             buffer.append(textWithMnemonic.substring(begin, end));
             begin = end + 1;
-            markerIndex = begin < length ? textWithMnemonic.indexOf(
-                    MNEMONIC_MARKER, begin) : -1;
+            markerIndex = begin < length
+                    ? textWithMnemonic.indexOf(MNEMONIC_MARKER, begin)
+                    : -1;
         } while (markerIndex != -1);
         buffer.append(textWithMnemonic.substring(begin));
 
@@ -319,9 +321,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * @return the font used for title labels
          */
         private Font getTitleFont() {
-            return Utilities.isLafAqua() ? UIManager.getFont("Label.font")
-                    .deriveFont(Font.BOLD) : UIManager
-                    .getFont("TitledBorder.font");
+            return Utilities.isLafAqua()
+                    ? UIManager.getFont("Label.font").deriveFont(Font.BOLD)
+                    : UIManager.getFont("TitledBorder.font");
         }
 
     }
@@ -427,7 +429,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
                 int ascent = metrics.getMaxAscent();
                 int hGapDlu = centerSeparators ? 3 : 1;
                 int hGap = Sizes.dialogUnitXAsPixel(hGapDlu, label);
-                int vOffset = centerSeparators ? 1 + (labelHeight - separatorHeight) / 2
+                int vOffset = centerSeparators
+                        ? 1 + (labelHeight - separatorHeight) / 2
                         : ascent - separatorHeight / 2;
 
                 int alignment = label.getHorizontalAlignment();

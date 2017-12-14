@@ -60,8 +60,8 @@ public class EntityElement extends PositionableElement {
         // Check if the different representation injection is available
         // for the entity.
         if (!(entity instanceof PortablePlaceable)) {
-            throw new IllegalActionException("Entity " + entity.getFullName()
-                    + " is not portable.");
+            throw new IllegalActionException(
+                    "Entity " + entity.getFullName() + " is not portable.");
         }
 
     }

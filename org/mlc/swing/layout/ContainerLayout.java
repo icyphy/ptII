@@ -145,15 +145,17 @@ public class ContainerLayout implements LayoutManager2 {
      * an empty map will be returned.
      */
     public Map<String, Object> getCustomProperties(String componentName) {
-        return componentNameToCustomProps.containsKey(componentName) ? componentNameToCustomProps
-                .get(componentName) : new HashMap<String, Object>();
+        return componentNameToCustomProps.containsKey(componentName)
+                ? componentNameToCustomProps.get(componentName)
+                : new HashMap<String, Object>();
     }
 
     /**
      * Set a user defined property for this component so that the tool can manage
      * the properties of the component thus reducing the burden on the user
      */
-    public void setProperty(String componentName, String property, Object value) {
+    public void setProperty(String componentName, String property,
+            Object value) {
         Map customProps = componentNameToCustomProps.get(componentName);
         if (customProps == null) {
             customProps = new HashMap<String, Object>();
@@ -334,8 +336,8 @@ public class ContainerLayout implements LayoutManager2 {
     public CellConstraints getComponentConstraints(Component component) {
         String name = componentsToNames.get(component);
         if (name == null) {
-            throw new RuntimeException("Unable to find name for component "
-                    + component);
+            throw new RuntimeException(
+                    "Unable to find name for component " + component);
         }
         return componentConstraints.get(name);
     }
@@ -396,7 +398,8 @@ public class ContainerLayout implements LayoutManager2 {
     }
 
     @Override
-    public void addLayoutComponent(java.awt.Component comp, Object constraints) {
+    public void addLayoutComponent(java.awt.Component comp,
+            Object constraints) {
         if (!(constraints instanceof String)) {
             throw new RuntimeException(
                     "The constraints must be a String name which should reference a CellConstraints entry in the xml file");
@@ -419,16 +422,16 @@ public class ContainerLayout implements LayoutManager2 {
                     Object value = customProps.get(prop);
                     // KBR Class compClass = comp.getClass();
                     try {
-                        BeanInfo beanInfo = Introspector.getBeanInfo(comp
-                                .getClass());
+                        BeanInfo beanInfo = Introspector
+                                .getBeanInfo(comp.getClass());
                         PropertyDescriptor[] props = beanInfo
                                 .getPropertyDescriptors();
                         for (PropertyDescriptor propertyDescriptor : props) {
                             if (propertyDescriptor.getName().equals(prop)) {
                                 Method writeMethod = propertyDescriptor
                                         .getWriteMethod();
-                                writeMethod
-                                .invoke(comp, new Object[] { value });
+                                writeMethod.invoke(comp,
+                                        new Object[] { value });
                                 break;
                             }
                         }

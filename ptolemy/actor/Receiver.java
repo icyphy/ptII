@@ -201,8 +201,8 @@ public interface Receiver {
      *   to one of the ports (e.g., wrong type).
      */
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
-            Receiver[] receivers) throws NoRoomException,
-            IllegalActionException;
+            Receiver[] receivers)
+            throws NoRoomException, IllegalActionException;
 
     /** Put a single token to all receivers in the specified array.
      *  If the specified token is null, this can be interpreted by

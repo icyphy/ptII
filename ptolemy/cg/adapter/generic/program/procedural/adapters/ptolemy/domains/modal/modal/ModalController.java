@@ -65,7 +65,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
      *  with the given modal controller.
      *  @param component The associated modal controller component.
      */
-    public ModalController(ptolemy.domains.modal.modal.ModalController component) {
+    public ModalController(
+            ptolemy.domains.modal.modal.ModalController component) {
         super(component);
         _myController = component;
     }
@@ -100,8 +101,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             throw new IllegalActionException(ndx.toString());
         }
         StringBuffer code = new StringBuffer();
-        code.append(getCodeGenerator().comment(
-                "1. Start transfer tokens to the outside."));
+        code.append(getCodeGenerator()
+                .comment("1. Start transfer tokens to the outside."));
 
         List<IOPort> inputPorts = _myController.inputPortList();
         for (int i = 0; i < inputPorts.size(); i++) {
@@ -112,8 +113,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         }
 
         // Generate code for preemptive transition.
-        code.append(_eol
-                + getCodeGenerator().comment("2. Preemptive Transition"));
+        code.append(
+                _eol + getCodeGenerator().comment("2. Preemptive Transition"));
 
         controllerHelper.generateTransitionCode(code,
                 new PreemptiveTransitions());
@@ -121,9 +122,9 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         code.append(_eol);
 
         // Check to see if a preemptive transition is taken.
-        code.append("if ("
-                + controller.processCode("$actorSymbol(transitionFlag)")
-                + " == 0) {" + _eol);
+        code.append(
+                "if (" + controller.processCode("$actorSymbol(transitionFlag)")
+                        + " == 0) {" + _eol);
 
         // Generate code for refinements.
         _generateRefinementCode(code);
@@ -194,26 +195,24 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             TypedIOPort t = (TypedIOPort) connectedPorts.get(i);
             if (t.isInput()) {
                 // FIXME: Defaulting to buffer size 1.
-                code.append(getCodeGenerator().generatePortName(
-                        t,
-                        StringUtilities.sanitizeName(t.getFullName())
-                        .substring(1), 1)
-                        + " = ");
+                code.append(
+                        getCodeGenerator().generatePortName(t, StringUtilities
+                                .sanitizeName(t.getFullName()).substring(1), 1)
+                                + " = ");
             }
         }
         String name = inputPort.getFullName();
         int i = name.indexOf("_Controller");
         name = name.substring(0, i) + name.substring(i + 12);
         code.append( // FIXME: Defaulting to buffer size 1.
-                getCodeGenerator().generatePortName(
-                        inputPort,
-                        StringUtilities.sanitizeName(inputPort.getFullName())
-                        .substring(1), 1)
+                getCodeGenerator().generatePortName(inputPort, StringUtilities
+                        .sanitizeName(inputPort.getFullName()).substring(1), 1)
                         + " = "
                         // FIXME: Defaulting to buffer size 1.
                         + getCodeGenerator().generatePortName(inputPort,
-                                StringUtilities.sanitizeName(name).substring(1), 1)
-                                + "; ");
+                                StringUtilities.sanitizeName(name).substring(1),
+                                1)
+                        + "; ");
 
     }
 
@@ -229,7 +228,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.domains.modal.modal.ModalController) getComponent())
-                        .getDirector().getContainer());
+                                .getDirector().getContainer());
 
         //executive If true, then look for the reference in the
         // executive director (the director of the container).  The
@@ -249,10 +248,10 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                 //code.append(getReference(name) + " = ");
                 //code.append(getReference("@" + name));
                 code.append(_compositeActorAdapter.getReference(name, false,
-                        executive)
-                        + " = "
-                        + _compositeActorAdapter.getReference("@" + name,
-                                false, executive) + ";");
+                        executive) + " = "
+                        + _compositeActorAdapter.getReference("@" + name, false,
+                                executive)
+                        + ";");
             }
         }
 
@@ -320,11 +319,11 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                                 + getCodeGenerator().generatePortName(
                                         (TypedIOPort) outputPort, destination,
                                         1)
-                                        + " = "
-                                        // FIXME: Defaulting to buffer size 1.
-                                        + getCodeGenerator().generatePortName(
-                                                (TypedIOPort) outputPort, source, 1)
-                                                + ";" + _eol);
+                                + " = "
+                                // FIXME: Defaulting to buffer size 1.
+                                + getCodeGenerator().generatePortName(
+                                        (TypedIOPort) outputPort, source, 1)
+                                + ";" + _eol);
                     }
 
                 }
@@ -358,8 +357,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: " + rate
-                    + " is negative.");
+            throw new IllegalActionException(port,
+                    "the rate: " + rate + " is negative.");
         }
         //NamedProgramCodeGeneratorAdapter portHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
         //        .getAdapter(port);
@@ -371,11 +370,10 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                 //str = rec[i][j].toString();
                 //str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
                 //str = str.replace('.', '_');
-                code.append(getCodeGenerator().comment(
-                        "MC: updatePortOffsets: "
-                                + element[j].getContainer().getFullName()));
-                String portName = StringUtilities.sanitizeName(element[j]
-                        .getContainer().getFullName());
+                code.append(getCodeGenerator().comment("MC: updatePortOffsets: "
+                        + element[j].getContainer().getFullName()));
+                String portName = StringUtilities
+                        .sanitizeName(element[j].getContainer().getFullName());
                 // FIXME: Defaulting to buffer size 1.
                 str = getCodeGenerator().generatePortName(
                         (TypedIOPort) element[j].getContainer(),
@@ -388,8 +386,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         // FIXME: Defaulting to buffer size 1.
         code.append(getCodeGenerator().generatePortName(port,
                 StringUtilities.sanitizeName(port.getFullName()).substring(1),
-                1)
-                + ";" + _eol);
+                1) + ";" + _eol);
     }
 
     /** Update the offsets of the buffers associated with the ports connected
@@ -408,8 +405,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: " + rate
-                    + " is negative.");
+            throw new IllegalActionException(port,
+                    "the rate: " + rate + " is negative.");
         }
         NamedProgramCodeGeneratorAdapter portHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(port);
@@ -453,8 +450,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         modalName = modalName.replace('.', '_');
         TypedIOPort inputPort;
         TypedIOPort outputPort;
-        code.append(getCodeGenerator().comment(
-                "Beginning of create controller variables."));
+        code.append(getCodeGenerator()
+                .comment("Beginning of create controller variables."));
         for (int i = 0; i < inputPorts.size(); i++) {
 
             inputPort = inputPorts.get(i);
@@ -494,8 +491,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
             // FIXME "static" is language-dependent, but we need it
             // generating code in small blocks.
-            code.append("static " + outputPort.getType() + " " + modalName
-                    + "_" + outputPort.getName());
+            code.append("static " + outputPort.getType() + " " + modalName + "_"
+                    + outputPort.getName());
             if (width > 1) {
                 code.append("[" + width + "]");
             }
@@ -512,16 +509,15 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         while (states.hasNext()) {
 
             State state = (State) states.next();
-            code.append(programCodeGenerator.generateConstantDefinition("STATE"
-                    + state.getFullName().replace(".", "_"), "int",
-                    Integer.toString(j))
-                    + _eol);
+            code.append(programCodeGenerator.generateConstantDefinition(
+                    "STATE" + state.getFullName().replace(".", "_"), "int",
+                    Integer.toString(j)) + _eol);
             j++;
 
         }
 
-        code.append(getCodeGenerator().comment(
-                "End of create controller variables"));
+        code.append(getCodeGenerator()
+                .comment("End of create controller variables"));
     }
 
     /**
@@ -568,7 +564,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
                     //_getHelper((NamedObj) actors2);
 
-                    if (actor.getDirector().getFullName().contains("Giotto") == false) {
+                    if (actor.getDirector().getFullName()
+                            .contains("Giotto") == false) {
                         //code.append("void "+_getActorName(actors2)+"(){");
                         //                       code.append(actorHelper.generateFireFunctionCode()); // this was there initially and it works with SDF
 
@@ -585,8 +582,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Retrieve the nonpreemtive transitions. */
-    private static class NonPreemptiveTransitions implements
-    TransitionRetriever {
+    private static class NonPreemptiveTransitions
+            implements TransitionRetriever {
         // Findbugs wants this to be static.
         /** Retrieve the nonpreemtive transitions.
          *  @param state The state

@@ -58,8 +58,8 @@ public class ListenFeedBackDelay extends FeedBackDelay {
     /** Construct a ListenFeedBackDelay actor with no container and a
      *  name that is an empty string.
      */
-    public ListenFeedBackDelay() throws IllegalActionException,
-    NameDuplicationException {
+    public ListenFeedBackDelay()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 

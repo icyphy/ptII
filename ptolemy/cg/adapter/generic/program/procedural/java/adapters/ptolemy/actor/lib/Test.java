@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Test
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Test {
+public class Test extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Test {
     /**
      *  Construct a Test adapter.
      *  @param actor The given ptolemy.actor.lib.Test actor.

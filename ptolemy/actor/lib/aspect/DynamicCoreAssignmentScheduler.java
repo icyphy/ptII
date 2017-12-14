@@ -69,7 +69,8 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public DynamicCoreAssignmentScheduler(CompositeEntity container, String name)
+    public DynamicCoreAssignmentScheduler(CompositeEntity container,
+            String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -108,8 +109,8 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
         // Check if is already executing somewhere.
         for (NamedObj schedulerActor : _actors) {
             AtomicExecutionAspect scheduler = (AtomicExecutionAspect) schedulerActor;
-            if (scheduler.getRemainingTime(actor) != null
-                    && scheduler.getRemainingTime(actor).getDoubleValue() > 0.0) {
+            if (scheduler.getRemainingTime(actor) != null && scheduler
+                    .getRemainingTime(actor).getDoubleValue() > 0.0) {
                 // This actor is currently executing on this scheduler.
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
@@ -134,7 +135,8 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
                 continue;
             }
             Time remainingTime = _remainingTimeOnCore.get(scheduler);
-            if (remainingTime == null || remainingTime.getDoubleValue() == 0.0) {
+            if (remainingTime == null
+                    || remainingTime.getDoubleValue() == 0.0) {
                 Time time = scheduler.schedule(actor, currentPlatformTime,
                         deadline, executionTime);
                 notifyExecutionListeners(scheduler,

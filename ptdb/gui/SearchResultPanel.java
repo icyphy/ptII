@@ -91,16 +91,16 @@ public class SearchResultPanel extends JPanel {
 
                 JLabel hierarchyLabel = new JLabel("Model Hierarchy:");
                 hierarchyLabel.setAlignmentX(LEFT_ALIGNMENT);
-                Border labelBorder = BorderFactory
-                        .createEmptyBorder(0, 3, 0, 0);
+                Border labelBorder = BorderFactory.createEmptyBorder(0, 3, 0,
+                        0);
                 hierarchyLabel.setBorder(labelBorder);
                 add(hierarchyLabel);
 
                 for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
 
                     ParentHierarchyPanel panelToAdd;
-                    panelToAdd = new ParentHierarchyPanel(hierarchy,
-                            _modelName, _configuration);
+                    panelToAdd = new ParentHierarchyPanel(hierarchy, _modelName,
+                            _configuration);
                     _parentPanelList.add(panelToAdd);
                     panelToAdd.setAlignmentX(LEFT_ALIGNMENT);
                     add(panelToAdd);

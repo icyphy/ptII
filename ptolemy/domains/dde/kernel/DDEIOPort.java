@@ -119,8 +119,8 @@ public class DDEIOPort extends TypedIOPort {
      *  a port already in the container.
      */
     public DDEIOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
+            boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
 
         if (!container.isAtomic()) {
@@ -201,8 +201,8 @@ public class DDEIOPort extends TypedIOPort {
         if (sentTimeValue < currentTimeValue
                 && sentTimeValue != PrioritizedTimedQueue.IGNORE
                 && sentTimeValue != PrioritizedTimedQueue.INACTIVE) {
-            throw new IllegalActionException(this, "Time values in "
-                    + "the past are not allowed.");
+            throw new IllegalActionException(this,
+                    "Time values in " + "the past are not allowed.");
         }
 
         if (thread instanceof DDEThread) {

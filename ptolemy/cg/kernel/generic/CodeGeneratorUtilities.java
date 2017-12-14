@@ -82,11 +82,8 @@ public class CodeGeneratorUtilities {
                 // If getToken() fails, make sure that you are calling
                 // setExpression with a string that has double quotes.
                 if (variable.getToken() == null) {
-                    throw new InternalErrorException(
-                            namedObj,
-                            null,
-                            "Internal error, for variable "
-                                    + variable
+                    throw new InternalErrorException(namedObj, null,
+                            "Internal error, for variable " + variable
                                     + ", getToken() returned null.  Make sure that you are "
                                     + "calling setExpression() in the c'tor for "
                                     + variable + ".");
@@ -118,12 +115,14 @@ public class CodeGeneratorUtilities {
         BufferedReader inputFile;
 
         try {
-            inputFile = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(inputFileName), java.nio.charset.Charset.defaultCharset()));
+            inputFile = new BufferedReader(new java.io.InputStreamReader(
+                    new java.io.FileInputStream(inputFileName),
+                    java.nio.charset.Charset.defaultCharset()));
         } catch (IOException ex) {
             try {
                 // Try it as a URL
-                inputFile = new BufferedReader(new InputStreamReader(new URL(
-                        inputFileName).openStream()));
+                inputFile = new BufferedReader(new InputStreamReader(
+                        new URL(inputFileName).openStream()));
             } catch (Throwable throwable) {
 
                 // Try it as a resource
@@ -133,8 +132,8 @@ public class CodeGeneratorUtilities {
                     throw ex;
                 }
 
-                inputFile = new BufferedReader(new InputStreamReader(
-                        inputFileURL.openStream()));
+                inputFile = new BufferedReader(
+                        new InputStreamReader(inputFileURL.openStream()));
             }
         }
 
@@ -220,22 +219,22 @@ public class CodeGeneratorUtilities {
         URL inputFileURL = ClassUtilities.getResource(inputFileName);
 
         if (inputFileURL == null) {
-            throw new FileNotFoundException("Failed to find '" + inputFileName
-                    + "' as a resource");
+            throw new FileNotFoundException(
+                    "Failed to find '" + inputFileName + "' as a resource");
         }
 
         StringBuffer output = new StringBuffer();
 
         BufferedReader inputReader = null;
         try {
-            inputReader = new BufferedReader(new InputStreamReader(
-                    inputFileURL.openStream()));
+            inputReader = new BufferedReader(
+                    new InputStreamReader(inputFileURL.openStream()));
             String inputLine;
             String lineSeparator = System.getProperty("line.separator");
 
             while ((inputLine = inputReader.readLine()) != null) {
-                output.append(substitute(inputLine + lineSeparator,
-                        substituteMap));
+                output.append(
+                        substitute(inputLine + lineSeparator, substituteMap));
             }
         } finally {
             if (inputReader != null) {
@@ -261,11 +260,11 @@ public class CodeGeneratorUtilities {
      */
     public static void substitute(BufferedReader inputFile,
             Map<String, String> substituteMap, String outputFileName)
-                    throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException {
         PrintWriter outputFile = null;
         try {
-            outputFile = new PrintWriter(new BufferedWriter(new FileWriter(
-                    outputFileName)));
+            outputFile = new PrintWriter(
+                    new BufferedWriter(new FileWriter(outputFileName)));
             String inputLine;
 
             while ((inputLine = inputFile.readLine()) != null) {
@@ -294,7 +293,7 @@ public class CodeGeneratorUtilities {
      */
     public static void substitute(String inputFileName,
             Map<String, String> substituteMap, String outputFileName)
-                    throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException {
         BufferedReader inputFile = openAsFileOrURL(inputFileName);
         substitute(inputFile, substituteMap, outputFileName);
     }

@@ -50,8 +50,8 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class PortablePlaceableWidget extends GlassPaneWidget implements
-MinSizeInterface {
+public class PortablePlaceableWidget extends GlassPaneWidget
+        implements MinSizeInterface {
 
     /** Create a new instance of the widget by requesting the element to place
      *  itself into the provided container.
@@ -67,14 +67,14 @@ MinSizeInterface {
                     "NamedObject must be instance of PortablePlaceable");
         }
 
-        ((PortablePlaceable) namedObject).place(new AWTContainer(
-                _containerPanel) {
-            @Override
-            public void add(Object object) {
-                _placeComponent((Component) object);
-            }
+        ((PortablePlaceable) namedObject)
+                .place(new AWTContainer(_containerPanel) {
+                    @Override
+                    public void add(Object object) {
+                        _placeComponent((Component) object);
+                    }
 
-        });
+                });
 
         // Workaround for actors that don't use PortableContainer's add method.
         if (_containerPanel.getComponentCount() > 0) {

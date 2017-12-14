@@ -158,7 +158,7 @@ public abstract class AbstractReceiver implements Receiver {
                 }
                 throw new NoTokenException(getContainer(), ex,
                         "Failed to get the " + (i + 1) + cardinality
-                        + " token of " + numberOfTokens);
+                                + " token of " + numberOfTokens);
 
             }
         }
@@ -267,8 +267,8 @@ public abstract class AbstractReceiver implements Receiver {
      *   (e.g. because of incompatible types).
      */
     @Override
-    public abstract void put(Token token) throws NoRoomException,
-    IllegalActionException;
+    public abstract void put(Token token)
+            throws NoRoomException, IllegalActionException;
 
     /** Put a portion of the specified token array into this receiver.
      *  The first <i>numberOfTokens</i> elements of the token array are put
@@ -338,8 +338,8 @@ public abstract class AbstractReceiver implements Receiver {
      */
     @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
-            Receiver[] receivers) throws NoRoomException,
-            IllegalActionException {
+            Receiver[] receivers)
+            throws NoRoomException, IllegalActionException {
         if (numberOfTokens > tokens.length) {
             IOPort container = getContainer();
             throw new IllegalActionException(container,
@@ -358,8 +358,8 @@ public abstract class AbstractReceiver implements Receiver {
                         // Do not put the token. The finite number has been reached.
                         break;
                     } else {
-                        receiver.put(container
-                                .convert(container._constantToken));
+                        receiver.put(
+                                container.convert(container._constantToken));
                         container._constantTokensSent++;
                     }
                 }
@@ -445,8 +445,8 @@ public abstract class AbstractReceiver implements Receiver {
     public String toString() {
         IOPort container = getContainer();
         return getClass().getName() + " {"
-        + (container != null ? container.getFullName() : "")
-        + ".receiver }";
+                + (container != null ? container.getFullName() : "")
+                + ".receiver }";
     }
 
     ///////////////////////////////////////////////////////////////////

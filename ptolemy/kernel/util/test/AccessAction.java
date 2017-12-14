@@ -117,8 +117,8 @@ public class AccessAction {
                 _workspace.doneReading();
 
                 if (_failed) {
-                    _record.add(_name
-                            + " handled failure in getting read access");
+                    _record.add(
+                            _name + " handled failure in getting read access");
                 } else {
                     _record.add(_name + " released read access");
                 }
@@ -132,8 +132,8 @@ public class AccessAction {
                 _workspace.doneWriting();
 
                 if (_failed) {
-                    _record.add(_name
-                            + " handled failure in getting write access");
+                    _record.add(
+                            _name + " handled failure in getting write access");
                 } else {
                     _record.add(_name + " released write access");
                 }

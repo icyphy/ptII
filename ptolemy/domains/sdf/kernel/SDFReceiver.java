@@ -158,10 +158,10 @@ public class SDFReceiver extends AbstractReceiver {
         try {
             return (Token) _queue.get(offset);
         } catch (NoSuchElementException ex) {
-            throw new NoTokenException(getContainer(), "Offset " + offset
-                    + " out of range with " + _queue.size()
-                    + " tokens in the receiver and " + _queue.historySize()
-                    + " in history.");
+            throw new NoTokenException(getContainer(),
+                    "Offset " + offset + " out of range with " + _queue.size()
+                            + " tokens in the receiver and "
+                            + _queue.historySize() + " in history.");
         }
     }
 
@@ -314,9 +314,8 @@ public class SDFReceiver extends AbstractReceiver {
             return;
         }
         if (!_queue.put(token)) {
-            throw new NoRoomException(getContainer(),
-                    "Queue is at capacity of " + _queue.getCapacity()
-                    + ". Cannot put a token.");
+            throw new NoRoomException(getContainer(), "Queue is at capacity of "
+                    + _queue.getCapacity() + ". Cannot put a token.");
         }
     }
 

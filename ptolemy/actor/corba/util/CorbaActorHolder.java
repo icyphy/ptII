@@ -10,8 +10,8 @@ package ptolemy.actor.corba.util;
 /* A CORBA compatible interface that implements the execution
  * methods of Ptolemy II.
  */
-public final class CorbaActorHolder implements
-org.omg.CORBA.portable.Streamable {
+public final class CorbaActorHolder
+        implements org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaActor value = null;
 
     public CorbaActorHolder() {

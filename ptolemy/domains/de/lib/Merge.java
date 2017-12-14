@@ -97,9 +97,9 @@ public class Merge extends DETransformer {
         discardEvents.setExpression("false");
         discardEvents.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:green\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ public class Merge extends DETransformer {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Merge newObject = (Merge)super.clone(workspace);
+        Merge newObject = (Merge) super.clone(workspace);
         newObject._queue = null;
         return newObject;
     }
@@ -138,7 +138,8 @@ public class Merge extends DETransformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        boolean discard = ((BooleanToken) discardEvents.getToken()).booleanValue();
+        boolean discard = ((BooleanToken) discardEvents.getToken())
+                .booleanValue();
         boolean foundInput = false;
 
         // If tokens can be discarded, this actor sends

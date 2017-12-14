@@ -73,32 +73,32 @@ public class SimpleCharStream {
 
         try {
             if (wrapAround) {
-                System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize
-                        - tokenBegin);
+                System.arraycopy(buffer, tokenBegin, newbuffer, 0,
+                        bufsize - tokenBegin);
                 System.arraycopy(buffer, 0, newbuffer, bufsize - tokenBegin,
                         bufpos);
                 buffer = newbuffer;
 
-                System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize
-                        - tokenBegin);
+                System.arraycopy(bufline, tokenBegin, newbufline, 0,
+                        bufsize - tokenBegin);
                 System.arraycopy(bufline, 0, newbufline, bufsize - tokenBegin,
                         bufpos);
                 bufline = newbufline;
 
                 System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0,
                         bufsize - tokenBegin);
-                System.arraycopy(bufcolumn, 0, newbufcolumn, bufsize
-                        - tokenBegin, bufpos);
+                System.arraycopy(bufcolumn, 0, newbufcolumn,
+                        bufsize - tokenBegin, bufpos);
                 bufcolumn = newbufcolumn;
 
                 maxNextCharInd = bufpos += bufsize - tokenBegin;
             } else {
-                System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize
-                        - tokenBegin);
+                System.arraycopy(buffer, tokenBegin, newbuffer, 0,
+                        bufsize - tokenBegin);
                 buffer = newbuffer;
 
-                System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize
-                        - tokenBegin);
+                System.arraycopy(bufline, tokenBegin, newbufline, 0,
+                        bufsize - tokenBegin);
                 bufline = newbufline;
 
                 System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0,
@@ -138,8 +138,8 @@ public class SimpleCharStream {
 
         int i;
         try {
-            if ((i = inputStream.read(buffer, maxNextCharInd, available
-                    - maxNextCharInd)) == -1) {
+            if ((i = inputStream.read(buffer, maxNextCharInd,
+                    available - maxNextCharInd)) == -1) {
                 inputStream.close();
                 throw new java.io.IOException();
             } else {
@@ -323,10 +323,10 @@ public class SimpleCharStream {
     /** Constructor. */
     public SimpleCharStream(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn, int buffersize)
-                    throws java.io.UnsupportedEncodingException {
+            throws java.io.UnsupportedEncodingException {
         this(encoding == null ? new java.io.InputStreamReader(dstream)
-        : new java.io.InputStreamReader(dstream, encoding), startline,
-        startcolumn, buffersize);
+                : new java.io.InputStreamReader(dstream, encoding), startline,
+                startcolumn, buffersize);
     }
 
     /** Constructor. */
@@ -339,7 +339,7 @@ public class SimpleCharStream {
     /** Constructor. */
     public SimpleCharStream(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn)
-                    throws java.io.UnsupportedEncodingException {
+            throws java.io.UnsupportedEncodingException {
         this(dstream, encoding, startline, startcolumn, 4096);
     }
 
@@ -363,10 +363,10 @@ public class SimpleCharStream {
     /** Reinitialise. */
     public void ReInit(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn, int buffersize)
-                    throws java.io.UnsupportedEncodingException {
+            throws java.io.UnsupportedEncodingException {
         ReInit(encoding == null ? new java.io.InputStreamReader(dstream)
-        : new java.io.InputStreamReader(dstream, encoding), startline,
-        startcolumn, buffersize);
+                : new java.io.InputStreamReader(dstream, encoding), startline,
+                startcolumn, buffersize);
     }
 
     /** Reinitialise. */
@@ -390,7 +390,7 @@ public class SimpleCharStream {
     /** Reinitialise. */
     public void ReInit(java.io.InputStream dstream, String encoding,
             int startline, int startcolumn)
-                    throws java.io.UnsupportedEncodingException {
+            throws java.io.UnsupportedEncodingException {
         ReInit(dstream, encoding, startline, startcolumn, 4096);
     }
 
@@ -406,7 +406,7 @@ public class SimpleCharStream {
             return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
         } else {
             return new String(buffer, tokenBegin, bufsize - tokenBegin)
-            + new String(buffer, 0, bufpos + 1);
+                    + new String(buffer, 0, bufpos + 1);
         }
     }
 
@@ -417,8 +417,8 @@ public class SimpleCharStream {
         if (bufpos + 1 >= len) {
             System.arraycopy(buffer, bufpos - len + 1, ret, 0, len);
         } else {
-            System.arraycopy(buffer, bufsize - (len - bufpos - 1), ret, 0, len
-                    - bufpos - 1);
+            System.arraycopy(buffer, bufsize - (len - bufpos - 1), ret, 0,
+                    len - bufpos - 1);
             System.arraycopy(buffer, 0, ret, len - bufpos - 1, bufpos + 1);
         }
 
@@ -448,8 +448,7 @@ public class SimpleCharStream {
         int i = 0, j = 0, k = 0;
         int nextColDiff = 0, columnDiff = 0;
 
-        while (i < len
-                && bufline[j = start % bufsize] == bufline[k = ++start
+        while (i < len && bufline[j = start % bufsize] == bufline[k = ++start
                 % bufsize]) {
             bufline[j] = newLine;
             nextColDiff = columnDiff + bufcolumn[k] - bufcolumn[j];
@@ -463,7 +462,8 @@ public class SimpleCharStream {
             bufcolumn[j] = newCol + columnDiff;
 
             while (i++ < len) {
-                if (bufline[j = start % bufsize] != bufline[++start % bufsize]) {
+                if (bufline[j = start % bufsize] != bufline[++start
+                        % bufsize]) {
                     bufline[j] = newLine++;
                 } else {
                     bufline[j] = newLine;

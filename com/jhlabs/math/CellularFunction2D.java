@@ -29,8 +29,9 @@ public class CellularFunction2D implements Function2D {
 
     public CellularFunction2D() {
         results = new Point[2];
-        for (int j = 0; j < results.length; j++)
+        for (int j = 0; j < results.length; j++) {
             results[j] = new Point();
+        }
     }
 
     public void setCoefficient(int c, float v) {
@@ -47,7 +48,8 @@ public class CellularFunction2D implements Function2D {
         float distance;
     }
 
-    private float checkCube(float x, float y, int cubeX, int cubeY, Point[] results) {
+    private float checkCube(float x, float y, int cubeX, int cubeY,
+            Point[] results) {
         random.setSeed(571 * cubeX + 23 * cubeY);
         int numPoints = 3 + random.nextInt() % 4;
         numPoints = 4;
@@ -58,12 +60,16 @@ public class CellularFunction2D implements Function2D {
             float dx = Math.abs(x - px);
             float dy = Math.abs(y - py);
             float d;
-            if (distancePower == 1.0f)
+            if (distancePower == 1.0f) {
                 d = dx + dy;
-            else if (distancePower == 2.0f)
+            } else if (distancePower == 2.0f) {
                 d = (float) Math.sqrt(dx * dx + dy * dy);
-            else
-                d = (float) Math.pow(Math.pow(dx, distancePower) + Math.pow(dy, distancePower), 1 / distancePower);
+            } else {
+                d = (float) Math.pow(
+                        Math.pow(dx, distancePower)
+                                + Math.pow(dy, distancePower),
+                        1 / distancePower);
+            }
 
             // Insertion sort
             for (int j = 0; j < results.length; j++) {
@@ -76,8 +82,9 @@ public class CellularFunction2D implements Function2D {
                     break;
                 } else if (d < results[j].distance) {
                     Point last = results[results.length - 1];
-                    for (int k = results.length - 1; k > j; k--)
+                    for (int k = results.length - 1; k > j; k--) {
                         results[k] = results[k - 1];
+                    }
                     last.distance = d;
                     last.x = px;
                     last.y = py;
@@ -91,8 +98,9 @@ public class CellularFunction2D implements Function2D {
 
     @Override
     public float evaluate(float x, float y) {
-        for (int j = 0; j < results.length; j++)
+        for (int j = 0; j < results.length; j++) {
             results[j].distance = Float.POSITIVE_INFINITY;
+        }
 
         int ix = (int) x;
         int iy = (int) y;
@@ -100,30 +108,39 @@ public class CellularFunction2D implements Function2D {
         float fy = y - iy;
 
         float d = checkCube(fx, fy, ix, iy, results);
-        if (d > fy)
+        if (d > fy) {
             d = checkCube(fx, fy + 1, ix, iy - 1, results);
-        if (d > 1 - fy)
+        }
+        if (d > 1 - fy) {
             d = checkCube(fx, fy - 1, ix, iy + 1, results);
+        }
         if (d > fx) {
             checkCube(fx + 1, fy, ix - 1, iy, results);
-            if (d > fy)
+            if (d > fy) {
                 d = checkCube(fx + 1, fy + 1, ix - 1, iy - 1, results);
-            if (d > 1 - fy)
+            }
+            if (d > 1 - fy) {
                 d = checkCube(fx + 1, fy - 1, ix - 1, iy + 1, results);
+            }
         }
         if (d > 1 - fx) {
             d = checkCube(fx - 1, fy, ix + 1, iy, results);
-            if (d > fy)
+            if (d > fy) {
                 d = checkCube(fx - 1, fy + 1, ix + 1, iy - 1, results);
-            if (d > 1 - fy)
+            }
+            if (d > 1 - fy) {
                 d = checkCube(fx - 1, fy - 1, ix + 1, iy + 1, results);
+            }
         }
 
         float t = 0;
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) {
             t += coefficients[i] * results[i].distance;
-        if (angular)
-            t += Math.atan2(fy - results[0].y, fx - results[0].x) / (2 * Math.PI) + 0.5;
+        }
+        if (angular) {
+            t += Math.atan2(fy - results[0].y, fx - results[0].x)
+                    / (2 * Math.PI) + 0.5;
+        }
         return t;
     }
 

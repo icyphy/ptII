@@ -77,11 +77,12 @@ public class HierarchicalModeController extends StateController {
      *  @param controller The associated graph controller.
      *  @param access The access level.
      */
-    public HierarchicalModeController(GraphController controller, Access access) {
+    public HierarchicalModeController(GraphController controller,
+            Access access) {
         super(controller, access);
 
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new AddRefinementAction()));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new AddRefinementAction()));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 new HierarchicalStateController.RemoveRefinementAction()));
     }
@@ -139,7 +140,8 @@ public class HierarchicalModeController extends StateController {
             Entity refinements = configuration.getEntity("_stateRefinements");
 
             // Default choices.
-            String[] choiceClasses = { "ptolemy.domains.tt.tdl.kernel.TDLRefinement" };
+            String[] choiceClasses = {
+                    "ptolemy.domains.tt.tdl.kernel.TDLRefinement" };
             String[] choiceNames = { "TDL Refinement" };
 
             // Check the configuration to see whether the default is overridden.
@@ -160,7 +162,8 @@ public class HierarchicalModeController extends StateController {
                 }
             }
 
-            query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
+            query.addChoice("Class", "Class", choiceNames, choiceNames[0],
+                    true);
 
             // Need a frame owner for first arg. for the dialog constructor.
             Frame owner = null;
@@ -252,21 +255,21 @@ public class HierarchicalModeController extends StateController {
                                     && port instanceof IOPort) {
                                 try {
                                     ((RefinementPort) newPort)
-                                    .setMirrorDisable(true);
+                                            .setMirrorDisable(true);
 
                                     if (((IOPort) port).isInput()) {
                                         ((RefinementPort) newPort)
-                                        .setInput(true);
+                                                .setInput(true);
                                     }
 
                                     if (((IOPort) port).isOutput()) {
                                         ((RefinementPort) newPort)
-                                        .setOutput(true);
+                                                .setOutput(true);
                                     }
 
                                     if (((IOPort) port).isMultiport()) {
                                         ((RefinementPort) newPort)
-                                        .setMultiport(true);
+                                                .setMultiport(true);
                                     }
 
                                     /* No longer needed since Yuhong modified
@@ -279,7 +282,7 @@ public class HierarchicalModeController extends StateController {
                                      */
                                 } finally {
                                     ((RefinementPort) newPort)
-                                    .setMirrorDisable(false);
+                                            .setMirrorDisable(false);
                                 }
                             }
                         } finally {

@@ -214,8 +214,8 @@ public class IterateOverArray extends MirrorComposite {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public IterateOverArray(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public IterateOverArray(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -238,8 +238,8 @@ public class IterateOverArray extends MirrorComposite {
         try {
             // Remove the old inner IterateDirector(s) that is(are) in the wrong workspace.
             String iterateDirectorName = null;
-            Iterator iterateDirectors = result.attributeList(
-                    IterateDirector.class).iterator();
+            Iterator iterateDirectors = result
+                    .attributeList(IterateDirector.class).iterator();
             while (iterateDirectors.hasNext()) {
                 IterateDirector oldIterateDirector = (IterateDirector) iterateDirectors
                         .next();
@@ -255,8 +255,8 @@ public class IterateOverArray extends MirrorComposite {
             iterateDirector.setContainer(result);
             iterateDirector.setName(iterateDirectorName);
         } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
+            throw new CloneNotSupportedException(
+                    "Could not clone: " + throwable);
         }
         result._iterationCount = (Variable) result
                 .getAttribute("iterationCount");
@@ -430,8 +430,9 @@ public class IterateOverArray extends MirrorComposite {
                     if (isBackwardTypeInferenceEnabled()) {
                         InequalityTerm typeTerm = sourcePort.getTypeTerm();
                         if (typeTerm.isSettable()) {
-                            result.add(new Inequality(new GLBArrayFunction(
-                                    sourcePort), typeTerm));
+                            result.add(new Inequality(
+                                    new GLBArrayFunction(sourcePort),
+                                    typeTerm));
                         }
                     }
                 } else if (sourcePort.getContainer().equals(this)) {
@@ -463,8 +464,9 @@ public class IterateOverArray extends MirrorComposite {
                         if (isBackwardTypeInferenceEnabled()) {
                             InequalityTerm typeTerm = sourcePort.getTypeTerm();
                             if (typeTerm.isSettable()) {
-                                result.add(new Inequality(new GLBArrayFunction(
-                                        sourcePort), typeTerm));
+                                result.add(new Inequality(
+                                        new GLBArrayFunction(sourcePort),
+                                        typeTerm));
                             }
                         }
                     } catch (IllegalActionException e) {
@@ -496,9 +498,11 @@ public class IterateOverArray extends MirrorComposite {
                         // if (isBackwardTypeInferenceEnabled()) {
                         InequalityTerm typeTerm = sourcePort.getTypeTerm();
                         if (typeTerm.isSettable()) {
-                            result.add(new Inequality(
-                                    new ArrayElementTypeFunction(
-                                            destinationPort), typeTerm));
+                            result.add(
+                                    new Inequality(
+                                            new ArrayElementTypeFunction(
+                                                    destinationPort),
+                                            typeTerm));
                         }
                         // }
                     } catch (IllegalActionException e) {
@@ -522,8 +526,8 @@ public class IterateOverArray extends MirrorComposite {
     ////                         private methods                   ////
 
     /** Initialize the class. */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
 
         // Create the IterateDirector in the proper workspace.
@@ -589,8 +593,8 @@ public class IterateOverArray extends MirrorComposite {
             types.addAll(_cachedTypes);
             for (InequalityTerm _cachedTerm : _cachedTerms) {
                 Object termObject = _cachedTerm.getAssociatedObject();
-                if (termObject instanceof IOPort
-                        && ((IOPort) termObject).getContainer() == IterateOverArray.this) {
+                if (termObject instanceof IOPort && ((IOPort) termObject)
+                        .getContainer() == IterateOverArray.this) {
                     // The type term belongs to a port of this IterateOverArray actor.
                     // Use its element type rather than its type.
                     Object value = _cachedTerm.getValue();
@@ -633,8 +637,8 @@ public class IterateOverArray extends MirrorComposite {
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class IterateComposite extends
-    MirrorComposite.MirrorCompositeContents {
+    public static class IterateComposite
+            extends MirrorComposite.MirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -882,8 +886,8 @@ public class IterateOverArray extends MirrorComposite {
                     }
 
                     if (list.size() != 0) {
-                        Token[] tokens = (Token[]) list.toArray(new Token[list
-                                                                          .size()]);
+                        Token[] tokens = (Token[]) list
+                                .toArray(new Token[list.size()]);
 
                         if (_debugging) {
                             _debug(getName(),

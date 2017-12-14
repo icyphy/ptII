@@ -102,8 +102,8 @@ public class PteraController extends ModalController {
      *  @exception NameDuplicationException If the name coincides with an actor
      *   already in the container.
      */
-    public PteraController(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public PteraController(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -205,7 +205,8 @@ public class PteraController extends ModalController {
                     _executiveDirector = super.getDirector();
                 } else {
                     _executiveDirector = null;
-                    for (Object atomicEntity : modalModel.allAtomicEntityList()) {
+                    for (Object atomicEntity : modalModel
+                            .allAtomicEntityList()) {
                         if (atomicEntity instanceof Event) {
                             Event event = (Event) atomicEntity;
                             Actor[] refinements;
@@ -396,7 +397,8 @@ public class PteraController extends ModalController {
      *  @return True if synchronizedToRealtime is set; false otherwise.
      */
     public boolean synchronizeToRealtime() {
-        List<?> synchronizeAttributes = attributeList(SynchronizeToRealtime.class);
+        List<?> synchronizeAttributes = attributeList(
+                SynchronizeToRealtime.class);
         boolean synchronize = false;
         if (synchronizeAttributes.size() > 0) {
             SynchronizeToRealtime attribute = (SynchronizeToRealtime) synchronizeAttributes
@@ -478,8 +480,7 @@ public class PteraController extends ModalController {
      */
     @Override
     protected TreeMap<Class<? extends Entity>, String> _getRefinementClasses() {
-        TreeMap<Class<? extends Entity>, String> map = super
-                ._getRefinementClasses();
+        TreeMap<Class<? extends Entity>, String> map = super._getRefinementClasses();
         map.put(Event.class, PteraController.class.getName());
         map.put(PteraController.class, PteraController.class.getName());
         return map;
@@ -500,8 +501,8 @@ public class PteraController extends ModalController {
      *  @exception NameDuplicationException If the name of the director
      *  coincides with a director already in the controller.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         director = new PteraDirector(this, "_Director");
         new SingletonAttribute(director, "_hide");
 

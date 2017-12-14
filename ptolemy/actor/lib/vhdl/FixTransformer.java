@@ -98,8 +98,8 @@ public class FixTransformer extends TypedAtomicActor {
                 .getAttribute(port.getName() + "Precision");
 
         if (precision == null) {
-            throw new IllegalActionException(this, port.getName()
-                    + " does not have an precision parameter.");
+            throw new IllegalActionException(this,
+                    port.getName() + " does not have an precision parameter.");
         }
 
         return precision.getExpression();
@@ -120,15 +120,15 @@ public class FixTransformer extends TypedAtomicActor {
         if (port.getType() == BaseType.FIX && token instanceof FixToken) {
             Precision precision = new Precision(
                     ((Parameter) getAttribute(port.getName() + "Precision"))
-                    .getExpression());
+                            .getExpression());
 
-            Overflow overflow = Overflow.getName(((Parameter) getAttribute(port
-                    .getName() + "Overflow")).getExpression().toLowerCase(
-                            Locale.getDefault()));
+            Overflow overflow = Overflow.getName(
+                    ((Parameter) getAttribute(port.getName() + "Overflow"))
+                            .getExpression().toLowerCase(Locale.getDefault()));
 
-            Rounding rounding = Rounding.getName(((Parameter) getAttribute(port
-                    .getName() + "Rounding")).getExpression().toLowerCase(
-                            Locale.getDefault()));
+            Rounding rounding = Rounding.getName(
+                    ((Parameter) getAttribute(port.getName() + "Rounding"))
+                            .getExpression().toLowerCase(Locale.getDefault()));
 
             Quantization quantization = new FixPointQuantization(precision,
                     overflow, rounding);
@@ -163,16 +163,16 @@ public class FixTransformer extends TypedAtomicActor {
 
         Iterator iterator = Overflow.nameIterator();
         while (iterator.hasNext()) {
-            overflow.addChoice(((String) iterator.next()).toUpperCase(Locale
-                    .getDefault()));
+            overflow.addChoice(((String) iterator.next())
+                    .toUpperCase(Locale.getDefault()));
         }
 
         rounding.setExpression("HALF_EVEN");
 
         iterator = Rounding.nameIterator();
         while (iterator.hasNext()) {
-            rounding.addChoice(((String) iterator.next()).toUpperCase(Locale
-                    .getDefault()));
+            rounding.addChoice(((String) iterator.next())
+                    .toUpperCase(Locale.getDefault()));
         }
 
         QueuedTypedIOPort port = new QueuedTypedIOPort(this, name, false, true);
@@ -261,15 +261,15 @@ public class FixTransformer extends TypedAtomicActor {
         //throws IllegalActionException {
         if (precisionString != null) {
             ((Parameter) getAttribute("outputPrecision"))
-            .setExpression(precisionString);
+                    .setExpression(precisionString);
         }
         if (overflowString != null) {
             ((Parameter) getAttribute("outputOverflow"))
-            .setExpression(overflowString);
+                    .setExpression(overflowString);
         }
         if (roundingString != null) {
             ((Parameter) getAttribute("outputRounding"))
-            .setExpression(roundingString);
+                    .setExpression(roundingString);
         }
     }
 

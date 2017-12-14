@@ -98,10 +98,9 @@ public class PthalesScheduler extends SDFScheduler {
 
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
-                    DFUtilities.setTokenConsumptionRate(
-                            port,
+                    DFUtilities.setTokenConsumptionRate(port,
                             PthalesIOPort.getArraySize(port)
-                            * PthalesIOPort.getNbTokenPerData(port));
+                                    * PthalesIOPort.getNbTokenPerData(port));
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
                 }
@@ -119,12 +118,12 @@ public class PthalesScheduler extends SDFScheduler {
                         for (Actor actor : actors) {
                             List<IOPort> outputPorts = actor.outputPortList();
                             for (IOPort outputPort : outputPorts) {
-                                if (outputPort.connectedPortList().contains(
-                                        externalPort)) {
+                                if (outputPort.connectedPortList()
+                                        .contains(externalPort)) {
                                     size = PthalesIOPort
                                             .getArraySize(outputPort)
-                                            * PthalesIOPort
-                                            .getNbTokenPerData(outputPort);
+                                            * PthalesIOPort.getNbTokenPerData(
+                                                    outputPort);
                                 }
                             }
                         }
@@ -150,8 +149,8 @@ public class PthalesScheduler extends SDFScheduler {
      * @exception NotSchedulableException
      */
     @Override
-    protected Schedule _getSchedule() throws IllegalActionException,
-    NotSchedulableException {
+    protected Schedule _getSchedule()
+            throws IllegalActionException, NotSchedulableException {
         // Context of this scheduler.
         PthalesDirector director = (PthalesDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) director
@@ -177,8 +176,8 @@ public class PthalesScheduler extends SDFScheduler {
                         for (Receiver receiver : receiverss) {
                             //FIXME: Should we do this?
                             if (receiver instanceof PthalesReceiver) {
-                                ((PthalesReceiver) receiver).setOutputArray(
-                                        port, model);
+                                ((PthalesReceiver) receiver)
+                                        .setOutputArray(port, model);
                             }
                         }
                     }
@@ -208,7 +207,7 @@ public class PthalesScheduler extends SDFScheduler {
                                 //FIXME: Should we do this?
                                 if (receiver instanceof PthalesReceiver) {
                                     ((PthalesReceiver) receiver)
-                                    .setOutputArray(port, actor);
+                                            .setOutputArray(port, actor);
                                 }
                             }
                         }
@@ -237,8 +236,8 @@ public class PthalesScheduler extends SDFScheduler {
                                 // safe?  Depends on the Java
                                 // implementation of LinkedHashMap.
                                 if (receiver instanceof PthalesReceiver) {
-                                    ((PthalesReceiver) receiver).setInputArray(
-                                            port, actor);
+                                    ((PthalesReceiver) receiver)
+                                            .setInputArray(port, actor);
                                 }
                             }
                         }
@@ -260,8 +259,8 @@ public class PthalesScheduler extends SDFScheduler {
             Firing firing = new Firing(actor);
 
             // Iteration is only done on external loops
-            firing.setIterationCount(PthalesAtomicActor
-                    .getIteration((ComponentEntity) actor));
+            firing.setIterationCount(
+                    PthalesAtomicActor.getIteration((ComponentEntity) actor));
 
             schedule.add(firing);
         }

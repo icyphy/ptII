@@ -95,8 +95,8 @@ public class Server extends DETransformer {
         serviceTime.setExpression("1.0");
         serviceTime.setTypeEquals(BaseType.DOUBLE);
         // Put the delay port at the bottom of the icon by default.
-        StringAttribute cardinality = new StringAttribute(
-                serviceTime.getPort(), "_cardinal");
+        StringAttribute cardinality = new StringAttribute(serviceTime.getPort(),
+                "_cardinal");
         cardinality.setExpression("SOUTH");
 
         _queue = new FIFOQueue();
@@ -161,9 +161,10 @@ public class Server extends DETransformer {
                 }
             } else {
                 if (newCapacity < _queue.size()) {
-                    throw new IllegalActionException(this, "Queue size ("
-                            + _queue.size() + ") exceed requested capacity "
-                            + newCapacity + ").");
+                    throw new IllegalActionException(this,
+                            "Queue size (" + _queue.size()
+                                    + ") exceed requested capacity "
+                                    + newCapacity + ").");
                 }
                 _queue.setCapacity(newCapacity);
             }

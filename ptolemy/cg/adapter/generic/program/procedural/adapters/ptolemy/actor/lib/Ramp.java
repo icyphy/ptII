@@ -73,9 +73,8 @@ public class Ramp extends NamedProgramCodeGeneratorAdapter {
         args.add(getCodeGenerator().codeGenType(actor.output.getType()));
 
         CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream.append(_eol
-                + CodeStream.indent(getCodeGenerator().comment(
-                        "initialize " + getComponent().getName())));
+        codeStream.append(_eol + CodeStream.indent(getCodeGenerator()
+                .comment("initialize " + getComponent().getName())));
         if (actor.output.getType() == BaseType.STRING) {
             codeStream.appendCodeBlock("StringInitBlock");
         } else {

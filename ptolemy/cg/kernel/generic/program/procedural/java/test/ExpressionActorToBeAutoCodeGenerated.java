@@ -54,8 +54,8 @@ public class ExpressionActorToBeAutoCodeGenerated extends Expression {
      *   actor with this name.
      */
     public ExpressionActorToBeAutoCodeGenerated(CompositeEntity container,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 }

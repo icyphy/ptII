@@ -92,8 +92,8 @@ public class HammingDecoder extends Transformer {
 
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.BOOLEAN);
-        _inputRate = new Parameter(input, "tokenConsumptionRate", new IntToken(
-                1));
+        _inputRate = new Parameter(input, "tokenConsumptionRate",
+                new IntToken(1));
         output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));

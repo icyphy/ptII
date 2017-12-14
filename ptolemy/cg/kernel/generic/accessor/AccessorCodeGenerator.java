@@ -99,14 +99,16 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         super(container, name, "js");
 
         // Use accessors/web/cg because the code generated can be used by multiple accessor hosts, not just the node accessor host.
-        codeDirectory.setExpression("$PTII/org/terraswarm/accessor/accessors/web/cg");
+        codeDirectory.setExpression(
+                "$PTII/org/terraswarm/accessor/accessors/web/cg");
 
         generatorPackageList.setExpression("generic.accessor");
 
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("@node@ ../hosts/node/nodeHostInvoke.js cg/@modelName@");
+        runCommand.setExpression(
+                "@node@ ../hosts/node/nodeHostInvoke.js cg/@modelName@");
 
         modules = new StringParameter(this, "modules");
         modules.setExpression("");
@@ -156,7 +158,6 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      */
     public Parameter npmInstall;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -187,72 +188,86 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     protected int _generateCode(StringBuffer code) throws KernelException {
         URI uri = URIAttribute.getModelURI(toplevel());
         String modelURI = "";
-        String PTII = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+        String PTII = StringUtilities.getProperty("ptolemy.ptII.dir")
+                .replace('\\', '/');
 
         try {
             AccessorCodeGenerator._setupAccessorsDirectory(PTII);
         } catch (IOException ex) {
-            throw new IllegalActionException(_model, ex, "Failed to set up accessors directory.");
+            throw new IllegalActionException(_model, ex,
+                    "Failed to set up accessors directory.");
         }
 
         if (uri != null) {
             modelURI = uri.toString();
             // System.out.println("AccessorCodeGenerator: PTII: " + PTII + " "
             //        + modelURI.startsWith("file:/") + " " + modelURI.contains(PTII));
-            if (modelURI.startsWith("file:/")
-                    && modelURI.contains(PTII)) {
+            if (modelURI.startsWith("file:/") && modelURI.contains(PTII)) {
                 modelURI = modelURI.substring(5).replace(PTII, "$PTII");
             }
         }
 
         try {
-            String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
+            String stopTime = ((CompositeActor) _model).getDirector().stopTime
+                    .getExpression();
             Double stopTimeValue = 0.0;
             if (stopTime.length() > 0) {
                 try {
                     stopTimeValue = Double.parseDouble(stopTime) * 1000.0;
                 } catch (NumberFormatException ex) {
-                    System.out.println("Could not parse stop time \"" + stopTime + "\". The generated composite accessor will not call stopAt().");
+                    System.out.println("Could not parse stop time \"" + stopTime
+                            + "\". The generated composite accessor will not call stopAt().");
                 }
             }
 
-            code.append("exports.setup = function () {" + _eol
-                + INDENT1 + comment(" This composite accessor was created by Cape Code.")
-                + INDENT1 + comment(" To run the code, run: ")
-                + INDENT1 + comment(" (cd " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/').replace(PTII.replace('\\', '/'), "$PTII") + "; "
-                                    + _runCommand() + ")")
-                + INDENT1 + comment(" To regenerate this composite accessor, run:")
-                + INDENT1 + comment(" $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
-                + INDENT1 + comment(" to edit the model, run:")
-                + INDENT1 + comment(" $PTII/bin/capecode " + modelURI)
+            code.append("exports.setup = function () {" + _eol + INDENT1
+                    + comment(
+                            " This composite accessor was created by Cape Code.")
+                    + INDENT1 + comment(" To run the code, run: ") + INDENT1
+                    + comment(" (cd "
+                            + codeDirectory.asFile().getCanonicalPath()
+                                    .replace('\\', '/')
+                                    .replace(PTII.replace('\\', '/'), "$PTII")
+                            + "; " + _runCommand() + ")")
+                    + INDENT1
+                    + comment(" To regenerate this composite accessor, run:")
+                    + INDENT1
+                    + comment(
+                            " $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor "
+                                    + modelURI)
+                    + INDENT1 + comment(" to edit the model, run:") + INDENT1
+                    + comment(" $PTII/bin/capecode " + modelURI)
 
-                // Here's where we generate the rest of the accessor code.
-                // See generateAccessor() in ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
+                    // Here's where we generate the rest of the accessor code.
+                    // See generateAccessor() in ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
 
-                + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel())).generateAccessor()
-                        + "};" + _eol);
+                    + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
+                            .generateAccessor()
+                    + "};" + _eol);
 
-            if (stopTimeValue > 0.0)  {
+            if (stopTimeValue > 0.0) {
                 code.append(_eol
-                            + comment("To update the initialize code below, modify")
-                            + comment("  $PTII/ptolemy/cg/kernel/generic/accessor/AccessorCodeGenerator.java")
-                            + "if (exports.initialize) {" + _eol
-                            + "    var originalInitialize = exports.initialize;" + _eol
-                            + "    exports.initialize = function() {" + _eol
-                            + "        originalInitialize.call(this);" + _eol
-                            + "        this.stopAt(" + stopTimeValue + ");" + _eol
-                            + "    }" + _eol
-                            + "} else {" + _eol
-                            + "    exports.initialize = function() {" + _eol
-                            + "        this.stopAt(" + stopTimeValue + ");" + _eol
-                            + "    }" + _eol
-                            + "}" + _eol);
+                        + comment("To update the initialize code below, modify")
+                        + comment(
+                                "  $PTII/ptolemy/cg/kernel/generic/accessor/AccessorCodeGenerator.java")
+                        + "if (exports.initialize) {" + _eol
+                        + "    var originalInitialize = exports.initialize;"
+                        + _eol + "    exports.initialize = function() {" + _eol
+                        + "        originalInitialize.call(this);" + _eol
+                        + "        this.stopAt(" + stopTimeValue + ");" + _eol
+                        + "    }" + _eol + "} else {" + _eol
+                        + "    exports.initialize = function() {" + _eol
+                        + "        this.stopAt(" + stopTimeValue + ");" + _eol
+                        + "    }" + _eol + "}" + _eol);
             } else {
-                code.append(_eol + comment("The stopTime parameter of the directory in the model was 0, so this.stopAt() is not being generated." + _eol));
+                code.append(_eol + comment(
+                        "The stopTime parameter of the directory in the model was 0, so this.stopAt() is not being generated."
+                                + _eol));
             }
 
         } catch (IOException ex) {
-            throw new IllegalActionException(_model, "Failed to get the canonical path of " + codeDirectory);
+            throw new IllegalActionException(_model,
+                    "Failed to get the canonical path of " + codeDirectory);
         }
         super._generateCode(code);
         return _executeCommands();
@@ -276,13 +291,15 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      *  @exception IllegalActionException If there is a problem getting
      *  the value of the <i>modules</i> parameter
      */
+    @Override
     protected List<String> _setupCommands() throws IllegalActionException {
         List<String> commands = super._setupCommands();
 
-        String modulesValue = ((StringToken) modules.getToken()).stringValue().replace(',', ' ').trim();
+        String modulesValue = ((StringToken) modules.getToken()).stringValue()
+                .replace(',', ' ').trim();
         if (_checkForLocalModules
-            && ((BooleanToken) npmInstall.getToken()).booleanValue()
-            && modulesValue.length() > 0) {
+                && ((BooleanToken) npmInstall.getToken()).booleanValue()
+                && modulesValue.length() > 0) {
             // Search from codeDirectory and up for a node_modules/ directory
             // If it is found, then search for the modules in that directory.
             // If any module is not found, then install all the modules.
@@ -294,15 +311,17 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 if (nodeModules.isDirectory()) {
                     String[] splitModules = modulesValue.split("\\s+");
                     for (int i = 0; i < splitModules.length; i++) {
-                        File modulesFile = new File(nodeModules, splitModules[i]);
+                        File modulesFile = new File(nodeModules,
+                                splitModules[i]);
                         if (!modulesFile.isDirectory()) {
                             missingModules = true;
                         }
                     }
                     if (!missingModules) {
-                        System.out.println("AccessorCodeGenerator: Found the modules in "
-                                           + nodeModules
-                                           + ", so npm install will not be run.");
+                        System.out.println(
+                                "AccessorCodeGenerator: Found the modules in "
+                                        + nodeModules
+                                        + ", so npm install will not be run.");
                         break;
                     }
                 }
@@ -313,11 +332,11 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 try {
                     npm = JSAccessor.npmBinary();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(this, ex, "Failed to find \"npm\".");
+                    throw new IllegalActionException(this, ex,
+                            "Failed to find \"npm\".");
                 }
                 String command = CodeGeneratorUtilities
-                    .substitute(npm + " install @modules@",
-                                _substituteMap);
+                        .substitute(npm + " install @modules@", _substituteMap);
                 commands.add(command);
             }
         }
@@ -334,7 +353,8 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
             }
         } catch (IOException ex) {
             // Just print to stdout, maybe it will work out.
-            System.out.println("AccessorCodeGenerator: Failed to find \"node\": " + ex);
+            System.out.println(
+                    "AccessorCodeGenerator: Failed to find \"node\": " + ex);
         }
 
         _substituteMap.put("@node@", node);
@@ -349,8 +369,8 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      *  @exception IllegalActionException If the @stopTime@ parameter
      *  cannot be parsed as a Double.
      */
-    protected void _updateSubstituteMap()
-        throws IllegalActionException {
+    @Override
+    protected void _updateSubstituteMap() throws IllegalActionException {
         super._updateSubstituteMap();
 
         // The modules to be installed if the npmInstall parameter is true.
@@ -398,7 +418,8 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     /** Set up the accessors directory.
      *  @param PTII The home directory of PTII.
      */
-    private static void _setupAccessorsDirectory(String PTII) throws IOException {
+    private static void _setupAccessorsDirectory(String PTII)
+            throws IOException {
         // If necessary, unjar the accessors jar file.
         String nodeHostPath = "org/terraswarm/accessor/accessors/web/hosts/node/nodeHost.js";
 

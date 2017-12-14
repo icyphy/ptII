@@ -97,9 +97,9 @@ public class ArrayToSequence extends SDFTransformer {
         output_tokenProductionRate.setExpression("arrayLength");
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,8 +131,8 @@ public class ArrayToSequence extends SDFTransformer {
             int rate = ((IntToken) arrayLength.getToken()).intValue();
 
             if (rate < 0) {
-                throw new IllegalActionException(this, "Invalid arrayLength: "
-                        + rate);
+                throw new IllegalActionException(this,
+                        "Invalid arrayLength: " + rate);
             }
         } else {
             super.attributeChanged(attribute);
@@ -150,8 +150,8 @@ public class ArrayToSequence extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayToSequence newObject = (ArrayToSequence) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.input));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.input));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -171,10 +171,11 @@ public class ArrayToSequence extends SDFTransformer {
                 .booleanValue();
 
         if (enforce && token.length() != rate) {
-            throw new IllegalActionException(this, "The "
-                    + "number of elements in the input ArrayToken ("
-                    + token.length() + ") is not the same as the arrayLength "
-                    + "parameter (" + rate + ").");
+            throw new IllegalActionException(this,
+                    "The " + "number of elements in the input ArrayToken ("
+                            + token.length()
+                            + ") is not the same as the arrayLength "
+                            + "parameter (" + rate + ").");
         }
 
         Token[] elements = token.arrayValue();
@@ -222,9 +223,12 @@ public class ArrayToSequence extends SDFTransformer {
                 // type inference)
                 if (((BooleanToken) enforceArrayLength.getToken())
                         .booleanValue()) {
-                    result.add(new Inequality(new ArrayOfTypesFunction(output,
-                            ((IntToken) arrayLength.getToken()).intValue()),
-                            input.getTypeTerm()));
+                    result.add(
+                            new Inequality(
+                                    new ArrayOfTypesFunction(output,
+                                            ((IntToken) arrayLength.getToken())
+                                                    .intValue()),
+                                    input.getTypeTerm()));
                 } else {
                     result.add(new Inequality(new ArrayOfTypesFunction(output),
                             input.getTypeTerm()));

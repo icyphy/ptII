@@ -106,9 +106,8 @@ public class EventTimeComparator {
             comparator = new Comparator<Event.Time>() {
                 @Override
                 public int compare(Time time1, Time time2) {
-                    long greater = time1.getValue()
-                            - convert(time2.getValue(), time2.getResolution(),
-                                    time1.getResolution());
+                    long greater = time1.getValue() - convert(time2.getValue(),
+                            time2.getResolution(), time1.getResolution());
                     if (greater > 0) {
                         return 1;
                     } else if (greater == 0) {

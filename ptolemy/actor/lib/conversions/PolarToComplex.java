@@ -79,9 +79,9 @@ public class PolarToComplex extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

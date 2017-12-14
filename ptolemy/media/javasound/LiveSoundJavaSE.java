@@ -62,8 +62,8 @@ import javax.sound.sampled.TargetDataLine;
  @Pt.ProposedRating Red (ishwinde)
  @Pt.AcceptedRating Red (ishwinde)
  */
-public class LiveSoundJavaSE extends LiveSoundCommon implements
-LiveSoundInterface {
+public class LiveSoundJavaSE extends LiveSoundCommon
+        implements LiveSoundInterface {
 
     /** Flush queued data from the capture buffer.  The flushed data is
      *  discarded.  It is only legal to flush the capture buffer after
@@ -86,8 +86,8 @@ LiveSoundInterface {
      *  to access the audio capture resources.
      */
     @Override
-    public void flushCaptureBuffer(Object consumer) throws IOException,
-    IllegalStateException {
+    public void flushCaptureBuffer(Object consumer)
+            throws IOException, IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
                     + " attempted to call LiveSound.flushCaptureBuffer(), but "
@@ -126,8 +126,8 @@ LiveSoundInterface {
      *  to access the audio playback resources.
      */
     @Override
-    public void flushPlaybackBuffer(Object producer) throws IOException,
-    IllegalStateException {
+    public void flushPlaybackBuffer(Object producer)
+            throws IOException, IllegalStateException {
         _flushPlaybackBuffer();
     }
 
@@ -214,8 +214,8 @@ LiveSoundInterface {
      *   to access the audio capture resources.
      */
     @Override
-    public double[][] getSamples(Object consumer) throws IOException,
-            IllegalStateException {
+    public double[][] getSamples(Object consumer)
+            throws IOException, IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
                     + " attempted to call LiveSound.getSamples(), but "
@@ -533,8 +533,8 @@ LiveSoundInterface {
      *   while audio capture is already active.
      */
     @Override
-    public void startCapture(Object consumer) throws IOException,
-    IllegalStateException {
+    public void startCapture(Object consumer)
+            throws IOException, IllegalStateException {
         // FIXME: consider allowing several object to
         // share the captured audio resources.
         if (_soundConsumers.size() > 0) {
@@ -588,8 +588,8 @@ LiveSoundInterface {
      *   while audio playback is already active.
      */
     @Override
-    public void startPlayback(Object producer) throws IOException,
-    IllegalStateException {
+    public void startPlayback(Object producer)
+            throws IOException, IllegalStateException {
         if (!_playbackIsActive) {
             _startPlayback();
             _playbackIsActive = true;
@@ -613,8 +613,8 @@ LiveSoundInterface {
      *   captured audio resources when this method was invoked.
      */
     @Override
-    public void stopCapture(Object consumer) throws IOException,
-    IllegalStateException {
+    public void stopCapture(Object consumer)
+            throws IOException, IllegalStateException {
         if (_soundConsumers.contains(consumer)) {
             _soundConsumers.remove(consumer);
         } else {
@@ -639,15 +639,15 @@ LiveSoundInterface {
      *
      *  @exception IOException If another object currently has access
      *   to the audio capture resources or if stopping the playback throws it.
-
+    
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   playback audio resources when this method was invoked.
      *
      */
     @Override
-    public void stopPlayback(Object producer) throws IOException,
-    IllegalStateException {
+    public void stopPlayback(Object producer)
+            throws IOException, IllegalStateException {
         if (_playbackIsActive) {
             _stopPlayback();
         }
@@ -707,7 +707,7 @@ LiveSoundInterface {
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
                     "Incorrect argument, possible encodings for\n" + format
-                    + "\n are:\n" + _encodings(format));
+                            + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex2) {
@@ -749,7 +749,7 @@ LiveSoundInterface {
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
                     "Incorrect argument, possible encodings for\n" + format
-                    + "\n are:\n" + _encodings(format));
+                            + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex) {

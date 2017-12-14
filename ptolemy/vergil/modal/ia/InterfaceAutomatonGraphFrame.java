@@ -63,7 +63,8 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public InterfaceAutomatonGraphFrame(CompositeEntity entity, Tableau tableau) {
+    public InterfaceAutomatonGraphFrame(CompositeEntity entity,
+            Tableau tableau) {
         this(entity, tableau, null);
     }
 
@@ -81,8 +82,8 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public InterfaceAutomatonGraphFrame(CompositeEntity entity,
-            Tableau tableau, LibraryAttribute defaultLibrary) {
+    public InterfaceAutomatonGraphFrame(CompositeEntity entity, Tableau tableau,
+            LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
     }
 

@@ -120,8 +120,8 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         } else if (valueToken instanceof DoubleToken) {
             value = ((DoubleToken) valueToken).doubleValue();
         } else {
-            throw new IllegalActionException("Token type at single "
-                    + "event not supported yet.");
+            throw new IllegalActionException(
+                    "Token type at single " + "event not supported yet.");
         }
 
         args.add(Double.toString(value));

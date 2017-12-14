@@ -167,8 +167,8 @@ public class Firing extends ScheduleElement {
      */
     public void setFiringElement(Object firingElement) {
         if (this.firingElementClass() != null) {
-            if (this.firingElementClass().isAssignableFrom(
-                    firingElement.getClass())) {
+            if (this.firingElementClass()
+                    .isAssignableFrom(firingElement.getClass())) {
                 _incrementVersion();
                 _firingElement = firingElement;
 
@@ -177,8 +177,8 @@ public class Firing extends ScheduleElement {
                     _firing.add(this);
                 }
             } else {
-                throw new RuntimeException("Attempt to add a non "
-                        + "authorized firing element");
+                throw new RuntimeException(
+                        "Attempt to add a non " + "authorized firing element");
             }
         } else {
             _incrementVersion();

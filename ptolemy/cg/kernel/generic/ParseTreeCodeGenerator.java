@@ -78,6 +78,6 @@ public interface ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
-            throws IllegalActionException;
+    public String traceParseTreeEvaluation(ASTPtRootNode node,
+            ParserScope scope) throws IllegalActionException;
 }

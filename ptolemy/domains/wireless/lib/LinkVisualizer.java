@@ -65,7 +65,8 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
  @Pt.ProposedRating Yellow (celaine)
  @Pt.AcceptedRating Yellow (celaine)
  */
-public class LinkVisualizer extends TypedAtomicActor implements ChannelListener {
+public class LinkVisualizer extends TypedAtomicActor
+        implements ChannelListener {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -181,8 +182,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
                 - senderLocation.getLocation()[0];
         double y = destinationLocation.getLocation()[1]
                 - senderLocation.getLocation()[1];
-        String moml = "<property name=\""
-                + lineName
+        String moml = "<property name=\"" + lineName
                 + "\" class=\"ptolemy.vergil.kernel.attributes.LineAttribute\">"
                 + senderLocation.exportMoML() + "<property name=\"x\" value=\""
                 + x + "\"/>" + "<property name=\"y\" value=\"" + y + "\"/>"

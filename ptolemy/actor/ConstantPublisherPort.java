@@ -157,8 +157,8 @@ public class ConstantPublisherPort extends PublisherPort {
      *     it.
      */
     @Override
-    public void broadcast(Token token) throws IllegalActionException,
-    NoRoomException {
+    public void broadcast(Token token)
+            throws IllegalActionException, NoRoomException {
         if (token == null) {
             super.broadcast(null);
         } else {

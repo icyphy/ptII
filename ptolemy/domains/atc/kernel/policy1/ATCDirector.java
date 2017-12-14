@@ -87,7 +87,9 @@ public class ATCDirector extends AbstractATCDirector {
      *  @return The airplane's color.x
      *  @exception IllegalActionException If thrown while creating an ArrayToken.
      */
-    public ArrayToken handleAirplaneColor(int id) throws IllegalActionException {
+    @Override
+    public ArrayToken handleAirplaneColor(int id)
+            throws IllegalActionException {
         ArrayToken color = _airplanesColor.get(id);
 
         if (color == null) {
@@ -107,13 +109,15 @@ public class ATCDirector extends AbstractATCDirector {
      *  @param airport The airport.
      *  @exception IllegalActionException If the id is invalid.
      */
-    public void handleInitializedAirport(Airport airport) throws IllegalActionException{
-        int airportId = ((IntToken)airport.airportId.getToken()).intValue();
-//        if (airportId == -1)
-//            throw new IllegalActionException("invalid id for airplane");
-//                if (_airplanesId.contains(airplaneId))
-//            throw new IllegalActionException("duplication in  airplanes id");
-//        _airplanesId.add(airplaneId);
+    @Override
+    public void handleInitializedAirport(Airport airport)
+            throws IllegalActionException {
+        int airportId = ((IntToken) airport.airportId.getToken()).intValue();
+        //        if (airportId == -1)
+        //            throw new IllegalActionException("invalid id for airplane");
+        //                if (_airplanesId.contains(airplaneId))
+        //            throw new IllegalActionException("duplication in  airplanes id");
+        //        _airplanesId.add(airplaneId);
         if (airportId == -1) {
             throw new IllegalActionException("Invalid id for source airport");
         }
@@ -124,8 +128,8 @@ public class ATCDirector extends AbstractATCDirector {
             _airportsId.add(airportId);
         }
 
-//        if (((ArrayToken)airplane.flightMap.getToken()) == null)
-//            throw new IllegalActionException("flightMap is empty");
+        //        if (((ArrayToken)airplane.flightMap.getToken()) == null)
+        //            throw new IllegalActionException("flightMap is empty");
     }
 
     /** Handle initializing of a destination airport. This function stores airport id in _airportsId
@@ -134,11 +138,16 @@ public class ATCDirector extends AbstractATCDirector {
      *  a duplicate of the idea of another airport or if the airport
      *  id is the same as the a track id.
      */
-    public void handleInitializedDestination( DestinationAirport destinationAirport) throws IllegalActionException {
+    @Override
+    public void handleInitializedDestination(
+            DestinationAirport destinationAirport)
+            throws IllegalActionException {
         // TODO Auto-generated method stub
-        int airportId = ((IntToken)destinationAirport.airportId.getToken()).intValue();
+        int airportId = ((IntToken) destinationAirport.airportId.getToken())
+                .intValue();
         if (airportId == -1) {
-            throw new IllegalActionException("Invalid id for destination airport");
+            throw new IllegalActionException(
+                    "Invalid id for destination airport");
         }
         if (_airportsId.contains(airportId)) {
             throw new IllegalActionException("Duplication in airports id");
@@ -153,25 +162,30 @@ public class ATCDirector extends AbstractATCDirector {
      *  @param track The track.
      *  @exception IllegalActionException If there track is invalid.
      */
-    public void handleInitializedTrack(Track track) throws IllegalActionException {
-        int id = ((IntToken)track.trackId.getToken()).intValue();
+    @Override
+    public void handleInitializedTrack(Track track)
+            throws IllegalActionException {
+        int id = ((IntToken) track.trackId.getToken()).intValue();
         if (id == -1) {
-            throw new IllegalActionException("Id of the track "+id+" is invalid (-1)");
+            throw new IllegalActionException(
+                    "Id of the track " + id + " is invalid (-1)");
         }
         if (_stormyTracks.containsKey(id)) {
-            throw new IllegalActionException("Track with the id "+id+" has been duplicated");
+            throw new IllegalActionException(
+                    "Track with the id " + id + " has been duplicated");
         }
         if (_airportsId.contains(id)) {
             throw new IllegalActionException("Track id is same as airport id");
         } else {
             if (track.stormy.getToken() == null) {
-                throw new IllegalActionException("Stormy parameter of track "+id+" has not been filled");
+                throw new IllegalActionException("Stormy parameter of track "
+                        + id + " has not been filled");
             }
             _stormyTracks.put(id, track.stormy.getToken());
         }
 
         _inTransit.put(id, false);
-        _neighbors.put(id, (ArrayToken)track.neighbors.getToken());
+        _neighbors.put(id, (ArrayToken) track.neighbors.getToken());
     }
 
     /** Return an additional delay for a track to keep an aircraft in
@@ -180,7 +194,9 @@ public class ATCDirector extends AbstractATCDirector {
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
      *  @exception IllegalActionException Not thrown in this method.
      */
-    public double handleRejectionWithDelay(Track track) throws IllegalActionException {
+    @Override
+    public double handleRejectionWithDelay(Track track)
+            throws IllegalActionException {
         // FIXME: what value should be returned here?
         return 1.0;
     }
@@ -193,9 +209,9 @@ public class ATCDirector extends AbstractATCDirector {
         _stormyTracks = new TreeMap<>();
         _neighbors = new TreeMap<>();
         _inTransit = new TreeMap<>();
-        _airportsId =  new ArrayList<>();
+        _airportsId = new ArrayList<>();
         _airplanesId = new ArrayList<>();
-        _airplanesColor = new HashMap<Integer,ArrayToken>();
+        _airplanesColor = new HashMap<Integer, ArrayToken>();
         super.initialize();
     }
 
@@ -204,13 +220,16 @@ public class ATCDirector extends AbstractATCDirector {
      *  @exception IllegalActionException If the entry for the track has
      *  not been set in the the stormyTrack array.
      */
-    public void handleTrackAttributeChanged(Track track) throws IllegalActionException {
-        int id = ((IntToken)track.trackId.getToken()).intValue();
+    @Override
+    public void handleTrackAttributeChanged(Track track)
+            throws IllegalActionException {
+        int id = ((IntToken) track.trackId.getToken()).intValue();
         if (_stormyTracks.size() != 0) {
             if (_stormyTracks.containsKey(id)) {
                 _stormyTracks.put(id, track.stormy.getToken());
             } else {
-                throw new IllegalActionException("The entry for this track has not been set in stormyTrack array ");
+                throw new IllegalActionException(
+                        "The entry for this track has not been set in stormyTrack array ");
             }
         }
     }
@@ -221,41 +240,54 @@ public class ATCDirector extends AbstractATCDirector {
      *  @return The routing.
      *  @exception IllegalActionException If there is a routing problem.
      */
-    public RecordToken routing(Token aircraft, Token trackId) throws IllegalActionException{
+    @Override
+    public RecordToken routing(Token aircraft, Token trackId)
+            throws IllegalActionException {
         RecordToken airplane = (RecordToken) aircraft;
-        ArrayToken flightMap = (ArrayToken)airplane.get("flightMap");
-        int id = ((IntToken)trackId).intValue();
-        if (!flightMap.getElement(0).equals(trackId))
-            throw new IllegalActionException("There is a mistake in routing: mismatch of track id "+id+" with first element in flight map "+((IntToken)flightMap.getElement(0)).intValue());
+        ArrayToken flightMap = (ArrayToken) airplane.get("flightMap");
+        int id = ((IntToken) trackId).intValue();
+        if (!flightMap.getElement(0).equals(trackId)) {
+            throw new IllegalActionException(
+                    "There is a mistake in routing: mismatch of track id " + id
+                            + " with first element in flight map "
+                            + ((IntToken) flightMap.getElement(0)).intValue());
+        }
         Token nextTrackInFlight = flightMap.getElement(1);
         int route = -1;
         if (_neighbors.containsKey(id)) {
             ArrayToken trackNeighbors = _neighbors.get(id);
-            for (int i = 0;i<trackNeighbors.length();i++)
-                if (trackNeighbors.getElement(i).equals(nextTrackInFlight))
-                {
+            for (int i = 0; i < trackNeighbors.length(); i++) {
+                if (trackNeighbors.getElement(i).equals(nextTrackInFlight)) {
                     route = i;
                     break;
                 }
+            }
             if (route == -1) {
-                throw new IllegalActionException("Mistake in routing. track "+id+" has not neighbor track "+nextTrackInFlight);
+                throw new IllegalActionException("Mistake in routing. track "
+                        + id + " has not neighbor track " + nextTrackInFlight);
             }
         } else {
-            throw new IllegalActionException("Neighbors of the current track with id "+id+" have not been set.");
+            throw new IllegalActionException(
+                    "Neighbors of the current track with id " + id
+                            + " have not been set.");
         }
-        Token [] newFlightMap = new Token[flightMap.length()-1];
+        Token[] newFlightMap = new Token[flightMap.length() - 1];
         int j = 0;
-        for (int i = 1;i<flightMap.length();i++)
+        for (int i = 1; i < flightMap.length(); i++) {
             newFlightMap[j++] = flightMap.getElement(i);
+        }
 
         //creating a new airplane record
         Map<String, Token> newAirplane = new TreeMap<String, Token>();
         newAirplane.put("aircraftId", airplane.get("aircraftId"));
         newAirplane.put("aircraftSpeed", airplane.get("aircraftSpeed"));
-        newAirplane.put("flightMap", (Token)(new ArrayToken(BaseType.INT, newFlightMap)));
-        newAirplane.put("priorTrack", (Token)(new IntToken(id)));
-        newAirplane.put("arrivalTimeToAirport", airplane.get("arrivalTimeToAirport"));
-        newAirplane.put("dipartureTimeFromAirport", airplane.get("dipartureTimeFromAirport"));
+        newAirplane.put("flightMap",
+                (new ArrayToken(BaseType.INT, newFlightMap)));
+        newAirplane.put("priorTrack", (new IntToken(id)));
+        newAirplane.put("arrivalTimeToAirport",
+                airplane.get("arrivalTimeToAirport"));
+        newAirplane.put("dipartureTimeFromAirport",
+                airplane.get("dipartureTimeFromAirport"));
         newAirplane.put("fuel", airplane.get("fuel"));
         //
         //add some infromation to newAirplane and then exploit and remove them from newAirplane (for transfer information to Track actor).
@@ -268,9 +300,11 @@ public class ATCDirector extends AbstractATCDirector {
      *  @param trackId The track Id.
      *  @return The status
      */
-    public boolean returnTrackStatus(Token trackId)  {
-        int id = ((IntToken)trackId).intValue();
-        return (_inTransit.get(id) || ((BooleanToken)_stormyTracks.get(id)).booleanValue());
+    @Override
+    public boolean returnTrackStatus(Token trackId) {
+        int id = ((IntToken) trackId).intValue();
+        return (_inTransit.get(id)
+                || ((BooleanToken) _stormyTracks.get(id)).booleanValue());
     }
 
     /** Update inTransit status of a track.
@@ -278,12 +312,14 @@ public class ATCDirector extends AbstractATCDirector {
      *  @param trackStatus The track status
      *  @exception IllegalActionException If thrown while getting the track Id.
      */
-    public void setInTransitStatusOfTrack(Token trackId, boolean trackStatus) throws IllegalActionException{
-        int id = ((IntToken)trackId).intValue();
+    @Override
+    public void setInTransitStatusOfTrack(Token trackId, boolean trackStatus)
+            throws IllegalActionException {
+        int id = ((IntToken) trackId).intValue();
         if (_inTransit.containsKey(id)) {
             _inTransit.put(id, trackStatus);
         } else if (!_airportsId.contains(id)) {
-            throw new IllegalActionException("There is no track with id "+id);
+            throw new IllegalActionException("There is no track with id " + id);
         }
     }
 
@@ -292,13 +328,15 @@ public class ATCDirector extends AbstractATCDirector {
      *  @return A Map of rerouted aircraft.
      *  @exception IllegalActionException If thrown while getting the flightMap or setting parameters.
      */
-    public Map<String, Token> rerouteUnacceptedAircraft(Token aircraft) throws IllegalActionException {
+    @Override
+    public Map<String, Token> rerouteUnacceptedAircraft(Token aircraft)
+            throws IllegalActionException {
         RecordToken airplane = (RecordToken) aircraft;
-        ArrayToken flightMap = (ArrayToken)airplane.get("flightMap");
-        if (flightMap.length() == 1){// it just contains id of the destination airport,
+        ArrayToken flightMap = (ArrayToken) airplane.get("flightMap");
+        if (flightMap.length() == 1) {// it just contains id of the destination airport,
             //it should send the airplane to that again.
             Map<String, Token> map = new TreeMap<String, Token>();
-            map.put("flightMap", (Token)flightMap);
+            map.put("flightMap", flightMap);
             map.put("route", new IntToken(-1));
             map.put("delay", new DoubleToken(1.0));
             return map;
@@ -306,16 +344,16 @@ public class ATCDirector extends AbstractATCDirector {
 
         Token choosedNeighbor = null;
         int route = -1;
-                boolean baseOnDestination = false;
+        boolean baseOnDestination = false;
         boolean neighborChoosed = false;
-        int priorTrack = ((IntToken)airplane.get("priorTrack")).intValue();
+        int priorTrack = ((IntToken) airplane.get("priorTrack")).intValue();
         Token currentTrack = flightMap.getElement(0);
         Token nextTrack = flightMap.getElement(1);
-        Token destination = flightMap.getElement(flightMap.length()-1);
+        Token destination = flightMap.getElement(flightMap.length() - 1);
         ArrayToken neighborsOfPriorTrack = _neighbors.get(priorTrack);
-        for (int i = 0;i<neighborsOfPriorTrack.length();i++) {
+        for (int i = 0; i < neighborsOfPriorTrack.length(); i++) {
             Token temp = neighborsOfPriorTrack.getElement(i);
-            int tempId = ((IntToken)temp).intValue();
+            int tempId = ((IntToken) temp).intValue();
             if (temp.equals(destination)) {
                 route = i;
                 neighborChoosed = true;
@@ -323,43 +361,46 @@ public class ATCDirector extends AbstractATCDirector {
                 baseOnDestination = true;
                 break;
             }
-            if ( tempId != -1 && !_airportsId.contains(tempId) &&  !temp.equals(currentTrack) && !_inTransit.get(tempId) &&
-                    !((BooleanToken)_stormyTracks.get(tempId)).booleanValue()) {
+            if (tempId != -1 && !_airportsId.contains(tempId)
+                    && !temp.equals(currentTrack) && !_inTransit.get(tempId)
+                    && !((BooleanToken) _stormyTracks.get(tempId))
+                            .booleanValue()) {
                 ArrayToken tempNeighbors = _neighbors.get(tempId);
-                for (int j = 0; j<tempNeighbors.length(); j++)
-                   if (tempNeighbors.getElement(j).equals(nextTrack)) {
-                       neighborChoosed = true;
-                       route = i;
-                       choosedNeighbor = temp;
-                       break;
-                   }
-                if (neighborChoosed) {
-                   break;
+                for (int j = 0; j < tempNeighbors.length(); j++) {
+                    if (tempNeighbors.getElement(j).equals(nextTrack)) {
+                        neighborChoosed = true;
+                        route = i;
+                        choosedNeighbor = temp;
+                        break;
+                    }
                 }
-            }//end of outer if
-        }//end of for
+                if (neighborChoosed) {
+                    break;
+                }
+            } //end of outer if
+        } //end of for
 
         if (neighborChoosed && !baseOnDestination) {
             flightMap = flightMap.update(0, choosedNeighbor);
-        }else if (neighborChoosed && baseOnDestination) {
-            flightMap = flightMap.subarray(flightMap.length()-1);
-        }else if (airplane.get("priorTrack").equals(nextTrack)) {
-           Token nextOfnextTrack = flightMap.getElement(2);
-           for (int i = 0;i<neighborsOfPriorTrack.length();i++) {
-               Token temp = neighborsOfPriorTrack.getElement(i);
-               if (temp.equals(nextOfnextTrack)) {
-                   route = i;
-                   neighborChoosed = true;
-                   flightMap = flightMap.subarray(2);
-               }
-           }
-       }
+        } else if (neighborChoosed && baseOnDestination) {
+            flightMap = flightMap.subarray(flightMap.length() - 1);
+        } else if (airplane.get("priorTrack").equals(nextTrack)) {
+            Token nextOfnextTrack = flightMap.getElement(2);
+            for (int i = 0; i < neighborsOfPriorTrack.length(); i++) {
+                Token temp = neighborsOfPriorTrack.getElement(i);
+                if (temp.equals(nextOfnextTrack)) {
+                    route = i;
+                    neighborChoosed = true;
+                    flightMap = flightMap.subarray(2);
+                }
+            }
+        }
 
-       Map<String, Token> map = new TreeMap<String, Token>();
-       map.put("flightMap", (Token)flightMap);
-       map.put("route", new IntToken(route));
-       map.put("delay", new DoubleToken(1.0));
-       return map;
+        Map<String, Token> map = new TreeMap<String, Token>();
+        map.put("flightMap", flightMap);
+        map.put("route", new IntToken(route));
+        map.put("delay", new DoubleToken(1.0));
+        return map;
     }
 
     /** Return a new ATCReceiver.
@@ -369,7 +410,6 @@ public class ATCDirector extends AbstractATCDirector {
     public Receiver newReceiver() {
         return new ATCReceiver();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
@@ -393,11 +433,11 @@ public class ATCDirector extends AbstractATCDirector {
     private Map<Integer, Boolean> _inTransit = new TreeMap<>();
 
     /** The id of the airport. */
-    private ArrayList<Integer> _airportsId =  new ArrayList<>();
+    private ArrayList<Integer> _airportsId = new ArrayList<>();
 
     /** The id of the airplane. */
     private ArrayList<Integer> _airplanesId = new ArrayList<>();
 
     /** A color for each airplane. */
-    private Map<Integer,ArrayToken> _airplanesColor = new HashMap<Integer,ArrayToken>();
+    private Map<Integer, ArrayToken> _airplanesColor = new HashMap<Integer, ArrayToken>();
 }

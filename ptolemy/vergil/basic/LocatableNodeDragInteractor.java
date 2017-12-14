@@ -150,9 +150,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                         // Special case, may need to handle by not going to
                         // MoML and which may not be undoable.
                         // FIXME: This is no way to handle it...
-                        System.out
-                        .println("Object with no semantic object , class: "
-                                + userObject.getClass().getName());
+                        System.out.println(
+                                "Object with no semantic object , class: "
+                                        + userObject.getClass().getName());
                     }
                 }
             }
@@ -223,8 +223,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 if (dropTarget == null) {
                     // Find the drop target if not yet done. Pass the selection
                     // as filter so that objects from the selection are not chosen.
-                    dropTarget = _getObjectUnder(new Point2D.Double(dragEnd[0],
-                            dragEnd[1]), selection);
+                    dropTarget = _getObjectUnder(
+                            new Point2D.Double(dragEnd[0], dragEnd[1]),
+                            selection);
                 }
                 // Check to see whether the target is an Entity, and if it is,
                 // then make the position relative to that entity. Also,
@@ -245,7 +246,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                             RelativeLocation.INITIAL_OFFSET,
                             RelativeLocation.INITIAL_OFFSET };
                     changeRelativeTo = true;
-                } else if (oldRelativeTo.length() > 0 /* && newLocation != null*/) {
+                } else if (oldRelativeTo
+                        .length() > 0 /* && newLocation != null*/) {
                     // We have no drop target, so check the current distance to the
                     // relativeTo object. If it exceeds a threshold, break the reference.
                     double distance = Math.sqrt(newLocation[0] * newLocation[0]
@@ -292,8 +294,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 // The old reference must be restored upon undo.
                 undoMoml.append("<property name=\"relativeTo\" value=\""
                         + oldRelativeTo + "\"/>");
-                undoMoml.append("<property name=\"relativeToElementName\" value=\""
-                        + oldRelativeToElementName + "\"/>");
+                undoMoml.append(
+                        "<property name=\"relativeToElementName\" value=\""
+                                + oldRelativeToElementName + "\"/>");
             }
 
             moml.append("</" + locationElementName + ">\n");
@@ -480,7 +483,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
      *  @return The object under the specified point, or null if there
      *   is none or it is not a NamedObj.
      */
-    private Figure _getFigureUnder(Point2D point, final Object[] filteredFigures) {
+    private Figure _getFigureUnder(Point2D point,
+            final Object[] filteredFigures) {
         GraphPane pane = getController().getGraphPane();
 
         return BasicGraphFrame.getFigureUnder(pane, point, filteredFigures);

@@ -133,8 +133,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PSDFScheduler() throws IllegalActionException,
-    NameDuplicationException {
+    public PSDFScheduler()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -151,8 +151,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PSDFScheduler(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public PSDFScheduler(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -229,8 +229,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
      */
     @Override
     @SuppressWarnings("unused")
-    protected Schedule _getSchedule() throws NotSchedulableException,
-    IllegalActionException {
+    protected Schedule _getSchedule()
+            throws NotSchedulableException, IllegalActionException {
         PSDFDirector director = (PSDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -261,8 +261,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
         ptolemy.graph.sched.Schedule graphSchedule = strategy.schedule();
         _debug("P-APGAN schedule = \n" + graphSchedule.toString());
 
-        SymbolicScheduleElement resultSchedule = _expandAPGAN(graph, strategy
-                .getClusterManager().getRootNode(), strategy);
+        SymbolicScheduleElement resultSchedule = _expandAPGAN(graph,
+                strategy.getClusterManager().getRootNode(), strategy);
         resultSchedule.setIterationCount(vectorizationFactorExpression);
 
         _debug("Final schedule = \n" + resultSchedule.toString());
@@ -441,8 +441,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
             _parserScope = new ScheduleScope();
         }
 
-        Token result = _parseTreeEvaluator
-                .evaluateParseTree(node, _parserScope);
+        Token result = _parseTreeEvaluator.evaluateParseTree(node,
+                _parserScope);
         return result;
     }
 
@@ -477,8 +477,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 Edge edge = (Edge) childGraph.edges().iterator().next();
                 ptolemy.graph.Node source = edge.source();
                 ptolemy.graph.Node sink = edge.sink();
-                SymbolicScheduleElement first = _expandAPGAN(childGraph,
-                        source, strategy);
+                SymbolicScheduleElement first = _expandAPGAN(childGraph, source,
+                        strategy);
                 SymbolicScheduleElement second = _expandAPGAN(childGraph, sink,
                         strategy);
 
@@ -493,14 +493,13 @@ public class PSDFScheduler extends BaseSDFScheduler {
                             + "production rate expression. The offending edge "
                             + "follows.\n" + edge);
                 } else if (consumedExpression == null) {
-                    throw new RuntimeException(
-                            "Internal error: null "
-                                    + "consumption rate expression. The offending edge "
-                                    + "follows.\n" + edge);
+                    throw new RuntimeException("Internal error: null "
+                            + "consumption rate expression. The offending edge "
+                            + "follows.\n" + edge);
                 }
 
-                String denominator = PSDFGraphs.gcdExpression(
-                        producedExpression, consumedExpression);
+                String denominator = PSDFGraphs
+                        .gcdExpression(producedExpression, consumedExpression);
                 String firstIterations = "(" + consumedExpression + ") / ("
                         + denominator + ")";
                 String secondIterations = "(" + producedExpression + ") / ("
@@ -563,8 +562,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
     }
 
     private void _inferFiringCounts(SymbolicScheduleElement element,
-            String expression) throws IllegalActionException,
-            NameDuplicationException {
+            String expression)
+            throws IllegalActionException, NameDuplicationException {
         String recursiveExpression;
 
         if (expression == null) {
@@ -613,8 +612,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** An actor firing with an iteration count that is determined by
      *  a symbolic expression.
      */
-    private class SymbolicFiring extends Firing implements
-    SymbolicScheduleElement {
+    private class SymbolicFiring extends Firing
+            implements SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
          *  expression.  The given actor is assumed to fire the number
          *  of times determined by evaluating the given expression.
@@ -642,7 +641,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
         @Override
         public int getIterationCount() {
             try {
-                IntToken token = (IntToken) _evaluateExpressionInModelScope(_parseTree);
+                IntToken token = (IntToken) _evaluateExpressionInModelScope(
+                        _parseTree);
                 _debug("firing " + getActor() + " " + token.intValue()
                         + " times");
                 return token.intValue();
@@ -650,7 +650,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 // FIXME: this isn't very nice.
                 throw new RuntimeException(
                         "Error evaluating parse tree for expression" + ": "
-                                + expression(), ex);
+                                + expression(),
+                        ex);
             }
         }
 
@@ -703,8 +704,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
     /** A schedule whose iteration count is given by an expression.
      */
-    private class SymbolicSchedule extends Schedule implements
-    SymbolicScheduleElement {
+    private class SymbolicSchedule extends Schedule
+            implements SymbolicScheduleElement {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.
@@ -730,13 +731,15 @@ public class PSDFScheduler extends BaseSDFScheduler {
         @Override
         public int getIterationCount() {
             try {
-                IntToken token = (IntToken) _evaluateExpressionInModelScope(_parseTree);
+                IntToken token = (IntToken) _evaluateExpressionInModelScope(
+                        _parseTree);
                 return token.intValue();
             } catch (Exception ex) {
                 // FIXME: this isn't very nice.
                 throw new RuntimeException(
                         "Error evaluating parse tree for expression" + ": "
-                                + expression(), ex);
+                                + expression(),
+                        ex);
             }
         }
 

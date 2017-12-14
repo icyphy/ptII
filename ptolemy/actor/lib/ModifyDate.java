@@ -143,8 +143,8 @@ public class ModifyDate extends TypedAtomicActor {
             } else if (operationString.equals("-")) {
                 val = val * (-1);
             } else {
-                throw new IllegalActionException(this, "Operation "
-                        + operationString + " not supported.");
+                throw new IllegalActionException(this,
+                        "Operation " + operationString + " not supported.");
             }
 
             boolean setUsingCalendar = true;
@@ -174,8 +174,8 @@ public class ModifyDate extends TypedAtomicActor {
                 // Update _value and _calendar in DateToken.
                 token.setTimeInMilliseconds(token.getTimeInMilliseconds());
             } else {
-                throw new IllegalActionException(this, "The unit " + unitString
-                        + " is not supported");
+                throw new IllegalActionException(this,
+                        "The unit " + unitString + " is not supported");
             }
 
             // If units are greater than milliseonds

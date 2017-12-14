@@ -53,8 +53,7 @@ public class JTreeComponentBuilder implements ComponentBuilder {
     @Override
     public String getDeclaration(String name,
             java.util.Map<String, Object> beanProperties) {
-        return "javax.swing.JTree "
-                + name
+        return "javax.swing.JTree " + name
                 + "Control = new javax.swing.JTree();\njavax.swing.JScrollPane "
                 + name + " = new javax.swing.JScrollPane(" + name
                 + "Control);\n";

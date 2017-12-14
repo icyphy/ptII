@@ -22,7 +22,8 @@ package com.jhlabs.image;
  */
 public class SwizzleFilter extends PointFilter {
 
-    private int[] matrix = { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0 };
+    private int[] matrix = { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+            0, 1, 0 };
 
     public SwizzleFilter() {
     }
@@ -52,10 +53,14 @@ public class SwizzleFilter extends PointFilter {
         int g = (rgb >> 8) & 0xff;
         int b = rgb & 0xff;
 
-        a = matrix[0] * a + matrix[1] * r + matrix[2] * g + matrix[3] * b + matrix[4] * 255;
-        r = matrix[5] * a + matrix[6] * r + matrix[7] * g + matrix[8] * b + matrix[9] * 255;
-        g = matrix[10] * a + matrix[11] * r + matrix[12] * g + matrix[13] * b + matrix[14] * 255;
-        b = matrix[15] * a + matrix[16] * r + matrix[17] * g + matrix[18] * b + matrix[19] * 255;
+        a = matrix[0] * a + matrix[1] * r + matrix[2] * g + matrix[3] * b
+                + matrix[4] * 255;
+        r = matrix[5] * a + matrix[6] * r + matrix[7] * g + matrix[8] * b
+                + matrix[9] * 255;
+        g = matrix[10] * a + matrix[11] * r + matrix[12] * g + matrix[13] * b
+                + matrix[14] * 255;
+        b = matrix[15] * a + matrix[16] * r + matrix[17] * g + matrix[18] * b
+                + matrix[19] * 255;
 
         a = PixelUtils.clamp(a);
         r = PixelUtils.clamp(r);

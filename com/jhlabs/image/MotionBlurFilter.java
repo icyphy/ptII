@@ -45,7 +45,8 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
      * @param rotation the angle of rotation.
      * @param zoom the zoom factor.
      */
-    public MotionBlurFilter(float distance, float angle, float rotation, float zoom) {
+    public MotionBlurFilter(float distance, float angle, float rotation,
+            float zoom) {
         this.distance = distance;
         this.angle = angle;
         this.rotation = rotation;
@@ -165,8 +166,9 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] inPixels = new int[width * height];
         int[] outPixels = new int[width * height];
@@ -182,13 +184,15 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
         float imageRadius = (float) Math.sqrt(cx * cx + cy * cy);
         float translateX = (float) (distance * Math.cos(angle));
         float translateY = (float) (distance * -Math.sin(angle));
-        float maxDistance = distance + Math.abs(rotation * imageRadius) + zoom * imageRadius;
+        float maxDistance = distance + Math.abs(rotation * imageRadius)
+                + zoom * imageRadius;
         int repetitions = (int) maxDistance;
         AffineTransform t = new AffineTransform();
         Point2D.Float p = new Point2D.Float();
 
-        if (premultiplyAlpha)
+        if (premultiplyAlpha) {
             ImageMath.premultiply(inPixels, 0, inPixels.length);
+        }
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int a = 0, r = 0, g = 0, b = 0;
@@ -203,24 +207,27 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
                     t.translate(cx + f * translateX, cy + f * translateY);
                     float s = 1 - zoom * f;
                     t.scale(s, s);
-                    if (rotation != 0)
+                    if (rotation != 0) {
                         t.rotate(-rotation * f);
+                    }
                     t.translate(-cx, -cy);
                     t.transform(p, p);
                     newX = (int) p.x;
                     newY = (int) p.y;
 
                     if (newX < 0 || newX >= width) {
-                        if (wrapEdges)
+                        if (wrapEdges) {
                             newX = ImageMath.mod(newX, width);
-                        else
+                        } else {
                             break;
+                        }
                     }
                     if (newY < 0 || newY >= height) {
-                        if (wrapEdges)
+                        if (wrapEdges) {
                             newY = ImageMath.mod(newY, height);
-                        else
+                        } else {
                             break;
+                        }
                     }
 
                     count++;
@@ -242,8 +249,9 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
                 index++;
             }
         }
-        if (premultiplyAlpha)
+        if (premultiplyAlpha) {
             ImageMath.unpremultiply(outPixels, 0, inPixels.length);
+        }
 
         setRGB(dst, 0, 0, width, height, outPixels);
         return dst;

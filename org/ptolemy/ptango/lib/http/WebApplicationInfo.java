@@ -159,9 +159,9 @@ public class WebApplicationInfo {
             Set<Resource> resourceLocations) throws Exception {
         if (resourcePath == null || _servletInfo.containsKey(resourcePath)
                 || resourceLocations == null || resourceLocations.isEmpty()) {
-            throw new Exception("Duplicate path requested by a resource, "
-                    + resourcePath
-                    + " . Please check servlet paths for matches.");
+            throw new Exception(
+                    "Duplicate path requested by a resource, " + resourcePath
+                            + " . Please check servlet paths for matches.");
         }
 
         for (Resource resource : resourceLocations) {
@@ -258,16 +258,16 @@ public class WebApplicationInfo {
 
         // Check for a matching handler path
         for (URI servletPath : _servletInfo.keySet()) {
-            if (servletPath != null
-                    && path.equalsIgnoreCase(appPath + servletPath.toString())) {
+            if (servletPath != null && path
+                    .equalsIgnoreCase(appPath + servletPath.toString())) {
                 return true;
             }
         }
 
         // Check for a matching resource path
         for (URI resourcePath : _resourceInfo.keySet()) {
-            if (resourcePath != null
-                    && path.equalsIgnoreCase(appPath + resourcePath.toString())) {
+            if (resourcePath != null && path
+                    .equalsIgnoreCase(appPath + resourcePath.toString())) {
                 return true;
             }
         }
@@ -306,8 +306,8 @@ public class WebApplicationInfo {
 
         // Check for a matching resource path
         for (URI resourcePath : _resourceInfo.keySet()) {
-            if (resourcePath != null
-                    && path.equalsIgnoreCase(appPath + resourcePath.toString())) {
+            if (resourcePath != null && path
+                    .equalsIgnoreCase(appPath + resourcePath.toString())) {
                 return true;
             }
         }

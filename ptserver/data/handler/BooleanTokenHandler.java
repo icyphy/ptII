@@ -55,8 +55,8 @@ public class BooleanTokenHandler implements TokenHandler<BooleanToken> {
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     @Override
-    public void convertToBytes(BooleanToken token, DataOutputStream outputStream)
-            throws IOException {
+    public void convertToBytes(BooleanToken token,
+            DataOutputStream outputStream) throws IOException {
         outputStream.writeBoolean(token.booleanValue());
     }
 

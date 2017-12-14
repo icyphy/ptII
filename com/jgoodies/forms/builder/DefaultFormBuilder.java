@@ -506,7 +506,8 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      * @return the added label
      * @see JLabel#setLabelFor(java.awt.Component)
      */
-    public JLabel append(String textWithMnemonic, Component c, boolean nextLine) {
+    public JLabel append(String textWithMnemonic, Component c,
+            boolean nextLine) {
         JLabel label = append(textWithMnemonic, c);
         if (nextLine) {
             nextLine();

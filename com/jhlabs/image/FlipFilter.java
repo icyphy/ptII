@@ -164,7 +164,8 @@ public class FlipFilter extends AbstractBufferedImageOp {
 
         if (dst == null) {
             ColorModel dstCM = src.getColorModel();
-            dst = new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(newW, newH),
+            dst = new BufferedImage(dstCM,
+                    dstCM.createCompatibleWritableRaster(newW, newH),
                     dstCM.isAlphaPremultiplied(), null);
         }
         dst.getRaster();

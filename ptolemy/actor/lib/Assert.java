@@ -194,8 +194,8 @@ public class Assert extends Expression {
      *   name already in the entity.
      */
     @Override
-    protected void _addPort(TypedIOPort port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(TypedIOPort port)
+            throws IllegalActionException, NameDuplicationException {
         super._addPort(port);
 
         if (_creatingOutputPort || _cloning) {
@@ -277,13 +277,14 @@ public class Assert extends Expression {
             TypedIOPort outputPort = (TypedIOPort) Assert.this
                     .getPort(outputPortName);
             if (outputPort == null) {
-                outputPort = new TypedIOPort(Assert.this, outputPortName,
-                        false, true) {
+                outputPort = new TypedIOPort(Assert.this, outputPortName, false,
+                        true) {
                     // Make sure that this output port _never_ appears in MoML.
                     // If it is allowed to appear, subtle bugs will arise, for example
                     // when copying and pasting in actor-oriented classes.
                     @Override
-                    public void exportMoML(Writer output, int depth, String name) {
+                    public void exportMoML(Writer output, int depth,
+                            String name) {
                     }
                 };
                 // Display name should match the input port name.
@@ -343,8 +344,8 @@ public class Assert extends Expression {
         // Override setName() to also change the name of the corresponding
         // output port.
         @Override
-        public void setName(final String name) throws IllegalActionException,
-        NameDuplicationException {
+        public void setName(final String name)
+                throws IllegalActionException, NameDuplicationException {
             final String oldName = getName();
             super.setName(name);
             // No need to do anything for the first name setting

@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
  */
 package org.ptolemy.machineLearning.hsmm;
 
-
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
@@ -76,23 +75,25 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
     public HSMMTimeAwareGenerator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        At = new PortParameter(this,"At");
+        At = new PortParameter(this, "At");
         At.setExpression("{[1.0]}");
         samplingPeriod = new Parameter(this, "samplingPeriod");
         samplingPeriod.setExpression("6");
     }
 
-
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == At) {
-            ArrayToken spec = ((ArrayToken)At.getToken());
+            ArrayToken spec = ((ArrayToken) At.getToken());
             _At = new double[spec.length()][][];
-            for (int i =0 ; i < spec.length(); i++) {
-                double[][] A = ((DoubleMatrixToken)spec.getElement(i)).doubleMatrix();
+            for (int i = 0; i < spec.length(); i++) {
+                double[][] A = ((DoubleMatrixToken) spec.getElement(i))
+                        .doubleMatrix();
                 _At[i] = A;
             }
         } else if (attribute == samplingPeriod) {
-            _Tsampling = ((IntToken)samplingPeriod.getToken()).intValue();
+            _Tsampling = ((IntToken) samplingPeriod.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -104,11 +105,10 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
     /** Sampling period in seconds. */
     public Parameter samplingPeriod;
 
-
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HSMMTimeAwareGenerator newObject = (HSMMTimeAwareGenerator) super
-                .clone(workspace);
+        HSMMTimeAwareGenerator newObject = (HSMMTimeAwareGenerator) super.clone(
+                workspace);
         newObject._At = null;
         newObject._ta = null;
 
@@ -126,12 +126,13 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         powerLowerBound.update();
         multinomialEstimates.update();
         At.update();
-        _maxDuration = ((DoubleMatrixToken)durationProbabilities.getToken()).getColumnCount();
+        _maxDuration = ((DoubleMatrixToken) durationProbabilities.getToken())
+                .getColumnCount();
 
         if (trigger.hasToken(0)) {
             long ts0 = ((IntToken) trigger.get(0)).intValue();
-            _ta = new TimedAutomaton(new DateToken(ts0,
-                    DateToken.PRECISION_SECOND,tz),
+            _ta = new TimedAutomaton(
+                    new DateToken(ts0, DateToken.PRECISION_SECOND, tz),
                     _Tsampling);
 
             Token[] outputObservations = new ArrayToken[_windowSize];
@@ -144,15 +145,16 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
             boolean validSequenceFound = false;
             int trials = 0;
             double[][] ys = new double[_windowSize][_obsDimension];
-            int [] xs = new int [_windowSize];
+            int[] xs = new int[_windowSize];
 
-            while (!validSequenceFound && trials < MAX_TRIALS && !_stopRequested) {
+            while (!validSequenceFound && trials < MAX_TRIALS
+                    && !_stopRequested) {
                 double totalPower = 0.0;
                 // set to true if we're forcing an inner loop to
                 // end because a deadlock has been detected
                 boolean _failFast = false;
 
-                for (int i = 0; i < _windowSize; i ++ ) {
+                for (int i = 0; i < _windowSize; i++) {
 
                     if (_firstIteration) {
                         // sample hidden state from prior
@@ -172,11 +174,12 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
                     yt = _sampleObservation();
 
                     Token[] yArray = new Token[yt.length];
-                    for (int x= 0; x < yArray.length; x++) {
+                    for (int x = 0; x < yArray.length; x++) {
                         yArray[x] = new DoubleToken(yt[x]);
                         totalPower += yt[x];
                     }
-                    if (totalPower >= ((DoubleToken)powerUpperBound.getToken()).doubleValue()) {
+                    if (totalPower >= ((DoubleToken) powerUpperBound.getToken())
+                            .doubleValue()) {
                         _failFast = true;
                         continue;
                     }
@@ -187,8 +190,10 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
                     _ta.advanceTime();
                 }
 
-                if (totalPower <= ((DoubleToken)powerUpperBound.getToken()).doubleValue()
-                        && totalPower >= ((DoubleToken)powerLowerBound.getToken()).doubleValue()
+                if (totalPower <= ((DoubleToken) powerUpperBound.getToken())
+                        .doubleValue()
+                        && totalPower >= ((DoubleToken) powerLowerBound
+                                .getToken()).doubleValue()
                         && !_failFast) {
                     validSequenceFound = true;
                     break;
@@ -199,19 +204,19 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
 
             if (validSequenceFound) {
                 Token[] states = new IntToken[_windowSize];
-                for (int i = 0; i < _windowSize; i ++) {
+                for (int i = 0; i < _windowSize; i++) {
                     states[i] = new IntToken(xs[i]);
                 }
-                System.out.println( (trials) + " samples rejected.");
+                System.out.println((trials) + " samples rejected.");
                 observation.send(0, new ArrayToken(outputObservations));
                 hiddenState.send(0, new ArrayToken(states));
             } else {
                 // Send out all zeros.
                 Token[] states = new IntToken[_windowSize];
-                for (int i = 0; i < _windowSize; i ++) {
+                for (int i = 0; i < _windowSize; i++) {
                     states[i] = new IntToken(0);
                     Token[] yArray = new Token[_nCategories.length];
-                    for (int x= 0; x < _nCategories.length; x++) {
+                    for (int x = 0; x < _nCategories.length; x++) {
                         yArray[x] = new DoubleToken(0.0);
                     }
                     outputObservations[i] = new ArrayToken(yArray);
@@ -225,9 +230,11 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
     @Override
     protected int _propagateState() throws IllegalActionException {
         // use a time-dependent transition probability matrix.
-        if (_ta.getState() > (_At.length-1) ) {
-            throw new IllegalActionException(this, "The timed automaton is set "
-                    + "to produce state " + _ta.getState() + " but At unknown for this state.");
+        if (_ta.getState() > (_At.length - 1)) {
+            throw new IllegalActionException(this,
+                    "The timed automaton is set " + "to produce state "
+                            + _ta.getState()
+                            + " but At unknown for this state.");
         }
         _A = _At[_ta.getState()];
         double[] cumSums = new double[_nStates + 1];
@@ -251,13 +258,17 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
             this._step = step;
             this._currentTime = timestamp;
         }
+
         private int getState() {
             return _currentTime.getHour();
         }
+
         private void advanceTime() throws IllegalActionException {
-            _currentTime = new DateToken(this._currentTime.getTimeInMilliseconds()/1000
-                    + _step,DateToken.PRECISION_SECOND,tz);
+            _currentTime = new DateToken(
+                    this._currentTime.getTimeInMilliseconds() / 1000 + _step,
+                    DateToken.PRECISION_SECOND, tz);
         }
+
         /* Time step of the automaton. */
         private final long _step;
         /* Current time variable of the automaton. */
@@ -274,6 +285,5 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
     private TimedAutomaton _ta;
 
     /** Default time zone. */
-    private static TimeZone tz = new SimpleTimeZone(0,"GMT");
+    private static TimeZone tz = new SimpleTimeZone(0, "GMT");
 }
-

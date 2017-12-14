@@ -66,8 +66,8 @@ public class Project {
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().
         MoMLParser parser = new MoMLParser();
-        InterfaceAutomaton firstAutomaton = (InterfaceAutomaton) parser.parse(
-                url, url);
+        InterfaceAutomaton firstAutomaton = (InterfaceAutomaton) parser
+                .parse(url, url);
         firstAutomaton.addPorts();
 
         // Construct the second automaton
@@ -80,8 +80,8 @@ public class Project {
         // called.
         parser = new MoMLParser();
 
-        InterfaceAutomaton secondAutomaton = (InterfaceAutomaton) parser.parse(
-                url, url);
+        InterfaceAutomaton secondAutomaton = (InterfaceAutomaton) parser
+                .parse(url, url);
         secondAutomaton.addPorts();
 
         // Compute the projection and write result
@@ -98,8 +98,7 @@ public class Project {
      */
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out
-            .println("Usage: java ptolemy.domains.modal.kernel."
+            System.out.println("Usage: java ptolemy.domains.modal.kernel."
                     + "test.Project <first_automaton.xml> <second_automaton.xml>");
             System.out.println("This program computes the projection of the "
                     + "first automaton to the second one.");

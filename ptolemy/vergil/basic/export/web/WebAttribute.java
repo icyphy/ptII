@@ -152,8 +152,8 @@ public class WebAttribute extends StringAttribute {
      * @exception IllegalActionException if the WebAttribute cannot be created
      * (perhaps another Attribute exists with the requested name)
      */
-    public static WebAttribute createWebAttribute(NamedObj container,
-            String id, String webName) throws IllegalActionException {
+    public static WebAttribute createWebAttribute(NamedObj container, String id,
+            String webName) throws IllegalActionException {
         WebAttribute webAttribute;
 
         try {

@@ -40,14 +40,16 @@ public interface MirrorDecoratorListener {
      *  @param eventType The type of the event.
      *  @param p The parameter subject to change.
      */
-    public void event(MirrorDecorator ssm, DecoratorEvent eventType, Parameter p);
+    public void event(MirrorDecorator ssm, DecoratorEvent eventType,
+            Parameter p);
 
     /** The event that is sent by the mirror decorator  and processed
      *  by the listener.
      *  @param eventType The type of the event.
      *  @param portName Name of changing port.
      */
-    public void event(MirrorDecorator ssm, DecoratorEvent eventType, String portName);
+    public void event(MirrorDecorator ssm, DecoratorEvent eventType,
+            String portName);
 
     /** Type of the event. */
     public static enum DecoratorEvent {

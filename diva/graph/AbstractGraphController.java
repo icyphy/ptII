@@ -397,8 +397,8 @@ public abstract class AbstractGraphController implements GraphController {
         }
 
         // Draw the edges that are connected to any of the above nodes.
-        edges = GraphUtilities
-                .partiallyContainedEdges(_model.getRoot(), _model);
+        edges = GraphUtilities.partiallyContainedEdges(_model.getRoot(),
+                _model);
 
         while (edges.hasNext()) {
             Object edge = edges.next();
@@ -673,11 +673,11 @@ public abstract class AbstractGraphController implements GraphController {
                 rerender();
 
                 /* Object root = e.getTarget();
-
+                
                  //FIXME - this could be optimized--
                  //        we may not need to rerender every
                  //        node.
-
+                
                  for (Iterator i = _model.nodes(root); i.hasNext(); ) {
                  rerenderNode(i.next());
                  }

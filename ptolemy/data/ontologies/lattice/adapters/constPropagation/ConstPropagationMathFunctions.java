@@ -56,8 +56,8 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      *   FlatTokenInfiniteConcepts.
      *  @exception IllegalActionException Thrown if the concept function cannot be created.
      */
-    public ConstPropagationMathFunctions(Ontology ontology, String mathOperation)
-            throws IllegalActionException {
+    public ConstPropagationMathFunctions(Ontology ontology,
+            String mathOperation) throws IllegalActionException {
         super("ConstPropagationMathFunction_" + mathOperation, 2, ontology);
 
         _mathOperation = mathOperation;
@@ -105,7 +105,8 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
 
         } else if (arg1 instanceof FlatTokenInfiniteConcept
                 && arg2 instanceof FlatTokenInfiniteConcept) {
-            if (_isDivisionAndSecondArgumentIsZero((FlatTokenInfiniteConcept) arg2)) {
+            if (_isDivisionAndSecondArgumentIsZero(
+                    (FlatTokenInfiniteConcept) arg2)) {
                 return _bottomOfTheLattice;
             } else {
                 return _getMathOperationResultConcept(
@@ -132,8 +133,8 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      *   performed.
      */
     private FlatTokenInfiniteConcept _getMathOperationResultConcept(
-            FlatTokenInfiniteConcept concept1, FlatTokenInfiniteConcept concept2)
-                    throws IllegalActionException {
+            FlatTokenInfiniteConcept concept1,
+            FlatTokenInfiniteConcept concept2) throws IllegalActionException {
 
         if (concept1.getRepresentative().equals(concept2.getRepresentative())) {
             Token token1 = concept1.getTokenValue();
@@ -169,8 +170,8 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
         } else if (_mathOperation.equals("/")) {
             return token1.divide(token2);
         } else {
-            throw new IllegalActionException("Unrecognized math operation: "
-                    + _mathOperation);
+            throw new IllegalActionException(
+                    "Unrecognized math operation: " + _mathOperation);
         }
     }
 

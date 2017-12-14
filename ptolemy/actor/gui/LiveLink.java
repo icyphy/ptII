@@ -39,7 +39,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 
-
 ///////////////////////////////////////////////////////////////////
 //// LiveLink
 
@@ -130,8 +129,8 @@ public class LiveLink extends FileParameter implements Editable {
      */
     @Override
     public void createEditor(NamedObj object, Frame parent) {
-        Configuration configuration = (Configuration) Configuration.findEffigy(
-                object.getContainer()).toplevel();
+        Configuration configuration = (Configuration) Configuration
+                .findEffigy(object.getContainer()).toplevel();
         try {
             // To find a base for relative references, find
             // the URIAttribute contained by the toplevel.

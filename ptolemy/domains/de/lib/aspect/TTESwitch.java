@@ -213,7 +213,8 @@ public class TTESwitch extends AtomicCommunicationAspect {
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
-        if (_nextTimeFree != null && currentTime.compareTo(_nextTimeFree) == 0) {
+        if (_nextTimeFree != null
+                && currentTime.compareTo(_nextTimeFree) == 0) {
             Object[] output;
             if (_ttTokens.size() > 0) {
                 output = (Object[]) _ttTokens.take();
@@ -231,10 +232,9 @@ public class TTESwitch extends AtomicCommunicationAspect {
     @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (_nextTimeFree != null
-                && currentTime.compareTo(_nextTimeFree) == 0
-                && (_ttTokens.size() == 1 || _ttTokens.size() == 0
-                && _etTokens.size() > 0)) {
+        if (_nextTimeFree != null && currentTime.compareTo(_nextTimeFree) == 0
+                && (_ttTokens.size() == 1
+                        || _ttTokens.size() == 0 && _etTokens.size() > 0)) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
@@ -256,12 +256,12 @@ public class TTESwitch extends AtomicCommunicationAspect {
                     "Schedule violation: A time-triggered message is "
                             + "being sent at port "
                             + ((Receiver) ((Object[]) _ttTokens.get(0))[0])
-                            .getContainer()
+                                    .getContainer()
                             + " while a new time-triggered message is received at port "
                             + receiver.getContainer() + " at time "
                             + getDirector().getModelTime());
-        } else if (_ttTokens.size() == 1 || _ttTokens.size() == 0
-                && _etTokens.size() > 0) {
+        } else if (_ttTokens.size() == 1
+                || _ttTokens.size() == 0 && _etTokens.size() > 0) {
             Time currentTime = getDirector().getModelTime();
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);

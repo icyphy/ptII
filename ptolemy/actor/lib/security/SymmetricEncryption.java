@@ -180,8 +180,8 @@ public class SymmetricEncryption extends CipherActor {
         try {
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Problem processing "
-                    + dataBytes.length + " bytes.");
+            throw new IllegalActionException(this, ex,
+                    "Problem processing " + dataBytes.length + " bytes.");
         }
 
         return byteArrayOutputStream.toByteArray();

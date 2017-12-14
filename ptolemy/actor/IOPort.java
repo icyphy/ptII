@@ -218,8 +218,8 @@ public class IOPort extends ComponentPort {
      *   a port already in the container.
      */
     public IOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
+            boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setInput(isInput);
         setOutput(isOutput);
@@ -315,13 +315,13 @@ public class IOPort extends ComponentPort {
         } else if (attribute == defaultValue) {
             Token value = defaultValue.getToken();
             if (value instanceof ArrayToken) {
-                    _persistentTokens = ((ArrayToken) value).arrayValue();
-                    _persistentTokensInside = ((ArrayToken) value).arrayValue();
-                    _persistentToken = null;
+                _persistentTokens = ((ArrayToken) value).arrayValue();
+                _persistentTokensInside = ((ArrayToken) value).arrayValue();
+                _persistentToken = null;
             } else {
-                    _persistentToken = value;
-                    _persistentTokens = null;
-                    _persistentTokensInside = null;
+                _persistentToken = value;
+                _persistentTokens = null;
+                _persistentTokensInside = null;
             }
         }
         super.attributeChanged(attribute);
@@ -348,8 +348,8 @@ public class IOPort extends ComponentPort {
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
      */
-    public void broadcast(Token token) throws IllegalActionException,
-    NoRoomException {
+    public void broadcast(Token token)
+            throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -357,9 +357,9 @@ public class IOPort extends ComponentPort {
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this,
-                    IOPortEvent.SEND_BEGIN, IOPortEvent.ALLCHANNELS, true,
-                    token));
+            _notifyPortEventListeners(
+                    new IOPortEvent(this, IOPortEvent.SEND_BEGIN,
+                            IOPortEvent.ALLCHANNELS, true, token));
         }
 
         try {
@@ -389,9 +389,9 @@ public class IOPort extends ComponentPort {
             }
         } finally {
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this,
-                        IOPortEvent.SEND_END, IOPortEvent.ALLCHANNELS, true,
-                        token));
+                _notifyPortEventListeners(
+                        new IOPortEvent(this, IOPortEvent.SEND_END,
+                                IOPortEvent.ALLCHANNELS, true, token));
             }
         }
     }
@@ -525,19 +525,13 @@ public class IOPort extends ComponentPort {
 
             if (t != null) {
                 if (width != t.intValue()) {
-                    throw new IllegalActionException(
-                            this,
-                            "The outside width ("
-                                    + width
-                                    + ") of port "
-                                    + getFullName()
-                                    + " is different from the width constrain specified by parameter "
-                                    + parameter
-                                    + " with container "
-                                    + parameter.getContainer()
-                                    + ". A"
-                                    + " possible fix is to right clicking on the"
-                                    + " outside relation(s) and set the width -1.");
+                    throw new IllegalActionException(this, "The outside width ("
+                            + width + ") of port " + getFullName()
+                            + " is different from the width constrain specified by parameter "
+                            + parameter + " with container "
+                            + parameter.getContainer() + ". A"
+                            + " possible fix is to right clicking on the"
+                            + " outside relation(s) and set the width -1.");
                 }
             }
         }
@@ -601,7 +595,8 @@ public class IOPort extends ComponentPort {
         try {
             newObject.attributeChanged(newObject.defaultValue);
         } catch (IllegalActionException e) {
-            throw new CloneNotSupportedException("Unexpected cloning error: " + e);
+            throw new CloneNotSupportedException(
+                    "Unexpected cloning error: " + e);
         }
 
         return newObject;
@@ -692,7 +687,7 @@ public class IOPort extends ComponentPort {
                     if (width == -1) {
                         throw new IllegalActionException(this,
                                 "Width of relation \"" + relation.getName()
-                                + "\" was -1?");
+                                        + "\" was -1?");
                     }
 
                     Receiver[][] result = new Receiver[width][1];
@@ -883,8 +878,8 @@ public class IOPort extends ComponentPort {
      * width.
      * @exception InvalidStateException Not thrown in this base class
      */
-    public Receiver[][] deepGetReceivers() throws InvalidStateException,
-    IllegalActionException {
+    public Receiver[][] deepGetReceivers()
+            throws InvalidStateException, IllegalActionException {
         if (!isInput()) {
             return _EMPTY_RECEIVER_ARRAY;
         }
@@ -909,8 +904,8 @@ public class IOPort extends ComponentPort {
                 Receiver[][] deepReceiver = relation.deepReceivers(this);
 
                 if (deepReceiver != null && deepReceiver.length > 0) {
-                    int size = java.lang.Math.min(deepReceiver.length, width
-                            - index);
+                    int size = java.lang.Math.min(deepReceiver.length,
+                            width - index);
 
                     for (int i = 0; i < size; i++) {
                         _insideReceivers[index++] = deepReceiver[i];
@@ -952,8 +947,8 @@ public class IOPort extends ComponentPort {
      *   no receivers have been created, if the port is not an input port, or
      *   if the channel index is out of range.
      */
-    public Token get(int channelIndex) throws NoTokenException,
-    IllegalActionException {
+    public Token get(int channelIndex)
+            throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
@@ -973,16 +968,16 @@ public class IOPort extends ComponentPort {
                     throw new IllegalActionException(this,
                             "Port is not an input port!");
                 } else {
-                    throw new IllegalActionException(this, "Channel index "
-                            + channelIndex
-                            + " is out of range, because width is only "
-                            + getWidth() + ".");
+                    throw new IllegalActionException(this,
+                            "Channel index " + channelIndex
+                                    + " is out of range, because width is only "
+                                    + getWidth() + ".");
                 }
             }
 
             if (localReceivers[channelIndex] == null) {
-                throw new NoTokenException(this, "No receiver at index: "
-                        + channelIndex + ".");
+                throw new NoTokenException(this,
+                        "No receiver at index: " + channelIndex + ".");
             }
         } finally {
             _workspace.doneReading();
@@ -1056,9 +1051,9 @@ public class IOPort extends ComponentPort {
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this,
-                    IOPortEvent.GET_BEGIN, channelIndex, true, null,
-                    vectorLength));
+            _notifyPortEventListeners(
+                    new IOPortEvent(this, IOPortEvent.GET_BEGIN, channelIndex,
+                            true, null, vectorLength));
         }
 
         try {
@@ -1078,8 +1073,8 @@ public class IOPort extends ComponentPort {
         }
 
         if (localReceivers[channelIndex] == null) {
-            throw new NoTokenException(this, "get: no receiver at index: "
-                    + channelIndex + ".");
+            throw new NoTokenException(this,
+                    "get: no receiver at index: " + channelIndex + ".");
         }
 
         Token[] result = null;
@@ -1087,7 +1082,8 @@ public class IOPort extends ComponentPort {
         try {
             result = localReceivers[channelIndex][0].getArray(vectorLength);
             // Record the last of these received tokens if there is persistence.
-            _recordPersistentValueIfNecessary(channelIndex, result[result.length - 1], false);
+            _recordPersistentValueIfNecessary(channelIndex,
+                    result[result.length - 1], false);
         } catch (NoTokenException ex) {
             // There are not enough tokens. If persistence has been specified,
             // or if a SmoothToken is available, then we can fill in the array.
@@ -1096,25 +1092,23 @@ public class IOPort extends ComponentPort {
             for (int i = 0; i < vectorLength; i++) {
                 if (localReceivers[channelIndex][0].hasToken()) {
                     result[i] = localReceivers[channelIndex][0].get();
-                    _recordPersistentValueIfNecessary(channelIndex, result[i], false);
+                    _recordPersistentValueIfNecessary(channelIndex, result[i],
+                            false);
                 } else {
                     result[i] = _getPersistentValue(channelIndex, false);
                     if (result[i] == null) {
                         throw new NoTokenException(this,
-                                "get: Requested "
-                                + vectorLength
-                                + " tokens, but only "
-                                + i
-                                + " were available.");
+                                "get: Requested " + vectorLength
+                                        + " tokens, but only " + i
+                                        + " were available.");
                     }
                 }
             }
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this,
-                    IOPortEvent.GET_END, channelIndex, true, result,
-                    vectorLength));
+            _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.GET_END,
+                    channelIndex, true, result, vectorLength));
         }
 
         int index = 1;
@@ -1414,16 +1408,16 @@ public class IOPort extends ComponentPort {
     @SuppressWarnings("unchecked")
     static public int getRelationIndex(IOPort port, Relation relation,
             boolean isOutsideRelation) {
-        List<Relation> relations = isOutsideRelation ? port
-                .linkedRelationList() : port.insideRelationList();
-                int i = 0;
-                for (Relation relation2 : relations) {
-                    if (relation == relation2) {
-                        return i;
-                    }
-                    ++i;
-                }
-                return -1;
+        List<Relation> relations = isOutsideRelation ? port.linkedRelationList()
+                : port.insideRelationList();
+        int i = 0;
+        for (Relation relation2 : relations) {
+            if (relation == relation2) {
+                return i;
+            }
+            ++i;
+        }
+        return -1;
     }
 
     /** Return the current time associated with a certain channel.
@@ -1479,7 +1473,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the channel index
      *  is out of range or if the port is not an input port.
      */
-    public Time getModelTime(int channelIndex, boolean inside) throws IllegalActionException {
+    public Time getModelTime(int channelIndex, boolean inside)
+            throws IllegalActionException {
         Receiver[][] localReceivers;
 
         try {
@@ -1560,10 +1555,9 @@ public class IOPort extends ComponentPort {
                             .getDecorator();
                     int oldSeqNum = ((IntToken) attribute.sequenceNumber
                             .getToken()).intValue();
-                    if (oldSeqNum == -1
-                            && communicationAspect != null
+                    if (oldSeqNum == -1 && communicationAspect != null
                             && !_communicationAspects
-                            .contains(communicationAspect)) {
+                                    .contains(communicationAspect)) {
                         attribute.sequenceNumber.setToken(new IntToken(seqNum));
                         _communicationAspectMap.put(seqNum, attribute);
                         sequenceNumber = sequenceNumber + 1;
@@ -1585,7 +1579,7 @@ public class IOPort extends ComponentPort {
                     Decorator decorator = attribute.getDecorator();
                     if (decorator != null) {
                         _communicationAspects
-                        .add((CommunicationAspect) decorator);
+                                .add((CommunicationAspect) decorator);
                     }
                 }
             } catch (Exception e) {
@@ -1845,12 +1839,12 @@ public class IOPort extends ComponentPort {
                                 // The previous error message was meaningless.
                                 throw new InternalErrorException(this, ex,
                                         "Failed to set farReceivers[" + index
-                                        + "] = deepReceivers[" + i
-                                        + "]. "
-                                        + "farReceivers.length = "
-                                        + farReceivers.length
-                                        + " deepReceivers.length = "
-                                        + deepReceivers.length + ".");
+                                                + "] = deepReceivers[" + i
+                                                + "]. "
+                                                + "farReceivers.length = "
+                                                + farReceivers.length
+                                                + " deepReceivers.length = "
+                                                + deepReceivers.length + ".");
                             }
                             index++;
                         }
@@ -1998,8 +1992,8 @@ public class IOPort extends ComponentPort {
         for (IOPort port : _widthEqualToPort) {
             try {
                 Set<IORelation> outsideUnspecifiedWidths = RelationWidthInference
-                        ._relationsWithUnspecifiedWidths(port
-                                .linkedRelationList());
+                        ._relationsWithUnspecifiedWidths(
+                                port.linkedRelationList());
                 // It there is still a outsideUnspecifiedWidths, the width
                 // is not yet completely specified.
                 if (outsideUnspecifiedWidths.isEmpty()) {
@@ -2098,10 +2092,10 @@ public class IOPort extends ComponentPort {
                 throw new IllegalActionException(this,
                         "Port is not an input port!");
             } else {
-                throw new IllegalActionException(this, "Channel index "
-                        + channelIndex
-                        + " is out of range, because width is only "
-                        + getWidth() + ".");
+                throw new IllegalActionException(this,
+                        "Channel index " + channelIndex
+                                + " is out of range, because width is only "
+                                + getWidth() + ".");
             }
         }
 
@@ -2115,7 +2109,8 @@ public class IOPort extends ComponentPort {
         }
 
         if (_debugging) {
-            _debug("hasToken on channel " + channelIndex + " returns " + result);
+            _debug("hasToken on channel " + channelIndex + " returns "
+                    + result);
         }
 
         return result;
@@ -2437,7 +2432,8 @@ public class IOPort extends ComponentPort {
 
             Nameable container = getContainer();
 
-            if (!(container instanceof CompositeActor && isInput() && isOpaque())) {
+            if (!(container instanceof CompositeActor && isInput()
+                    && isOpaque())) {
                 // Return an empty list, since this port cannot send data
                 // to the inside.
                 return new LinkedList<IOPort>();
@@ -2483,7 +2479,8 @@ public class IOPort extends ComponentPort {
 
             Nameable container = getContainer();
 
-            if (!(container instanceof CompositeActor && isOutput() && isOpaque())) {
+            if (!(container instanceof CompositeActor && isOutput()
+                    && isOpaque())) {
                 // Return an empty list, since this port cannot receive data
                 // from the inside.
                 return new LinkedList<IOPort>();
@@ -2984,13 +2981,13 @@ public class IOPort extends ComponentPort {
     public void reset() throws IllegalActionException {
         Token value = defaultValue.getToken();
         if (value instanceof ArrayToken) {
-                _persistentTokens = ((ArrayToken) value).arrayValue();
-                _persistentTokensInside = ((ArrayToken) value).arrayValue();
-                _persistentToken = null;
+            _persistentTokens = ((ArrayToken) value).arrayValue();
+            _persistentTokensInside = ((ArrayToken) value).arrayValue();
+            _persistentToken = null;
         } else {
-                _persistentToken = value;
-                _persistentTokens = null;
-                _persistentTokensInside = null;
+            _persistentToken = value;
+            _persistentTokens = null;
+            _persistentTokensInside = null;
         }
     }
 
@@ -3109,14 +3106,14 @@ public class IOPort extends ComponentPort {
         Receiver[][] farReceivers;
 
         if (_debugging) {
-            _debug("send to channel " + channelIndex
-                    + " token array of length " + vectorLength);
+            _debug("send to channel " + channelIndex + " token array of length "
+                    + vectorLength);
         }
 
         if (_hasPortEventListeners) {
-            _notifyPortEventListeners(new IOPortEvent(this,
-                    IOPortEvent.SEND_BEGIN, channelIndex, true, tokenArray,
-                    vectorLength));
+            _notifyPortEventListeners(
+                    new IOPortEvent(this, IOPortEvent.SEND_BEGIN, channelIndex,
+                            true, tokenArray, vectorLength));
         }
 
         try {
@@ -3143,9 +3140,9 @@ public class IOPort extends ComponentPort {
             }
         } finally {
             if (_hasPortEventListeners) {
-                _notifyPortEventListeners(new IOPortEvent(this,
-                        IOPortEvent.SEND_END, channelIndex, true, tokenArray,
-                        vectorLength));
+                _notifyPortEventListeners(
+                        new IOPortEvent(this, IOPortEvent.SEND_END,
+                                channelIndex, true, tokenArray, vectorLength));
             }
         }
     }
@@ -3204,7 +3201,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
      */
-    public void sendClearInside(int channelIndex) throws IllegalActionException {
+    public void sendClearInside(int channelIndex)
+            throws IllegalActionException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -3323,8 +3321,8 @@ public class IOPort extends ComponentPort {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         // Invalidate schedule and type resolution of the old container.
         Actor oldContainer = (Actor) getContainer();
 
@@ -3402,7 +3400,8 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted (not thrown in this base class).
      */
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
@@ -3595,7 +3594,7 @@ public class IOPort extends ComponentPort {
      public List sourcePortList(Receiver receiver) {
      // This is a surprisingly difficult thing to do...
      List result = new LinkedList();
-
+    
      // Next, we iterate over ports in the sourcePortList() to find
      // those that have one of these receivers in their remote
      // receiver list.
@@ -3652,8 +3651,8 @@ public class IOPort extends ComponentPort {
                         Token t = get(i);
 
                         if (_debugging) {
-                            _debug(getName(), "transferring input from "
-                                    + getName());
+                            _debug(getName(),
+                                    "transferring input from " + getName());
                         }
 
                         sendInside(i, t);
@@ -4181,8 +4180,8 @@ public class IOPort extends ComponentPort {
                                 result.append("{");
 
                                 if (receiver[j] != null) {
-                                    result.append(receiver[j].getClass()
-                                            .getName());
+                                    result.append(
+                                            receiver[j].getClass().getName());
                                     result.append(" in ");
                                     result.append(receiver[j].getContainer()
                                             .getFullName());
@@ -4223,13 +4222,13 @@ public class IOPort extends ComponentPort {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         if (_isInput) {
-            output.write(_getIndentPrefix(depth)
-                    + "<property name=\"input\"/>\n");
+            output.write(
+                    _getIndentPrefix(depth) + "<property name=\"input\"/>\n");
         }
 
         if (_isOutput) {
-            output.write(_getIndentPrefix(depth)
-                    + "<property name=\"output\"/>\n");
+            output.write(
+                    _getIndentPrefix(depth) + "<property name=\"output\"/>\n");
         }
 
         if (_isMultiport) {
@@ -4311,7 +4310,7 @@ public class IOPort extends ComponentPort {
      *  workspace, so the caller should be.
      *  This method ignores the relations for which the width still has
      *  to be inferred.
-
+    
      *  @param except The relation to exclude.
      *  @return The sums of the width of the relations linked on the outside,
      *  except for the specified port.
@@ -4409,7 +4408,8 @@ public class IOPort extends ComponentPort {
             }
 
             // Create a linked list of the results to be merged.
-            Receiver[][][] results = new Receiver[groupRelationsList.size()][][];
+            Receiver[][][] results = new Receiver[groupRelationsList
+                    .size()][][];
             int index = 0;
             int width = 0;
             Iterator<?> groupRelations = groupRelationsList.iterator();
@@ -4787,9 +4787,7 @@ public class IOPort extends ComponentPort {
                         try {
                             _getInsideWidth(null);
                         } catch (InvalidStateException ex) {
-                            throw new IllegalActionException(
-                                    this,
-                                    relation,
+                            throw new IllegalActionException(this, relation,
                                     "Attempt to link a second bus relation "
                                             + "with unspecified width to the inside "
                                             + "of a port.");
@@ -4822,10 +4820,9 @@ public class IOPort extends ComponentPort {
 
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
-                        if (theRelation != null && !theRelation.isWidthFixed()) {
-                            throw new IllegalActionException(
-                                    this,
-                                    relation,
+                        if (theRelation != null
+                                && !theRelation.isWidthFixed()) {
+                            throw new IllegalActionException(this, relation,
                                     "Attempt to link a second bus relation "
                                             + "with unspecified width to the outside "
                                             + "of a port.");
@@ -4850,13 +4847,12 @@ public class IOPort extends ComponentPort {
         if (inside) {
             tokens = _persistentTokensInside;
         }
-        if (tokens != null
-                && tokens.length > channelIndex
+        if (tokens != null && tokens.length > channelIndex
                 && tokens[channelIndex] != null) {
             Token result = tokens[channelIndex];
             if (result instanceof SmoothToken) {
                 Time currentTime = getModelTime(channelIndex, inside);
-                return ((SmoothToken)result).extrapolate(currentTime);
+                return ((SmoothToken) result).extrapolate(currentTime);
             } else {
                 return result;
             }
@@ -4934,9 +4930,8 @@ public class IOPort extends ComponentPort {
                 if (result.length != width) {
                     throw new InvalidStateException(this,
                             "getReceivers(IORelation, int): "
-                                    + "Invalid receivers. "
-                                    + "result.length = " + result.length
-                                    + " width = " + width
+                                    + "Invalid receivers. " + "result.length = "
+                                    + result.length + " width = " + width
                                     + ". Need to call createReceivers()?");
                 }
             }
@@ -5057,9 +5052,9 @@ public class IOPort extends ComponentPort {
                         // Need to check to see if there is a director, otherwise
                         // _description will fail on MaximumEntropySpectrum, see
                         // ptolemy/domains/sdf/lib/test/MaximumEntropySpectrum.tcl
-                        if (createReceivers
-                                && isOpaque()
-                                && ((Actor) getContainer()).getDirector() != null) {
+                        if (createReceivers && isOpaque()
+                                && ((Actor) getContainer())
+                                        .getDirector() != null) {
                             // FIXME: maybe we should only call createReceivers()
                             // if the sum is less than the _width (see below).
                             createReceivers();
@@ -5080,7 +5075,8 @@ public class IOPort extends ComponentPort {
         try {
             defaultValue = new Parameter(this, "defaultValue");
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e.getCause(), e.getMessage());
+            throw new IllegalActionException(this, e.getCause(),
+                    e.getMessage());
         }
     }
 
@@ -5120,15 +5116,14 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the width of this port cannot be
      *   determined.
      */
-    private void _recordPersistentValueIfNecessary(int channelIndex, Token token, boolean inside)
-            throws IllegalActionException {
+    private void _recordPersistentValueIfNecessary(int channelIndex,
+            Token token, boolean inside) throws IllegalActionException {
         Token[] tokens = _persistentTokens;
         if (inside) {
             tokens = _persistentTokensInside;
         }
 
-        if (_persistentToken != null
-                || tokens != null
+        if (_persistentToken != null || tokens != null
                 || token instanceof SmoothToken) {
             // Token may be persistent. Make sure there is a place to store it.
             int width = getWidth();
@@ -5182,22 +5177,19 @@ public class IOPort extends ComponentPort {
             // gets reset at the receiver. Notice that since tokens are
             // immutable, we have to create a new SmoothToken here.
             Time currentTime = getModelTime(channelIndex, inside);
-            Time tokenTime = ((SmoothToken)token).getTime();
+            Time tokenTime = ((SmoothToken) token).getTime();
             if (!currentTime.equals(tokenTime)) {
-                token = new SmoothToken(
-                        ((SmoothToken) token).doubleValue(),
-                        currentTime,
-                        ((SmoothToken) token).derivativeValues());
+                token = new SmoothToken(((SmoothToken) token).doubleValue(),
+                        currentTime, ((SmoothToken) token).derivativeValues());
             }
             tokens[channelIndex] = token;
-        } else if (tokens != null
-                && _persistentToken == null
+        } else if (tokens != null && _persistentToken == null
                 && tokens[channelIndex] instanceof SmoothToken) {
             // If the persistence is because of having received a SmoothToken, but we are
             // now receiving something that is not a SmoothToken, then we need to reverse the
             // persistence.
-                // FIXME: Potential weird corner case here where defaultValue is an array
-                // that is not long enough to encompass this channel.
+            // FIXME: Potential weird corner case here where defaultValue is an array
+            // that is not long enough to encompass this channel.
             tokens[channelIndex] = null;
         } else if (_persistentToken != null) {
             tokens[channelIndex] = token;

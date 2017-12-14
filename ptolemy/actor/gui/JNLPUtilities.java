@@ -87,8 +87,8 @@ public class JNLPUtilities {
         // so we want to always refer to the files with the same URL
         // so as to avoid duplicate windows
         if (possibleJarURL.toExternalForm().startsWith("jar:")) {
-            String possibleJarURLPath = StringUtilities.substitute(
-                    possibleJarURL.toExternalForm(), " ", "%20");
+            String possibleJarURLPath = StringUtilities
+                    .substitute(possibleJarURL.toExternalForm(), " ", "%20");
             if (possibleJarURLPath.contains("..")) {
                 // A jar URL with a relative path.  about:checkCompleteDemos will generate these.
                 String[] path = possibleJarURLPath.split("/");
@@ -128,14 +128,14 @@ public class JNLPUtilities {
             URL jarURL = new URL(possibleJarURLPath);
             //System.out.println("JNLPUtilities: 2 jarURL: " + jarURL);
             // FIXME: should we check to see if the jarURL exists here?
-//            if (jarURL == null) {
-//                try {
-//                    return ClassUtilities
-//                            .jarURLEntryResource(possibleJarURLPath);
-//                } catch (IOException ex) {
-//                    throw new java.net.MalformedURLException(ex.toString());
-//                }
-//            }
+            //            if (jarURL == null) {
+            //                try {
+            //                    return ClassUtilities
+            //                            .jarURLEntryResource(possibleJarURLPath);
+            //                } catch (IOException ex) {
+            //                    throw new java.net.MalformedURLException(ex.toString());
+            //                }
+            //            }
             return jarURL;
         }
 
@@ -160,7 +160,8 @@ public class JNLPUtilities {
      *  @return The File.
      *  @exception IOException If the jar URL cannot be saved as a temporary file.
      */
-    public static File getResourceSaveJarURLAsTempFile(String spec) throws IOException {
+    public static File getResourceSaveJarURLAsTempFile(String spec)
+            throws IOException {
         // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec);
         // If the spec is not a jar URL, then check in file system.
         // This method is used by CapeCode to find .js file resources with require().
@@ -186,9 +187,12 @@ public class JNLPUtilities {
             url = ClassUtilities.getResource(spec2);
             if (url == null) {
                 // If we are trying to read something with a path like ./decode.js, then check the _lastSpec
-                if (spec.startsWith("." + File.separator) && _lastSpec != null) {
-                    String parentLastSpec = _lastSpec.substring(0, _lastSpec.lastIndexOf(File.separator) + 1);
-                    return getResourceSaveJarURLAsTempFile(parentLastSpec + spec.substring(2));
+                if (spec.startsWith("." + File.separator)
+                        && _lastSpec != null) {
+                    String parentLastSpec = _lastSpec.substring(0,
+                            _lastSpec.lastIndexOf(File.separator) + 1);
+                    return getResourceSaveJarURLAsTempFile(
+                            parentLastSpec + spec.substring(2));
                 }
                 return null;
             }
@@ -213,7 +217,8 @@ public class JNLPUtilities {
                     return results;
                 }
             } catch (URISyntaxException ex) {
-                IOException ioException = new IOException("Failed to look up " + url + " in the cache.");
+                IOException ioException = new IOException(
+                        "Failed to look up " + url + " in the cache.");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -232,22 +237,25 @@ public class JNLPUtilities {
                 if (lastIndexOfDot == -1) {
                     prefix = spec.substring(lastIndexOfSlash + 1);
                 } else {
-                    prefix = spec.substring(lastIndexOfSlash + 1, lastIndexOfDot);
+                    prefix = spec.substring(lastIndexOfSlash + 1,
+                            lastIndexOfDot);
                     suffix = "." + spec.substring(lastIndexOfDot + 1);
                 }
             }
             try {
                 String temporaryFileName = saveJarURLAsTempFile(url.toString(),
                         prefix, suffix, null /*directory*/);
-                results =  new File(temporaryFileName);
+                results = new File(temporaryFileName);
                 // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 1.5 reslts: " + results + " exists: " + results.exists());
             } catch (IOException ex) {
                 // If the spec exists with a trailing / or \ , then just
                 // return that so that we can detect that it is a
                 // directory.  FIXME: the directory is not actually
                 // created here, which could be confusing.
-                if (spec.length() > 0 && spec.charAt(spec.length()-1) != File.separatorChar) {
-                    URL urlDirectory = ClassUtilities.getResource(spec + File.separator);
+                if (spec.length() > 0 && spec
+                        .charAt(spec.length() - 1) != File.separatorChar) {
+                    URL urlDirectory = ClassUtilities
+                            .getResource(spec + File.separator);
                     if (urlDirectory != null) {
                         results = new File(spec + File.separator);
                     }
@@ -261,7 +269,8 @@ public class JNLPUtilities {
             try {
                 _jarURITemporaryFiles.put(url.toURI(), results);
             } catch (URISyntaxException ex) {
-                IOException ioException = new IOException("Failed to add " + url + " in the cache.");
+                IOException ioException = new IOException(
+                        "Failed to add " + url + " in the cache.");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -273,9 +282,9 @@ public class JNLPUtilities {
             // creating a file.
             try {
                 results = new File(url.toURI());
-            } catch(URISyntaxException e) {
+            } catch (URISyntaxException e) {
                 results = new File(url.getPath());
-            } catch(IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 results = new File(url.getPath());
             }
             // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 3 return: " + results);
@@ -365,10 +374,11 @@ public class JNLPUtilities {
 
             temporaryFile = File.createTempFile(prefix, suffix, directory);
         } catch (Exception ex) {
-            throw new IOException("While trying to save a jar URL \"" + jarURLName
-                                               + "\", failed to create temporary file with prefix: \"" + prefix
-                                               + "\", suffix: \"" + suffix
-                                               + "\", directory: \"" + directory);
+            throw new IOException("While trying to save a jar URL \""
+                    + jarURLName
+                    + "\", failed to create temporary file with prefix: \""
+                    + prefix + "\", suffix: \"" + suffix + "\", directory: \""
+                    + directory);
         }
         temporaryFile.deleteOnExit();
 
@@ -381,12 +391,12 @@ public class JNLPUtilities {
             // Hmm, jarURL could be referring to a directory.
             if (temporaryFile.delete()) {
                 throw new IOException("Copying \"" + jarURL + "\" to \""
-                                      + temporaryFile + "\" failed: " + throwable
-                                      + "  Then deleting \"" + temporaryFile
-                                      + "\" failed?");
+                        + temporaryFile + "\" failed: " + throwable
+                        + "  Then deleting \"" + temporaryFile + "\" failed?");
             }
             Path directoryPath = directory.toPath();
-            Path temporaryDirectory = Files.createTempDirectory(directoryPath, prefix);
+            Path temporaryDirectory = Files.createTempDirectory(directoryPath,
+                    prefix);
             temporaryFile = temporaryDirectory.toFile();
             temporaryFile.deleteOnExit();
             FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
@@ -438,10 +448,9 @@ public class JNLPUtilities {
         if (jarURLParentFileName.endsWith(parentEntryFileName)
                 && jarURLParentFileName.startsWith("jar:file:/")) {
             // The top level directory, probably $PTII
-            String jarURLTop = jarURLParentFileName.substring(
-                    9,
+            String jarURLTop = jarURLParentFileName.substring(9,
                     jarURLParentFileName.length()
-                    - parentEntryFileName.length());
+                            - parentEntryFileName.length());
 
             File temporaryFile = new File(jarURLTop, entryFileName);
 
@@ -470,8 +479,8 @@ public class JNLPUtilities {
         }
 
         if (jarURL == null) {
-            throw new FileNotFoundException("Could not find '" + jarURLName
-                    + "'");
+            throw new FileNotFoundException(
+                    "Could not find '" + jarURLName + "'");
         }
 
         return jarURL;
@@ -483,7 +492,7 @@ public class JNLPUtilities {
     /** The map of URIs to Files used by
      * getResourceSaveJarURIAsTempFile().
      */
-    private static Map<URI,File> _jarURITemporaryFiles;
+    private static Map<URI, File> _jarURITemporaryFiles;
 
     private static String _lastSpec = null;
 }

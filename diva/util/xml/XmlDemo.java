@@ -63,8 +63,8 @@ public class XmlDemo {
         int errors = reader.getErrorCount();
         int warnings = reader.getWarningCount();
 
-        System.err.println("Completed: " + errors + " errors, " + warnings
-                + " warnings");
+        System.err.println(
+                "Completed: " + errors + " errors, " + warnings + " warnings");
 
         if (errors > 0) {
             System.err.println("Unrecoverable errors in XML. Stop.");
@@ -73,7 +73,7 @@ public class XmlDemo {
 
         // Now print it
         System.out
-        .println("\nHaving parsed the document, we will print it out.");
+                .println("\nHaving parsed the document, we will print it out.");
         System.out.println("Here is the DTD:\n");
 
         writer = new XmlWriter();

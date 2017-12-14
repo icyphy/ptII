@@ -81,8 +81,8 @@ public class ExpressionShellFrame extends TableauFrame {
     @Override
     protected void _help() {
         try {
-            URL doc = getClass().getClassLoader().getResource(
-                    "doc/expressions.htm");
+            URL doc = getClass().getClassLoader()
+                    .getResource("doc/expressions.htm");
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
             System.out.println("ExpressionShellTableau._help(): " + ex);

@@ -73,10 +73,11 @@ public class Equals extends Transformer {
         input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"60\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-14\" y=\"8\""
-                + "style=\"font-size:24\">==</text>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                        + "width=\"60\" height=\"30\" "
+                        + "style=\"fill:white\"/>\n" + "<text x=\"-14\" y=\"8\""
+                        + "style=\"font-size:24\">==</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

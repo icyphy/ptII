@@ -54,7 +54,8 @@ public class NegativeLengthCycleAnalysis extends Analysis {
      *  @param graph The given graph.
      *  @param edgeLengths The lengths associated with the edges of the graph.
      */
-    public NegativeLengthCycleAnalysis(Graph graph, ToDoubleMapping edgeLengths) {
+    public NegativeLengthCycleAnalysis(Graph graph,
+            ToDoubleMapping edgeLengths) {
         super(new FloydWarshallNegativeLengthCycleStrategy(graph, edgeLengths));
     }
 

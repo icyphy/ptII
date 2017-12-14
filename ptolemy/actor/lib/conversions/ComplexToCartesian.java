@@ -72,9 +72,9 @@ public class ComplexToCartesian extends TypedAtomicActor {
         y = new TypedIOPort(this, "y", false, true);
         y.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

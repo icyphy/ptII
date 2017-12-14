@@ -136,7 +136,8 @@ public class JSONArray {
             case ']':
             case ')':
                 if (q != c) {
-                    throw x.syntaxError("Expected a '" + new Character(q) + "'");
+                    throw x.syntaxError(
+                            "Expected a '" + new Character(q) + "'");
                 }
                 return;
             default:
@@ -235,10 +236,11 @@ public class JSONArray {
     public double getDouble(int index) throws JSONException {
         Object o = get(index);
         try {
-            return o instanceof Number ? ((Number) o).doubleValue() : Double
-                    .valueOf((String) o).doubleValue();
+            return o instanceof Number ? ((Number) o).doubleValue()
+                    : Double.valueOf((String) o).doubleValue();
         } catch (Exception e) {
-            throw new JSONException("JSONArray[" + index + "] is not a number.");
+            throw new JSONException(
+                    "JSONArray[" + index + "] is not a number.");
         }
     }
 
@@ -284,7 +286,8 @@ public class JSONArray {
         if (o instanceof JSONObject) {
             return (JSONObject) o;
         }
-        throw new JSONException("JSONArray[" + index + "] is not a JSONObject.");
+        throw new JSONException(
+                "JSONArray[" + index + "] is not a JSONObject.");
     }
 
     /**
@@ -357,8 +360,8 @@ public class JSONArray {
      *              object at that index.
      */
     public Object opt(int index) {
-        return index < 0 || index >= length() ? null : this.myArrayList
-                .get(index);
+        return index < 0 || index >= length() ? null
+                : this.myArrayList.get(index);
     }
 
     /**

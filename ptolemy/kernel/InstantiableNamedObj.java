@@ -140,8 +140,8 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
         try {
             workspace().getReadAccess();
 
-            InstantiableNamedObj newObject = (InstantiableNamedObj) super
-                    .clone(workspace);
+            InstantiableNamedObj newObject = (InstantiableNamedObj) super.clone(
+                    workspace);
 
             // The new object does not have any other objects deferring
             // their MoML definitions to it, so we have to reset this.

@@ -30,36 +30,36 @@
 // http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
 // so the following copyright applies:
 
- /*
- * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *
- *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+/*
+* Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+*   - Redistributions of source code must retain the above copyright
+*     notice, this list of conditions and the following disclaimer.
+*
+*   - Redistributions in binary form must reproduce the above copyright
+*     notice, this list of conditions and the following disclaimer in the
+*     documentation and/or other materials provided with the distribution.
+*
+*   - Neither the name of Oracle or the names of its
+*     contributors may be used to endorse or promote products derived
+*     from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+* IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+* PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+* CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+* EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 package ptolemy.actor.gui;
 
@@ -167,8 +167,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (eal)
  */
 @SuppressWarnings("serial")
-public class PortConfigurerDialog extends PtolemyDialog implements
-ChangeListener {
+public class PortConfigurerDialog extends PtolemyDialog
+        implements ChangeListener {
     /**
      * Construct a dialog that presents the ports as a table. Each row of the
      * table corresponds to one port. The user modifies the table to specify
@@ -189,8 +189,8 @@ ChangeListener {
      */
     public PortConfigurerDialog(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
-        super("Configure ports for " + target.getName(), tableau, owner,
-                target, configuration);
+        super("Configure ports for " + target.getName(), tableau, owner, target,
+                configuration);
 
         // Listen for changes that may need to be reflected in the table.
         getTarget().addChangeListener(this);
@@ -214,9 +214,10 @@ ChangeListener {
                 if (PtGUIUtilities.macOSLookAndFeel()
                         && (mouseEvent.isPopupTrigger() || mouseEvent
                                 .getButton() == MouseEvent.BUTTON1
-                                && (mouseEvent.getModifiersEx() | java.awt.event.InputEvent.CTRL_MASK) == java.awt.event.InputEvent.CTRL_MASK)
-                                || !PtGUIUtilities.macOSLookAndFeel()
-                                && mouseEvent.getButton() == MouseEvent.BUTTON3) {
+                                && (mouseEvent.getModifiersEx()
+                                        | java.awt.event.InputEvent.CTRL_MASK) == java.awt.event.InputEvent.CTRL_MASK)
+                        || !PtGUIUtilities.macOSLookAndFeel() && mouseEvent
+                                .getButton() == MouseEvent.BUTTON3) {
                     Point point = mouseEvent.getPoint();
                     int row = _portTable.rowAtPoint(point);
                     _setSelectedRow(row);
@@ -386,8 +387,8 @@ ChangeListener {
         if (_isDirty()) {
             int option = JOptionPane.showConfirmDialog(getOwner(),
                     "Save port modifications on " + getTarget().getFullName()
-                    + "?", "Unsaved Port Modifications",
-                    JOptionPane.YES_NO_OPTION);
+                            + "?",
+                    "Unsaved Port Modifications", JOptionPane.YES_NO_OPTION);
 
             switch (option) {
             case JOptionPane.YES_OPTION:
@@ -427,9 +428,9 @@ ChangeListener {
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             for (int j = i + 1; j < _portTableModel.getRowCount(); j++) {
                 if (portNameInTable[i].equals(portNameInTable[j])) {
-                    JOptionPane.showMessageDialog(this, portNameInTable[i]
-                            + " is a duplicate port name.\n"
-                            + "Please remove all but one");
+                    JOptionPane.showMessageDialog(this,
+                            portNameInTable[i] + " is a duplicate port name.\n"
+                                    + "Please remove all but one");
                     return false;
                 }
             }
@@ -489,9 +490,11 @@ ChangeListener {
                         + StringUtilities.escapeForXML(actualPort.getName())
                         + "\" entity=\"" + container.getName() + "\" />");
             } else {
-                moml.append("<deletePort name=\""
-                        + StringUtilities.escapeForXML(actualPort
-                                .getName(container)) + "\" />");
+                moml.append(
+                        "<deletePort name=\""
+                                + StringUtilities.escapeForXML(
+                                        actualPort.getName(container))
+                                + "\" />");
             }
 
             // NOTE: the context is the composite entity containing
@@ -544,13 +547,10 @@ ChangeListener {
 
                     if (!actualPort.getName().equals(tableValue)) {
                         if (tableValue.contains(".")) {
-                            MessageHandler
-                            .error("Failed to rename port "
+                            MessageHandler.error("Failed to rename port "
                                     + actualPort.getName()
                                     + "; port names are not allowed to contain periods.",
-                                    new InternalErrorException(
-                                            null,
-                                            null,
+                                    new InternalErrorException(null, null,
                                             "Instead, alias the port by setting display name. "
                                                     + "Right-click on the port,\nchoose Rename, then enter "
                                                     + "the desired alias into the field Display Name."));
@@ -591,7 +591,8 @@ ChangeListener {
 
                         if (iop.isMultiport() != tableValue.booleanValue()) {
                             havePortUpdate = true;
-                            updates.put(ColumnNames.COL_MULTIPORT, Boolean.TRUE);
+                            updates.put(ColumnNames.COL_MULTIPORT,
+                                    Boolean.TRUE);
                         }
                     }
                 }
@@ -665,13 +666,13 @@ ChangeListener {
                             .getAttribute("_cardinal");
 
                     if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase(
-                                Locale.getDefault());
+                        _direction = _cardinal.getExpression()
+                                .toUpperCase(Locale.getDefault());
                     }
 
                     if (_direction == null && !direction.equals("DEFAULT")
                             || _direction != null
-                            && !direction.equals(_direction)) {
+                                    && !direction.equals(_direction)) {
                         havePortUpdate = true;
                         updates.put(ColumnNames.COL_DIRECTION, Boolean.TRUE);
                     }
@@ -730,13 +731,10 @@ ChangeListener {
                     String tableValue = (String) portInfo
                             .get(ColumnNames.COL_NAME);
                     if (tableValue.contains(".")) {
-                        MessageHandler
-                        .error("Failed to add port \""
+                        MessageHandler.error("Failed to add port \""
                                 + tableValue
                                 + "\"; port names are not allowed to contain periods.",
-                                new InternalErrorException(
-                                        null,
-                                        null,
+                                new InternalErrorException(null, null,
                                         "Instead, provide a name without periods and then alias the port by setting display name.\n"
                                                 + "Right-click on the port, choose Rename, then enter "
                                                 + "the desired alias into the field Display Name."));
@@ -814,8 +812,8 @@ ChangeListener {
         if (haveSomeUpdate) {
             moml.append("</group>");
 
-            MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    getTarget(), moml.toString(), null);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, getTarget(),
+                    moml.toString(), null);
             request.setUndoable(true);
 
             // NOTE: There is no need to listen for completion or
@@ -826,10 +824,9 @@ ChangeListener {
             try {
                 getTarget().requestChange(request);
             } catch (Throwable throwable) {
-                MessageHandler.error(
-                        "Failed to apply changes",
-                        new InternalErrorException(getTarget(), throwable, moml
-                                .toString()));
+                MessageHandler.error("Failed to apply changes",
+                        new InternalErrorException(getTarget(), throwable,
+                                moml.toString()));
                 _applyChangeRequestFailed = true;
                 return false;
             }
@@ -840,8 +837,8 @@ ChangeListener {
         _enableApplyButton(false);
 
         // Update the remove button label.
-        _setSelectedRow(_portTable.getSelectionModel()
-                .getAnchorSelectionIndex());
+        _setSelectedRow(
+                _portTable.getSelectionModel().getAnchorSelectionIndex());
         return true;
     }
 
@@ -869,8 +866,8 @@ ChangeListener {
      */
     @Override
     protected URL _getHelpURL() {
-        URL helpURL = getClass().getClassLoader().getResource(
-                "ptolemy/actor/gui/doc/portConfigurerDialog.htm");
+        URL helpURL = getClass().getClassLoader()
+                .getResource("ptolemy/actor/gui/doc/portConfigurerDialog.htm");
         return helpURL;
     }
 
@@ -907,8 +904,8 @@ ChangeListener {
         } else if (button.equals("Add")) {
             _portTableModel.addNewPort();
         } else if (
-                // FIXME this depends on button name string length.
-                button.length() > 5 && button.substring(0, 6).equals("Remove")) {
+        // FIXME this depends on button name string length.
+        button.length() > 5 && button.substring(0, 6).equals("Remove")) {
             _portTableModel.removePort();
             _setSelectedRow(-1);
         } else {
@@ -946,8 +943,8 @@ ChangeListener {
                             .getAttribute("_cardinal");
 
                     if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase(
-                                Locale.getDefault());
+                        _direction = _cardinal.getExpression()
+                                .toUpperCase(Locale.getDefault());
                     } else {
                         _direction = "DEFAULT";
                     }
@@ -1005,8 +1002,8 @@ ChangeListener {
                         List<TypeAttribute> attributes = tiop
                                 .attributeList(TypeAttribute.class);
                         if (attributes.size() > 0) {
-                            TypeAttribute type = attributes.get(attributes
-                                    .size() - 1);
+                            TypeAttribute type = attributes
+                                    .get(attributes.size() - 1);
                             portInfo.put(ColumnNames.COL_TYPE,
                                     type.getExpression());
                         } else {
@@ -1183,11 +1180,11 @@ ChangeListener {
                 if (port.getDerivedLevel() < Integer.MAX_VALUE) {
                     if (col == _columnNames.indexOf(ColumnNames.COL_NAME)
                             || col == _columnNames
-                            .indexOf(ColumnNames.COL_INPUT)
+                                    .indexOf(ColumnNames.COL_INPUT)
                             || col == _columnNames
-                            .indexOf(ColumnNames.COL_OUTPUT)
+                                    .indexOf(ColumnNames.COL_OUTPUT)
                             || col == _columnNames
-                            .indexOf(ColumnNames.COL_MULTIPORT)) {
+                                    .indexOf(ColumnNames.COL_MULTIPORT)) {
                         return false;
                     }
                 }
@@ -1221,14 +1218,15 @@ ChangeListener {
             Boolean _hide = Boolean.valueOf(_hideAllPorts);
 
             for (int i = 0; i < getRowCount(); i++) {
-                setValueAt(_hide, i, _columnNames.indexOf(ColumnNames.COL_HIDE));
+                setValueAt(_hide, i,
+                        _columnNames.indexOf(ColumnNames.COL_HIDE));
             }
         }
     }
 
     /** Render a boolean cell. */
-    static class PortBooleanCellRenderer extends JCheckBox implements
-    TableCellRenderer {
+    static class PortBooleanCellRenderer extends JCheckBox
+            implements TableCellRenderer {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -1266,7 +1264,8 @@ ChangeListener {
      *
      * see _setupTableModel()
      */
-    static class StringCellRenderer extends JLabel implements TableCellRenderer {
+    static class StringCellRenderer extends JLabel
+            implements TableCellRenderer {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -1323,10 +1322,10 @@ ChangeListener {
      A validating JTextField table cell editor for use with JTable.
      To determine if a selection is valid, this class uses the
      CellValidator class.
-
+    
      <p>Based on IntegerEditor from
      http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
-
+    
      @author Christopher Brooks, Sun Microsystems
      @version $Id$
      @since Ptolemy II 5.1
@@ -1352,26 +1351,26 @@ ChangeListener {
             // React when the user presses Enter while the editor is
             // active.  (Tab is handled as specified by
             // JFormattedTextField's focusLostBehavior property.)
-            jFormattedTextField.getInputMap().put(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "check");
+            jFormattedTextField.getInputMap()
+                    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "check");
             jFormattedTextField.getActionMap().put("check",
                     new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    boolean valid = true;
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            boolean valid = true;
 
-                    if (_validator != null) {
-                        valid = _validator.isValid(jFormattedTextField
-                                .getText());
-                    }
+                            if (_validator != null) {
+                                valid = _validator
+                                        .isValid(jFormattedTextField.getText());
+                            }
 
-                    if (!valid) {
-                        userSaysRevert(jFormattedTextField.getText());
-                    } else {
-                        jFormattedTextField.postActionEvent(); //stop editing
-                    }
-                }
-            });
+                            if (!valid) {
+                                userSaysRevert(jFormattedTextField.getText());
+                            } else {
+                                jFormattedTextField.postActionEvent(); //stop editing
+                            }
+                        }
+                    });
             _jFormattedTextField.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyTyped(KeyEvent ke) {
@@ -1405,11 +1404,10 @@ ChangeListener {
         /**
          */
         @Override
-        public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected, int row, int column) {
-            JTextField jTextField = (JTextField) super
-                    .getTableCellEditorComponent(table, value, isSelected, row,
-                            column);
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            JTextField jTextField = (JTextField) super.getTableCellEditorComponent(
+                    table, value, isSelected, row, column);
             _oldValue = jTextField.getText();
             jTextField.setText((String) value);
             return jTextField;
@@ -1493,10 +1491,10 @@ ChangeListener {
                     "The value \"" + selectedItem + "\" is not valid:\n"
                             + _validator.getMessage()
                             + "\nYou can either continue editing "
-                            + "or revert to the last valid value \""
-                            + _oldValue + "\".", "Invalid Text Entered",
-                            JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
-                            options, options[1]);
+                            + "or revert to the last valid value \"" + _oldValue
+                            + "\".",
+                    "Invalid Text Entered", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE, null, options, options[1]);
 
             if (answer == 1) { //Revert!
                 _jFormattedTextField.setText((String) _oldValue);
@@ -1526,10 +1524,10 @@ ChangeListener {
      A validating ComboBox table cell editor for use with JTable.
      To determine if a selection is valid, this class uses the
      CellValidator class.
-
+    
      <p>Based on IntegerEditor from
      http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
-
+    
      @author Christopher Brooks, Sun Microsystems
      @version $Id$
      @since Ptolemy II 5.1
@@ -1549,16 +1547,16 @@ ChangeListener {
             // React when the user presses Enter while the editor is
             // active.  (Tab is handled as specified by
             // JFormattedTextField's focusLostBehavior property.)
-            comboBox.getInputMap().put(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "check");
+            comboBox.getInputMap()
+                    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "check");
             comboBox.getActionMap().put("check", new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     boolean valid = true;
 
                     if (_validator != null) {
-                        valid = _validator.isValid((String) comboBox
-                                .getSelectedItem());
+                        valid = _validator
+                                .isValid((String) comboBox.getSelectedItem());
                     }
 
                     if (!valid) {
@@ -1574,8 +1572,8 @@ ChangeListener {
         /**
          */
         @Override
-        public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
             JComboBox comboBox = (JComboBox) super.getTableCellEditorComponent(
                     table, value, isSelected, row, column);
             _oldValue = comboBox.getSelectedItem();
@@ -1661,10 +1659,10 @@ ChangeListener {
                     "The value \"" + selectedItem + "\" is not valid:\n"
                             + _validator.getMessage()
                             + "\nYou can either continue editing "
-                            + "or revert to the last valid value \""
-                            + _oldValue + "\".", "Invalid Text Entered",
-                            JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
-                            options, options[1]);
+                            + "or revert to the last valid value \"" + _oldValue
+                            + "\".",
+                    "Invalid Text Entered", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE, null, options, options[1]);
 
             if (answer == 1) { //Revert!
                 _comboBox.setSelectedItem(_oldValue);
@@ -1747,7 +1745,7 @@ ChangeListener {
                     momlUpdate.append(_momlProperty("multiport"));
                 } else {
                     momlUpdate
-                    .append(_momlProperty("multiport", null, "false"));
+                            .append(_momlProperty("multiport", null, "false"));
                 }
             }
         }
@@ -1873,26 +1871,26 @@ ChangeListener {
 
         // If the user types in the comboBox, enable Apply.
         jComboBox.getEditor().getEditorComponent()
-        .addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent ke) {
-                _setDirty(true);
-                _enableApplyButton(true);
-            }
-        });
+                .addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent ke) {
+                        _setDirty(true);
+                        _enableApplyButton(true);
+                    }
+                });
         jComboBox.getEditor().getEditorComponent()
-        .addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent event) {
-                // Set the selected row so the remove key gets updated
-                _setSelectedRow(_portTable.getSelectionModel()
-                        .getAnchorSelectionIndex());
-            }
+                .addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent event) {
+                        // Set the selected row so the remove key gets updated
+                        _setSelectedRow(_portTable.getSelectionModel()
+                                .getAnchorSelectionIndex());
+                    }
 
-            @Override
-            public void focusLost(FocusEvent event) {
-            }
-        });
+                    @Override
+                    public void focusLost(FocusEvent event) {
+                    }
+                });
         jComboBox.setEditable(true);
 
         // Add this item first so it is first on the list.
@@ -2027,8 +2025,8 @@ ChangeListener {
             // and characters can be hard to read."
             // If you change the height, then check that a few rows can be added,
             // see the _portTable.setPreferredScrollableViewportSize(new Dimension(... call above
-            _portTable
-            .setRowHeight((int) Math.round(_portTable.getRowHeight() * 1.20));
+            _portTable.setRowHeight(
+                    (int) Math.round(_portTable.getRowHeight() * 1.20));
         }
 
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
@@ -2125,16 +2123,12 @@ ChangeListener {
             }
 
             if (!foundActualPort) {
-                Exception exception = new InternalErrorException(
-                        "Port \""
-                                + portName
-                                + "\"stored in _ports "
-                                + "not found in \""
-                                + getTarget().getFullName()
-                                + "\". "
-                                + "This can occur when two port names are being swapped. "
-                                + "The workaround when swapping A and B is to first set A to C, then C to A, then C to B. "
-                                + "See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4478");
+                Exception exception = new InternalErrorException("Port \""
+                        + portName + "\"stored in _ports " + "not found in \""
+                        + getTarget().getFullName() + "\". "
+                        + "This can occur when two port names are being swapped. "
+                        + "The workaround when swapping A and B is to first set A to C, then C to A, then C to B. "
+                        + "See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4478");
                 MessageHandler.error("Failed to find \"" + portName + "\",",
                         exception);
             }
@@ -2220,8 +2214,8 @@ ChangeListener {
             int col = _columnNames.indexOf(ColumnNames.COL_DIRECTION);
             TableColumn _portLocationColumn = _portTable.getColumnModel()
                     .getColumn(col);
-            _portLocationColumn.setCellEditor(new DefaultCellEditor(
-                    _portLocationComboBox));
+            _portLocationColumn.setCellEditor(
+                    new DefaultCellEditor(_portLocationComboBox));
         }
 
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
@@ -2248,7 +2242,7 @@ ChangeListener {
                         ASTPtRootNode tree = _typeParser
                                 .generateParseTree(cellValue);
                         /* Token result = */_parseTreeEvaluator
-                        .evaluateParseTree(tree, null);
+                                .evaluateParseTree(tree, null);
                     } catch (IllegalActionException e) {
                         setMessage(e.getMessage());
                         return false;

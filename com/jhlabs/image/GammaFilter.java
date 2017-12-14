@@ -84,25 +84,28 @@ public class GammaFilter extends TransferFilter {
     protected void initialize() {
         rTable = makeTable(rGamma);
 
-        if (gGamma == rGamma)
+        if (gGamma == rGamma) {
             gTable = rTable;
-        else
+        } else {
             gTable = makeTable(gGamma);
+        }
 
-        if (bGamma == rGamma)
+        if (bGamma == rGamma) {
             bTable = rTable;
-        else if (bGamma == gGamma)
+        } else if (bGamma == gGamma) {
             bTable = gTable;
-        else
+        } else {
             bTable = makeTable(bGamma);
+        }
     }
 
     private int[] makeTable(float gamma) {
         int[] table = new int[256];
         for (int i = 0; i < 256; i++) {
             int v = (int) ((255.0 * Math.pow(i / 255.0, 1.0 / gamma)) + 0.5);
-            if (v > 255)
+            if (v > 255) {
                 v = 255;
+            }
             table[i] = v;
         }
         return table;

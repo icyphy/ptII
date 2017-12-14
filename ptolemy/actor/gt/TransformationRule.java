@@ -77,8 +77,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationRule extends MultiCompositeActor implements
-GTCompositeActor, ValueListener {
+public class TransformationRule extends MultiCompositeActor
+        implements GTCompositeActor, ValueListener {
 
     /** Construct a transformation rule with a name and a container.
      *  The container argument must not be null, or a
@@ -239,7 +239,7 @@ GTCompositeActor, ValueListener {
                         paramCopy.setToken(paramToken);
                     } while (paramCopy.getToken() == null && paramToken != null
                             || paramCopy.getToken() != null
-                            && paramToken == null);
+                                    && paramToken == null);
                 }
             }
 
@@ -261,9 +261,9 @@ GTCompositeActor, ValueListener {
                         }
                     }
                 } catch (Throwable t) {
-                    throw new IllegalActionException(this, t, "Error "
-                            + "occurred in the transformation in "
-                            + getFullName() + ".");
+                    throw new IllegalActionException(this, t,
+                            "Error " + "occurred in the transformation in "
+                                    + getFullName() + ".");
                 }
                 if (!matchOnly) {
                     modelOutput.send(0, new ActorToken(_lastModel));
@@ -282,8 +282,8 @@ GTCompositeActor, ValueListener {
             MatchResult match = (MatchResult) token.getValue();
             if (match != null) {
                 TransformationRule workingCopy = mode.getWorkingCopy(this);
-                CompositeEntity host = (CompositeEntity) match.get(workingCopy
-                        .getPattern());
+                CompositeEntity host = (CompositeEntity) match
+                        .get(workingCopy.getPattern());
                 if (_lastModel != host && !_lastModel.deepContains(host)) {
                     throw new IllegalActionException(this,
                             "The match result cannot be used with the "
@@ -292,9 +292,9 @@ GTCompositeActor, ValueListener {
                 try {
                     GraphTransformer.transform(workingCopy, match);
                 } catch (Throwable t) {
-                    throw new IllegalActionException(this, t, "Error "
-                            + "occurred in the transformation in "
-                            + getFullName() + ".");
+                    throw new IllegalActionException(this, t,
+                            "Error " + "occurred in the transformation in "
+                                    + getFullName() + ".");
                 }
                 modelOutput.send(0, new ActorToken(_lastModel));
             }
@@ -372,9 +372,9 @@ GTCompositeActor, ValueListener {
             } else {
                 return modelInput.hasToken(0)
                         || matchInput.isOutsideConnected()
-                        && matchInput.hasToken(0) && _lastModel != null
+                                && matchInput.hasToken(0) && _lastModel != null
                         || trigger.isOutsideConnected() && trigger.hasToken(0)
-                        && !_lastResults.isEmpty();
+                                && !_lastResults.isEmpty();
             }
         } else {
             return false;
@@ -438,7 +438,7 @@ GTCompositeActor, ValueListener {
                         trigger.setTypeEquals(BaseType.BOOLEAN);
                         trigger.setDerivedLevel(1);
                         new StringAttribute(trigger, "_cardinal")
-                        .setExpression("SOUTH");
+                                .setExpression("SOUTH");
                     }
                     if (remaining == null) {
                         remaining = new TypedIOPort(this, "remaining", false,
@@ -446,7 +446,7 @@ GTCompositeActor, ValueListener {
                         remaining.setTypeEquals(BaseType.INT);
                         remaining.setDerivedLevel(1);
                         new StringAttribute(remaining, "_cardinal")
-                        .setExpression("SOUTH");
+                                .setExpression("SOUTH");
                     }
                     if (matched != null) {
                         matched.setContainer(null);
@@ -487,7 +487,7 @@ GTCompositeActor, ValueListener {
                         matched.setTypeEquals(BaseType.BOOLEAN);
                         matched.setDerivedLevel(1);
                         new StringAttribute(matched, "_cardinal")
-                        .setExpression("SOUTH");
+                                .setExpression("SOUTH");
                     }
                 }
             } catch (KernelException e) {
@@ -553,7 +553,7 @@ GTCompositeActor, ValueListener {
 
     /**
      A director to be associated with this actor, which does nothing.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -637,8 +637,8 @@ GTCompositeActor, ValueListener {
      *  @exception NameDuplicationException If the name of an object coincides
      *   with a name already in the container.
      */
-    protected void _init() throws IllegalActionException,
-    NameDuplicationException {
+    protected void _init()
+            throws IllegalActionException, NameDuplicationException {
         setClassName("ptolemy.actor.gt.TransformationRule");
 
         // Create the default refinement.

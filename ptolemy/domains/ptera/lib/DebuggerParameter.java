@@ -70,8 +70,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DebuggerParameter extends TableauParameter implements
-DebugListener {
+public class DebuggerParameter extends TableauParameter
+        implements DebugListener {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -141,9 +141,8 @@ DebugListener {
                         TextEditor frame = (TextEditor) tableau.getFrame();
                         frame.text.append(message + "\n");
                         try {
-                            int lineOffset = frame.text
-                                    .getLineStartOffset(frame.text
-                                            .getLineCount() - 1);
+                            int lineOffset = frame.text.getLineStartOffset(
+                                    frame.text.getLineCount() - 1);
                             frame.text.setCaretPosition(lineOffset);
                         } catch (BadLocationException ex) {
                             // Ignore ... worst case is that the scrollbar doesn't move.
@@ -152,7 +151,7 @@ DebugListener {
                 } catch (Throwable e) {
                     throw new InternalErrorException(this, e,
                             "Unable to report " + "message \"" + message
-                            + "\".");
+                                    + "\".");
                 }
                 break;
             case B_CHECK_LOG:
@@ -209,8 +208,8 @@ DebugListener {
         if (mode == Mode.B_CHECK_LOG) {
             if (_lineNumber + 1 != _lines.length
                     || !_lines[_lineNumber].equals("")) {
-                throw new RuntimeException("Log does not match on line "
-                        + _lineNumber + ".");
+                throw new RuntimeException(
+                        "Log does not match on line " + _lineNumber + ".");
             }
         }
     }
@@ -244,7 +243,7 @@ DebugListener {
 
     /**
      The modes.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -291,20 +290,20 @@ DebugListener {
         try {
             textEffigy = TextEffigy.newTextEffigy(effigy, "");
         } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Unable to create "
-                    + "effigy.");
+            throw new IllegalActionException(this, e,
+                    "Unable to create " + "effigy.");
         }
         Tableau tableau;
         try {
             tableau = new Tableau(textEffigy, "tableau");
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e, "Unable to create "
-                    + "tableau.");
+            throw new IllegalActionException(this, e,
+                    "Unable to create " + "tableau.");
         }
         TextEditor frame = new TextEditor(tableau.getTitle(),
                 textEffigy.getDocument());
-        frame.text.setColumns(((IntToken) columnsDisplayed.getToken())
-                .intValue());
+        frame.text.setColumns(
+                ((IntToken) columnsDisplayed.getToken()).intValue());
         frame.text.setRows(((IntToken) rowsDisplayed.getToken()).intValue());
         tableau.setFrame(frame);
         frame.setTableau(tableau);
@@ -349,7 +348,7 @@ DebugListener {
                             for (TypedActor refinement : refinements) {
                                 if (refinement instanceof PteraController) {
                                     controllers
-                                    .add((PteraController) refinement);
+                                            .add((PteraController) refinement);
                                 }
                             }
                         }

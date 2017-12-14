@@ -45,13 +45,15 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (erwinDL)
  *  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class PackageBasedModelElementClassProvider implements ModelElementClassProvider {
+public class PackageBasedModelElementClassProvider
+        implements ModelElementClassProvider {
 
     /** Create a package-based model element class provider.
      *  @param classLoader The class loader.
      *  @param packageNames The package names.
      */
-    public PackageBasedModelElementClassProvider(ClassLoader classLoader, String... packageNames) {
+    public PackageBasedModelElementClassProvider(ClassLoader classLoader,
+            String... packageNames) {
         _classLoader = classLoader;
         _packageNames = packageNames;
     }
@@ -77,8 +79,8 @@ public class PackageBasedModelElementClassProvider implements ModelElementClassP
      *
      */
     @Override
-    public Class<? extends NamedObj> getClass(String className, VersionSpecification versionSpec)
-            throws ClassNotFoundException {
+    public Class<? extends NamedObj> getClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException {
         if (_packageNames != null) {
             boolean packageNameMatch = false;
             for (String packageName : _packageNames) {

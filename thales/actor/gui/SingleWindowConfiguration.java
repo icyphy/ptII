@@ -204,15 +204,16 @@ public class SingleWindowConfiguration extends Configuration {
             NamedObj container = tableau.getContainer();
             if (container instanceof PtolemyEffigy) {
                 // Handle $PTII/bin/vergil -single ptolemy/domains/de/demo/DateDemo/DateDemo.xml
-                NamedObj model = ((PtolemyEffigy)tableau.getContainer()).getModel();
-                SizeAttribute size = (SizeAttribute) model.getAttribute(
-                           "_vergilSize", SizeAttribute.class);
+                NamedObj model = ((PtolemyEffigy) tableau.getContainer())
+                        .getModel();
+                SizeAttribute size = (SizeAttribute) model
+                        .getAttribute("_vergilSize", SizeAttribute.class);
                 if (size != null) {
                     IntMatrixToken token = (IntMatrixToken) size.getToken();
                     int[][] sizeMatrix = token.intMatrix();
                     // FIXME: This is a hack to increase the width to include the panner and the tabs.
-                    sizeMatrix[0][0]+= 200;
-                    sizeMatrix[0][1]+= 100;
+                    sizeMatrix[0][0] += 200;
+                    sizeMatrix[0][1] += 100;
                     size.setToken(new IntMatrixToken(sizeMatrix));
                     size.setSize(mainView);
                 }
@@ -240,8 +241,8 @@ public class SingleWindowConfiguration extends Configuration {
      *   should not be thrown).
      */
     @Override
-    public Tableau openModel(NamedObj entity) throws IllegalActionException,
-    NameDuplicationException {
+    public Tableau openModel(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         // If the entity defers its MoML definition to another,
         // then open that other.
         InstantiableNamedObj deferredTo = null;
@@ -335,8 +336,8 @@ public class SingleWindowConfiguration extends Configuration {
                         separator = ".";
                     }
 
-                    effigy.identifier.setExpression(entityName + separator
-                            + entity.getName());
+                    effigy.identifier.setExpression(
+                            entityName + separator + entity.getName());
 
                     // Set the uri of the effigy to that of
                     // the parent.

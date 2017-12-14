@@ -208,8 +208,8 @@ public class VQDecode extends Transformer {
                 } catch (FileNotFoundException e) {
                     System.err.println("File not found: " + e);
                 } catch (IOException e) {
-                    throw new IllegalActionException("Error reading"
-                            + " input file: " + e.getMessage());
+                    throw new IllegalActionException(
+                            "Error reading" + " input file: " + e.getMessage());
                 }
             }
 
@@ -236,16 +236,16 @@ public class VQDecode extends Transformer {
 
                 for (j = 0; j < 256; j++) {
                     if (_fullRead(source, temp) != size) {
-                        throw new IllegalActionException("Error reading "
-                                + "codebook file!");
+                        throw new IllegalActionException(
+                                "Error reading " + "codebook file!");
                     }
 
                     for (x = 0; x < size; x++) {
                         intTemp[x] = temp[x] & 255;
                     }
 
-                    _codebook[i][j] = IntegerMatrixMath.toMatrixFromArray(
-                            intTemp, rows, columns);
+                    _codebook[i][j] = IntegerMatrixMath
+                            .toMatrixFromArray(intTemp, rows, columns);
                 }
 
                 // skip over the lookup tables.
@@ -253,8 +253,8 @@ public class VQDecode extends Transformer {
 
                 // read in the lookup table.
                 if (_fullRead(source, temp) != 65536) {
-                    throw new IllegalActionException("Error reading "
-                            + "codebook file!");
+                    throw new IllegalActionException(
+                            "Error reading " + "codebook file!");
                 }
             }
         } catch (Exception e) {
@@ -298,13 +298,13 @@ public class VQDecode extends Transformer {
         int x = 0;
 
         if (length < 2) {
-            throw new RuntimeException("Vector length of " + length
-                    + "must be greater than 1");
+            throw new RuntimeException(
+                    "Vector length of " + length + "must be greater than 1");
         }
 
         while (length > 2) {
             length = length >> 1;
-                x++;
+            x++;
         }
 
         return x;

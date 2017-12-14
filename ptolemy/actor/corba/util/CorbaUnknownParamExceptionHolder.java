@@ -6,8 +6,8 @@ package ptolemy.actor.corba.util;
  * from CorbaActor.idl
  * Thursday, January 18, 2001 7:07:58 PM PST
  */
-public final class CorbaUnknownParamExceptionHolder implements
-org.omg.CORBA.portable.Streamable {
+public final class CorbaUnknownParamExceptionHolder
+        implements org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaUnknownParamException value = null;
 
     public CorbaUnknownParamExceptionHolder() {

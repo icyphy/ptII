@@ -426,8 +426,8 @@ public class PxgraphParser {
      *   found.
      *  @exception IOException If an error occurs reading an input file.
      */
-    public int parseArgs(String[] args) throws CmdLineArgException,
-    FileNotFoundException, IOException {
+    public int parseArgs(String[] args)
+            throws CmdLineArgException, FileNotFoundException, IOException {
         return parseArgs(args, null);
     }
 
@@ -443,8 +443,8 @@ public class PxgraphParser {
      *   found.
      *  @exception IOException If an error occurs reading an input file.
      */
-    public int parseArgs(String[] args, URL base) throws CmdLineArgException,
-    FileNotFoundException, IOException {
+    public int parseArgs(String[] args, URL base)
+            throws CmdLineArgException, FileNotFoundException, IOException {
         int i = 0;
         int j;
         int argumentsRead = 0;
@@ -514,8 +514,8 @@ public class PxgraphParser {
                     double[] spec = _parseDoubles(args[i++]);
 
                     if (spec.length == 1) {
-                        throw new CmdLineArgException("Failed to parse `" + arg
-                                + "'");
+                        throw new CmdLineArgException(
+                                "Failed to parse `" + arg + "'");
                     } else {
                         _plot.setXRange(spec[0], spec[1]);
                     }
@@ -525,8 +525,8 @@ public class PxgraphParser {
                     double[] spec = _parseDoubles(args[i++]);
 
                     if (spec.length == 1) {
-                        throw new CmdLineArgException("Failed to parse `" + arg
-                                + "'");
+                        throw new CmdLineArgException(
+                                "Failed to parse `" + arg + "'");
                     } else {
                         _plot.setYRange(spec[0], spec[1]);
                     }
@@ -687,8 +687,8 @@ public class PxgraphParser {
                                 index = plusIndex;
                             }
 
-                            height = Integer.parseInt(arg.substring(
-                                    arg.indexOf('x') + 1, index));
+                            height = Integer.parseInt(
+                                    arg.substring(arg.indexOf('x') + 1, index));
                         } else {
                             if (plusIndex != -1) {
                                 // =WxH+X+Y
@@ -811,7 +811,7 @@ public class PxgraphParser {
                             argvector.addElement("-" + stoken.sval);
                         } else {
                             argvector
-                            .addElement("-" + partialarg + stoken.sval);
+                                    .addElement("-" + partialarg + stoken.sval);
                         }
                     } else {
                         if (partialarg == null) {
@@ -873,8 +873,8 @@ public class PxgraphParser {
      *  @exception java.io.IOException If an I/O error occurs.
      */
     public void read(InputStream inputStream) throws IOException {
-        DataInputStream in = new DataInputStream(new BufferedInputStream(
-                inputStream));
+        DataInputStream in = new DataInputStream(
+                new BufferedInputStream(inputStream));
 
         if (_binary) {
             int c;
@@ -978,17 +978,15 @@ public class PxgraphParser {
                             // Data point.
                             if (byteSwapped) {
                                 in.readFully(input);
-                                x = Float
-                                        .intBitsToFloat((input[3] & 0xFF) << 24
-                                                | (input[2] & 0xFF) << 16
-                                                | (input[1] & 0xFF) << 8
-                                                | input[0] & 0xFF);
+                                x = Float.intBitsToFloat((input[3] & 0xFF) << 24
+                                        | (input[2] & 0xFF) << 16
+                                        | (input[1] & 0xFF) << 8
+                                        | input[0] & 0xFF);
                                 in.readFully(input);
-                                y = Float
-                                        .intBitsToFloat((input[3] & 0xFF) << 24
-                                                | (input[2] & 0xFF) << 16
-                                                | (input[1] & 0xFF) << 8
-                                                | input[0] & 0xFF);
+                                y = Float.intBitsToFloat((input[3] & 0xFF) << 24
+                                        | (input[2] & 0xFF) << 16
+                                        | (input[1] & 0xFF) << 8
+                                        | input[0] & 0xFF);
                             } else {
                                 x = in.readFloat();
                                 y = in.readFloat();

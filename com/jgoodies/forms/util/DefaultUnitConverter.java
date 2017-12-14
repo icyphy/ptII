@@ -304,8 +304,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         double height = ascent > 14 ? ascent : ascent + (15 - ascent) / 3;
         DialogBaseUnits dialogBaseUnits = new DialogBaseUnits(averageCharWidth,
                 height);
-        LOGGER.config("Computed dialog base units " + dialogBaseUnits
-                + " for: " + metrics.getFont());
+        LOGGER.config("Computed dialog base units " + dialogBaseUnits + " for: "
+                + metrics.getFont());
         return dialogBaseUnits;
     }
 
@@ -322,8 +322,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     private DialogBaseUnits computeGlobalDialogBaseUnits() {
         LOGGER.config("Computing global dialog base units...");
         Font dialogFont = getDefaultDialogFont();
-        FontMetrics metrics = createDefaultGlobalComponent().getFontMetrics(
-                dialogFont);
+        FontMetrics metrics = createDefaultGlobalComponent()
+                .getFontMetrics(dialogFont);
         DialogBaseUnits globalDialogBaseUnits = computeDialogBaseUnits(metrics);
         return globalDialogBaseUnits;
     }
@@ -465,8 +465,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     /**
      * Listens to changes of the Look and Feel and invalidates the cache.
      */
-    private final class LookAndFeelChangeHandler implements
-    PropertyChangeListener {
+    private final class LookAndFeelChangeHandler
+            implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             invalidateCaches();

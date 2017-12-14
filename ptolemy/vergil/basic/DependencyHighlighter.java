@@ -94,7 +94,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
         highlightColor.setExpression("{1.0, 0.0, 0.0, 1.0}");
 
         // Hide the name.
-        SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
+        SingletonParameter _hideName = new SingletonParameter(this,
+                "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
         _hideName.setVisibility(Settable.EXPERT);
 
@@ -219,8 +220,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
             // checkboxes to select between dependencies and prerequisites.
             HighlightDependents listDependents = new HighlightDependents(
                     "List dependents & prereqs.", true, false, true);
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    listDependents));
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(listDependents));
 
             HighlightDependents clear1 = new HighlightDependents(
                     "Clear dependents", true, true, false);
@@ -229,7 +230,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
             HighlightDependents prerequisites = new HighlightDependents(
                     "Highlight prerequisites", false, false, false);
             _menuFactory
-            .addMenuItemFactory(new MenuActionFactory(prerequisites));
+                    .addMenuItemFactory(new MenuActionFactory(prerequisites));
 
             HighlightDependents clear2 = new HighlightDependents(
                     "Clear prerequisites", false, true, false);
@@ -309,8 +310,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 HashSet<NamedObj> visited = new HashSet<NamedObj>();
                 _addHighlights(actor, moml, visited, _forward, _clear);
                 moml.append("</group>");
-                actor.requestChange(new MoMLChangeRequest(this, actor
-                        .getContainer(), moml.toString()));
+                actor.requestChange(new MoMLChangeRequest(this,
+                        actor.getContainer(), moml.toString()));
             }
         }
 

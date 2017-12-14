@@ -63,7 +63,8 @@ public class GraphSearchTask extends Task {
      * @param graphSearchCriteria The graph search criteria.
      * @see #getGraphSearchCriteria
      */
-    public void setGraphSearchCriteria(DBGraphSearchCriteria graphSearchCriteria) {
+    public void setGraphSearchCriteria(
+            DBGraphSearchCriteria graphSearchCriteria) {
         this._graphSearchCriteria = graphSearchCriteria;
     }
 

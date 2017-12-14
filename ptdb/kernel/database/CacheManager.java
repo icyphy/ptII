@@ -230,8 +230,8 @@ public class CacheManager {
                 dbConnection.abortConnection();
             }
 
-            throw new DBExecutionException("Failed to update the cache - "
-                    + e.getMessage(), e);
+            throw new DBExecutionException(
+                    "Failed to update the cache - " + e.getMessage(), e);
         } finally {
 
             if (dbConnection != null) {

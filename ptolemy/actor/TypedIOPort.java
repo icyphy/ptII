@@ -165,8 +165,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   a port already in the container.
      */
     public TypedIOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput) throws IllegalActionException,
-            NameDuplicationException {
+            boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
     }
 
@@ -202,7 +202,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             if (type != null) {
                 // Avoid incrementing the workspace version if the type has
                 // not changed.
-                if (!type.equals(_declaredType) || !type.equals(_resolvedType)) {
+                if (!type.equals(_declaredType)
+                        || !type.equals(_resolvedType)) {
                     setTypeEquals(type);
                 }
             }
@@ -239,8 +240,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *     it.
      */
     @Override
-    public void broadcast(Token token) throws IllegalActionException,
-    NoRoomException {
+    public void broadcast(Token token)
+            throws IllegalActionException, NoRoomException {
         _checkType(token);
         super.broadcast(token);
     }
@@ -328,7 +329,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         Type type = getType();
 
         // Do not convert if automatic type conversion is disabled.
-        if (type.equals(token.getType()) || !this.getAutomaticTypeConversion()) {
+        if (type.equals(token.getType())
+                || !this.getAutomaticTypeConversion()) {
             return token;
         } else {
             try {
@@ -392,8 +394,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
 
                 CPO lattice = TypeLattice.lattice();
-                result = (Type) lattice.leastUpperBound(new HashSet<Type>(
-                        portTypeList));
+                result = (Type) lattice
+                        .leastUpperBound(new HashSet<Type>(portTypeList));
             }
 
             return result;
@@ -864,7 +866,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         // calling localFunctions.js convertToToken() and we fall through
         // to a possibly very large RecordToken.
         if (_resolvedType.equals(BaseType.UNKNOWN)
-            ||_resolvedType.equals(BaseType.GENERAL)) {
+                || _resolvedType.equals(BaseType.GENERAL)) {
             return;
         }
         int compare = TypeLattice.compare(token.getType(), _resolvedType);
@@ -995,17 +997,18 @@ public class TypedIOPort extends IOPort implements Typeable {
     /** Exception class for run-time type errors.
      */
     @SuppressWarnings("serial")
-    public static class RunTimeTypeCheckException extends
-            IllegalActionException {
+    public static class RunTimeTypeCheckException
+            extends IllegalActionException {
         /** Create an run-time type error exception.
          *  @param port The port where the error occurred.
          *  @param token The token that caused the error.
          */
         public RunTimeTypeCheckException(TypedIOPort port, Token token) {
-            super(port, "Run-time type checking failed. Token " + token
-                    + " with type " + token.getType()
-                    + " is incompatible with port type: "
-                    + port.getType().toString());
+            super(port,
+                    "Run-time type checking failed. Token " + token
+                            + " with type " + token.getType()
+                            + " is incompatible with port type: "
+                            + port.getType().toString());
             _port = port;
             _token = token;
         }
@@ -1038,7 +1041,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         @Override
         public boolean equals(Object object) {
             if (object instanceof TypeTerm) {
-                return TypedIOPort.this.equals(((TypeTerm)object).getAssociatedObject());
+                return TypedIOPort.this
+                        .equals(((TypeTerm) object).getAssociatedObject());
             }
             return false;
         }
@@ -1162,8 +1166,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             if (!_declaredType.isSubstitutionInstance((Type) type)) {
                 throw new IllegalActionException("Type conflict on port "
                         + TypedIOPort.this.getFullName() + ".\n"
-                        + "Declared type is " + _declaredType.toString()
-                        + ".\n"
+                        + "Declared type is " + _declaredType.toString() + ".\n"
                         + "The connection or type constraints, however, "
                         + "require type " + type.toString());
             }
@@ -1177,7 +1180,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             } else {
                 // _declaredType is a StructuredType
                 ((StructuredType) _resolvedType)
-                .updateType((StructuredType) type);
+                        .updateType((StructuredType) type);
             }
 
             if (!oldType.equals(type)) {

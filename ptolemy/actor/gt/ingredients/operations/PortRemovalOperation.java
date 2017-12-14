@@ -209,15 +209,16 @@ public class PortRemovalOperation extends Operation {
             throw new ValidationException("Name must not be empty.");
         }
         if (_name.contains(".")) {
-            throw new ValidationException("Name must not have period (\".\") "
-                    + "in it.");
+            throw new ValidationException(
+                    "Name must not have period (\".\") " + "in it.");
         }
     }
 
     /** The elements.
      */
-    private static final OperationElement[] _ELEMENTS = { new StringOperationElement(
-            "matcher name or port name", false, true) };
+    private static final OperationElement[] _ELEMENTS = {
+            new StringOperationElement("matcher name or port name", false,
+                    true) };
 
     /** Value of the port name element.
      */

@@ -55,8 +55,8 @@ import ptdb.common.exception.DBExecutionException;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class HierarchyFetcher extends AbstractSearcher implements
-AbstractDBSearcher {
+public class HierarchyFetcher extends AbstractSearcher
+        implements AbstractDBSearcher {
 
     /**
      * Construct the HierarchyFetcher object.

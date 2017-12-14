@@ -80,8 +80,8 @@ public class ExceptionManagerModel extends CompositeEntity {
      *   an entity already in the container.
      */
     public ExceptionManagerModel(ExceptionManager exceptionManager,
-            Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+            Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _modelContainer = exceptionManager;
     }

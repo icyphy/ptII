@@ -138,9 +138,10 @@ public abstract class JAIWriter extends Sink {
             String fileRoot = file.toString();
 
             if (file.exists()) {
-                if (((BooleanToken) confirmOverwrite.getToken()).booleanValue()) {
-                    if (!MessageHandler.yesNoQuestion("OK to overwrite " + file
-                            + "?")) {
+                if (((BooleanToken) confirmOverwrite.getToken())
+                        .booleanValue()) {
+                    if (!MessageHandler
+                            .yesNoQuestion("OK to overwrite " + file + "?")) {
                         throw new IllegalActionException(this,
                                 "Please select another file name.");
                     }
@@ -163,8 +164,7 @@ public abstract class JAIWriter extends Sink {
                 if (encoder == null) {
                     throw new IllegalActionException(this,
                             "Could not create encoder for \""
-                                    + _imageEncoderName + "\", to \""
-                                    + fileRoot
+                                    + _imageEncoderName + "\", to \"" + fileRoot
                                     + "\". Perhaps the encoder name is wrong?"
                                     + "encoder was: " + _imageEncodeParam);
                 }

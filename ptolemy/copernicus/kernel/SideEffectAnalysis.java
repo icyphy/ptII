@@ -74,13 +74,14 @@ public class SideEffectAnalysis {
         Iterator methods = _unprocessedMethods.reader();
 
         CallGraph callGraph = Scene.v().getCallGraph();
-        _reachables = new ReachableMethods(callGraph, new ArrayList<MethodOrMethodContext>(EntryPoints.v()
-                        .application()));
+        _reachables = new ReachableMethods(callGraph,
+                new ArrayList<MethodOrMethodContext>(
+                        EntryPoints.v().application()));
         _reachables.update();
 
         // Process all the reachableMethods.
-        for (Iterator reachableMethods = _reachables.listener(); reachableMethods
-                .hasNext();) {
+        for (Iterator reachableMethods = _reachables
+                .listener(); reachableMethods.hasNext();) {
             _addMethod((SootMethod) reachableMethods.next());
         }
 
@@ -150,8 +151,8 @@ public class SideEffectAnalysis {
 
         if (flow == null) {
             if (_debug) {
-                System.out.println("SideEffectAnalysis: Method not found: "
-                        + method);
+                System.out.println(
+                        "SideEffectAnalysis: Method not found: " + method);
             }
 
             return null;
@@ -173,8 +174,8 @@ public class SideEffectAnalysis {
 
         if (flow == null) {
             if (_debug) {
-                System.out.println("SideEffectAnalysis: Method not found: "
-                        + method);
+                System.out.println(
+                        "SideEffectAnalysis: Method not found: " + method);
             }
 
             return true;
@@ -191,8 +192,8 @@ public class SideEffectAnalysis {
 
         if (flow == null) {
             if (_debug) {
-                System.out.println("SideEffectAnalysis: Method not found: "
-                        + method);
+                System.out.println(
+                        "SideEffectAnalysis: Method not found: " + method);
             }
 
             return true;
@@ -256,8 +257,8 @@ public class SideEffectAnalysis {
 
                 if (value instanceof FieldRef) {
                     if (_debug) {
-                        System.out
-                        .println("SideEffectAnalysis: assigns to field");
+                        System.out.println(
+                                "SideEffectAnalysis: assigns to field");
                     }
 
                     out.addSideEffect(((FieldRef) value).getField());
@@ -265,8 +266,8 @@ public class SideEffectAnalysis {
 
                 if (value instanceof ArrayRef) {
                     if (_debug) {
-                        System.out
-                        .println("SideEffectAnalysis: assigns to array.");
+                        System.out.println(
+                                "SideEffectAnalysis: assigns to array.");
                     }
 
                     // Escape analysis might help in this case.

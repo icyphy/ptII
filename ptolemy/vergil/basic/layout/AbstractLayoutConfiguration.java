@@ -103,8 +103,8 @@ public abstract class AbstractLayoutConfiguration extends Attribute {
         logAspectRatio.setDisplayName("Aspect ratio");
         logAspectRatio.min.setExpression("-1.0");
         logAspectRatio.max.setExpression("1.0");
-        logAspectRatio.setExpression(Double.toString(Math
-                .log10(DEF_ASPECT_RATIO)));
+        logAspectRatio
+                .setExpression(Double.toString(Math.log10(DEF_ASPECT_RATIO)));
         logAspectRatio.minLabel.setExpression("Narrow");
         logAspectRatio.maxLabel.setExpression("Wide");
         logAspectRatio.min.setVisibility(Settable.NONE);

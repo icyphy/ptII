@@ -66,7 +66,8 @@ import caltrop.interpreter.environment.Environment;
  @see #actionComputeOutputs
  @see #actionClear
  */
-public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter {
+public class DataflowWithRatesActorInterpreter
+        extends DataflowActorInterpreter {
     /**
      * Defines a new actor interpreter for the specified actor.
      *
@@ -156,15 +157,13 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
                             + inputPattern.getVariables().length);
                 }
             } else {
-                int repeatVal = context.intValue(env.get(new EnvironmentKey(
-                        inputPattern.getPortname())));
+                int repeatVal = context.intValue(env
+                        .get(new EnvironmentKey(inputPattern.getPortname())));
 
-                if (!channel.hasAvailable(inputPattern.getVariables().length
-                        * repeatVal)) {
-                    throw new InterpreterException(
-                            "Not enough repeated inputs:"
-                                    + inputPattern.getVariables().length
-                                    * repeatVal);
+                if (!channel.hasAvailable(
+                        inputPattern.getVariables().length * repeatVal)) {
+                    throw new InterpreterException("Not enough repeated inputs:"
+                            + inputPattern.getVariables().length * repeatVal);
                 }
             }
         }

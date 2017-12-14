@@ -334,8 +334,8 @@ public class MultiCompositePort extends TypedIOPort {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -364,8 +364,8 @@ public class MultiCompositePort extends TypedIOPort {
                 }
 
                 // Remove the relation as well.
-                ComponentRelation relation = model.getRelation(getName()
-                        + "Relation");
+                ComponentRelation relation = model
+                        .getRelation(getName() + "Relation");
 
                 if (relation != null) {
                     relation.setContainer(null);
@@ -435,7 +435,8 @@ public class MultiCompositePort extends TypedIOPort {
      *   not permitted.
      */
     @Override
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
 
@@ -475,8 +476,8 @@ public class MultiCompositePort extends TypedIOPort {
      *   with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 

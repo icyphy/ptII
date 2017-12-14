@@ -51,9 +51,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolem
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating
  */
-public class PtidesTopLevelDirector
-extends
-ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesTopLevelDirector {
+public class PtidesTopLevelDirector extends
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesTopLevelDirector {
 
     /**
      * Construct the code generator adapter associated with the given

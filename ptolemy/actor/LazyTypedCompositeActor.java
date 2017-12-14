@@ -143,8 +143,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class LazyTypedCompositeActor extends TypedCompositeActor implements
-LazyComposite {
+public class LazyTypedCompositeActor extends TypedCompositeActor
+        implements LazyComposite {
 
     // FIXME: Have to do ports and relations.  Only done attributes and entities.
 
@@ -224,8 +224,8 @@ LazyComposite {
         _cloning = true;
 
         try {
-            LazyTypedCompositeActor result = (LazyTypedCompositeActor) super
-                    .clone(workspace);
+            LazyTypedCompositeActor result = (LazyTypedCompositeActor) super.clone(
+                    workspace);
 
             // There may or may not be configure text, but it won't be the
             // same as what we are cloning (instantiating) from.
@@ -495,8 +495,8 @@ LazyComposite {
         // rather than having both an Iterator and a result list.
         for (Object entity : lazyDeepEntityList()) {
             if (entity instanceof CompositeEntity) {
-                result.addAll(((CompositeEntity) entity)
-                        .lazyAllAtomicEntityList());
+                result.addAll(
+                        ((CompositeEntity) entity).lazyAllAtomicEntityList());
             } else {
                 result.add(entity);
             }
@@ -687,8 +687,7 @@ LazyComposite {
                 // prototype.
                 List prototypes = getPrototypeList();
                 if (prototypes == null || prototypes.size() == 0) {
-                    throw new InternalErrorException(
-                            getFullName()
+                    throw new InternalErrorException(getFullName()
                             + ": Object says it is derived but reports no prototypes!");
                 }
                 // The prototype must have the same class as this.
@@ -1080,8 +1079,8 @@ LazyComposite {
      *  objects are attributes first, then ports, then entities,
      *  then relations.
      */
-    protected class ContainedObjectsIterator extends
-    Entity.ContainedObjectsIterator {
+    protected class ContainedObjectsIterator
+            extends Entity.ContainedObjectsIterator {
         /** Create an iterator over all the contained objects, which
          *  for CompositeEntities are attributes, ports, classes
          *  entities, and relations.

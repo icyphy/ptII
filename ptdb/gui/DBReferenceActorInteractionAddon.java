@@ -68,10 +68,11 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
     @Override
     public boolean isActorOfInterestForLookInside(NamedObj actor) {
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+            if (actor.getAttribute(
+                    XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                            .getExpression().equalsIgnoreCase("TRUE")) {
+                                    .getExpression().equalsIgnoreCase("TRUE")) {
                 return true;
             }
         }
@@ -136,10 +137,11 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
     @Override
     public boolean isActorOfInterestForOpenInstance(NamedObj actor) {
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+            if (actor.getAttribute(
+                    XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                            .getExpression().equalsIgnoreCase("TRUE")) {
+                                    .getExpression().equalsIgnoreCase("TRUE")) {
                 return true;
             }
         }
@@ -173,10 +175,11 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
     @Override
     public boolean isActorOfInterestForAddonController(NamedObj actor) {
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+            if (actor.getAttribute(
+                    XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                            .getExpression().equalsIgnoreCase("TRUE")) {
+                                    .getExpression().equalsIgnoreCase("TRUE")) {
                 return true;
             }
         }

@@ -120,7 +120,8 @@ public class Sensor extends TypedAtomicActor {
         // Since this actor sources the data at this port, we have to
         // declare the type.
         TypeAttribute portType = new TypeAttribute(output, "type");
-        portType.setExpression("{location=arrayType(double, 2), time=double, depth=int}");
+        portType.setExpression(
+                "{location=arrayType(double, 2), time=double, depth=int}");
 
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
@@ -283,7 +284,7 @@ public class Sensor extends TypedAtomicActor {
 
             if (time.doubleValue() > _timeValue
                     || time.doubleValue() == _timeValue
-                    && d.intValue() < _parentDepth) {
+                            && d.intValue() < _parentDepth) {
                 //the root node may have been changed
                 //or there is a shorter path.
                 ArrayToken locationArray = (ArrayToken) inputToken
@@ -302,7 +303,8 @@ public class Sensor extends TypedAtomicActor {
                 String[] labels = { "location", "time", "depth" };
 
                 Token[] values = { new ArrayToken(_parentLocation),
-                        new DoubleToken(_timeValue), new IntToken(_parentDepth) };
+                        new DoubleToken(_timeValue),
+                        new IntToken(_parentDepth) };
                 Token result = new RecordToken(labels, values);
 
                 output.send(0, result);

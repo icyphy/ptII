@@ -99,8 +99,8 @@ public class CustomerPanel extends javax.swing.JPanel {
     /** Instantiate the CustomerPanel. */
     public CustomerPanel() {
         super();
-        java.io.InputStream is = this.getClass().getResourceAsStream(
-                "customerLayout.xml");
+        java.io.InputStream is = this.getClass()
+                .getResourceAsStream("customerLayout.xml");
         if (is == null) {
             System.err.println("Could not find constraints customerLayout.xml");
             return;

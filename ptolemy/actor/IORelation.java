@@ -324,8 +324,7 @@ public class IORelation extends ComponentRelation {
                     if (container instanceof CompositeActor) {
                         ((CompositeActor) container).inferWidths();
                     } else {
-                        throw new IllegalActionException(
-                                this,
+                        throw new IllegalActionException(this,
                                 "Can't infer the widths "
                                         + "of the relations since no container or container is not a CompositeActor.");
                     }
@@ -725,8 +724,8 @@ public class IORelation extends ComponentRelation {
             } else {
                 throw new IllegalActionException(this, relation,
                         "Relations have different widths: " + _getUserWidth()
-                        + " != "
-                        + ((IORelation) relation)._getUserWidth());
+                                + " != "
+                                + ((IORelation) relation)._getUserWidth());
             }
         }
 
@@ -1174,10 +1173,10 @@ public class IORelation extends ComponentRelation {
                 /* This is now allowed.
                  if (width != 1) {
                  Iterator ports = linkedPortList().iterator();
-
+                
                  while (ports.hasNext()) {
                  IOPort p = (IOPort) ports.next();
-
+                
                  // Check for non-multiports.
                  if (!p.isMultiport()) {
                  throw new IllegalActionException(this, p,

@@ -131,8 +131,8 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  executing the delta iteration.
      */
     private void _doDeltaIteration(NamedObj toplevel,
-            List<Inequality> constraintList) throws TypeConflictException,
-            IllegalActionException {
+            List<Inequality> constraintList)
+            throws TypeConflictException, IllegalActionException {
 
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;

@@ -123,8 +123,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             MessageHandler.error("Change failed: ", exception);
         } else if (!change.isErrorReported()) {
             change.setErrorReported(true);
-            MessageHandler.error("Change failed: "
-                    + StringUtilities.truncateString(change.getDescription(), 80, 1),
+            MessageHandler.error(
+                    "Change failed: " + StringUtilities
+                            .truncateString(change.getDescription(), 80, 1),
                     exception);
         }
     }
@@ -385,8 +386,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 effigy.setModel(newModel);
                 return effigy;
             } else {
-                String extension = getExtension(input).toLowerCase(
-                        Locale.getDefault());
+                String extension = getExtension(input)
+                        .toLowerCase(Locale.getDefault());
 
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;
@@ -452,36 +453,36 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             try {
                                 String entityClassName = StringUtilities
                                         .getProperty("entityClassName");
-                                if ((entityClassName.length() > 0 || endTime > startTime
-                                        + Manager.minimumStatisticsTime)
+                                if ((entityClassName.length() > 0
+                                        || endTime > startTime
+                                                + Manager.minimumStatisticsTime)
                                         && model instanceof CompositeEntity) {
-                                    System.out
-                                    .println("Opened "
-                                            + input
+                                    System.out.println("Opened " + input
                                             + " in "
-                                            + (System
-                                                    .currentTimeMillis() - startTime)
-                                                    + " ms.");
+                                            + (System.currentTimeMillis()
+                                                    - startTime)
+                                            + " ms.");
 
                                     long statisticsStartTime = System
                                             .currentTimeMillis();
-                                    System.out
-                                    .println(((CompositeEntity) model)
+                                    System.out.println(((CompositeEntity) model)
                                             .statistics(entityClassName));
                                     long statisticsEndTime = System
                                             .currentTimeMillis();
-                                    if (statisticsEndTime - statisticsStartTime > Manager.minimumStatisticsTime) {
-                                        System.out
-                                        .println("Generating statistics took"
-                                                + (statisticsEndTime - statisticsStartTime)
-                                                + " ms. ");
+                                    if (statisticsEndTime
+                                            - statisticsStartTime > Manager.minimumStatisticsTime) {
+                                        System.out.println(
+                                                "Generating statistics took"
+                                                        + (statisticsEndTime
+                                                                - statisticsStartTime)
+                                                        + " ms. ");
                                     }
                                 }
                             } catch (SecurityException ex) {
-                                System.err
-                                .println("Warning, while trying to print timing statistics,"
-                                        + " failed to read the entityClassName"
-                                        + " property (-sandbox always causes this)");
+                                System.err.println(
+                                        "Warning, while trying to print timing statistics,"
+                                                + " failed to read the entityClassName"
+                                                + " property (-sandbox always causes this)");
                             }
                             effigy.setModel(model);
 
@@ -514,8 +515,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 // is a %20 instead of a space.  This could
                                 // cause problems in Web Start
                                 String inputExternalFormFixed = StringUtilities
-                                        .substitute(input.toExternalForm(),
-                                                " ", "%20");
+                                        .substitute(input.toExternalForm(), " ",
+                                                "%20");
 
                                 try {
                                     inputURI = new URI(inputExternalFormFixed);
@@ -572,8 +573,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // effigies open.  We check for that condition,
                         // and report the error here.  Otherwise, we
                         // pass the error to the caller.
-                        ModelDirectory dir = (ModelDirectory) effigy
-                                .topEffigy().getContainer();
+                        ModelDirectory dir = (ModelDirectory) effigy.topEffigy()
+                                .getContainer();
                         List effigies = dir.entityList(Effigy.class);
 
                         // We might get to here if we are running a
@@ -641,8 +642,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *   an entity already in the container.
          */
         protected PtolemyEffigy _newEffigy(CompositeEntity container,
-                String name) throws IllegalActionException,
-                NameDuplicationException {
+                String name)
+                throws IllegalActionException, NameDuplicationException {
             return new PtolemyEffigy(container, name);
         }
     }

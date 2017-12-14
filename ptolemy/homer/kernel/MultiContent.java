@@ -100,11 +100,11 @@ public class MultiContent<T extends ContentPrototype> {
      */
     public String addTab(ComponentEntity topLevel, String tabTag,
             String tabName, ContentPrototype content)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (tabTag != null && _contents.containsKey(tabTag)) {
             throw new IllegalActionException(
                     "A content area with the identifier " + tabTag
-                    + " already exists.");
+                            + " already exists.");
         }
 
         TabDefinition tabDefinition = new TabDefinition(topLevel, tabTag,
@@ -133,7 +133,8 @@ public class MultiContent<T extends ContentPrototype> {
      *  class for the container, if the name contains a period, or if a content
      *  area with the same tag already exist.
      */
-    public String addTab(ComponentEntity topLevel, String tabTag, String tabName)
+    public String addTab(ComponentEntity topLevel, String tabTag,
+            String tabName)
             throws IllegalActionException, NameDuplicationException {
         return addTab(topLevel, tabTag, tabName,
                 _contentPrototype.getNewInstance());
@@ -153,8 +154,8 @@ public class MultiContent<T extends ContentPrototype> {
      *  @exception IllegalActionException If the tab could not be created in the model.
      */
     public String addTab(ComponentEntity topLevel, String tabName,
-            ContentPrototype content) throws NameDuplicationException,
-            IllegalActionException {
+            ContentPrototype content)
+            throws NameDuplicationException, IllegalActionException {
         return addTab(topLevel, null, tabName, content);
     }
 
@@ -317,8 +318,8 @@ public class MultiContent<T extends ContentPrototype> {
      *  same name. Element names within a workspace must be unique.
      */
     protected void _initializeContents(ContentPrototype contentPrototype,
-            CompositeEntity model) throws IllegalActionException,
-            NameDuplicationException {
+            CompositeEntity model)
+            throws IllegalActionException, NameDuplicationException {
         LayoutParser parser = new LayoutParser(model);
 
         // Add each tab to the layout.

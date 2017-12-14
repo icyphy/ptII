@@ -174,8 +174,8 @@ public class BusContentionApplet extends PtolemyApplet {
         super._createView();
 
         _divaPanel = new JPanel(new BorderLayout());
-        _divaPanel.setBorder(new TitledBorder(new LineBorder(Color.black),
-                "Animation"));
+        _divaPanel.setBorder(
+                new TitledBorder(new LineBorder(Color.black), "Animation"));
         _divaPanel.setBackground(getBackground());
         _divaPanel.setPreferredSize(new Dimension(500, 450));
         _divaPanel.setBackground(getBackground());
@@ -345,8 +345,8 @@ public class BusContentionApplet extends PtolemyApplet {
     //}
     ///////////////////////////////////////////////////////////////////
     //// BusContentionGraphController
-    public static class BusContentionGraphController extends
-    BasicGraphController {
+    public static class BusContentionGraphController
+            extends BasicGraphController {
         private SelectionDragger _selectionDragger;
 
         /**

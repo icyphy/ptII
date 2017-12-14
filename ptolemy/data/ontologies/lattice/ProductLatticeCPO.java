@@ -74,7 +74,8 @@ public class ProductLatticeCPO extends ConceptGraph {
             throw new IllegalArgumentException(
                     "Invalid product lattice ontology; "
                             + "could not get the list of tuple ontologies for the product "
-                            + "lattice ontology.", ex);
+                            + "lattice ontology.",
+                    ex);
         }
 
         _findBottom();
@@ -146,8 +147,8 @@ public class ProductLatticeCPO extends ConceptGraph {
         // track which ones are higher, same, or lower.
         for (int i = 0; i < tupleSize; i++) {
             Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-            int comparison = tupleOntology.getConceptGraph().compare(
-                    leftArgTuple.get(i), rightArgTuple.get(i));
+            int comparison = tupleOntology.getConceptGraph()
+                    .compare(leftArgTuple.get(i), rightArgTuple.get(i));
 
             if (comparison == CPO.HIGHER) {
                 numHigher++;
@@ -226,8 +227,8 @@ public class ProductLatticeCPO extends ConceptGraph {
         List<ProductLatticeConcept> result = new ArrayList<ProductLatticeConcept>();
         for (List<Concept> pc : productLatticeConcepts) {
             try {
-                result.add(_productOntology
-                        .getProductLatticeConceptFromTuple(pc));
+                result.add(
+                        _productOntology.getProductLatticeConceptFromTuple(pc));
             } catch (IllegalActionException ex) {
                 throw new IllegalArgumentException("ProductLatticeCPO: "
                         + "Argument's ontologies do not match this CPO: "
@@ -279,7 +280,8 @@ public class ProductLatticeCPO extends ConceptGraph {
                 throw new IllegalArgumentException(
                         "Could not create the product "
                                 + "lattice concept greatest lower bound from the "
-                                + "component greates lower bound concepts.", ex);
+                                + "component greates lower bound concepts.",
+                        ex);
             }
         }
         return glb;
@@ -349,7 +351,8 @@ public class ProductLatticeCPO extends ConceptGraph {
                 throw new IllegalArgumentException(
                         "Could not create the product "
                                 + "lattice concept least upper bound from the "
-                                + "component least upper bound concepts.", ex);
+                                + "component least upper bound concepts.",
+                        ex);
             }
         }
         return lub;
@@ -374,8 +377,8 @@ public class ProductLatticeCPO extends ConceptGraph {
     private void _findBottom() {
         StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
-            conceptNameBuffer.append(ontology.getConceptGraph().bottom()
-                    .getName());
+            conceptNameBuffer
+                    .append(ontology.getConceptGraph().bottom().getName());
         }
         String productLatticeConceptName = conceptNameBuffer.toString();
         _bottomConcept = (ProductLatticeConcept) _productOntology
@@ -388,7 +391,7 @@ public class ProductLatticeCPO extends ConceptGraph {
         StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
             conceptNameBuffer
-            .append(ontology.getConceptGraph().top().getName());
+                    .append(ontology.getConceptGraph().top().getName());
         }
         String productLatticeConceptName = conceptNameBuffer.toString();
         _topConcept = (ProductLatticeConcept) _productOntology
@@ -410,8 +413,8 @@ public class ProductLatticeCPO extends ConceptGraph {
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
 
-        if (!((ProductLatticeConcept) e1).getOntology().equals(
-                ((ProductLatticeConcept) e2).getOntology())) {
+        if (!((ProductLatticeConcept) e1).getOntology()
+                .equals(((ProductLatticeConcept) e2).getOntology())) {
             throw new IllegalArgumentException(
                     "Attempt to compare elements from two distinct ontologies: "
                             + " arg1 = " + e1 + ", arg2 = " + e2);
@@ -437,12 +440,11 @@ public class ProductLatticeCPO extends ConceptGraph {
         }
 
         if (leftArgTuple.size() != rightArgTuple.size()) {
-            throw new IllegalArgumentException(
-                    "Attempt to compare "
-                            + "ProductLatticeConcept elements that do not have the same size "
-                            + "concept tuple arrays even though they are in the same "
-                            + "Ontology. This is an error." + " arg1 = " + e1
-                            + ", arg2 = " + e2);
+            throw new IllegalArgumentException("Attempt to compare "
+                    + "ProductLatticeConcept elements that do not have the same size "
+                    + "concept tuple arrays even though they are in the same "
+                    + "Ontology. This is an error." + " arg1 = " + e1
+                    + ", arg2 = " + e2);
         }
     }
 

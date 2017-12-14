@@ -310,7 +310,8 @@ public class UndoStackAttribute extends SingletonAttribute {
         // smaller and avoids leaks.
 
         /** Create an undo action from two actions. */
-        public MergeUndoActions(UndoAction firstAction, UndoAction secondAction) {
+        public MergeUndoActions(UndoAction firstAction,
+                UndoAction secondAction) {
             _firstAction = firstAction;
             _secondAction = secondAction;
         }

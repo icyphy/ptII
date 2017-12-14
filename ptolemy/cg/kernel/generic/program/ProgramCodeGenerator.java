@@ -100,7 +100,7 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      */
     public ProgramCodeGenerator(NamedObj container, String name,
             String outputFileExtension, String templateExtension)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension);
 
         _templateExtension = templateExtension;
@@ -279,13 +279,18 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
                         : ptType == BaseType.STRING ? "String"
                                 : ptType == BaseType.DOUBLE ? "Double"
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-                                                        : ptType == PointerToken.POINTER ? "Pointer"
-                                                                : ptType == BaseType.COMPLEX ? "Complex"
+                                                : ptType == BaseType.UNSIGNED_BYTE
+                                                        ? "UnsignedByte"
+                                                        : ptType == PointerToken.POINTER
+                                                                ? "Pointer"
+                                                                : ptType == BaseType.COMPLEX
+                                                                        ? "Complex"
                                                                         // FIXME: Why do we have to use equals with BaseType.OBJECT?
-                                                                        : ptType.equals(BaseType.OBJECT) ? "Object"
-                                                                                //: ptType == BaseType.OBJECT ? "Object"
-                                                                                : null;
+                                                                        : ptType.equals(
+                                                                                BaseType.OBJECT)
+                                                                                        ? "Object"
+                                                                                        //: ptType == BaseType.OBJECT ? "Object"
+                                                                                        : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
@@ -317,9 +322,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             }
         }
         if (result == null || result.length() == 0) {
-            System.out
-            .println("Cannot resolve codegen type from Ptolemy type: "
-                    + ptType);
+            System.out.println(
+                    "Cannot resolve codegen type from Ptolemy type: " + ptType);
         }
         return result;
     }
@@ -389,7 +393,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         code.append(adapter.generateFireFunctionCode());
         return code.toString();
     }
@@ -449,8 +454,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      */
     public String generateFireFunctionMethodName(NamedObj namedObj)
             throws IllegalActionException {
-        return TemplateParser.escapeName(CodeGeneratorAdapter
-                .generateName(namedObj));
+        return TemplateParser
+                .escapeName(CodeGeneratorAdapter.generateName(namedObj));
     }
 
     /** Generate the fire function variable name and method
@@ -522,7 +527,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         StringBuffer code = new StringBuffer();
         //code.append(comment("Initialize " + getContainer().getFullName()));
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         code.append(adapter.generateInitializeCode());
         return code.toString();
     }
@@ -668,8 +674,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             arrayName = "ports_";
             typeMap = _portTypeMap;
             typeMaxIndex = _portTypeMaxIndex;
-        } else if (port.isMultiport() && bufferSize <= 1 || !port.isMultiport()
-                && bufferSize > 1) {
+        } else if (port.isMultiport() && bufferSize <= 1
+                || !port.isMultiport() && bufferSize > 1) {
             // A 2D array is needed.
             if (_portTypeMap2 == null) {
                 // A map from String type name to a HashMap of multiport name
@@ -718,7 +724,7 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         }
 
         return arrayName + StringUtilities.sanitizeName(typeName) + "["
-        + portIndex + "]";
+                + portIndex + "]";
     }
 
     /** Generate sanitized name for the given Ptolemy IOPort.
@@ -770,7 +776,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             Integer actorIndex = null;
             String actorNameSymbol = generateVariableName(container) + "_"
                     + actorName;
-            if ((actorIndex = _typedCompositeActorMap.get(actorNameSymbol)) == null) {
+            if ((actorIndex = _typedCompositeActorMap
+                    .get(actorNameSymbol)) == null) {
                 // FIXME: is there a better way to update an element in a HashMap?
                 actorIndex = Integer.valueOf(_typedCompositeActorMap.size());
                 _typedCompositeActorMap.put(actorNameSymbol, actorIndex);
@@ -797,7 +804,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      */
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         code.append(adapter.generatePostfireCode());
         return code.toString();
     }
@@ -822,7 +830,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  @return a string for the postfire procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generatePostfireProcedureName() throws IllegalActionException {
+    public String generatePostfireProcedureName()
+            throws IllegalActionException {
         return "";
     }
 
@@ -845,7 +854,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         return adapter.generateVariableDeclaration();
     }
 
@@ -861,7 +871,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         //code.append(comment(1, "Variable initialization "
         //       + getContainer().getFullName()));
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
 
         code.append(adapter.generateVariableInitialization());
         return code.toString();
@@ -889,7 +900,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         StringBuffer code = new StringBuffer();
         //code.append(comment(1, "Wrapup " + getContainer().getFullName()));
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         code.append(adapter.generateWrapupCode());
         return code.toString();
     }
@@ -975,14 +987,21 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  @return null if there is not corresponding Ptolemy type.
      */
     public static Type ptolemyType(String cgType) {
-        Type result = cgType.equals("Int") ? BaseType.INT : cgType
-                .equals("Long") ? BaseType.LONG
-                        : cgType.equals("String") ? BaseType.STRING : cgType
-                                .equals("Boolean") ? BaseType.BOOLEAN : cgType
-                                        .equals("Double") ? BaseType.DOUBLE : cgType
-                                                .equals("Complex") ? BaseType.COMPLEX : cgType
-                                                        .equals("Object") ? BaseType.OBJECT : cgType
-                                                                .equals("Pointer") ? PointerToken.POINTER : null;
+        Type result = cgType.equals("Int") ? BaseType.INT
+                : cgType.equals("Long") ? BaseType.LONG
+                        : cgType.equals("String") ? BaseType.STRING
+                                : cgType.equals("Boolean") ? BaseType.BOOLEAN
+                                        : cgType.equals("Double")
+                                                ? BaseType.DOUBLE
+                                                : cgType.equals("Complex")
+                                                        ? BaseType.COMPLEX
+                                                        : cgType.equals(
+                                                                "Object")
+                                                                        ? BaseType.OBJECT
+                                                                        : cgType.equals(
+                                                                                "Pointer")
+                                                                                        ? PointerToken.POINTER
+                                                                                        : null;
 
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
@@ -992,11 +1011,14 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             String elementType = cgType.replace("Matrix", "");
             result = elementType.equals("Int") ? BaseType.INT_MATRIX
                     : elementType.equals("Complex") ? BaseType.COMPLEX_MATRIX
-                            : elementType.equals("Double") ? BaseType.DOUBLE_MATRIX
-                                    : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
-                                            : elementType.equals("Fix") ? BaseType.FIX_MATRIX
-                                                    : elementType
-                                                    .equals("Long") ? BaseType.LONG_MATRIX
+                            : elementType.equals("Double")
+                                    ? BaseType.DOUBLE_MATRIX
+                                    : elementType.equals("Boolean")
+                                            ? BaseType.BOOLEAN_MATRIX
+                                            : elementType.equals("Fix")
+                                                    ? BaseType.FIX_MATRIX
+                                                    : elementType.equals("Long")
+                                                            ? BaseType.LONG_MATRIX
                                                             : null;
 
         }
@@ -1034,8 +1056,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  of the code parameter.
      *  @exception IOException If thrown while reading the code.
      */
-    public String[] splitLongBody(int linesPerMethod, String prefix, String code)
-            throws IOException {
+    public String[] splitLongBody(int linesPerMethod, String prefix,
+            String code) throws IOException {
         String[] results = { "", code };
         return results;
     }
@@ -1083,11 +1105,15 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long long "
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
+                                                : ptType == BaseType.UNSIGNED_BYTE
+                                                        ? "unsigned char"
                                                         // FIXME: Why do we have to use equals with BaseType.OBJECT?
-                                                        : ptType.equals(BaseType.OBJECT) ? "Object"
-                                                                : ptType == PointerToken.POINTER ? "void*"
-                                                                        : "Token*";
+                                                        : ptType.equals(
+                                                                BaseType.OBJECT)
+                                                                        ? "Object"
+                                                                        : ptType == PointerToken.POINTER
+                                                                                ? "void*"
+                                                                                : "Token*";
     }
 
     /** Return an updated array of command line options.
@@ -1105,11 +1131,11 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
                 { "-measureTime", "       true|false (default: false)" },
                 { "-variablesAsArrays", " true|false (default:false)" },
                 { "-verbosity",
-                "         <an integer, try 1 or 10>, (default: 0)" } };
+                        "         <an integer, try 1 or 10>, (default: 0)" } };
 
         String[][] parentOptions = super.updateCommandOptions();
         String[][] allOptions = new String[parentOptions.length
-                                           + options.length][2];
+                + options.length][2];
         int i = 0;
         for (; i < parentOptions.length; i++) {
             allOptions[i][0] = parentOptions[i][0];
@@ -1144,7 +1170,7 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
         ((NamedProgramCodeGeneratorAdapter) getAdapter(getContainer()))
-        .analyzeTypeConvert();
+                .analyzeTypeConvert();
     }
 
     /** Return the value of the codeDirectory parameter.
@@ -1154,8 +1180,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  @exception IllegalActionException If thrown while reading the
      *  codeDirectory parameter.
      */
-    protected File _codeDirectoryAsFile() throws IOException,
-    IllegalActionException {
+    protected File _codeDirectoryAsFile()
+            throws IOException, IllegalActionException {
         // This method is here to avoid code duplication.
         // It is package protected so we can read it in ProgramCodeGeneratorAdapter
         File codeDirectoryFile = codeDirectory.asFile();
@@ -1183,8 +1209,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
-        StringTokenizer tokenizer = new StringTokenizer(code.toString(), _eol
-                + "\n");
+        StringTokenizer tokenizer = new StringTokenizer(code.toString(),
+                _eol + "\n");
 
         code = new StringBuffer();
 
@@ -1243,7 +1269,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         ptolemy.actor.Director director = ((Actor) model).getDirector();
 
         if (director == null) {
-            throw new IllegalActionException(model, "Does not have a director.");
+            throw new IllegalActionException(model,
+                    "Does not have a director.");
         }
 
         if (_isTopLevel()) {
@@ -1259,14 +1286,16 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             }
              */
             //Director directorAdapter = (Director) getAdapter(director);
-            NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(director);
+            NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                    director);
             code += directorAdapter.generateMainLoop(
             /* CodeGenerator.containsCode(_postfireCode)*/
             );
 
         } else {
             // Generate embedded code.
-            NamedProgramCodeGeneratorAdapter compositeAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(model);
+            NamedProgramCodeGeneratorAdapter compositeAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                    model);
             code += compositeAdapter.generateFireCode();
         }
 
@@ -1295,7 +1324,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
     protected String _generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         Set<String> sharedCodeBlocks = adapter.getSharedCode();
         Iterator<String> blocks = sharedCodeBlocks.iterator();
         while (blocks.hasNext()) {
@@ -1304,9 +1334,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         }
 
         if (code.length() > 0) {
-            code.insert(0, _eol
-                    + comment("Generate shared code for "
-                            + getContainer().getName()));
+            code.insert(0, _eol + comment(
+                    "Generate shared code for " + getContainer().getName()));
             code.append(comment("Finished generating shared code for "
                     + getContainer().getName()));
         }
@@ -1482,11 +1511,13 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
 
         String[] splitPreinitializeMethodBodyCode = _splitBody(
                 "_preinitializeMethod_", preinitializeMethodBodyCode);
-        code.append(comment("Before appending splitPreinitializeMethodBodyCode[0]."));
+        code.append(comment(
+                "Before appending splitPreinitializeMethodBodyCode[0]."));
         code.append(splitPreinitializeMethodBodyCode[0]);
         // Set this to null to free up space.
         splitPreinitializeMethodBodyCode[0] = null;
-        code.append(comment("After appending splitPreinitializeMethodBodyCode[0]."));
+        code.append(comment(
+                "After appending splitPreinitializeMethodBodyCode[0]."));
         code.append(preinitializeMethodEntryCode);
         code.append(splitPreinitializeMethodBodyCode[1]);
         splitPreinitializeMethodBodyCode[1] = null;
@@ -1568,7 +1599,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             if (containsCode(preinitializeMethodBodyCode)) {
                 code.append(preinitializeProcedureName);
             }
-            if (containsCode(variableInitCode) || containsCode(initializeCode)) {
+            if (containsCode(variableInitCode)
+                    || containsCode(initializeCode)) {
                 code.append(initializeProcedureName);
             }
         }
@@ -1636,9 +1668,11 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *   director cannot be found, or if an error occurs when the director
      *   adapter generates preinitialize code.
      */
-    protected String _generatePreinitializeCode() throws IllegalActionException {
+    protected String _generatePreinitializeCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
 
         try {
             // Determine which variables in the model can change
@@ -1668,7 +1702,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
     protected String _generatePreinitializeMethodBodyCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
 
         try {
             // Delegate to the container to generate preinitialize code.
@@ -1719,15 +1754,14 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
     @Override
     protected CodeGeneratorAdapter _instantiateAdapter(Object component,
             Class<?> componentClass, String adapterClassName)
-                    throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super
-                ._instantiateAdapter(component, componentClass,
-                        adapterClassName);
+            throws IllegalActionException {
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super._instantiateAdapter(
+                component, componentClass, adapterClassName);
         try {
             Class<?> templateParserClass = _templateParserClass();
             if (templateParserClass != null) {
-                adapter.setTemplateParser((TemplateParser) templateParserClass
-                        .newInstance());
+                adapter.setTemplateParser(
+                        (TemplateParser) templateParserClass.newInstance());
             }
         } catch (InstantiationException e) {
             throw new InternalErrorException(e);
@@ -1787,7 +1821,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *   initializing an adapter.
      */
     protected void _setupAdapter() throws IllegalActionException {
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(
+                getContainer());
         adapter.setupAdapter();
     }
 
@@ -1806,7 +1841,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  that corresponds with the include or import listed in the
      *  first element.
      */
-    protected List<String> _splitVariableDeclaration(String suffix, String code) {
+    protected List<String> _splitVariableDeclaration(String suffix,
+            String code) {
         // Split the initialize body into multiple methods
         // so that the compiler has an easier time.
         List<String> results = new LinkedList<String>();
@@ -1817,8 +1853,7 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
                     code);
         } catch (Throwable throwable) {
             // Ignore
-            System.out
-            .println("Warning: Failed to split variable declaration: "
+            System.out.println("Warning: Failed to split variable declaration: "
                     + throwable);
             throwable.printStackTrace();
             results.add("");
@@ -1858,7 +1893,7 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  sanitized version of the model name, and a ".mk" extension.
      *  Thus, for a model named "Foo", we might generate a makefile in
      *  "$HOME/codegen/Foo.mk".
-
+    
      *  <p>Under Java under Windows, your <code>$HOME</code> variable
      *  is set to the value of the <code>user.home</code>System property,
      *  which is usually something like
@@ -1893,9 +1928,9 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             String currentDirectory) throws IllegalActionException {
         File codeDirectoryFile = new File(currentDirectory);
         if (codeDirectoryFile.isFile()) {
-            throw new IllegalActionException(this, "Error: "
-                    + codeDirectory.stringValue() + " is a file, "
-                    + " it should be a directory.");
+            throw new IllegalActionException(this,
+                    "Error: " + codeDirectory.stringValue() + " is a file, "
+                            + " it should be a directory.");
         }
 
         if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
@@ -1933,8 +1968,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
                 if (!JVMBitWidth.is32Bit()) {
                     widthFlag = "-m64 ";
                 }
-                _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag
-                        + "-dynamiclib");
+                _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@",
+                        widthFlag + "-dynamiclib");
                 _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                 _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
             } else if (osName.startsWith("SunOS")) {
@@ -1967,14 +2002,13 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
                 URIAttribute.class);
         if (uriAttribute != null) {
             String uriString = uriAttribute.getURI().toString();
-            templateList.add(uriString.substring(0,
-                    uriString.lastIndexOf("/") + 1)
-                    + _sanitizedModelName
-                    + ".mk.in");
+            templateList
+                    .add(uriString.substring(0, uriString.lastIndexOf("/") + 1)
+                            + _sanitizedModelName + ".mk.in");
         }
 
-        String generatorDirectory = generatorPackageList.stringValue().replace(
-                '.', '/');
+        String generatorDirectory = generatorPackageList.stringValue()
+                .replace('.', '/');
 
         if (container.getContainer() != null) {
             // We have a embedded code generator
@@ -1986,24 +2020,25 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         // 2. If the target parameter is set, look for a makefile.
 
         // Look for generator specific make file
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
-                + "/makefile.in");
+        templateList.add(
+                "ptolemy/cg/kernel/" + generatorDirectory + "/makefile.in");
 
         // Look for generator specific make file
-        templateList.add("ptolemy/cg/adapter/" + generatorDirectory
-                + "/makefile.in");
+        templateList.add(
+                "ptolemy/cg/adapter/" + generatorDirectory + "/makefile.in");
 
         // 3. Look for the generic makefile.in
         // Note this code is repeated in the catch below.
 
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
-                + "/makefile.in");
+        templateList.add(
+                "ptolemy/cg/kernel/" + generatorDirectory + "/makefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
                 + (!codeDirectory.stringValue().endsWith("/")
                         && !codeDirectory.stringValue().endsWith("\\") ? "/"
-                                : "") + _sanitizedModelName + ".mk";
+                                : "")
+                + _sanitizedModelName + ".mk";
 
         BufferedReader makefileTemplateReader = null;
 
@@ -2034,7 +2069,7 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to read \"" + makefileTemplateName
-                    + "\" or write \"" + makefileOutputName + "\"");
+                            + "\" or write \"" + makefileOutputName + "\"");
         } finally {
             if (makefileTemplateReader != null) {
                 try {
@@ -2063,7 +2098,8 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  @param blockEnd The given block end symbol to match.
      *  @return The pretty-printed version of the given code line.
      */
-    private String _prettyPrint(String line, String blockBegin, String blockEnd) {
+    private String _prettyPrint(String line, String blockBegin,
+            String blockEnd) {
 
         line = line.trim();
         int begin = line.contains(blockBegin) ? 1 : 0;
@@ -2201,9 +2237,9 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
 
     /** A list of the primitive types supported by the code generator.
      */
-    protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-    "Pointer" });
+    protected static List<String> _primitiveTypes = Arrays
+            .asList(new String[] { "Int", "Double", "String", "Long", "Boolean",
+                    "UnsignedByte", "Pointer" });
 
     /** The initial default value of the <i>runCommand</i> parameter.
      *  The constructor of a derived class may compare the value of <i>runCommand</i>

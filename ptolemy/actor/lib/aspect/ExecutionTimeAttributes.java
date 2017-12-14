@@ -122,7 +122,8 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
      * @return True if execution target can have execution time.
      */
     public boolean canSimulateExecutionFor(NamedObj target) {
-        return (target instanceof CompositeActor || target instanceof AtomicActor);
+        return (target instanceof CompositeActor
+                || target instanceof AtomicActor);
     }
 
     ///////////////////////////////////////////////////////////////////

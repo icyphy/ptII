@@ -137,8 +137,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MetroIIPtidesDirector newObject = (MetroIIPtidesDirector) super
-                .clone(workspace);
+        MetroIIPtidesDirector newObject = (MetroIIPtidesDirector) super.clone(
+                workspace);
 
         newObject._eventList = (ArrayList<PtidesEvent>) _eventList.clone();
         return newObject;
@@ -177,13 +177,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                             "sourcePlatformDelayBound");
             if (localClock.getLocalTime().subtract(event.timeStamp())
                     .getDoubleValue() > sourcePlatformDelayBound
-                    + networkDelayBound) {
-                event = _handleTimingError(
-                        sourcePort,
-                        event,
+                            + networkDelayBound) {
+                event = _handleTimingError(sourcePort, event,
                         "Event on this network receiver came in too late. "
-                                + "(Physical time: "
-                                + localClock.getLocalTime()
+                                + "(Physical time: " + localClock.getLocalTime()
                                 + ", Event timestamp: " + event.timeStamp()
                                 + ", Source platform delay bound: "
                                 + sourcePlatformDelayBound
@@ -284,8 +281,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     PtidesEvent newEvent = new PtidesEvent(event.ioPort(),
                             event.channel(), event.timeStamp(),
                             event.microstep(), event.depth(), event.token(),
-                            event.receiver(), localClock.getLocalTime().add(
-                                    deviceDelay), event.sourceTimestamp());
+                            event.receiver(),
+                            localClock.getLocalTime().add(deviceDelay),
+                            event.sourceTimestamp());
 
                     ptidesOutputPortList.add(newEvent);
 
@@ -302,9 +300,11 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         for (MetroIIPtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
             Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
                     .get(port);
-            if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
+            if (ptidesOutputPortList != null
+                    && ptidesOutputPortList.size() > 0) {
                 PtidesEvent event = ptidesOutputPortList.peek();
-                if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
+                if (event.absoluteDeadline()
+                        .equals(localClock.getLocalTime())) {
                     _currentLogicalTime = event.timeStamp();
                     _currentSourceTimestamp = event.sourceTimestamp();
                     _currentLogicalIndex = event.microstep();
@@ -343,9 +343,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         if (_currentLogicalTime != null
                 && _currentLogicalTime.compareTo(time) == 0
                 && index <= getIndex()) {
-            if (!(actor instanceof CompositeActor)
-                    || ((CompositeActor) actor).getDirector()
-                    .scheduleContainedActors()) {
+            if (!(actor instanceof CompositeActor) || ((CompositeActor) actor)
+                    .getDirector().scheduleContainedActors()) {
                 newIndex = Math.max(getIndex(), index) + 1;
             }
         }
@@ -456,7 +455,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
         ArrayList<IOPort> ports1 = new ArrayList<IOPort>();
         if (e1.isPureEvent()) {
-            for (IOPort outputPort : (List<IOPort>) e1.actor().outputPortList()) {
+            for (IOPort outputPort : (List<IOPort>) e1.actor()
+                    .outputPortList()) {
                 ports1.addAll(outputPort.deepConnectedInPortList());
             }
         } else {
@@ -469,8 +469,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         } else {
             Actor actor = e2.actor();
             CausalityInterface causality = actor.getCausalityInterface();
-            Collection<IOPort> equivalentPorts = causality.equivalentPorts(e2
-                    .ioPort());
+            Collection<IOPort> equivalentPorts = causality
+                    .equivalentPorts(e2.ioPort());
             ports2.addAll(equivalentPorts);
         }
         double minDelay = minDelayBetween(ports1, ports2);
@@ -546,8 +546,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     public boolean isPendingEventCausallyAffect(PtidesEvent event)
             throws IllegalActionException {
         ArrayList<PtidesEvent> eventArray = new ArrayList<PtidesEvent>(
-                (List<PtidesEvent>) (List<?>) Arrays.asList(_pureEvents
-                        .toArray()));
+                (List<PtidesEvent>) (List<?>) Arrays
+                        .asList(_pureEvents.toArray()));
         eventArray.addAll((List<PtidesEvent>) (List<?>) Arrays
                 .asList(_eventQueue.toArray()));
 
@@ -620,8 +620,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     PtidesEvent newEvent = new PtidesEvent(event.ioPort(),
                             event.channel(), event.timeStamp(),
                             event.microstep(), event.depth(), event.token(),
-                            event.receiver(), localClock.getLocalTime().add(
-                                    deviceDelay), event.sourceTimestamp());
+                            event.receiver(),
+                            localClock.getLocalTime().add(deviceDelay),
+                            event.sourceTimestamp());
 
                     ptidesOutputPortList.add(newEvent);
 
@@ -638,9 +639,11 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         for (MetroIIPtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
             Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
                     .get(port);
-            if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
+            if (ptidesOutputPortList != null
+                    && ptidesOutputPortList.size() > 0) {
                 PtidesEvent event = ptidesOutputPortList.peek();
-                if (event.absoluteDeadline().equals(localClock.getLocalTime())) {
+                if (event.absoluteDeadline()
+                        .equals(localClock.getLocalTime())) {
                     _currentLogicalTime = event.timeStamp();
                     _currentSourceTimestamp = event.sourceTimestamp();
                     _currentLogicalIndex = event.microstep();
@@ -723,18 +726,17 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
             for (PtidesEvent event : _outputEventQueue.get(set.first())) {
                 if (event.ioPort() instanceof MetroIIPtidesPort
-                        && ((MetroIIPtidesPort) event.ioPort())
-                        .isActuatorPort()
-                        && getEnvironmentTime().compareTo(event.timeStamp()) > 0) {
+                        && ((MetroIIPtidesPort) event.ioPort()).isActuatorPort()
+                        && getEnvironmentTime()
+                                .compareTo(event.timeStamp()) > 0) {
                     //                    System.out.println("Warning: Missed Deadline at "
                     //                            + event.ioPort() + "!");
                     //                    System.out.println("Warning: Reschedule the event from "
                     //                            + event.timeStamp() + " to " + getEnvironmentTime()
                     //                            + "!");
-                    handleModelError(event.ioPort(),
-                            new IllegalActionException(event.ioPort(),
-                                    "Missed Deadline at " + event.ioPort()
-                                    + "!"));
+                    handleModelError(event.ioPort(), new IllegalActionException(
+                            event.ioPort(),
+                            "Missed Deadline at " + event.ioPort() + "!"));
                 }
             }
             _setNextFireTime(set.first());
@@ -749,20 +751,19 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         for (MetroIIPtidesPort port : _ptidesOutputPortEventQueue.keySet()) {
             Queue<PtidesEvent> ptidesOutputPortList = _ptidesOutputPortEventQueue
                     .get(port);
-            if (ptidesOutputPortList != null && ptidesOutputPortList.size() > 0) {
+            if (ptidesOutputPortList != null
+                    && ptidesOutputPortList.size() > 0) {
                 PtidesEvent event = ptidesOutputPortList.peek();
 
-                if (port.isActuatorPort()
-                        && getEnvironmentTime().compareTo(
-                                event.absoluteDeadline()) > 0) {
+                if (port.isActuatorPort() && getEnvironmentTime()
+                        .compareTo(event.absoluteDeadline()) > 0) {
                     //                    System.out.println("Warning: Missed Deadline at " + port
                     //                            + "!");
                     //                    System.out.println("Warning: Reschedule the event from "
                     //                            + event.absoluteDeadline() + " to "
                     //                            + getEnvironmentTime() + "!");
-                    handleModelError(event.ioPort(),
-                            new IllegalActionException(port,
-                                    "Missed Deadline at " + port + "!"));
+                    handleModelError(event.ioPort(), new IllegalActionException(
+                            port, "Missed Deadline at " + port + "!"));
                 }
 
                 _setNextFireTime(event.absoluteDeadline());
@@ -867,18 +868,18 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             Receiver receiver) throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
 
-        if (_eventQueue == null || _disabledActors != null
-                && _disabledActors.contains(actor)) {
+        if (_eventQueue == null
+                || _disabledActors != null && _disabledActors.contains(actor)) {
             return;
         }
 
         int depth = _getDepthOfIOPort(ioPort);
 
         if (_debugging) {
-            _debug("enqueue a trigger event for ",
-                    ((NamedObj) actor).getName(), " port " + ioPort
-                    + " time = " + getModelTime() + " microstep = "
-                    + _microstep + " depth = " + depth);
+            _debug("enqueue a trigger event for ", ((NamedObj) actor).getName(),
+                    " port " + ioPort + " time = " + getModelTime()
+                            + " microstep = " + _microstep + " depth = "
+                            + depth);
         }
 
         // Register this trigger event.
@@ -908,29 +909,24 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     //                             + " to "
                     //                            + getEnvironmentTime() + "!");
 
-                    newEvent = _handleTimingError(
-                            (MetroIIPtidesPort) ioPort,
+                    newEvent = _handleTimingError((MetroIIPtidesPort) ioPort,
                             newEvent,
-                            "Missed Deadline at "
-                                    + ioPort
-                                    + "!\n "
-                                    + " At "
+                            "Missed Deadline at " + ioPort + "!\n " + " At "
                                     + getModelTime()
                                     + " which is smaller than current platform time "
                                     + localClock.getLocalTime());
                 }
-            } else if (((MetroIIPtidesPort) ioPort).isNetworkTransmitterPort()) {
+            } else if (((MetroIIPtidesPort) ioPort)
+                    .isNetworkTransmitterPort()) {
                 if (localClock.getLocalTime().subtract(getModelTime())
                         .getDoubleValue() > _getDoubleParameterValue(ioPort,
                                 "platformDelayBound")) {
-                    newEvent = _handleTimingError(
-                            (MetroIIPtidesPort) ioPort,
+                    newEvent = _handleTimingError((MetroIIPtidesPort) ioPort,
                             newEvent,
                             "Token is being sent out onto the network too late."
                                     + "Current platform time: "
                                     + localClock.getLocalTime()
-                                    + " Event timestamp: "
-                                    + getModelTime()
+                                    + " Event timestamp: " + getModelTime()
                                     + " Platform delay: "
                                     + _getDoubleParameterValue(ioPort,
                                             "platformDelayBound"));
@@ -968,11 +964,12 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         for (int i = 0; i < actor.outputPortList().size(); i++) {
             for (int j = 0; j < ((IOPort) actor.outputPortList().get(i))
                     .sinkPortList().size(); j++) {
-                double newRelativeDeadline = _getRelativeDeadline((TypedIOPort) ((IOPort) actor
-                        .outputPortList().get(i)).sinkPortList().get(j));
+                double newRelativeDeadline = _getRelativeDeadline(
+                        (TypedIOPort) ((IOPort) actor.outputPortList().get(i))
+                                .sinkPortList().get(j));
                 if (newRelativeDeadline < Double.MAX_VALUE
                         && newRelativeDeadline < relativeDeadline
-                        .getDoubleValue()) {
+                                .getDoubleValue()) {
                     relativeDeadline = new Time(this, newRelativeDeadline);
                 }
             }
@@ -994,8 +991,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             String parameterName) throws IllegalActionException {
         Parameter parameter = (Parameter) object.getAttribute(parameterName);
         if (parameter != null && parameter.getToken() != null) {
-            return Double.valueOf(((DoubleToken) parameter.getToken())
-                    .doubleValue());
+            return Double.valueOf(
+                    ((DoubleToken) parameter.getToken()).doubleValue());
         }
         return null;
     }
@@ -1139,9 +1136,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         for (TypedIOPort port : _inputPorts) {
 
             // Disallow SensorPort and NetworkReceiverPort.
-            if (port instanceof MetroIIPtidesPort
-                    && (((MetroIIPtidesPort) port).isSensorPort() || ((MetroIIPtidesPort) port)
-                            .isNetworkReceiverPort())) {
+            if (port instanceof MetroIIPtidesPort && (((MetroIIPtidesPort) port)
+                    .isSensorPort()
+                    || ((MetroIIPtidesPort) port).isNetworkReceiverPort())) {
                 continue;
             }
 
@@ -1150,9 +1147,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             double delayOffset = Double.POSITIVE_INFINITY;
             for (TypedIOPort inputPort : _inputPorts) {
                 // Only allow SensorPort and NetworkReceiverPort.
-                if (!(inputPort instanceof MetroIIPtidesPort && (((MetroIIPtidesPort) inputPort)
-                        .isSensorPort() || ((MetroIIPtidesPort) inputPort)
-                        .isNetworkReceiverPort()))) {
+                if (!(inputPort instanceof MetroIIPtidesPort
+                        && (((MetroIIPtidesPort) inputPort).isSensorPort()
+                                || ((MetroIIPtidesPort) inputPort)
+                                        .isNetworkReceiverPort()))) {
                     continue;
                 }
                 double deviceDelayBound = _getDoubleParameterValue(inputPort,
@@ -1166,9 +1164,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 SuperdenseDependency minDelay = SuperdenseDependency.OPLUS_IDENTITY;
                 // Find minimum path to input port group.
                 for (TypedIOPort groupPort : _inputPortGroups.get(port)) {
-                    minDelay = (SuperdenseDependency) minDelay
-                            .oPlus(_getSuperdenseDependencyPair(inputPort,
-                                    groupPort));
+                    minDelay = (SuperdenseDependency) minDelay.oPlus(
+                            _getSuperdenseDependencyPair(inputPort, groupPort));
                 }
 
                 // Check if best so far.
@@ -1192,18 +1189,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     }
                 }
             }
-            _setDelayOffset(
-                    port,
-                    delayOffset
-                    - ((DoubleToken) clockSynchronizationErrorBound
-                            .getToken()).doubleValue());
+            _setDelayOffset(port, delayOffset
+                    - ((DoubleToken) clockSynchronizationErrorBound.getToken())
+                            .doubleValue());
         }
 
         // Calculate delayOffset to each actor
         for (Object entity : ((CompositeActor) getContainer()).entityList()) {
-            if (entity instanceof TimeDelay
-                    && ((TimeDelay) entity).delay.getPort()
-                    .isOutsideConnected()) {
+            if (entity instanceof TimeDelay && ((TimeDelay) entity).delay
+                    .getPort().isOutsideConnected()) {
                 _setDelayOffset((NamedObj) entity,
                         ((DoubleToken) ((TimeDelay) entity).minimumDelay
                                 .getToken()).doubleValue());
@@ -1227,9 +1221,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         for (TypedIOPort port : _inputPorts) {
 
             // Disallow SensorPort and NetworkReceiverPort.
-            if (port instanceof MetroIIPtidesPort
-                    && (((MetroIIPtidesPort) port).isSensorPort() || ((MetroIIPtidesPort) port)
-                            .isNetworkReceiverPort())) {
+            if (port instanceof MetroIIPtidesPort && (((MetroIIPtidesPort) port)
+                    .isSensorPort()
+                    || ((MetroIIPtidesPort) port).isNetworkReceiverPort())) {
                 continue;
             }
 
@@ -1238,9 +1232,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             double relativeDeadline = Double.POSITIVE_INFINITY;
             for (TypedIOPort outputPort : _inputPorts) {
                 // Only allow ActuatorPort and NetworkTransmitterPort.
-                if (!(outputPort instanceof MetroIIPtidesPort && (((MetroIIPtidesPort) outputPort)
-                        .isActuatorPort() || ((MetroIIPtidesPort) outputPort)
-                        .isNetworkTransmitterPort()))) {
+                if (!(outputPort instanceof MetroIIPtidesPort
+                        && (((MetroIIPtidesPort) outputPort).isActuatorPort()
+                                || ((MetroIIPtidesPort) outputPort)
+                                        .isNetworkTransmitterPort()))) {
                     continue;
                 }
                 double deviceDelayBound = _getDoubleParameterValue(outputPort,
@@ -1263,8 +1258,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         // state.
         for (TypedIOPort port : _inputPortsForPureEvent.keySet()) {
             Double relativeDeadline = Double.POSITIVE_INFINITY;
-            for (TypedIOPort connectedPort : _inputPortsForPureEvent.get(port)) {
-                Double thisRelativeDeadline = _getRelativeDeadline(connectedPort);
+            for (TypedIOPort connectedPort : _inputPortsForPureEvent
+                    .get(port)) {
+                Double thisRelativeDeadline = _getRelativeDeadline(
+                        connectedPort);
                 if (thisRelativeDeadline.compareTo(relativeDeadline) < 0) {
                     relativeDeadline = thisRelativeDeadline;
                 }
@@ -1291,8 +1288,9 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
         // Code generation would also need to handle multiports differently.
 
         if (!(getContainer() instanceof TypedCompositeActor)) {
-            throw new IllegalActionException(getContainer(), getContainer()
-                    .getFullName() + " is not a TypedCompositeActor");
+            throw new IllegalActionException(getContainer(),
+                    getContainer().getFullName()
+                            + " is not a TypedCompositeActor");
         }
 
         // Initialize HashMaps. These will end up being identical if parameter
@@ -1319,8 +1317,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
 
             // Only allow ports which are MetroIIPtidesPorts.
             if (!(port instanceof MetroIIPtidesPort)) {
-                throw new IllegalActionException(port, port.getFullName()
-                        + " is not a MetroIIPtidesPort");
+                throw new IllegalActionException(port,
+                        port.getFullName() + " is not a MetroIIPtidesPort");
             }
 
             _addInputPort(port);
@@ -1371,12 +1369,13 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                         // produce pure events.
                         if (!minDelay
                                 .equals(SuperdenseDependency.OTIMES_IDENTITY)) {
-                            if (!_inputPortsForPureEvent.containsKey(inputPort)) {
+                            if (!_inputPortsForPureEvent
+                                    .containsKey(inputPort)) {
                                 _inputPortsForPureEvent.put(inputPort,
                                         new HashSet<TypedIOPort>());
                             }
-                            _inputPortsForPureEvent.get(inputPort).addAll(
-                                    outputPort.deepConnectedPortList());
+                            _inputPortsForPureEvent.get(inputPort)
+                                    .addAll(outputPort.deepConnectedPortList());
                         }
                         for (TypedIOPort connectedPort : (List<TypedIOPort>) outputPort
                                 .deepConnectedPortList()) {
@@ -1388,8 +1387,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                                 .inputPortList()) {
                             minDelay = (SuperdenseDependency) actorCausality
                                     .getDependency(inPort, outputPort);
-                            if (!minDelay
-                                    .equals(SuperdenseDependency.OPLUS_IDENTITY)) {
+                            if (!minDelay.equals(
+                                    SuperdenseDependency.OPLUS_IDENTITY)) {
                                 _inputPortGroups.get(inputPort).add(inPort);
                             }
                         }
@@ -1409,7 +1408,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     ik = _getSuperdenseDependencyPair(i, k);
                     kj = _getSuperdenseDependencyPair(k, j);
                     // Check if i->k->j is better than i->j.
-                    if (ij.compareTo(ik.oTimes(kj)) == Dependency.GREATER_THAN) {
+                    if (ij.compareTo(
+                            ik.oTimes(kj)) == Dependency.GREATER_THAN) {
                         _putSuperdenseDependencyPair(i, j,
                                 (SuperdenseDependency) ik.oTimes(kj));
                     }
@@ -1430,10 +1430,10 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 buf.append(srcPort.getName(getContainer()) + "\t");
                 for (TypedIOPort destPort : _inputPorts) {
                     buf.append(_getSuperdenseDependencyPair(srcPort, destPort)
-                            .timeValue()
-                            + "("
+                            .timeValue() + "("
                             + _getSuperdenseDependencyPair(srcPort, destPort)
-                            .indexValue() + ")\t");
+                                    .indexValue()
+                            + ")\t");
                 }
                 _debug(buf.toString());
             }
@@ -1472,14 +1472,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                     // If event has same tag and destined to same actor, remove from
                     // queue.
                     // TODO: or input port group?
-                    if (eventInQueue.actor().equals(ptidesEvent.actor()) &&
-                            eventInQueue.hasTheSameTagAs(ptidesEvent)) {
+                    if (eventInQueue.actor().equals(ptidesEvent.actor())
+                            && eventInQueue.hasTheSameTagAs(ptidesEvent)) {
                         sameTagEvents.add(eventInQueue);
                         if (eventInQueue.receiver() != null) {
-                            if (eventInQueue.receiver() instanceof MetroIIPtidesReceiver) {
+                            if (eventInQueue
+                                    .receiver() instanceof MetroIIPtidesReceiver) {
                                 ((MetroIIPtidesReceiver) eventInQueue
-                                        .receiver()).putToReceiver(eventInQueue
-                                                .token());
+                                        .receiver()).putToReceiver(
+                                                eventInQueue.token());
                             }
                         }
                     }
@@ -1495,21 +1496,22 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 // Remove tokens again.
                 for (PtidesEvent sameTagEvent : sameTagEvents) {
                     if (sameTagEvent.receiver() != null) {
-                        if (sameTagEvent.receiver() instanceof MetroIIPtidesReceiver) {
+                        if (sameTagEvent
+                                .receiver() instanceof MetroIIPtidesReceiver) {
                             ((MetroIIPtidesReceiver) sameTagEvent.receiver())
-                            .remove(sameTagEvent.token());
+                                    .remove(sameTagEvent.token());
                         }
                     }
                 }
 
-                if (prefire
-                        && (!_aspectsPresent || queue != _pureEvents
-                        && ptidesEvent.actor() instanceof TimeDelay || _schedule(
-                                (NamedObj) ptidesEvent.actor(),
+                if (prefire && (!_aspectsPresent
+                        || queue != _pureEvents
+                                && ptidesEvent.actor() instanceof TimeDelay
+                        || _schedule((NamedObj) ptidesEvent.actor(),
                                 ptidesEvent.timeStamp()))) {
                     if (!(ptidesEvent.actor() instanceof CompositeActor)
                             || ((CompositeActor) ptidesEvent.actor())
-                            .getDirector().scheduleContainedActors()) {
+                                    .getDirector().scheduleContainedActors()) {
                         _currentLogicalTime = ptidesEvent.timeStamp();
                         _currentLogicalIndex = ptidesEvent.microstep();
                         _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
@@ -1582,8 +1584,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     private SuperdenseDependency _getSuperdenseDependencyPair(IOPort source,
             IOPort destination) {
         if (_superdenseDependencyPair.containsKey(source)
-                && _superdenseDependencyPair.get(source).containsKey(
-                        destination)) {
+                && _superdenseDependencyPair.get(source)
+                        .containsKey(destination)) {
             return _superdenseDependencyPair.get(source).get(destination);
         } else {
             return SuperdenseDependency.OPLUS_IDENTITY;
@@ -1611,33 +1613,33 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     private PtidesEvent _handleTimingError(MetroIIPtidesPort port,
             PtidesEvent event, String message) throws IllegalActionException {
         /* The following code is not supported by Ptides any more.
-
+        
         for (int i = 0; i < list.size(); i++) {
             Object entity = list.get(i);
             if (entity instanceof CompositeActor
                     && ((CompositeActor) entity).getName().equals(
                             "ErrorHandler")) {
                 CompositeActor errorHandler = (CompositeActor) entity;
-
+        
                 List errorHandlerEntities = errorHandler.entityList();
                 for (int j = 0; j < errorHandlerEntities.size(); j++) {
                     Object errorHandlerEntity = errorHandlerEntities.get(j);
                     if (errorHandlerEntity instanceof Const
                             && ((Const) errorHandlerEntity).getName().equals(
                                     "missed" + port.getName())) {
-
+        
                         int index = 1;
                         errorHandler.getDirector().setModelTime(getModelTime());
                         ((MetroIIDEDirector) errorHandler.getDirector())
                                 .setIndex(index);
                         ((Const) errorHandlerEntity).fire();
-
+        
                         errorHandler.getDirector().getModelNextIterationTime();
-
+        
                         errorHandler.prefire();
                         errorHandler.fire();
                         errorHandler.postfire();
-
+        
                         List attributes = errorHandler.attributeList();
                         for (int k = 0; k < attributes.size(); k++) {
                             Attribute attribute = (Attribute) attributes.get(k);
@@ -1706,7 +1708,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                                             }
                                             idx++;
                                         }
-
+        
                                         idx = 0;
                                         while (i < _pureEvents.size()) {
                                             PtidesEvent eventInQueue = ((MetroIIPtidesListEventQueue) _pureEvents)
@@ -1774,8 +1776,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             return false;
         }
 
-        FireMachine metroActor = _actorDictionary.get(event.actor()
-                .getFullName());
+        FireMachine metroActor = _actorDictionary
+                .get(event.actor().getFullName());
 
         if (metroActor.getState() != FireMachine.State.START) {
             return false;
@@ -1799,8 +1801,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 //if (ioPort != port) {
                 Double ioPortDelayOffset = _getDoubleParameterValue(
                         (NamedObj) ioPort, "delayOffset");
-                if (ioPortDelayOffset != null
-                        && (delayOffset == null || ioPortDelayOffset < delayOffset)) {
+                if (ioPortDelayOffset != null && (delayOffset == null
+                        || ioPortDelayOffset < delayOffset)) {
                     delayOffset = ioPortDelayOffset;
                 }
                 //}
@@ -1810,9 +1812,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             delayOffset = _getDoubleParameterValue((NamedObj) event.actor(),
                     "delayOffset");
         }
-        if (delayOffset == null
-                || localClock.getLocalTime().compareTo(
-                        eventTimestamp.subtract(delayOffset)) >= 0) {
+        if (delayOffset == null || localClock.getLocalTime()
+                .compareTo(eventTimestamp.subtract(delayOffset)) >= 0) {
             return true;
         }
 
@@ -1858,8 +1859,8 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
             // If event has same tag and destined to same actor, remove from
             // queue.
             // TODO: or input port group?
-            if (eventInQueue.actor().equals(event.actor()) &&
-                    eventInQueue.hasTheSameTagAs(event)) {
+            if (eventInQueue.actor().equals(event.actor())
+                    && eventInQueue.hasTheSameTagAs(event)) {
                 eventList.add(eventInQueue);
                 ((MetroIIPtidesListEventQueue) queue).take(i);
                 continue;

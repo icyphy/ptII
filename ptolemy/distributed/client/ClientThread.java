@@ -95,8 +95,8 @@ public class ClientThread extends Thread {
 
         while ((command = synchronizer.getCommand(this)) != EXIT) {
             if (VERBOSE) {
-                System.out.println(service.serviceID + " -> Command: "
-                        + command);
+                System.out
+                        .println(service.serviceID + " -> Command: " + command);
             }
 
             distributedActor = (DistributedActor) service.service;

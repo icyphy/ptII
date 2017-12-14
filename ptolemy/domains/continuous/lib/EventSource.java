@@ -197,8 +197,8 @@ public class EventSource extends TypedAtomicActor {
         System.arraycopy(_offsets, 0, newObject._offsets, 0, _offsets.length);
 
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -264,10 +264,10 @@ public class EventSource extends TypedAtomicActor {
         }
 
         if (_offsets[_phase] >= periodValue) {
-            throw new IllegalActionException(this, "Offset number " + _phase
-                    + " with value " + _offsets[_phase]
-                            + " must be less than the " + "period, which is "
-                            + periodValue);
+            throw new IllegalActionException(this,
+                    "Offset number " + _phase + " with value "
+                            + _offsets[_phase] + " must be less than the "
+                            + "period, which is " + periodValue);
         }
 
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);

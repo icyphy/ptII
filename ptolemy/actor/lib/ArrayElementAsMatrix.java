@@ -86,14 +86,14 @@ public class ArrayElementAsMatrix extends Transformer {
         xOffset.setExpression("1");
         new Parameter(xOffset.getPort(), "_showName", BooleanToken.TRUE);
         new StringAttribute(xOffset.getPort(), "_cardinal")
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
 
         yOffset = new PortParameter(this, "yOffset");
         yOffset.setTypeEquals(BaseType.INT);
         yOffset.setExpression("1");
         new Parameter(yOffset.getPort(), "_showName", BooleanToken.TRUE);
         new StringAttribute(yOffset.getPort(), "_cardinal")
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
 
         x = new PortParameter(this, "x");
         x.setTypeEquals(BaseType.INT);
@@ -146,11 +146,11 @@ public class ArrayElementAsMatrix extends Transformer {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayElementAsMatrix newObject = (ArrayElementAsMatrix) super
-                .clone(workspace);
+        ArrayElementAsMatrix newObject = (ArrayElementAsMatrix) super.clone(
+                workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.input));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.input));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);
@@ -183,26 +183,21 @@ public class ArrayElementAsMatrix extends Transformer {
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken) input.get(0);
 
-            if (xOffsetValue < 0
-                    || yOffsetValue < 0
-                    || xValue < 0
-                    || yValue < 0
+            if (xOffsetValue < 0 || yOffsetValue < 0 || xValue < 0 || yValue < 0
                     || xValue * xOffsetValue + yValue * yOffsetValue >= token
-                    .length()) {
-                throw new IllegalActionException(this, "xValue (" + xValue
-                        + ") * xOffsetValue *(" + xOffsetValue
-                        + " ) + yValue (" + yValue + ") * yOffsetValue ("
-                        + yOffsetValue + ") = " + xValue * xOffsetValue
-                        + yValue * yOffsetValue
-                        + " is less than zero or otherwise "
-                        + "out of range for the input "
-                        + "array, which has length " + token.length());
+                            .length()) {
+                throw new IllegalActionException(this,
+                        "xValue (" + xValue + ") * xOffsetValue *("
+                                + xOffsetValue + " ) + yValue (" + yValue
+                                + ") * yOffsetValue (" + yOffsetValue + ") = "
+                                + xValue * xOffsetValue + yValue * yOffsetValue
+                                + " is less than zero or otherwise "
+                                + "out of range for the input "
+                                + "array, which has length " + token.length());
             }
 
-            output.send(
-                    0,
-                    token.getElement(xValue * xOffsetValue + yValue
-                            * yOffsetValue));
+            output.send(0, token
+                    .getElement(xValue * xOffsetValue + yValue * yOffsetValue));
         }
     }
 }

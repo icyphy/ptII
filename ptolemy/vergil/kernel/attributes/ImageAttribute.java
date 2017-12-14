@@ -84,7 +84,8 @@ public class ImageAttribute extends VisibleAttribute {
 
         // Put the gif in the local directory so that it stays with this actor.
         // Use $CLASSPATH here so that this works in Web Start.
-        source.setExpression("$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
+        source.setExpression(
+                "$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
 
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
@@ -130,7 +131,9 @@ public class ImageAttribute extends VisibleAttribute {
             try {
                 url = FileUtilities.followRedirects(source.asURL());
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to follow possible redirects for " + source.asURL());
+                throw new IllegalActionException(this, ex,
+                        "Failed to follow possible redirects for "
+                                + source.asURL());
             }
             Toolkit tk = Toolkit.getDefaultToolkit();
             Image image = tk.getImage(url);

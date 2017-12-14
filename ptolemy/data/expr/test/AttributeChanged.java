@@ -54,8 +54,8 @@ public class AttributeChanged extends Entity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public AttributeChanged(String name) throws NameDuplicationException,
-    IllegalActionException {
+    public AttributeChanged(String name)
+            throws NameDuplicationException, IllegalActionException {
         super(name);
         param = new Parameter(this, "param", new DoubleToken(1.0));
     }

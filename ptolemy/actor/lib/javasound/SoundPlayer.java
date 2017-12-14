@@ -153,8 +153,8 @@ public class SoundPlayer extends SoundActor {
             _sourceDataLine = AudioSystem.getSourceDataLine(format);
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
-            _sourceDataLine.open(format, _bufferSize * _bytesPerSample
-                    * _channels);
+            _sourceDataLine.open(format,
+                    _bufferSize * _bytesPerSample * _channels);
             _sourceDataLine.start();
         } catch (LineUnavailableException e) {
             throw new IllegalActionException(this, e,

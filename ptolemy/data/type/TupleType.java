@@ -438,8 +438,8 @@ public class TupleType extends StructuredType implements Cloneable {
     @Override
     protected int _compare(StructuredType type) {
         if (!(type instanceof TupleType)) {
-            throw new IllegalArgumentException("TupleType.compare: "
-                    + "The argument is not a TupleType.");
+            throw new IllegalArgumentException(
+                    "TupleType.compare: " + "The argument is not a TupleType.");
         }
 
         if (this.equals(type)) {
@@ -503,8 +503,8 @@ public class TupleType extends StructuredType implements Cloneable {
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice()
+                        .greatestLowerBound(type1, type2);
             }
         }
 

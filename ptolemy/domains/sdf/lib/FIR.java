@@ -184,9 +184,8 @@ public class FIR extends SDFTransformer {
             _interpolationValue = token.intValue();
 
             if (_interpolationValue <= 0) {
-                throw new IllegalActionException(this,
-                        "Invalid interpolation: " + _interpolationValue
-                        + ". Must be positive.");
+                throw new IllegalActionException(this, "Invalid interpolation: "
+                        + _interpolationValue + ". Must be positive.");
             }
 
             _reinitializeNeeded = true;
@@ -207,7 +206,7 @@ public class FIR extends SDFTransformer {
             if (_decimationPhaseValue < 0) {
                 throw new IllegalActionException(this,
                         "Invalid decimationPhase: " + _decimationPhaseValue
-                        + ". Must be nonnegative.");
+                                + ". Must be nonnegative.");
             }
 
             _reinitializeNeeded = true;
@@ -346,8 +345,8 @@ public class FIR extends SDFTransformer {
     @Override
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(new OutputTypeFunction(), output
-                .getTypeTerm()));
+        result.add(
+                new Inequality(new OutputTypeFunction(), output.getTypeTerm()));
         return result;
     }
 
@@ -371,10 +370,10 @@ public class FIR extends SDFTransformer {
      */
     protected void _reinitialize() throws IllegalActionException {
         if (_decimationPhaseValue >= _decimationValue) {
-            throw new IllegalActionException(this, "Invalid decimationPhase: "
-                    + _decimationPhaseValue
-                    + ". Must be less than decimation: " + _decimationValue
-                    + ".");
+            throw new IllegalActionException(this,
+                    "Invalid decimationPhase: " + _decimationPhaseValue
+                            + ". Must be less than decimation: "
+                            + _decimationValue + ".");
         }
 
         _phaseLength = _taps.length / _interpolationValue;

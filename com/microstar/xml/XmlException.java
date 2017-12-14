@@ -119,13 +119,11 @@ public class XmlException extends Exception {
     public String getMessage() {
         // Modified by Steve Neuendorffer because the message didn't tell what
         // the location was.
-        return _message
-                + " in "
-                + _systemId
+        return _message + " in " + _systemId
                 + (_line == -1 ? "unknown line " : " at line " + _line)
-                + (_column == -1 ? " and unknown column " : " and column "
-                        + _column)
-                        + (_cause == null ? "" : "\nCaused by:\n " + _cause);
+                + (_column == -1 ? " and unknown column "
+                        : " and column " + _column)
+                + (_cause == null ? "" : "\nCaused by:\n " + _cause);
     }
 
     /** Get the URI of the entity containing the error.

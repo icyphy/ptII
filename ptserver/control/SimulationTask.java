@@ -59,8 +59,8 @@ public class SimulationTask implements Runnable {
      *  the director or getting workspace access.
      */
     public SimulationTask(final Ticket ticket) throws Exception {
-        CompositeActor model = (CompositeActor) ServerUtility
-                .createMoMLParser().parse(null, new URL(ticket.getModelUrl()));
+        CompositeActor model = (CompositeActor) ServerUtility.createMoMLParser()
+                .parse(null, new URL(ticket.getModelUrl()));
         CompositeActor layout = (CompositeActor) ServerUtility
                 .createMoMLParser().parse(null, new URL(ticket.getLayoutUrl()));
         HashSet<String> remoteAttributes = new HashSet<String>();
@@ -86,10 +86,10 @@ public class SimulationTask implements Runnable {
     public void run() {
         try {
             getProxyModelInfrastructure().getTopLevelActor().getManager()
-            .execute();
+                    .execute();
         } catch (Throwable e) {
-            getProxyModelInfrastructure().fireModelException(
-                    "Problem starting model execution", e);
+            getProxyModelInfrastructure()
+                    .fireModelException("Problem starting model execution", e);
         }
     }
 

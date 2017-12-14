@@ -175,21 +175,17 @@ public class TransformationEvaluator extends PtalonEvaluator {
     @Override
     public void preserveObject(String name) throws PtalonRuntimeException {
         if (_isIncrementalTransformation) {
-            throw new PtalonRuntimeException(
-                    "Objects can be marked "
-                            + "preserved only in incremental transformations (declared "
-                            + "with \"=>\" but not \"=>+\").");
+            throw new PtalonRuntimeException("Objects can be marked "
+                    + "preserved only in incremental transformations (declared "
+                    + "with \"=>\" but not \"=>+\").");
         }
         try {
             NamedObj object = _getObject(name);
             if (object != null) {
                 if (GTTools.isCreated(object)) {
-                    throw new PtalonRuntimeException(
-                            "Object \""
-                                    + name
-                                    + "\""
-                                    + " is created in the transformation, so it cannot "
-                                    + "be preserved.");
+                    throw new PtalonRuntimeException("Object \"" + name + "\""
+                            + " is created in the transformation, so it cannot "
+                            + "be preserved.");
                 }
                 if (_preservedObjects.contains(object)) {
                     throw new PtalonRuntimeException("Object \"" + name + "\" "
@@ -226,12 +222,9 @@ public class TransformationEvaluator extends PtalonEvaluator {
             NamedObj object = _getObject(name);
             if (object != null) {
                 if (GTTools.isCreated(object)) {
-                    throw new PtalonRuntimeException(
-                            "Object \""
-                                    + name
-                                    + "\""
-                                    + " is created in the transformation, so it cannot "
-                                    + "be removed.");
+                    throw new PtalonRuntimeException("Object \"" + name + "\""
+                            + " is created in the transformation, so it cannot "
+                            + "be removed.");
                 }
                 if (_removedObjects.contains(object)) {
                     throw new PtalonRuntimeException("Object \"" + name + "\" "
@@ -294,8 +287,8 @@ public class TransformationEvaluator extends PtalonEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private NamedObj _getObject(String name) throws PtalonScopeException,
-    PtalonRuntimeException {
+    private NamedObj _getObject(String name)
+            throws PtalonScopeException, PtalonRuntimeException {
         String type = _getType(name);
         String uniqueId = _actor.getMappedName(name);
         NamedObj object = null;

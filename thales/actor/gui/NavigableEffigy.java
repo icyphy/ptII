@@ -364,7 +364,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                                                         + input.toExternalForm()
                                                         + "' and from '"
                                                         + inputExternalFormFixed
-                                                        + "'", ex);
+                                                        + "'",
+                                                ex);
                                     }
                                 }
 
@@ -481,15 +482,16 @@ public class NavigableEffigy extends PtolemyEffigy {
             BufferedReader reader = null;
 
             try {
-                reader = new BufferedReader(new InputStreamReader(
-                        url.openStream()));
+                reader = new BufferedReader(
+                        new InputStreamReader(url.openStream()));
 
                 String aLine = "";
 
                 while ((aLine = reader.readLine()) != null) {
-                    if (aLine.indexOf("<property") != -1
-                            && (aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1 || aLine
-                            .indexOf("name='" + _tagToCheck + "'") != -1)) {
+                    if (aLine.indexOf("<property") != -1 && (aLine
+                            .indexOf("name=\"" + _tagToCheck + "\"") != -1
+                            || aLine.indexOf(
+                                    "name='" + _tagToCheck + "'") != -1)) {
                         answer = true;
                         break;
                     }
@@ -517,8 +519,8 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  @return A new effigy.
          */
         protected NavigableEffigy _newEffigy(CompositeEntity container,
-                String name) throws IllegalActionException,
-                NameDuplicationException {
+                String name)
+                throws IllegalActionException, NameDuplicationException {
             return new NavigableEffigy(container, name);
         }
     }

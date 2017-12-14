@@ -131,8 +131,8 @@ public final class FormFactory {
      *
      * @since 1.0.3
      */
-    public static final ColumnSpec LABEL_COMPONENT_GAP_COLSPEC = createGapColumnSpec(LayoutStyle
-            .getCurrent().getLabelComponentPadX());
+    public static final ColumnSpec LABEL_COMPONENT_GAP_COLSPEC = createGapColumnSpec(
+            LayoutStyle.getCurrent().getLabelComponentPadX());
 
     /**
      * Describes a logical horizontal gap between two related components.
@@ -144,8 +144,8 @@ public final class FormFactory {
      *
      * @see #UNRELATED_GAP_COLSPEC
      */
-    public static final ColumnSpec RELATED_GAP_COLSPEC = createGapColumnSpec(LayoutStyle
-            .getCurrent().getRelatedComponentsPadX());
+    public static final ColumnSpec RELATED_GAP_COLSPEC = createGapColumnSpec(
+            LayoutStyle.getCurrent().getRelatedComponentsPadX());
 
     /**
      * Describes a logical horizontal gap between two unrelated components.<p>
@@ -155,8 +155,8 @@ public final class FormFactory {
      *
      * @see #RELATED_GAP_COLSPEC
      */
-    public static final ColumnSpec UNRELATED_GAP_COLSPEC = createGapColumnSpec(LayoutStyle
-            .getCurrent().getUnrelatedComponentsPadX());
+    public static final ColumnSpec UNRELATED_GAP_COLSPEC = createGapColumnSpec(
+            LayoutStyle.getCurrent().getUnrelatedComponentsPadX());
 
     /**
      * Describes a logical horizontal column for a fixed size button. This spec
@@ -168,8 +168,8 @@ public final class FormFactory {
      * @see #GROWING_BUTTON_COLSPEC
      */
     public static final ColumnSpec BUTTON_COLSPEC = new ColumnSpec(
-            Sizes.bounded(Sizes.PREFERRED, LayoutStyle.getCurrent()
-                    .getDefaultButtonWidth(), null));
+            Sizes.bounded(Sizes.PREFERRED,
+                    LayoutStyle.getCurrent().getDefaultButtonWidth(), null));
 
     /**
      * Describes a logical horizontal column for a growing button. This spec
@@ -181,7 +181,8 @@ public final class FormFactory {
      * @see #BUTTON_COLSPEC
      */
     public static final ColumnSpec GROWING_BUTTON_COLSPEC = new ColumnSpec(
-            ColumnSpec.DEFAULT, BUTTON_COLSPEC.getSize(), FormSpec.DEFAULT_GROW);
+            ColumnSpec.DEFAULT, BUTTON_COLSPEC.getSize(),
+            FormSpec.DEFAULT_GROW);
 
     // Frequently used Row Specifications ***********************************
 
@@ -238,8 +239,8 @@ public final class FormFactory {
      *
      * @see #UNRELATED_GAP_ROWSPEC
      */
-    public static final RowSpec RELATED_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
-            .getCurrent().getRelatedComponentsPadY());
+    public static final RowSpec RELATED_GAP_ROWSPEC = createGapRowSpec(
+            LayoutStyle.getCurrent().getRelatedComponentsPadY());
 
     /**
      * Describes a logical vertical gap between two unrelated components.<p>
@@ -249,8 +250,8 @@ public final class FormFactory {
      *
      * @see #RELATED_GAP_ROWSPEC
      */
-    public static final RowSpec UNRELATED_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
-            .getCurrent().getUnrelatedComponentsPadY());
+    public static final RowSpec UNRELATED_GAP_ROWSPEC = createGapRowSpec(
+            LayoutStyle.getCurrent().getUnrelatedComponentsPadY());
 
     /**
      * Describes a logical vertical narrow gap between two rows in the grid.
@@ -263,8 +264,8 @@ public final class FormFactory {
      * @see #LINE_GAP_ROWSPEC
      * @see #PARAGRAPH_GAP_ROWSPEC
      */
-    public static final RowSpec NARROW_LINE_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
-            .getCurrent().getNarrowLinePad());
+    public static final RowSpec NARROW_LINE_GAP_ROWSPEC = createGapRowSpec(
+            LayoutStyle.getCurrent().getNarrowLinePad());
 
     /**
      * Describes the logical vertical default gap between two rows in the grid.
@@ -276,8 +277,8 @@ public final class FormFactory {
      * @see #NARROW_LINE_GAP_ROWSPEC
      * @see #PARAGRAPH_GAP_ROWSPEC
      */
-    public static final RowSpec LINE_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
-            .getCurrent().getLinePad());
+    public static final RowSpec LINE_GAP_ROWSPEC = createGapRowSpec(
+            LayoutStyle.getCurrent().getLinePad());
 
     /**
      * Describes the logical vertical default gap between two paragraphs in
@@ -289,8 +290,8 @@ public final class FormFactory {
      * @see #NARROW_LINE_GAP_ROWSPEC
      * @see #LINE_GAP_ROWSPEC
      */
-    public static final RowSpec PARAGRAPH_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
-            .getCurrent().getParagraphPad());
+    public static final RowSpec PARAGRAPH_GAP_ROWSPEC = createGapRowSpec(
+            LayoutStyle.getCurrent().getParagraphPad());
 
     // Factory Methods ******************************************************
 

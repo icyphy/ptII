@@ -58,8 +58,8 @@ public class TestSerializable {
      * @exception IllegalActionException if the example system cannot
      * be built.
      */
-    public static void main(String[] args) throws NameDuplicationException,
-    IllegalActionException {
+    public static void main(String[] args)
+            throws NameDuplicationException, IllegalActionException {
         ExampleSystem exampleSystem = new ExampleSystem();
         String filename = "TestSerializable.data";
 
@@ -126,7 +126,7 @@ public class TestSerializable {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 System.err
-                .println("ClassNotFoundException while reading: " + e);
+                        .println("ClassNotFoundException while reading: " + e);
             } finally {
                 if (f != null) {
                     try {

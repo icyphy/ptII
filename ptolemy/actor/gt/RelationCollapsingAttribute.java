@@ -53,8 +53,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationCollapsingAttribute extends Parameter implements
-GTAttribute {
+public class RelationCollapsingAttribute extends Parameter
+        implements GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -76,7 +76,8 @@ GTAttribute {
         setTypeEquals(BaseType.BOOLEAN);
         setToken(BooleanToken.getInstance(!DEFAULT));
 
-        editorFactory = new VisibleParameterEditorFactory(this, "editorFactory");
+        editorFactory = new VisibleParameterEditorFactory(this,
+                "editorFactory");
     }
 
     /** Specify the container NamedObj, adding this attribute to the
@@ -109,8 +110,8 @@ GTAttribute {
      *  @see #getContainer()
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, true);

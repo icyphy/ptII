@@ -126,8 +126,8 @@ public class ComponentRelation extends Relation {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ComponentRelation newObject = (ComponentRelation) super
-                .clone(workspace);
+        ComponentRelation newObject = (ComponentRelation) super.clone(
+                workspace);
         newObject._container = null;
         return newObject;
     }
@@ -490,8 +490,8 @@ public class ComponentRelation extends Relation {
      *   with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -609,13 +609,13 @@ public class ComponentRelation extends Relation {
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {
-            ComponentRelation newObject = (ComponentRelation) super
-                    ._propagateExistence(container);
+            ComponentRelation newObject = (ComponentRelation) super._propagateExistence(
+                    container);
             // FindBugs warns that the cast of container is
             // unchecked.
             if (!(container instanceof CompositeEntity)) {
-                throw new InternalErrorException(container
-                        + " is not a CompositeEntity.");
+                throw new InternalErrorException(
+                        container + " is not a CompositeEntity.");
             } else {
                 newObject.setContainer((CompositeEntity) container);
             }

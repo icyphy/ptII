@@ -90,8 +90,8 @@ public class InterfaceAutomatonTransition extends Transition {
      *   any relation already in the container.
      */
     public InterfaceAutomatonTransition(InterfaceAutomaton container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         label = new StringAttribute(this, "label");
         outputActions.setVisibility(Settable.NONE);

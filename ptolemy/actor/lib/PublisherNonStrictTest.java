@@ -306,12 +306,13 @@ public class PublisherNonStrictTest extends Publisher {
                 // Here, we require that the referenceToken also be nil.
                 // If the token is an ArrayToken and two corresponding elements
                 // are nil, then we consider them "close".
-                if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false
+                if (token.isCloseTo(referenceToken, _tolerance)
+                        .booleanValue() == false
                         && !referenceToken.isNil()
                         && !NonStrictTest._isCloseToIfNilArrayElement(token,
                                 referenceToken, _tolerance)
-                                && !NonStrictTest._isCloseToIfNilRecordElement(token,
-                                        referenceToken, _tolerance)) {
+                        && !NonStrictTest._isCloseToIfNilRecordElement(token,
+                                referenceToken, _tolerance)) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
                                     + "Value was: " + token
@@ -346,7 +347,8 @@ public class PublisherNonStrictTest extends Publisher {
                         + "starvation is occurring.";
                 String fireCompatProperty = "ptolemy.actor.lib.NonStrictTest.fire.compat";
 
-                if (StringUtilities.getProperty(fireCompatProperty).length() > 0) {
+                if (StringUtilities.getProperty(fireCompatProperty)
+                        .length() > 0) {
                     System.err.println("Warning: '" + getFullName() + "' "
                             + errorMessage
                             + "\nThis error is being ignored because " + "the "
@@ -365,8 +367,8 @@ public class PublisherNonStrictTest extends Publisher {
                         + ((ArrayToken) correctValues.getToken()).length()
                         + " tokens.";
 
-                System.err.println("Warning: '" + getFullName() + "' "
-                        + errorMessage);
+                System.err.println(
+                        "Warning: '" + getFullName() + "' " + errorMessage);
             }
         }
 
@@ -488,13 +490,9 @@ public class PublisherNonStrictTest extends Publisher {
                     tolerance.setToken(new DoubleToken(newTolerance));
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
-                    System.out
-                    .println("PublisherNonStrictTest: "
-                            + getFullName()
-                            + ": exponent of "
-                            + newValue
-                            + " is "
-                            + log
+                    System.out.println("PublisherNonStrictTest: "
+                            + getFullName() + ": exponent of " + newValue
+                            + " is " + log
                             + ", which cannot be compared with the previous tolerance."
                             + " The new tolerance is "
                             + tolerance.getExpression() + ".");

@@ -111,8 +111,8 @@ public class RelationWidthChanges extends MoMLFilterSimple {
                     _currentlyProcessingWidth = true;
                 }
             }
-        } else if (element != null && element.equals("relation") &&
-                   attributeName != null && attributeName.equals("class")) {
+        } else if (element != null && element.equals("relation")
+                && attributeName != null && attributeName.equals("class")) {
             _currentlyProcessingRelation = true;
         }
         return attributeValue;
@@ -193,37 +193,38 @@ public class RelationWidthChanges extends MoMLFilterSimple {
      */
     private boolean _changedNeeded(NamedObj container, String xmlFile) {
         // First Check whether we already have the version
-        Boolean changesNeeded = xmlFile != null ? _changesNeededForXmlFile
-                .get(xmlFile) : null;
-                if (changesNeeded != null && changesNeeded) {
-                    return _changesNeededForXmlFile.get(xmlFile);
-                } else {
-                    // Retrieve the version number. This is only available on the toplevel.
-                    NamedObj toplevel = container;
-                    NamedObj parent = toplevel.getContainer();
+        Boolean changesNeeded = xmlFile != null
+                ? _changesNeededForXmlFile.get(xmlFile)
+                : null;
+        if (changesNeeded != null && changesNeeded) {
+            return _changesNeededForXmlFile.get(xmlFile);
+        } else {
+            // Retrieve the version number. This is only available on the toplevel.
+            NamedObj toplevel = container;
+            NamedObj parent = toplevel.getContainer();
 
-                    while (parent != null) {
-                        toplevel = parent;
-                        parent = toplevel.getContainer();
-                    }
-                    Attribute version = toplevel.getAttribute("_createdBy");
-                    if (version != null) {
-                        try {
-                            return ((VersionAttribute) version)
-                                    .isLessThan(new VersionAttribute("7.2.devel"));
-                        } catch (IllegalActionException e) {
-                        }
-                    } else {
-                        // If there is no _createdBy attribute, then this might be a
-                        // copy and paste, in which case we assume we are copying
-                        // from the current version.  Note that this might not
-                        // be always be true, but it is more likely that we are copying
-                        // from a version recent version than a pre 7.2.devel version.
-                        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4804
-                        return false;
-                    }
+            while (parent != null) {
+                toplevel = parent;
+                parent = toplevel.getContainer();
+            }
+            Attribute version = toplevel.getAttribute("_createdBy");
+            if (version != null) {
+                try {
+                    return ((VersionAttribute) version)
+                            .isLessThan(new VersionAttribute("7.2.devel"));
+                } catch (IllegalActionException e) {
                 }
-                return true;
+            } else {
+                // If there is no _createdBy attribute, then this might be a
+                // copy and paste, in which case we assume we are copying
+                // from the current version.  Note that this might not
+                // be always be true, but it is more likely that we are copying
+                // from a version recent version than a pre 7.2.devel version.
+                // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4804
+                return false;
+            }
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

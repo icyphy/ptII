@@ -68,7 +68,8 @@ public class BasicGraphDemo {
      */
     public BasicGraphDemo(AppContext context) {
         final BasicGraphModel model = new BasicGraphModel();
-        JGraph jg = new JGraph(new GraphPane(new BasicGraphController(), model));
+        JGraph jg = new JGraph(
+                new GraphPane(new BasicGraphController(), model));
         JGraph jg2 = new JGraph(
                 new GraphPane(new BasicGraphController(), model));
 
@@ -88,7 +89,7 @@ public class BasicGraphDemo {
          }
          });
          context.getContentPane().add("South", but);
-
+        
          ActionListener deletionListener = new DeletionListener();
          jg.registerKeyboardAction(deletionListener, "Delete",
          KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),

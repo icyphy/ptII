@@ -113,8 +113,8 @@ public class MultipleConceptIcon extends ConceptIcon {
             return _iconCache;
         }
         CompositeFigure composite = new CompositeFigure();
-        composite.add(new RoundedRectangle(0, 0, 20, 10, _getFill(), 1.0f, 5.0,
-                5.0));
+        composite.add(
+                new RoundedRectangle(0, 0, 20, 10, _getFill(), 1.0f, 5.0, 5.0));
         composite.add(new RoundedRectangle(-5, -5, 20, 10, _getFill(), 1.0f,
                 5.0, 5.0));
         _iconCache = new FigureIcon(composite, 20, 15);

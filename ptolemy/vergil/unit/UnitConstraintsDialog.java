@@ -65,8 +65,8 @@ import ptolemy.moml.unit.UnitEquation;
  @Pt.AcceptedRating Red (rowland)
  */
 @SuppressWarnings("serial")
-public class UnitConstraintsDialog extends PtolemyDialog implements
-ChangeListener {
+public class UnitConstraintsDialog extends PtolemyDialog
+        implements ChangeListener {
     /**
      * Construct a dialog that presents Unit constraints as a table. Each row
      * of the table corresponds to one constraint. The user modifies the table
@@ -85,8 +85,8 @@ ChangeListener {
      */
     public UnitConstraintsDialog(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
-        super("Configure units for " + target.getName(), tableau, owner,
-                target, configuration);
+        super("Configure units for " + target.getName(), tableau, owner, target,
+                configuration);
 
         Vector _constraintExpression = new Vector();
         UnitAttribute _unitConstraints = (UnitAttribute) target
@@ -251,8 +251,8 @@ ChangeListener {
      */
     @Override
     protected URL _getHelpURL() {
-        URL helpURL = getClass().getClassLoader().getResource(
-                "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
+        URL helpURL = getClass().getClassLoader()
+                .getResource("ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
         return helpURL;
     }
 
@@ -275,8 +275,8 @@ ChangeListener {
         _unitsTableModel = new UnitsTableModel(constraintExpressions);
         _unitsTable.setModel(_unitsTableModel);
 
-        TableColumn _constraintColumn = _unitsTable.getColumnModel().getColumn(
-                0);
+        TableColumn _constraintColumn = _unitsTable.getColumnModel()
+                .getColumn(0);
         JTextField textField = new JTextField();
         final DefaultCellEditor constraintEditor = new DefaultCellEditor(
                 textField);

@@ -293,8 +293,8 @@ public class PullConsumer extends Source {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) remoteSupplierName.getToken()).stringValue(),
                     "");
-            _debug(getName(), " looking for name: ", remoteSupplierName
-                    .getToken().toString());
+            _debug(getName(), " looking for name: ",
+                    remoteSupplierName.getToken().toString());
 
             NameComponent[] path = { namecomp };
 
@@ -307,8 +307,7 @@ public class PullConsumer extends Source {
                         " can not find the remote supplier.");
             }
         } catch (UserException ex) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     " initialize ORB failed. Please make sure the "
                             + "naming server has already started and the "
                             + "ORBInitProperty parameter is configured correctly. "

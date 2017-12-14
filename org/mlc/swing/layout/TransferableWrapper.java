@@ -68,8 +68,8 @@ public class TransferableWrapper implements java.awt.datatransfer.Transferable {
      */
     @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return flavor.getMimeType().equals(
-                DataFlavor.javaJVMLocalObjectMimeType);
+        return flavor.getMimeType()
+                .equals(DataFlavor.javaJVMLocalObjectMimeType);
     }
 
     /** Get the transfer data flavors.
@@ -78,8 +78,8 @@ public class TransferableWrapper implements java.awt.datatransfer.Transferable {
     @Override
     public synchronized DataFlavor[] getTransferDataFlavors() {
         try {
-            return new DataFlavor[] { new DataFlavor(
-                    DataFlavor.javaJVMLocalObjectMimeType) };
+            return new DataFlavor[] {
+                    new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType) };
         } catch (ClassNotFoundException cnfe) {
             throw new RuntimeException("Unable to load DataFlavor "
                     + DataFlavor.javaJVMLocalObjectMimeType, cnfe);

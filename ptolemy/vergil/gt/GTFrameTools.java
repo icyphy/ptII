@@ -66,13 +66,13 @@ import ptolemy.vergil.modal.FSMGraphModel;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTFrameTools {
-    public static void changeModel(BasicGraphFrame frame,
-            CompositeEntity model, boolean undoable, boolean delegateUndoStack) {
+    public static void changeModel(BasicGraphFrame frame, CompositeEntity model,
+            boolean undoable, boolean delegateUndoStack) {
         changeModel(frame, model, undoable, delegateUndoStack, null);
     }
 
-    public static void changeModel(BasicGraphFrame frame,
-            CompositeEntity model, boolean undoable, boolean delegateUndoStack,
+    public static void changeModel(BasicGraphFrame frame, CompositeEntity model,
+            boolean undoable, boolean delegateUndoStack,
             UndoAction undoAction) {
         if (undoable && delegateUndoStack) {
             UndoStackAttribute oldAttribute = UndoStackAttribute
@@ -142,8 +142,8 @@ public class GTFrameTools {
     public static class DelegatedUndoStackAttribute extends UndoStackAttribute {
 
         public DelegatedUndoStackAttribute(NamedObj container, String name,
-                UndoStackAttribute oldAttribute) throws IllegalActionException,
-                NameDuplicationException {
+                UndoStackAttribute oldAttribute)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             if (oldAttribute instanceof DelegatedUndoStackAttribute) {

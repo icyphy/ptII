@@ -170,8 +170,8 @@ public class Controller extends CSPActor {
             ConditionalBranch[] requiredBranches = new ConditionalBranch[_numRequestInChannels];
 
             for (int i = 0; i < _numRequestInChannels; i++) {
-                requiredBranches[i] = new ConditionalReceive(true,
-                        requestInput, i, i);
+                requiredBranches[i] = new ConditionalReceive(true, requestInput,
+                        i, i);
             }
 
             br = chooseBranch(requiredBranches);
@@ -197,7 +197,8 @@ public class Controller extends CSPActor {
             boolean continueCDO = true;
 
             while (continueCDO) {
-                requiredBranches = new ConditionalBranch[_numRequestInChannels + 1];
+                requiredBranches = new ConditionalBranch[_numRequestInChannels
+                        + 1];
 
                 for (int i = 0; i < _numRequestInChannels; i++) {
                     requiredBranches[i] = new ConditionalReceive(true,
@@ -205,8 +206,8 @@ public class Controller extends CSPActor {
                 }
 
                 int j = _numRequestInChannels;
-                requiredBranches[j] = new ConditionalReceive(true,
-                        contendInput, 0, j);
+                requiredBranches[j] = new ConditionalReceive(true, contendInput,
+                        0, j);
 
                 br = chooseBranch(requiredBranches);
 
@@ -220,8 +221,8 @@ public class Controller extends CSPActor {
                         _winningPortChannelCode = new PortChannelCode(
                                 requestInput, br, code);
                     } else {
-                        _losingPortChannelCodes.add(0, new PortChannelCode(
-                                requestInput, br, code));
+                        _losingPortChannelCodes.add(0,
+                                new PortChannelCode(requestInput, br, code));
                     }
                 } else if (br == _numRequestInChannels) {
                     //

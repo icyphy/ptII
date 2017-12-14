@@ -29,9 +29,9 @@ package ptolemy.actor.lib.jjs;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.math.BigInteger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.TreeSet;
@@ -73,15 +73,14 @@ public class HelperBase {
         _currentObj = helping;
 
         if (actor instanceof RestrictedJavaScriptInterface) {
-            _actor = ((RestrictedJavaScriptInterface) actor)
-                    ._getActor();
+            _actor = ((RestrictedJavaScriptInterface) actor)._getActor();
         } else if (actor instanceof JavaScript) {
             _actor = ((JavaScript) actor);
         } else if (actor == null) {
             throw new InternalErrorException("No actor object.");
         } else {
-            throw new InternalErrorException("Invalid actor object: "
-                    + actor.toString());
+            throw new InternalErrorException(
+                    "Invalid actor object: " + actor.toString());
         }
     }
 
@@ -162,8 +161,7 @@ public class HelperBase {
      */
     protected void _error(String message, Throwable throwable) {
         try {
-            _currentObj.callMember("emit", "error",
-                    message + ": " + throwable );
+            _currentObj.callMember("emit", "error", message + ": " + throwable);
             // NOTE: The error handler may not stop execution.
         } catch (Throwable ex) {
             // There may be no error event handler registered.
@@ -188,7 +186,8 @@ public class HelperBase {
                 } catch (Throwable ex) {
                     // There may be no error event handler registered.
                     // Use the actor to report the error.
-                    _actor.error(message, new IllegalActionException(_actor, ex, message));
+                    _actor.error(message,
+                            new IllegalActionException(_actor, ex, message));
                 }
             }
         });
@@ -200,7 +199,8 @@ public class HelperBase {
      *  @param message The error message.
      *  @param throwable The exception that caused the error.
      */
-    protected void _error(ScriptObjectMirror emitter, final String message, final Throwable throwable) {
+    protected void _error(ScriptObjectMirror emitter, final String message,
+            final Throwable throwable) {
         _issueResponse(new Runnable() {
             @Override
             public void run() {
@@ -210,7 +210,8 @@ public class HelperBase {
                 } catch (Throwable ex) {
                     // There may be no error event handler registered.
                     // Use the actor to report the error.
-                    _actor.error(message, new IllegalActionException(_actor, throwable, message));
+                    _actor.error(message, new IllegalActionException(_actor,
+                            throwable, message));
                 }
             }
         });
@@ -221,49 +222,49 @@ public class HelperBase {
      *  @param data The data to be appended
      *  @param type The type of data.
      */
-    protected void _appendNumericToBuffer(Buffer buffer, Object data, DATA_TYPE type) {
+    protected void _appendNumericToBuffer(Buffer buffer, Object data,
+            DATA_TYPE type) {
         if (data instanceof Number) {
-            switch(type) {
+            switch (type) {
             case BYTE:
-                buffer.appendByte(((Number)data).byteValue());
+                buffer.appendByte(((Number) data).byteValue());
                 break;
             case DOUBLE:
             case NUMBER:
-                buffer.appendDouble(((Number)data).doubleValue());
+                buffer.appendDouble(((Number) data).doubleValue());
                 break;
             case FLOAT:
-                buffer.appendFloat(((Number)data).floatValue());
+                buffer.appendFloat(((Number) data).floatValue());
                 break;
             case INT:
-                buffer.appendInt(((Number)data).intValue());
+                buffer.appendInt(((Number) data).intValue());
                 break;
             //case LONG:
             //    buffer.appendLong(((Number)data).longValue());
             //    break;
             case SHORT:
-                buffer.appendShort(((Number)data).shortValue());
+                buffer.appendShort(((Number) data).shortValue());
                 break;
             case UNSIGNEDBYTE:
                 // Number class can't extract an unsigned byte, so we use short.
-                buffer.appendUnsignedByte(((Number)data).shortValue());
+                buffer.appendUnsignedByte(((Number) data).shortValue());
                 break;
             //case UNSIGNEDINT:
-                // Number class can't extract an unsigned int, so we use long.
+            // Number class can't extract an unsigned int, so we use long.
             //    buffer.appendUnsignedInt(((Number)data).longValue());
             //    break;
             case UNSIGNEDSHORT:
                 // Number class can't extract an unsigned short, so we use int.
-                buffer.appendUnsignedShort(((Number)data).intValue());
+                buffer.appendUnsignedShort(((Number) data).intValue());
                 break;
             default:
-                _error("Unsupported type for buffer: "
-                        + type.toString());
+                _error("Unsupported type for buffer: " + type.toString());
             }
-        // } else if (data instanceof LongToken) {
-        //     // JavaScript has no long data type, and long is not convertible to
-        //     // "number" (which is double), so the Ptolemy host will pass in a
-        //     // LongToken.  Handle this specially.
-        //     buffer.appendLong(((LongToken)data).longValue());
+            // } else if (data instanceof LongToken) {
+            //     // JavaScript has no long data type, and long is not convertible to
+            //     // "number" (which is double), so the Ptolemy host will pass in a
+            //     // LongToken.  Handle this specially.
+            //     buffer.appendLong(((LongToken)data).longValue());
         } else {
             _toTypeError(type, data);
         }
@@ -276,8 +277,8 @@ public class HelperBase {
      *   null to use the default (JPG).
      *  @param buffer The buffer.
      */
-    protected void _appendToBuffer(
-            final Object data, DATA_TYPE type, String imageType, Buffer buffer) {
+    protected void _appendToBuffer(final Object data, DATA_TYPE type,
+            String imageType, Buffer buffer) {
         if (data == null) {
             // Nothing to do.
             return;
@@ -290,7 +291,7 @@ public class HelperBase {
             buffer.appendString(data.toString());
         } else if (type.equals(DATA_TYPE.IMAGE)) {
             if (data instanceof ImageToken) {
-                Image image = ((ImageToken)data).asAWTImage();
+                Image image = ((ImageToken) data).asAWTImage();
                 if (image == null) {
                     _error("Empty image received: " + data);
                     return;
@@ -305,9 +306,10 @@ public class HelperBase {
                 }
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 try {
-                    ImageIO.write((BufferedImage)image, imageType, stream);
+                    ImageIO.write((BufferedImage) image, imageType, stream);
                 } catch (IOException e) {
-                    _error("Failed to convert image to byte array for sending: " + e.toString());
+                    _error("Failed to convert image to byte array for sending: "
+                            + e.toString());
                 }
                 byte[] imageBytes = stream.toByteArray();
                 buffer.appendBytes(imageBytes);
@@ -327,9 +329,10 @@ public class HelperBase {
      *  @param position The position in the buffer from which to extract it.
      *  @return The numeric instance.
      */
-    protected Object _extractFromBuffer(Buffer buffer, DATA_TYPE type, int position) {
+    protected Object _extractFromBuffer(Buffer buffer, DATA_TYPE type,
+            int position) {
         try {
-            switch(type) {
+            switch (type) {
             case BYTE:
                 return buffer.getByte(position);
             case DOUBLE:
@@ -340,8 +343,8 @@ public class HelperBase {
             case INT:
                 return buffer.getInt(position);
             //case LONG:
-                // Note that long is not representable in JavaScript.
-                // Hence, we return a LongToken.
+            // Note that long is not representable in JavaScript.
+            // Hence, we return a LongToken.
             //    long result = buffer.getLong(position);
             //    return new LongToken(result);
             case SHORT:
@@ -349,12 +352,11 @@ public class HelperBase {
             case UNSIGNEDBYTE:
                 return buffer.getUnsignedByte(position);
             //case UNSIGNEDINT:
-                //return buffer.getUnsignedInt(position);
+            //return buffer.getUnsignedInt(position);
             case UNSIGNEDSHORT:
                 return buffer.getUnsignedShort(position);
             default:
-                _error("Type has no fixed size: "
-                        + type.toString());
+                _error("Type has no fixed size: " + type.toString());
                 return null;
             }
         } catch (Throwable ex) {
@@ -367,7 +369,7 @@ public class HelperBase {
      *  If this is called within the director thread and the associated actor
      *  is in its fire() method, then the response is executed immediately.
      *  Otherwise, it is deferred using the director's fireAtCurrentTime() function.
-o     *  This is useful, for example, when a response
+    o     *  This is useful, for example, when a response
      *  produces multiple output events or errors, because it ensures that all those
      *  output events and errors are simultaneous in the DE sense. It also prevents
      *  threading issues from having the response execute concurrently
@@ -381,9 +383,9 @@ o     *  This is useful, for example, when a response
         try {
             _actor.invokeCallback(response);
         } catch (IllegalActionException e) {
-            _actor.error(_actor.getName()
-                    + ": Failed to schedule response handler: "
-                    + e.getMessage());
+            _actor.error(
+                    _actor.getName() + ": Failed to schedule response handler: "
+                            + e.getMessage());
         }
     }
 
@@ -406,7 +408,7 @@ o     *  This is useful, for example, when a response
      *  @return The size
      */
     protected int _sizeOfType(DATA_TYPE type) {
-        switch(type) {
+        switch (type) {
         case BYTE:
             return Byte.BYTES;
         case DOUBLE:
@@ -427,8 +429,7 @@ o     *  This is useful, for example, when a response
         case UNSIGNEDSHORT:
             return Short.BYTES;
         default:
-            _error("Type has no fixed size: "
-                    + type.toString());
+            _error("Type has no fixed size: " + type.toString());
             return 0;
         }
     }
@@ -441,7 +442,7 @@ o     *  This is useful, for example, when a response
     protected Object _toJSArray(byte[] buffer) throws IllegalActionException {
         Object[] result = new Object[buffer.length];
         for (int i = 0; i < result.length; i++) {
-            result[i] = (Object) buffer[i];
+            result[i] = buffer[i];
         }
         return _actor.toJSArray(result);
     }
@@ -453,33 +454,32 @@ o     *  This is useful, for example, when a response
      *  @return The Java byte array.
      *  @exception IllegalActionException If the conversion fails.
      */
-    protected static byte[] _toJavaBytes(Object object) throws IllegalActionException {
+    protected static byte[] _toJavaBytes(Object object)
+            throws IllegalActionException {
         // FIXME: jdk.nashorn.internal.objects.NativeArray is not exported in Java 9
         // At compilation time, the error is:
         // (package jdk.nashorn.internal.objects is declared in module jdk.scripting.nashorn, which does not export it to the unnamed module)
         if (object instanceof ScriptObjectMirror /* || object instanceof NativeArray*/) {
             Collection<Object> values = null;
-          // if (object instanceof ScriptObjectMirror) {
-                ScriptObjectMirror objectMirror = ((ScriptObjectMirror) object);
-                values = objectMirror.values();
-          // } else if (object instanceof NativeArray) {
-          // NativeArray nativeArray = (NativeArray)object;
-          // values = nativeArray.values();
-          // } else {
-          //    // FindBugs: Avoid a possibly NPE when dereferencing values.
-          //   throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
-          // }
+            // if (object instanceof ScriptObjectMirror) {
+            ScriptObjectMirror objectMirror = ((ScriptObjectMirror) object);
+            values = objectMirror.values();
+            // } else if (object instanceof NativeArray) {
+            // NativeArray nativeArray = (NativeArray)object;
+            // values = nativeArray.values();
+            // } else {
+            //    // FindBugs: Avoid a possibly NPE when dereferencing values.
+            //   throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
+            // }
 
             byte[] result = new byte[values.size()];
             int i = 0;
             for (Object value : values) {
                 if (value instanceof UnsignedByteToken) {
                     result[i] = ((UnsignedByteToken) value).byteValue();
-                }
-                else if (value instanceof Byte) {
+                } else if (value instanceof Byte) {
                     result[i] = ((Byte) value).byteValue();
-                }
-                else if (value instanceof Integer) {
+                } else if (value instanceof Integer) {
                     result[i] = ((Integer) value).byteValue();
                 }
                 // else if (value instanceof Long) {
@@ -487,13 +487,12 @@ o     *  This is useful, for example, when a response
                 // }
                 else if (value instanceof Short) {
                     result[i] = ((Short) value).byteValue();
-                }
-                else if (value instanceof Double) {
+                } else if (value instanceof Double) {
                     result[i] = ((Double) value).byteValue();
-                }
-                else {
-                    throw new IllegalActionException("Cannot interpret the input array element type: "
-                            + value.getClass().getName());
+                } else {
+                    throw new IllegalActionException(
+                            "Cannot interpret the input array element type: "
+                                    + value.getClass().getName());
                 }
 
                 i++;
@@ -514,14 +513,16 @@ o     *  This is useful, for example, when a response
                 // An alternative would be to use Apache commons codec,
                 // but this would introduce a compile and runtime dependency.
 
-                return new BigInteger(stringObject.substring(2), 16).toByteArray();
+                return new BigInteger(stringObject.substring(2), 16)
+                        .toByteArray();
             } else {
                 // String.getBytes() causes Dm: Dubious method used (FB.DM_DEFAULT_ENCODING)
                 return ((String) object).getBytes(Charset.forName("UTF-8"));
             }
         }
-        throw new IllegalActionException("Cannot interpret the input, the input should be either"
-                + "JavaScript int array or string.");
+        throw new IllegalActionException(
+                "Cannot interpret the input, the input should be either"
+                        + "JavaScript int array or string.");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -546,12 +547,8 @@ o     *  This is useful, for example, when a response
     private void _fromTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
         String expectedType = type.toString().toLowerCase();
         // ex.printStackTrace();
-        _error("Cannot convert buffer data to type "
-                + expectedType
-                + ": "
-                + buffer.toString()
-                + "\nException occurred: "
-                + ex);
+        _error("Cannot convert buffer data to type " + expectedType + ": "
+                + buffer.toString() + "\nException occurred: " + ex);
     }
 
     /** Indicate a conversion error of data to a buffer.
@@ -560,9 +557,7 @@ o     *  This is useful, for example, when a response
      */
     private void _toTypeError(DATA_TYPE type, Object data) {
         String expectedType = type.toString().toLowerCase();
-        _error("Data cannot be converted to "
-                + expectedType
-                + ". It is: "
+        _error("Data cannot be converted to " + expectedType + ". It is: "
                 + data.getClass().getName());
     }
 }

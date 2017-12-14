@@ -141,8 +141,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FixedPriorityScheduler newObject = (FixedPriorityScheduler) super
-                .clone(workspace);
+        FixedPriorityScheduler newObject = (FixedPriorityScheduler) super.clone(
+                workspace);
         newObject._currentlyExecuting = new Stack<NamedObj>();
         newObject._preemptive = true;
 
@@ -232,8 +232,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
                     double newActorPriority = _getPriority(actor);
                     if (newActorPriority < executingPriority) {
                         if (remainingTime.getDoubleValue() == 0.0) {
-                            notifyExecutionListeners(
-                                    _currentlyExecuting.peek(),
+                            notifyExecutionListeners(_currentlyExecuting.peek(),
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.STOP);
                         } else {
@@ -294,11 +293,13 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *    assigned, the lowest priority.
      *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
-    protected double _getPriority(NamedObj actor) throws IllegalActionException {
+    protected double _getPriority(NamedObj actor)
+            throws IllegalActionException {
         Attribute attributes = actor.getDecoratorAttribute(this, "priority");
         if (attributes == null || !(attributes instanceof Parameter)) {
             throw new IllegalActionException(this,
-                    "Cannot get priority attribute of actor " + actor.getName());
+                    "Cannot get priority attribute of actor "
+                            + actor.getName());
         }
         Token token = ((Parameter) attributes).getToken();
         if (token == null) {

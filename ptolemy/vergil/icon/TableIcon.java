@@ -221,7 +221,8 @@ public class TableIcon extends DynamicEditorIcon {
                                     }
                                 } else {
                                     // Display specified fields.
-                                    for (int j = 0; j < fieldsValue.length(); j++) {
+                                    for (int j = 0; j < fieldsValue
+                                            .length(); j++) {
                                         if (j >= numColumns) {
                                             break;
                                         }
@@ -258,7 +259,7 @@ public class TableIcon extends DynamicEditorIcon {
                                     double columnPosition = _HORIZONTAL_PADDING;
                                     while (labelSet.hasNext()) {
                                         /*String column = (String) */labelSet
-                                        .next();
+                                                .next();
                                         tableElement[i][j].translateTo(
                                                 columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);
@@ -269,7 +270,8 @@ public class TableIcon extends DynamicEditorIcon {
                                 } else {
                                     // Display specified fields.
                                     double columnPosition = _HORIZONTAL_PADDING;
-                                    for (int j = 0; j < fieldsValue.length(); j++) {
+                                    for (int j = 0; j < fieldsValue
+                                            .length(); j++) {
                                         // String column = ((StringToken)fieldsValue.getElement(j)).stringValue();
                                         tableElement[i][j].translateTo(
                                                 columnPosition, rowPosition);
@@ -360,14 +362,14 @@ public class TableIcon extends DynamicEditorIcon {
         float blue = (code & 0xff) / 256.0f;
         // Make sure the color is at least as dark as close to a pure red, green, or blue.
         // This means that the magnitude of the r,g,b vector is no greater than 1.0.
-        float magnitude = (float) Math.sqrt(red * red + green * green + blue
-                * blue);
+        float magnitude = (float) Math
+                .sqrt(red * red + green * green + blue * blue);
         if (magnitude < 0.8f) {
             magnitude = 0.8f;
         }
 
-        Color result = new Color(red / magnitude, green / magnitude, blue
-                / magnitude);
+        Color result = new Color(red / magnitude, green / magnitude,
+                blue / magnitude);
         return result;
     }
 }

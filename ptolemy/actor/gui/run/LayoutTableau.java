@@ -59,8 +59,8 @@ public class LayoutTableau extends Tableau {
      *   an entity with the specified name.
      */
     public LayoutTableau(PtolemyEffigy container, String name,
-            CustomizableRunPane pane) throws IllegalActionException,
-            NameDuplicationException {
+            CustomizableRunPane pane)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         NamedObj model = container.getModel();
 

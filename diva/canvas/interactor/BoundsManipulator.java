@@ -212,9 +212,8 @@ public class BoundsManipulator extends Manipulator {
             BoundsManipulator parent = (BoundsManipulator) g.getParent();
             BoundsGeometry geometry = parent.getGeometry();
 
-            parent.getChild().transform(
-                    CanvasUtilities.computeTransform(parent.getChild()
-                            .getBounds(), geometry.getBounds()));
+            parent.getChild().transform(CanvasUtilities.computeTransform(
+                    parent.getChild().getBounds(), geometry.getBounds()));
         }
     }
 }

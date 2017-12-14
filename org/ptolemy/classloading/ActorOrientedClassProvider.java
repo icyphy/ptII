@@ -71,6 +71,6 @@ public interface ActorOrientedClassProvider {
      * @return the actor-oriented class matching the given className
      * @exception ClassNotFoundException if this provider can not provide the requested class for the requested version (if specified)
      */
-    CompositeEntity getActorOrientedClass(String className, VersionSpecification versionSpec)
-            throws ClassNotFoundException;
+    CompositeEntity getActorOrientedClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException;
 }

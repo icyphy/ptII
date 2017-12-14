@@ -62,8 +62,8 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
-ChannelListener {
+public interface WirelessChannel
+        extends Actor, Nameable, PropertyTransformer, ChannelListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

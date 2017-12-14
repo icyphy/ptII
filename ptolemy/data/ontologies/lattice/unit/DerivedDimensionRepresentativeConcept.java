@@ -77,8 +77,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
  */
-public class DerivedDimensionRepresentativeConcept extends
-DimensionRepresentativeConcept {
+public class DerivedDimensionRepresentativeConcept
+        extends DimensionRepresentativeConcept {
 
     /** Create a new DerivedUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -90,14 +90,14 @@ DimensionRepresentativeConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     public DerivedDimensionRepresentativeConcept(CompositeEntity ontology,
-            String name) throws NameDuplicationException,
-            IllegalActionException {
+            String name)
+            throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
         dimensionArray = new Parameter(this, "dimensionArray");
         String[] labels = { _dimensionLabel, _exponentLabel };
         Type[] types = { BaseType.STRING, BaseType.INT };
-        dimensionArray.setTypeEquals(new ArrayType(
-                new RecordType(labels, types)));
+        dimensionArray
+                .setTypeEquals(new ArrayType(new RecordType(labels, types)));
 
         _componentDimensions = new HashMap<DimensionRepresentativeConcept, Integer>();
         _componentBaseDimensions = null;
@@ -152,7 +152,7 @@ DimensionRepresentativeConcept {
      */
     public static Map<BaseDimensionRepresentativeConcept, Integer> deriveComponentBaseDimensionsMap(
             Map<DimensionRepresentativeConcept, Integer> dimensionMap)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         Map<BaseDimensionRepresentativeConcept, Integer> baseComponentDimensions = new HashMap<BaseDimensionRepresentativeConcept, Integer>();
 
@@ -164,8 +164,7 @@ DimensionRepresentativeConcept {
                         (BaseDimensionRepresentativeConcept) dimension,
                         exponentValue);
             } else if (dimension instanceof DerivedDimensionRepresentativeConcept) {
-                _incrementDerivedDimensionExponents(
-                        baseComponentDimensions,
+                _incrementDerivedDimensionExponents(baseComponentDimensions,
                         ((DerivedDimensionRepresentativeConcept) dimension)._componentDimensions,
                         exponentValue);
             } else {
@@ -186,7 +185,8 @@ DimensionRepresentativeConcept {
      *   unit concepts from the ontology.
      */
     @Override
-    public List<DerivedUnitConcept> getAllUnits() throws IllegalActionException {
+    public List<DerivedUnitConcept> getAllUnits()
+            throws IllegalActionException {
         return (List<DerivedUnitConcept>) super.getAllUnits();
     }
 
@@ -221,19 +221,16 @@ DimensionRepresentativeConcept {
         _updateDimensionInformation();
 
         if (containsThisInfiniteConceptString(infiniteConceptString)) {
-            String unitName = infiniteConceptString.substring(getName()
-                    .length() + 1);
+            String unitName = infiniteConceptString
+                    .substring(getName().length() + 1);
 
             return DerivedUnitConcept.createDerivedUnitConcept(getOntology(),
                     this, _findUnitRecordByName(unitName));
         } else {
-            throw new IllegalActionException(
-                    this,
-                    "The given string "
-                            + infiniteConceptString
-                            + " cannot "
-                            + "be used to derive a valid derived unit concept contained "
-                            + "by this representative.");
+            throw new IllegalActionException(this, "The given string "
+                    + infiniteConceptString + " cannot "
+                    + "be used to derive a valid derived unit concept contained "
+                    + "by this representative.");
         }
     }
 
@@ -258,15 +255,17 @@ DimensionRepresentativeConcept {
             // dimension parameter specified in this concept.
             Attribute dimensionAttribute = this.getAttribute(dimensionName);
             if (dimensionAttribute instanceof Parameter
-                    && ((Parameter) dimensionAttribute).getToken() instanceof ObjectToken) {
+                    && ((Parameter) dimensionAttribute)
+                            .getToken() instanceof ObjectToken) {
                 ObjectToken dimensionConceptToken = (ObjectToken) ((Parameter) dimensionAttribute)
                         .getToken();
                 Object dimensionConceptObject = dimensionConceptToken
                         .getValue();
                 if (dimensionConceptObject instanceof DimensionRepresentativeConcept) {
-                    _dimensionNameToReferenceName
-                    .put(((DimensionRepresentativeConcept) dimensionConceptObject)
-                            .getName(), dimensionName);
+                    _dimensionNameToReferenceName.put(
+                            ((DimensionRepresentativeConcept) dimensionConceptObject)
+                                    .getName(),
+                            dimensionName);
                     return (DimensionRepresentativeConcept) dimensionConceptObject;
                 } else {
                     throw new IllegalActionException(this, "Invalid dimension "
@@ -275,8 +274,8 @@ DimensionRepresentativeConcept {
 
                 // Next see if the name refers to a dimension name in the ontology.
             } else {
-                Concept dimensionConcept = getOntology().getConceptByString(
-                        dimensionName);
+                Concept dimensionConcept = getOntology()
+                        .getConceptByString(dimensionName);
                 if (dimensionConcept instanceof DimensionRepresentativeConcept) {
                     return (DimensionRepresentativeConcept) dimensionConcept;
                 } else {
@@ -285,8 +284,8 @@ DimensionRepresentativeConcept {
                 }
             }
         } else { // FIXME: redundant, type system ensures this
-            throw new IllegalActionException(this, "Invalid dimension record "
-                    + "token: " + dimensionRecord);
+            throw new IllegalActionException(this,
+                    "Invalid dimension record " + "token: " + dimensionRecord);
         }
     }
 
@@ -310,8 +309,8 @@ DimensionRepresentativeConcept {
                 return Integer.valueOf(exponentValue);
             }
         } else { // FIXME: redundant, type system ensures this
-            throw new IllegalActionException(this, "Invalid dimension record "
-                    + "token: " + dimensionRecord);
+            throw new IllegalActionException(this,
+                    "Invalid dimension record " + "token: " + dimensionRecord);
         }
     }
 
@@ -327,7 +326,7 @@ DimensionRepresentativeConcept {
     private static int _getExponentValueForComponentDimension(
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             DimensionRepresentativeConcept dimension)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         Integer exponent = dimensionMap.get(dimension);
         if (exponent == null) {
             throw new IllegalActionException("Exponent value for "
@@ -348,12 +347,12 @@ DimensionRepresentativeConcept {
     private static void _incrementBaseDimensionExponent(
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionsMap,
             BaseDimensionRepresentativeConcept dimension, int exponentValue)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         Integer currentExponent = baseDimensionsMap.get(dimension);
         if (currentExponent == null) {
             if (exponentValue != 0) {
-                baseDimensionsMap
-                .put(dimension, Integer.valueOf(exponentValue));
+                baseDimensionsMap.put(dimension,
+                        Integer.valueOf(exponentValue));
             }
         } else {
             int newExponentValue = currentExponent.intValue() + exponentValue;
@@ -388,8 +387,7 @@ DimensionRepresentativeConcept {
                         (BaseDimensionRepresentativeConcept) dimension,
                         subDimensionExponentValue);
             } else if (dimension instanceof DerivedDimensionRepresentativeConcept) {
-                _incrementDerivedDimensionExponents(
-                        baseDimensionsMap,
+                _incrementDerivedDimensionExponents(baseDimensionsMap,
                         ((DerivedDimensionRepresentativeConcept) dimension)._componentDimensions,
                         subDimensionExponentValue);
             } else {
@@ -414,8 +412,10 @@ DimensionRepresentativeConcept {
         Token[] dimensions = dimensionArrayToken.arrayValue();
         for (Token dimensionRecord : dimensions) {
             if (dimensionRecord instanceof RecordToken) {
-                DimensionRepresentativeConcept dimension = _getDimensionValue((RecordToken) dimensionRecord);
-                Integer exponent = _getExponentValue((RecordToken) dimensionRecord);
+                DimensionRepresentativeConcept dimension = _getDimensionValue(
+                        (RecordToken) dimensionRecord);
+                Integer exponent = _getExponentValue(
+                        (RecordToken) dimensionRecord);
                 _componentDimensions.put(dimension, exponent);
             } else {
                 throw new IllegalActionException(this, "Dimension array token "
@@ -438,7 +438,8 @@ DimensionRepresentativeConcept {
                     .getToken();
             if (dimensionArrayToken != null) {
                 _setUnitDimensions(dimensionArrayToken);
-                _componentBaseDimensions = deriveComponentBaseDimensionsMap(_componentDimensions);
+                _componentBaseDimensions = deriveComponentBaseDimensionsMap(
+                        _componentDimensions);
                 _dimensionVersion = workspace().getVersion();
             }
         }

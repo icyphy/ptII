@@ -46,8 +46,8 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class LogicOpConceptFunctionDefinition extends
-BinaryOperationMonotonicFunctionDefinition {
+public class LogicOpConceptFunctionDefinition
+        extends BinaryOperationMonotonicFunctionDefinition {
 
     /** Construct the LogicOpConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -59,8 +59,8 @@ BinaryOperationMonotonicFunctionDefinition {
      *   actor with this name.
      */
     public LogicOpConceptFunctionDefinition(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         Token[] argNames = new Token[] { new StringToken("booleanVar0"),

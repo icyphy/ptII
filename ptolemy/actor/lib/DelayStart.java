@@ -140,8 +140,8 @@ public class DelayStart extends TypedAtomicActor {
                 // }
             }
         } catch (ParseException e) {
-            throw new IllegalActionException(this, "Invalid startTime: "
-                    + startTime.stringValue());
+            throw new IllegalActionException(this,
+                    "Invalid startTime: " + startTime.stringValue());
         }
 
         super.initialize();

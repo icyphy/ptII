@@ -57,7 +57,8 @@ public class GPOutputSetup extends ActuatorSetup {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GPOutputSetup(ptolemy.domains.ptides.lib.luminary.GPOutputSetup actor)
+    public GPOutputSetup(
+            ptolemy.domains.ptides.lib.luminary.GPOutputSetup actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
 
@@ -120,8 +121,8 @@ public class GPOutputSetup extends ActuatorSetup {
         List args = new ArrayList();
         args.add(_padID);
         args.add(_pinID);
-        code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
-                "initializeGPOutput", args)));
+        code.append(processCode(_templateParser.getCodeStream()
+                .getCodeBlock("initializeGPOutput", args)));
         return code.toString();
     }
 

@@ -127,8 +127,8 @@ public interface IOMCCommand {
      */
     public void runModel(String fileName, String modelName, String startTime,
             String stopTime, int numberOfIntervals, String outputFormat,
-            String processingMode) throws ConnectException, IOException,
-            IllegalActionException;
+            String processingMode)
+            throws ConnectException, IOException, IllegalActionException;
 
     /** Leave and quit OpenModelica environment.
      *  @exception ConnectException If quit command couldn't

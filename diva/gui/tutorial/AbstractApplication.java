@@ -232,8 +232,8 @@ public abstract class AbstractApplication implements Application {
     @Override
     public void addView(View v) {
         if (_views.contains(v)) {
-            throw new IllegalArgumentException("View " + v
-                    + " is already known by application " + this);
+            throw new IllegalArgumentException(
+                    "View " + v + " is already known by application " + this);
         }
 
         List l = (List) _documentMap.get(v.getDocument());
@@ -385,8 +385,8 @@ public abstract class AbstractApplication implements Application {
     @Override
     public void removeDocument(Document d) {
         if (!_documents.contains(d)) {
-            throw new IllegalArgumentException("Document " + d
-                    + " is not known by application " + this);
+            throw new IllegalArgumentException(
+                    "Document " + d + " is not known by application " + this);
         }
 
         _documents.removeElement(d);
@@ -411,8 +411,8 @@ public abstract class AbstractApplication implements Application {
     @Override
     public void removeView(View v) {
         if (!_views.contains(v)) {
-            throw new IllegalArgumentException("View " + v
-                    + " is not known by application " + this);
+            throw new IllegalArgumentException(
+                    "View " + v + " is not known by application " + this);
         }
 
         _views.removeElement(v);
@@ -461,8 +461,8 @@ public abstract class AbstractApplication implements Application {
     @Override
     public void setCurrentView(View v) {
         if (v != null && !_views.contains(v)) {
-            throw new IllegalArgumentException("View " + v
-                    + " is not known by application " + this);
+            throw new IllegalArgumentException(
+                    "View " + v + " is not known by application " + this);
         }
 
         _views.setSelectedItem(v);

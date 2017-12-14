@@ -76,8 +76,8 @@ public class ProductLatticeConcept extends FiniteConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     public ProductLatticeConcept(ProductLatticeOntology ontology, String name,
-            List<Concept> conceptTuple) throws NameDuplicationException,
-            IllegalActionException {
+            List<Concept> conceptTuple)
+            throws NameDuplicationException, IllegalActionException {
         this(ontology, name);
         _conceptTuple = new ArrayList<Concept>(conceptTuple);
     }
@@ -126,16 +126,15 @@ public class ProductLatticeConcept extends FiniteConcept {
             // FIXME: A single ontology could have multiple instances but we don't
             // have a defined equals() method for ontologies, so this hack of
             // comparing their Ptolemy class names is used.
-            if (innerConcept.getOntology().getName().equals(ontology.getName())) {
+            if (innerConcept.getOntology().getName()
+                    .equals(ontology.getName())) {
                 return ontology.getConceptByString(innerConcept.toString());
             }
         }
-        throw new IllegalActionException(
-                this,
-                "The ontology "
-                        + ontology.getName()
-                        + " is not a component of this concept's product lattice ontology "
-                        + getOntology().getName() + ".");
+        throw new IllegalActionException(this, "The ontology "
+                + ontology.getName()
+                + " is not a component of this concept's product lattice ontology "
+                + getOntology().getName() + ".");
     }
 
     /** Return the list of concepts that compose this product lattice concept.

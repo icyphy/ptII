@@ -105,7 +105,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
         if (attributeName.equals("name")) {
             if (attributeValue.startsWith("annotation")
                     || attributeValue.contains("annotation")
-                    && attributeValue.contains(":")) {
+                            && attributeValue.contains(":")) {
 
                 // We found a line like
                 // <property name="annotation1"
@@ -128,10 +128,10 @@ public class UpdateAnnotations extends MoMLFilterSimple {
             }
         } else if (_currentlyProcessingAnnotation) {
             if (attributeName.equals("class")
-                    && attributeValue
-                    .equals("ptolemy.vergil.kernel.attributes.TextAttribute")
-                    && container.getFullName().equals(
-                            _currentAnnotationContainerFullName)) {
+                    && attributeValue.equals(
+                            "ptolemy.vergil.kernel.attributes.TextAttribute")
+                    && container.getFullName()
+                            .equals(_currentAnnotationContainerFullName)) {
                 // We have an annotation, but it is a TextAttribute, so we are done.
                 _reset();
                 return attributeValue;
@@ -143,11 +143,12 @@ public class UpdateAnnotations extends MoMLFilterSimple {
         }
         if (_currentlyProcessingAnnotation) {
             if (container != null) {
-                if (!container.getFullName().equals(_currentAnnotationFullName)) {
+                if (!container.getFullName()
+                        .equals(_currentAnnotationFullName)) {
                     if (_currentAnnotationFullName == null
                             || (!_currentAnnotationFullName
-                                    .startsWith(container.getFullName()) && !container
-                                    .getFullName().startsWith(
+                                    .startsWith(container.getFullName())
+                                    && !container.getFullName().startsWith(
                                             _currentAnnotationFullName))) {
                         // We found another class in a different container
                         // while handling an annotation.
@@ -236,20 +237,20 @@ public class UpdateAnnotations extends MoMLFilterSimple {
             if (charData.contains(" fill:")) {
                 if (charData.contains(" fill:black")) {
                     _textAttribute.textColor
-                    .setExpression("{0.0, 0.0, 0.0, 1.0}");
+                            .setExpression("{0.0, 0.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:darkgray")
                         || charData.contains(" fill:gray")) {
                     _textAttribute.textColor
-                    .setExpression("{0.2, 0.2, 0.2, 1.0}");
+                            .setExpression("{0.2, 0.2, 0.2, 1.0}");
                 }
                 if (charData.contains(" fill:green")) {
                     _textAttribute.textColor
-                    .setExpression("{0.0, 1.0, 0.0, 1.0}");
+                            .setExpression("{0.0, 1.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:red")) {
                     _textAttribute.textColor
-                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
+                            .setExpression("{1.0, 0.0, 0.0, 1.0}");
                 }
             }
 

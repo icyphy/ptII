@@ -119,12 +119,13 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
 
         testConnectionButton.setText("Test Connection");
         testConnectionButton
-        .addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                testConnectionButtonActionPerformed(evt);
-            }
-        });
+                .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(
+                            java.awt.event.ActionEvent evt) {
+                        testConnectionButtonActionPerformed(evt);
+                    }
+                });
 
         cacheLabel.setText("Cache Container Name");
 
@@ -163,172 +164,122 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
                 jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout
-        .setHorizontalGroup(jPanel1Layout
-                .createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                jPanel1Layout
-                                .createSequentialGroup()
-                                .addGroup(
-                                        jPanel1Layout
-                                        .createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(
-                                                        jPanel1Layout
-                                                        .createSequentialGroup()
-                                                        .addContainerGap()
-                                                        .addGroup(
-                                                                jPanel1Layout
-                                                                .createParallelGroup(
-                                                                        javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                        .addComponent(
-                                                                                containerLabel)
-                                                                                .addComponent(
-                                                                                        urlLabel)
-                                                                                        .addComponent(
-                                                                                                cacheLabel))
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addGroup(jPanel1Layout
+                                                .createParallelGroup(
+                                                        javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(containerLabel)
+                                                .addComponent(urlLabel)
+                                                .addComponent(cacheLabel))
 
-                                                                                                .addGap(33,
-                                                                                                        33,
-                                                                                                        33)
-                                                                                                        .addGroup(
+                                        .addGap(33, 33, 33).addGroup(
 
-                                                                                                                jPanel1Layout
-                                                                                                                .createParallelGroup(
-                                                                                                                        javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                                                        false)
-                                                                                                                        .addComponent(
-                                                                                                                                _containerNameTextField,
-                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
-
-                                                                                                                                .addComponent(
-                                                                                                                                        _urlTextField,
-                                                                                                                                        javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                                        281,
-                                                                                                                                        Short.MAX_VALUE)
-
-                                                                                                                                        .addComponent(
-                                                                                                                                                _cacheContainerNameTextField,
-                                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)))
-
-                                                                                                                                                .addGroup(
-                                                                                                                                                        jPanel1Layout
-                                                                                                                                                        .createSequentialGroup()
-                                                                                                                                                        .addGap(128,
-                                                                                                                                                                128,
-                                                                                                                                                                128)
-                                                                                                                                                                .addComponent(
-                                                                                                                                                                        testConnectionButton)
-                                                                                                                                                                        .addPreferredGap(
-                                                                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                                                .addComponent(
-                                                                                                                                                                                        saveButton)
-                                                                                                                                                                                        .addPreferredGap(
-                                                                                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                                                                .addComponent(
-                                                                                                                                                                                                        resetButton)
-                                                                                                                                                                                                        .addPreferredGap(
-                                                                                                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                                                                                                                .addComponent(
-                                                                                                                                                                                                                        _cancelButton)))
-                                                                                                                                                                                                                        .addGroup(
-                                                                                                                                                                                                                                jPanel1Layout
-                                                                                                                                                                                                                                .createParallelGroup(
-                                                                                                                                                                                                                                        javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                                                                                                                                                                        true)
-                                                                                                                                                                                                                                        .addGap(100)
-                                                                                                                                                                                                                                        .addComponent(
-                                                                                                                                                                                                                                                _browseButton,
-                                                                                                                                                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING))
-                                                                                                                                                                                                                                                .addContainerGap(22, Short.MAX_VALUE)));
-        jPanel1Layout
-        .setVerticalGroup(jPanel1Layout
-                .createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                jPanel1Layout
-                                .createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addGroup(
-                                        jPanel1Layout
-                                        .createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-
-                                                .addComponent(
-                                                        _urlTextField,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                jPanel1Layout
+                                                        .createParallelGroup(
+                                                                javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                false)
+                                                        .addComponent(
+                                                                _containerNameTextField,
+                                                                javax.swing.GroupLayout.Alignment.LEADING)
 
                                                         .addComponent(
-                                                                _browseButton)
-                                                                .addComponent(urlLabel))
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                        .addGroup(
-                                                                                jPanel1Layout
-                                                                                .createParallelGroup(
-                                                                                        javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                        .addComponent(
-                                                                                                _containerNameTextField,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addComponent(
-                                                                                                        containerLabel))
-                                                                                                        .addPreferredGap(
-                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                                .addGroup(
-                                                                                                                        jPanel1Layout
-                                                                                                                        .createParallelGroup(
-                                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                                                                .addComponent(
-                                                                                                                                        _cacheContainerNameTextField,
-                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                                        .addComponent(
-                                                                                                                                                cacheLabel))
-                                                                                                                                                .addGap(28, 28, 28)
-                                                                                                                                                .addGroup(
-                                                                                                                                                        jPanel1Layout
-                                                                                                                                                        .createParallelGroup(
-                                                                                                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                                                                                                .addComponent(
-                                                                                                                                                                        saveButton)
-                                                                                                                                                                        .addComponent(
-                                                                                                                                                                                resetButton)
-                                                                                                                                                                                .addComponent(
-                                                                                                                                                                                        _cancelButton)
-                                                                                                                                                                                        .addComponent(
-                                                                                                                                                                                                testConnectionButton))
-                                                                                                                                                                                                .addContainerGap(12, Short.MAX_VALUE)));
+                                                                _urlTextField,
+                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                281,
+                                                                Short.MAX_VALUE)
+
+                                                        .addComponent(
+                                                                _cacheContainerNameTextField,
+                                                                javax.swing.GroupLayout.Alignment.LEADING)))
+
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(128, 128, 128)
+                                        .addComponent(testConnectionButton)
+                                        .addPreferredGap(
+                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(saveButton)
+                                        .addPreferredGap(
+                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(resetButton)
+                                        .addPreferredGap(
+                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(_cancelButton)))
+                        .addGroup(jPanel1Layout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.TRAILING,
+                                true).addGap(100).addComponent(_browseButton,
+                                        javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap(22, Short.MAX_VALUE)));
+        jPanel1Layout.setVerticalGroup(jPanel1Layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE)
+
+                                .addComponent(_urlTextField,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+
+                                .addComponent(_browseButton)
+                                .addComponent(urlLabel))
+                        .addPreferredGap(
+                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(_containerNameTextField,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(containerLabel))
+                        .addPreferredGap(
+                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(_cacheContainerNameTextField,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cacheLabel))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(
+                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(saveButton)
+                                .addComponent(resetButton)
+                                .addComponent(_cancelButton)
+                                .addComponent(testConnectionButton))
+                        .addContainerGap(12, Short.MAX_VALUE)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
                 getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(
-                javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-                        javax.swing.GroupLayout.Alignment.TRAILING,
-                        layout.createSequentialGroup()
+        layout.setHorizontalGroup(layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout
+                        .createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
                                 Short.MAX_VALUE)
-                                .addComponent(jPanel1,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(69, 69, 69)));
-        layout.setVerticalGroup(layout.createParallelGroup(
-                javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-                        layout.createSequentialGroup()
                         .addComponent(jPanel1,
                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        Short.MAX_VALUE)));
+                        .addGap(69, 69, 69)));
+        layout.setVerticalGroup(layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE)));
 
         pack();
     }// </editor-fold>
@@ -358,7 +309,8 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
 
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        if (fileChooser.showOpenDialog(DatabaseSetupFrame.this) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(
+                DatabaseSetupFrame.this) == JFileChooser.APPROVE_OPTION) {
 
             String directoryPath = fileChooser.getSelectedFile()
                     .getAbsolutePath();
@@ -416,8 +368,8 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
      */
     private void _populateSetupParameters() {
 
-        _cacheContainerNameTextField.setText(_setupParameters
-                .getCacheContainerName());
+        _cacheContainerNameTextField
+                .setText(_setupParameters.getCacheContainerName());
         _containerNameTextField.setText(_setupParameters.getContainerName());
         _urlTextField.setText(_setupParameters.getUrl());
     }
@@ -443,7 +395,8 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
         }
 
         if (_cacheContainerNameTextField.getText() == null
-                || _cacheContainerNameTextField.getText().trim().length() == 0) {
+                || _cacheContainerNameTextField.getText().trim()
+                        .length() == 0) {
             JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
                     "Please specify the Cache Container Name.");
             _cacheContainerNameTextField.requestFocusInWindow();
@@ -465,15 +418,13 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
                 setupManager.testConnection(_readSetupParameters());
             } catch (DBConnectionException e) {
                 Object[] options = { "Yes", "No" };
-                int input = JOptionPane
-                        .showOptionDialog(
-                                DatabaseSetupFrame.this,
-                                "The connection test was not successful. "
-                                        + "Do you still want to save the parameters?",
-                                        "Connection Test Error",
-                                        JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.QUESTION_MESSAGE, null, options,
-                                        options[1]);
+                int input = JOptionPane.showOptionDialog(
+                        DatabaseSetupFrame.this,
+                        "The connection test was not successful. "
+                                + "Do you still want to save the parameters?",
+                        "Connection Test Error", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, options,
+                        options[1]);
                 isValid = input == JOptionPane.YES_OPTION;
             }
         }
@@ -483,7 +434,7 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
             try {
                 try {
                     setupManager
-                    .updateDBConnectionSetupParameters(setupParameters);
+                            .updateDBConnectionSetupParameters(setupParameters);
                 } catch (ExceptionInInitializerError e) {
 
                 }
@@ -493,11 +444,11 @@ public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame {
                 this.setVisible(false);
                 dispose();
             } catch (DBConnectionException e) {
-                JOptionPane.showMessageDialog(
-                        DatabaseSetupFrame.this,
+                JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
                         "Error while connecting to the new connection - "
-                                + e.getMessage(), "Connection Error",
-                                JOptionPane.INFORMATION_MESSAGE, null);
+                                + e.getMessage(),
+                        "Connection Error", JOptionPane.INFORMATION_MESSAGE,
+                        null);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
                         "Error while saving parameters - " + e.getMessage(),

@@ -139,12 +139,14 @@ public class AccessorLibrary extends EntityLibrary {
                         _configureSource += "/";
                     }
                     // Second argument specifies to update the repository.
-                    URL source = JSAccessor._sourceToURL(_configureSource + "index.json", true);
+                    URL source = JSAccessor._sourceToURL(
+                            _configureSource + "index.json", true);
 
                     // Get the index file at the specified location.
                     URL indexURL = new URL(source, "index.json");
 
-                    indexURL = JSAccessor.getLocalURL(indexURL.toString(), indexURL);
+                    indexURL = JSAccessor.getLocalURL(indexURL.toString(),
+                            indexURL);
                     BufferedReader in = null;
                     StringBuffer contents = new StringBuffer();
                     MessageHandler.status("Retrieving library from " + source);
@@ -153,7 +155,8 @@ public class AccessorLibrary extends EntityLibrary {
                         // up to 10 redirects.  Otherwise, we just
                         // call URL.getInputStream().
                         in = new BufferedReader(new InputStreamReader(
-                                FileUtilities.openStreamFollowingRedirects(indexURL)));
+                                FileUtilities.openStreamFollowingRedirects(
+                                        indexURL)));
 
                         String input;
                         while ((input = in.readLine()) != null) {
@@ -163,54 +166,70 @@ public class AccessorLibrary extends EntityLibrary {
                         for (int i = 0; i < index.length(); ++i) {
                             Object value = index.get(i);
                             if (value instanceof String) {
-                                String valueString = (String)value;
-                                String newConfigureSource = _configureSource + valueString;
+                                String valueString = (String) value;
+                                String newConfigureSource = _configureSource
+                                        + valueString;
                                 URL newBase = new URL(newConfigureSource);
                                 // Check to see whether the value specifies a sublibrary.
-                                if (!valueString.endsWith(".js") && !valueString.endsWith(".xml")) {
+                                if (!valueString.endsWith(".js")
+                                        && !valueString.endsWith(".xml")) {
                                     // Assume the entry in index.json specifies a sublibrary, not an accessor.
-                                    AccessorLibrary sublibrary = new AccessorLibrary(this, valueString);
-                                    sublibrary.configure(newBase, newConfigureSource, null);
+                                    AccessorLibrary sublibrary = new AccessorLibrary(
+                                            this, valueString);
+                                    sublibrary.configure(newBase,
+                                            newConfigureSource, null);
                                     continue;
                                 }
                                 // Entry in index.json is an accessor.
                                 parser.setContext(this);
                                 try {
-                                    URL accessorURL = new URL(source, valueString);
-                                    String moml = JSAccessor.accessorToMoML(newConfigureSource, false);
+                                    URL accessorURL = new URL(source,
+                                            valueString);
+                                    String moml = JSAccessor.accessorToMoML(
+                                            newConfigureSource, false);
                                     parser.clearTopObjectsList();
                                     parser.parse(accessorURL, moml);
 
-                                    List<NamedObj> created = parser.topObjectsCreated();
+                                    List<NamedObj> created = parser
+                                            .topObjectsCreated();
                                     for (NamedObj toplevel : created) {
                                         if (toplevel instanceof JavaScript) {
                                             // Indicate that the script is not overridden.
                                             // In other words, each time you set the value of the script,
                                             // the new value will be assumed to be that specified by the class
                                             // of which this accessor is an instance.
-                                            ((JavaScript)toplevel).script.setDerivedLevel(Integer.MAX_VALUE);
+                                            ((JavaScript) toplevel).script
+                                                    .setDerivedLevel(
+                                                            Integer.MAX_VALUE);
                                             // The above will have the side effect that a script will not be saved
                                             // when you save the model. Force it to be saved so that there is always
                                             // a local copy.
-                                            ((JavaScript)toplevel).script.setPersistent(true);
+                                            ((JavaScript) toplevel).script
+                                                    .setPersistent(true);
                                         }
                                     }
                                 } catch (Throwable ex) {
-                                    String message = "Loading accessor failed: " + valueString;
+                                    String message = "Loading accessor failed: "
+                                            + valueString;
                                     MessageHandler.status(message);
                                     System.err.println(message + "\n" + ex);
                                     // If we are running the nightly build and trying
                                     // to populate the library, then throw an exception if there is a problem.
-                                    if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
-                                        throw new InternalErrorException(this, ex,
-                                                message);
+                                    if (StringUtilities.getProperty(
+                                            "ptolemy.ptII.isRunningNightlyBuild")
+                                            .length() > 0) {
+                                        throw new InternalErrorException(this,
+                                                ex, message);
                                     }
                                 }
                             } else {
-                                String message = "Cannot parse index entry: " + value;
+                                String message = "Cannot parse index entry: "
+                                        + value;
                                 MessageHandler.status(message);
                                 System.err.println(message);
-                                if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
+                                if (StringUtilities.getProperty(
+                                        "ptolemy.ptII.isRunningNightlyBuild")
+                                        .length() > 0) {
                                     throw new InternalErrorException(this, null,
                                             message);
                                 }
@@ -220,17 +239,21 @@ public class AccessorLibrary extends EntityLibrary {
                         String message = "Cannot open index file: " + indexURL;
                         MessageHandler.status(message);
                         System.err.println(message + "\n" + ex);
-                        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
-                            throw new InternalErrorException(this, ex,
-                                    message);
+                        if (StringUtilities
+                                .getProperty(
+                                        "ptolemy.ptII.isRunningNightlyBuild")
+                                .length() > 0) {
+                            throw new InternalErrorException(this, ex, message);
                         }
                     } catch (JSONException ex) {
                         String message = "Cannot open index data: " + contents;
                         MessageHandler.status(message);
                         System.err.println(message + "\n" + ex);
-                        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
-                            throw new InternalErrorException(this, ex,
-                                    message);
+                        if (StringUtilities
+                                .getProperty(
+                                        "ptolemy.ptII.isRunningNightlyBuild")
+                                .length() > 0) {
+                            throw new InternalErrorException(this, ex, message);
                         }
                     } finally {
                         if (in != null) {
@@ -241,21 +264,21 @@ public class AccessorLibrary extends EntityLibrary {
 
                 if (_configureText != null && !_configureText.equals("")) {
                     /* FIXME: What to do with included text?
-
+                    
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.
                     String trimmed = _configureText.trim();
-
+                    
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                         trimmed = trimmed.substring(2, trimmed.length() - 2)
                                 .trim();
-
+                    
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();
                             parser.parse(_base, trimmed);
                         }
-
+                    
                         // If it's not a moml processing instruction, ignore.
                     } else {
                         // Data is not enclosed in a processing instruction.

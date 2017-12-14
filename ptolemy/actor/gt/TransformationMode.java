@@ -55,8 +55,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationMode extends ChoiceParameter implements
-MatchCallback {
+public class TransformationMode extends ChoiceParameter
+        implements MatchCallback {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -93,8 +93,8 @@ MatchCallback {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TransformationMode newObject = (TransformationMode) super
-                .clone(workspace);
+        TransformationMode newObject = (TransformationMode) super.clone(
+                workspace);
         newObject._masterRule = null;
         newObject._matchResults = new LinkedList<MatchResult>();
         newObject._matcher = new GraphMatcher();
@@ -242,8 +242,8 @@ MatchCallback {
                                 listener);
                         break;
                     case REPLACE_ANY:
-                        result = _matchResults.get(_random
-                                .nextInt(_matchResults.size()));
+                        result = _matchResults
+                                .get(_random.nextInt(_matchResults.size()));
                         GraphTransformer.transform(workingCopy, result,
                                 listener);
                         break;
@@ -271,7 +271,7 @@ MatchCallback {
 
     /**
      The enumeration of accepted modes.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -359,15 +359,15 @@ MatchCallback {
     /**
      A scope extender to resolve names in the scope of the master transformation
      rule even though the expression is specified in a working copy.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private static class WorkingCopyScopeExtender extends Attribute implements
-    ScopeExtender {
+    private static class WorkingCopyScopeExtender extends Attribute
+            implements ScopeExtender {
 
         /** Return a list of the attributes contained by this object.
          *  If there are no attributes, return an empty list.
@@ -377,8 +377,8 @@ MatchCallback {
         @Override
         public List<?> attributeList() {
             NamedObj container = _masterRule;
-            Set<?> names = ModelScope
-                    .getAllScopedVariableNames(null, container);
+            Set<?> names = ModelScope.getAllScopedVariableNames(null,
+                    container);
             List<Variable> variables = new LinkedList<Variable>();
             for (Object name : names) {
                 variables.add(ModelScope.getScopedVariable(null, container,
@@ -432,8 +432,8 @@ MatchCallback {
          *   an attribute already in the container.
          */
         WorkingCopyScopeExtender(NamedObj container, String name,
-                TransformationRule masterRule) throws IllegalActionException,
-                NameDuplicationException {
+                TransformationRule masterRule)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
             _masterRule = masterRule;
             setPersistent(false);

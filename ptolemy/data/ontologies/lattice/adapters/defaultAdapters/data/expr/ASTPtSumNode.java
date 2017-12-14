@@ -84,16 +84,16 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         // are needed for the PtSumNode monotonic function.
         ConceptFunction addFunction = null;
         ConceptFunctionDefinitionAttribute addDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.ADD_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
         if (addDefinition != null) {
             addFunction = addDefinition.createConceptFunction();
         }
 
         ConceptFunction subtractFunction = null;
         ConceptFunctionDefinitionAttribute subtractDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
         if (subtractDefinition != null) {
             subtractFunction = subtractDefinition.createConceptFunction();
         }
@@ -114,15 +114,14 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
                 addFunction, subtractFunction, operatorTokenList);
 
         if (!astSumFunction.isMonotonic()) {
-            throw new IllegalActionException(
-                    _solver,
+            throw new IllegalActionException(_solver,
                     "The concept function for determining the "
                             + "PtProductNode concept is not monotonic. All concept functions used for a "
                             + "lattice ontology solver must be monotonic.");
         }
 
-        setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
-                astSumFunction, childNodeTerms));
+        setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(astSumFunction,
+                childNodeTerms));
 
         return super.constraintList();
     }
@@ -156,9 +155,9 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         public ASTPtSumNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction addFunction,
                 ConceptFunction subtractFunction, List<Token> operatorTokenList)
-                        throws IllegalActionException {
-            super("defaultASTPtSumNodeFunction", true,
-                    argumentDomainOntologies, outputRangeOntology);
+                throws IllegalActionException {
+            super("defaultASTPtSumNodeFunction", true, argumentDomainOntologies,
+                    outputRangeOntology);
 
             _addFunction = addFunction;
             _subtractFunction = subtractFunction;

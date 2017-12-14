@@ -113,9 +113,8 @@ public class PoissonClock extends RandomSource implements TimedActor {
         stopTime.setExpression("Infinity");
         stopTime.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:lightGrey\"/>\n"
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
                 + "<circle cx=\"0\" cy=\"0\" r=\"17\""
                 + "style=\"fill:white\"/>\n"
                 + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"
@@ -218,8 +217,8 @@ public class PoissonClock extends RandomSource implements TimedActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PoissonClock newObject = (PoissonClock) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

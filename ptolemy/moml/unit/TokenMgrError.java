@@ -107,8 +107,8 @@ public class TokenMgrError extends Error {
             default:
                 if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e) {
                     String s = "0000" + Integer.toString(ch, 16);
-                    retval.append("\\u"
-                            + s.substring(s.length() - 4, s.length()));
+                    retval.append(
+                            "\\u" + s.substring(s.length() - 4, s.length()));
                 } else {
                     retval.append(ch);
                 }
@@ -132,15 +132,12 @@ public class TokenMgrError extends Error {
      */
     protected static String LexicalError(boolean EOFSeen, int lexState,
             int errorLine, int errorColumn, String errorAfter, char curChar) {
-        return "Lexical error at line "
-                + errorLine
-                + ", column "
-                + errorColumn
+        return "Lexical error at line " + errorLine + ", column " + errorColumn
                 + ".  Encountered: "
-                + (EOFSeen ? "<EOF> " : "\""
-                        + addEscapes(String.valueOf(curChar)) + "\"" + " ("
-                        + (int) curChar + "), ") + "after : \""
-                        + addEscapes(errorAfter) + "\"";
+                + (EOFSeen ? "<EOF> "
+                        : "\"" + addEscapes(String.valueOf(curChar)) + "\""
+                                + " (" + (int) curChar + "), ")
+                + "after : \"" + addEscapes(errorAfter) + "\"";
     }
 
     /**
@@ -174,8 +171,8 @@ public class TokenMgrError extends Error {
     /** Full Constructor. */
     public TokenMgrError(boolean EOFSeen, int lexState, int errorLine,
             int errorColumn, String errorAfter, char curChar, int reason) {
-        this(LexicalError(EOFSeen, lexState, errorLine, errorColumn,
-                errorAfter, curChar), reason);
+        this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter,
+                curChar), reason);
     }
 }
 /* JavaCC - OriginalChecksum=c2b8ceabb4bc42ab01c911dcbb9e153b (do not edit this line) */

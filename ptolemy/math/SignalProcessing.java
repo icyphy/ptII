@@ -838,8 +838,8 @@ public class SignalProcessing {
         double fourPiOverM = 2.0 * twoPiOverM;
 
         for (n = 0; n < length; n++) {
-            window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n) + 0.08
-                    * Math.cos(fourPiOverM * n);
+            window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n)
+                    + 0.08 * Math.cos(fourPiOverM * n);
         }
 
         return window;
@@ -867,9 +867,9 @@ public class SignalProcessing {
         double sixPiOverM = 3.0 * twoPiOverM;
 
         for (n = 0; n < length; n++) {
-            window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n) + 0.14128
-                    * Math.cos(fourPiOverM * n) - 0.01168
-                    * Math.cos(sixPiOverM * n);
+            window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n)
+                    + 0.14128 * Math.cos(fourPiOverM * n)
+                    - 0.01168 * Math.cos(sixPiOverM * n);
         }
 
         return window;
@@ -885,12 +885,12 @@ public class SignalProcessing {
      *  @param length The length of the returned array.
      *  @return An array that contains samples of the Gaussian curve.
      */
-    public static final double[] generateGaussianCurve(
-            double standardDeviation, double extent, int length) {
+    public static final double[] generateGaussianCurve(double standardDeviation,
+            double extent, int length) {
         GaussianSampleGenerator generator = new GaussianSampleGenerator(0.0,
                 standardDeviation);
-        return sampleWave(length, -extent * standardDeviation, 2.0 * extent
-                * standardDeviation / length, generator);
+        return sampleWave(length, -extent * standardDeviation,
+                2.0 * extent * standardDeviation / length, generator);
     }
 
     /** Return a new array that is filled with samples of a Hamming
@@ -1515,16 +1515,18 @@ public class SignalProcessing {
      *  h(t) = (1/(sqrt(2 * PI) * stdDev) *
      *         exp(-(t - mean)<sup>2</sup> / (2 * stdDev<sup>2</sup>))
      *  </pre>
-
+    
      */
-    public static class GaussianSampleGenerator implements DoubleUnaryOperation {
+    public static class GaussianSampleGenerator
+            implements DoubleUnaryOperation {
         /** Construct a GaussianSampleGenerator.
          *  @param standardDeviation The standard deviation of the
          *  Gaussian function.
          */
         public GaussianSampleGenerator(double mean, double standardDeviation) {
             _mean = mean;
-            _oneOverTwoVariance = 1.0 / (2.0 * standardDeviation * standardDeviation);
+            _oneOverTwoVariance = 1.0
+                    / (2.0 * standardDeviation * standardDeviation);
             _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
         }
 
@@ -1534,8 +1536,8 @@ public class SignalProcessing {
         @Override
         public final double operate(double time) {
             double shiftedTime = time - _mean;
-            return _factor
-                    * Math.exp(-shiftedTime * shiftedTime * _oneOverTwoVariance);
+            return _factor * Math
+                    .exp(-shiftedTime * shiftedTime * _oneOverTwoVariance);
         }
 
         private final double _mean;
@@ -1544,8 +1546,8 @@ public class SignalProcessing {
 
         private final double _factor;
 
-        private static final double ONE_OVER_SQRT_TWO_PI = 1.0 / Math
-                .sqrt(2 * Math.PI);
+        private static final double ONE_OVER_SQRT_TWO_PI = 1.0
+                / Math.sqrt(2 * Math.PI);
     }
 
     /** This class generates samples of a polynomial.
@@ -1562,8 +1564,8 @@ public class SignalProcessing {
      *  </pre>
      *  depending on the direction specified.
      */
-    public static class PolynomialSampleGenerator implements
-    DoubleUnaryOperation {
+    public static class PolynomialSampleGenerator
+            implements DoubleUnaryOperation {
         /** Construct a PolynomialSampleGenerator. The input argument is
          *  an array of doubles
          *  a[0] = a<sub>0</sub> .. a[n-1] = a<sub>n-1</sub> used to compute
@@ -1625,7 +1627,8 @@ public class SignalProcessing {
     /** This class generates samples of a sawtooth wave with the specified
      *  period and phase. The returned values range between -1.0 and 1.0.
      */
-    public static class SawtoothSampleGenerator implements DoubleUnaryOperation {
+    public static class SawtoothSampleGenerator
+            implements DoubleUnaryOperation {
         /** Construct a SawtoothSampleGenerator with the given period and
          *  phase.  The phase is given as a fraction of a cycle,
          *  typically ranging from 0.0 to 1.0.  If the phase is 0.0 or 1.0,
@@ -1661,7 +1664,8 @@ public class SignalProcessing {
      *  set the phase to -Math.PI*0.5 from the
      *  phase, since sin(t) = cos(t - PI/2).
      */
-    public static class SinusoidSampleGenerator implements DoubleUnaryOperation {
+    public static class SinusoidSampleGenerator
+            implements DoubleUnaryOperation {
         /**
          *  Construct a SinusoidSampleGenerator.
          *  @param frequency The frequency of the cosine wave, in radians per
@@ -1708,8 +1712,8 @@ public class SignalProcessing {
      *  Kluwer Academic Publishers, Boston, 1994.</a>
      *
      */
-    public static class RaisedCosineSampleGenerator implements
-    DoubleUnaryOperation {
+    public static class RaisedCosineSampleGenerator
+            implements DoubleUnaryOperation {
         /** Construct a RaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing,
          *  after time zero. This would be the symbol interval in a
@@ -1790,8 +1794,8 @@ public class SignalProcessing {
      *  The implementation was then further optimized to cache computations
      *  that are independent of time.
      */
-    public static class SqrtRaisedCosineSampleGenerator implements
-    DoubleUnaryOperation {
+    public static class SqrtRaisedCosineSampleGenerator
+            implements DoubleUnaryOperation {
         /** Construct a SqrtRaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing of
          *  the corresponding raised cosine pulse.
@@ -1854,18 +1858,18 @@ public class SignalProcessing {
                 double oneOverTime = 1.0 / time;
                 double oneOverTimeSquared = oneOverTime * oneOverTime;
 
-                return _fzcSqrtFZCOverEightExcessPI
-                        * oneOverTime
+                return _fzcSqrtFZCOverEightExcessPI * oneOverTime
                         * (_onePlus * Math.sin(onePlusTime)
                                 - _oneMinusFZCOverFourExcess * oneOverTime
-                                * Math.cos(oneMinusTime) + _fzcOverFourExcess
-                                * oneOverTimeSquared * Math.sin(oneMinusTime));
+                                        * Math.cos(oneMinusTime)
+                                + _fzcOverFourExcess * oneOverTimeSquared
+                                        * Math.sin(oneMinusTime));
             }
 
             return _fourExcessOverPISqrtFZC
-                    * (Math.cos(onePlusTime) + Math.sin(oneMinusTime)
-                            / (x * _fourExcess))
-                            / (1.0 - _sixteenExcessSquared * x * x);
+                    * (Math.cos(onePlusTime)
+                            + Math.sin(oneMinusTime) / (x * _fourExcess))
+                    / (1.0 - _sixteenExcessSquared * x * x);
         }
 
         private final double _oneOverFZC;
@@ -1924,8 +1928,8 @@ public class SignalProcessing {
 
         // Zero pad the array if necessary
         if (x.length < size) {
-            x = inverse ? DoubleArrayMath.padMiddle(x, size) : DoubleArrayMath
-                    .resize(x, size);
+            x = inverse ? DoubleArrayMath.padMiddle(x, size)
+                    : DoubleArrayMath.resize(x, size);
         }
 
         return x;
@@ -1942,8 +1946,9 @@ public class SignalProcessing {
 
         // Zero pad the array if necessary
         if (x.length < size) {
-            x = inverse == _INVERSE_TRANSFORM ? ComplexArrayMath.padMiddle(x,
-                    size) : ComplexArrayMath.resize(x, size);
+            x = inverse == _INVERSE_TRANSFORM
+                    ? ComplexArrayMath.padMiddle(x, size)
+                    : ComplexArrayMath.resize(x, size);
         }
 
         return x;
@@ -2025,7 +2030,7 @@ public class SignalProcessing {
         case 2:
             return null; // should never be used
 
-            // Optimized base case for higher orders
+        // Optimized base case for higher orders
         case 4: {
             double[] returnValue = new double[2];
 
@@ -2039,37 +2044,37 @@ public class SignalProcessing {
         int halfN = size >> 1;
         int quarterN = size >> 2;
 
-            double[] x1 = new double[halfN];
+        double[] x1 = new double[halfN];
 
-            for (int k = 0; k < halfN; k++) {
-                x1[k] = x[k << 1];
-            }
+        for (int k = 0; k < halfN; k++) {
+            x1[k] = x[k << 1];
+        }
 
-            double[] x3 = new double[quarterN];
+        double[] x3 = new double[quarterN];
 
-            for (int k = 0; k < quarterN; k++) {
-                int twoIp = (k << 1) + 1;
-                x3[k] = (k & 1) == 1 ? x[size - twoIp] - x[twoIp] : x[twoIp]
-                        - x[size - twoIp];
-            }
+        for (int k = 0; k < quarterN; k++) {
+            int twoIp = (k << 1) + 1;
+            x3[k] = (k & 1) == 1 ? x[size - twoIp] - x[twoIp]
+                    : x[twoIp] - x[size - twoIp];
+        }
 
-            double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
-            double[] quarterDCT = _DCT(x3, quarterN, order - 2);
+        double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
+        double[] quarterDCT = _DCT(x3, quarterN, order - 2);
 
-            double[] returnValue = new double[halfN];
+        double[] returnValue = new double[halfN];
 
-            // returnValue[0] = 0.0; // not necessary in Java
-            for (int k = 1; k < quarterN; k++) {
-                returnValue[k] = halfSinDFT[k] + quarterDCT[quarterN - k];
-            }
+        // returnValue[0] = 0.0; // not necessary in Java
+        for (int k = 1; k < quarterN; k++) {
+            returnValue[k] = halfSinDFT[k] + quarterDCT[quarterN - k];
+        }
 
-            returnValue[quarterN] = quarterDCT[0];
+        returnValue[quarterN] = quarterDCT[0];
 
-            for (int k = quarterN + 1; k < halfN; k++) {
-                returnValue[k] = quarterDCT[k - quarterN] - halfSinDFT[halfN - k];
-            }
+        for (int k = quarterN + 1; k < halfN; k++) {
+            returnValue[k] = quarterDCT[k - quarterN] - halfSinDFT[halfN - k];
+        }
 
-            return returnValue;
+        return returnValue;
     }
 
     private static double[] _DCT(double[] x, int size, int order) {
@@ -2090,47 +2095,47 @@ public class SignalProcessing {
 
         int halfN = size >> 1;
 
-            double[] x4 = new double[size];
+        double[] x4 = new double[size];
 
-            for (int n = 0; n < halfN; n++) {
-                int twoN = n << 1;
+        for (int n = 0; n < halfN; n++) {
+            int twoN = n << 1;
 
-                // Do zero padding here
-                if (twoN >= x.length) {
-                    x4[n] = 0.0;
-                } else {
-                    x4[n] = x[twoN];
-                }
-
-                if (twoN + 1 >= x.length) {
-                    x4[size - n - 1] = 0.0;
-                } else {
-                    x4[size - n - 1] = x[twoN + 1];
-                }
+            // Do zero padding here
+            if (twoN >= x.length) {
+                x4[n] = 0.0;
+            } else {
+                x4[n] = x[twoN];
             }
 
-            double[] cosDFTarray = _cosDFT(x4, size, order);
-            double[] sinDFTarray = _sinDFT(x4, size, order);
-
-            double[] p1tab = _P1Table[order];
-            double[] p2tab = _P2Table[order];
-            double[] ctab = _CTable[order];
-
-            returnValue = new double[size];
-
-            returnValue[0] = cosDFTarray[0];
-
-            for (int k = 1; k < halfN; k++) {
-                double m1 = (cosDFTarray[k] + sinDFTarray[k]) * ctab[k];
-                double m2 = sinDFTarray[k] * p1tab[k];
-                double m3 = cosDFTarray[k] * p2tab[k];
-                returnValue[k] = m1 - m2;
-                returnValue[size - k] = m1 + m3;
+            if (twoN + 1 >= x.length) {
+                x4[size - n - 1] = 0.0;
+            } else {
+                x4[size - n - 1] = x[twoN + 1];
             }
+        }
 
-            returnValue[halfN] = ExtendedMath.ONE_OVER_SQRT_2 * cosDFTarray[halfN];
+        double[] cosDFTarray = _cosDFT(x4, size, order);
+        double[] sinDFTarray = _sinDFT(x4, size, order);
 
-            return returnValue;
+        double[] p1tab = _P1Table[order];
+        double[] p2tab = _P2Table[order];
+        double[] ctab = _CTable[order];
+
+        returnValue = new double[size];
+
+        returnValue[0] = cosDFTarray[0];
+
+        for (int k = 1; k < halfN; k++) {
+            double m1 = (cosDFTarray[k] + sinDFTarray[k]) * ctab[k];
+            double m2 = sinDFTarray[k] * p1tab[k];
+            double m3 = cosDFTarray[k] * p2tab[k];
+            returnValue[k] = m1 - m2;
+            returnValue[size - k] = m1 + m3;
+        }
+
+        returnValue[halfN] = ExtendedMath.ONE_OVER_SQRT_2 * cosDFTarray[halfN];
+
+        return returnValue;
     }
 
     private synchronized static void _FFCTTableGen(int limit) {

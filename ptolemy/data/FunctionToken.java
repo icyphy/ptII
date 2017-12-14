@@ -145,8 +145,8 @@ public class FunctionToken extends Token {
     @Override
     public BooleanToken isEqualTo(Token rightArgument) {
         FunctionToken convertedArgument = (FunctionToken) rightArgument;
-        return BooleanToken.getInstance(convertedArgument._function
-                .isCongruent(_function));
+        return BooleanToken.getInstance(
+                convertedArgument._function.isCongruent(_function));
     }
 
     /** Return a String representation of this function.

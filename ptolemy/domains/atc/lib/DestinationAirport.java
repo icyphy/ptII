@@ -58,7 +58,7 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class DestinationAirport extends TypedAtomicActor implements Rejecting{
+public class DestinationAirport extends TypedAtomicActor implements Rejecting {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -78,18 +78,18 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new RecordType(_lables, _types));
 
-        airportId= new Parameter(this, "airportId");
+        airportId = new Parameter(this, "airportId");
         airportId.setTypeEquals(BaseType.INT);
         airportId.setExpression("-1");
 
-        delay= new Parameter(this, "delay");
+        delay = new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1");
 
         EditorIcon node_icon = new EditorIcon(this, "_icon");
 
         //rectangle
-        _rectangle=new RectangleAttribute(node_icon, "_rectangleShape");
+        _rectangle = new RectangleAttribute(node_icon, "_rectangleShape");
         _rectangle.centered.setToken("true");
         _rectangle.width.setToken("60");
         _rectangle.height.setToken("50");
@@ -119,7 +119,6 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     /** The delay. */
     public Parameter delay;
 
-
     /** Return true if the token cannot be accepted at the specified port.
      *  @param token The token that may be rejected.
      *  @param port The port.
@@ -127,14 +126,14 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
      */
     @Override
     public boolean reject(Token token, IOPort port) {
-        if (_inTransit != null)
+        if (_inTransit != null) {
             return true;
-
-        if (_called==false) {
-            _called=true;
-            return (_inTransit != null);
         }
-        else {
+
+        if (_called == false) {
+            _called = true;
+            return (_inTransit != null);
+        } else {
             return true;
         }
     }
@@ -146,7 +145,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        Director director=getDirector();
+        Director director = getDirector();
         Time currentTime = director.getModelTime();
         if (currentTime.equals(_transitExpires) && _inTransit != null) {
             output.send(0, _inTransit);
@@ -154,20 +153,23 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
             _setIcon(-1);
 
             _inTransit = null;
-            _called=false;
+            _called = false;
             return;
         }
 
-        for (int i=0; i< input.getWidth();i++)
+        for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasNewToken(i)) {
-                _inTransit=input.get(i);
+                _inTransit = input.get(i);
                 //Set icon to color of the airplane
-                int id=((IntToken)((RecordToken)_inTransit).get("aircraftId")).intValue();
+                int id = ((IntToken) ((RecordToken) _inTransit)
+                        .get("aircraftId")).intValue();
                 _setIcon(id);
                 //
-                _transitExpires = currentTime.add(((DoubleToken)delay.getToken()).doubleValue());
+                _transitExpires = currentTime
+                        .add(((DoubleToken) delay.getToken()).doubleValue());
                 director.fireAt(this, _transitExpires);
             }
+        }
     }
 
     /** Initialize this actor.  Derived classes override this method
@@ -179,10 +181,10 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        Director _director=getDirector();
-        ((AbstractATCDirector)_director).handleInitializedDestination(this);
-        _inTransit=null;
-        _called=false;
+        Director _director = getDirector();
+        ((AbstractATCDirector) _director).handleInitializedDestination(this);
+        _inTransit = null;
+        _called = false;
         _setIcon(-1);
     }
 
@@ -193,10 +195,12 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     protected void _setIcon(int id) throws IllegalActionException {
         ArrayToken color = _noAircraftColor;
         if (id > -1) {
-            Director _director=getDirector();
-            color = ((AbstractATCDirector)_director).handleAirplaneColor(id);
-            if (color==null)
-                throw new IllegalActionException("Color for the airplane "+id+" has not been set");
+            Director _director = getDirector();
+            color = ((AbstractATCDirector) _director).handleAirplaneColor(id);
+            if (color == null) {
+                throw new IllegalActionException(
+                        "Color for the airplane " + id + " has not been set");
+            }
         }
         _shape.fillColor.setToken(color);
     }
@@ -205,15 +209,18 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     private ResizablePolygonAttribute _shape;
     private RectangleAttribute _rectangle;
     private DoubleToken _one = new DoubleToken(1.0);
-    private Token[] _white = {_one, _one, _one, _one};
+    private Token[] _white = { _one, _one, _one, _one };
     private ArrayToken _noAircraftColor = new ArrayToken(_white);
     //
 
     private Token _inTransit;
     private Time _transitExpires;
     private boolean _called;
-    private String[] _lables={"aircraftId","aircraftSpeed","flightMap","priorTrack","fuel","arrivalTimeToAirport","dipartureTimeFromAirport"};
-    private Type[] _types={BaseType.INT,BaseType.INT,new ArrayType(BaseType.INT),BaseType.INT,BaseType.DOUBLE,BaseType.DOUBLE,BaseType.DOUBLE};
-
+    private String[] _lables = { "aircraftId", "aircraftSpeed", "flightMap",
+            "priorTrack", "fuel", "arrivalTimeToAirport",
+            "dipartureTimeFromAirport" };
+    private Type[] _types = { BaseType.INT, BaseType.INT,
+            new ArrayType(BaseType.INT), BaseType.INT, BaseType.DOUBLE,
+            BaseType.DOUBLE, BaseType.DOUBLE };
 
 }

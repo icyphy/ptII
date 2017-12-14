@@ -60,8 +60,8 @@ public class IterateOverArrayCloneTest {
                 "iterateOverArray");
 
         // IterateOverArray has an inner class called IterateDirector.
-        Class iterateDirectorClass = Class
-                .forName("ptolemy.actor.lib.hoc.IterateOverArray$IterateDirector");
+        Class iterateDirectorClass = Class.forName(
+                "ptolemy.actor.lib.hoc.IterateOverArray$IterateDirector");
         List iterateDirectors = iterateOverArray
                 .attributeList(iterateDirectorClass);
         Object iterateDirector = iterateDirectors.get(0);
@@ -97,11 +97,11 @@ public class IterateOverArrayCloneTest {
                 + clonedOuterIterateOverArrayWorkspace.getName());
 
         if (outerIterateOverArray.equals(clonedOuterIterateOverArray)) {
-            System.err
-            .println("Error! the outer IterateOverArray objects are equal?");
+            System.err.println(
+                    "Error! the outer IterateOverArray objects are equal?");
         } else {
-            System.err
-            .println("Passed! the outer IterateOverArray objects are not equal!");
+            System.err.println(
+                    "Passed! the outer IterateOverArray objects are not equal!");
         }
 
         if (outerIterateOverArrayWorkspace

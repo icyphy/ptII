@@ -42,8 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class CC3000Module
-extends NamedProgramCodeGeneratorAdapter {
+public class CC3000Module extends NamedProgramCodeGeneratorAdapter {
 
     /**
      *  Construct the CC3000Module adapter.

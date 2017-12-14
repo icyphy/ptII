@@ -242,7 +242,8 @@ class CAMatrixViewer extends Component {
 
             int borderSize = (int) (rowWidth / 6.0);
             // create shadow trianlge
-            int[] xPoints = new int[] { 0, (int) columnWidth, (int) columnWidth };
+            int[] xPoints = new int[] { 0, (int) columnWidth,
+                    (int) columnWidth };
             int[] yPoints = new int[] { (int) rowWidth, 0, (int) rowWidth };
 
             for (int i = 0; i < rowCount; i++) {
@@ -261,8 +262,8 @@ class CAMatrixViewer extends Component {
                         graphics.setColor(shadow);
                         graphics.fillPolygon(xPoints, yPoints, 3);
                         graphics.setColor(cellColor);
-                        graphics.fillRect(borderSize, borderSize, x2
-                                - borderSize * 2, y2 - borderSize * 2);
+                        graphics.fillRect(borderSize, borderSize,
+                                x2 - borderSize * 2, y2 - borderSize * 2);
 
                         graphics.translate(-x1, -y1);
                     }

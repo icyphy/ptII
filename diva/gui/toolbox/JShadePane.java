@@ -210,8 +210,8 @@ public class JShadePane extends JPanel {
     public void insertShade(String title, Icon icon, Component component,
             String tip, int index) {
         if (icon != null && icon instanceof ImageIcon) {
-            new ImageIcon(GrayFilter.createDisabledImage(((ImageIcon) icon)
-                    .getImage()));
+            new ImageIcon(GrayFilter
+                    .createDisabledImage(((ImageIcon) icon).getImage()));
         }
 
         JButton button = new JButton(title, icon);
@@ -379,8 +379,8 @@ public class JShadePane extends JPanel {
     /**
      * Borrowed from JTabbedPane.  Holds all the info about each shade.
      */
-    private static class Shade extends AccessibleContext implements
-    Serializable, Accessible, AccessibleComponent {
+    private static class Shade extends AccessibleContext
+            implements Serializable, Accessible, AccessibleComponent {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.

@@ -52,7 +52,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public abstract class BaseMultipleMethodsActor extends
-SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
+        SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
 
     /** Create a new instance of an ASCETClassActor with the given
      *  name and container.
@@ -141,8 +141,8 @@ SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
                 StringAttribute methodNameAttribute = (StringAttribute) ((IOPort) outputPort)
                         .getAttribute(methodName);
                 if (methodNameAttribute != null) {
-                    if (methodNameAttribute.getValueAsString().equals(
-                            methodName)) {
+                    if (methodNameAttribute.getValueAsString()
+                            .equals(methodName)) {
                         return (IOPort) outputPort;
                     }
                 }
@@ -173,7 +173,7 @@ SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
         if (!_methodList.contains(methodName)) {
             throw new IllegalActionException(this,
                     "Unrecognized fire method name: " + methodName
-                    + " for actor " + getName() + ".");
+                            + " for actor " + getName() + ".");
         } else {
             _fireMethodName = methodName;
         }
@@ -198,8 +198,8 @@ SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
      *   name specified for this actor.
      */
     protected void _addFireMethod(String methodName, IOPort outputPort,
-            List<IOPort> inputPorts) throws IllegalActionException,
-            NameDuplicationException {
+            List<IOPort> inputPorts)
+            throws IllegalActionException, NameDuplicationException {
 
         if (methodName == null) {
             throw new IllegalActionException(this,
@@ -212,10 +212,10 @@ SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
                 StringAttribute methodAttribute = (StringAttribute) outputPort
                         .getAttribute(methodName);
                 if (methodAttribute != null) {
-                    throw new IllegalActionException(this, "Output port "
-                            + outputPort.getName()
-                            + " already has a method name set: "
-                            + methodAttribute.getValueAsString());
+                    throw new IllegalActionException(this,
+                            "Output port " + outputPort.getName()
+                                    + " already has a method name set: "
+                                    + methodAttribute.getValueAsString());
                 } else {
                     methodAttribute = new StringAttribute(outputPort,
                             "methodName");
@@ -231,11 +231,9 @@ SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
                         List<IOPort> methodInputs = (List<IOPort>) methodInputPortsIter
                                 .nextElement();
                         if (methodInputs.contains(inputPort)) {
-                            throw new IllegalActionException(
-                                    this,
-                                    "Input port "
-                                            + inputPort.getName()
-                                            + " is already used by another method in this actor.");
+                            throw new IllegalActionException(this, "Input port "
+                                    + inputPort.getName()
+                                    + " is already used by another method in this actor.");
                         }
                     }
                 }

@@ -83,8 +83,8 @@ public class ActuatorSetup extends OutputDevice {
         CodeStream _codeStream = _templateParser.getCodeStream();
 
         ptolemy.domains.ptides.lib.ActuatorSetup actor = (ptolemy.domains.ptides.lib.ActuatorSetup) getComponent();
-        PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(actor
-                .getDirector());
+        PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(
+                actor.getDirector());
 
         args.add(adapter.actuators.get(actor).toString());
 
@@ -98,8 +98,8 @@ public class ActuatorSetup extends OutputDevice {
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(processCode(_templateParser.getCodeStream().getCodeBlock(
-                "initializeActuationOutput")));
+        code.append(processCode(_templateParser.getCodeStream()
+                .getCodeBlock("initializeActuationOutput")));
         return code.toString();
     }
 }

@@ -68,7 +68,8 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (cxh)
  */
 @SuppressWarnings("serial")
-public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame {
+public class RunLayoutFrame extends TableauFrame
+        implements MultiContainerFrame {
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -94,8 +95,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
             if (container == null) {
                 // If data is malformed, issue a warning and proceed.
                 try {
-                    MessageHandler
-                    .warning("A container with name "
+                    MessageHandler.warning("A container with name "
                             + containerLayout.getName()
                             + " was found in the contstraints file but was not found in the container");
                 } catch (CancelException ex) {
@@ -125,8 +125,8 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
         // check to see if another panel with this name already exists
         ContainerLayout layout = _constraintsManager.getContainerLayout(name);
         if (layout != null) {
-            throw new IllegalArgumentException("A container with name " + name
-                    + " already exists");
+            throw new IllegalArgumentException(
+                    "A container with name " + name + " already exists");
         }
 
         layout = new ContainerLayout(name, "pref", "pref");
@@ -154,8 +154,8 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
     public void removeContainer(String name) {
         ContainerLayout layout = _constraintsManager.getContainerLayout(name);
         if (layout == null) {
-            throw new InternalErrorException("Container " + name
-                    + " does not exist");
+            throw new InternalErrorException(
+                    "Container " + name + " does not exist");
         }
         // Also have to remove any contained containers!
         Container container = _constraintsManager.getContainer(layout);

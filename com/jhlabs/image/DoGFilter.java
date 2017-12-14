@@ -95,8 +95,10 @@ public class DoGFilter extends AbstractBufferedImageOp {
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
         int width = src.getWidth();
         int height = src.getHeight();
-        BufferedImage image1 = new BoxBlurFilter(radius1, radius1, 3).filter(src, null);
-        BufferedImage image2 = new BoxBlurFilter(radius2, radius2, 3).filter(src, null);
+        BufferedImage image1 = new BoxBlurFilter(radius1, radius1, 3)
+                .filter(src, null);
+        BufferedImage image2 = new BoxBlurFilter(radius2, radius2, 3)
+                .filter(src, null);
         Graphics2D g2d = image2.createGraphics();
         g2d.setComposite(new SubtractComposite(1.0f));
         g2d.drawImage(image1, 0, 0, null);
@@ -111,12 +113,15 @@ public class DoGFilter extends AbstractBufferedImageOp {
                     int r = (rgb >> 16) & 0xff;
                     int g = (rgb >> 8) & 0xff;
                     int b = rgb & 0xff;
-                    if (r > max)
+                    if (r > max) {
                         max = r;
-                    if (g > max)
+                    }
+                    if (g > max) {
                         max = g;
-                    if (b > max)
+                    }
+                    if (b > max) {
                         max = b;
+                    }
                 }
             }
 
@@ -137,8 +142,9 @@ public class DoGFilter extends AbstractBufferedImageOp {
 
         }
 
-        if (invert)
+        if (invert) {
             image2 = new InvertFilter().filter(image2, image2);
+        }
 
         return image2;
     }

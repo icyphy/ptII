@@ -91,8 +91,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      *   an attribute already in the container.
      */
     public OptimizingSDFScheduler(OptimizingSDFDirector container, String name,
-            OptimizationCriteria crit) throws IllegalActionException,
-            NameDuplicationException {
+            OptimizationCriteria crit)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         optimizationCriterion = crit;
     }
@@ -126,8 +126,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      *  external ports are not correct.
      */
     @Override
-    protected Schedule _getSchedule() throws NotSchedulableException,
-    IllegalActionException {
+    protected Schedule _getSchedule()
+            throws NotSchedulableException, IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -163,7 +163,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         Map externalRates = new HashMap();
 
         // Initialize externalRates to zero.
-        for (Iterator ports = container.portList().iterator(); ports.hasNext();) {
+        for (Iterator ports = container.portList().iterator(); ports
+                .hasNext();) {
             IOPort port = (IOPort) ports.next();
             externalRates.put(port, Fraction.ZERO);
         }
@@ -219,9 +220,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      *   inconsistent internal state, or detects a graph that cannot be
      *   scheduled.
      */
-    private Schedule _scheduleConnectedActors(Map externalRates,
-            List actorList, CompositeActor container)
-                    throws NotSchedulableException {
+    private Schedule _scheduleConnectedActors(Map externalRates, List actorList,
+            CompositeActor container) throws NotSchedulableException {
 
         // FIXME: contains a lot of duplicated code from same method
         // in SDFScheduler.  Would be good to factor out common code,
@@ -308,8 +308,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
 
             // Simulate a number of tokens initially present on each
             // external input port.
-            for (Iterator inputPorts = container.inputPortList().iterator(); inputPorts
-                    .hasNext();) {
+            for (Iterator inputPorts = container.inputPortList()
+                    .iterator(); inputPorts.hasNext();) {
                 IOPort port = (IOPort) inputPorts.next();
                 int count = ((Integer) externalRates.get(port)).intValue();
 

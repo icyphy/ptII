@@ -73,8 +73,8 @@ public class Bernoulli extends RandomSource {
 
         // gaussianBlock is from the RandomSource parent class.
         ArrayList<String> args = new ArrayList<String>();
-        sharedCode.add(getTemplateParser().generateBlockCode("gaussianBlock",
-                args));
+        sharedCode.add(
+                getTemplateParser().generateBlockCode("gaussianBlock", args));
         return sharedCode;
     }
 

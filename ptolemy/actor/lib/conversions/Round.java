@@ -96,9 +96,9 @@ public class Round extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<circle cx=\"0\" cy=\"0\" r=\"17\""
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<circle cx=\"0\" cy=\"0\" r=\"17\""
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -206,9 +206,8 @@ public class Round extends Transformer {
             for (int i = 0; i < count; i++) {
                 double value = ((DoubleToken) inArray[i]).doubleValue();
                 if (Double.isNaN(value)) {
-                    throw new IllegalActionException(
-                            "Input is Double.NaN, "
-                                    + "there is no way to represent a NaN as an integer.");
+                    throw new IllegalActionException("Input is Double.NaN, "
+                            + "there is no way to represent a NaN as an integer.");
                 }
 
                 _resultArray[i] = new IntToken(_doFunction(value));

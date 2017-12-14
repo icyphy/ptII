@@ -186,8 +186,8 @@ public class MobileModel extends TypedCompositeActor {
 
                 _parser.reset();
 
-                CompositeActor model = (CompositeActor) _parser.parse(str
-                        .stringValue());
+                CompositeActor model = (CompositeActor) _parser
+                        .parse(str.stringValue());
                 StringWriter writer = new StringWriter();
 
                 try {
@@ -322,13 +322,14 @@ public class MobileModel extends TypedCompositeActor {
             // When no model applied, output the default value.
             if (((BooleanToken) connectPorts.getToken()).booleanValue()) {
                 Const constActor = new Const(this, "Const");
-                constActor.value.setExpression(defaultValue.getToken()
-                        .toString());
+                constActor.value
+                        .setExpression(defaultValue.getToken().toString());
                 connect(input, constActor.trigger);
                 connect(constActor.output, output);
             } //otherwise, do nothing.
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "preinitialize() failed");
+            throw new IllegalActionException(this, ex,
+                    "preinitialize() failed");
         }
 
         //connect(input, output);
@@ -454,8 +455,8 @@ public class MobileModel extends TypedCompositeActor {
             //Mailbox, which can only hold one token. In this case, specify a proper
             //director using the <i>director<i> parameter.
             new Director(this, "defaultDirector");
-            director = new Parameter(this, "director", new StringToken(
-                    "ptolemy.actor.Director"));
+            director = new Parameter(this, "director",
+                    new StringToken("ptolemy.actor.Director"));
             setClassName("ptolemy.actor.lib.hoc.MobileModel");
         } catch (NameDuplicationException e) {
             // This should not be thrown.

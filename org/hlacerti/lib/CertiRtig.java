@@ -110,10 +110,11 @@ public class CertiRtig extends NamedObj {
      *  failed or if the RTIG subprocess it not running.
      */
     public void exec() throws IllegalActionException {
-        System.out.println("CertiRtig: " + _hlaManager.getFullName() +  ": About to invoke rtig: "
-                + "\ncommand: " + java.util.Arrays.toString(_commandArray)
-                + "\nenvironment: " + java.util.Arrays.toString(_environmentArray)
-                + "\ndirectory: " + _directoryAsFile);
+        System.out.println("CertiRtig: " + _hlaManager.getFullName()
+                + ": About to invoke rtig: " + "\ncommand: "
+                + java.util.Arrays.toString(_commandArray) + "\nenvironment: "
+                + java.util.Arrays.toString(_environmentArray) + "\ndirectory: "
+                + _directoryAsFile);
         try {
             _process = _runtime.exec(_commandArray, _environmentArray,
                     _directoryAsFile);
@@ -156,7 +157,8 @@ public class CertiRtig extends NamedObj {
         // set for the associated HlaManager. If not, throws an exception.
         if (System.getenv("CERTI_HOME") != null) {
             certiHome = System.getenv("CERTI_HOME");
-        } else if (_hlaManager.getContainer().getAttribute("CERTI_HOME") != null) {
+        } else if (_hlaManager.getContainer()
+                .getAttribute("CERTI_HOME") != null) {
             certiHome = ((StringToken) ((Parameter) _hlaManager.getContainer()
                     .getAttribute("CERTI_HOME")).getToken()).stringValue();
 
@@ -256,7 +258,8 @@ public class CertiRtig extends NamedObj {
      */
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
-            System.out.println("CertiRtig: " + _hlaManager.getFullName() + ": About to terminate rtig.");
+            System.out.println("CertiRtig: " + _hlaManager.getFullName()
+                    + ": About to terminate rtig.");
             try {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();
@@ -264,9 +267,7 @@ public class CertiRtig extends NamedObj {
             } catch (NullPointerException ex) {
                 // Ignore, _process was set to null elsewhere.
             } catch (IOException io) {
-                throw new IllegalActionException(
-                        _hlaManager,
-                        io,
+                throw new IllegalActionException(_hlaManager, io,
                         "CertiRtig: terminateProcess(): "
                                 + "Closing stdin of the subprocess threw an IOException.");
             }
@@ -317,10 +318,12 @@ public class CertiRtig extends NamedObj {
          *  @param actor The parent actor of this thread, which
          *  is used in error messages.
          */
-        _StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
+        _StreamReaderThread(InputStream inputStream, String name,
+                Nameable actor) {
             super(name);
             _inputStream = inputStream;
-            _inputStreamReader = new InputStreamReader(_inputStream, java.nio.charset.Charset.defaultCharset());
+            _inputStreamReader = new InputStreamReader(_inputStream,
+                    java.nio.charset.Charset.defaultCharset());
             _actor = actor;
             _stringBuffer = new StringBuffer();
         }
@@ -361,12 +364,12 @@ public class CertiRtig extends NamedObj {
                     }
                 }
             } catch (IOException e) {
-                throw new InternalErrorException(_actor, e, getName()
-                        + " IOExeception throwed: " + _stringBuffer);
+                throw new InternalErrorException(_actor, e,
+                        getName() + " IOExeception throwed: " + _stringBuffer);
             }
 
-            if (_stringBuffer.toString().matches(
-                    ".*SocketUDP:\\sBind:\\sAddress\\s"
+            if (_stringBuffer.toString()
+                    .matches(".*SocketUDP:\\sBind:\\sAddress\\s"
                             + "already\\sin\\suse\n.*")) {
                 _isAlreadyLaunched = true;
 

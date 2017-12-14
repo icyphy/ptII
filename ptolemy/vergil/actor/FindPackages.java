@@ -51,7 +51,8 @@ public class FindPackages {
      *  @return A string of space separated package names, relative to
      *  the File named by the ptII argument.
      */
-    public static String findPackages(File ptII, ExecuteCommands executeCommands) {
+    public static String findPackages(File ptII,
+            ExecuteCommands executeCommands) {
         StringBuffer results = new StringBuffer();
         Set directoriesSeen = new HashSet();
         Set classFilesSeen = new HashSet();
@@ -68,8 +69,8 @@ public class FindPackages {
             File files[] = (File[]) classFiles.next();
             for (File file : files) {
                 String fullPath = file.toString().replace('\\', '/');
-                String shortPath = fullPath.substring(0, file.toString()
-                        .length() - 6);
+                String shortPath = fullPath.substring(0,
+                        file.toString().length() - 6);
                 if (shortPath.startsWith(ptIIPath)) {
                     shortPath = shortPath.substring(ptIIPath.length() + 1);
                 }
@@ -119,10 +120,11 @@ public class FindPackages {
                         && !directories[i].getName().endsWith("CVS")
                         && !directories[i].getName().endsWith("vendors")) {
                     File classFiles[] = directories[i]
-                        .listFiles(new ClassFileFilter());
+                            .listFiles(new ClassFileFilter());
                     classFilesSeen.add(classFiles);
                     directoriesSeen.add(directories[i]);
-                    _getDirectories(directories[i], directoriesSeen, classFilesSeen);
+                    _getDirectories(directories[i], directoriesSeen,
+                            classFilesSeen);
                 }
             }
         }

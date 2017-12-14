@@ -142,8 +142,7 @@ public class NashornAccessorHostApplication {
      *  method is not defined or if there is a problem evaluating a
      *  file.
      */
-    public static int evaluate(String [] args)
-            throws Throwable {
+    public static int evaluate(String[] args) throws Throwable {
 
         // Create a Nashorn script engine, if we don't already have one.
         if (_engine == null) {
@@ -175,13 +174,16 @@ public class NashornAccessorHostApplication {
         // initialize accessors or evaluate specified JavaScript code.
         // This needs to be evaluated in the orchestrator thread.
         _orchestrator.invokeCallback(new Runnable() {
+            @Override
             public void run() {
                 try {
-                    ((Invocable)_engine)
-                            .invokeFunction("processCommandLineArguments", (Object)args);
+                    ((Invocable) _engine).invokeFunction(
+                            "processCommandLineArguments", (Object) args);
                 } catch (NoSuchMethodException | ScriptException e) {
-                    System.err.println("NashornAccessorHostApplication.evaluate("
-                            + Arrays.toString(args) + ") failed with: " + e);
+                    System.err
+                            .println("NashornAccessorHostApplication.evaluate("
+                                    + Arrays.toString(args) + ") failed with: "
+                                    + e);
                     e.printStackTrace();
                 }
             }
@@ -249,7 +251,8 @@ public class NashornAccessorHostApplication {
          *  @see #setInterval(Runnable, int)
          */
         @Override
-        public synchronized void clearInterval(Object timer) throws IllegalActionException {
+        public synchronized void clearInterval(Object timer)
+                throws IllegalActionException {
             clearTimeout(timer);
         }
 
@@ -261,12 +264,14 @@ public class NashornAccessorHostApplication {
          *  @see #setInterval(Runnable, int)
          */
         @Override
-        public synchronized void clearTimeout(Object timer) throws IllegalActionException {
+        public synchronized void clearTimeout(Object timer)
+                throws IllegalActionException {
             if (timer instanceof Timer) {
-                ((Timer)timer).cancel();
+                ((Timer) timer).cancel();
                 _pendingTimers.remove(timer);
             } else {
-                throw new IllegalActionException(this, "Invalid timer handle: " + timer);
+                throw new IllegalActionException(this,
+                        "Invalid timer handle: " + timer);
             }
         }
 
@@ -277,6 +282,7 @@ public class NashornAccessorHostApplication {
         }
 
         /** Report an error. */
+        @Override
         public void error(String message) {
             System.err.println(message);
         }
@@ -287,8 +293,9 @@ public class NashornAccessorHostApplication {
         public synchronized void eventLoop() {
             // System.out.println(_name + ": **** Creating new event loop thread from thread: " + Thread.currentThread());
             Thread thread = new Thread() {
+                @Override
                 public void run() {
-                    synchronized(ActorSubstitute.this) {
+                    synchronized (ActorSubstitute.this) {
                         while (!_wrapupRequested) {
                             // System.out.println(_name + ": event loop thread: " + Thread.currentThread());
                             // If there are no pending callbacks, then wait for notification.
@@ -301,7 +308,8 @@ public class NashornAccessorHostApplication {
                                     try {
                                         ActorSubstitute.this.wrapup();
                                     } catch (IllegalActionException e1) {
-                                        ActorSubstitute.this.error(_name + ": Event loop thread interrupted.");
+                                        ActorSubstitute.this.error(_name
+                                                + ": Event loop thread interrupted.");
                                     }
                                     return;
                                 }
@@ -325,7 +333,9 @@ public class NashornAccessorHostApplication {
                                 try {
                                     callbackFunction.run();
                                 } catch (Throwable throwable) {
-                                    System.err.println("*** Callback function failed: " + throwable);
+                                    System.err.println(
+                                            "*** Callback function failed: "
+                                                    + throwable);
                                     throwable.printStackTrace();
                                     // Do not terminate the event loop. Keep running.
                                 }
@@ -367,7 +377,8 @@ public class NashornAccessorHostApplication {
          *  @see #setName(String)
          */
         @Override
-        public String getName(NamedObj relativeTo) throws InvalidStateException {
+        public String getName(NamedObj relativeTo)
+                throws InvalidStateException {
             return _name;
         }
 
@@ -378,6 +389,7 @@ public class NashornAccessorHostApplication {
         }
 
         /** Print a message. */
+        @Override
         public void log(String message) {
             System.out.println(message);
         }
@@ -401,6 +413,7 @@ public class NashornAccessorHostApplication {
         public synchronized Timer setInterval(Runnable function, int periodMS) {
             // System.out.println(_name + ": requesting interval: " + periodMS + "ms for " + function + " in thread " + Thread.currentThread());
             TimerTask task = new TimerTask() {
+                @Override
                 public void run() {
                     // Cannot run this directly because it will be
                     // invoked in an arbitrary thread, creating race conditions.
@@ -408,7 +421,7 @@ public class NashornAccessorHostApplication {
                 }
             };
             Timer timer = new Timer();
-            timer.schedule(task, (long)periodMS, (long)periodMS);
+            timer.schedule(task, periodMS, periodMS);
             _pendingTimers.add(timer);
             return timer;
         }
@@ -423,6 +436,7 @@ public class NashornAccessorHostApplication {
         public synchronized Timer setTimeout(Runnable function, int timeMS) {
             // System.out.println(_name + ": requesting timeout: " + timeMS + "ms for " + function + " in thread " + Thread.currentThread());
             TimerTask task = new TimerTask() {
+                @Override
                 public void run() {
                     // Cannot run this directly because it will be
                     // invoked in an arbitrary thread, creating race conditions.
@@ -431,7 +445,7 @@ public class NashornAccessorHostApplication {
                 }
             };
             Timer timer = new Timer();
-            timer.schedule(task, (long)timeMS);
+            timer.schedule(task, timeMS);
             _pendingTimers.add(timer);
             return timer;
         }
@@ -464,12 +478,10 @@ public class NashornAccessorHostApplication {
         private String _name;
 
         /** Queue containing callback functions to be invoked. */
-        private ConcurrentLinkedQueue<Runnable> _pendingCallbacks
-                = new ConcurrentLinkedQueue<Runnable>();
+        private ConcurrentLinkedQueue<Runnable> _pendingCallbacks = new ConcurrentLinkedQueue<Runnable>();
 
         /** Set containing pending timers. */
-        private HashSet<Timer> _pendingTimers
-                = new HashSet<Timer>();
+        private HashSet<Timer> _pendingTimers = new HashSet<Timer>();
 
         /** Flag indicating that wrapup has been called. */
         private boolean _wrapupRequested;

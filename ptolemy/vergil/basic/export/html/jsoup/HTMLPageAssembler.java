@@ -176,8 +176,8 @@ public class HTMLPageAssembler extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HTMLPageAssembler newObject = (HTMLPageAssembler) super
-                .clone(workspace);
+        HTMLPageAssembler newObject = (HTMLPageAssembler) super.clone(
+                workspace);
         // Not sure why this is necessary, but it stops
         // (cd $PTII/ptolemy/configs/test; $PTII/bin/ptjacl allConfigs.tcl) from failing.
         newObject.newline = (Parameter) newObject.getAttribute("newline");
@@ -236,10 +236,10 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                     messages.append(error.toString());
                     // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
                 }
-                throw new IllegalActionException(this, "Template file '"
-                        + template.getValueAsString()
-                        + "' contains HTML syntax errors:\n"
-                        + messages);
+                throw new IllegalActionException(this,
+                        "Template file '" + template.getValueAsString()
+                                + "' contains HTML syntax errors:\n"
+                                + messages);
             }
 
             // Set the page title
@@ -261,7 +261,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                 if (elements == null || elements.isEmpty()) {
                     throw new IllegalActionException(this,
                             "Cannot find an element with id = '" + id
-                            + "' in the template file.");
+                                    + "' in the template file.");
                 }
 
                 // Throw exception if multiple elements with this id are found
@@ -271,10 +271,10 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                 // Note this only checks elements we are inserting content into
                 // TODO:  Check all elements?
                 if (elements.size() > 1) {
-                    throw new IllegalActionException(this, "Id = \"" + id
-                            + "\" is not unique in the "
-                            + "template file.  Please make sure each"
-                            + " element has a unique id (or none).");
+                    throw new IllegalActionException(this,
+                            "Id = \"" + id + "\" is not unique in the "
+                                    + "template file.  Please make sure each"
+                                    + " element has a unique id (or none).");
                 }
 
                 for (int i = port.getWidth() - 1; i >= 0; i--) {
@@ -284,12 +284,12 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                         ArrayToken array = (ArrayToken) token;
                         Token[] lines = array.arrayValue();
                         for (Token line : lines) {
-                            htmlText.append(((StringToken) line).stringValue()
-                                    + "\n");
+                            htmlText.append(
+                                    ((StringToken) line).stringValue() + "\n");
                         }
                     } else {
-                        htmlText.append(((StringToken) token).stringValue()
-                                + "\n");
+                        htmlText.append(
+                                ((StringToken) token).stringValue() + "\n");
                     }
 
                     // Check that each fragment is valid html
@@ -305,10 +305,10 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                             messages.append(error.toString());
                             // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
                         }
-                        throw new IllegalActionException(this, "Input '"
-                                + htmlText.toString()
-                                + "' contains HTML syntax errors:\n"
-                                + messages);
+                        throw new IllegalActionException(this,
+                                "Input '" + htmlText.toString()
+                                        + "' contains HTML syntax errors:\n"
+                                        + messages);
                     }
 
                     // We previously checked that there is exactly one element

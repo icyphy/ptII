@@ -206,8 +206,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 List<Object> tokensFromAllInputPorts = new LinkedList<Object>();
 
-                for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext() && !_stopRequested;) {
+                for (Iterator<?> inputPorts = inputPortList()
+                        .iterator(); inputPorts.hasNext() && !_stopRequested;) {
                     IOPort port = (IOPort) inputPorts.next();
                     if (!(port instanceof ParameterPort)) {
                         Object tokens = _transferInputs(port);
@@ -235,11 +235,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 }
 
                 int portNumber = 0;
-                for (Iterator<?> outputPorts = outputPortList().iterator(); outputPorts
-                        .hasNext() && !_stopRequested;) {
+                for (Iterator<?> outputPorts = outputPortList()
+                        .iterator(); outputPorts.hasNext()
+                                && !_stopRequested;) {
                     IOPort iOPort = (IOPort) outputPorts.next();
-                    CompiledCompositeActor._transferOutputs(
-                            this, iOPort, tokensToAllOutputPorts[portNumber++]);
+                    CompiledCompositeActor._transferOutputs(this, iOPort,
+                            tokensToAllOutputPorts[portNumber++]);
                 }
 
             } finally {
@@ -328,93 +329,83 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     URLClassLoader classLoader = null;
                     Class<?> classInstance = null;
                     try {
-                    try {
-                        url = codeDirectory.asFile().toURI().toURL();
-                        URL[] urls = new URL[] { url };
+                        try {
+                            url = codeDirectory.asFile().toURI().toURL();
+                            URL[] urls = new URL[] { url };
 
-                        classLoader = new URLClassLoader(urls);
-                        classInstance = classLoader.loadClass(className);
+                            classLoader = new URLClassLoader(urls);
+                            classInstance = classLoader.loadClass(className);
 
-                    } catch (ClassNotFoundException ex) {
-                        throw new IllegalActionException(
-                                this,
-                                ex,
-                                "The class URL \""
-                                        + url
-                                        + "\" for \""
-                                        + className
-                                        + "\" could not be found.  "
-                                        + "Make sure that the cg directory is not being deleted.");
-                    } catch (MalformedURLException ex) {
-                        throw new IllegalActionException(this, ex,
-                                "The class URL \"" + url + "\" for \""
-                                        + className + "\" is malformed");
-                    } catch (UnsupportedClassVersionError ex) {
-                        // This can occur if we have two different
-                        // machines sharing ~/cg
-                        throw new IllegalActionException(
-                                this,
-                                ex,
-                                "Unsupported class version in the class \""
-                                        + className
-                                        + "\" from \""
-                                        + url
-                                        + "\".  Try deleting the \""
-                                        + className
-                                        + "\" class in \""
-                                        + url
-                                        + "\".\nThis problem can also occur "
-                                        + "if the version of java that is "
-                                        + "running Ptolemy and the version "
-                                        + "of javac used to compile the file "
-                                        + "to load into Ptolemy are different "
-                                        + "and java is of a later version."
-                                        + "\nTo see information about the "
-                                        + "version of Java used to run "
-                                        + "Ptolemy, use View -> JVM Properties."
-                                        + "  To see what version of javac "
-                                        + "was used, run \"java -version\".");
-                    } catch (Throwable ex) {
-                        throw new IllegalActionException(this, ex,
-                                "Cannot load the class \"" + className
-                                        + "\" from \"" + url + "\"");
-                    }
-
-                    try {
-                        _objectWrapper = classInstance.newInstance();
-                    } catch (Throwable throwable) {
-                        throw new IllegalActionException(this, throwable,
-                                "Cannot instantiate the wrapper object.");
-                    }
-
-                    Method[] methods = classInstance.getMethods();
-                    for (Method method : methods) {
-                        String name = method.getName();
-                        if (name.equals("fire")) {
-                            _fireMethod = method;
-                        } else if (name.equals("initialize")) {
-                            _initializeMethod = method;
-                        } else if (name.equals("wrapup")) {
-                            _wrapupMethod = method;
+                        } catch (ClassNotFoundException ex) {
+                            throw new IllegalActionException(this, ex,
+                                    "The class URL \"" + url + "\" for \""
+                                            + className
+                                            + "\" could not be found.  "
+                                            + "Make sure that the cg directory is not being deleted.");
+                        } catch (MalformedURLException ex) {
+                            throw new IllegalActionException(this, ex,
+                                    "The class URL \"" + url + "\" for \""
+                                            + className + "\" is malformed");
+                        } catch (UnsupportedClassVersionError ex) {
+                            // This can occur if we have two different
+                            // machines sharing ~/cg
+                            throw new IllegalActionException(this, ex,
+                                    "Unsupported class version in the class \""
+                                            + className + "\" from \"" + url
+                                            + "\".  Try deleting the \""
+                                            + className + "\" class in \"" + url
+                                            + "\".\nThis problem can also occur "
+                                            + "if the version of java that is "
+                                            + "running Ptolemy and the version "
+                                            + "of javac used to compile the file "
+                                            + "to load into Ptolemy are different "
+                                            + "and java is of a later version."
+                                            + "\nTo see information about the "
+                                            + "version of Java used to run "
+                                            + "Ptolemy, use View -> JVM Properties."
+                                            + "  To see what version of javac "
+                                            + "was used, run \"java -version\".");
+                        } catch (Throwable ex) {
+                            throw new IllegalActionException(this, ex,
+                                    "Cannot load the class \"" + className
+                                            + "\" from \"" + url + "\"");
                         }
-                    }
-                    if (_fireMethod == null) {
-                        throw new IllegalActionException(this,
-                                "Cannot find fire "
-                                        + "method in the wrapper class.");
-                    }
-                    if (_initializeMethod == null) {
-                        throw new IllegalActionException(this,
-                                "Cannot find initialize "
-                                        + "method in the wrapper class.");
-                    }
-                    if (_wrapupMethod == null) {
-                        throw new IllegalActionException(this,
-                                "Cannot find wrapup "
-                                        + "method in the wrapper class.");
-                    }
-                    _loadedCodeVersion = _workspace.getVersion();
-                    //java.net.URLClassLoader is not present in Java 1.6.
+
+                        try {
+                            _objectWrapper = classInstance.newInstance();
+                        } catch (Throwable throwable) {
+                            throw new IllegalActionException(this, throwable,
+                                    "Cannot instantiate the wrapper object.");
+                        }
+
+                        Method[] methods = classInstance.getMethods();
+                        for (Method method : methods) {
+                            String name = method.getName();
+                            if (name.equals("fire")) {
+                                _fireMethod = method;
+                            } else if (name.equals("initialize")) {
+                                _initializeMethod = method;
+                            } else if (name.equals("wrapup")) {
+                                _wrapupMethod = method;
+                            }
+                        }
+                        if (_fireMethod == null) {
+                            throw new IllegalActionException(this,
+                                    "Cannot find fire "
+                                            + "method in the wrapper class.");
+                        }
+                        if (_initializeMethod == null) {
+                            throw new IllegalActionException(this,
+                                    "Cannot find initialize "
+                                            + "method in the wrapper class.");
+                        }
+                        if (_wrapupMethod == null) {
+                            throw new IllegalActionException(this,
+                                    "Cannot find wrapup "
+                                            + "method in the wrapper class.");
+                        }
+                        _loadedCodeVersion = _workspace.getVersion();
+                        //java.net.URLClassLoader is not present in Java 1.6.
                     } finally {
                         if (classLoader != null) {
                             try {
@@ -435,8 +426,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 // Cast to Object() to suppress Java 1.5 warning
                 _initializeMethod.invoke(_objectWrapper, (Object[]) null);
             } catch (Throwable throwable) {
-                System.out.println("Failed to invoke " + _initializeMethod
-                        + " " + throwable.getCause());
+                System.out.println("Failed to invoke " + _initializeMethod + " "
+                        + throwable.getCause());
                 throw new IllegalActionException(this, throwable,
                         "Failed to invoke the initialize method \""
                                 + _initializeMethod + "\" on"
@@ -545,8 +536,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         code.append("public class " + _sanitizedActorName + " {\n" + "\n"
                 + "    public native Object[] fire(" + _getArguments() + ");\n"
                 + "    public native void initialize();\n"
-                + "    public native void wrapup();\n"
-                + "    static {\n"
+                + "    public native void wrapup();\n" + "    static {\n"
 
                 // + "        String library = \"" + _sanitizedActorName + "\";\n"
                 // + "        System.loadLibrary(library);\n"
@@ -564,7 +554,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 throw new IOException("Error: " + codeDirectory.stringValue()
                         + " is a file, " + "it should be a directory.");
             }
-            if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+            if (!codeDirectoryFile.isDirectory()
+                    && !codeDirectoryFile.mkdirs()) {
                 throw new IOException("Failed to make the \""
                         + codeDirectory.stringValue() + "\" directory.");
             }
@@ -577,8 +568,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             File writeFile = new File(codeDirectoryFile, codeFileName);
             if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
                     && writeFile.exists()) {
-                if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                        + " exists. OK to overwrite?")) {
+                if (!MessageHandler.yesNoQuestion(
+                        codeDirectory.asFile() + " exists. OK to overwrite?")) {
                     /*
                     throw new IllegalActionException(this,
                             "Please select another file name.");
@@ -590,15 +581,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             Writer writer = null;
             try {
                 if (_debugging) {
-                    _debugAndSystemOut("Generate \"" + codeFileName
-                            + "\" in \"" + codeDirectory.getBaseDirectory()
-                            + "\"");
+                    _debugAndSystemOut("Generate \"" + codeFileName + "\" in \""
+                            + codeDirectory.getBaseDirectory() + "\"");
                 }
 
                 writer = FileUtilities.openForWriting(codeFileName,
                         codeDirectory.getBaseDirectory(), false);
-                System.out
-                .println("CompiledCompositeActor wrote "
+                System.out.println("CompiledCompositeActor wrote "
                         + codeDirectory.getBaseDirectory() + " "
                         + codeFileName);
                 writer.write(code.toString());
@@ -650,7 +639,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             }
 
             /*} else if (type == PointerToken.POINTER) {
-
+            
                 int[][] tokens = (int[][]) outputTokens;
                 for (int i = 0; i < port.getWidthInside(); i++) {
                     for (int k = 0; k < rate; k++) {
@@ -689,8 +678,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         Field objSize = payload.getClass().getField("size");
                         int size = objSize.getInt(payload);
 
-                        Field elementsField = payload.getClass().getField(
-                                "elements");
+                        Field elementsField = payload.getClass()
+                                .getField("elements");
                         Object[] elements = (Object[]) elementsField
                                 .get(payload);
 
@@ -706,8 +695,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                 convertedTokens[j] = new DoubleToken(
                                         Double.parseDouble(element.toString()));
                             } else if (type == BaseType.BOOLEAN) {
-                                convertedTokens[j] = new BooleanToken(
-                                        Boolean.parseBoolean(element.toString()));
+                                convertedTokens[j] = new BooleanToken(Boolean
+                                        .parseBoolean(element.toString()));
                             } else {
                                 //FIXME: need to deal with other types
                             }
@@ -750,7 +739,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // it before returning from this method.
         _invokeAdapterMethod("copyFilesToCodeDirectory");
 
-        File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
+        File sharedObjectFile = new File(
+                _sharedObjectPath(_sanitizedActorName));
 
         Effigy effigy = Configuration.findEffigy(this.toplevel());
 
@@ -758,11 +748,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // effigy.isModified() is not the optimal way to deal with changes.
         // It might be the case that we already compiled after the change.
         if (effigy != null && effigy.isModified()) {
-            System.out
-            .println(message
-                    + "The effigy "
-                    + effigy
-                    + "(model : "
+            System.out.println(message + "The effigy " + effigy + "(model : "
                     + ((PtolemyEffigy) effigy).getModel()
                     + ") says the model was modified and thus it does not matter "
                     + "if the shared object file is newer than the model file "
@@ -772,8 +758,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         URI modelURI = URIAttribute.getModelURI(this);
         if (modelURI == null) {
-            System.out.println(message
-                    + "This model does not have a _uri parameter.");
+            System.out.println(
+                    message + "This model does not have a _uri parameter.");
             return true;
         }
         String modelPath = modelURI.getPath();
@@ -870,8 +856,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             generateMethod = adapterClass.getMethod(methodName,
                     new Class[] { ptolemy.actor.TypedCompositeActor.class });
         } catch (NoSuchMethodException ex) {
-            throw new IllegalActionException(this, ex, "Cannot find the \""
-                    + methodName + "\" method in \"" + adapterClassName + "\".");
+            throw new IllegalActionException(this, ex,
+                    "Cannot find the \"" + methodName + "\" method in \""
+                            + adapterClassName + "\".");
         }
 
         try {
@@ -991,99 +978,100 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         Type type = ((TypedIOPort) port).getType();
         Object tokenHolder = null;
 
-        int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
-                .getWidth() : port.getWidthInside();
+        int numberOfChannels = port.getWidth() < port.getWidthInside()
+                ? port.getWidth()
+                : port.getWidthInside();
 
-                if (type == BaseType.INT) {
-                    tokenHolder = new int[numberOfChannels][];
-                } else if (type == BaseType.DOUBLE) {
-                    tokenHolder = new double[numberOfChannels][];
-                    /*} else if (type == PointerToken.POINTER) {
+        if (type == BaseType.INT) {
+            tokenHolder = new int[numberOfChannels][];
+        } else if (type == BaseType.DOUBLE) {
+            tokenHolder = new double[numberOfChannels][];
+            /*} else if (type == PointerToken.POINTER) {
             tokenHolder = new int[numberOfChannels][];*/
-                } else if (type == BaseType.BOOLEAN) {
-                    tokenHolder = new boolean[numberOfChannels][];
-                } else {
-                    // FIXME: need to deal with other types
-                }
+        } else if (type == BaseType.BOOLEAN) {
+            tokenHolder = new boolean[numberOfChannels][];
+        } else {
+            // FIXME: need to deal with other types
+        }
 
-                for (int i = 0; i < port.getWidth(); i++) {
-                    try {
-                        if (i < port.getWidthInside()) {
+        for (int i = 0; i < port.getWidth(); i++) {
+            try {
+                if (i < port.getWidthInside()) {
 
-                            if (port.hasToken(i, rate)) {
-                                Token[] tokens = port.get(i, rate);
+                    if (port.hasToken(i, rate)) {
+                        Token[] tokens = port.get(i, rate);
 
-                                if (_debugging) {
-                                    _debug(getName(),
-                                            "transferring input from " + port.getName());
-                                }
+                        if (_debugging) {
+                            _debug(getName(), "transferring input from "
+                                    + port.getName());
+                        }
 
-                                if (type == BaseType.INT) {
-
-                                    int[] intTokens = new int[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        intTokens[k] = ((IntToken) tokens[k])
-                                                .intValue();
-                                    }
-                                    ((int[][]) tokenHolder)[i] = intTokens;
-
-                                } else if (type == BaseType.DOUBLE) {
-
-                                    double[] doubleTokens = new double[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        doubleTokens[k] = ((DoubleToken) tokens[k])
-                                                .doubleValue();
-                                    }
-                                    ((double[][]) tokenHolder)[i] = doubleTokens;
-
-                                    /*} else if (type == PointerToken.POINTER) {
+                        if (type == BaseType.INT) {
 
                             int[] intTokens = new int[rate];
                             for (int k = 0; k < rate; k++) {
-                            intTokens[k] = ((PointerToken) tokens[k])
-                                    .getValue();
+                                intTokens[k] = ((IntToken) tokens[k])
+                                        .intValue();
                             }
                             ((int[][]) tokenHolder)[i] = intTokens;
-                                     */
-                                } else if (type == BaseType.BOOLEAN) {
 
-                                    boolean[] booleanTokens = new boolean[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        booleanTokens[k] = ((BooleanToken) tokens[k])
-                                                .booleanValue();
-                                    }
-                                    ((boolean[][]) tokenHolder)[i] = booleanTokens;
+                        } else if (type == BaseType.DOUBLE) {
 
-                                } else {
-                                    // FIXME: need to deal with other types
-                                }
-
-                            } else {
-                                throw new IllegalActionException(this, port,
-                                        "Port should consume " + rate
-                                        + " tokens, but there were not "
-                                        + " enough tokens available.");
+                            double[] doubleTokens = new double[rate];
+                            for (int k = 0; k < rate; k++) {
+                                doubleTokens[k] = ((DoubleToken) tokens[k])
+                                        .doubleValue();
                             }
+                            ((double[][]) tokenHolder)[i] = doubleTokens;
+
+                            /*} else if (type == PointerToken.POINTER) {
+                            
+                            int[] intTokens = new int[rate];
+                            for (int k = 0; k < rate; k++) {
+                            intTokens[k] = ((PointerToken) tokens[k])
+                            .getValue();
+                            }
+                            ((int[][]) tokenHolder)[i] = intTokens;
+                             */
+                        } else if (type == BaseType.BOOLEAN) {
+
+                            boolean[] booleanTokens = new boolean[rate];
+                            for (int k = 0; k < rate; k++) {
+                                booleanTokens[k] = ((BooleanToken) tokens[k])
+                                        .booleanValue();
+                            }
+                            ((boolean[][]) tokenHolder)[i] = booleanTokens;
 
                         } else {
-                            // No inside connection to transfer tokens to.
-                            // In this case, consume one input token if there is one.
-                            if (_debugging) {
-                                _debug(getName(),
-                                        "Dropping single input from " + port.getName());
-                            }
-
-                            if (port.hasToken(i)) {
-                                port.get(i);
-                            }
+                            // FIXME: need to deal with other types
                         }
-                    } catch (NoTokenException ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
+
+                    } else {
+                        throw new IllegalActionException(this, port,
+                                "Port should consume " + rate
+                                        + " tokens, but there were not "
+                                        + " enough tokens available.");
                     }
 
+                } else {
+                    // No inside connection to transfer tokens to.
+                    // In this case, consume one input token if there is one.
+                    if (_debugging) {
+                        _debug(getName(),
+                                "Dropping single input from " + port.getName());
+                    }
+
+                    if (port.hasToken(i)) {
+                        port.get(i);
+                    }
                 }
-                return tokenHolder;
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+
+        }
+        return tokenHolder;
     }
 
     /** Update the _sanitizedActorName variable.

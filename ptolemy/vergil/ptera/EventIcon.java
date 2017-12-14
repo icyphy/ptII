@@ -200,24 +200,24 @@ public class EventIcon extends StateIcon {
         double height = backBounds.getHeight() + stringBounds.getHeight();
 
         background.setParent(null);
-        RoundedRectangle border = new RoundedRectangle(left, 0.0, width, height
-                - 2.0 * _spacingValue, _getFill(), _getLineWidth(),
+        RoundedRectangle border = new RoundedRectangle(left, 0.0, width,
+                height - 2.0 * _spacingValue, _getFill(), _getLineWidth(),
                 _roundingValue, _roundingValue);
         if (_spacingValue == 0.0) {
             background = border;
         } else {
-            background = new CompositeFigure(new RoundedRectangle(left
-                    - _spacingValue, -_spacingValue, width + 2.0
-                    * _spacingValue, height, null, _getLineWidth(),
-                    _roundingValue + _spacingValue, _roundingValue
-                    + _spacingValue));
+            background = new CompositeFigure(
+                    new RoundedRectangle(left - _spacingValue, -_spacingValue,
+                            width + 2.0 * _spacingValue, height, null,
+                            _getLineWidth(), _roundingValue + _spacingValue,
+                            _roundingValue + _spacingValue));
             ((CompositeFigure) background).add(border);
         }
         figure.setBackgroundFigure(background);
 
         label.translateTo(background.getBounds().getCenterX(),
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0
-                - _spacingValue);
+                        - _spacingValue);
         figure.add(label);
     }
 

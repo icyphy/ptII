@@ -59,16 +59,16 @@ public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
      */
     @Override
     public void convertToBytes(LongMatrixToken token,
-            DataOutputStream outputStream) throws IOException,
-            IllegalActionException {
+            DataOutputStream outputStream)
+            throws IOException, IllegalActionException {
 
         outputStream.writeInt(token.getRowCount());
         outputStream.writeInt(token.getColumnCount());
 
         for (int row = 0; row < token.getRowCount(); row++) {
             for (int column = 0; column < token.getColumnCount(); column++) {
-                LongToken elementToken = (LongToken) token.getElementAsToken(
-                        row, column);
+                LongToken elementToken = (LongToken) token
+                        .getElementAsToken(row, column);
                 TokenParser.getInstance().convertToBytes(elementToken,
                         outputStream);
             }
@@ -85,8 +85,8 @@ public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
      */
     @Override
     public LongMatrixToken convertToToken(DataInputStream inputStream,
-            Class<? extends LongMatrixToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends LongMatrixToken> tokenType)
+            throws IOException, IllegalActionException {
 
         int rowCount = inputStream.readInt();
         int columnCount = inputStream.readInt();

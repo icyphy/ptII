@@ -84,7 +84,8 @@ public abstract class ModelScope implements ParserScope {
                 }
             }
             if (container instanceof CompositeEntity) {
-                for (Object entity : ((CompositeEntity) container).entityList()) {
+                for (Object entity : ((CompositeEntity) container)
+                        .entityList()) {
                     identifiers.add(((Entity) entity).getName());
                 }
 
@@ -114,7 +115,8 @@ public abstract class ModelScope implements ParserScope {
 
         Set<String> nameSet = new HashSet<String>();
 
-        for (Iterator variables = variableList.iterator(); variables.hasNext();) {
+        for (Iterator variables = variableList.iterator(); variables
+                .hasNext();) {
             Variable variable = (Variable) variables.next();
             nameSet.add(variable.getName());
         }
@@ -147,8 +149,8 @@ public abstract class ModelScope implements ParserScope {
             //        (NamedObj) extender));
 
             // This is safer, but does it include everything?
-            for (Iterator attributes = extender.attributeList().iterator(); attributes
-                    .hasNext();) {
+            for (Iterator attributes = extender.attributeList()
+                    .iterator(); attributes.hasNext();) {
                 Attribute attribute = (Attribute) attributes.next();
                 if (attribute instanceof Variable) {
                     nameSet.add(attribute.getName());
@@ -264,7 +266,8 @@ public abstract class ModelScope implements ParserScope {
                             .attributeList(ContainmentExtender.class);
                     Iterator attrIterator = attributes.iterator();
                     NamedObj extendedContainer = null;
-                    while (extendedContainer == null && attrIterator.hasNext()) {
+                    while (extendedContainer == null
+                            && attrIterator.hasNext()) {
                         ContainmentExtender extender = (ContainmentExtender) attrIterator
                                 .next();
                         try {
@@ -352,7 +355,8 @@ public abstract class ModelScope implements ParserScope {
      *  @param preferenceName The name of the preference.
      *  @return The value of the preference, or null if it is not set.
      */
-    public static Token preferenceValue(NamedObj context, String preferenceName) {
+    public static Token preferenceValue(NamedObj context,
+            String preferenceName) {
         Variable result = ModelScope.getScopedVariable(null, context,
                 preferenceName);
 

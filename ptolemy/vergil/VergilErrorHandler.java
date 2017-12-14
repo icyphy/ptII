@@ -89,7 +89,8 @@ public class VergilErrorHandler implements ErrorHandler {
      *   had happened, or RETHROW to request that the exception be rethrown.
      */
     @Override
-    public int handleError(String element, NamedObj context, Throwable exception) {
+    public int handleError(String element, NamedObj context,
+            Throwable exception) {
         if (_skipping) {
             return CONTINUE;
         }
@@ -100,8 +101,7 @@ public class VergilErrorHandler implements ErrorHandler {
 
         // If the element is long, we truncate it.
         String message = "Error encountered in XML element:\n"
-                + StringUtilities.truncateString(element, 80, 1)
-                + "\n"
+                + StringUtilities.truncateString(element, 80, 1) + "\n"
                 + exception.getMessage();
 
         Object[] messageArray = new Object[1];
@@ -139,8 +139,8 @@ public class VergilErrorHandler implements ErrorHandler {
                 if (selected == 3) {
                     return CANCEL;
                 } else if (selected == 2) {
-                    return _showStackTrace(parentWindow, true,
-                            _skippingEnabled, exception, message);
+                    return _showStackTrace(parentWindow, true, _skippingEnabled,
+                            exception, message);
                 } else if (selected == 1) {
                     _skipping = true;
                 }
@@ -149,7 +149,7 @@ public class VergilErrorHandler implements ErrorHandler {
             } else {
                 // Skipping is not enabled.
                 Object[] options = { "Skip element", "Display stack trace",
-                "Cancel" };
+                        "Cancel" };
 
                 // Show the MODAL dialog
                 int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -218,7 +218,7 @@ public class VergilErrorHandler implements ErrorHandler {
 
         if (skippingEnabled) {
             options = new Object[] { "Skip element", "Skip remaining errors",
-            "Cancel" };
+                    "Cancel" };
         } else {
             if (skipElement) {
                 options = new Object[] { "Skip element", "Cancel" };

@@ -74,8 +74,8 @@ public class AlternatingSimulation {
         // following the comments in MoMLApplication, use the same URL for
         // the two arguments (base and URL) to parse().
         MoMLParser parser = new MoMLParser();
-        InterfaceAutomaton superAutomaton = (InterfaceAutomaton) parser.parse(
-                url, url);
+        InterfaceAutomaton superAutomaton = (InterfaceAutomaton) parser
+                .parse(url, url);
         superAutomaton.addPorts();
 
         // Construct the sub automaton
@@ -88,8 +88,8 @@ public class AlternatingSimulation {
         // called.
         parser = new MoMLParser();
 
-        InterfaceAutomaton subAutomaton = (InterfaceAutomaton) parser.parse(
-                url, url);
+        InterfaceAutomaton subAutomaton = (InterfaceAutomaton) parser.parse(url,
+                url);
         subAutomaton.addPorts();
 
         // Compute alternating simulation

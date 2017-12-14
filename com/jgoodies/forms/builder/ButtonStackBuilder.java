@@ -84,7 +84,8 @@ public final class ButtonStackBuilder extends PanelBuilder {
     /**
      * Specifies the FormLayout's the single button stack column.
      */
-    private static final ColumnSpec[] COL_SPECS = new ColumnSpec[] { FormFactory.BUTTON_COLSPEC };
+    private static final ColumnSpec[] COL_SPECS = new ColumnSpec[] {
+            FormFactory.BUTTON_COLSPEC };
 
     /**
      * Specifies the rows of the initial FormLayout used in constructors.

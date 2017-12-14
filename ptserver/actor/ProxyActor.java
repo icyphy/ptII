@@ -116,10 +116,10 @@ public abstract class ProxyActor extends TypedAtomicActor {
      */
     public ProxyActor(CompositeEntity container, ComponentEntity targetEntity,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
-                    throws IllegalActionException, NameDuplicationException,
-                    CloneNotSupportedException {
-        this(container, targetEntity.getName()
-                + ServerUtility.REMOTE_OBJECT_TAG);
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
+        this(container,
+                targetEntity.getName() + ServerUtility.REMOTE_OBJECT_TAG);
         System.out.println("ProxyActor() ctor: " + targetEntity.getName()
                 + ServerUtility.REMOTE_OBJECT_TAG);
         setTargetEntityName(targetEntity.getFullName());
@@ -180,8 +180,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
      */
     private void _replaceConnectingEntities(ComponentEntity targetEntity,
             HashMap<String, String> portTypes)
-                    throws CloneNotSupportedException, IllegalActionException,
-                    NameDuplicationException {
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
         // Copy all attributes of the entity whose connected entities are removed.
         // This is needed in cases when a port references any of the attributes via an expression.
         for (Object attributeObject : targetEntity.attributeList()) {
@@ -237,8 +237,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
                     Attribute consumptionRate = port
                             .getAttribute("tokenConsumptionRate");
                     if (port.isInput() && consumptionRate != null) {
-                        remotePort.removeAttribute(remotePort
-                                .getAttribute("tokenProductionRate"));
+                        remotePort.removeAttribute(
+                                remotePort.getAttribute("tokenProductionRate"));
                         Attribute cloned = (Attribute) consumptionRate
                                 .clone(consumptionRate.workspace());
                         cloned.setPersistent(true);
@@ -250,8 +250,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
                     // when the spliced-up model is recreated from the XML.
                     if (remotePort instanceof TypedIOPort) {
                         // Set the type information of the port.
-                        Type type = TypeParser.parse(portTypes.get(port
-                                .getFullName()));
+                        Type type = TypeParser
+                                .parse(portTypes.get(port.getFullName()));
                         if (type == null) {
                             throw new NullPointerException(
                                     "Could not get parse the type of \""
@@ -288,8 +288,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
      */
     private void _replaceTargetEntity(ComponentEntity targetEntity,
             HashMap<String, String> portTypes)
-                    throws CloneNotSupportedException, IllegalActionException,
-                    NameDuplicationException {
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
         // Copy all attributes of the entity being replaced.
         ArrayList<Attribute> attributes = new ArrayList<Attribute>(
                 targetEntity.attributeList());
@@ -317,8 +317,8 @@ public abstract class ProxyActor extends TypedAtomicActor {
                 // Set the type information.
                 Type type = TypeParser.parse(portTypes.get(port.getFullName()));
                 if (type == null) {
-                    throw new NullPointerException("Could not parse type for "
-                            + port.getFullName());
+                    throw new NullPointerException(
+                            "Could not parse type for " + port.getFullName());
                 } else {
                     ((TypedIOPort) remotePort).setTypeEquals(type);
                     StringAttribute targetPortName = new StringAttribute(

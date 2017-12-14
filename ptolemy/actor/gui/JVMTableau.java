@@ -160,9 +160,8 @@ public class JVMTableau extends Tableau {
 
                 Method allThreads = printThreadsClass.getMethod("allThreads",
                         new Class[] { boolean.class });
-                propertyBuffer.append("\nThreads:\n"
-                        + (String) allThreads.invoke(null,
-                                new Object[] { Boolean.TRUE }));
+                propertyBuffer.append("\nThreads:\n" + (String) allThreads
+                        .invoke(null, new Object[] { Boolean.TRUE }));
             } catch (Throwable throwable) {
                 // Ignore.
             }
@@ -238,10 +237,7 @@ public class JVMTableau extends Tableau {
         long freeMemory = runtime.freeMemory() / 1024;
         long maxMemory = runtime.maxMemory() / 1024;
 
-        textArea.setText("Memory: "
-                + totalMemory
-                + "K Free: "
-                + freeMemory
+        textArea.setText("Memory: " + totalMemory + "K Free: " + freeMemory
                 + "K ("
                 + Math.round((double) freeMemory / (double) totalMemory * 100.0)
                 + "%) Max: " + maxMemory + "K ("

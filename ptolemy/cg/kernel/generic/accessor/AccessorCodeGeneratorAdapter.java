@@ -66,7 +66,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Yellow (rodiers)
  * @Pt.AcceptedRating Yellow (rodiers)
  */
-public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter {
+public abstract class AccessorCodeGeneratorAdapter
+        extends CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
@@ -125,7 +126,8 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
      *  @exception IllegalActionException If thrown will getting the
      *  type or expression of the parameter.
      */
-    public String targetExpression(Parameter parameter) throws IllegalActionException{
+    public String targetExpression(Parameter parameter)
+            throws IllegalActionException {
         // Should not use getExpression() here, because the expression may be
         // referring to other parameters in scope. The code generator needs to
         // juse use the value of the token.
@@ -144,11 +146,11 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         // To replicate:
         // $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/TestRESTPut.xml
         if (parameter.getAttribute("_JSON") != null
-            && (token instanceof StringToken)
-            // If the returnValue is the empty string (""), then don't do the subsitution mambo.
-            // To replicate:
-            // $PTII/bin/capecode $PTII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
-            && !returnValue.equals("\"\"")) {
+                && (token instanceof StringToken)
+                // If the returnValue is the empty string (""), then don't do the subsitution mambo.
+                // To replicate:
+                // $PTII/bin/capecode $PTII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+                && !returnValue.equals("\"\"")) {
 
             returnValue = returnValue.replace("\\\"", "\"");
             // System.out.println("ACGA.targetExpression: returnValue0: " + returnValue);
@@ -188,15 +190,15 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         String returnValue = null;
         if (ptType == BaseType.INT) {
             returnValue = "int";
-        } else if ( ptType == BaseType.STRING) {
+        } else if (ptType == BaseType.STRING) {
             returnValue = "string";
-        } else if ( ptType == BaseType.DOUBLE) {
+        } else if (ptType == BaseType.DOUBLE) {
             returnValue = "number";
-        } else if ( ptType == BaseType.BOOLEAN) {
+        } else if (ptType == BaseType.BOOLEAN) {
             returnValue = "boolean";
-        } else if ( ptType == BaseType.LONG) {
+        } else if (ptType == BaseType.LONG) {
             returnValue = "number";
-        } else if ( ptType == BaseType.UNSIGNED_BYTE) {
+        } else if (ptType == BaseType.UNSIGNED_BYTE) {
             returnValue = "number";
         } else {
             returnValue = ptType.toString();

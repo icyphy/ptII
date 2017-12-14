@@ -93,8 +93,8 @@ public class OntologyAnnotationAttribute extends StringAttribute {
         if (solverName != null && !solverName.isEmpty()) {
             return solverName;
         }
-        throw new IllegalActionException(this, "Cannot determine "
-                + OntologySolver.class.getName());
+        throw new IllegalActionException(this,
+                "Cannot determine " + OntologySolver.class.getName());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,8 +107,8 @@ public class OntologyAnnotationAttribute extends StringAttribute {
      */
     private void _initializeSolverName() throws IllegalActionException {
         String solverName = "";
-        List<OntologySolver> solvers = toplevel().attributeList(
-                OntologySolver.class);
+        List<OntologySolver> solvers = toplevel()
+                .attributeList(OntologySolver.class);
         if (solvers != null && solvers.size() == 1) {
             solverName = solvers.get(0).getDisplayName();
         }

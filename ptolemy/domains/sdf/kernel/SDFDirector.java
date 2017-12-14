@@ -161,8 +161,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class SDFDirector extends StaticSchedulingDirector implements
-PeriodicDirector {
+public class SDFDirector extends StaticSchedulingDirector
+        implements PeriodicDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -173,8 +173,8 @@ PeriodicDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SDFDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public SDFDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -190,8 +190,8 @@ PeriodicDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SDFDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public SDFDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -572,8 +572,8 @@ PeriodicDirector {
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should produce " + rate
-                                    + " tokens, but there were only "
-                                    + k + " tokens available.");
+                                            + " tokens, but there were only "
+                                            + k + " tokens available.");
                         }
                     }
                 } catch (NoTokenException ex) {
@@ -655,7 +655,8 @@ PeriodicDirector {
                             break;
                         }
 
-                        long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+                        long timeToWait = (long) ((currentTime
+                                - elapsedTimeInSeconds) * 1000.0);
 
                         if (_debugging) {
                             _debug("Waiting for real time to pass: "
@@ -701,9 +702,7 @@ PeriodicDirector {
                 && !_periodicDirectorHelper.prefire()) {
             if (_debugging) {
                 _debug("Current time is not a multiple of the period or the microstep is 0. Returning false.\n"
-                        + "Current time: "
-                        + getModelTime()
-                        + "  Period: "
+                        + "Current time: " + getModelTime() + "  Period: "
                         + periodValue);
             }
             return false;
@@ -820,7 +819,7 @@ PeriodicDirector {
     public String[] suggestedModalModelDirectors() {
         return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
-        "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
+                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -879,8 +878,8 @@ PeriodicDirector {
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should consume " + rate
-                                    + " tokens, but there were only "
-                                    + k + " tokens available.");
+                                            + " tokens, but there were only "
+                                            + k + " tokens available.");
                         }
                     }
                 } else if (port.isKnown(i)) {
@@ -949,8 +948,8 @@ PeriodicDirector {
                     } else {
                         throw new IllegalActionException(this, port,
                                 "Port should produce " + rate
-                                + " tokens, but there were only " + k
-                                + " tokens available.");
+                                        + " tokens, but there were only " + k
+                                        + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -978,8 +977,8 @@ PeriodicDirector {
      *  default scheduler of the class SDFScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
 
         // AUTO and UNBOUNDED are used to set the value of iterations,
         // see the getIterations() method.
@@ -1004,7 +1003,8 @@ PeriodicDirector {
         vectorizationFactor.setTypeEquals(BaseType.INT);
         vectorizationFactor.setExpression("1");
 
-        allowDisconnectedGraphs = new Parameter(this, "allowDisconnectedGraphs");
+        allowDisconnectedGraphs = new Parameter(this,
+                "allowDisconnectedGraphs");
         allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
         allowDisconnectedGraphs.setExpression("false");
 
@@ -1027,7 +1027,8 @@ PeriodicDirector {
         startTime.moveToLast();
         stopTime.moveToLast();
 
-        SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
+        SDFScheduler scheduler = new SDFScheduler(this,
+                uniqueName("Scheduler"));
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
         setScheduler(scheduler);
 

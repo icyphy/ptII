@@ -96,8 +96,8 @@ public class ModalPort extends ModalBasePort {
             throws IllegalActionException {
         if (attribute == defaultValue) {
             if (_getMirrorPort() != null) {
-                _getMirrorPort().defaultValue.setExpression(defaultValue
-                        .getExpression());
+                _getMirrorPort().defaultValue
+                        .setExpression(defaultValue.getExpression());
             }
         }
         super.attributeChanged(attribute);
@@ -206,8 +206,8 @@ public class ModalPort extends ModalBasePort {
      *                port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         // See also ModelRefinementPort.setContainer() for a similar method.
         try {
             _workspace.getWriteAccess();
@@ -260,7 +260,8 @@ public class ModalPort extends ModalBasePort {
      *                If changing the port status is not permitted.
      */
     @Override
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         _setMultiport(isMultiport);
     }
 
@@ -276,8 +277,8 @@ public class ModalPort extends ModalBasePort {
      *                container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         _setName(name);
     }
 
@@ -301,13 +302,12 @@ public class ModalPort extends ModalBasePort {
     }
 
     private RefinementPort _getMirrorPort() {
-        if (getContainer() != null
-                && getContainer() instanceof ModalModel
+        if (getContainer() != null && getContainer() instanceof ModalModel
                 && ((ModalModel) getContainer())._controller != null
-                && ((ModalModel) getContainer())._controller.getPort(this
-                        .getName()) != null) {
-            if (((ModalModel) getContainer())._controller.getPort(this
-                    .getName()) instanceof RefinementPort) {
+                && ((ModalModel) getContainer())._controller
+                        .getPort(this.getName()) != null) {
+            if (((ModalModel) getContainer())._controller
+                    .getPort(this.getName()) instanceof RefinementPort) {
                 return (RefinementPort) ((ModalModel) getContainer())._controller
                         .getPort(this.getName());
             }

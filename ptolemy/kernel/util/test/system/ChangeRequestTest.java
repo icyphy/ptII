@@ -66,8 +66,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class ChangeRequestTest implements ChangeListener {
     /** Constructor.
      */
-    public ChangeRequestTest() throws IllegalActionException,
-    NameDuplicationException {
+    public ChangeRequestTest()
+            throws IllegalActionException, NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();

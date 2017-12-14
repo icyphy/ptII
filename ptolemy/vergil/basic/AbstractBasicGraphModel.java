@@ -70,7 +70,7 @@ import ptolemy.vergil.kernel.CompositePtolemyModel;
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class AbstractBasicGraphModel extends ModularGraphModel
-implements ChangeListener {
+        implements ChangeListener {
     /** Create a graph model for the specified Ptolemy II model.
      *  Note that the argument need not be a CompositeEntity, although
      *  if it is not, then it is a rather trivial graph that only has
@@ -112,8 +112,8 @@ implements ChangeListener {
 
         // If this change request is not a structural change we won't
         // repaint the model.
-        if (change != null
-                && (change.getSource() == this || !change.isStructuralChange())) {
+        if (change != null && (change.getSource() == this
+                || !change.isStructuralChange())) {
             return;
         }
 

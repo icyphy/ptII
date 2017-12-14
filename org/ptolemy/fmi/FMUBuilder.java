@@ -178,8 +178,8 @@ public class FMUBuilder {
 
         int exitValue = process.exitValue();
         if (exitValue != 0) {
-            stderr("The exit value of the process building "
-                    + sharedLibraryFile + " was non-zero: " + exitValue);
+            stderr("The exit value of the process building " + sharedLibraryFile
+                    + " was non-zero: " + exitValue);
         }
         if (!sharedLibraryFile.exists()) {
             stderr("Failed to created " + sharedLibraryFile + "?");
@@ -247,7 +247,7 @@ public class FMUBuilder {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _fmuBuilder.stdout( /*_streamType + ">" +*/
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _fmuBuilder.stderr("IOException: " + ioe);

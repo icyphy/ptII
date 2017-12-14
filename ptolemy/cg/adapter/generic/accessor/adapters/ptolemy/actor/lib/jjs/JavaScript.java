@@ -72,18 +72,19 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
         String name = StringUtilities.sanitizeName(actor.getName());
 
         code.append(_eol + _INDENT1 + "// Start: " + getComponent().getName()
-                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java" + _eol);
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java"
+                + _eol);
 
         // See org/terraswarm/accessor/accessors/web/hosts/common/commonHost.js
-        code.append(
-                _INDENT1 + "// FIXME: See instantiate() in accessors/web/hosts/common/commonHost.js" + _eol
-                + _INDENT1 + "// We probably need to do something with the bindings." + _eol
-                + _INDENT1 + "var " + name + " = this.instantiateFromCode('"+ name
-                + "', unescape('"
-                 + actor.escapeForJavaScript(actor.script.getExpression())
+        code.append(_INDENT1
+                + "// FIXME: See instantiate() in accessors/web/hosts/common/commonHost.js"
+                + _eol + _INDENT1
+                + "// We probably need to do something with the bindings."
+                + _eol + _INDENT1 + "var " + name
+                + " = this.instantiateFromCode('" + name + "', unescape('"
+                + actor.escapeForJavaScript(actor.script.getExpression())
                 //+ actor.script.getExpression().replace("\"", "\\\"").replace("'", "\\\'").replace("\n", "\\n")
-                + "'));"
-                + _eol);
+                + "'));" + _eol);
 
         code.append(_generateJavaScriptParameters(actor));
         return code.toString();
@@ -115,14 +116,12 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                     setter = "setDefault";
                 }
 
-                code.append(StringUtilities.sanitizeName(namedObj.getName()) + "." + setter + "('" + parameter.getName() + "', "
-                        + targetExpression(parameter)
-                        + ");" + _eol);
+                code.append(StringUtilities.sanitizeName(namedObj.getName())
+                        + "." + setter + "('" + parameter.getName() + "', "
+                        + targetExpression(parameter) + ");" + _eol);
             }
         }
         return code;
     }
 
 }
-
-

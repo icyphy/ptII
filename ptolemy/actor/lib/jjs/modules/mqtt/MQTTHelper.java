@@ -85,7 +85,8 @@ public class MQTTHelper extends HelperBase {
      *  @param helping The JavaScript object that this is helping.
      *  @return The MQTTHelper.
      */
-    public static MQTTHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
+    public static MQTTHelper getOrCreateHelper(Object actor,
+            ScriptObjectMirror helping) {
         if (_mqttHelper == null) {
             // FIXME: This isn't right. Instead of a static
             // _mqttHelper, this should use a mechanism like in
@@ -115,8 +116,7 @@ public class MQTTHelper extends HelperBase {
         // An alternative would be to use Apache commons codec,
         // but this would introduce a compile and runtime dependency.
 
-        String newId = "mqttpt_"
-            + new BigInteger(idBytes);
+        String newId = "mqttpt_" + new BigInteger(idBytes);
         return newId;
     }
     ///////////////////////////////////////////////////////////////////
@@ -143,8 +143,9 @@ public class MQTTHelper extends HelperBase {
          * @param rawBytes True if the payload is raw bytes.
          * @exception MqttException
          */
-        public MQTTClientWrapper(ScriptObjectMirror currentObj,
-                int port, String host, String clientId, boolean rawBytes) throws MqttException {
+        public MQTTClientWrapper(ScriptObjectMirror currentObj, int port,
+                String host, String clientId, boolean rawBytes)
+                throws MqttException {
             _currentObj = currentObj;
 
             MemoryPersistence persistence = new MemoryPersistence();
@@ -187,11 +188,12 @@ public class MQTTHelper extends HelperBase {
                     Object messageObject;
                     if (_rawBytes) {
                         messageObject = _toJSArray(message.getPayload());
+                    } else {
+                        messageObject = new String(message.getPayload(),
+                                StandardCharsets.UTF_8);
                     }
-                    else {
-                        messageObject = new String(message.getPayload(), StandardCharsets.UTF_8);
-                    }
-                    _currentObj.callMember("emit", "message", topic, messageObject);
+                    _currentObj.callMember("emit", "message", topic,
+                            messageObject);
                 }
 
                 @Override
@@ -223,9 +225,8 @@ public class MQTTHelper extends HelperBase {
             byte[] payload;
             if (_rawBytes) {
                 payload = _toJavaBytes(message);
-            }
-            else {
-                payload = ((String)message).getBytes(StandardCharsets.UTF_8);
+            } else {
+                payload = ((String) message).getBytes(StandardCharsets.UTF_8);
             }
 
             MqttMessage mqttMessage = new MqttMessage(payload);

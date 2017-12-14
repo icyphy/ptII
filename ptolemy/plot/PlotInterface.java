@@ -69,8 +69,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *   point.
      */
     public default void addPoint(final int dataset, final double x,
-            final double y,
-            final boolean connected) {
+            final double y, final boolean connected) {
         addPoint(dataset, x, y, null, connected);
     }
 
@@ -133,9 +132,8 @@ public interface PlotInterface extends PlotBoxInterface {
      *   point.
      */
     public void addPointWithErrorBars(final int dataset, final double x,
-            final double y, final double[] derivatives,
-            final double yLowEB, final double yHighEB,
-            final boolean connected);
+            final double y, final double[] derivatives, final double yLowEB,
+            final double yHighEB, final boolean connected);
 
     /** Clear the plot of all data points.  If the argument is true, then
      *  reset all parameters to their initial conditions, including

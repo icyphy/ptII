@@ -78,10 +78,10 @@ public class RecorderErrorHandler implements ErrorHandler {
      *  @return CONTINUE to request skipping this element.
      */
     @Override
-    public int handleError(String element, NamedObj context, Throwable exception) {
-        _buffer.append("RecorderErrorHandler: Error encountered in:\n"
-                + element + "\n"
-                + KernelException.stackTraceToString(exception));
+    public int handleError(String element, NamedObj context,
+            Throwable exception) {
+        _buffer.append("RecorderErrorHandler: Error encountered in:\n" + element
+                + "\n" + KernelException.stackTraceToString(exception));
         return CONTINUE;
     }
 

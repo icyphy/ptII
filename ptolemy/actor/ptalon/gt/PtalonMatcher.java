@@ -68,8 +68,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PtalonMatcher extends TypedCompositeActor implements
-GTCompositeActor {
+public class PtalonMatcher extends TypedCompositeActor
+        implements GTCompositeActor {
 
     /** Construct a PtalonMatcher with a name and a container.
      *  The container argument must not be null, or a
@@ -139,7 +139,7 @@ GTCompositeActor {
                 } else {
                     _currentActor = _actors.get(key);
                     _currentActor.getAttribute(_IGNORING_ATTRIBUTE_NAME)
-                    .setContainer(null);
+                            .setContainer(null);
                 }
                 if (_currentActor != null) {
                     Attribute ignoringAttribute = _currentActor
@@ -152,8 +152,8 @@ GTCompositeActor {
                     _rearrangePtalonActors();
                 }
             } catch (Throwable throwable) {
-                throw new IllegalActionException(null, throwable, "Unable to "
-                        + "create Ptalon actor inside.");
+                throw new IllegalActionException(null, throwable,
+                        "Unable to " + "create Ptalon actor inside.");
             } finally {
                 _handleAttributeChange = true;
             }
@@ -204,8 +204,8 @@ GTCompositeActor {
 
     /**  A nested ptalon actor.
      */
-    public static class NestedPtalonActor extends PtalonActor implements
-    GTCompositeActor {
+    public static class NestedPtalonActor extends PtalonActor
+            implements GTCompositeActor {
 
         /** Construct a NestedPtalonActor with a name and a container.
          *  The container argument must not be null, or a
@@ -285,15 +285,15 @@ GTCompositeActor {
     ////                         private methods                   ////
 
     private void _createParameters() throws IllegalActionException,
-    NameDuplicationException, CloneNotSupportedException {
+            NameDuplicationException, CloneNotSupportedException {
         _currentActor._fixed = true;
         Set<PtalonExpressionParameter> parameters = new HashSet<PtalonExpressionParameter>();
         for (Object parameterObject : _currentActor
                 .attributeList(PtalonExpressionParameter.class)) {
             PtalonExpressionParameter parameter = (PtalonExpressionParameter) parameterObject;
             parameter.setVisibility(Settable.NOT_EDITABLE);
-            Attribute myAttribute = getAttribute(_MIRRORED_PARAMETER_PREFIX
-                    + parameter.getName());
+            Attribute myAttribute = getAttribute(
+                    _MIRRORED_PARAMETER_PREFIX + parameter.getName());
             if (myAttribute != null
                     && !(myAttribute instanceof PtalonExpressionParameter)) {
                 myAttribute.setContainer(null);
@@ -302,8 +302,8 @@ GTCompositeActor {
             PtalonExpressionParameter myParameter = (PtalonExpressionParameter) myAttribute;
             if (myParameter == null) {
                 myParameter = (PtalonExpressionParameter) parameter.clone();
-                myParameter.setName(_MIRRORED_PARAMETER_PREFIX
-                        + myParameter.getName());
+                myParameter.setName(
+                        _MIRRORED_PARAMETER_PREFIX + myParameter.getName());
                 myParameter.setContainer(this);
                 myParameter.setVisibility(Settable.FULL);
                 myParameter.setToken(parameter.getExpression());
@@ -317,19 +317,20 @@ GTCompositeActor {
             }
             parameters.add(myParameter);
         }
-        for (Object parameterObject : attributeList(PtalonExpressionParameter.class)) {
+        for (Object parameterObject : attributeList(
+                PtalonExpressionParameter.class)) {
             PtalonExpressionParameter parameter = (PtalonExpressionParameter) parameterObject;
             if (!parameters.contains(parameter)) {
                 if (parameter.getAttribute("_hide") == null) {
                     new Parameter(parameter, "_hide")
-                    .setToken(BooleanToken.TRUE);
+                            .setToken(BooleanToken.TRUE);
                 }
             }
         }
     }
 
-    private void _createPtalonActor(HashKey key) throws IllegalActionException,
-    NameDuplicationException {
+    private void _createPtalonActor(HashKey key)
+            throws IllegalActionException, NameDuplicationException {
         NestedPtalonActor actor = new NestedPtalonActor(this,
                 uniqueName("PtalonActor"));
         actor.ptalonCodeLocation.setToken(key._codeLocation);
@@ -353,7 +354,8 @@ GTCompositeActor {
 
     private HashKey _getKey() throws IllegalActionException {
         HashKey key = new HashKey((StringToken) ptalonCodeLocation.getToken());
-        for (Object parameter : attributeList(PtalonExpressionParameter.class)) {
+        for (Object parameter : attributeList(
+                PtalonExpressionParameter.class)) {
             key.put((PtalonExpressionParameter) parameter);
         }
         return key;
@@ -370,7 +372,7 @@ GTCompositeActor {
     }
 
     private void _mirrorPtalonActor() throws IllegalActionException,
-    NameDuplicationException, CloneNotSupportedException {
+            NameDuplicationException, CloneNotSupportedException {
         removeAllPorts();
         removeAllRelations();
         for (Object portObject : _currentActor.portList()) {
@@ -384,8 +386,8 @@ GTCompositeActor {
         }
     }
 
-    private void _rearrangePtalonActors() throws IllegalActionException,
-    NameDuplicationException {
+    private void _rearrangePtalonActors()
+            throws IllegalActionException, NameDuplicationException {
         final int width = 640;
         final int xSpace = 80;
         final int ySpace = 80;

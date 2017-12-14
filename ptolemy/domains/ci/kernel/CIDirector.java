@@ -102,7 +102,8 @@ public class CIDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CIDirector() throws IllegalActionException, NameDuplicationException {
+    public CIDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -113,8 +114,8 @@ public class CIDirector extends Director {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CIDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public CIDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -302,7 +303,8 @@ public class CIDirector extends Director {
     @Override
     public boolean postfire() throws IllegalActionException {
         if (_actorManagers.size() == 0 && _asyncPushedActors.size() == 0
-                && _asyncPulledActors.size() == 0 && _actorsToFire.size() == 0) {
+                && _asyncPulledActors.size() == 0
+                && _actorsToFire.size() == 0) {
             return false;
         } else {
             return !_finishRequested;

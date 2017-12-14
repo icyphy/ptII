@@ -65,9 +65,11 @@ public class DataConverterHelper extends HelperBase {
      * @return JavaScript array converted from the image token.
      * @exception IllegalActionException If the conversion fails.
      */
-    public Object imageToJSArray(AWTImageToken imageToken) throws IllegalActionException {
+    public Object imageToJSArray(AWTImageToken imageToken)
+            throws IllegalActionException {
         Image image = imageToken.getValue();
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null),
+                image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         // Draw the image on to the buffered image
         Graphics2D gr2D = bufferedImage.createGraphics();
         gr2D.drawImage(image, 0, 0, null);
@@ -77,7 +79,9 @@ public class DataConverterHelper extends HelperBase {
         try {
             ImageIO.write(bufferedImage, "jpg", baos);
         } catch (IOException e) {
-            throw new IllegalActionException("Cannot convert AWTImageToken to JavaScript array: " + e.getMessage());
+            throw new IllegalActionException(
+                    "Cannot convert AWTImageToken to JavaScript array: "
+                            + e.getMessage());
         }
         return _toJSArray(baos.toByteArray());
     }
@@ -87,14 +91,17 @@ public class DataConverterHelper extends HelperBase {
      *  @return The image token converted from JavaScript array.
      *  @exception IllegalActionException If the conversion fails..
      */
-    public AWTImageToken jsArrayToImage(Object object) throws IllegalActionException {
+    public AWTImageToken jsArrayToImage(Object object)
+            throws IllegalActionException {
         byte[] bytes = _toJavaBytes(object);
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         BufferedImage bufferedImage;
         try {
             bufferedImage = ImageIO.read(bais);
         } catch (IOException e) {
-            throw new IllegalActionException("Cannot convert JavaScript array to AWTImageToken: " + e.getMessage());
+            throw new IllegalActionException(
+                    "Cannot convert JavaScript array to AWTImageToken: "
+                            + e.getMessage());
         }
         AWTImageToken imageToken = new AWTImageToken(bufferedImage);
         return imageToken;

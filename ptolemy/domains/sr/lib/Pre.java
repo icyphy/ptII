@@ -153,8 +153,8 @@ public class Pre extends Transformer {
         try {
             // type of initialValue <= type of output
             if (initialValue.getToken() != null) {
-                result.add(new Inequality(initialValue.getTypeTerm(), output
-                        .getTypeTerm()));
+                result.add(new Inequality(initialValue.getTypeTerm(),
+                        output.getTypeTerm()));
             }
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should already

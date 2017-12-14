@@ -166,9 +166,9 @@ public class PTDBGenericAttribute {
 
         if (_className != null && _attributeName != null && _values != null) {
             return _className.equals(genericAttribute.getClassName())
-                    && _attributeName.equals(genericAttribute
-                            .getAttributeName())
-                            && _values.equals(genericAttribute.getValues());
+                    && _attributeName
+                            .equals(genericAttribute.getAttributeName())
+                    && _values.equals(genericAttribute.getValues());
         }
 
         if (_className == null && _attributeName == null) {
@@ -185,16 +185,15 @@ public class PTDBGenericAttribute {
 
         if (_values == null && _className == null) {
             return genericAttribute.getValues() == null
-                    && genericAttribute.getClassName() == null
-                    && _attributeName.equals(genericAttribute
-                            .getAttributeName());
+                    && genericAttribute.getClassName() == null && _attributeName
+                            .equals(genericAttribute.getAttributeName());
         }
 
         if (_className == null) {
             return genericAttribute.getClassName() == null
-                    && _attributeName.equals(genericAttribute
-                            .getAttributeName())
-                            && _values.equals(genericAttribute.getValues());
+                    && _attributeName
+                            .equals(genericAttribute.getAttributeName())
+                    && _values.equals(genericAttribute.getValues());
         }
 
         if (_attributeName == null) {
@@ -206,8 +205,8 @@ public class PTDBGenericAttribute {
         if (_values == null) {
             return genericAttribute.getValues() == null
                     && _className.equals(genericAttribute.getClassName())
-                    && _attributeName.equals(genericAttribute
-                            .getAttributeName());
+                    && _attributeName
+                            .equals(genericAttribute.getAttributeName());
         }
 
         return false;

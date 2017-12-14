@@ -96,9 +96,9 @@ public class SmoothSignal extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -136,10 +136,11 @@ public class SmoothSignal extends Transformer {
             // Do not read this in a while loop because if input is persistent,
             // it will go into an infinite loop. There always is a token.
             if (input.hasToken(i)) {
-                received[i] = (DoubleToken)input.get(i);
+                received[i] = (DoubleToken) input.get(i);
             }
             if (received[i] instanceof SmoothToken) {
-                double[] derivatives = ((SmoothToken)received[i]).derivativeValues();
+                double[] derivatives = ((SmoothToken) received[i])
+                        .derivativeValues();
                 if (derivatives != null) {
                     int max = i + derivatives.length;
                     if (order < max) {
@@ -154,8 +155,8 @@ public class SmoothSignal extends Transformer {
         if (_previous != null) {
             result[0] = _previous.doubleValue();
             if (previousDerivatives != null) {
-                System.arraycopy(
-                        previousDerivatives, 0, result, 1, previousDerivatives.length);
+                System.arraycopy(previousDerivatives, 0, result, 1,
+                        previousDerivatives.length);
             }
         }
 
@@ -164,9 +165,11 @@ public class SmoothSignal extends Transformer {
             if (received[i] != null) {
                 result[i] = received[i].doubleValue();
                 if (received[i] instanceof SmoothToken) {
-                    double[] derivatives = ((SmoothToken)received[i]).derivativeValues();
+                    double[] derivatives = ((SmoothToken) received[i])
+                            .derivativeValues();
                     if (derivatives != null && derivatives.length > 0) {
-                        System.arraycopy(derivatives, 0, result, i + 1, derivatives.length);
+                        System.arraycopy(derivatives, 0, result, i + 1,
+                                derivatives.length);
                     }
                 }
             }
@@ -179,6 +182,7 @@ public class SmoothSignal extends Transformer {
      *  @exception IllegalActionException If the width of the input does
      *   not match the width of the output.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _previous = null;

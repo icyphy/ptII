@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class TrigFunction
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.TrigFunction {
+public class TrigFunction extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.TrigFunction {
     /**
      *  Construct a TrigFunction adapter.
      *  @param actor The given ptolemy.actor.lib.TrigFunction actor.

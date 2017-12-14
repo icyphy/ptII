@@ -75,8 +75,8 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationAttribute extends Attribute implements Configurable,
-GTAttribute {
+public class TransformationAttribute extends Attribute
+        implements Configurable, GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -136,14 +136,14 @@ GTAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TransformationAttribute newObject = (TransformationAttribute) super
-                .clone(workspace);
+        TransformationAttribute newObject = (TransformationAttribute) super.clone(
+                workspace);
         try {
             newObject._configurer = new Configurer(workspace);
             newObject._configurer.setName("Configurer");
             new DEDirector(newObject._configurer, "_director");
             newObject._configurer
-            .setManager(new Manager(workspace, "_manager"));
+                    .setManager(new Manager(workspace, "_manager"));
             newObject._configurer.setConfiguredObject(newObject);
             newObject._executionListeners = new LinkedList<ExecutionListener>();
             newObject._modelUpdater = (PteraModalModel) _modelUpdater
@@ -188,24 +188,23 @@ GTAttribute {
         }
 
         StringParameter typeParameter = (StringParameter) getAttribute("_type");
-        String type = typeParameter == null ? null : typeParameter
-                .getExpression();
+        String type = typeParameter == null ? null
+                : typeParameter.getExpression();
         if ("delayed".equals(type)) {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    getContainer().requestChange(
-                            new ChangeRequest(this,
-                                    "Perform delayed transformation.") {
-                                @Override
-                                protected void _execute() throws Exception {
-                                    try {
-                                        executeTransformation();
-                                    } finally {
-                                        setContainer(null);
-                                    }
-                                }
-                            });
+                    getContainer().requestChange(new ChangeRequest(this,
+                            "Perform delayed transformation.") {
+                        @Override
+                        protected void _execute() throws Exception {
+                            try {
+                                executeTransformation();
+                            } finally {
+                                setContainer(null);
+                            }
+                        }
+                    });
                 }
             });
         } else if ("immediate".equals(type)) {
@@ -341,8 +340,8 @@ GTAttribute {
             sourceSpec = " source=\"" + _configureSource + "\"";
         }
 
-        output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
-                + ">\n");
+        output.write(
+                _getIndentPrefix(depth) + "<configure" + sourceSpec + ">\n");
         _modelUpdater.exportMoML(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
@@ -374,8 +373,8 @@ GTAttribute {
      *  @exception NameDuplicationException If thrown when creating the
      *   parameters.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         condition = new Parameter(this, "condition");
         condition.setExpression("true");
 
@@ -392,9 +391,9 @@ GTAttribute {
         try {
             parser.parse(moml);
         } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Unable to populate "
-                    + "the transformation rule within \"" + getFullName()
-                    + "\".");
+            throw new IllegalActionException(this, e,
+                    "Unable to populate " + "the transformation rule within \""
+                            + getFullName() + "\".");
         }
         _modelUpdater = (PteraModalModel) _configurer.getEntity("ModelUpdater");
 
@@ -428,15 +427,15 @@ GTAttribute {
      An execution listener that sets the model parameter to contain the
      container of the transformation attribute at the beginning of the
      transformation.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
      @Pt.ProposedRating Yellow (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    private class TransformationListener extends Attribute implements
-    ExecutionListener {
+    private class TransformationListener extends Attribute
+            implements ExecutionListener {
 
         /** Construct an attribute with the given name contained by the specified
          *  entity. The container argument must not be null, or a
@@ -453,8 +452,8 @@ GTAttribute {
          *   an attribute already in the container.
          */
         public TransformationListener(Manager manager, String name,
-                CompositeEntity model) throws IllegalActionException,
-                NameDuplicationException {
+                CompositeEntity model)
+                throws IllegalActionException, NameDuplicationException {
             super(manager, name);
             _model = model;
         }

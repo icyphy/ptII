@@ -103,8 +103,8 @@ public class ToolBar extends GUIProperty {
      *   an attribute already in the container.
      */
     public ToolBar(NamedObj container, String name, JToolBar component,
-            Object constraint) throws IllegalActionException,
-            NameDuplicationException {
+            Object constraint)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, component, constraint);
     }
 

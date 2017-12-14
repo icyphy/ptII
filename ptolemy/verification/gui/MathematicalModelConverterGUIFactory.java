@@ -88,8 +88,8 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
 
         MathematicalModelConverter modelConverter = (MathematicalModelConverter) getContainer();
 
-        Effigy effigy = parent == null ? null : ((TableauFrame) parent)
-                .getEffigy();
+        Effigy effigy = parent == null ? null
+                : ((TableauFrame) parent).getEffigy();
 
         Tableau tableau;
         try {

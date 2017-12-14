@@ -55,9 +55,8 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (wlc)
  * @Pt.AcceptedRating Red (wlc)
  */
-public class TypedCompositeActor
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
+public class TypedCompositeActor extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
 
     /**
      * Constructor method for the CompositeActor adapter.
@@ -88,10 +87,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompos
         // Append _fireFunction_ to the class names so as to
         // differentiate from the inner classes that are generated for
         // the first few Composites when inline is false.
-        String[] splitFireCode = getCodeGenerator()._splitBody(
-                "_fireFunction_"
-                        + CodeGeneratorAdapter.generateName(getComponent())
-                        + "_", fireCode);
+        String[] splitFireCode = getCodeGenerator()._splitBody("_fireFunction_"
+                + CodeGeneratorAdapter.generateName(getComponent()) + "_",
+                fireCode);
         code.append(splitFireCode[0]);
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
         code.append(_eol + "void "
@@ -218,7 +216,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompos
 
         // After the actors we declare the receivers of this container
         Director director = TopActor.getDirector();
-        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(director);
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getAdapter(
+                director);
         String directorName = CodeGeneratorAdapter
                 .generateName(directorAdapter);
         codeStream.append("$include(\"" + directorName + ".h\")");
@@ -254,11 +253,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompos
         if (TopActor.getContainer() == null
                 || TopActor instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             // Appending the construction of the actors
-            codeStream.append(_eol + sanitizedContainerName
-                    + "_constructorActors();");
+            codeStream.append(
+                    _eol + sanitizedContainerName + "_constructorActors();");
             // Appending the construction of the ports
-            codeStream.append(_eol + sanitizedContainerName
-                    + "_constructorPorts();");
+            codeStream.append(
+                    _eol + sanitizedContainerName + "_constructorPorts();");
             // Appending the construction of the receivers
             codeStream.append(_eol + sanitizedContainerName
                     + "_constructorReceivers();" + _eol);
@@ -283,8 +282,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompos
     @Override
     public void setupAdapter() throws IllegalActionException {
         ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator()
-                .getAdapter(
-                        ((ptolemy.actor.CompositeActor) getComponent())
+                .getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                         .getDirector());
         directorAdapter.setupAdapter();
     }

@@ -357,9 +357,9 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         try {
             link = new Link();
         } catch (Exception e) {
-            throw new InternalErrorException("Failed to create "
-                    + "new link, even though one does not " + "already exist:"
-                    + e.getMessage());
+            throw new InternalErrorException(
+                    "Failed to create " + "new link, even though one does not "
+                            + "already exist:" + e.getMessage());
         }
 
         link.setRelation(relation);
@@ -753,8 +753,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          */
         private ComponentPort _getHeadOrTailPort(Flowable conceptHead,
                 Flowable conceptTail, boolean isHead) {
-            Flowable concept = (Flowable) _getHeadOrTail(
-                    (NamedObj) conceptHead, (NamedObj) conceptTail, isHead);
+            Flowable concept = (Flowable) _getHeadOrTail((NamedObj) conceptHead,
+                    (NamedObj) conceptTail, isHead);
 
             if (isHead) {
                 return concept.getIncomingPort();
@@ -826,8 +826,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                         // Create the new relation.
                         // Note that we specify no class so that we use the
                         // container's factory method when this gets parsed
-                        moml.append("<relation name=\"" + relationName
-                                + "\"/>\n");
+                        moml.append(
+                                "<relation name=\"" + relationName + "\"/>\n");
                         moml.append("<link port=\""
                                 + existingPortToConnect.getName(ptolemyModel)
                                 + "\" relation=\"" + relationName + "\"/>\n");
@@ -847,8 +847,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                         failmoml.append("<unlink port=\""
                                 + existingPortToConnect.getName(ptolemyModel)
                                 + "\" relation=\"" + relationName + "\"/>\n");
-                        failmoml.append("<deleteRelation name=\""
-                                + relationName + "\"/>\n");
+                        failmoml.append("<deleteRelation name=\"" + relationName
+                                + "\"/>\n");
                     }
 
                     // close the context
@@ -974,8 +974,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
                     MoMLChangeRequest requestChange = new MoMLChangeRequest(
-                            OntologyGraphModel.this, container, failmoml
-                            .toString());
+                            OntologyGraphModel.this, container,
+                            failmoml.toString());
 
                     // Fail moml execution not undoable
                     container.requestChange(requestChange);

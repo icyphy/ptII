@@ -92,7 +92,8 @@ public class GraphViewEvent extends java.util.EventObject {
      * Construct a GraphViewEvent with the given
      * source, target, and previous value.
      */
-    public GraphViewEvent(Object source, int id, Object target, Object oldValue) {
+    public GraphViewEvent(Object source, int id, Object target,
+            Object oldValue) {
         super(source);
         _id = id;
         _target = target;

@@ -180,8 +180,8 @@ public class TaskCoordinator extends Transformer {
                         selectedClient.push(event);
 
                         if (_debugging) {
-                            _debug(getName(), "coordinator sends new task: "
-                                    + data);
+                            _debug(getName(),
+                                    "coordinator sends new task: " + data);
                         }
                     } else { //no worker is availabe, so wait.
 
@@ -223,8 +223,8 @@ public class TaskCoordinator extends Transformer {
                         "remote actor throws IllegalActionException"
                                 + ex.getMessage());
             } catch (InterruptedException e) {
-                throw new IllegalActionException(this, "blocking interrupted."
-                        + e.getMessage());
+                throw new IllegalActionException(this,
+                        "blocking interrupted." + e.getMessage());
             }
         }
     }
@@ -268,8 +268,8 @@ public class TaskCoordinator extends Transformer {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) coordinatorName.getToken()).stringValue(),
                     "Multi");
-            _debug(getName(), " looking for name: ", coordinatorName.getToken()
-                    .toString());
+            _debug(getName(), " looking for name: ",
+                    coordinatorName.getToken().toString());
 
             NameComponent[] path = { namecomp };
             Coordinator _coordinator = new Coordinator();
@@ -277,8 +277,7 @@ public class TaskCoordinator extends Transformer {
             ncRef.rebind(path, _coordinator);
         } catch (UserException ex) {
             //ex.printStackTrace();
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     " initialize ORB failed. Please make sure the "
                             + "naming server has already started and the "
                             + "ORBInitProperty parameter is configured correctly. "

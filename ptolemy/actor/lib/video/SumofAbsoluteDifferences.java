@@ -119,13 +119,13 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SumofAbsoluteDifferences newObject = (SumofAbsoluteDifferences) super
-                .clone(workspace);
+        SumofAbsoluteDifferences newObject = (SumofAbsoluteDifferences) super.clone(
+                workspace);
         newObject.previousImageBlock
-        .setTypeAtLeast(newObject.previousImageBlock);
+                .setTypeAtLeast(newObject.previousImageBlock);
         newObject.currentImageBlock.setTypeAtLeast(newObject.currentImageBlock);
         newObject.sumAbsoluteDifference
-        .setTypeAtLeast(newObject.sumAbsoluteDifference);
+                .setTypeAtLeast(newObject.sumAbsoluteDifference);
         return newObject;
     }
 

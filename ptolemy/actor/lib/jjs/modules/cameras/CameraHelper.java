@@ -104,7 +104,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  @param actor The actor associated with this camera.
      *  @param currentObj The JavaScript object that this is helping.
      */
-    public CameraHelper(Object actor, ScriptObjectMirror currentObj) throws IOException {
+    public CameraHelper(Object actor, ScriptObjectMirror currentObj)
+            throws IOException {
         this(actor, currentObj, null);
     }
 
@@ -117,8 +118,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  @param currentObj The JavaScript object that this is helping.
      *  @exception IOException If the camera does not exist.
      */
-    public CameraHelper(Object actor, ScriptObjectMirror currentObj, String name)
-            throws IOException {
+    public CameraHelper(Object actor, ScriptObjectMirror currentObj,
+            String name) throws IOException {
         super(actor, currentObj);
         if (name == null || name.trim().equals("")) {
             _webcam = Webcam.getDefault();
@@ -137,12 +138,14 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             }
         }
         if (_webcam == null) {
-            System.out.println("No physical cameras found, using WebcamDummyDriver.");
+            System.out.println(
+                    "No physical cameras found, using WebcamDummyDriver.");
             Webcam.setDriver(new WebcamDummyDriver(1));
             _webcam = Webcam.getDefault();
         }
         if (_webcam == null) {
-            throw new IOException("No such camera: " + name + " and no dummy camera found.");
+            throw new IOException(
+                    "No such camera: " + name + " and no dummy camera found.");
         }
         _webcam.addWebcamListener(this);
     }
@@ -218,7 +221,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         if (_webcam != null) {
             size = _webcam.getViewSize();
         } else {
-            size = new Dimension(0,0);
+            size = new Dimension(0, 0);
         }
         String result = "{\"width\":" + size.width + ", \"height\":"
                 + size.height + "}";
@@ -237,8 +240,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             if (_openCameras != null) {
                 WeakReference<JavaScript> actor = _openCameras.get(cameraName);
                 if (actor != null && actor.get() != null) {
-                    _actor.error(
-                            "Camera " + (cameraName == null ? "null" : cameraName)
+                    _actor.error("Camera "
+                            + (cameraName == null ? "null" : cameraName)
                             + " has already been opened by "
                             + actor.get().getFullName()
                             + " Cannot be used again by "
@@ -320,7 +323,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      */
     public String[] viewSizes() {
         if (_webcam == null) {
-            return new String [] {"{ \"width\"=0, \"height\"=0 }"};
+            return new String[] { "{ \"width\"=0, \"height\"=0 }" };
         }
         Dimension[] sizes = _webcam.getViewSizes();
         String[] result = new String[sizes.length];

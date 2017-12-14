@@ -64,9 +64,8 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating Red (wlc)
  */
 
-public class IOPort
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
+public class IOPort extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
     /**
      * Construct the code generator adapter for the given IOPort.
@@ -103,8 +102,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         Type type = port.getType();
         String typeString = getCodeGenerator().codeGenType(type);
         if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
-            return processCode("$new(" + typeString + "(0))->payload."
-                    + typeString);
+            return processCode(
+                    "$new(" + typeString + "(0))->payload." + typeString);
         }
         String result = "(*(" + port.getName() + "->get))((struct IOPort*) "
                 + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
@@ -124,6 +123,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
+    @Override
     public String generateGetCodeWithoutType(String channel, String offset)
             throws IllegalActionException {
         int channelIndex = Integer.parseInt(channel);
@@ -133,7 +133,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         String typeString = getCodeGenerator().codeGenType(type);
         if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
             return processCode("$new(" + typeString + "(0));");//->payload."
-                    //+ typeString);
+            //+ typeString);
         }
         String result = "(*(" + port.getName() + "->get))((struct IOPort*) "
                 + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
@@ -146,9 +146,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
         return result;
 
-
     }
-
 
     /** Generate the code to get a token from a port and then free it.
      *  @param channel The channel for which the get code is generated.
@@ -156,6 +154,7 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
+    @Override
     public String generateGetAndFree(String channel, String offset)
             throws IllegalActionException {
 
@@ -166,10 +165,11 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         String typeString = getCodeGenerator().codeGenType(type);
         if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
             return processCode("$new(" + typeString + "(0));"); //->payload."
-                   // + typeString);
+            // + typeString);
         }
-        String result = "(*(" + port.getName() + "->get"+typeString+"))((struct IOPort*) "
-                + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
+        String result = "(*(" + port.getName() + "->get" + typeString
+                + "))((struct IOPort*) " + port.getName() + "_X_COMA_X_ "
+                + channelIndex + ")";
         /*if (type instanceof BaseType) {
             result += "->payload." + typeString;
         } else if (type instanceof RecordType) {
@@ -226,10 +226,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         result.append(portName + " = (struct TypedIOPort*)" + typePort
                 + "_New();" + _eol
 
-                + "#ifdef _debugging" + _eol
-                + portName + "->setName((struct IOPort*)"
-                + portName + ", \"" + port.getName() + "\");" + _eol
-                + "#endif" + _eol
+                + "#ifdef _debugging" + _eol + portName
+                + "->setName((struct IOPort*)" + portName + ", \""
+                + port.getName() + "\");" + _eol + "#endif" + _eol
 
                 + portName + "->container = (struct Actor*)"
                 + sanitizedActorName + ";" + _eol
@@ -242,21 +241,20 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
                 + portName + "->_isInput = " + port.isInput() + ";" + _eol
 
-                + portName + "->_isOutput = " + port.isOutput() + ";"
-                + _eol
+                + portName + "->_isOutput = " + port.isOutput() + ";" + _eol
 
                 + portName + "->_isMultiport = " + port.isMultiport() + ";"
                 + _eol
 
                 + portName + "->_width = " + port.getWidth() + ";" + _eol
-                + portName + "->_insideWidth = " + port.getWidthInside()
-                + ";" + _eol
+                + portName + "->_insideWidth = " + port.getWidthInside() + ";"
+                + _eol
 
-                + portName + "->_numberOfSinks = " + port.numberOfSinks()
-                + ";" + _eol
+                + portName + "->_numberOfSinks = " + port.numberOfSinks() + ";"
+                + _eol
 
-                + portName + "->_numberOfSources = "
-                + port.numberOfSources() + ";" + _eol);
+                + portName + "->_numberOfSources = " + port.numberOfSources()
+                + ";" + _eol);
 
         Parameter parameter = (Parameter) ((NamedObj) port)
                 .getAttribute("delayOffset");
@@ -279,46 +277,45 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
             MirrorPort mport = (MirrorPort) port;
             MirrorPort associatedPort = mport.getAssociatedPort();
             String accessorAssociatedPort = CodeGeneratorAdapter
-                    .generateName(associatedPort.getContainer())
-                    + "_get_"
+                    .generateName(associatedPort.getContainer()) + "_get_"
                     + associatedPort.getName() + "()";
             result.append("((struct PtidesPort*)" + portName
                     + ")->_associatedPort = (struct PtidesPort*)"
                     + accessorAssociatedPort + ";" + _eol);
             if (mport instanceof PtidesPort) {
                 PtidesPort ptidesPort = (PtidesPort) mport;
-                result.append("((struct PtidesPort*)"
-                        + portName
+                result.append("((struct PtidesPort*)" + portName
                         + ")->actuateAtEventTimestamp = "
                         + ((BooleanToken) ptidesPort.actuateAtEventTimestamp
-                                .getToken()).booleanValue() + ";" + _eol);
-                result.append("((struct PtidesPort*)"
-                        + portName
+                                .getToken()).booleanValue()
+                        + ";" + _eol);
+                result.append("((struct PtidesPort*)" + portName
                         + ")->deviceDelay = "
                         + ((DoubleToken) ptidesPort.deviceDelay.getToken())
-                        .doubleValue() + ";" + _eol);
-                result.append("((struct PtidesPort*)"
-                        + portName
+                                .doubleValue()
+                        + ";" + _eol);
+                result.append("((struct PtidesPort*)" + portName
                         + ")->deviceDelayBound = "
                         + ((DoubleToken) ptidesPort.deviceDelayBound.getToken())
-                        .doubleValue() + ";" + _eol);
-                result.append("((struct PtidesPort*)"
-                        + portName
+                                .doubleValue()
+                        + ";" + _eol);
+                result.append("((struct PtidesPort*)" + portName
                         + ")->isNetworkPort = "
                         + ((BooleanToken) ptidesPort.isNetworkPort.getToken())
-                        .booleanValue() + ";" + _eol);
+                                .booleanValue()
+                        + ";" + _eol);
                 if (ptidesPort.isNetworkReceiverPort()
                         || ptidesPort.isNetworkTransmitterPort()) {
-                    result.append("((struct PtidesPort*)"
-                            + portName
+                    result.append("((struct PtidesPort*)" + portName
                             + ")->networkDelayBound = "
                             + ((DoubleToken) ptidesPort.networkDelayBound
-                                    .getToken()).doubleValue() + ";" + _eol);
-                    result.append("((struct PtidesPort*)"
-                            + portName
+                                    .getToken()).doubleValue()
+                            + ";" + _eol);
+                    result.append("((struct PtidesPort*)" + portName
                             + ")->sourcePlatformDelayBound = "
                             + ((DoubleToken) ptidesPort.sourcePlatformDelayBound
-                                    .getToken()).doubleValue() + ";" + _eol);
+                                    .getToken()).doubleValue()
+                            + ";" + _eol);
                 }
             }
         }
@@ -343,8 +340,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
         int foo = 0;
         if (port.isInput()) {
-            result.append("pblListAdd(" + sanitizedActorName
-                    + "->_inputPorts, " + portName + ");" + _eol);
+            result.append("pblListAdd(" + sanitizedActorName + "->_inputPorts, "
+                    + portName + ");" + _eol);
         }
         if (port.isOutput()) {
             result.append("pblListAdd(" + sanitizedActorName
@@ -360,7 +357,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
             receiverss = new Receiver[0][];
         }
 
-        String directorCall = (actor instanceof CompositeActor ? "getExecutiveDirector"
+        String directorCall = (actor instanceof CompositeActor
+                ? "getExecutiveDirector"
                 : "getDirector");
         if (port instanceof PtidesPort) {
             directorCall = (!port.isInput() && actor instanceof CompositeActor
@@ -411,9 +409,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
             for (foo = 0; foo < port.getWidthInside(); foo++) {
                 result.append("PblList* " + portName + "__" + foo
                         + " = pblListNewArrayList();" + _eol);
-                result.append("pblListAdd(" + portName
-                        + "->_insideReceivers , " + portName + "__" + foo
-                        + ");" + _eol);
+                result.append("pblListAdd(" + portName + "->_insideReceivers , "
+                        + portName + "__" + foo + ");" + _eol);
             }
         }
         if (port.isOutput()) {
@@ -486,8 +483,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         if (type instanceof BaseType) {
             tokenCode = "$new(" + typeString + "(" + dataToken + "))";
         } else if (type instanceof RecordType) {
-            tokenCode = "$new(Record(" + dataToken + "->timestamp, "
-                    + dataToken + "->microstep, " + dataToken + "->payload))";
+            tokenCode = "$new(Record(" + dataToken + "->timestamp, " + dataToken
+                    + "->microstep, " + dataToken + "->payload))";
         } else {
             tokenCode = dataToken;
         }
@@ -526,8 +523,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         if (type instanceof BaseType) {
             tokenCode = "$new(" + typeString + "(" + dataToken + "))";
         } else if (type instanceof RecordType) {
-            tokenCode = "$new(Record(" + dataToken + "->timestamp, "
-                    + dataToken + "->microstep, " + dataToken + "->payload))";
+            tokenCode = "$new(Record(" + dataToken + "->timestamp, " + dataToken
+                    + "->microstep, " + dataToken + "->payload))";
         } else {
             tokenCode = dataToken;
         }

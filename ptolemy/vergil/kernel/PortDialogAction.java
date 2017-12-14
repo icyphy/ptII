@@ -92,8 +92,8 @@ public class PortDialogAction extends FigureAction {
             // Giotto code generator on giotto/demo/Hierarchy/Hierarchy.xml
             // was throwing an exception here that was not being displayed
             // in the UI.
-            MessageHandler
-            .error("Failed to open a dialog to configure the ports the target.",
+            MessageHandler.error(
+                    "Failed to open a dialog to configure the ports the target.",
                     throwable);
         }
     }

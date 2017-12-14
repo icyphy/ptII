@@ -116,9 +116,9 @@ public class SharedQueue extends Queue {
                     break;
                 }
             }
-            if (_token != null
-                    && (_queue.getCapacity() == FIFOQueue.INFINITE_CAPACITY || _queue
-                    .getCapacity() > _queue.size() - _removeTokens)) {
+            if (_token != null && (_queue
+                    .getCapacity() == FIFOQueue.INFINITE_CAPACITY
+                    || _queue.getCapacity() > _queue.size() - _removeTokens)) {
                 sizeOutput++;
             } else {
                 _token = null;

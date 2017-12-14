@@ -72,8 +72,8 @@ import ptolemy.moml.filter.MoMLFilterSimple;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DesignPatternImporter extends Attribute implements GTAttribute,
-ValueListener {
+public class DesignPatternImporter extends Attribute
+        implements GTAttribute, ValueListener {
 
     /** Construct an attribute with the given name contained by the
      *  specified entity. The container argument must not be null, or
@@ -116,8 +116,8 @@ ValueListener {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DesignPatternImporter newObject = (DesignPatternImporter) super
-                .clone(workspace);
+        DesignPatternImporter newObject = (DesignPatternImporter) super.clone(
+                workspace);
         newObject._lastValues = new HashMap<String, Token>();
         return newObject;
     }
@@ -130,8 +130,8 @@ ValueListener {
      *  @exception NameDuplicationException If thrown by the superclass.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = getContainer();
         try {
             if (oldContainer != null && _lastUndoStack != null) {
@@ -201,8 +201,8 @@ ValueListener {
             Reader reader = designPatternFile.openForReading();
             URI baseDirectory = designPatternFile.getBaseDirectory();
             model = parser.parse(
-                    baseDirectory == null ? null : baseDirectory.toURL(),
-                            value, reader);
+                    baseDirectory == null ? null : baseDirectory.toURL(), value,
+                    reader);
         } catch (Exception e) {
             throw new InternalErrorException(this, e, "Unable to read design "
                     + "pattern from file \"" + value + "\".");
@@ -220,8 +220,8 @@ ValueListener {
             undoStack.moveToFirst();
         } catch (KernelException e) {
             // This should not happen.
-            throw new InternalErrorException(this, e, "Unable to create "
-                    + "empty undo stack.");
+            throw new InternalErrorException(this, e,
+                    "Unable to create " + "empty undo stack.");
         }
 
         boolean isModified = MoMLParser.isModified();
@@ -319,7 +319,7 @@ ValueListener {
 
     /**
      A moml filter that sets each created object to be non-persistent.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

@@ -71,8 +71,9 @@ public class StringConst extends Const {
         // Set the type constraint.
         output.setTypeEquals(BaseType.STRING);
 
-        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" "
-                + "style=\"fill:lightBlue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                        + "width=\"60\" height=\"20\" "
+                        + "style=\"fill:lightBlue\"/>\n" + "</svg>\n");
     }
 }

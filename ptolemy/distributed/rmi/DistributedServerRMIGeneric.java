@@ -73,8 +73,8 @@ import ptolemy.kernel.util.KernelException;
  @Pt.ProposedRating Red (kapokasa)
  @Pt.AcceptedRating Red (cxh)
  */
-public class DistributedServerRMIGeneric implements ServiceIDListener,
-DiscoveryListener {
+public class DistributedServerRMIGeneric
+        implements ServiceIDListener, DiscoveryListener {
     /** Construct a DistributedServerRMIGeneric with a configuration file.
      *  It performs the following tasks:
      * <ul>
@@ -94,9 +94,8 @@ DiscoveryListener {
     public DistributedServerRMIGeneric(String configFileName) {
         try {
             System.out.println("Starting server in: ");
-            System.out.println("    "
-                    + InetAddress.getLocalHost().getHostName() + " ("
-                    + InetAddress.getLocalHost().getHostAddress() + ")");
+            System.out.println("    " + InetAddress.getLocalHost().getHostName()
+                    + " (" + InetAddress.getLocalHost().getHostAddress() + ")");
         } catch (UnknownHostException e) {
             KernelException.stackTraceToString(e);
         }
@@ -288,8 +287,7 @@ DiscoveryListener {
 
         if (configuration == null) {
             throw new InternalErrorException(null, null,
-                    "Failed to get configuration from "
-                    + configFileName);
+                    "Failed to get configuration from " + configFileName);
         }
         // The config file must have an exporter, a service and a codebase
         try {

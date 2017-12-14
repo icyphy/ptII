@@ -140,8 +140,8 @@ public class FileChooserStyle extends ParameterEditorStyle {
         boolean allowDirectories = false;
 
         if (container instanceof NamedObj) {
-            Parameter marker = (Parameter) ((NamedObj) container).getAttribute(
-                    "allowFiles", Parameter.class);
+            Parameter marker = (Parameter) ((NamedObj) container)
+                    .getAttribute("allowFiles", Parameter.class);
 
             if (marker != null) {
                 Token value = marker.getToken();
@@ -151,8 +151,8 @@ public class FileChooserStyle extends ParameterEditorStyle {
                 }
             }
 
-            marker = (Parameter) ((NamedObj) container).getAttribute(
-                    "allowDirectories", Parameter.class);
+            marker = (Parameter) ((NamedObj) container)
+                    .getAttribute("allowDirectories", Parameter.class);
 
             if (marker != null) {
                 Token value = marker.getToken();

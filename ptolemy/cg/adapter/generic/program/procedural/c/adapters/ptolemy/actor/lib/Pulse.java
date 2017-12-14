@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Pulse
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Pulse {
+public class Pulse extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Pulse {
     /**
      *  Construct a Pulse adapter.
      *  @param actor The given ptolemy.actor.lib.Pulse actor.

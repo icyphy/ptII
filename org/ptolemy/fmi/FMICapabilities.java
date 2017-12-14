@@ -83,12 +83,12 @@ public class FMICapabilities {
 
                     // The field is a primitive boolean, not a Boolean.
                     if (field.getType().equals(Boolean.TYPE)) {
-                        boolean value = Boolean.valueOf(element
-                                .getAttribute(field.getName()));
+                        boolean value = Boolean
+                                .valueOf(element.getAttribute(field.getName()));
                         field.setBoolean(this, value);
                     } else if (field.getType().equals(Integer.TYPE)) {
-                        int value = Integer.parseInt(element.getAttribute(field
-                                .getName()));
+                        int value = Integer.parseInt(
+                                element.getAttribute(field.getName()));
                         field.setInt(this, value);
                     }
                 } catch (IllegalAccessException ex) {
@@ -109,7 +109,8 @@ public class FMICapabilities {
      *  @exception IllegalArgumentException If the field is not found
      *  or it is not a boolean.
      */
-    public boolean getBoolean(String fieldName) throws IllegalArgumentException {
+    public boolean getBoolean(String fieldName)
+            throws IllegalArgumentException {
         try {
             Field field = getClass().getField(fieldName);
             return field.getBoolean(this);
@@ -147,8 +148,8 @@ public class FMICapabilities {
                         }
                     }
                 } catch (IllegalAccessException ex) {
-                    throw new RuntimeException("Failed to get the " + field
-                            + " field", ex);
+                    throw new RuntimeException(
+                            "Failed to get the " + field + " field", ex);
                 }
 
                 // Optionally append a comma.

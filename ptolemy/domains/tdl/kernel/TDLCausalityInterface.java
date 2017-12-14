@@ -71,7 +71,8 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
         if (!(actor instanceof CompositeEntity)) {
             throw new IllegalArgumentException("Cannot create an instance of "
                     + "CausalityInterfaceForComposites for "
-                    + actor.getFullName() + ", which is not a CompositeEntity.");
+                    + actor.getFullName()
+                    + ", which is not a CompositeEntity.");
         }
     }
 
@@ -133,8 +134,8 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                     Director executiveDirector = _actor.getExecutiveDirector();
                     if (executiveDirector instanceof TDLModuleDirector) {
                         minimumDelay = ((TDLCausalityInterface) ((Actor) container)
-                                .getCausalityInterface())._getMinimumDelay(
-                                        port, visitedPorts);
+                                .getCausalityInterface())._getMinimumDelay(port,
+                                        visitedPorts);
                     } else {
                         minimumDelay = getDefaultDependency();
                     }
@@ -145,18 +146,19 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                 // else if port is input port of any actor in this actor
                 Collection<IOPort> equivalentPorts = ((Actor) port
                         .getContainer()).getCausalityInterface()
-                        .equivalentPorts(port);
+                                .equivalentPorts(port);
                 for (IOPort equivalentPort : equivalentPorts) {
                     if (equivalentPort.isInput()) {
                         Collection<IOPort> sourcePorts = equivalentPort
                                 .sourcePortList(); // contains only one item (?)
                         for (IOPort sourcePort : sourcePorts) {
-                            Dependency dependency = _getMinimumDelay(
-                                    sourcePort, visitedPorts);
+                            Dependency dependency = _getMinimumDelay(sourcePort,
+                                    visitedPorts);
                             // Coverity and FindBugs report: RV: Bad use of return value
                             // the results of Comparator.compareTo(Object) should not be compared
                             // with a specific value such as -1 or 1.
-                            if (dependency.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
+                            if (dependency.compareTo(
+                                    minimumDelay) <= Dependency.LESS_THAN) {
                                 minimumDelay = dependency;
                             }
                         }
@@ -183,7 +185,8 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                 for (IOPort actorOutputPort : sourcePorts) {
                     Dependency dependency = _getMinimumDelay(actorOutputPort,
                             visitedPorts);
-                    if (dependency.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
+                    if (dependency
+                            .compareTo(minimumDelay) <= Dependency.LESS_THAN) {
                         minimumDelay = dependency;
                     }
                 }
@@ -194,19 +197,19 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
             // else if port is output port of any actor in this actor
             else {
                 if (port.getContainer() instanceof CompositeActor) {
-                    if (((CompositeActor) port.getContainer()).getDirector() != this._actor
-                            .getDirector()
+                    if (((CompositeActor) port.getContainer())
+                            .getDirector() != this._actor.getDirector()
                             && ((CompositeActor) port.getContainer())
-                            .getDirector()
-                            .defaultDependency()
-                            .equals(this._actor.getDirector()
-                                    .defaultDependency())) {
+                                    .getDirector().defaultDependency()
+                                    .equals(this._actor.getDirector()
+                                            .defaultDependency())) {
                         Collection<IOPort> deepInputPorts = port
                                 .deepInsidePortList();
                         for (IOPort inputPort : deepInputPorts) {
                             Dependency delay = _getMinimumDelay(inputPort,
                                     visitedPorts);
-                            if (delay.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
+                            if (delay.compareTo(
+                                    minimumDelay) <= Dependency.LESS_THAN) {
                                 minimumDelay = delay;
                             }
                         }
@@ -221,9 +224,10 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                     for (IOPort inputPort : inputPorts) {
                         Dependency delay = _getMinimumDelay(inputPort,
                                 visitedPorts);
-                        delay = delay.oTimes(causalityInterface.getDependency(
-                                inputPort, port));
-                        if (delay.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
+                        delay = delay.oTimes(causalityInterface
+                                .getDependency(inputPort, port));
+                        if (delay.compareTo(
+                                minimumDelay) <= Dependency.LESS_THAN) {
                             minimumDelay = delay;
                         }
                     }

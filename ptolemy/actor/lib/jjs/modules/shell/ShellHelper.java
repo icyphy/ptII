@@ -71,8 +71,8 @@ public class ShellHelper {
      *  @param command The command to be executed.
      *  @return a new shell.
      */
-    public static ShellHelper createShell(
-            ScriptObjectMirror scriptObjectMirror, String command) {
+    public static ShellHelper createShell(ScriptObjectMirror scriptObjectMirror,
+            String command) {
         return new ShellHelper(scriptObjectMirror, command);
     }
 
@@ -171,9 +171,10 @@ public class ShellHelper {
             return false;
         }
         // FIXME: FindBugs says that out is being accessed without a lock here.
-        out = new BufferedWriter(new OutputStreamWriter(
-                process.getOutputStream()));
-        in = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+        out = new BufferedWriter(
+                new OutputStreamWriter(process.getOutputStream()));
+        in = new BufferedReader(new InputStreamReader(process.getInputStream(),
+                StandardCharsets.UTF_8));
         return true;
     }
 

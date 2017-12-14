@@ -112,8 +112,8 @@ public class LocatableNodeController extends BasicNodeController {
         if (hasLocation(node)) {
             return ((Locatable) node).getLocation();
         } else {
-            throw new RuntimeException("The node " + node
-                    + "does not have a desired location");
+            throw new RuntimeException(
+                    "The node " + node + "does not have a desired location");
         }
     }
 
@@ -175,8 +175,8 @@ public class LocatableNodeController extends BasicNodeController {
     public void setLocation(Object node, double[] location)
             throws IllegalActionException {
         if (location == null) {
-            throw new RuntimeException("The location is not valid, it should "
-                    + "not be null.");
+            throw new RuntimeException(
+                    "The location is not valid, it should " + "not be null.");
         } else if (location.length != 2) {
             throw new RuntimeException("The location is not valid, the length "
                     + "should be 2, but it is " + location.length);
@@ -185,8 +185,8 @@ public class LocatableNodeController extends BasicNodeController {
         if (node instanceof Locatable) {
             ((Locatable) node).setLocation(location);
         } else {
-            throw new RuntimeException("The node " + node
-                    + "cannot have a desired location");
+            throw new RuntimeException(
+                    "The node " + node + "cannot have a desired location");
         }
     }
 
@@ -336,8 +336,7 @@ public class LocatableNodeController extends BasicNodeController {
             Object object = model.getSemanticObject(node);
             CompositeFigure cf = _getCompositeFigure(nf);
 
-            if (_decoratable
-                    && object instanceof NamedObj
+            if (_decoratable && object instanceof NamedObj
                     && ((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE
                     && cf != null) {
                 // float[] dash = { 2.0f, 5.0f };
@@ -353,8 +352,9 @@ public class LocatableNodeController extends BasicNodeController {
                 Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
                 double padding = 3.0;
                 bounds = new Rectangle2D.Double(bounds.getX() - padding,
-                        bounds.getY() - padding, bounds.getWidth() + padding
-                        * 2.0, bounds.getHeight() + padding * 2.0);
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0);
                 BasicFigure bf = new BasicFigure(bounds);
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);

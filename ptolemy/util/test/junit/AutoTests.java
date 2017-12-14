@@ -89,8 +89,8 @@ public class AutoTests extends ModelTests {
     @Parameters(method = "modelValues")
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
-            System.out.println("No auto/*.xml tests in "
-                    + System.getProperty("user.dir"));
+            System.out.println(
+                    "No auto/*.xml tests in " + System.getProperty("user.dir"));
             return;
         }
         // Only check for the JSAccessor class if there are auto tests.
@@ -121,7 +121,7 @@ public class AutoTests extends ModelTests {
             // _applicationToplevelMethod here.
             if (_applicationToplevelMethod == null) {
                 _applicationToplevelMethod = _applicationClass
-                    .getMethod("toplevel", new Class[]{});
+                        .getMethod("toplevel", new Class[] {});
             }
 
             // If a model is in org/terraswarm/accessors/test, the delay before reloading.
@@ -136,39 +136,46 @@ public class AutoTests extends ModelTests {
                     (Class<?>[]) null);
             rerunMethod.invoke(instance, (Object[]) null);
 
-
             // If JSAccessor is present and the model contains one, then
             // reload all the JSAccessors and rerun the model
             if (_jsAccessorClass != null) {
                 _applicationToplevelMethod = _applicationClass
-                    .getMethod("toplevel", new Class[]{});
-
+                        .getMethod("toplevel", new Class[] {});
 
                 // If a model is in org/terraswarm/accessors/test, the delay before reloading.
                 // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
                 _delay(fullPath);
 
                 if (fullPath.indexOf("org/terraswarm/accessors/test") != -1) {
-                    System.out.println("----------------- About to sleep for 5 seconds before reloading accessors in org/terraswarm/accessors/test" + fullPath);
+                    System.out.println(
+                            "----------------- About to sleep for 5 seconds before reloading accessors in org/terraswarm/accessors/test"
+                                    + fullPath);
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException ex) {
-                        System.err.println("Sleep before reloading of accessors was interrupted: " + ex);
+                        System.err.println(
+                                "Sleep before reloading of accessors was interrupted: "
+                                        + ex);
                     }
                 }
-                Object toplevel = _applicationToplevelMethod.invoke(instance, (Object[]) null);
+                Object toplevel = _applicationToplevelMethod.invoke(instance,
+                        (Object[]) null);
                 if (_jsAccessorReloadAllAccessorsMethod == null) {
-                    throw new InternalError("Found the JSAccessor class, but not the reloadAllAccessors() method?");
+                    throw new InternalError(
+                            "Found the JSAccessor class, but not the reloadAllAccessors() method?");
                 }
-                if (((Boolean)_jsAccessorReloadAllAccessorsMethod.invoke(null, new Object [] {toplevel})).booleanValue()) {
-                    System.out.println("----------------- Reloaded Accessors and testing again " + fullPath);
+                if (((Boolean) _jsAccessorReloadAllAccessorsMethod.invoke(null,
+                        new Object[] { toplevel })).booleanValue()) {
+                    System.out.println(
+                            "----------------- Reloaded Accessors and testing again "
+                                    + fullPath);
                     System.out.flush();
                     rerunMethod.invoke(instance, (Object[]) null);
                 }
             }
         } else {
-            System.err.println("----------------- *** Skipping testing of "
-                    + fullPath);
+            System.err.println(
+                    "----------------- *** Skipping testing of " + fullPath);
             System.err.flush();
 
         }
@@ -182,10 +189,11 @@ public class AutoTests extends ModelTests {
      */
     public boolean modelFileIsOK(String fullPath) {
         if (fullPath.endsWith("de/test/auto/ThreadedComposite.xml")
-                && !StringUtilities.getProperty(
-                        "net.sourceforge.cobertura.datafile").equals("")) {
-            System.err
-            .println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
+                && !StringUtilities
+                        .getProperty("net.sourceforge.cobertura.datafile")
+                        .equals("")) {
+            System.err.println(
+                    "ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
             return false;
         }
         return true;
@@ -208,12 +216,11 @@ public class AutoTests extends ModelTests {
     private static void _checkForJSAccessor() {
         try {
             _jsAccessorClass = Class
-                .forName("org.terraswarm.accessor.JSAccessor");
+                    .forName("org.terraswarm.accessor.JSAccessor");
             Class compositeEntityClass = Class
-                .forName("ptolemy.kernel.CompositeEntity");
-            _jsAccessorReloadAllAccessorsMethod = _jsAccessorClass
-                .getMethod("reloadAllAccessors",
-                        new Class [] {compositeEntityClass});
+                    .forName("ptolemy.kernel.CompositeEntity");
+            _jsAccessorReloadAllAccessorsMethod = _jsAccessorClass.getMethod(
+                    "reloadAllAccessors", new Class[] { compositeEntityClass });
         } catch (Throwable throwable) {
             // Ignore this, it could be that the JSAccessor class
             // is not present.
@@ -226,15 +233,16 @@ public class AutoTests extends ModelTests {
         String accessorTests = "org/terraswarm/accessor";
         int delay = 5000;
         if (fullPath.indexOf(accessorTests) != -1) {
-            System.out.println("----------------- "
-                    + (new java.util.Date())
-                    + " About to sleep for "
-                    + delay/1000 + " seconds before rerunning in "
-                    + accessorTests + ".  Test is: " + fullPath);
+            System.out.println("----------------- " + (new java.util.Date())
+                    + " About to sleep for " + delay / 1000
+                    + " seconds before rerunning in " + accessorTests
+                    + ".  Test is: " + fullPath);
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
-                System.err.println("Sleep before reloading of accessors was interrupted: " + ex);
+                System.err.println(
+                        "Sleep before reloading of accessors was interrupted: "
+                                + ex);
             }
         }
     }

@@ -94,8 +94,8 @@ import ptolemy.vergil.toolbox.FigureAction;
  *
  */
 @SuppressWarnings("serial")
-public class GraphPatternSearchEditor extends TransformationEditor implements
-PTDBBasicFrame {
+public class GraphPatternSearchEditor extends TransformationEditor
+        implements PTDBBasicFrame {
 
     //    /**
     //     * Construct the GraphPatternSearchEditor.
@@ -227,12 +227,12 @@ PTDBBasicFrame {
 
                         if (gtIngredient instanceof DynamicNameCriterion
                                 && !gtIngredient.getValue(0).toString().trim()
-                                .isEmpty()) {
+                                        .isEmpty()) {
 
                             PTDBSearchAttribute gtIngredientAttribute = new PTDBSearchAttribute();
 
-                            gtIngredientAttribute.setName(gtIngredient
-                                    .getValue(0).toString());
+                            gtIngredientAttribute.setName(
+                                    gtIngredient.getValue(0).toString());
 
                             attributesList.add(gtIngredientAttribute);
                         }
@@ -304,13 +304,13 @@ PTDBBasicFrame {
                             .getIngredientList()) {
                         if (gtIngredient instanceof DynamicNameCriterion
                                 && !((DynamicNameCriterion) gtIngredient)
-                                .getValue(0).toString().trim()
-                                .isEmpty()) {
+                                        .getValue(0).toString().trim()
+                                        .isEmpty()) {
 
                             PTDBSearchComponentEntity ptdbSearchComponentEntity = new PTDBSearchComponentEntity();
-                            ptdbSearchComponentEntity
-                            .setName(((DynamicNameCriterion) gtIngredient)
-                                    .getValue(0).toString());
+                            ptdbSearchComponentEntity.setName(
+                                    ((DynamicNameCriterion) gtIngredient)
+                                            .getValue(0).toString());
                             componentEntities.add(ptdbSearchComponentEntity);
 
                         }
@@ -339,14 +339,14 @@ PTDBBasicFrame {
                             .toString().trim().isEmpty()) {
                         PTDBSearchAttribute ptdbSearchAttribute = new PTDBSearchAttribute();
                         ptdbSearchAttribute
-                        .setName(((AttributeCriterion) gtIngredient)
-                                .getValue(0).toString());
+                                .setName(((AttributeCriterion) gtIngredient)
+                                        .getValue(0).toString());
 
                         if (((AttributeCriterion) gtIngredient)
                                 .isAttributeValueEnabled()) {
-                            ptdbSearchAttribute
-                            .setToken(((AttributeCriterion) gtIngredient)
-                                    .getValue(2).toString());
+                            ptdbSearchAttribute.setToken(
+                                    ((AttributeCriterion) gtIngredient)
+                                            .getValue(2).toString());
                         }
 
                         attributesList.add(ptdbSearchAttribute);
@@ -472,7 +472,8 @@ PTDBBasicFrame {
         if (patternGtIngredientsAttribute != null) {
 
             try {
-                if (patternGtIngredientsAttribute.getIngredientList().size() > 0) {
+                if (patternGtIngredientsAttribute.getIngredientList()
+                        .size() > 0) {
                     return false;
                 }
             } catch (MalformedStringException e) {
@@ -622,22 +623,20 @@ PTDBBasicFrame {
         public DBMatchAction() {
             super("Match Model");
 
-            GUIUtilities.addIcons(this,
-                    new String[][] {
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptdb/gui/img/database.gif", GUIUtilities.LARGE_ICON },
                     { "/ptdb/gui/img/database.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptdb/gui/img/database.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptdb/gui/img/database.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptdb/gui/img/database.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptdb/gui/img/database.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptdb/gui/img/database.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
-            putValue("tooltip", "Search Ptolemy models in Database"
-                    + "(Ctrl+1)");
+            putValue("tooltip",
+                    "Search Ptolemy models in Database" + "(Ctrl+1)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_1, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_1,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         //////////////////////////////////////////////////////////////////////
@@ -678,14 +677,15 @@ PTDBBasicFrame {
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/save.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/save_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/save.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/save_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/basic/img/save_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/save_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/save_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }

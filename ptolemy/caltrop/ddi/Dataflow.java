@@ -73,8 +73,8 @@ public class Dataflow extends AbstractDDI {
         _env = env;
         _inputPorts = createPortMap(_actor.getInputPorts(), true);
         _outputPorts = createPortMap(_actor.getOutputPorts(), false);
-        _actorInterpreter = new DataflowActorInterpreter(_actor, _context,
-                _env, _inputPorts, _outputPorts);
+        _actorInterpreter = new DataflowActorInterpreter(_actor, _context, _env,
+                _inputPorts, _outputPorts);
     }
 
     private Map createPortMap(PortDecl[] ports, boolean isInput) {
@@ -85,8 +85,8 @@ public class Dataflow extends AbstractDDI {
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
 
             if (isInput) {
-                portMap.put(name, new SingleInputPort(name, new DFInputChannel(
-                        port, 0)));
+                portMap.put(name,
+                        new SingleInputPort(name, new DFInputChannel(port, 0)));
             } else {
                 portMap.put(name, new SingleOutputPort(name,
                         new DFOutputChannel(port, 0)));
@@ -143,7 +143,7 @@ public class Dataflow extends AbstractDDI {
      *
      * @exception IllegalActionException If an error occurs during the
      * interpretation of the action.
-
+    
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -235,8 +235,8 @@ public class Dataflow extends AbstractDDI {
             _currentStateSet = null;
             _currentTransitions = new Transition[0];
         } else {
-            _currentStateSet = Collections.singleton(_actor.getScheduleFSM()
-                    .getInitialState());
+            _currentStateSet = Collections
+                    .singleton(_actor.getScheduleFSM().getInitialState());
             _computeNextTransitions();
         }
 
@@ -384,8 +384,8 @@ public class Dataflow extends AbstractDDI {
             }
         }
 
-        _currentTransitions = (Transition[]) nt.toArray(new Transition[nt
-                                                                       .size()]);
+        _currentTransitions = (Transition[]) nt
+                .toArray(new Transition[nt.size()]);
     }
 
     private static boolean isPrefixedByTagList(QID tag, QID[] tags) {

@@ -157,8 +157,8 @@ public class IconScript extends Script implements WebExportable {
             webElement = WebElement.createWebElement(getContainer(), "script",
                     "script");
             webElement.setParent(WebElement.HEAD);
-            webElement.setExpression("<script type=\"" + getMimeType()
-                    + "\">\n" + scriptValue + "\n</script>\n");
+            webElement.setExpression("<script type=\"" + getMimeType() + "\">\n"
+                    + scriptValue + "\n</script>\n");
             exporter.defineElement(webElement, true);
         }
 

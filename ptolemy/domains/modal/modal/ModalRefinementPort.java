@@ -162,8 +162,8 @@ public class ModalRefinementPort extends RefinementPort {
      *   a port with the name of this port.
      */
     @Override
-    public void setContainer(Entity container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         // FIXME: Why is this method is slightly different from ModalPort.setContainer()
@@ -222,7 +222,8 @@ public class ModalRefinementPort extends RefinementPort {
      *   not permitted.
      */
     @Override
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport)
+            throws IllegalActionException {
         _setMultiport(isMultiport);
     }
 
@@ -235,8 +236,8 @@ public class ModalRefinementPort extends RefinementPort {
      *   with the same name in the container.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         _setName(name);
     }
 

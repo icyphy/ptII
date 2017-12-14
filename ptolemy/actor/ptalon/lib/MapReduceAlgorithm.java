@@ -52,8 +52,8 @@ public abstract class MapReduceAlgorithm extends Thread {
     public synchronized boolean isReduceFinished()
             throws IllegalActionException {
         if (_threadError) {
-            throw new IllegalActionException("Error writing to key "
-                    + reduceKey);
+            throw new IllegalActionException(
+                    "Error writing to key " + reduceKey);
         }
         return _threadDone;
     }
@@ -78,8 +78,8 @@ public abstract class MapReduceAlgorithm extends Thread {
      * @return The reduced list of values
      * @exception InterruptedException If thrown while reducing.
      */
-    public abstract List<String> reduce(String key, BlockingQueue<String> values)
-            throws InterruptedException;
+    public abstract List<String> reduce(String key,
+            BlockingQueue<String> values) throws InterruptedException;
 
     /**
      * This is used to call the reduce algorithm.

@@ -62,7 +62,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *  throws it.
      */
     public ASTPtLeafNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
+            ptolemy.data.expr.ASTPtLeafNode node)
+            throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -79,8 +80,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
         ptolemy.data.expr.ASTPtLeafNode leafNode = (ptolemy.data.expr.ASTPtLeafNode) _getNode();
 
         ASTPtLeafNodeFunction astRelationFunction = new ASTPtLeafNodeFunction(
-                leafNode, getSolver().getOntology(), getSolver()
-                .getAllContainedOntologies());
+                leafNode, getSolver().getOntology(),
+                getSolver().getAllContainedOntologies());
 
         ConceptFunctionInequalityTerm constraint = new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms());
@@ -100,8 +101,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *  monotonicity of leaf nodes in the abstract
      *  syntax trees of Ptolemy expressions.
      */
-    private static class ASTPtLeafNodeFunction extends
-    MonotonicityConceptFunction {
+    private static class ASTPtLeafNodeFunction
+            extends MonotonicityConceptFunction {
         // FindBugs indicates that this should be a static class.
 
         /** Create a new function for inferring the monotonicity concept
@@ -116,7 +117,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
                 Ontology monotonicityOntology, List<Ontology> domainOntologies)
-                        throws IllegalActionException {
+                throws IllegalActionException {
             super("MonotonicityASTPtLeafNodeFunction", 0, monotonicityOntology,
                     domainOntologies);
             _leafNode = leafNode;
@@ -139,7 +140,8 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                     .createMonotonicityConcept(_monotonicityAnalysisOntology);
 
             // Don't evaluate monotonicity of function names.
-            if (_leafNode.jjtGetParent() instanceof ptolemy.data.expr.ASTPtFunctionApplicationNode
+            if (_leafNode
+                    .jjtGetParent() instanceof ptolemy.data.expr.ASTPtFunctionApplicationNode
                     && _leafNode.jjtGetParent().jjtGetChild(0) == _leafNode) {
                 return result;
             }

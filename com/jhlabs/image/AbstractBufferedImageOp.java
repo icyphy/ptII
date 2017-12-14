@@ -29,13 +29,18 @@ import java.lang.reflect.Field;
 /**
  * A convenience class which implements those methods of BufferedImageOp which are rarely changed.
  */
-public abstract class AbstractBufferedImageOp implements BufferedImageOp, Cloneable {
+public abstract class AbstractBufferedImageOp
+        implements BufferedImageOp, Cloneable {
 
     @Override
-    public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel dstCM) {
-        if (dstCM == null)
+    public BufferedImage createCompatibleDestImage(BufferedImage src,
+            ColorModel dstCM) {
+        if (dstCM == null) {
             dstCM = src.getColorModel();
-        return new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(src.getWidth(), src.getHeight()),
+        }
+        return new BufferedImage(dstCM,
+                dstCM.createCompatibleWritableRaster(src.getWidth(),
+                        src.getHeight()),
                 dstCM.isAlphaPremultiplied(), null);
     }
 
@@ -46,8 +51,9 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
 
     @Override
     public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
-        if (dstPt == null)
+        if (dstPt == null) {
             dstPt = new Point2D.Double();
+        }
         dstPt.setLocation(srcPt.getX(), srcPt.getY());
         return dstPt;
     }
@@ -69,10 +75,14 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
      * @return the pixels
      * @see #setRGB
      */
-    public int[] getRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
+    public int[] getRGB(BufferedImage image, int x, int y, int width,
+            int height, int[] pixels) {
         int type = image.getType();
-        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
-            return (int[]) image.getRaster().getDataElements(x, y, width, height, pixels);
+        if (type == BufferedImage.TYPE_INT_ARGB
+                || type == BufferedImage.TYPE_INT_RGB) {
+            return (int[]) image.getRaster().getDataElements(x, y, width,
+                    height, pixels);
+        }
         return image.getRGB(x, y, width, height, pixels, 0, width);
     }
 
@@ -87,12 +97,15 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
      * @param pixels  the array of pixels to set
      * @see #getRGB
      */
-    public void setRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
+    public void setRGB(BufferedImage image, int x, int y, int width, int height,
+            int[] pixels) {
         int type = image.getType();
-        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
+        if (type == BufferedImage.TYPE_INT_ARGB
+                || type == BufferedImage.TYPE_INT_RGB) {
             image.getRaster().setDataElements(x, y, width, height, pixels);
-        else
+        } else {
             image.setRGB(x, y, width, height, pixels, 0, width);
+        }
     }
 
     @Override

@@ -165,17 +165,18 @@ public class CActorBase extends TypedAtomicActor {
      *  @exception NameDuplicationException If the port name coincides with
      *   the name of another port already in the actor.
      */
-    protected void _addPort(CPort port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(CPort port)
+            throws IllegalActionException, NameDuplicationException {
         super._addPort(port);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         source = new FileParameter(this, "source");
-        source.setExpression("$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
+        source.setExpression(
+                "$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
 
         // Should this be visible?
         // source.setVisibility(Settable.EXPERT);
@@ -183,10 +184,9 @@ public class CActorBase extends TypedAtomicActor {
         frequency.setExpression("1");
         frequency.setTypeEquals(BaseType.INT);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-16\" y=\"5\" "
-                + "style=\"font-size:18\">\n" + "CActor\n" + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-16\" y=\"5\" " + "style=\"font-size:18\">\n"
+                + "CActor\n" + "</text>\n" + "</svg>\n");
     }
 }

@@ -182,8 +182,8 @@ public class MDIApplicationTutorial extends MDIApplication {
 
         action = DefaultActions.openAction(this);
         addAction(action);
-        GUIUtilities
-        .addMenuItem(menuFile, action, 'O', "Open a graph document");
+        GUIUtilities.addMenuItem(menuFile, action, 'O',
+                "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);

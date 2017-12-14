@@ -73,8 +73,9 @@ public class InterpolateFilter extends AbstractBufferedImageOp {
         src.getType();
         src.getRaster();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         dst.getRaster();
 
         if (destination != null) {
@@ -96,9 +97,12 @@ public class InterpolateFilter extends AbstractBufferedImageOp {
                     int r2 = (rgb2 >> 16) & 0xff;
                     int g2 = (rgb2 >> 8) & 0xff;
                     int b2 = rgb2 & 0xff;
-                    r1 = PixelUtils.clamp(ImageMath.lerp(interpolation, r1, r2));
-                    g1 = PixelUtils.clamp(ImageMath.lerp(interpolation, g1, g2));
-                    b1 = PixelUtils.clamp(ImageMath.lerp(interpolation, b1, b2));
+                    r1 = PixelUtils
+                            .clamp(ImageMath.lerp(interpolation, r1, r2));
+                    g1 = PixelUtils
+                            .clamp(ImageMath.lerp(interpolation, g1, g2));
+                    b1 = PixelUtils
+                            .clamp(ImageMath.lerp(interpolation, b1, b2));
                     pixels1[x] = (a1 << 24) | (r1 << 16) | (g1 << 8) | b1;
                 }
                 setRGB(dst, 0, y, width, 1, pixels1);

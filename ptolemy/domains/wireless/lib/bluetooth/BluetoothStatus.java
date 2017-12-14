@@ -35,6 +35,5 @@ package ptolemy.domains.wireless.lib.bluetooth;
  * @see BluetoothStatusToken
  */
 public enum BluetoothStatus {
-    STATUS_OK,
-    STATUS_ERROR
+    STATUS_OK, STATUS_ERROR
 }

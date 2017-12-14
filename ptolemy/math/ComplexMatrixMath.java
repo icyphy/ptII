@@ -88,7 +88,8 @@ public class ComplexMatrixMath {
             final Complex[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
-        Complex[][] returnValue = new Complex[_rows(matrix1)][_columns(matrix1)];
+        Complex[][] returnValue = new Complex[_rows(matrix1)][_columns(
+                matrix1)];
 
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
@@ -121,7 +122,8 @@ public class ComplexMatrixMath {
      *  to each element of <i>matrix</i>.
      */
     public static final Complex[][] applyBinaryOperation(
-            ComplexBinaryOperation op, final Complex z, final Complex[][] matrix) {
+            ComplexBinaryOperation op, final Complex z,
+            final Complex[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -149,7 +151,8 @@ public class ComplexMatrixMath {
      *  to each element of <i>matrix</i>.
      */
     public static final Complex[][] applyBinaryOperation(
-            ComplexBinaryOperation op, final Complex[][] matrix, final Complex z) {
+            ComplexBinaryOperation op, final Complex[][] matrix,
+            final Complex z) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -252,7 +255,8 @@ public class ComplexMatrixMath {
      *  @return A new matrix of complex numbers formed by transposing
      *  the input matrix and conjugating the elements.
      */
-    public static final Complex[][] conjugateTranspose(final Complex[][] matrix) {
+    public static final Complex[][] conjugateTranspose(
+            final Complex[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -349,8 +353,8 @@ public class ComplexMatrixMath {
                 Complex temp = a[row][pivot];
 
                 for (int col = pivot + 1; col < n; col++) {
-                    a[row][col] = a[row][col].subtract(a[pivot][col]
-                            .multiply(temp));
+                    a[row][col] = a[row][col]
+                            .subtract(a[pivot][col].multiply(temp));
                 }
             }
         }
@@ -606,8 +610,8 @@ public class ComplexMatrixMath {
                     Ai[row][icol] = Complex.ZERO;
 
                     for (int col = 0; col < n; col++) {
-                        Ai[row][col] = Ai[row][col].subtract(Ai[icol][col]
-                                .multiply(temp));
+                        Ai[row][col] = Ai[row][col]
+                                .subtract(Ai[icol][col].multiply(temp));
                     }
                 }
             }
@@ -813,7 +817,8 @@ public class ComplexMatrixMath {
      */
     public static final Complex[][] multiply(Complex[][] matrix1,
             Complex[][] matrix2) {
-        Complex[][] returnValue = new Complex[_rows(matrix1)][matrix2[0].length];
+        Complex[][] returnValue = new Complex[_rows(
+                matrix1)][matrix2[0].length];
 
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
@@ -936,7 +941,8 @@ public class ComplexMatrixMath {
      *  @return A new matrix formed by orthonormalizing the
      *  rows of the input matrix.
      */
-    public static final Complex[][] orthonormalizeRows(final Complex[][] matrix) {
+    public static final Complex[][] orthonormalizeRows(
+            final Complex[][] matrix) {
         int rows = _rows(matrix);
 
         Object[] orthoInfo = _orthogonalizeRows(matrix);
@@ -1030,8 +1036,8 @@ public class ComplexMatrixMath {
      *  new matrix.
      *  @return A new matrix of complex numbers initialized from a 1-D array.
      */
-    public static final Complex[][] toMatrixFromArray(Complex[] array,
-            int rows, int cols) {
+    public static final Complex[][] toMatrixFromArray(Complex[] array, int rows,
+            int cols) {
         Complex[][] returnValue = new Complex[rows][cols];
 
         for (int i = 0; i < rows; i++) {
@@ -1153,8 +1159,8 @@ public class ComplexMatrixMath {
      *   explicitly.
      *  @return True or false.
      */
-    public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, Complex maxError) {
+    public static final boolean within(Complex[][] matrix1, Complex[][] matrix2,
+            Complex maxError) {
         return within(matrix1, matrix2, maxError.magnitude());
     }
 
@@ -1170,8 +1176,8 @@ public class ComplexMatrixMath {
      *   dimensions.  This is a run-time exception, so it need not be declared explicitly.
      *  @return True or false.
      */
-    public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, double maxError) {
+    public static final boolean within(Complex[][] matrix1, Complex[][] matrix2,
+            double maxError) {
         _checkSameDimension("within", matrix1, matrix2);
 
         int rows = _rows(matrix1);
@@ -1202,8 +1208,8 @@ public class ComplexMatrixMath {
      *   dimensions.
      *  @return True or false.
      */
-    public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, double[][] maxError) {
+    public static final boolean within(Complex[][] matrix1, Complex[][] matrix2,
+            double[][] maxError) {
         _checkSameDimension("within", matrix1, matrix2);
 
         int rows = _rows(matrix1);
@@ -1238,8 +1244,8 @@ public class ComplexMatrixMath {
      *   length.
      *  @return True or false.
      */
-    public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, Complex[][] maxError) {
+    public static final boolean within(Complex[][] matrix1, Complex[][] matrix2,
+            Complex[][] maxError) {
         int rows = _rows(maxError);
         int columns = _columns(maxError);
 
@@ -1281,9 +1287,8 @@ public class ComplexMatrixMath {
         int columns = _columns(matrix1);
 
         if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.ComplexMatrixMath." + caller
-                    + "() : one matrix " + _dimensionString(matrix1)
+            throw new IllegalArgumentException("ptolemy.math.ComplexMatrixMath."
+                    + caller + "() : one matrix " + _dimensionString(matrix1)
                     + " is not the same size as another matrix "
                     + _dimensionString(matrix2) + ".");
         }
@@ -1299,11 +1304,9 @@ public class ComplexMatrixMath {
     protected static final int _checkSquare(final String caller,
             final Complex[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.ComplexMatrixMath." + caller
-                    + "() : matrix argument "
-                    + _dimensionString(matrix)
-                    + " is not a square matrix.");
+            throw new IllegalArgumentException("ptolemy.math.ComplexMatrixMath."
+                    + caller + "() : matrix argument "
+                    + _dimensionString(matrix) + " is not a square matrix.");
         }
 
         return _rows(matrix);
@@ -1390,13 +1393,9 @@ public class ComplexMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = ComplexArrayMath
-                        .subtract(
-                                rowArray,
-                                ComplexArrayMath.scale(
-                                        orthogonalMatrix[j],
-                                        dotProduct
-                                        .multiply(oneOverNormSquaredArray[j])));
+                rowArray = ComplexArrayMath.subtract(rowArray,
+                        ComplexArrayMath.scale(orthogonalMatrix[j], dotProduct
+                                .multiply(oneOverNormSquaredArray[j])));
             }
 
             // Compute the dot product between the input and output vector
@@ -1459,8 +1458,8 @@ public class ComplexMatrixMath {
      *  @param columns The number of columns for the matrix.
      *  @return The modified matrix with zeroes in the desired positions.
      */
-    protected static final Complex[][] _zeroMatrix(Complex[][] matrix,
-            int rows, int columns) {
+    protected static final Complex[][] _zeroMatrix(Complex[][] matrix, int rows,
+            int columns) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 matrix[i][j] = Complex.ZERO;

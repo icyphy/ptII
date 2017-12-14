@@ -68,8 +68,7 @@ public class AbsoluteValue extends NamedProgramCodeGeneratorAdapter {
         if (getCodeGenerator().isPrimitive(type)) {
             type = "Primitive";
         } else if (!type.equals("Complex")) {
-            throw new IllegalActionException(
-                    actor.output,
+            throw new IllegalActionException(actor.output,
                     "Only primitive types "
                             + "and Complex numbers may have their absolute value taken, "
                             + "the type was " + type);

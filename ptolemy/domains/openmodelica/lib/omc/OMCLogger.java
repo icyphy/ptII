@@ -118,8 +118,8 @@ public class OMCLogger {
         String temp = System.getProperty("java.io.tmpdir");
 
         if (username == null) {
-            System.err
-                    .println("Could not get user.name property?  Using 'nobody'.");
+            System.err.println(
+                    "Could not get user.name property?  Using 'nobody'.");
             username = "nobody";
         }
 

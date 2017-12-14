@@ -214,8 +214,8 @@ public class GRScheduler extends Scheduler {
                 }
             }
 
-            throw new NotSchedulableException(this, "GR graph is not acyclic: "
-                    + names.toString());
+            throw new NotSchedulableException(this,
+                    "GR graph is not acyclic: " + names.toString());
         }
 
         if (dag.top() == null) {

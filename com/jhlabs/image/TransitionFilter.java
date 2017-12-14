@@ -59,7 +59,8 @@ public class TransitionFilter extends AbstractBufferedImageOp {
      * @param minValue the start value for the filter property
      * @param maxValue the end value for the filter property
      */
-    public TransitionFilter(BufferedImageOp filter, String property, float minValue, float maxValue) {
+    public TransitionFilter(BufferedImageOp filter, String property,
+            float minValue, float maxValue) {
         this.filter = filter;
         this.property = property;
         this.minValue = minValue;
@@ -74,8 +75,10 @@ public class TransitionFilter extends AbstractBufferedImageOp {
                     break;
                 }
             }
-            if (method == null)
-                throw new IllegalArgumentException("No such property in object: " + property);
+            if (method == null) {
+                throw new IllegalArgumentException(
+                        "No such property in object: " + property);
+            }
         } catch (IntrospectionException e) {
             throw new IllegalArgumentException(e.toString());
         }
@@ -121,7 +124,7 @@ public class TransitionFilter extends AbstractBufferedImageOp {
             public void setFilter( BufferedImageOp filter ) {
                     this.filter = filter;
             }
-
+    
             public int getFilter() {
                     return filter;
             }
@@ -136,16 +139,19 @@ public class TransitionFilter extends AbstractBufferedImageOp {
         try {
             method.invoke(filter, new Object[] { new Float(transition) });
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error setting value for property: " + property);
+            throw new IllegalArgumentException(
+                    "Error setting value for property: " + property);
         }
     }
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
-        if (destination == null)
+        }
+        if (destination == null) {
             return dst;
+        }
 
         float itransition = 1 - transition;
 
@@ -156,7 +162,8 @@ public class TransitionFilter extends AbstractBufferedImageOp {
             g.drawImage(src, filter, 0, 0);
         }
         if (transition != 0) {
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transition));
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                    transition));
             float t = minValue + itransition * (maxValue - minValue);
             prepareFilter(t);
             g.drawImage(destination, filter, 0, 0);

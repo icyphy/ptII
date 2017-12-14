@@ -54,8 +54,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PatternObjectAttribute extends StringAttribute implements
-ValueListener {
+public class PatternObjectAttribute extends StringAttribute
+        implements ValueListener {
 
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
@@ -141,9 +141,9 @@ ValueListener {
                     }
                     if (container instanceof GTEntity
                             && correspondingEntity instanceof GTEntity) {
-                        ((GTEntity) container)
-                        .updateAppearance(((GTEntity) correspondingEntity)
-                                .getCriteriaAttribute());
+                        ((GTEntity) container).updateAppearance(
+                                ((GTEntity) correspondingEntity)
+                                        .getCriteriaAttribute());
                     }
                 }
             }

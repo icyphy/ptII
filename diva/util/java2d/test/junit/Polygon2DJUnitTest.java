@@ -67,8 +67,8 @@ public class Polygon2DJUnitTest {
     public void unitSquare() {
         // A square
         // {x0, y0, x1, y1, ... }
-        double[] coordinates = new double[] { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0,
-                0.0, 1.0 };
+        double[] coordinates = new double[] { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0,
+                1.0 };
         unitSquare = new Polygon2D.Double(coordinates);
         unitSquare.closePath();
         //System.out.println("unitSquare: " + unitSquare);
@@ -305,7 +305,7 @@ public class Polygon2DJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-        .main("diva.util.java2d.test.junit.Polygon2DJUnitTest");
+                .main("diva.util.java2d.test.junit.Polygon2DJUnitTest");
     }
 
     /** A 1.0 x 1.0 diamond centered on 0.0, 0.0. */

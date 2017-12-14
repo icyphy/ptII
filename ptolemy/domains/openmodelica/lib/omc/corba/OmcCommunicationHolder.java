@@ -9,8 +9,8 @@ package ptolemy.domains.openmodelica.lib.omc.corba;
 
 /* A CORBA compatible interface for omc.
  */
-public final class OmcCommunicationHolder implements
-org.omg.CORBA.portable.Streamable {
+public final class OmcCommunicationHolder
+        implements org.omg.CORBA.portable.Streamable {
 
     public OmcCommunicationHolder() {
     }

@@ -117,8 +117,8 @@ public class DDEDirector extends CompositeProcessDirector {
      * @exception NameDuplicationException If thrown while adding a
      * stopTime parameter.
      */
-    public DDEDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public DDEDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -135,8 +135,8 @@ public class DDEDirector extends CompositeProcessDirector {
      * @exception NameDuplicationException If thrown while adding a
      * stopTime parameter.
      */
-    public DDEDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public DDEDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -415,7 +415,8 @@ public class DDEDirector extends CompositeProcessDirector {
      * @exception IllegalActionException If there is an error while
      * attempting to set the capacity of a DDE receiver.
      */
-    protected void _incrementLowestCapacityPort() throws IllegalActionException {
+    protected void _incrementLowestCapacityPort()
+            throws IllegalActionException {
         if (_writeBlockedQueues == null) {
             return;
         }
@@ -451,8 +452,7 @@ public class DDEDirector extends CompositeProcessDirector {
         // this receiver unblocked now, before the notification,
         // or we will detect deadlock all over again and
         // again increase the buffer sizes.
-        threadUnblocked(
-                (Thread) _writeBlockedQueues.get(smallestCapacityQueue),
+        threadUnblocked((Thread) _writeBlockedQueues.get(smallestCapacityQueue),
                 smallestCapacityQueue, WRITE_BLOCKED);
 
         notifyAll();
@@ -493,8 +493,8 @@ public class DDEDirector extends CompositeProcessDirector {
     @Override
     protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {
-        System.out.println("_writeBlockedQueues.size() = "
-                + _writeBlockedQueues.size());
+        System.out.println(
+                "_writeBlockedQueues.size() = " + _writeBlockedQueues.size());
 
         if (_writeBlockedQueues.size() > 0) {
             _incrementLowestCapacityPort();

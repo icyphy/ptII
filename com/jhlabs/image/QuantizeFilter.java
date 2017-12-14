@@ -87,8 +87,8 @@ public class QuantizeFilter extends WholeImageFilter {
         return serpentine;
     }
 
-    public void quantize(int[] inPixels, int[] outPixels, int width, int height, int numColors, boolean dither,
-            boolean serpentine) {
+    public void quantize(int[] inPixels, int[] outPixels, int width, int height,
+            int numColors, boolean dither, boolean serpentine) {
         int count = width * height;
         Quantizer quantizer = new OctTreeQuantizer();
         quantizer.setup(numColors);
@@ -96,8 +96,9 @@ public class QuantizeFilter extends WholeImageFilter {
         int[] table = quantizer.buildColorTable();
 
         if (!dither) {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++) {
                 outPixels[i] = table[quantizer.getIndexForColor(inPixels[i])];
+            }
         } else {
             int index = 0;
             for (int y = 0; y < height; y++) {
@@ -135,10 +136,11 @@ public class QuantizeFilter extends WholeImageFilter {
                                 int jx = j + x;
                                 if (0 <= jx && jx < width) {
                                     int w;
-                                    if (reverse)
+                                    if (reverse) {
                                         w = matrix[(i + 1) * 3 - j + 1];
-                                    else
+                                    } else {
                                         w = matrix[(i + 1) * 3 + j + 1];
+                                    }
                                     if (w != 0) {
                                         int k = reverse ? index - j : index + j;
                                         rgb1 = inPixels[k];
@@ -148,7 +150,9 @@ public class QuantizeFilter extends WholeImageFilter {
                                         r1 += er * w / sum;
                                         g1 += eg * w / sum;
                                         b1 += eb * w / sum;
-                                        inPixels[k] = (PixelUtils.clamp(r1) << 16) | (PixelUtils.clamp(g1) << 8)
+                                        inPixels[k] = (PixelUtils
+                                                .clamp(r1) << 16)
+                                                | (PixelUtils.clamp(g1) << 8)
                                                 | PixelUtils.clamp(b1);
                                     }
                                 }
@@ -162,10 +166,12 @@ public class QuantizeFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int[] outPixels = new int[width * height];
 
-        quantize(inPixels, outPixels, width, height, numColors, dither, serpentine);
+        quantize(inPixels, outPixels, width, height, numColors, dither,
+                serpentine);
 
         return outPixels;
     }

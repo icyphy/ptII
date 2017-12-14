@@ -56,14 +56,16 @@ public abstract class WholeImageFilter extends AbstractBufferedImageOp {
         if (dst == null) {
             ColorModel dstCM = src.getColorModel();
             dst = new BufferedImage(dstCM,
-                    dstCM.createCompatibleWritableRaster(transformedSpace.width, transformedSpace.height),
+                    dstCM.createCompatibleWritableRaster(transformedSpace.width,
+                            transformedSpace.height),
                     dstCM.isAlphaPremultiplied(), null);
         }
         dst.getRaster();
 
         int[] inPixels = getRGB(src, 0, 0, width, height, null);
         inPixels = filterPixels(width, height, inPixels, transformedSpace);
-        setRGB(dst, 0, 0, transformedSpace.width, transformedSpace.height, inPixels);
+        setRGB(dst, 0, 0, transformedSpace.width, transformedSpace.height,
+                inPixels);
 
         return dst;
     }
@@ -83,5 +85,6 @@ public abstract class WholeImageFilter extends AbstractBufferedImageOp {
     * @param transformedSpace the output bounds
     * @return the output pixels
     */
-    protected abstract int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace);
+    protected abstract int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace);
 }

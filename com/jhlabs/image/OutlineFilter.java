@@ -28,7 +28,8 @@ public class OutlineFilter extends BinaryFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int index = 0;
         int[] outPixels = new int[width * height];
 
@@ -45,18 +46,22 @@ public class OutlineFilter extends BinaryFilter {
                             ioffset = iy * width;
                             for (int dx = -1; dx <= 1; dx++) {
                                 int ix = x + dx;
-                                if (!(dy == 0 && dx == 0) && 0 <= ix && ix < width) {
+                                if (!(dy == 0 && dx == 0) && 0 <= ix
+                                        && ix < width) {
                                     int rgb = inPixels[ioffset + ix];
-                                    if (blackFunction.isBlack(rgb))
+                                    if (blackFunction.isBlack(rgb)) {
                                         neighbours++;
-                                } else
+                                    }
+                                } else {
                                     neighbours++;
+                                }
                             }
                         }
                     }
 
-                    if (neighbours == 9)
+                    if (neighbours == 9) {
                         pixel = newColor;
+                    }
                 }
                 outPixels[index++] = pixel;
             }

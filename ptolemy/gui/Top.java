@@ -146,7 +146,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (janneck)
  */
 @SuppressWarnings("serial")
-public abstract class Top extends JFrame implements WindowFocusListener, StatusHandler {
+public abstract class Top extends JFrame
+        implements WindowFocusListener, StatusHandler {
 
     /** Construct an empty top-level frame with the default status
      *  bar.  After constructing this, it is necessary to call
@@ -362,8 +363,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
                             } catch (SecurityException ex) {
                                 if (!_printedSecurityExceptionMessage) {
                                     _printedSecurityExceptionMessage = true;
-                                    System.out
-                                    .println("Warning: Failed set "
+                                    System.out.println("Warning: Failed set "
                                             + field
                                             + " accessible while disposing. "
                                             + "(applets and -sandbox always causes this)");
@@ -374,8 +374,8 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
                         superclass = superclass.getSuperclass();
                     }
                 } catch (IllegalAccessException ex) {
-                    throw new RuntimeException("Failed to get or set field "
-                            + field, ex);
+                    throw new RuntimeException(
+                            "Failed to get or set field " + field, ex);
                 }
             }
             myClass = myClass.getSuperclass();
@@ -620,6 +620,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
      *  If there is no status bar, print to standard out.
      *  @param message The message.
      */
+    @Override
     public void status(final String message) {
         if (_statusBar != null) {
             if (_statusMessageTimer == null) {
@@ -631,6 +632,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
             // the order in which messages are reported gets messed up.
             // The only simple solutions seems to be to call this from the Swing event thread.
             deferIfNecessary(new Runnable() {
+                @Override
                 public void run() {
                     if (_lastStatusMessageClearingTask != null) {
                         _lastStatusMessageClearingTask.cancel();
@@ -640,12 +642,14 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
                     // If the message is non-empty, schedule a clearing message.
                     if (!message.trim().equals("")) {
                         _lastStatusMessageClearingTask = new TimerTask() {
+                            @Override
                             public void run() {
                                 status("");
                                 _lastStatusMessageClearingTask = null;
                             }
                         };
-                        _statusMessageTimer.schedule(_lastStatusMessageClearingTask,
+                        _statusMessageTimer.schedule(
+                                _lastStatusMessageClearingTask,
                                 MAXIMUM_STATUS_MESSAGE_TIME);
                     }
                 }
@@ -659,6 +663,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
      *  @see MessageHandler#status(String)
      *  @param event The window event.
      */
+    @Override
     public void windowGainedFocus(WindowEvent event) {
         MessageHandler.setStatusHandler(this);
     }
@@ -667,6 +672,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
      *  @see MessageHandler#status(String)
      *  @param event The window event.
      */
+    @Override
     public void windowLostFocus(WindowEvent event) {
         MessageHandler.setStatusHandler(null);
     }
@@ -683,13 +689,13 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
     /** Open a dialog with basic information about this window.
      */
     protected void _about() {
-        JOptionPane.showMessageDialog(this, "Ptolemy II "
-                + getClass().getName() + "\n"
-                + "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n"
-                + "Copyright (c) 1997-2016, "
-                + "The Regents of the University of California.",
+        JOptionPane.showMessageDialog(this,
+                "Ptolemy II " + getClass().getName() + "\n"
+                        + "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n"
+                        + "Copyright (c) 1997-2016, "
+                        + "The Regents of the University of California.",
                 "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -956,8 +962,8 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         // If you are using $PTII/bin/vergil, under bash, set this property:
         // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
         // and then run $PTII/bin/vergil
-        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals(
-                "CrossPlatform")) {
+        if (StringUtilities.getProperty("ptolemy.ptII.print.platform")
+                .equals("CrossPlatform")) {
             _printCrossPlatform();
         } else {
             _printNative();
@@ -1051,12 +1057,10 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
             // On the Mac, calling job.setJobName() will set the file name,
             // but not the directory.
-            System.out
-            .println("Top._printPDF(): Print Job information, much of which is ignored?\n"
-                    + "JobName: "
-                    + job.getJobName()
-                    + "\nUserName: "
-                    + job.getUserName());
+            System.out.println(
+                    "Top._printPDF(): Print Job information, much of which is ignored?\n"
+                            + "JobName: " + job.getJobName() + "\nUserName: "
+                            + job.getUserName());
             javax.print.attribute.Attribute[] attributes = aset.toArray();
             for (Attribute attribute : attributes) {
                 System.out.println(attribute.getName() + " "
@@ -1064,8 +1068,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
             }
 
             job.print(aset);
-            System.out
-            .println("Window printed from command line. "
+            System.out.println("Window printed from command line. "
                     + "Under MacOSX, look for "
                     + "~/Desktop/Java Printing.pdf");
         }
@@ -1537,7 +1540,8 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
             }
         }
         if (exceptions != null) {
-            StringBuffer message = new StringBuffer("Exceptions occurred in deferred actions:\n");
+            StringBuffer message = new StringBuffer(
+                    "Exceptions occurred in deferred actions:\n");
             for (Throwable exception : exceptions) {
                 message.append(exception);
                 message.append("\n");
@@ -1680,12 +1684,13 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
                         .getProperty("user.dir");
 
                 if (currentWorkingDirectory != null) {
-                    fileDialog.setCurrentDirectory(new File(
-                            currentWorkingDirectory));
+                    fileDialog.setCurrentDirectory(
+                            new File(currentWorkingDirectory));
                 }
             }
 
-            if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fileDialog
+                    .showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 _directory = fileDialog.getCurrentDirectory();
 
                 try {
@@ -1745,11 +1750,11 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
     private static void _macCheck() {
         if (PtGUIUtilities.macOSLookAndFeel()
                 && System.getProperty("java.version").startsWith("1.5")) {
-            System.out
-            .println("Warning, under Mac OS X with Java 1.5, printing might "
-                    + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
-                    + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
-                    + "and restarting vergil: $PTII/bin/vergil");
+            System.out.println(
+                    "Warning, under Mac OS X with Java 1.5, printing might "
+                            + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
+                            + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
+                            + "and restarting vergil: $PTII/bin/vergil");
         }
     }
 
@@ -1758,7 +1763,8 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         if (System.getProperty("java.version").startsWith("9")) {
             if (!_printedMacInitializerWarning) {
                 _printedMacInitializerWarning = true;
-                System.err.println("Top.java: java.version starts with 9, so no Mac menus and key bindings yet.");
+                System.err.println(
+                        "Top.java: java.version starts with 9, so no Mac menus and key bindings yet.");
             }
             return;
         }
@@ -1870,7 +1876,8 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
             JFileChooser fileDialog = _saveAsFileDialog();
 
             // Under Java 1.6 and Mac OS X, showSaveDialog() ignores the filter.
-            if (fileDialog.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fileDialog
+                    .showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 _file = fileDialog.getSelectedFile();
 
                 if (_file.exists()) {
@@ -1954,8 +1961,9 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         @Override
         public void run() {
             if (_statusBar != null) {
-                _statusBar.setMessage(MessageHandler
-                        .shortDescription(_throwable) + ". " + _message);
+                _statusBar
+                        .setMessage(MessageHandler.shortDescription(_throwable)
+                                + ". " + _message);
             }
 
             MessageHandler.error(_message, _throwable);

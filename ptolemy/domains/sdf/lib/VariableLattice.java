@@ -137,8 +137,8 @@ public class VariableLattice extends Lattice implements ExplicitChangeContext {
             _blockSizeValue = blockSizeToken.intValue();
 
             if (_blockSizeValue < 1) {
-                throw new IllegalActionException(this, "Invalid blockSize: "
-                        + _blockSizeValue);
+                throw new IllegalActionException(this,
+                        "Invalid blockSize: " + _blockSizeValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -157,7 +157,7 @@ public class VariableLattice extends Lattice implements ExplicitChangeContext {
         VariableLattice newObject = (VariableLattice) super.clone(workspace);
 
         newObject.newCoefficients
-        .setTypeSameAs(newObject.reflectionCoefficients);
+                .setTypeSameAs(newObject.reflectionCoefficients);
 
         // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);

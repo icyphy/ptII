@@ -69,8 +69,8 @@ public class QSSDirector extends DEDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public QSSDirector() throws IllegalActionException,
-            NameDuplicationException {
+    public QSSDirector()
+            throws IllegalActionException, NameDuplicationException {
         _initSolverParameters();
     }
 
@@ -81,8 +81,8 @@ public class QSSDirector extends DEDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public QSSDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public QSSDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initSolverParameters();
     }
@@ -148,6 +148,7 @@ public class QSSDirector extends DEDirector {
      *  @exception IllegalActionException If the new parameter value
      *  is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (_debugging) {
@@ -170,7 +171,7 @@ public class QSSDirector extends DEDirector {
                         "absoluteQuantum is required to be greater than 0.0.");
             }
             _absoluteQuantum = value;
-        }else if (attribute == quantumScaleFactor) {
+        } else if (attribute == quantumScaleFactor) {
             double value = ((DoubleToken) quantumScaleFactor.getToken())
                     .doubleValue();
             if (value <= 0.0) {
@@ -191,8 +192,8 @@ public class QSSDirector extends DEDirector {
      *  @param solverParameter The parameter specifying the solver method.
      *  @param defaultSolver The default solver to use.
      */
-    public static void configureSolverParameter(
-            StringParameter solverParameter, String defaultSolver) {
+    public static void configureSolverParameter(StringParameter solverParameter,
+            String defaultSolver) {
         solverParameter.setExpression(defaultSolver);
         solverParameter.addChoice("QSS1");
         solverParameter.addChoice("QSS2Fd");
@@ -246,7 +247,7 @@ public class QSSDirector extends DEDirector {
      */
     public QSSBase newQSSSolver(String type) throws IllegalActionException {
         // Instantiate the solver.
-        return(_instantiateQSSSolver(_solverClasspath + type));
+        return (_instantiateQSSSolver(_solverClasspath + type));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -278,14 +279,14 @@ public class QSSDirector extends DEDirector {
             Class solver = Class.forName(className);
             newSolver = (QSSBase) solver.newInstance();
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this, "QSSSolver: " + className
-                    + " is not found.");
+            throw new IllegalActionException(this,
+                    "QSSSolver: " + className + " is not found.");
         } catch (InstantiationException e) {
-            throw new IllegalActionException(this, "QSSSolver: " + className
-                    + " instantiation failed." + e);
+            throw new IllegalActionException(this,
+                    "QSSSolver: " + className + " instantiation failed." + e);
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this, "QSSSolver: " + className
-                    + " is not accessible.");
+            throw new IllegalActionException(this,
+                    "QSSSolver: " + className + " is not accessible.");
         }
         return newSolver;
     }
@@ -315,7 +316,6 @@ public class QSSDirector extends DEDirector {
         relativeQuantum = new Parameter(this, "relativeQuantum");
         relativeQuantum.setExpression("0.0");
         relativeQuantum.setTypeEquals(BaseType.DOUBLE);
-
 
         QSSSolver = new StringParameter(this, "QSSSolver");
         configureSolverParameter(QSSSolver, "QSS1");

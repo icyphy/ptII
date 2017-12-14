@@ -300,8 +300,8 @@ public class BasicEdgeController implements EdgeController {
 
         // Create the figure
         Connector c = render(edge, layer, tailSite, headSite);
-        _controller.dispatch(new GraphViewEvent(this,
-                GraphViewEvent.EDGE_DRAWN, edge));
+        _controller.dispatch(
+                new GraphViewEvent(this, GraphViewEvent.EDGE_DRAWN, edge));
         return c;
     }
 

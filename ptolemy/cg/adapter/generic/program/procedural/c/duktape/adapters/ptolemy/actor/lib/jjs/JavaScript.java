@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class JavaScript
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.jjs.JavaScript {
+public class JavaScript extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.jjs.JavaScript {
 
     /**
      *  Construct the JavaScript adapter.

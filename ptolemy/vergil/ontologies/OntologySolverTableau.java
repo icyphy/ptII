@@ -81,8 +81,8 @@ public class OntologySolverTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public OntologySolverTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();

@@ -52,10 +52,12 @@ public class ShadowFilter extends AbstractBufferedImageOp {
     * @param yOffset the Y offset of the shadow
     * @param opacity the opacity of the shadow
     */
-    public ShadowFilter(float radius, float xOffset, float yOffset, float opacity) {
+    public ShadowFilter(float radius, float xOffset, float yOffset,
+            float opacity) {
         this.radius = radius;
         this.angle = (float) Math.atan2(yOffset, xOffset);
-        this.distance = (float) Math.sqrt(xOffset * xOffset + yOffset * yOffset);
+        this.distance = (float) Math
+                .sqrt(xOffset * xOffset + yOffset * yOffset);
         this.opacity = opacity;
     }
 
@@ -199,17 +201,20 @@ public class ShadowFilter extends AbstractBufferedImageOp {
 
     @Override
     public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
-        if (dstPt == null)
+        if (dstPt == null) {
             dstPt = new Point2D.Double();
+        }
 
         if (addMargins) {
             float xOffset = distance * (float) Math.cos(angle);
             float yOffset = -distance * (float) Math.sin(angle);
             float topShadow = Math.max(0, radius - yOffset);
             float leftShadow = Math.max(0, radius - xOffset);
-            dstPt.setLocation(srcPt.getX() + leftShadow, srcPt.getY() + topShadow);
-        } else
+            dstPt.setLocation(srcPt.getX() + leftShadow,
+                    srcPt.getY() + topShadow);
+        } else {
             dstPt.setLocation(srcPt.getX(), srcPt.getY());
+        }
 
         return dstPt;
     }
@@ -225,12 +230,13 @@ public class ShadowFilter extends AbstractBufferedImageOp {
         if (dst == null) {
             if (addMargins) {
                 ColorModel cm = src.getColorModel();
-                dst = new BufferedImage(cm,
-                        cm.createCompatibleWritableRaster(src.getWidth() + (int) (Math.abs(xOffset) + radius),
-                                src.getHeight() + (int) (Math.abs(yOffset) + radius)),
+                dst = new BufferedImage(cm, cm.createCompatibleWritableRaster(
+                        src.getWidth() + (int) (Math.abs(xOffset) + radius),
+                        src.getHeight() + (int) (Math.abs(yOffset) + radius)),
                         cm.isAlphaPremultiplied(), null);
-            } else
+            } else {
                 dst = createCompatibleDestImage(src, null);
+            }
         }
 
         float shadowR = ((shadowColor >> 16) & 0xff) / 255f;
@@ -238,20 +244,24 @@ public class ShadowFilter extends AbstractBufferedImageOp {
         float shadowB = (shadowColor & 0xff) / 255f;
 
         // Make a black mask from the image's alpha channel
-        float[][] extractAlpha = { { 0, 0, 0, shadowR }, { 0, 0, 0, shadowG }, { 0, 0, 0, shadowB },
-                { 0, 0, 0, opacity } };
-        BufferedImage shadow = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        new BandCombineOp(extractAlpha, null).filter(src.getRaster(), shadow.getRaster());
+        float[][] extractAlpha = { { 0, 0, 0, shadowR }, { 0, 0, 0, shadowG },
+                { 0, 0, 0, shadowB }, { 0, 0, 0, opacity } };
+        BufferedImage shadow = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
+        new BandCombineOp(extractAlpha, null).filter(src.getRaster(),
+                shadow.getRaster());
         shadow = new GaussianFilter(radius).filter(shadow, null);
 
         Graphics2D g = dst.createGraphics();
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        g.setComposite(
+                AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         if (addMargins) {
             float topShadow = Math.max(0, radius - yOffset);
             float leftShadow = Math.max(0, radius - xOffset);
             g.translate(leftShadow, topShadow);
         }
-        g.drawRenderedImage(shadow, AffineTransform.getTranslateInstance(xOffset, yOffset));
+        g.drawRenderedImage(shadow,
+                AffineTransform.getTranslateInstance(xOffset, yOffset));
         if (!shadowOnly) {
             g.setComposite(AlphaComposite.SrcOver);
             g.drawRenderedImage(src, null);

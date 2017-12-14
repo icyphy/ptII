@@ -80,7 +80,8 @@ public class IntegerMatrixMath {
      *  @param matrix1 The first matrix of ints.
      *  @param matrix2 The second matrix of ints.
      *  @return A new matrix of ints.  */
-    public static final int[][] add(final int[][] matrix1, final int[][] matrix2) {
+    public static final int[][] add(final int[][] matrix1,
+            final int[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
         int[][] returnValue = new int[_rows(matrix1)][_columns(matrix1)];
@@ -251,7 +252,7 @@ public class IntegerMatrixMath {
 
     /** Return a new matrix that is the formed by bitwise ORing z with
      *  each element of the input matrix (matrix[i][j] | z).
-
+    
      */
     public static final int[][] bitwiseOr(final int[][] matrix, final int z) {
         int rows = _rows(matrix);
@@ -572,7 +573,8 @@ public class IntegerMatrixMath {
      *  in the array. The returned array will have a length equal to the number
      *  of columns of the matrix.
      */
-    public static final int[] multiply(final int[][] matrix, final int[] array) {
+    public static final int[] multiply(final int[][] matrix,
+            final int[] array) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -605,7 +607,8 @@ public class IntegerMatrixMath {
      *  in the array. The returned array will have a length equal to the number
      *  of rows of the matrix.
      */
-    public static final int[] multiply(final int[] array, final int[][] matrix) {
+    public static final int[] multiply(final int[] array,
+            final int[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -1082,9 +1085,8 @@ public class IntegerMatrixMath {
         int columns = _columns(matrix1);
 
         if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.IntegerMatrixMath." + caller
-                    + "() : one matrix " + _dimensionString(matrix1)
+            throw new IllegalArgumentException("ptolemy.math.IntegerMatrixMath."
+                    + caller + "() : one matrix " + _dimensionString(matrix1)
                     + " is not the same size as another matrix "
                     + _dimensionString(matrix2) + ".");
         }
@@ -1099,11 +1101,9 @@ public class IntegerMatrixMath {
     protected static final int _checkSquare(final String caller,
             final int[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
-            throw new IllegalArgumentException(
-                    "ptolemy.math.IntegerMatrixMath." + caller
-                    + "() : matrix argument "
-                    + _dimensionString(matrix)
-                    + " is not a square matrix.");
+            throw new IllegalArgumentException("ptolemy.math.IntegerMatrixMath."
+                    + caller + "() : matrix argument "
+                    + _dimensionString(matrix) + " is not a square matrix.");
         }
 
         return _rows(matrix);

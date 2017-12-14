@@ -64,6 +64,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (eal)
  @deprecated No longer needed. Use Sampler.
  */
+@Deprecated
 public class Align extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -87,9 +88,9 @@ public class Align extends Transformer {
         StringAttribute cardinality = new StringAttribute(trigger, "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:yellow\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                        + "style=\"fill:yellow\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,15 +147,15 @@ public class Align extends Transformer {
      *  @exception IllegalActionException If the width of the input does
      *   not match the width of the output.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         int outWidth = output.getWidth();
         int inWidth = input.getWidth();
 
         if (inWidth != outWidth) {
-            throw new IllegalActionException(this,
-                    "Unequal Align channels: " + inWidth
-                    + " inputs and " + outWidth + " outputs.");
+            throw new IllegalActionException(this, "Unequal Align channels: "
+                    + inWidth + " inputs and " + outWidth + " outputs.");
         }
         _received = new Token[inWidth];
     }

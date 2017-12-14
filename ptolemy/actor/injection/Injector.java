@@ -46,76 +46,93 @@ import java.util.HashMap;
  */
 public class Injector {
 
-  ///////////////////////////////////////////////////////////////////
-  ////                   public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                   public methods                          ////
 
-  /**
-   * Get implementation for the provided interface based on the
-   * mappings loaded into the injector.
-   * Class<T> is the implementation.
-   *
-   * @param type The interface type to load.
-   * @return The implementation of the interface.
-   */
-  public <T> T getInstance(Class<T> type) {
-    Class<T> implementation = (Class<T>) _resolvedInterfaceToImplementationMap.get(type);
-    if (implementation != null) {
-      try {
-        return implementation.newInstance();
-      } catch (InstantiationException e) {
-        throw new IllegalStateException("Problem instantiating type " + implementation, e);
-      } catch (IllegalAccessException e) {
-        throw new IllegalStateException("Problem instantiating type " + implementation, e);
-      }
-    } else {
-      try {
-        PtolemyModule module = _interfaceToImplementationMap.get(type.getName());
-        String implementationName = module.getBindings().get(type.getName());
-        ClassLoader loader = module.getClassLoader() != null ? module.getClassLoader() : getClass().getClassLoader();
-        if (implementationName != null) {
-          try {
-            Class<?> implementationClass = loader.loadClass(implementationName);
-            _resolvedInterfaceToImplementationMap.put(type, implementationClass);
-            return (T) implementationClass.newInstance();
-          } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Problem loading type " + implementationName, e);
-          } catch (InstantiationException e) {
-            throw new IllegalStateException("Problem instantiating type " + implementationName, e);
-          } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Problem instantiating type " + implementationName, e);
-          }
+    /**
+     * Get implementation for the provided interface based on the
+     * mappings loaded into the injector.
+     * Class<T> is the implementation.
+     *
+     * @param type The interface type to load.
+     * @return The implementation of the interface.
+     */
+    public <T> T getInstance(Class<T> type) {
+        Class<T> implementation = (Class<T>) _resolvedInterfaceToImplementationMap
+                .get(type);
+        if (implementation != null) {
+            try {
+                return implementation.newInstance();
+            } catch (InstantiationException e) {
+                throw new IllegalStateException(
+                        "Problem instantiating type " + implementation, e);
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException(
+                        "Problem instantiating type " + implementation, e);
+            }
+        } else {
+            try {
+                PtolemyModule module = _interfaceToImplementationMap
+                        .get(type.getName());
+                String implementationName = module.getBindings()
+                        .get(type.getName());
+                ClassLoader loader = module.getClassLoader() != null
+                        ? module.getClassLoader()
+                        : getClass().getClassLoader();
+                if (implementationName != null) {
+                    try {
+                        Class<?> implementationClass = loader
+                                .loadClass(implementationName);
+                        _resolvedInterfaceToImplementationMap.put(type,
+                                implementationClass);
+                        return (T) implementationClass.newInstance();
+                    } catch (ClassNotFoundException e) {
+                        throw new IllegalStateException(
+                                "Problem loading type " + implementationName,
+                                e);
+                    } catch (InstantiationException e) {
+                        throw new IllegalStateException(
+                                "Problem instantiating type "
+                                        + implementationName,
+                                e);
+                    } catch (IllegalAccessException e) {
+                        throw new IllegalStateException(
+                                "Problem instantiating type "
+                                        + implementationName,
+                                e);
+                    }
+                }
+            } catch (NullPointerException e) {
+                // skip, the exception is thrown below
+            }
         }
-      } catch (NullPointerException e) {
-        // skip, the exception is thrown below
-      }
+        throw new IllegalStateException("Implementation for the interface "
+                + type + " was not found. " + "Perhaps\n" + type.getName() + "="
+                + type.getName()
+                + "\nneeds to be added to the implementations class mappings file ptolemy/actor/*.properties such as ptolemy/actor/ActorModule.properties or some other injector file.");
+
     }
-    throw new IllegalStateException("Implementation for the interface " + type
-        + " was not found. " + "Perhaps\n"
-        + type.getName() + "=" + type.getName()
-        + "\nneeds to be added to the implementations class mappings file ptolemy/actor/*.properties such as ptolemy/actor/ActorModule.properties or some other injector file.");
 
-  }
-
-  /**
-   * Load the interface to implementation mappings into the injector.
-   *
-   * @param module The interface to implementation mapping.
-   */
-  public void loadMappings(PtolemyModule module) {
-    for (String interfaceType : module.getBindings().keySet()) {
-      _interfaceToImplementationMap.put(interfaceType, module);
+    /**
+     * Load the interface to implementation mappings into the injector.
+     *
+     * @param module The interface to implementation mapping.
+     */
+    public void loadMappings(PtolemyModule module) {
+        for (String interfaceType : module.getBindings().keySet()) {
+            _interfaceToImplementationMap.put(interfaceType, module);
+        }
     }
-  }
 
-  ///////////////////////////////////////////////////////////////////
-  ////                   private variables                       ////
-  /**
-   * The resolved interface to the implementation class mappings.
-   */
-  private HashMap<Class<?>, Class<?>> _resolvedInterfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
+    ///////////////////////////////////////////////////////////////////
+    ////                   private variables                       ////
+    /**
+     * The resolved interface to the implementation class mappings.
+     */
+    private HashMap<Class<?>, Class<?>> _resolvedInterfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
 
-  /**
-   * The resolved interface to the implementation class mappings.
-   */
-  private HashMap<String, PtolemyModule> _interfaceToImplementationMap = new HashMap<String, PtolemyModule>();
+    /**
+     * The resolved interface to the implementation class mappings.
+     */
+    private HashMap<String, PtolemyModule> _interfaceToImplementationMap = new HashMap<String, PtolemyModule>();
 }

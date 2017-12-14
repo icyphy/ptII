@@ -64,7 +64,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (eal)
  */
 @SuppressWarnings("serial")
-public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener {
+public class OpenInstanceDialog extends PtolemyDialog
+        implements ChangeListener {
 
     /** Construct a dialog that presents the parameters as a table. Each row of the
      *  table corresponds to one parameter. The table shows the expression and its
@@ -76,8 +77,8 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
      *  @param configuration The configuration to use to open the help screen
      *   (or null if help is not supported).
      */
-    public OpenInstanceDialog(DialogTableau tableau, Frame owner,
-            Entity target, Configuration configuration) {
+    public OpenInstanceDialog(DialogTableau tableau, Frame owner, Entity target,
+            Configuration configuration) {
         super("Instance: " + target.getFullName(), tableau, owner, target,
                 configuration);
 
@@ -101,8 +102,8 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
         } else if (height > 256) {
             height = 256;
         }
-        _parameterTable.setPreferredScrollableViewportSize(new Dimension(600,
-                height));
+        _parameterTable
+                .setPreferredScrollableViewportSize(new Dimension(600, height));
 
         // Initialize the displayed column widths.
         _initColumnSizes();
@@ -164,8 +165,8 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
      */
     @Override
     protected URL _getHelpURL() {
-        URL doc = getClass().getClassLoader().getResource(
-                "doc/openInstanceHelp.htm");
+        URL doc = getClass().getClassLoader()
+                .getResource("doc/openInstanceHelp.htm");
         return doc;
     }
 
@@ -327,8 +328,8 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
 
     /** Default renderer for table cells.
      */
-    private class StringCellRenderer extends JLabel implements
-    TableCellRenderer {
+    private class StringCellRenderer extends JLabel
+            implements TableCellRenderer {
         public StringCellRenderer() {
             super();
         }

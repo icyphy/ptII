@@ -224,10 +224,10 @@ public class HTVQEncode extends Transformer {
         _blocks = input.get(0, _blockCount);
 
         for (j = 0; j < _blockCount; j++) {
-            _codewords[j] = new IntToken(
-                    _encode(IntegerMatrixMath
-                            .fromMatrixToArray(((IntMatrixToken) _blocks[j])
-                                    .intMatrix()), _blockWidth * _blockHeight));
+            _codewords[j] = new IntToken(_encode(
+                    IntegerMatrixMath.fromMatrixToArray(
+                            ((IntMatrixToken) _blocks[j]).intMatrix()),
+                    _blockWidth * _blockHeight));
         }
 
         output.send(0, _codewords, _blockCount);
@@ -267,9 +267,8 @@ public class HTVQEncode extends Transformer {
                 } catch (FileNotFoundException e) {
                     System.err.println("HTVQEncode: " + "file not found: " + e);
                 } catch (IOException e) {
-                    throw new IllegalActionException(
-                            "HTVQEncode: error reading" + " input file: "
-                                    + e.getMessage());
+                    throw new IllegalActionException("HTVQEncode: error reading"
+                            + " input file: " + e.getMessage());
                 }
             }
 
@@ -287,8 +286,8 @@ public class HTVQEncode extends Transformer {
                     _codeBook[i][j] = new int[size];
 
                     if (_fullRead(source, temp) != size) {
-                        throw new IllegalActionException("Error reading "
-                                + "codebook file!");
+                        throw new IllegalActionException(
+                                "Error reading " + "codebook file!");
                     }
 
                     for (x = 0; x < size; x++) {
@@ -300,8 +299,8 @@ public class HTVQEncode extends Transformer {
 
                 // read in the lookup table.
                 if (_fullRead(source, temp) != 65536) {
-                    throw new IllegalActionException("Error reading "
-                            + "codebook file!");
+                    throw new IllegalActionException(
+                            "Error reading " + "codebook file!");
                 }
 
                 for (x = 0; x < 65536; x++) {
@@ -519,8 +518,8 @@ public class HTVQEncode extends Transformer {
         int x = 0;
 
         if (length < 2) {
-            throw new RuntimeException("Vector length of " + length
-                    + "must be greater than 1");
+            throw new RuntimeException(
+                    "Vector length of " + length + "must be greater than 1");
         }
 
         while (length > 2) {

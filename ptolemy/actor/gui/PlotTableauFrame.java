@@ -87,8 +87,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (cxh)
  */
 @SuppressWarnings("serial")
-public class PlotTableauFrame extends TableauFrame implements Printable,
-ImageExportable {
+public class PlotTableauFrame extends TableauFrame
+        implements Printable, ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -340,8 +340,7 @@ ImageExportable {
             // is only one configuration, or that if there are multiple configurations
             // in this execution, that the first one will determine whether PDF
             // export is provided.
-            Configuration configuration = (Configuration) Configuration
-                    .configurations().get(0);
+            Configuration configuration = Configuration.configurations().get(0);
             // NOTE: Configuration should not be null, but just in case:
             if (configuration != null) {
                 // Deal with the PDF Action first.
@@ -361,9 +360,7 @@ ImageExportable {
                             _exportPDFAction = (AbstractAction) exportPDFActionConstructor
                                     .newInstance(this);
                         } catch (Throwable throwable) {
-                            throw new InternalErrorException(
-                                    null,
-                                    throwable,
+                            throw new InternalErrorException(null, throwable,
                                     "Failed to construct export PDF class \""
                                             + exportPDFActionClassName
                                             + "\", which was read from the configuration.");
@@ -375,9 +372,9 @@ ImageExportable {
             // We do not want to abort at this point because the worst
             // case is that we will have no Export PDF in the menu.
             // That is better than preventing the user from opening a model.
-            System.err
-            .println("Warning: Tried to create Export PDF menu item, but failed: "
-                    + ex);
+            System.err.println(
+                    "Warning: Tried to create Export PDF menu item, but failed: "
+                            + ex);
         }
 
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
@@ -457,8 +454,8 @@ ImageExportable {
             }
         }
 
-        fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                "plot.eps"));
+        fileDialog.setSelectedFile(
+                new File(fileDialog.getCurrentDirectory(), "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
 
@@ -470,9 +467,9 @@ ImageExportable {
                 fout = new FileOutputStream(file);
                 plot.export(fout);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error exporting plot to '"
-                        + file + "': " + ex, "Ptolemy II Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Error exporting plot to '" + file + "': " + ex,
+                        "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             } finally {
                 if (fout != null) {
                     try {
@@ -495,7 +492,7 @@ ImageExportable {
                 "PlotTableauFrame is a plot in a top-level window.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.",
-                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Write the plot to the specified file in PlotML syntax.
@@ -552,8 +549,8 @@ ImageExportable {
                 fileDialog.setDialogTitle("Specify a file to write to.");
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
-                fileDialog.addChoosableFileFilter(new ExtensionFilenameFilter(
-                        extensions));
+                fileDialog.addChoosableFileFilter(
+                        new ExtensionFilenameFilter(extensions));
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);
@@ -567,13 +564,12 @@ ImageExportable {
                     String currentWorkingDirectory = StringUtilities
                             .getProperty("user.dir");
                     if (currentWorkingDirectory != null) {
-                        fileDialog.setCurrentDirectory(new File(
-                                currentWorkingDirectory));
+                        fileDialog.setCurrentDirectory(
+                                new File(currentWorkingDirectory));
                     }
                 }
 
-                int returnVal = fileDialog.showDialog(
-                        PlotTableauFrame.this,
+                int returnVal = fileDialog.showDialog(PlotTableauFrame.this,
                         "Export "
                                 + _formatName.toUpperCase(Locale.getDefault()));
 
@@ -583,12 +579,12 @@ ImageExportable {
 
                     if (file.getName().indexOf(".") == -1) {
                         // If the user has not given the file an extension, add it
-                        file = new File(file.getAbsolutePath() + "."
-                                + _formatName);
+                        file = new File(
+                                file.getAbsolutePath() + "." + _formatName);
                     }
                     if (file.exists()) {
-                        if (!MessageHandler.yesNoQuestion("Overwrite "
-                                + file.getName() + "?")) {
+                        if (!MessageHandler.yesNoQuestion(
+                                "Overwrite " + file.getName() + "?")) {
                             return;
                         }
                     }
@@ -606,14 +602,13 @@ ImageExportable {
                     // FIXME: We don't do the right thing with PNG files.
                     // It just opens in a text editor.
                     // _read(file.toURI().toURL());
-                    MessageHandler.message("Image file exported to "
-                            + file.getName());
+                    MessageHandler.message(
+                            "Image file exported to " + file.getName());
                 }
             } catch (Exception ex) {
-                MessageHandler.error(
-                        "Export to "
-                                + _formatName.toUpperCase(Locale.getDefault())
-                                + " failed", ex);
+                MessageHandler.error("Export to "
+                        + _formatName.toUpperCase(Locale.getDefault())
+                        + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }
@@ -639,9 +634,9 @@ ImageExportable {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null, "Format Exception:\n"
-                        + exception.toString(), "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "Format Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta
@@ -675,9 +670,9 @@ ImageExportable {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                JOptionPane.showMessageDialog(null, "Special Menu Exception:\n"
-                        + exception.toString(), "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "Special Menu Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
 
             // NOTE: The following should not be needed, but there jdk1.3beta

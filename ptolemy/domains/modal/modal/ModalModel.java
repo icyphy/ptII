@@ -149,8 +149,8 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public ModalModel(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public ModalModel(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -213,19 +213,20 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 try {
                     Class.forName(className);
                 } catch (ClassNotFoundException e) {
-                    if (className
-                            .equals("ptolemy.domains.modal.kernel.FSMDirector")) {
+                    if (className.equals(
+                            "ptolemy.domains.modal.kernel.FSMDirector")) {
                         className = "ptolemy.domains.modal.kernel.FSMDirector";
                         try {
                             Class.forName(className);
                         } catch (ClassNotFoundException e2) {
                             throw new IllegalActionException(this, null, e2,
                                     "Invalid directorClass. \"" + className
-                                    + "\".");
+                                            + "\".");
                         }
                     } else {
                         throw new IllegalActionException(this, null, e,
-                                "Invalid directorClass. \"" + className + "\".");
+                                "Invalid directorClass. \"" + className
+                                        + "\".");
                     }
                 }
 
@@ -256,9 +257,8 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                                     .getAttribute("controllerName");
                             newControllerName.setExpression("_Controller");
                         } catch (Exception e) {
-                            throw new IllegalActionException(
-                                    "Director class \"" + newDirectorClass
-                                    + "\" cannot be used "
+                            throw new IllegalActionException("Director class \""
+                                    + newDirectorClass + "\" cannot be used "
                                     + "because it does not have a "
                                     + "\"controllerName\" attribute.");
                         }
@@ -278,7 +278,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                             // support multirate firing in order for this to work.
                             if (newDirector.supportMultirateFiring()
                                     && executiveDirector
-                                    .supportMultirateFiring()) {
+                                            .supportMultirateFiring()) {
                                 getController().setSupportMultirate(true);
                             }
                         }
@@ -375,9 +375,10 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             for (TypedActor actor : entityList(Refinement.class)) {
                 // FindBugs: Using pointer equality to compare _controller (a FSMActor)
                 // with actor, which is a Refinement)
-                if (!activeRefinements.contains(actor) /*&& actor != _controller*/) {
-                    if (MessageHandler
-                            .yesNoQuestion("Unused state refinement in modal model: "
+                if (!activeRefinements
+                        .contains(actor) /*&& actor != _controller*/) {
+                    if (MessageHandler.yesNoQuestion(
+                            "Unused state refinement in modal model: "
                                     + actor.getFullName() + ". Remove it?")) {
                         ((ComponentEntity) actor).setContainer(null);
                     }
@@ -580,13 +581,14 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Initialize the model.
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.modal.modal.ModalModel");
 
-        stateDependentCausality = new Parameter(this, "stateDependentCausality");
+        stateDependentCausality = new Parameter(this,
+                "stateDependentCausality");
         stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
         stateDependentCausality.setExpression("false");
 
@@ -598,7 +600,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         // Whether the controller does conservative analysis or not should
         // depend on the parameter of this actor.
         _controller.stateDependentCausality
-        .setExpression("stateDependentCausality");
+                .setExpression("stateDependentCausality");
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
@@ -639,20 +641,21 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             // dropped into a blank editor. Model designers need to configure
             // it if FSMDirector is not the desired director.
             directorClass
-            .setExpression("ptolemy.domains.modal.kernel.FSMDirector");
+                    .setExpression("ptolemy.domains.modal.kernel.FSMDirector");
         }
 
         // Create a more reasonable default icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:red\"/>\n"
-                + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
-                + "height=\"36\" style=\"fill:lightgrey\"/>\n"
-                + "<ellipse cx=\"0\" cy=\"0\"" + " rx=\"15\" ry=\"10\"/>\n"
-                + "<circle cx=\"-15\" cy=\"0\""
-                + " r=\"5\" style=\"fill:white\"/>\n"
-                + "<circle cx=\"15\" cy=\"0\""
-                + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                        + "height=\"40\" style=\"fill:red\"/>\n"
+                        + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
+                        + "height=\"36\" style=\"fill:lightgrey\"/>\n"
+                        + "<ellipse cx=\"0\" cy=\"0\""
+                        + " rx=\"15\" ry=\"10\"/>\n"
+                        + "<circle cx=\"-15\" cy=\"0\""
+                        + " r=\"5\" style=\"fill:white\"/>\n"
+                        + "<circle cx=\"15\" cy=\"0\""
+                        + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
 
     }
 

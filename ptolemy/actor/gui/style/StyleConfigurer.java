@@ -104,7 +104,8 @@ public class StyleConfigurer extends Query implements QueryListener {
             _parameterStyles[3] = new EditableChoiceStyle(container,
                     "EditableChoice");
             _parameterStyles[4] = new TextStyle(container, "Text");
-            _parameterStyles[5] = new FileChooserStyle(container, "FileChooser");
+            _parameterStyles[5] = new FileChooserStyle(container,
+                    "FileChooser");
             _parameterStyles[6] = new NotEditableLineStyle(container, "Fixed");
             _parameterStyles[7] = new HiddenStyle(container, "Hidden");
         } catch (NameDuplicationException ex) {
@@ -123,8 +124,8 @@ public class StyleConfigurer extends Query implements QueryListener {
 
             // Get the current style.
             boolean foundOne = false;
-            Iterator styles = ((NamedObj) param).attributeList(
-                    ParameterEditorStyle.class).iterator();
+            Iterator styles = ((NamedObj) param)
+                    .attributeList(ParameterEditorStyle.class).iterator();
             ParameterEditorStyle foundStyle = null;
 
             while (styles.hasNext()) {
@@ -150,8 +151,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                 // Reduce the list of parameters
                 for (int i = 0; i < _parameterStyles.length
                         && _parameterStyles[i] != null; i++) {
-                    if (foundOne
-                            && _parameterStyles[i].getClass() == foundStyle
+                    if (foundOne && _parameterStyles[i].getClass() == foundStyle
                             .getClass()) {
                         defaultIndex = count;
 
@@ -209,7 +209,8 @@ public class StyleConfigurer extends Query implements QueryListener {
             ParameterEditorStyle found = null;
 
             for (int i = 0; i < _parameterStyles.length && found == null; i++) {
-                if (getStringValue(name).equals(_parameterStyles[i].getName())) {
+                if (getStringValue(name)
+                        .equals(_parameterStyles[i].getName())) {
                     found = _parameterStyles[i];
                 }
             }
@@ -229,8 +230,8 @@ public class StyleConfigurer extends Query implements QueryListener {
 
                 ParameterEditorStyle style = (ParameterEditorStyle) styles
                         .next();
-                moml.append("<deleteProperty name=\"" + style.getName()
-                        + "\"/>\n");
+                moml.append(
+                        "<deleteProperty name=\"" + style.getName() + "\"/>\n");
             }
 
             if (foundOne) {

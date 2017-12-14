@@ -123,7 +123,8 @@ public class Scale2D extends GRTransform2D {
      *  such an exception.
      */
     @Override
-    protected void _applyTransform(Figure figure) throws IllegalActionException {
+    protected void _applyTransform(Figure figure)
+            throws IllegalActionException {
         double scaleFactorXValue = 1.0;
         double scaleFactorYValue = 1.0;
 
@@ -150,8 +151,8 @@ public class Scale2D extends GRTransform2D {
             _oldScaleFactorX = scaleFactorXValue;
             _oldScaleFactorY = scaleFactorYValue;
 
-            AffineTransform inputTransform = AffineTransform.getScaleInstance(
-                    scaleFactorXValue, scaleFactorYValue);
+            AffineTransform inputTransform = AffineTransform
+                    .getScaleInstance(scaleFactorXValue, scaleFactorYValue);
 
             figure.transform(inputTransform);
         }

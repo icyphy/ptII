@@ -121,8 +121,8 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CSPDirector() throws IllegalActionException,
-    NameDuplicationException {
+    public CSPDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -133,8 +133,8 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
-    public CSPDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public CSPDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -334,8 +334,8 @@ public class CSPDirector extends CompositeProcessDirector {
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
-    private String _receiverStatus() throws InvalidStateException,
-    IllegalActionException {
+    private String _receiverStatus()
+            throws InvalidStateException, IllegalActionException {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor) getContainer();
 
@@ -372,7 +372,8 @@ public class CSPDirector extends CompositeProcessDirector {
                         result.append("   on channel " + channel + ":\n");
                         for (int copy = 0; copy < destinations[channel].length; copy++) {
                             result.append("-- to "
-                                    + _receiverStatus(destinations[channel][copy])
+                                    + _receiverStatus(
+                                            destinations[channel][copy])
                                     + "\n");
                         }
                     }
@@ -460,8 +461,8 @@ public class CSPDirector extends CompositeProcessDirector {
             }
         } else if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
             // Report deadlock.
-            Parameter suppress = (Parameter) getContainer().getAttribute(
-                    "SuppressDeadlockReporting", Parameter.class);
+            Parameter suppress = (Parameter) getContainer()
+                    .getAttribute("SuppressDeadlockReporting", Parameter.class);
             if (suppress == null
                     || !(suppress.getToken() instanceof BooleanToken)
                     || !((BooleanToken) suppress.getToken()).booleanValue()) {
@@ -487,8 +488,8 @@ public class CSPDirector extends CompositeProcessDirector {
         if (_delayedActorList.size() > 0) {
             return ((DelayListLink) _delayedActorList.get(0))._resumeTime;
         } else {
-            throw new InvalidStateException("CSPDirector.getNextTime(): "
-                    + " called in error.");
+            throw new InvalidStateException(
+                    "CSPDirector.getNextTime(): " + " called in error.");
         }
     }
 

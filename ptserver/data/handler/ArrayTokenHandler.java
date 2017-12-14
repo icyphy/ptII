@@ -66,8 +66,8 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
 
         for (int index = 0; index < size; index++) {
             Token elementToken = token.getElement(index);
-            TokenParser.getInstance()
-            .convertToBytes(elementToken, outputStream);
+            TokenParser.getInstance().convertToBytes(elementToken,
+                    outputStream);
         }
     }
 
@@ -81,15 +81,15 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
      */
     @Override
     public ArrayToken convertToToken(DataInputStream inputStream,
-            Class<? extends ArrayToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends ArrayToken> tokenType)
+            throws IOException, IllegalActionException {
 
         int size = inputStream.readInt();
         Token[] tokens = new Token[size];
 
         for (int index = 0; index < size; index++) {
-            tokens[index] = TokenParser.getInstance().convertToToken(
-                    inputStream);
+            tokens[index] = TokenParser.getInstance()
+                    .convertToToken(inputStream);
         }
 
         return new ArrayToken(tokens);

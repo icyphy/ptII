@@ -50,7 +50,8 @@ public class JSAccessor extends NamedProgramCodeGeneratorAdapter {
      */
     public JSAccessor(org.terraswarm.accessor.JSAccessor actor) {
         super(actor);
-        System.out.println("###### ctor: ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/JSAccessor.java");
+        System.out.println(
+                "###### ctor: ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/JSAccessor.java");
     }
 
     /** Generate the initialize code. Declare the variable state.
@@ -65,7 +66,8 @@ public class JSAccessor extends NamedProgramCodeGeneratorAdapter {
 
         //org.terraswarm.accessor.JSAccessor actor = (org.terraswarm.accessor.JSAccessor) getComponent();
 
-        System.out.println("###### generateInitializeCode: ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/JSAccessor.java");
+        System.out.println(
+                "###### generateInitializeCode: ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/JSAccessor.java");
         CodeStream codeStream = _templateParser.getCodeStream();
         return processCode(codeStream.toString());
     }

@@ -95,7 +95,9 @@ public class ActorIndex {
             ActorModuleInitializer.initializeInjector();
 
             // Read classesFileName and populate the classes Set
-            classesReader = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(classesFileName), java.nio.charset.Charset.defaultCharset()));
+            classesReader = new BufferedReader(new java.io.InputStreamReader(
+                    new java.io.FileInputStream(classesFileName),
+                    java.nio.charset.Charset.defaultCharset()));
             String className;
             while ((className = classesReader.readLine()) != null) {
                 System.out.println("Going to index " + className);
@@ -104,7 +106,9 @@ public class ActorIndex {
 
             // Read modelsFileName and parse each model, looking
             // for classes in which we are interested.
-            modelReader = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(modelsFileName), java.nio.charset.Charset.defaultCharset()));
+            modelReader = new BufferedReader(new java.io.InputStreamReader(
+                    new java.io.FileInputStream(modelsFileName),
+                    java.nio.charset.Charset.defaultCharset()));
             String modelName;
             MoMLParser parser = new MoMLParser();
 
@@ -147,16 +151,16 @@ public class ActorIndex {
                 try {
                     classesReader.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close " + classesReader + " "
-                            + ex);
+                    System.out.println(
+                            "Failed to close " + classesReader + " " + ex);
                 }
             }
             if (modelReader != null) {
                 try {
                     modelReader.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close " + modelReader + " "
-                            + ex);
+                    System.out.println(
+                            "Failed to close " + modelReader + " " + ex);
                 }
             }
         }
@@ -181,15 +185,14 @@ public class ActorIndex {
                 // Determine the relative path to $PTII from this
                 // file.  We need this so that we can link to the models.
                 String canonicalOutputFileName = new File(outputFileName)
-                .getCanonicalPath().replace('\\', '/');
+                        .getCanonicalPath().replace('\\', '/');
 
                 // Get PTII as C:/cxh/ptII
                 String ptII = null;
                 try {
-                    ptII = new URI(
-                            StringUtilities
-                            .getProperty("ptolemy.ptII.dirAsURL"))
-                    .normalize().getPath();
+                    ptII = new URI(StringUtilities
+                            .getProperty("ptolemy.ptII.dirAsURL")).normalize()
+                                    .getPath();
                     // Under Windows, convert /C:/foo/bar to C:/foo/bar
                     ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
                 } catch (URISyntaxException ex) {
@@ -205,8 +208,8 @@ public class ActorIndex {
                 if (canonicalOutputFileName.startsWith(ptII)) {
                     // If the canonical output file name starts with ptII
                     // we then generate a relative path
-                    String relativeOutputFileName = StringUtilities.substitute(
-                            canonicalOutputFileName, ptII, "");
+                    String relativeOutputFileName = StringUtilities
+                            .substitute(canonicalOutputFileName, ptII, "");
                     StringBuffer relativePathBuffer = new StringBuffer();
                     int index = 0;
                     while (relativeOutputFileName.indexOf('/', index) != -1) {
@@ -239,8 +242,7 @@ public class ActorIndex {
                         + relativePath + "doc/default.css\""
                         + "rel=\"stylesheet\" type=\"text/css\">\n"
                         + "</head>\n<body>\n" + "<h2>" + actorClassName
-                        + "</h2>\n"
-                        + "Below are demonstration models that use "
+                        + "</h2>\n" + "Below are demonstration models that use "
                         + actorClassName + "\n<ul>\n");
 
                 // Loop through all the models that use this actor
@@ -250,8 +252,8 @@ public class ActorIndex {
                     if (model.startsWith("$CLASSPATH")) {
                         model = model.substring(11);
                     }
-                    writer.write("<li><a href=\"" + relativePath + model
-                            + "\">" + model + "</a>\n");
+                    writer.write("<li><a href=\"" + relativePath + model + "\">"
+                            + model + "</a>\n");
                 }
                 writer.write("</ul>\n</body>\n</html>\n");
             } finally {

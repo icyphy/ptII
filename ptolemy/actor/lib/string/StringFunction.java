@@ -97,9 +97,10 @@ public class StringFunction extends Transformer {
         function.addChoice("trim");
         _function = _TRIM;
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"80\" height=\"30\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                        + "width=\"80\" height=\"30\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

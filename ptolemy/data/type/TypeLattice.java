@@ -233,7 +233,7 @@ public class TypeLattice {
             // _lattice.compare() on ptolemy.data package performance... Run
             // ptolemy/data/type/test/performance.xml before and after...(zk)
             if (//false &&
-                    (val = _getCachedTypeComparisonResult(key.toString())) != null) {
+            (val = _getCachedTypeComparisonResult(key.toString())) != null) {
                 return val;
             }
 
@@ -598,12 +598,11 @@ public class TypeLattice {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t2Rep)
                                 && _basicLattice
-                                .containsNodeWeight(elementType)) {
+                                        .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
-                            return new ArrayType(
-                                    (Type) _basicLattice.leastUpperBound(
-                                            elementType, t2Rep));
+                            return new ArrayType((Type) _basicLattice
+                                    .leastUpperBound(elementType, t2Rep));
                         } else {
                             // t2 is a user type (has no representative in the
                             // basic lattice). Arrays of this type are not supported.
@@ -649,12 +648,11 @@ public class TypeLattice {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t1Rep)
                                 && _basicLattice
-                                .containsNodeWeight(elementType)) {
+                                        .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
-                            return new ArrayType(
-                                    (Type) _basicLattice.leastUpperBound(
-                                            elementType, t1Rep));
+                            return new ArrayType((Type) _basicLattice
+                                    .leastUpperBound(elementType, t1Rep));
                         } else {
                             // t1 is a user type (has no representative in the
                             // basic lattice). Arrays of this type are not supported.
@@ -760,19 +758,19 @@ public class TypeLattice {
             _basicLattice = new DirectedAcyclicGraph();
 
             StructuredType arrayRep = new ArrayType(BaseType.UNKNOWN)
-            ._getRepresentative();
+                    ._getRepresentative();
 
             String[] labels = new String[0];
             Type[] types = new Type[0];
             StructuredType recordRep = new RecordType(labels, types)
-            ._getRepresentative();
+                    ._getRepresentative();
             StructuredType unionRep = new UnionType(labels, types)
-            ._getRepresentative();
+                    ._getRepresentative();
 
             // FindBugs: Return value of FunctionType._getRepresentative() ignored, but method has no side effect
             /*StructuredType functionRep = *//*new ptolemy.data.type.FunctionType(
-                    new ptolemy.data.type.Type[0],
-                    ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();*/
+                                             new ptolemy.data.type.Type[0],
+                                             ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();*/
 
             _basicLattice.addNodeWeight(BaseType.BOOLEAN);
             _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
@@ -905,7 +903,8 @@ public class TypeLattice {
         /** Return the result for the types that have the given two
          * indexes as hashes.
          */
-        private static final Integer _getCachedTypeComparisonResult(String key) {
+        private static final Integer _getCachedTypeComparisonResult(
+                String key) {
             return _compareCache.get(key);
         }
 

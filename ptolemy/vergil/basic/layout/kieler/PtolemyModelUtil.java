@@ -114,7 +114,8 @@ public final class PtolemyModelUtil {
             // Relative locatables may be connected to a reference object.
             Locatable locatable = KielerLayoutUtil.getLocation(namedObj);
             if (locatable instanceof RelativeLocation) {
-                NamedObj referenceObj = _getReferencedObj((RelativeLocation) locatable);
+                NamedObj referenceObj = _getReferencedObj(
+                        (RelativeLocation) locatable);
                 return referenceObj != null && _isConnected(referenceObj);
             }
         }

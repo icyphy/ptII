@@ -66,7 +66,8 @@ public class MappingConstraintReaderWriter {
     public static String readMappingFile(String filename) throws IOException {
         FileInputStream stream = new FileInputStream(filename);
         DataInputStream in = new DataInputStream(stream);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in, java.nio.charset.Charset.defaultCharset()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in,
+                java.nio.charset.Charset.defaultCharset()));
         String line;
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -86,7 +87,8 @@ public class MappingConstraintReaderWriter {
      * @param buffer constraints in a string.
      * @return a list of mapping constraints.
      */
-    public static LinkedList<Pair<String, String>> readConstraints(String buffer) {
+    public static LinkedList<Pair<String, String>> readConstraints(
+            String buffer) {
         LinkedList<Pair<String, String>> constraintList = new LinkedList<Pair<String, String>>();
         String[] constraints = buffer.split("\n");
         for (String line : constraints) {

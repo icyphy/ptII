@@ -108,8 +108,9 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
         code.append("<html>" + _eol);
 
         code.append("<head>" + _eol);
-        code.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"
-                + _eol);
+        code.append(
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"
+                        + _eol);
         code.append("<title>" + toplevel().getName() + "</title>" + _eol);
         code.append("</head>" + _eol);
 

@@ -86,11 +86,11 @@ public class DesignPatternGetMoMLAction {
                 }
                 typeParameter.setExpression("immediate");
                 try {
-                    buffer.write(StringUtilities.getIndentPrefix(1)
-                            + "<group>\n");
+                    buffer.write(
+                            StringUtilities.getIndentPrefix(1) + "<group>\n");
                     before.exportMoML(buffer, 2);
-                    buffer.write(StringUtilities.getIndentPrefix(1)
-                            + "</group>\n");
+                    buffer.write(
+                            StringUtilities.getIndentPrefix(1) + "</group>\n");
                 } finally {
                     if (oldType == null) {
                         typeParameter.setContainer(null);
@@ -119,12 +119,10 @@ public class DesignPatternGetMoMLAction {
                         if (expression != null) {
                             buffer.write(StringUtilities
                                     .getIndentPrefix(extraIndent + 1)
-                                    + "<property name=\""
-                                    + parameterName
+                                    + "<property name=\"" + parameterName
                                     + "\" value=\"" + expression + "\">\n");
-                            buffer.write(StringUtilities
-                                    .getIndentPrefix(extraIndent + 1)
-                                    + "</property>\n");
+                            buffer.write(StringUtilities.getIndentPrefix(
+                                    extraIndent + 1) + "</property>\n");
                         }
                     }
                 }
@@ -139,19 +137,19 @@ public class DesignPatternGetMoMLAction {
                     boolean isInput = ioPort.isInput();
                     boolean isOutput = ioPort.isOutput();
                     if (isInput) {
-                        buffer.write(StringUtilities
-                                .getIndentPrefix(extraIndent + 2)
-                                + "<property name=\"input\"/>\n");
+                        buffer.write(
+                                StringUtilities.getIndentPrefix(extraIndent + 2)
+                                        + "<property name=\"input\"/>\n");
                     }
                     if (isOutput) {
-                        buffer.write(StringUtilities
-                                .getIndentPrefix(extraIndent + 2)
-                                + "<property name=\"output\"/>\n");
+                        buffer.write(
+                                StringUtilities.getIndentPrefix(extraIndent + 2)
+                                        + "<property name=\"output\"/>\n");
                     }
                     if (ioPort.isMultiport()) {
-                        buffer.write(StringUtilities
-                                .getIndentPrefix(extraIndent + 2)
-                                + "<property name=\"multiport\"/>\n");
+                        buffer.write(
+                                StringUtilities.getIndentPrefix(extraIndent + 2)
+                                        + "<property name=\"multiport\"/>\n");
                     }
                 }
                 attributes = port.attributeList();
@@ -169,7 +167,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute != null
                         && ((BooleanToken) ((Parameter) attribute).getToken())
-                        .booleanValue()) {
+                                .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -179,7 +177,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute != null
                         && ((BooleanToken) ((Parameter) attribute).getToken())
-                        .booleanValue()) {
+                                .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -192,7 +190,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute == null
                         || !((BooleanToken) ((Parameter) attribute).getToken())
-                        .booleanValue()) {
+                                .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -202,7 +200,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute == null
                         || !((BooleanToken) ((Parameter) attribute).getToken())
-                        .booleanValue()) {
+                                .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -231,11 +229,11 @@ public class DesignPatternGetMoMLAction {
                 }
                 typeParameter.setExpression("delayed");
                 try {
-                    buffer.write(StringUtilities.getIndentPrefix(1)
-                            + "<group>\n");
+                    buffer.write(
+                            StringUtilities.getIndentPrefix(1) + "<group>\n");
                     after.exportMoML(buffer, 2);
-                    buffer.write(StringUtilities.getIndentPrefix(1)
-                            + "</group>\n");
+                    buffer.write(
+                            StringUtilities.getIndentPrefix(1) + "</group>\n");
                 } finally {
                     if (oldType == null) {
                         typeParameter.setContainer(null);

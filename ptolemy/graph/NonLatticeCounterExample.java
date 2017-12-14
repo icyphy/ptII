@@ -85,7 +85,8 @@ public class NonLatticeCounterExample {
      *  @param node1 The first node weight.
      *  @param node2 The second node weight.
      */
-    public NonLatticeCounterExample(BoundType bound, Object node1, Object node2) {
+    public NonLatticeCounterExample(BoundType bound, Object node1,
+            Object node2) {
         _exampleType = getExampleTypeFromBoundType(bound);
         _nodeList = new ArrayList();
         _nodeList.add(node1);

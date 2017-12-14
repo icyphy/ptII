@@ -132,8 +132,8 @@ public class Case extends ModalModel {
             if (_controller.getRelation(controlValue) == null) {
                 Transition transition = (Transition) _controller
                         .newRelation(controlValue);
-                transition.guardExpression.setExpression("control == "
-                        + controlValue);
+                transition.guardExpression
+                        .setExpression("control == " + controlValue);
                 transition.refinementName.setExpression(controlValue);
                 transition.preemptive.setToken(BooleanToken.TRUE);
                 if (controlValue.equals("default")) {
@@ -166,8 +166,8 @@ public class Case extends ModalModel {
 
     /** Initialize the model with a single state.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         if (!_printedDeprecatedMessage) {
             _printedDeprecatedMessage = true;
             System.out.println("Warning: " + getFullName()
@@ -194,7 +194,8 @@ public class Case extends ModalModel {
         control.setExpression("true");
         ParameterPort port = control.getPort();
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(port,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         // Create the default refinement.

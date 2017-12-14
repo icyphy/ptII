@@ -55,8 +55,8 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class JSPlotterAttribute extends WebContent implements
-WebExportable {
+public abstract class JSPlotterAttribute extends WebContent
+        implements WebExportable {
 
     /** Create an instance for each parameter.
      *  @param container The container.
@@ -92,8 +92,8 @@ WebExportable {
         eventsJSON.setDisplayName("Input event series in JSON format");
 
         saveDataToFile = new Parameter(this, "saveDataToFile");
-        saveDataToFile.setDisplayName("Save data and event series to a "
-                + "separate file");
+        saveDataToFile.setDisplayName(
+                "Save data and event series to a " + "separate file");
         saveDataToFile.setExpression("false");
         saveDataToFile.setTypeEquals(BaseType.BOOLEAN);
 
@@ -371,15 +371,15 @@ WebExportable {
         _config.put("outputDataFile", outputDataFile.stringValue().trim());
 
         _config.put("graphTitle", displayText.stringValue().trim());
-        _config.put("graphWidth", ((IntToken) graphWidth.getToken()).toString()
-                .trim());
-        _config.put("graphHeight", ((IntToken) graphHeight.getToken())
-                .toString().trim());
-        _config.put("autoResize", ((BooleanToken) autoResize.getToken())
-                .toString().trim());
+        _config.put("graphWidth",
+                ((IntToken) graphWidth.getToken()).toString().trim());
+        _config.put("graphHeight",
+                ((IntToken) graphHeight.getToken()).toString().trim());
+        _config.put("autoResize",
+                ((BooleanToken) autoResize.getToken()).toString().trim());
 
-        _config.put("enableLegend", ((BooleanToken) enableLegend.getToken())
-                .toString().trim());
+        _config.put("enableLegend",
+                ((BooleanToken) enableLegend.getToken()).toString().trim());
         _config.put("horizontalAlign", horizontalAlign.stringValue().trim());
         _config.put("verticalAlign", verticalAlign.stringValue().trim());
 
@@ -392,21 +392,22 @@ WebExportable {
 
         _config.put("eventsConnectWidth",
                 ((IntToken) eventsConnectWidth.getToken()).toString().trim());
-        _config.put("enableEventsMarker", ((BooleanToken) enableEventsMarker
-                .getToken()).toString().trim());
+        _config.put("enableEventsMarker",
+                ((BooleanToken) enableEventsMarker.getToken()).toString()
+                        .trim());
         _config.put("eventsMarkerRadius",
                 ((IntToken) eventsMarkerRadius.getToken()).toString().trim());
 
         _config.put("xAxisMode", xAxisMode.stringValue().trim());
         _config.put("drawVerticalGridLine",
                 ((BooleanToken) drawVerticalGridLine.getToken()).toString()
-                .trim());
+                        .trim());
         _config.put("xAxisTitle", xAxisTitle.stringValue().trim());
 
         _config.put("yAxisMode", yAxisMode.stringValue().trim());
         _config.put("drawHorizontalGridLine",
                 ((BooleanToken) drawHorizontalGridLine.getToken()).toString()
-                .trim());
+                        .trim());
         _config.put("yAxisTitle", yAxisTitle.stringValue().trim());
         return _config;
     }
@@ -433,8 +434,8 @@ WebExportable {
      */
     public String getHTMLPageContent() {
         StringBuffer pageContent = new StringBuffer();
-        pageContent
-        .append("<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n");
+        pageContent.append(
+                "<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n");
         pageContent.append(getHeaderContent());
         pageContent.append("\t</head>\n\n\t<body>\n");
         pageContent.append(getBodyContent());

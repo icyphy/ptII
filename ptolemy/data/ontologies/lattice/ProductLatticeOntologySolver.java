@@ -130,9 +130,8 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
             if (containedSolvers != null) {
                 for (LatticeOntologySolver innerSolver : containedSolvers) {
                     Ontology innerOntology = innerSolver.getOntology();
-                    if (innerOntology != null
-                            && innerOntology.getName().equals(
-                                    containedOntology.getName())) {
+                    if (innerOntology != null && innerOntology.getName()
+                            .equals(containedOntology.getName())) {
                         return innerSolver;
                     }
                 }
@@ -160,8 +159,8 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         List<LatticeOntologySolver> containedSolvers = getAllContainedOntologySolvers();
         if (containedSolvers != null) {
             for (LatticeOntologySolver innerSolver : containedSolvers) {
-                innerSolver
-                .setOntologySolverUtilities(productLatticeSolverUtilities);
+                innerSolver.setOntologySolverUtilities(
+                        productLatticeSolverUtilities);
             }
         }
 
@@ -170,7 +169,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         reset();
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
-
+        
         toplevelAdapter.reinitialize();
         if (containedSolvers != null) {
             for (LatticeOntologySolver innerSolver : containedSolvers) {
@@ -203,10 +202,10 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                     LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) innerSolver
                             .getAdapter(toplevel);
                     toplevelAdapter.reinitialize();
-                    toplevelAdapter._addDefaultConstraints(innerSolver
-                            ._getConstraintType());
-                    toplevelAdapter._setConnectionConstraintType(innerSolver
-                            ._getConstraintType());
+                    toplevelAdapter._addDefaultConstraints(
+                            innerSolver._getConstraintType());
+                    toplevelAdapter._setConnectionConstraintType(
+                            innerSolver._getConstraintType());
                 } catch (IllegalActionException e) {
                     throw new IllegalStateException("Could not reinitialize "
                             + "the adapters for the contained "
@@ -246,10 +245,10 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                     .attributeList(ActorConstraintsDefinitionAttribute.class);
             for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
                 if (((StringToken) adapterDefinitionAttribute.actorClassName
-                        .getToken()).stringValue().equals(
-                                component.getClass().getName())) {
-                    adapter = adapterDefinitionAttribute.createAdapter(
-                            (ComponentEntity) component, this);
+                        .getToken()).stringValue()
+                                .equals(component.getClass().getName())) {
+                    adapter = adapterDefinitionAttribute
+                            .createAdapter((ComponentEntity) component, this);
                     break;
                 }
             }

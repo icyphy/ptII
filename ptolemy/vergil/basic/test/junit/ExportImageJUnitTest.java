@@ -71,7 +71,7 @@ public class ExportImageJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-        .main("ptolemy.vergil.basic.test.junit.ExportImageJUnitTest");
+                .main("ptolemy.vergil.basic.test.junit.ExportImageJUnitTest");
     }
 
     /**
@@ -147,7 +147,8 @@ public class ExportImageJUnitTest {
             public void run() {
                 try {
                     imageDisplayModel[0] = ConfigurationApplication
-                            .openModelOrEntity("$CLASSPATH/ptolemy/actor/lib/image/test/auto/ImageReaderImageDisplay.xml");
+                            .openModelOrEntity(
+                                    "$CLASSPATH/ptolemy/actor/lib/image/test/auto/ImageReaderImageDisplay.xml");
                 } catch (Throwable throwable) {
                     throw new RuntimeException(throwable);
                 }
@@ -166,8 +167,7 @@ public class ExportImageJUnitTest {
                 public void run() {
                     try {
                         System.out.print(" " + formatName + " ");
-                        File imageFile = File.createTempFile(
-                                model[0].getName(),
+                        File imageFile = File.createTempFile(model[0].getName(),
                                 formatName.toLowerCase(Locale.getDefault()));
                         imageFile.deleteOnExit();
                         OutputStream out = null;
@@ -190,8 +190,8 @@ public class ExportImageJUnitTest {
                         ImageReader imageReader = (ImageReader) imageDisplayModel[0]
                                 .getEntity("ImageReader");
 
-                        imageReader.fileOrURL.setExpression(imageFile.toURI()
-                                .toURL().toString());
+                        imageReader.fileOrURL.setExpression(
+                                imageFile.toURI().toURL().toString());
                         if (!(model[0] instanceof TypedCompositeActor)) {
                             throw new RuntimeException(model[0].getFullName()
                                     + "is not a TypedCompositeActor? "
@@ -206,16 +206,16 @@ public class ExportImageJUnitTest {
 
                             }
                             if (!(imageDisplayModel[0] instanceof TypedCompositeActor)) {
-                                throw new RuntimeException(
-                                        imageDisplayModel[0].getFullName()
-                                                + "is not a TypedCompositeActor? "
-                                                + imageDisplayModel[0]
-                                                        .getClass());
+                                throw new RuntimeException(imageDisplayModel[0]
+                                        .getFullName()
+                                        + "is not a TypedCompositeActor? "
+                                        + imageDisplayModel[0].getClass());
                             } else {
                                 ((TypedCompositeActor) imageDisplayModel[0])
                                         .setManager(manager);
                                 ((TypedCompositeActor) imageDisplayModel[0])
-                                        .setModelErrorHandler(new BasicModelErrorHandler());
+                                        .setModelErrorHandler(
+                                                new BasicModelErrorHandler());
                                 manager.execute();
                             }
                         }
@@ -237,7 +237,7 @@ public class ExportImageJUnitTest {
             public void run() {
                 try {
                     ConfigurationApplication
-                    .closeModelWithoutSavingOrExiting(model[0]);
+                            .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

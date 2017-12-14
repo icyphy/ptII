@@ -98,8 +98,8 @@ public class JAIPNGWriter extends JAIWriter {
         IntToken[] initialArray = { new IntToken(0), new IntToken(0),
                 new IntToken(0) };
 
-        background = new Parameter(this, "background", new ArrayToken(
-                BaseType.INT, initialArray));
+        background = new Parameter(this, "background",
+                new ArrayToken(BaseType.INT, initialArray));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -225,8 +225,8 @@ public class JAIPNGWriter extends JAIWriter {
 
                 if (_setBackground) {
                     if (_valueArray.length < 1) {
-                        throw new IllegalActionException("Need "
-                                + "one value to set Transparency");
+                        throw new IllegalActionException(
+                                "Need " + "one value to set Transparency");
                     } else {
                         parametersGray.setBackgroundGray(_valueArray[0]);
                     }
@@ -244,8 +244,8 @@ public class JAIPNGWriter extends JAIWriter {
 
                 if (_setBackground) {
                     if (_valueArray.length < 3) {
-                        throw new IllegalActionException("Need "
-                                + "three values to set transparency");
+                        throw new IllegalActionException(
+                                "Need " + "three values to set transparency");
                     } else {
                         int[] RGBvalues = new int[3];
 

@@ -71,8 +71,8 @@ public class HomerLocation extends Parameter {
      *  @exception NameDuplicationException If the location already exist
      *  in that container.
      */
-    public HomerLocation(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public HomerLocation(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         super(container, HomerConstants.POSITION_NODE);
         setVisibility(Settable.NONE);
     }
@@ -139,8 +139,8 @@ public class HomerLocation extends Parameter {
      */
     public void setLocation(int x, int y, int width, int height) {
         try {
-            setToken(new IntMatrixToken(new int[] { x, y, width, height }, 1,
-                    4, MatrixToken.DO_NOT_COPY));
+            setToken(new IntMatrixToken(new int[] { x, y, width, height }, 1, 4,
+                    MatrixToken.DO_NOT_COPY));
         } catch (IllegalActionException e) {
             // matrix is non-null so this can't happen.
         }

@@ -78,7 +78,8 @@ abstract public class GRShape2D extends GRActor2D {
         rgbOutlineColor = new ColorAttribute(this, "rgbOutlineColor");
         rgbOutlineColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
 
-        outlineWidth = new Parameter(this, "outlineWidth", new DoubleToken(1.0));
+        outlineWidth = new Parameter(this, "outlineWidth",
+                new DoubleToken(1.0));
         outlineWidth.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -121,8 +122,8 @@ abstract public class GRShape2D extends GRActor2D {
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == rgbFillColor || attribute == rgbOutlineColor || attribute == outlineWidth)
-                && _viewScreen != null) {
+        if ((attribute == rgbFillColor || attribute == rgbOutlineColor
+                || attribute == outlineWidth) && _viewScreen != null) {
             _setAppearance(_figure);
         }
 

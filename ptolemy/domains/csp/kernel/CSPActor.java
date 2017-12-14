@@ -206,7 +206,8 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
                     return;
                 } else if (delta < 0.0) {
                     throw new IllegalActionException(this,
-                            "delay() called with a negative argument: " + delta);
+                            "delay() called with a negative argument: "
+                                    + delta);
                 } else {
                     _delayed = true;
                     director._actorDelayed(delta, this);
@@ -223,8 +224,8 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
                 }
             }
         } catch (InterruptedException ex) {
-            throw new TerminateProcessException("CSPActor interrupted "
-                    + "while delayed.");
+            throw new TerminateProcessException(
+                    "CSPActor interrupted " + "while delayed.");
         }
     }
 
@@ -324,8 +325,8 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
                 }
             }
         } catch (InterruptedException ex) {
-            throw new TerminateProcessException("CSPActor interrupted "
-                    + "while waiting for deadlock.");
+            throw new TerminateProcessException(
+                    "CSPActor interrupted " + "while waiting for deadlock.");
         }
     }
 

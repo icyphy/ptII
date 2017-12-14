@@ -65,7 +65,8 @@ public class LevelsFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         Histogram histogram = new Histogram(inPixels, width, height, 0, width);
 
         int i, j;
@@ -76,22 +77,27 @@ public class LevelsFilter extends WholeImageFilter {
 
             float low = lowLevel * 255;
             float high = highLevel * 255;
-            if (low == high)
+            if (low == high) {
                 high++;
-            for (i = 0; i < 3; i++) {
-                for (j = 0; j < 256; j++)
-                    lut[i][j] = PixelUtils.clamp((int) (255
-                            * (lowOutputLevel + (highOutputLevel - lowOutputLevel) * (j - low) / (high - low))));
             }
-        } else
+            for (i = 0; i < 3; i++) {
+                for (j = 0; j < 256; j++) {
+                    lut[i][j] = PixelUtils.clamp((int) (255 * (lowOutputLevel
+                            + (highOutputLevel - lowOutputLevel) * (j - low)
+                                    / (high - low))));
+                }
+            }
+        } else {
             lut = null;
+        }
 
         i = 0;
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 inPixels[i] = filterRGB(x, y, inPixels[i]);
                 i++;
             }
+        }
         lut = null;
 
         return inPixels;

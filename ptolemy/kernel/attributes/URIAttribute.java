@@ -92,7 +92,7 @@ public class URIAttribute extends SingletonAttribute {
 
     /** Clone the attribute into the specified workspace.  The
      *  resulting object has a null value for the value of the URI.
-
+    
      *  @param workspace The workspace for the cloned object.
      *  @return A new attribute.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -221,7 +221,8 @@ public class URIAttribute extends SingletonAttribute {
             // For example, a URL that has a space in it is not
             // a valid URI, the space must be quoted (converted) to %20
             try {
-                _value = new URI(url.getProtocol(), url.getFile(), url.getRef());
+                _value = new URI(url.getProtocol(), url.getFile(),
+                        url.getRef());
             } catch (URISyntaxException ex2) {
                 // Should not occur because a URL is a valid URI.
                 throw new InternalErrorException(this, ex2,

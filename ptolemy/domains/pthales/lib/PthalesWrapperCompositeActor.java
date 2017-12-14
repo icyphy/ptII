@@ -61,7 +61,8 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
 
     public PthalesWrapperCompositeActor() {
         super();
-        setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
+        setClassName(
+                "ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
     }
 
     /** Construct a PthalesWrapperCompositeActor in the specified workspace with
@@ -76,7 +77,8 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
 
     public PthalesWrapperCompositeActor(Workspace workspace) {
         super(workspace);
-        setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
+        setClassName(
+                "ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
     }
 
     /** Construct a PthalesWrapperCompositeActor with a name and a container.
@@ -99,7 +101,8 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
     public PthalesWrapperCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setClassName("ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
+        setClassName(
+                "ptolemy.domains.pthales.lib.PthalesWrapperCompositeActor");
     }
 
     /** Return a new receiver of flexible buffer size to interface with PN actors.

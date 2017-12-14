@@ -27,12 +27,14 @@ public final class SubtractComposite extends RGBComposite {
     }
 
     @Override
-    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
+    public CompositeContext createContext(ColorModel srcColorModel,
+            ColorModel dstColorModel, RenderingHints hints) {
         return new Context(extraAlpha, srcColorModel, dstColorModel);
     }
 
     static class Context extends RGBCompositeContext {
-        public Context(float alpha, ColorModel srcColorModel, ColorModel dstColorModel) {
+        public Context(float alpha, ColorModel srcColorModel,
+                ColorModel dstColorModel) {
             super(alpha, srcColorModel, dstColorModel);
         }
 
@@ -52,14 +54,17 @@ public final class SubtractComposite extends RGBComposite {
                 int dor, dog, dob;
 
                 dor = dir - sr;
-                if (dor < 0)
+                if (dor < 0) {
                     dor = 0;
+                }
                 dog = dig - sg;
-                if (dog < 0)
+                if (dog < 0) {
                     dog = 0;
+                }
                 dob = dib - sb;
-                if (dob < 0)
+                if (dob < 0) {
                     dob = 0;
+                }
 
                 float a = alpha * sa / 255f;
                 float ac = 1 - a;

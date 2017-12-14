@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating
 */
 public class UnscentedKalmanFilterSSM extends AbstractUnscentedKalmanFilter
-implements InferenceActor {
+        implements InferenceActor {
 
     /** Instantiate an unscented Kalman filter.
      *  @param container The container
@@ -94,8 +94,8 @@ implements InferenceActor {
         // Check state variable names.
 
         if (validDecoratorAssociationExists()) {
-            Parameter stateVariableNames =
-                    (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
+            Parameter stateVariableNames = (Parameter) this
+                    .getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
             int n = _stateNames.length();
             if (n < 1) {
@@ -113,17 +113,15 @@ implements InferenceActor {
                 // Check state equations.
                 String equation = name + "_update";
                 if (this.getUserDefinedParameter(equation) == null) {
-                    throw new IllegalActionException(
-                            this,
-                            "Please add a "
-                                    + "parameter with name \""
-                                    + equation
-                                    + "\" that gives the state update expression for state "
-                                    + name + ".");
+                    throw new IllegalActionException(this, "Please add a "
+                            + "parameter with name \"" + equation
+                            + "\" that gives the state update expression for state "
+                            + name + ".");
                 }
             }
         } else {
-            throw new IllegalActionException(this, "No valid State Space Model association found!");
+            throw new IllegalActionException(this,
+                    "No valid State Space Model association found!");
         }
     }
 
@@ -134,25 +132,30 @@ implements InferenceActor {
      * @exception IllegalActionException
      */
     @Override
-    public boolean validDecoratorAssociationExists() throws IllegalActionException {
+    public boolean validDecoratorAssociationExists()
+            throws IllegalActionException {
         boolean found = false;
         for (Decorator d : this.decorators()) {
             if (d instanceof StateSpaceModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
                     if (!found) {
                         found = true;
                         _decorator = (StateSpaceModel) d;
                     } else {
-                        throw new IllegalActionException(this, "A StateSpaceActor "
-                                + "can be associated with exactly one StateSpaceModel "
-                                + "at a time.");
+                        throw new IllegalActionException(this,
+                                "A StateSpaceActor "
+                                        + "can be associated with exactly one StateSpaceModel "
+                                        + "at a time.");
                     }
                 }
             } else if (d instanceof GaussianMeasurementModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
-                    _measurementDecorators.put(d.getName(),(GaussianMeasurementModel)d);
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
+                    _measurementDecorators.put(d.getName(),
+                            (GaussianMeasurementModel) d);
                 }
             }
         }
@@ -164,8 +167,8 @@ implements InferenceActor {
             throws IllegalActionException {
 
         if (_decorator != null) {
-            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName);
-            return ((Parameter)attr);
+            Attribute attr = this.getDecoratorAttribute(_decorator, eqnName);
+            return ((Parameter) attr);
         } else {
             throw new IllegalActionException("No decorator found!");
         }
@@ -191,21 +194,24 @@ implements InferenceActor {
         GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
         if (m != null) {
             String postfix = m.getMeasurementParameterPostfix();
-            Attribute attr = this.getDecoratorAttribute(m,portName+postfix);
+            Attribute attr = this.getDecoratorAttribute(m, portName + postfix);
 
-            if ( attr != null) {
-                return ((Parameter)attr);
+            if (attr != null) {
+                return ((Parameter) attr);
             } else {
-                throw new IllegalActionException("Specified parameter for: " +
-                        portName + " not found in referred decorator " + decoratorName);
+                throw new IllegalActionException("Specified parameter for: "
+                        + portName + " not found in referred decorator "
+                        + decoratorName);
             }
         } else {
-            throw new IllegalActionException("Decorator not found: " + decoratorName);
+            throw new IllegalActionException(
+                    "Decorator not found: " + decoratorName);
         }
     }
 
     private StateSpaceModel _decorator;
-    private HashMap<String,GaussianMeasurementModel> _measurementDecorators;
+    private HashMap<String, GaussianMeasurementModel> _measurementDecorators;
+
     @Override
     protected InputType getInputType(String inputName) {
         String[] nameStruct = inputName.split("_");
@@ -217,21 +223,23 @@ implements InferenceActor {
     }
 
     @Override
-    protected Parameter getNoiseParameter(String fullName) throws IllegalActionException {
+    protected Parameter getNoiseParameter(String fullName)
+            throws IllegalActionException {
         String[] completeName = fullName.split("_");
         String decoratorName = completeName[0];
         GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
         if (m != null) {
-            Attribute attr = this.getDecoratorAttribute(m,"noiseCovariance");
+            Attribute attr = this.getDecoratorAttribute(m, "noiseCovariance");
 
-            if ( attr != null) {
-                return ((Parameter)attr);
+            if (attr != null) {
+                return ((Parameter) attr);
             } else {
                 throw new IllegalActionException("Specified parameter for noise"
                         + " not found in referred decorator " + decoratorName);
             }
         } else {
-            throw new IllegalActionException("Decorator not found: " + decoratorName);
+            throw new IllegalActionException(
+                    "Decorator not found: " + decoratorName);
         }
     }
 

@@ -52,7 +52,7 @@ import ptolemy.plot.Plot;
    @Pt.AcceptedRating Red (derler)
  */
 public class ExecutionAspectPlotterEditorFactory extends EditorFactory
-implements ExecutionAspectListener {
+        implements ExecutionAspectListener {
 
     /**
      * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
@@ -108,7 +108,7 @@ implements ExecutionAspectListener {
             schedulePlotterEffigy.setPlot(plot);
             schedulePlotterEffigy.setModel(this.getContainer());
             schedulePlotterEffigy.identifier
-            .setExpression("Execution Time Monitor");
+                    .setExpression("Execution Time Monitor");
 
             configuration.createPrimaryTableau(schedulePlotterEffigy);
 
@@ -172,7 +172,8 @@ implements ExecutionAspectListener {
      *  @param scheduler Resource Scheduler associated with this plot.
      */
     @Override
-    public void initialize(List<NamedObj> actors, ActorExecutionAspect scheduler) {
+    public void initialize(List<NamedObj> actors,
+            ActorExecutionAspect scheduler) {
         _actors = actors;
         _scheduler = scheduler;
         if (plot != null) {

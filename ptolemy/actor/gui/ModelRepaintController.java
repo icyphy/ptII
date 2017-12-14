@@ -80,9 +80,9 @@ public class ModelRepaintController extends Attribute {
         _repaintOnPostFire.setExpression("false");
 
         // The icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" " + "width=\"135\" height=\"20\" "
-                + "style=\"fill:#00FFFF\"/>\n" + "<text x=\"-55\" y=\"5\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-60\" y=\"-10\" "
+                + "width=\"135\" height=\"20\" " + "style=\"fill:#00FFFF\"/>\n"
+                + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
                 + "RepaintController\n" + "</text>\n" + "</svg>\n");
 
@@ -105,8 +105,8 @@ public class ModelRepaintController extends Attribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ModelRepaintController newObject = (ModelRepaintController) super
-                .clone(workspace);
+        ModelRepaintController newObject = (ModelRepaintController) super.clone(
+                workspace);
         newObject._executable = null;
         newObject._repaintOnPostFire = (Parameter) newObject
                 .getAttribute("repaintOnPostFire");
@@ -143,8 +143,8 @@ public class ModelRepaintController extends Attribute {
      *  @see #getContainer()
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         if (_executable == null) {
             // The inner class will be piggybacked as an executable for the container to
             // execute change request at the appropriate times. These change request will

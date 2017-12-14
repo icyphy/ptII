@@ -137,6 +137,7 @@ public class OscSender extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == remotePort) {
@@ -150,11 +151,13 @@ public class OscSender extends TypedAtomicActor {
         }
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _constructOscReceiver(_localPort);
     }
 
+    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -191,6 +194,7 @@ public class OscSender extends TypedAtomicActor {
 
     }
 
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         oscP5.stop();
@@ -222,15 +226,14 @@ public class OscSender extends TypedAtomicActor {
             OscMessage m = new OscMessage(prefix + "/" + label);
 
             if (o instanceof Double) {
-                m.add(new Float((double)o));
+                m.add(new Float((double) o));
             } else if (o instanceof Integer) {
                 m.add((Integer) o);
             } else if (o instanceof String) {
                 m.add((String) o);
             } else {
-                throw new IllegalActionException(
-                        "Invalid OSC input. "
-                                + "Currently this OSC Client  Integer, String and Double types");
+                throw new IllegalActionException("Invalid OSC input. "
+                        + "Currently this OSC Client  Integer, String and Double types");
             }
             bundle.add(m);
         }

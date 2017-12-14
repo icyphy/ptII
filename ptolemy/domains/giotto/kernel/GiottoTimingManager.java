@@ -124,8 +124,8 @@ import ptolemy.kernel.util.SingletonAttribute;
  *  @Pt.ProposedRating Red (sssf)
  *  @Pt.AcceptedRating Red (sssf)
  */
-public class GiottoTimingManager extends SingletonAttribute implements
-Decorator { //extends SingletonAttribute
+public class GiottoTimingManager extends SingletonAttribute
+        implements Decorator { //extends SingletonAttribute
 
     /** Construct an instance with the specified container and name.
      *  @param container The container.
@@ -140,9 +140,9 @@ Decorator { //extends SingletonAttribute
         super(container, name);
 
         // The icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" " + "width=\"180\" height=\"20\" "
-                + "style=\"fill:#00FFFE\"/>\n" + "<text x=\"-55\" y=\"5\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-60\" y=\"-10\" "
+                + "width=\"180\" height=\"20\" " + "style=\"fill:#00FFFE\"/>\n"
+                + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:15; font-family:SansSerif; fill:blue\">\n"
                 + "Timing Manager\n" + "</text>\n" + "</svg>\n");
 
@@ -312,7 +312,8 @@ Decorator { //extends SingletonAttribute
                             .attributeList();
                     for (Attribute param : paramList) {
                         name = param.getDisplayName();
-                        if (name.equals("WCET") || name.equals("executionTime")) {
+                        if (name.equals("WCET")
+                                || name.equals("executionTime")) {
                             // param.setPersistent(false);
                         }
                     }
@@ -348,7 +349,7 @@ Decorator { //extends SingletonAttribute
                     public void initialize() throws IllegalActionException {
                         if (_random == null
                                 || ((BooleanToken) resetOnEachRun.getToken())
-                                .booleanValue()) {
+                                        .booleanValue()) {
                             _createGenerator();
                         }
                         _needNew = true;
@@ -378,25 +379,24 @@ Decorator { //extends SingletonAttribute
                             if (_debugging) {
                                 _debug("There was a timing overrun");
                             }
-                            handleModelError(
-                                    container,
-                                    new IllegalActionException(
-                                            container,
+                            handleModelError(container,
+                                    new IllegalActionException(container,
                                             "total ExecutionTime  of ("
                                                     + _totalObservedExecutionTime
                                                     + ") is larger than Period of ("
                                                     + _totalExpectedExecutionTime
                                                     + ")  for actor "
                                                     + container
-                                                    .getDisplayName()));
+                                                            .getDisplayName()));
 
                         }
                         _totalObservedExecutionTime = 0; // reset the observed time
 
                         ChangeRequest request = new ChangeRequest(this,
-                                "SetVariable change request", true /*Although this not a structural change in my point of view
-                                                                   , we however for some reason need to specify it is, otherwise the GUI won't update.*/
-                                ) {
+                                "SetVariable change request",
+                                true /*Although this not a structural change in my point of view
+                                     , we however for some reason need to specify it is, otherwise the GUI won't update.*/
+                        ) {
                             @Override
                             protected void _execute()
                                     throws IllegalActionException {
@@ -496,17 +496,17 @@ Decorator { //extends SingletonAttribute
                                         _debug("there was an error at model time "
                                                 + (actor.getDirector()
                                                         .getModelTime()
-                                                        .getDoubleValue() + actorWCET)
-                                                        + "physical time is actually "
-                                                        + _myPhysicalTime);
+                                                        .getDoubleValue()
+                                                        + actorWCET)
+                                                + "physical time is actually "
+                                                + _myPhysicalTime);
                                     }
                                 }
                                 Parameter dummyP = (Parameter) executionTime;
                                 dummyP.setExpression(Double.toString(t));
 
                                 if (_debugging) {
-                                    _debug("Done firing actor "
-                                            + actor
+                                    _debug("Done firing actor " + actor
                                             + " now going to check to see if it went over time.");
                                 }
 
@@ -519,18 +519,18 @@ Decorator { //extends SingletonAttribute
                                         .next()).getActor();
 
                                 if (_debugging) {
-                                    _debug("Iterating "
-                                            + ((NamedObj) actor1).getFullName());
+                                    _debug("Iterating " + ((NamedObj) actor1)
+                                            .getFullName());
                                 }
 
                                 if (actor1.iterate(1) == STOP_ITERATING) {
                                     // FIXME: How to handle this?
                                     // put the actor on a no-fire hashtable?
-                                    System.err
-                                    .println("Warning: Giotto iterate returned "
-                                            + "STOP_ITERATING for actor \""
-                                            + actor1.getFullName()
-                                            + "\"");
+                                    System.err.println(
+                                            "Warning: Giotto iterate returned "
+                                                    + "STOP_ITERATING for actor \""
+                                                    + actor1.getFullName()
+                                                    + "\"");
                                 }
                             }
 
@@ -609,13 +609,11 @@ Decorator { //extends SingletonAttribute
                             }
                             // this is the static check before execution
                             throw new IllegalActionException(container,
-                                    "total WCET of ("
-                                            + wcet
+                                    "total WCET of (" + wcet
                                             + ") is larger than period ("
-                                            + _periodValue
-                                            + ") for actor "
+                                            + _periodValue + ") for actor "
                                             + ((CompositeActor) getContainer())
-                                            .getDisplayName());
+                                                    .getDisplayName());
 
                         } //end of if
                         if (_debugging) {
@@ -624,7 +622,8 @@ Decorator { //extends SingletonAttribute
                     }
 
                     @Override
-                    public void removeInitializable(Initializable initializable) {
+                    public void removeInitializable(
+                            Initializable initializable) {
                     }
                 };
             }

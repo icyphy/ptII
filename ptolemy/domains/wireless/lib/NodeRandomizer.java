@@ -338,8 +338,8 @@ public class NodeRandomizer extends TypedAtomicActor {
                 ArrayToken lowHigh = (ArrayToken) rangeValue.getElement(i);
 
                 if (lowHigh.length() < 2) {
-                    throw new IllegalActionException(this, "Invalid range: "
-                            + range.getExpression());
+                    throw new IllegalActionException(this,
+                            "Invalid range: " + range.getExpression());
                 }
 
                 double low = ((DoubleToken) lowHigh.getElement(0))
@@ -348,28 +348,28 @@ public class NodeRandomizer extends TypedAtomicActor {
                         .doubleValue();
 
                 if (high < low) {
-                    throw new IllegalActionException(this, "Invalid range: "
-                            + range.getExpression());
+                    throw new IllegalActionException(this,
+                            "Invalid range: " + range.getExpression());
                 }
 
                 // If the precision is 0, then use the maximum precision allowed by double.
                 // Otherwise, round according to the maxPrecision parameter.
                 if (_mathContext == null) {
-                    randomLocation[i] = low + _random.nextDouble()
-                            * (high - low);
+                    randomLocation[i] = low
+                            + _random.nextDouble() * (high - low);
                 } else {
-                    double candidateRandomLocation = low + _random.nextDouble()
-                            * (high - low);
+                    double candidateRandomLocation = low
+                            + _random.nextDouble() * (high - low);
                     // Create a BigDecimal with the specified precision.
-                    BigDecimal decimal = new BigDecimal(
-                            candidateRandomLocation, _mathContext);
+                    BigDecimal decimal = new BigDecimal(candidateRandomLocation,
+                            _mathContext);
                     // Obtain the rounded double value.
                     randomLocation[i] = decimal.doubleValue();
                 }
             }
 
-            changeMoML.append(_getLocationSetMoML(container, node,
-                    randomLocation));
+            changeMoML.append(
+                    _getLocationSetMoML(container, node, randomLocation));
         }
 
         changeMoML.append("</group>");
@@ -405,8 +405,8 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  @exception IllegalActionException If the location attribute
      *  cannot be set.
      */
-    protected String _getLocationSetMoML(CompositeEntity container,
-            Entity node, double[] location) throws IllegalActionException {
+    protected String _getLocationSetMoML(CompositeEntity container, Entity node,
+            double[] location) throws IllegalActionException {
         // First figure out the name of the class of the _location
         // attribute.  Usually, it is ptolemy.kernel.util.Location,
         // but another possibility is
@@ -424,7 +424,7 @@ public class NodeRandomizer extends TypedAtomicActor {
             // throwing an exception here.
             throw new IllegalActionException(
                     "The _location attribute does not exist for node = " + node
-                    + "with container = " + container);
+                            + "with container = " + container);
         }
     }
 

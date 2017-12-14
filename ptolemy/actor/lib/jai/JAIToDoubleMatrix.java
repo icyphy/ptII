@@ -164,8 +164,8 @@ public class JAIToDoubleMatrix extends Transformer {
                 break;
 
             default:
-                throw new IllegalActionException("Data type not suitable for "
-                        + "normalizing");
+                throw new IllegalActionException(
+                        "Data type not suitable for " + "normalizing");
             }
 
             if (_debugging) {
@@ -195,8 +195,8 @@ public class JAIToDoubleMatrix extends Transformer {
                         //                             (dataBuffer.getElemDouble(i*height + j) -
                         //                                     _minValue)/
                         //                             (_maxValue - _minValue);
-                        data[i][j] = (dataBuffer.getElemDouble(i + j * width) - _minValue)
-                                / (_maxValue - _minValue);
+                        data[i][j] = (dataBuffer.getElemDouble(i + j * width)
+                                - _minValue) / (_maxValue - _minValue);
                     }
                 }
             }

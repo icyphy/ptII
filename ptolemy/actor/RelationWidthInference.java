@@ -172,7 +172,7 @@ public class RelationWidthInference {
                                             if (!port.isMultiport()) {
                                                 relation._setInferredWidth(1);
                                                 workingRelationSet
-                                                .add(relation);
+                                                        .add(relation);
                                                 break; //Break the for loop.
                                             } else {
                                                 //Add known outside relations
@@ -181,9 +181,9 @@ public class RelationWidthInference {
                                                     IORelation connectedRelation = (IORelation) connectedRelationObject;
                                                     if (connectedRelation != null
                                                             && connectedRelation
-                                                            .isWidthFixed()) {
-                                                        workingRelationSet
-                                                        .add(connectedRelation);
+                                                                    .isWidthFixed()) {
+                                                        workingRelationSet.add(
+                                                                connectedRelation);
                                                     }
                                                 }
                                                 //Add known inside relations
@@ -192,9 +192,9 @@ public class RelationWidthInference {
                                                     IORelation connectedRelation = (IORelation) connectedRelationObject;
                                                     if (connectedRelation != null
                                                             && connectedRelation
-                                                            .isWidthFixed()) {
-                                                        workingRelationSet
-                                                        .add(connectedRelation);
+                                                                    .isWidthFixed()) {
+                                                        workingRelationSet.add(
+                                                                connectedRelation);
                                                     }
                                                 }
                                                 if (port.hasWidthConstraints()) {
@@ -202,7 +202,7 @@ public class RelationWidthInference {
                                                 }
                                                 if (port.getDefaultWidth() >= 0) {
                                                     workingDefaultPortSet
-                                                    .add(port);
+                                                            .add(port);
                                                 }
                                             }
                                         }
@@ -218,8 +218,7 @@ public class RelationWidthInference {
                 workingRelationSet = null;
 
                 if (logTimings) {
-                    System.out
-                    .println("Width inference - initialization: "
+                    System.out.println("Width inference - initialization: "
                             + (System.currentTimeMillis() - startTime)
                             + " ms.");
                 }
@@ -232,11 +231,10 @@ public class RelationWidthInference {
 
                 boolean continueInference = true;
 
-                while (continueInference
-                        && !unspecifiedSet.isEmpty()
+                while (continueInference && !unspecifiedSet.isEmpty()
                         && (!workingPortSet.isEmpty()
-                                || !workingRelationList.isEmpty() || !workingDefaultPortSet
-                                .isEmpty())) {
+                                || !workingRelationList.isEmpty()
+                                || !workingDefaultPortSet.isEmpty())) {
 
                     while (!workingRelationList.isEmpty()
                             && !unspecifiedSet.isEmpty()) {
@@ -287,11 +285,11 @@ public class RelationWidthInference {
                                 // If we have updated relations for this port, it means that it is consistent
                                 // and hence we don't need to check consistency anymore.
                                 portsThatCanBeIngnoredForConsistencyCheck
-                                .add(port);
+                                        .add(port);
                                 for (IORelation updatedRelation : updatedRelations) {
                                     portsToCheckConsistency
-                                    .addAll(updatedRelation
-                                            .linkedPortList(port));
+                                            .addAll(updatedRelation
+                                                    .linkedPortList(port));
                                 }
                             }
                             workingRelationList.addAll(updatedRelations);
@@ -299,7 +297,8 @@ public class RelationWidthInference {
                     }
 
                     // Use the width constraints on ports to infer the widths.
-                    if (!workingPortSet.isEmpty() && !unspecifiedSet.isEmpty()) {
+                    if (!workingPortSet.isEmpty()
+                            && !unspecifiedSet.isEmpty()) {
                         continueInference = false;
                         LinkedList<IOPort> workingPortList = new LinkedList<IOPort>(
                                 workingPortSet);
@@ -320,11 +319,11 @@ public class RelationWidthInference {
                                 // If we have updated relations for this port, it means that it is consistent
                                 // and hence we don't need to check consistency anymore.
                                 portsThatCanBeIngnoredForConsistencyCheck
-                                .add(port);
+                                        .add(port);
                                 for (IORelation updatedRelation : updatedRelations) {
                                     portsToCheckConsistency
-                                    .addAll(updatedRelation
-                                            .linkedPortList(port));
+                                            .addAll(updatedRelation
+                                                    .linkedPortList(port));
                                 }
                             }
                             workingRelationList.addAll(updatedRelations);
@@ -355,8 +354,7 @@ public class RelationWidthInference {
                 }
 
                 if (logTimings) {
-                    System.out
-                    .println("Actual algorithm: "
+                    System.out.println("Actual algorithm: "
                             + (System.currentTimeMillis() - afterinit)
                             + " ms.");
                 }
@@ -364,8 +362,8 @@ public class RelationWidthInference {
                 //Consistency check
                 if (checkConsistencyAtMultiport) {
 
-                    portsToCheckConsistency
-                    .removeAll(portsThatCanBeIngnoredForConsistencyCheck);
+                    portsToCheckConsistency.removeAll(
+                            portsThatCanBeIngnoredForConsistencyCheck);
                     for (IOPort port : portsToCheckConsistency) {
                         _checkConsistency(port);
                     }
@@ -381,8 +379,8 @@ public class RelationWidthInference {
 
                     boolean defaultInferredWidthTo1 = false;
 
-                    Token defaultTo1 = ModelScope.preferenceValue(
-                            _topLevel, "_defaultInferredWidthTo1");
+                    Token defaultTo1 = ModelScope.preferenceValue(_topLevel,
+                            "_defaultInferredWidthTo1");
                     if (defaultTo1 instanceof BooleanToken) {
                         defaultInferredWidthTo1 = ((BooleanToken) defaultTo1)
                                 .booleanValue();
@@ -396,7 +394,8 @@ public class RelationWidthInference {
                     } else {
                         StringBuffer portDetails = new StringBuffer();
                         IORelation relation = unspecifiedSet.iterator().next();
-                        List<IOPort> linkedPorts = relation.deepLinkedPortList();
+                        List<IOPort> linkedPorts = relation
+                                .deepLinkedPortList();
 
                         // Look for a special case where a relation is linking a multiport
                         // inside a composite to the inside of one or more multiports that are
@@ -443,18 +442,17 @@ public class RelationWidthInference {
                                     + "on the output port. "
                                     + "The relation is deeply connected to these ports:\n"
                                     + portDetails.toString();
-                            Manager manager = ((CompositeActor) relation.toplevel())
-                                    .getManager();
+                            Manager manager = ((CompositeActor) relation
+                                    .toplevel()).getManager();
                             if (manager != null
                                     && manager.getState() != Manager.IDLE) {
                                 throw new IllegalActionException(
-                                        relation,
-                                        message1
-                                        + "The model is not idle, so stopping the model "
-                                        + "might help.\n" + message2);
+                                        relation, message1
+                                                + "The model is not idle, so stopping the model "
+                                                + "might help.\n" + message2);
                             }
-                            throw new IllegalActionException(relation, message1
-                                    + message2);
+                            throw new IllegalActionException(relation,
+                                    message1 + message2);
                         } else {
                             relation._setInferredWidth(0);
                             unspecifiedSet.remove(relation);
@@ -465,8 +463,7 @@ public class RelationWidthInference {
                 _inferringWidths = false;
                 _topLevel.workspace().doneTemporaryWriting();
                 if (logTimings) {
-                    System.out
-                    .println("Time to do width inference: "
+                    System.out.println("Time to do width inference: "
                             + (System.currentTimeMillis() - startTime)
                             + " ms.");
                 }
@@ -559,18 +556,13 @@ public class RelationWidthInference {
 
         if (insideWidth != 0 && outsideWidth != 0
                 && insideWidth != outsideWidth) {
-            throw new IllegalActionException(
-                    port,
-                    "The inside width ("
-                            + insideWidth
-                            + ") and the outside width ("
-                            + outsideWidth
-                            + ") of port "
-                            + port.getFullName()
-                            + " are not either equal to 0 or not equal to each other and are therefore"
-                            + " inconsistent.\nCan't determine a uniquely defined width for"
-                            + " the connected relations. A possible fix is to right clicking on either the"
-                            + " inside or outside relation and set the width -1.");
+            throw new IllegalActionException(port, "The inside width ("
+                    + insideWidth + ") and the outside width (" + outsideWidth
+                    + ") of port " + port.getFullName()
+                    + " are not either equal to 0 or not equal to each other and are therefore"
+                    + " inconsistent.\nCan't determine a uniquely defined width for"
+                    + " the connected relations. A possible fix is to right clicking on either the"
+                    + " inside or outside relation and set the width -1.");
         }
     }
 
@@ -586,8 +578,8 @@ public class RelationWidthInference {
     static private boolean _updateRelationsFromMultiport(IOPort port,
             List<IORelation> updatedRelations) throws IllegalActionException {
         boolean constraintStillUseful = true;
-        Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port
-                .linkedRelationList());
+        Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(
+                port.linkedRelationList());
         //port.linkedRelationList() returns the outside relations
 
         int outsideUnspecifiedWidthsSize = outsideUnspecifiedWidths.size();
@@ -602,7 +594,8 @@ public class RelationWidthInference {
         if (namedObject instanceof AtomicActor) {
 
             assert outsideUnspecifiedWidthsSize >= 0;
-            if (outsideUnspecifiedWidthsSize > 0 && port.hasWidthConstraints()) {
+            if (outsideUnspecifiedWidthsSize > 0
+                    && port.hasWidthConstraints()) {
                 difference = port.getWidthFromConstraints();
                 unspecifiedWidths = outsideUnspecifiedWidths;
                 if (difference < 0) {
@@ -613,8 +606,8 @@ public class RelationWidthInference {
             }
         } else {
 
-            Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port
-                    .insideRelationList());
+            Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(
+                    port.insideRelationList());
             int insideUnspecifiedWidthsSize = insideUnspecifiedWidths.size();
 
             if (insideUnspecifiedWidthsSize > 0
@@ -652,13 +645,13 @@ public class RelationWidthInference {
                 return false; // No width inference possible and necessary at this port.
             }
             if (difference < 0) {
-                throw new IllegalActionException(
-                        port,
+                throw new IllegalActionException(port,
                         "The inside and outside widths of port "
                                 + port.getFullName()
                                 + " are not consistent.\nThe inferred width of relation "
                                 + unspecifiedWidths.iterator().next()
-                                .getFullName() + " would be negative.");
+                                        .getFullName()
+                                + " would be negative.");
             }
         }
 
@@ -704,8 +697,8 @@ public class RelationWidthInference {
             List<IORelation> updatedRelations) throws IllegalActionException {
         boolean constraintStillUseful = true;
 
-        Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port
-                .linkedRelationList());
+        Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(
+                port.linkedRelationList());
         //port.linkedRelationList() returns the outside relations
 
         int outsideUnspecifiedWidthsSize = outsideUnspecifiedWidths.size();

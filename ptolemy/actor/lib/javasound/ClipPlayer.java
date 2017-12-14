@@ -99,7 +99,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(trigger, "_showName")
+                .setToken(BooleanToken.TRUE);
 
         stop = new TypedIOPort(this, "stop", true, false);
         new SingletonParameter(stop, "_showName").setToken(BooleanToken.TRUE);
@@ -107,9 +108,11 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         fileOrURL = new FilePortParameter(this, "fileOrURL");
         // Use $CLASSPATH instead of $PTII so that this actor can find its
         // audio file under Web Start.
-        fileOrURL.setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        fileOrURL.setExpression(
+                "$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
         // new SingletonParameter(fileOrURL.getPort(), "_showName").setToken(BooleanToken.TRUE);
-        new StringAttribute(fileOrURL.getPort(), "_cardinal").setExpression("SOUTH");
+        new StringAttribute(fileOrURL.getPort(), "_cardinal")
+                .setExpression("SOUTH");
 
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
@@ -213,7 +216,6 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         newObject._outputOnlyOnStop = false;
         newObject._playToCompletion = false;
 
-
         return newObject;
     }
 
@@ -235,7 +237,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         // due to a START event).
         synchronized (_outputEvents) {
             if (!_outputEvents.isEmpty()) {
-            // Produce all outputs that have been requested.
+                // Produce all outputs that have been requested.
                 BooleanToken token = _outputEvents.get(0);
 
                 if (_outputOnlyOnStop) {
@@ -290,7 +292,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         fileOrURL.update();
         Token newValue = fileOrURL.getToken();
         boolean fileOrURLChanged = false;
-        if (_previousFileOrURL == null || !_previousFileOrURL.equals(newValue)) {
+        if (_previousFileOrURL == null
+                || !_previousFileOrURL.equals(newValue)) {
             fileOrURLChanged = true;
         }
         _previousFileOrURL = newValue;
@@ -322,9 +325,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                             .jarURLEntryResource(fileOrURL.getExpression());
                     if (possibleJarURL == null) {
                         throw new IllegalActionException(this, ex,
-                                                         "Could not open "
-                                                         + fileOrURL.getExpression()
-                                                         + " as a jar URL.");
+                                "Could not open " + fileOrURL.getExpression()
+                                        + " as a jar URL.");
                     }
                     stream = AudioSystem.getAudioInputStream(possibleJarURL);
                 }
@@ -387,7 +389,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                         output.send(0, token);
                     }
                 }
-               _outputEvents.clear();
+                _outputEvents.clear();
             }
         }
     }
@@ -435,7 +437,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
-        synchronized(_outputEvents) {
+        synchronized (_outputEvents) {
             _outputEvents.clear();
         }
 

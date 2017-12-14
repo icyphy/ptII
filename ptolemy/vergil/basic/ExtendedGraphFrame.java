@@ -114,7 +114,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
         // Only include the palettePane and panner if there is an actor library.
         // The ptinyViewer configuration uses this.
-        if ((CompositeEntity) getConfiguration().getEntity("actor library") != null) {
+        if ((CompositeEntity) getConfiguration()
+                .getEntity("actor library") != null) {
             // Put the component back into the original window.
             _splitPane.setRightComponent(_getRightComponent());
 
@@ -204,8 +205,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     @Override
     public void dispose() {
         if (_debugClosing) {
-            System.out.println("ExtendedGraphFrame.dispose() : "
-                    + this.getName());
+            System.out.println(
+                    "ExtendedGraphFrame.dispose() : " + this.getName());
         }
 
         _fullScreenAction = null;
@@ -245,8 +246,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     @Override
     protected boolean _close() {
         if (_debugClosing) {
-            System.out.println("ExtendedGraphFrame._close() : "
-                    + this.getName());
+            System.out
+                    .println("ExtendedGraphFrame._close() : " + this.getName());
         }
 
         return super._close();
@@ -270,7 +271,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     ///////////////////////////////////////////////////////////////////
     //// FullScreenAction
     /** An action to display in full-screen mode. */
-    public class FullScreenAction extends AbstractAction implements KeyListener {
+    public class FullScreenAction extends AbstractAction
+            implements KeyListener {
         /** Construct a full screen action.
          *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
@@ -283,14 +285,15 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/fullscreen.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/fullscreen_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptolemy/vergil/basic/img/fullscreen.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptolemy/vergil/basic/img/fullscreen_o.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
                             { "/ptolemy/vergil/basic/img/fullscreen_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/fullscreen_on.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptolemy/vergil/basic/img/fullscreen_on.gif",
                                     GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description);

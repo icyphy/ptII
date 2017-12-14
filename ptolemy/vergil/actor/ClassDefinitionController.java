@@ -89,15 +89,16 @@ public class ClassDefinitionController extends ActorController {
      *  @param controller The associated graph controller.
      *  @param access The access level, one of FULL or PARTIAL.
      */
-    public ClassDefinitionController(GraphController controller, Access access) {
+    public ClassDefinitionController(GraphController controller,
+            Access access) {
         super(controller, access);
 
         if (access == FULL) {
             // Use a submenu.
             Action[] actions = { _createInstanceAction, _createSubclassAction,
                     _convertToInstanceAction };
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
-                    "Class Actions"));
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(actions, "Class Actions"));
         }
     }
 
@@ -298,8 +299,8 @@ public class ClassDefinitionController extends ActorController {
         public CreateInstanceAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_I, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_I,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override
@@ -325,8 +326,8 @@ public class ClassDefinitionController extends ActorController {
         public CreateSubclassAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_U, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                    KeyEvent.VK_U,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         @Override

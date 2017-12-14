@@ -64,14 +64,14 @@ public class AddSubtract extends LatticeOntologyAdapter {
         super(solver, actor, false);
 
         _addDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.ADD_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
         _negateDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.NEGATE_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.NEGATE_FUNCTION_NAME);
         _subtractDefinition = (ConceptFunctionDefinitionAttribute) _solver
-                .getContainedModel().getAttribute(
-                        LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
+                .getContainedModel()
+                .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
 
         // If definitions for addition, subtraction, and negation concept
         // functions cannot be found, just use the default constraints.
@@ -118,14 +118,16 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 List<IOPort> plusInputs = _getSourcePortList(actor.plus);
                 if (plusInputs.size() > 1) {
                     InequalityTerm[] plusTerms = new InequalityTerm[plusInputs
-                                                                    .size()];
+                            .size()];
                     for (int i = 0; i < plusTerms.length; i++) {
                         plusTerms[i] = getPropertyTerm(plusInputs.get(i));
                     }
-                    setAtLeast(actor.plus, new ConceptFunctionInequalityTerm(
-                            new ApplyBinaryFunctionToMultipleArguments(
-                                    "sumPlusInputs", _solver.getOntology(),
-                                    addFunction), plusTerms));
+                    setAtLeast(actor.plus,
+                            new ConceptFunctionInequalityTerm(
+                                    new ApplyBinaryFunctionToMultipleArguments(
+                                            "sumPlusInputs",
+                                            _solver.getOntology(), addFunction),
+                                    plusTerms));
                 }
 
                 // If the minus input is a multiport with multiple input ports,
@@ -133,16 +135,18 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 List<IOPort> minusInputs = _getSourcePortList(actor.minus);
                 if (minusInputs.size() > 1) {
                     InequalityTerm[] minusTerms = new InequalityTerm[minusInputs
-                                                                     .size()];
+                            .size()];
                     for (int i = 0; i < minusTerms.length; i++) {
                         // Coverity identified a copy paste error here:
                         //minusTerms[i] = getPropertyTerm(plusInputs.get(i));
                         minusTerms[i] = getPropertyTerm(minusInputs.get(i));
                     }
-                    setAtLeast(actor.minus, new ConceptFunctionInequalityTerm(
-                            new ApplyBinaryFunctionToMultipleArguments(
-                                    "sumMinusInputs", _solver.getOntology(),
-                                    addFunction), minusTerms));
+                    setAtLeast(actor.minus,
+                            new ConceptFunctionInequalityTerm(
+                                    new ApplyBinaryFunctionToMultipleArguments(
+                                            "sumMinusInputs",
+                                            _solver.getOntology(), addFunction),
+                                    minusTerms));
                 }
 
                 // If the minus input port is unconnected, then the output
@@ -153,25 +157,26 @@ public class AddSubtract extends LatticeOntologyAdapter {
                     // If the plus input port is unconnected, then the output
                     // is >= negation of the minus input.
                 } else if (plusInputs.size() == 0) {
-                    setAtLeast(
-                            actor.output,
-                            new ConceptFunctionInequalityTerm(
-                                    negateFunction,
-                                    new InequalityTerm[] { getPropertyTerm(actor.minus) }));
+                    setAtLeast(actor.output,
+                            new ConceptFunctionInequalityTerm(negateFunction,
+                                    new InequalityTerm[] {
+                                            getPropertyTerm(actor.minus) }));
 
                     // Otherwise the output is >= multiply input / divide input.
                 } else {
-                    setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                            subtractFunction, new InequalityTerm[] {
-                                    getPropertyTerm(actor.plus),
-                                    getPropertyTerm(actor.minus) }));
+                    setAtLeast(actor.output,
+                            new ConceptFunctionInequalityTerm(subtractFunction,
+                                    new InequalityTerm[] {
+                                            getPropertyTerm(actor.plus),
+                                            getPropertyTerm(actor.minus) }));
                 }
             }
         }
 
         // Add back in default constraints for the output to input relationship.
         if (!_useDefaultConstraints
-                && (interconnectConstraintType == ConstraintType.EQUALS || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
+                && (interconnectConstraintType == ConstraintType.EQUALS
+                        || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
             setAtLeast(actor.plus, actor.output);
             setAtLeast(actor.minus, actor.output);
         }

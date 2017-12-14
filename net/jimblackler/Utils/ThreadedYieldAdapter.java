@@ -99,8 +99,8 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                                     public void handleResult(T value)
                                             throws CollectionAbortedException {
                                         try {
-                                            synchronousQueue
-                                            .put(new ValueMessage(value));
+                                            synchronousQueue.put(
+                                                    new ValueMessage(value));
                                             returnQueue.take(); // wait for permission to continue
                                         } catch (InterruptedException e) {
                                             // this thread has been aborted
@@ -115,7 +115,8 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                                 // Signal no more results to come
 
                             } catch (CollectionAbortedException collectionAborted) {
-                                if (!(collectionAborted.getCause() instanceof InterruptedException)) {
+                                if (!(collectionAborted
+                                        .getCause() instanceof InterruptedException)) {
                                     // Collect was aborted by client
                                     // This is not sent on thread abort as there is nothing waiting
                                     // to receive it, and the thread will block.
@@ -155,8 +156,8 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                     public T next() {
                         readNextMessage();
 
-                        if (StopMessage.class.isAssignableFrom(messageWaiting
-                                .getClass())) {
+                        if (StopMessage.class
+                                .isAssignableFrom(messageWaiting.getClass())) {
                             // instanceof cannot be used because of generics restriction
                             throw new NoSuchElementException();
                         }

@@ -116,8 +116,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class SysMLSequentialDirector extends Director implements
-SuperdenseTimeDirector {
+public class SysMLSequentialDirector extends Director
+        implements SuperdenseTimeDirector {
 
     /** Construct a director in the given container with the given name.
      *  @param container Container of the director.
@@ -143,8 +143,8 @@ SuperdenseTimeDirector {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SysMLSequentialDirector newObject = (SysMLSequentialDirector) super
-                .clone(workspace);
+        SysMLSequentialDirector newObject = (SysMLSequentialDirector) super.clone(
+                workspace);
         newObject._inputQueue = null;
         newObject._fireAtRequests = null;
         return newObject;
@@ -204,7 +204,8 @@ SuperdenseTimeDirector {
 
                     if (_fireAtRequests.size() > 0) {
                         request = _fireAtRequests.peek();
-                        if (!_schedule((NamedObj) request.actor, getModelTime())) {
+                        if (!_schedule((NamedObj) request.actor,
+                                getModelTime())) {
                             break;
                         }
                         if (!currentTime.equals(request.time)
@@ -247,9 +248,8 @@ SuperdenseTimeDirector {
                             + " with value: " + input.token);
                 }
             } else if (_debugging) {
-                _debug(actor.getFullName()
-                        + ": Providing change event to port " + port.getName()
-                        + " on channel " + channel);
+                _debug(actor.getFullName() + ": Providing change event to port "
+                        + port.getName() + " on channel " + channel);
             }
             if (actor != getContainer()) {
                 if (!_schedule((NamedObj) actor, getModelTime())) {
@@ -290,8 +290,8 @@ SuperdenseTimeDirector {
         if (time.compareTo(currentTime) < 0) {
             throw new IllegalActionException(actor,
                     "Requesting firing at time " + time
-                    + ", which is in the past. Current time is "
-                    + currentTime);
+                            + ", which is in the past. Current time is "
+                            + currentTime);
         }
 
         if (time.compareTo(currentTime) == 0 && microstep <= _microstep
@@ -300,9 +300,7 @@ SuperdenseTimeDirector {
             microstep = _microstep + 1;
 
             if (microstep == Integer.MAX_VALUE) {
-                throw new IllegalActionException(
-                        this,
-                        actor,
+                throw new IllegalActionException(this, actor,
                         "Microstep has hit the maximum while scheduling a firing of "
                                 + actor.getFullName()
                                 + ". Perhaps the model has a stuttering Zeno Condition?");
@@ -628,8 +626,8 @@ SuperdenseTimeDirector {
         }
         // Perform one last check for a valid result.
         int timeCompareToCurrentTime = time.compareTo(currentTime);
-        if (timeCompareToCurrentTime < 0 || timeCompareToCurrentTime == 0
-                && microstep < _microstep) {
+        if (timeCompareToCurrentTime < 0
+                || timeCompareToCurrentTime == 0 && microstep < _microstep) {
             throw new IllegalActionException(this,
                     "Proposed time advance is not an advance. Current time is "
                             + currentTime + ", and proposed time is " + time);
@@ -707,7 +705,8 @@ SuperdenseTimeDirector {
                 Token flowPortMarkerValue = ((Parameter) flowPortMarker)
                         .getToken();
                 if (flowPortMarkerValue instanceof BooleanToken
-                        && ((BooleanToken) flowPortMarkerValue).booleanValue()) {
+                        && ((BooleanToken) flowPortMarkerValue)
+                                .booleanValue()) {
                     isFlowPort = true;
                 }
             } catch (IllegalActionException e) {
@@ -821,7 +820,7 @@ SuperdenseTimeDirector {
                         + channel + "]";
             }
             return "[" + token + " for port " + port.getName() + " channel "
-            + channel + "]";
+                    + channel + "]";
         }
     }
 
@@ -935,12 +934,11 @@ SuperdenseTimeDirector {
             _inputQueue.add(input);
             if (SysMLSequentialDirector.this._debugging) {
                 Actor actor = (Actor) port.getContainer();
+                SysMLSequentialDirector.this._debug(
+                        "Adding to queue event destined for " + actor.getName()
+                                + " at time " + getModelTime() + ": " + input);
                 SysMLSequentialDirector.this
-                ._debug("Adding to queue event destined for "
-                        + actor.getName() + " at time "
-                        + getModelTime() + ": " + input);
-                SysMLSequentialDirector.this._debug("input queue: "
-                        + _inputQueue);
+                        ._debug("input queue: " + _inputQueue);
             }
             if (isFlowPort) {
                 // Do not use super.put() here because it

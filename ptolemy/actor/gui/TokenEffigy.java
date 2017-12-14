@@ -164,8 +164,8 @@ public class TokenEffigy extends Effigy {
         LineNumberReader reader = null;
 
         try {
-            reader = new LineNumberReader(new InputStreamReader(
-                    input.openStream()));
+            reader = new LineNumberReader(
+                    new InputStreamReader(input.openStream()));
 
             while (true) {
                 // NOTE: The following tolerates all major line terminators.

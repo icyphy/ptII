@@ -108,16 +108,16 @@ public class UndoLayoutAction implements UndoAction {
             NamedObj container = layoutHint.getContainer();
             if (container != null) {
                 layoutHint.setContainer(null);
-                undoLayoutAction._connAddEntries.add(new ConnectionHintEntry(
-                        container, layoutHint));
+                undoLayoutAction._connAddEntries
+                        .add(new ConnectionHintEntry(container, layoutHint));
             }
         }
 
         // Process locations.
         for (LocationEntry entry : this._locationEntries) {
             double[] oldLoc = entry._locatable.getLocation();
-            undoLayoutAction.addLocation(new LocationEntry(entry._locatable,
-                    oldLoc[0], oldLoc[1]));
+            undoLayoutAction.addLocation(
+                    new LocationEntry(entry._locatable, oldLoc[0], oldLoc[1]));
             entry._locatable.setLocation(new double[] { entry._x, entry._y });
         }
 
@@ -131,8 +131,8 @@ public class UndoLayoutAction implements UndoAction {
         for (CurveEntry entry : this._curveEntries) {
             Parameter exitAngleParam = entry._transition.exitAngle;
             DoubleToken token = DoubleToken.convert(exitAngleParam.getToken());
-            undoLayoutAction.addCurve(new CurveEntry(entry._transition, token
-                    .doubleValue()));
+            undoLayoutAction.addCurve(
+                    new CurveEntry(entry._transition, token.doubleValue()));
             exitAngleParam.setExpression(Double.toString(entry._exitAngle));
         }
 

@@ -141,15 +141,18 @@ public abstract class TransformFilter extends AbstractBufferedImageOp {
         if (dst == null) {
             ColorModel dstCM = src.getColorModel();
             dst = new BufferedImage(dstCM,
-                    dstCM.createCompatibleWritableRaster(transformedSpace.width, transformedSpace.height),
+                    dstCM.createCompatibleWritableRaster(transformedSpace.width,
+                            transformedSpace.height),
                     dstCM.isAlphaPremultiplied(), null);
         }
         dst.getRaster();
 
         int[] inPixels = getRGB(src, 0, 0, width, height, null);
 
-        if (interpolation == NEAREST_NEIGHBOUR)
-            return filterPixelsNN(dst, width, height, inPixels, transformedSpace);
+        if (interpolation == NEAREST_NEIGHBOUR) {
+            return filterPixelsNN(dst, width, height, inPixels,
+                    transformedSpace);
+        }
 
         int srcWidth = width;
         int srcHeight = height;
@@ -173,7 +176,8 @@ public abstract class TransformFilter extends AbstractBufferedImageOp {
                 float yWeight = out[1] - srcY;
                 int nw, ne, sw, se;
 
-                if (srcX >= 0 && srcX < srcWidth1 && srcY >= 0 && srcY < srcHeight1) {
+                if (srcX >= 0 && srcX < srcWidth1 && srcY >= 0
+                        && srcY < srcHeight1) {
                     // Easy case, all corners are in the image
                     int i = srcWidth * srcY + srcX;
                     nw = inPixels[i];
@@ -183,37 +187,44 @@ public abstract class TransformFilter extends AbstractBufferedImageOp {
                 } else {
                     // Some of the corners are off the image
                     nw = getPixel(inPixels, srcX, srcY, srcWidth, srcHeight);
-                    ne = getPixel(inPixels, srcX + 1, srcY, srcWidth, srcHeight);
-                    sw = getPixel(inPixels, srcX, srcY + 1, srcWidth, srcHeight);
-                    se = getPixel(inPixels, srcX + 1, srcY + 1, srcWidth, srcHeight);
+                    ne = getPixel(inPixels, srcX + 1, srcY, srcWidth,
+                            srcHeight);
+                    sw = getPixel(inPixels, srcX, srcY + 1, srcWidth,
+                            srcHeight);
+                    se = getPixel(inPixels, srcX + 1, srcY + 1, srcWidth,
+                            srcHeight);
                 }
-                outPixels[x] = ImageMath.bilinearInterpolate(xWeight, yWeight, nw, ne, sw, se);
+                outPixels[x] = ImageMath.bilinearInterpolate(xWeight, yWeight,
+                        nw, ne, sw, se);
             }
             setRGB(dst, 0, y, transformedSpace.width, 1, outPixels);
         }
         return dst;
     }
 
-    final private int getPixel(int[] pixels, int x, int y, int width, int height) {
+    final private int getPixel(int[] pixels, int x, int y, int width,
+            int height) {
         if (x < 0 || x >= width || y < 0 || y >= height) {
             switch (edgeAction) {
             case ZERO:
             default:
                 return 0;
             case WRAP:
-                return pixels[(ImageMath.mod(y, height) * width) + ImageMath.mod(x, width)];
+                return pixels[(ImageMath.mod(y, height) * width)
+                        + ImageMath.mod(x, width)];
             case CLAMP:
-                return pixels[(ImageMath.clamp(y, 0, height - 1) * width) + ImageMath.clamp(x, 0, width - 1)];
+                return pixels[(ImageMath.clamp(y, 0, height - 1) * width)
+                        + ImageMath.clamp(x, 0, width - 1)];
             case RGB_CLAMP:
-                return pixels[(ImageMath.clamp(y, 0, height - 1) * width) + ImageMath.clamp(x, 0, width - 1)]
-                        & 0x00ffffff;
+                return pixels[(ImageMath.clamp(y, 0, height - 1) * width)
+                        + ImageMath.clamp(x, 0, width - 1)] & 0x00ffffff;
             }
         }
         return pixels[y * width + x];
     }
 
-    protected BufferedImage filterPixelsNN(BufferedImage dst, int width, int height, int[] inPixels,
-            Rectangle transformedSpace) {
+    protected BufferedImage filterPixelsNN(BufferedImage dst, int width,
+            int height, int[] inPixels, Rectangle transformedSpace) {
         int srcWidth = width;
         int srcHeight = height;
         int outWidth = transformedSpace.width;
@@ -232,7 +243,8 @@ public abstract class TransformFilter extends AbstractBufferedImageOp {
                 srcX = (int) out[0];
                 srcY = (int) out[1];
                 // int casting rounds towards zero, so we check out[0] < 0, not srcX < 0
-                if (out[0] < 0 || srcX >= srcWidth || out[1] < 0 || srcY >= srcHeight) {
+                if (out[0] < 0 || srcX >= srcWidth || out[1] < 0
+                        || srcY >= srcHeight) {
                     int p;
                     switch (edgeAction) {
                     case ZERO:
@@ -240,15 +252,19 @@ public abstract class TransformFilter extends AbstractBufferedImageOp {
                         p = 0;
                         break;
                     case WRAP:
-                        p = inPixels[(ImageMath.mod(srcY, srcHeight) * srcWidth) + ImageMath.mod(srcX, srcWidth)];
+                        p = inPixels[(ImageMath.mod(srcY, srcHeight) * srcWidth)
+                                + ImageMath.mod(srcX, srcWidth)];
                         break;
                     case CLAMP:
-                        p = inPixels[(ImageMath.clamp(srcY, 0, srcHeight - 1) * srcWidth)
+                        p = inPixels[(ImageMath.clamp(srcY, 0, srcHeight - 1)
+                                * srcWidth)
                                 + ImageMath.clamp(srcX, 0, srcWidth - 1)];
                         break;
                     case RGB_CLAMP:
-                        p = inPixels[(ImageMath.clamp(srcY, 0, srcHeight - 1) * srcWidth)
-                                + ImageMath.clamp(srcX, 0, srcWidth - 1)] & 0x00ffffff;
+                        p = inPixels[(ImageMath.clamp(srcY, 0, srcHeight - 1)
+                                * srcWidth)
+                                + ImageMath.clamp(srcX, 0, srcWidth - 1)]
+                                & 0x00ffffff;
                     }
                     outPixels[x] = p;
                 } else {

@@ -38,9 +38,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class VectorAssembler
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.VectorAssembler {
+public class VectorAssembler extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.VectorAssembler {
     /**
      *  Construct a VectorAssembler adapter.
      *  @param actor The given ptolemy.actor.lib.VectorAssembler actor.

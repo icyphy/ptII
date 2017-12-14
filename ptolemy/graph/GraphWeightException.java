@@ -76,8 +76,8 @@ public class GraphWeightException extends GraphException {
      */
     static private String _argumentsToString(Object weight, Element element,
             Graph graph, String message) {
-        StringBuffer outputMessage = new StringBuffer(message
-                + weightDump(weight));
+        StringBuffer outputMessage = new StringBuffer(
+                message + weightDump(weight));
 
         if (element != null) {
             outputMessage.append(elementDump(element, graph));

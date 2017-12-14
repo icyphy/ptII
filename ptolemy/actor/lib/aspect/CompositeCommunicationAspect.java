@@ -80,8 +80,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public class CompositeCommunicationAspect extends TypedCompositeActor implements
-CommunicationAspect, Decorator {
+public class CompositeCommunicationAspect extends TypedCompositeActor
+        implements CommunicationAspect, Decorator {
 
     /** Construct a CompositeCommunicationAspectAttributes in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -159,8 +159,8 @@ CommunicationAspect, Decorator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CompositeCommunicationAspect newObject = (CompositeCommunicationAspect) super
-                .clone(workspace);
+        CompositeCommunicationAspect newObject = (CompositeCommunicationAspect) super.clone(
+                workspace);
         newObject._parameters = new HashMap<IOPort, List<Attribute>>();
         newObject._decoratedObjects = null;
         newObject._decoratedObjectsVersion = -1L;
@@ -384,22 +384,23 @@ CommunicationAspect, Decorator {
     @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
-        String name = _communicationRequestPortNames.get(receiver
-                .getContainer());
-        CommunicationRequestPort port = (CommunicationRequestPort) getEntity(name);
+        String name = _communicationRequestPortNames
+                .get(receiver.getContainer());
+        CommunicationRequestPort port = (CommunicationRequestPort) getEntity(
+                name);
         if (port == null) {
             throw new IllegalActionException(this,
                     "CommunicationRequestPort with name " + name
-                    + " specified by " + receiver.getContainer()
-                    + " missing");
+                            + " specified by " + receiver.getContainer()
+                            + " missing");
         }
         if (_tokens == null) {
             _tokens = new HashMap<CommunicationRequestPort, List<Token>>();
         }
         if (token != null) {
-            RecordToken recordToken = new RecordToken(new String[] {
-                    "receiver", "token" }, new Token[] {
-                    new ObjectToken(receiver), token });
+            RecordToken recordToken = new RecordToken(
+                    new String[] { "receiver", "token" },
+                    new Token[] { new ObjectToken(receiver), token });
             List<Token> tokens = _tokens.get(port);
             if (tokens == null) {
                 tokens = new ArrayList<Token>();
@@ -410,8 +411,8 @@ CommunicationAspect, Decorator {
                 receiver.put(token);
             }
 
-            ((CompositeActor) getContainer()).getDirector().fireAtCurrentTime(
-                    this);
+            ((CompositeActor) getContainer()).getDirector()
+                    .fireAtCurrentTime(this);
 
             if (_debugging) {
                 _debug("At time " + getDirector().getModelTime()
@@ -435,8 +436,8 @@ CommunicationAspect, Decorator {
      * @exception IllegalActionException If color attribute cannot be initialized.
      * @exception NameDuplicationException If color attribute cannot be initialized.
      */
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         ColorAttribute color = new ColorAttribute(this,
                 decoratorHighlightColorName);
         color.setExpression("{1.0,0.6,0.0,1.0}");
@@ -481,8 +482,8 @@ CommunicationAspect, Decorator {
      *
      *  @author Patricia Derler
      */
-    public static class CompositeCommunicationAspectAttributes extends
-    CommunicationAspectAttributes {
+    public static class CompositeCommunicationAspectAttributes
+            extends CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -492,7 +493,7 @@ CommunicationAspect, Decorator {
          */
         public CompositeCommunicationAspectAttributes(NamedObj target,
                 CompositeCommunicationAspect decorator)
-                        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
         }
@@ -504,8 +505,8 @@ CommunicationAspect, Decorator {
          *  @exception NameDuplicationException If the superclass throws it.
          */
         public CompositeCommunicationAspectAttributes(NamedObj target,
-                String name) throws IllegalActionException,
-                NameDuplicationException {
+                String name)
+                throws IllegalActionException, NameDuplicationException {
             super(target, name);
             _init();
         }
@@ -530,8 +531,7 @@ CommunicationAspect, Decorator {
             if (attribute == inputPort) {
                 Token token = ((Parameter) attribute).getToken();
                 if (!(token instanceof StringToken)) {
-                    throw new IllegalActionException(
-                            this,
+                    throw new IllegalActionException(this,
                             "Decorator attribute for "
                                     + "mapped port in communication aspect for actor port "
                                     + port.getName()

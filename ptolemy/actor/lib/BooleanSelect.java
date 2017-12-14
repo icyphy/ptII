@@ -139,14 +139,13 @@ public class BooleanSelect extends TypedAtomicActor {
         /** Make the icon show T, F, and C for trueInput, falseInput
          *  and control.
          */
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-17\" y=\"-3\" "
-                + "style=\"font-size:14\">\n" + "T \n" + "</text>\n"
-                + "<text x=\"-17\" y=\"15\" " + "style=\"font-size:14\">\n"
-                + "F \n" + "</text>\n" + "<text x=\"-5\" y=\"16\" "
-                + "style=\"font-size:14\">\n" + "C \n" + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-17\" y=\"-3\" " + "style=\"font-size:14\">\n"
+                + "T \n" + "</text>\n" + "<text x=\"-17\" y=\"15\" "
+                + "style=\"font-size:14\">\n" + "F \n" + "</text>\n"
+                + "<text x=\"-5\" y=\"16\" " + "style=\"font-size:14\">\n"
+                + "C \n" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

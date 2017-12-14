@@ -98,8 +98,8 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.domains.de.lib.Merge actor = (ptolemy.domains.de.lib.Merge) getComponent();
 
-        code.append(getTemplateParser().generateBlockCode("fireBeginBlock",
-                args));
+        code.append(
+                getTemplateParser().generateBlockCode("fireBeginBlock", args));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.clear();
             args.add(Integer.toString(i));
@@ -127,8 +127,8 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
             // This seems wrong, it overwrites timeVariable for each EventHead_ that
             // is non-null.
             result.append("if (Event_Head_" + name + "_input[" + i
-                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_"
-                    + name + "_input[" + i + "]->tag.timestamp;\n" + "}\n");
+                    + "] != NULL) {\n" + timeVariable + " = &Event_Head_" + name
+                    + "_input[" + i + "]->tag.timestamp;\n" + "}\n");
         }
         return result.toString();
     }

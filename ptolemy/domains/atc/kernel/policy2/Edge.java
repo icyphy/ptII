@@ -32,7 +32,7 @@ package ptolemy.domains.atc.kernel.policy2;
  *  @version $Id$
  *  @since Ptolemy II 11.0
  */
-public class Edge  {
+public class Edge {
 
     /** Create an edge.
      * @param id an int specifying an identifier

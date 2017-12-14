@@ -71,8 +71,8 @@ public class SDFModularScheduler extends SDFScheduler {
      * @exception IllegalActionException If thrown while solving the balance equations.
      */
     @SuppressWarnings("unused")
-    public Map getFiringVector(CompositeActor container, int vectorizationFactor)
-            throws IllegalActionException {
+    public Map getFiringVector(CompositeActor container,
+            int vectorizationFactor) throws IllegalActionException {
         if (vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
                     "The supplied vectorizationFactor must be "
@@ -96,7 +96,8 @@ public class SDFModularScheduler extends SDFScheduler {
         Map externalRates = new HashMap();
 
         // Initialize externalRates to zero.
-        for (Iterator ports = container.portList().iterator(); ports.hasNext();) {
+        for (Iterator ports = container.portList().iterator(); ports
+                .hasNext();) {
             IOPort port = (IOPort) ports.next();
             externalRates.put(port, Fraction.ZERO);
         }
@@ -141,8 +142,8 @@ public class SDFModularScheduler extends SDFScheduler {
      */
     @Override
     protected Map _solveBalanceEquations(CompositeActor container,
-            List actorList, Map externalRates) throws NotSchedulableException,
-            IllegalActionException {
+            List actorList, Map externalRates)
+            throws NotSchedulableException, IllegalActionException {
         // The map that we will return.
         // This will be populated with the fraction firing ratios for
         // each actor.
@@ -229,7 +230,8 @@ public class SDFModularScheduler extends SDFScheduler {
             // of actors are only normalized within their cluster.
             int lcm = 1;
 
-            for (Iterator actors = clusteredActors.iterator(); actors.hasNext();) {
+            for (Iterator actors = clusteredActors.iterator(); actors
+                    .hasNext();) {
                 Actor currentActor = (Actor) actors.next();
                 Fraction fraction = (Fraction) entityToFiringsPerIteration
                         .get(currentActor);
@@ -240,7 +242,8 @@ public class SDFModularScheduler extends SDFScheduler {
             // Got the normalizing factor.
             Fraction lcmFraction = new Fraction(lcm);
 
-            for (Iterator actors = clusteredActors.iterator(); actors.hasNext();) {
+            for (Iterator actors = clusteredActors.iterator(); actors
+                    .hasNext();) {
                 Actor currentActor = (Actor) actors.next();
                 Fraction repetitions = ((Fraction) entityToFiringsPerIteration
                         .get(currentActor)).multiply(lcmFraction);
@@ -254,8 +257,8 @@ public class SDFModularScheduler extends SDFScheduler {
                 entityToFiringsPerIteration.put(currentActor, repetitions);
             }
 
-            for (Iterator externalPorts = clusteredExternalPorts.iterator(); externalPorts
-                    .hasNext();) {
+            for (Iterator externalPorts = clusteredExternalPorts
+                    .iterator(); externalPorts.hasNext();) {
                 IOPort port = (IOPort) externalPorts.next();
                 Fraction rate = ((Fraction) externalRates.get(port))
                         .multiply(lcmFraction);
@@ -310,8 +313,8 @@ public class SDFModularScheduler extends SDFScheduler {
                         if (!portParametersFound.contains(portParameter)) {
                             portParametersFound.add(portParameter);
                             portParameterMessageBuffer
-                            .append(((PortParameter) portParameter)
-                                    .getFullName() + " ");
+                                    .append(((PortParameter) portParameter)
+                                            .getFullName() + " ");
                             if (count > 100) {
                                 break;
                             }
@@ -321,14 +324,14 @@ public class SDFModularScheduler extends SDFScheduler {
             }
             if (portParameterMessageBuffer.length() > 0) {
                 messageBuffer
-                .append("Note that some of the unreached actors are in "
-                        + "transparent composite actors that have PortParameters.  "
-                        + "A transparent composite actor is composite actor that has "
-                        + "no local director.  Transparent composite actors and "
-                        + "PortParameters are not compatible, the workaround is to "
-                        + "insert a director or remove the PortParameter.  "
-                        + "\nThe PortParameters:\n"
-                        + portParameterMessageBuffer.toString());
+                        .append("Note that some of the unreached actors are in "
+                                + "transparent composite actors that have PortParameters.  "
+                                + "A transparent composite actor is composite actor that has "
+                                + "no local director.  Transparent composite actors and "
+                                + "PortParameters are not compatible, the workaround is to "
+                                + "insert a director or remove the PortParameter.  "
+                                + "\nThe PortParameters:\n"
+                                + portParameterMessageBuffer.toString());
                 if (count >= 99) {
                     messageBuffer.append("...");
                 }
@@ -336,8 +339,9 @@ public class SDFModularScheduler extends SDFScheduler {
 
             messageBuffer.append("\nUnreached Actors:\n");
             count = 0;
-            for (Iterator unreachedActors = remainingActors.iterator(); unreachedActors
-                    .hasNext() && count < 100; count++) {
+            for (Iterator unreachedActors = remainingActors
+                    .iterator(); unreachedActors.hasNext()
+                            && count < 100; count++) {
                 NamedObj unreachedActor = (NamedObj) unreachedActors.next();
                 messageBuffer.append(unreachedActor.getFullName() + " ");
             }
@@ -352,8 +356,8 @@ public class SDFModularScheduler extends SDFScheduler {
             reachedActorList.removeAll(remainingActors);
 
             count = 0;
-            for (Iterator actors = reachedActorList.iterator(); actors
-                    .hasNext() && count < 100; count++) {
+            for (Iterator actors = reachedActorList.iterator(); actors.hasNext()
+                    && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 messageBuffer.append(entity.getFullName() + " ");
             }
@@ -469,7 +473,8 @@ public class SDFModularScheduler extends SDFScheduler {
             ComponentEntity actor = (ComponentEntity) actors.next();
 
             // Check if this actor has any ports with rate of zero.
-            for (Iterator ports = actor.portList().iterator(); ports.hasNext();) {
+            for (Iterator ports = actor.portList().iterator(); ports
+                    .hasNext();) {
                 IOPort port = (IOPort) ports.next();
 
                 if (DFUtilities.getRate(port) == 0) {
@@ -523,7 +528,7 @@ public class SDFModularScheduler extends SDFScheduler {
             Map entityToFiringsPerIteration, Map externalRates,
             LinkedList remainingActors, LinkedList pendingActors,
             Set clusteredActors, Set clusteredExternalPorts)
-                    throws NotSchedulableException, IllegalActionException {
+            throws NotSchedulableException, IllegalActionException {
         ComponentEntity currentActor = (ComponentEntity) currentPort
                 .getContainer();
 
@@ -702,8 +707,8 @@ public class SDFModularScheduler extends SDFScheduler {
             } else {
                 // Both the rates are non zero, so we can just do the
                 // regular actor propagation.
-                desiredFiring = currentFiring.multiply(new Fraction(
-                        currentRate, connectedRate));
+                desiredFiring = currentFiring
+                        .multiply(new Fraction(currentRate, connectedRate));
             }
 
             // Now, compare the firing ratio that was computed before
@@ -734,8 +739,8 @@ public class SDFModularScheduler extends SDFScheduler {
                 entityToFiringsPerIteration.put(connectedActor, desiredFiring);
 
                 // Compute the external rate for this port.
-                Fraction rate = currentFiring.multiply(new Fraction(
-                        currentRate, 1));
+                Fraction rate = currentFiring
+                        .multiply(new Fraction(currentRate, 1));
                 Fraction previousRate = (Fraction) externalRates
                         .get(connectedPort);
 
@@ -760,12 +765,13 @@ public class SDFModularScheduler extends SDFScheduler {
                             clusteredExternalPorts);
                 } else if (!rate.equals(previousRate)) {
                     // The rates don't match.
-                    throw new NotSchedulableException(this, "No solution "
-                            + "exists for the balance equations.\n"
-                            + "Graph is not "
-                            + "consistent under the SDF domain "
-                            + "detected on external port "
-                            + connectedPort.getFullName());
+                    throw new NotSchedulableException(this,
+                            "No solution "
+                                    + "exists for the balance equations.\n"
+                                    + "Graph is not "
+                                    + "consistent under the SDF domain "
+                                    + "detected on external port "
+                                    + connectedPort.getFullName());
                 }
 
                 // _propagatePort(container, connectedPort,
@@ -787,11 +793,12 @@ public class SDFModularScheduler extends SDFScheduler {
             } else if (!presentFiring.equals(desiredFiring)) {
                 // So we've already propagated here, but the
                 // firingsPerIteration don't match.
-                throw new NotSchedulableException(this, "No solution "
-                        + "exists for the balance equations.\n"
-                        + "Graph is not " + "consistent under the SDF domain "
-                        + "detected on external port "
-                        + connectedPort.getFullName());
+                throw new NotSchedulableException(this,
+                        "No solution " + "exists for the balance equations.\n"
+                                + "Graph is not "
+                                + "consistent under the SDF domain "
+                                + "detected on external port "
+                                + connectedPort.getFullName());
             }
 
             if (_debugging && VERBOSE) {

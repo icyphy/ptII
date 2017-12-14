@@ -526,7 +526,8 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             // the maximizeMode.  Instead rely on removeContentPane to hide
             // the frame if the close actually succeeds.
             if (flag) {
-                DesktopInternalFrame frame = (DesktopInternalFrame) getInternalFrame(getCurrentContentPane());
+                DesktopInternalFrame frame = (DesktopInternalFrame) getInternalFrame(
+                        getCurrentContentPane());
                 frame.doDefaultCloseAction();
             }
         }
@@ -536,7 +537,8 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             // to iconify, unset the maximize mode, instead of just
             // hiding the frame.
             if (flag) {
-                JInternalFrame frame = getInternalFrame(getCurrentContentPane());
+                JInternalFrame frame = getInternalFrame(
+                        getCurrentContentPane());
                 setMaximizeMode(false);
                 frame.setIcon(true);
             }
@@ -554,7 +556,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * internal frames and generates other events and does useful stuff.
      */
     private class FrameManager extends InternalFrameAdapter implements
-    ComponentListener, PropertyChangeListener, ActionListener {
+            ComponentListener, PropertyChangeListener, ActionListener {
         // Update when the pseudo-frame has things done to it
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -637,8 +639,8 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
                     && isMaximizeMode()) {
                 c = getCurrentContentPane();
             } else {
-                throw new RuntimeException("Could not find content "
-                        + "for frame " + f);
+                throw new RuntimeException(
+                        "Could not find content " + "for frame " + f);
             }
 
             ViewEvent event = new ViewEvent(c, id);

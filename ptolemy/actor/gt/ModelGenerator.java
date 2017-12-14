@@ -191,11 +191,10 @@ public class ModelGenerator extends Source {
     @Override
     public boolean prefire() throws IllegalActionException {
         ParameterPort modelNamePort = modelName.getPort();
-        return super.prefire()
-                && (moml.isOutsideConnected() && moml.hasToken(0)
-                        || modelNamePort.isOutsideConnected()
-                        && modelNamePort.hasToken(0) || !moml
-                        .isOutsideConnected()
+        return super.prefire() && (moml.isOutsideConnected() && moml.hasToken(0)
+                || modelNamePort.isOutsideConnected()
+                        && modelNamePort.hasToken(0)
+                || !moml.isOutsideConnected()
                         && !modelNamePort.isOutsideConnected());
     }
 

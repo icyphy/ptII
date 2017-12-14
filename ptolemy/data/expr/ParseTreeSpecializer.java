@@ -155,7 +155,8 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     @Override
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
@@ -180,8 +181,8 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
                 return;
             }
 
-            throw new IllegalActionException("The ID " + node.getName()
-                    + " is undefined.");
+            throw new IllegalActionException(
+                    "The ID " + node.getName() + " is undefined.");
         }
     }
 

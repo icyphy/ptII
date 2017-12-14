@@ -130,7 +130,8 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PNDirector() throws IllegalActionException, NameDuplicationException {
+    public PNDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -147,8 +148,8 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PNDirector(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public PNDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -365,7 +366,7 @@ public class PNDirector extends CompositeProcessDirector {
         return new String[] {
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.modal.kernel.FSMDirector",
-        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -511,8 +512,7 @@ public class PNDirector extends CompositeProcessDirector {
         // this receiver unblocked now, before the notification,
         // or we will detect deadlock all over again and
         // again increase the buffer sizes.
-        threadUnblocked(
-                (Thread) _writeBlockedQueues.get(smallestCapacityQueue),
+        threadUnblocked((Thread) _writeBlockedQueues.get(smallestCapacityQueue),
                 smallestCapacityQueue, WRITE_BLOCKED);
 
         return;
@@ -582,8 +582,8 @@ public class PNDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                 new IntToken(1));
         initialQueueCapacity.setTypeEquals(BaseType.INT);

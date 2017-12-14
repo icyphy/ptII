@@ -60,8 +60,9 @@ public class OpacityFilter extends PointFilter {
 
     @Override
     public int filterRGB(int x, int y, int rgb) {
-        if ((rgb & 0xff000000) != 0)
+        if ((rgb & 0xff000000) != 0) {
             return (rgb & 0xffffff) | opacity24;
+        }
         return rgb;
     }
 

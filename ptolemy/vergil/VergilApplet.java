@@ -86,7 +86,7 @@ public class VergilApplet extends BasicJApplet {
     @Override
     public String[][] getParameterInfo() {
         String[][] newinfo = { { "commandLineArguments", "",
-        "Command Line Arguments suitable for VergilApplication" }, };
+                "Command Line Arguments suitable for VergilApplication" }, };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
@@ -122,7 +122,8 @@ public class VergilApplet extends BasicJApplet {
                         if (connection instanceof HttpURLConnection) {
                             HttpURLConnection httpConnection = (HttpURLConnection) connection;
                             httpConnection.setRequestMethod("HEAD");
-                            if (httpConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                            if (httpConnection
+                                    .getResponseCode() != HttpURLConnection.HTTP_OK) {
                                 xmlFile = new URL(vergilArguments[i]);
                             }
                         } else {
@@ -135,8 +136,8 @@ public class VergilApplet extends BasicJApplet {
                             }
                         }
                     } catch (Exception ex) {
-                        System.out.println("Failed to open "
-                                + vergilArguments[i]);
+                        System.out.println(
+                                "Failed to open " + vergilArguments[i]);
                         ex.printStackTrace();
                     }
                     vergilArguments[i] = xmlFile.toExternalForm();

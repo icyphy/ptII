@@ -239,8 +239,8 @@ public class AbstractTextAttribute extends VisibleAttribute {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AbstractTextAttribute result = (AbstractTextAttribute) super
-                .clone(workspace);
+        AbstractTextAttribute result = (AbstractTextAttribute) super.clone(
+                workspace);
         result._icon = (TextIcon) result.getAttribute("_icon");
         return result;
     }

@@ -159,7 +159,8 @@ public class EventButton extends TypedAtomicActor {
             Director director = getDirector();
             Time currentTime = director.getModelTime();
 
-            double pressDurationValue = ((DoubleToken)pressDuration.getToken()).doubleValue();
+            double pressDurationValue = ((DoubleToken) pressDuration.getToken())
+                    .doubleValue();
             // Mark that the button is depressed.
             _bounceBackTime = currentTime.add(pressDurationValue);
             // Request a firing in the future to restore the button.
@@ -198,8 +199,7 @@ public class EventButton extends TypedAtomicActor {
      *  @param pressed True to be pressed.
      */
     private void _setButtonPressed(boolean pressed) {
-        String moml = "<property name=\"buttonPressed\" value=\""
-                + pressed
+        String moml = "<property name=\"buttonPressed\" value=\"" + pressed
                 + "\"/>";
         MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
         request.setPersistent(false);
@@ -231,7 +231,8 @@ public class EventButton extends TypedAtomicActor {
         public void createEditor(NamedObj object, Frame parent) {
             if (!_running) {
                 try {
-                    MessageHandler.warning("Model is not running. No output produced.");
+                    MessageHandler.warning(
+                            "Model is not running. No output produced.");
                 } catch (CancelException e) {
                     // Ignore.
                 }
@@ -242,7 +243,7 @@ public class EventButton extends TypedAtomicActor {
                 try {
                     // This will be called in the Swing event thread.
                     // Make sure that the actor is not currently firing.
-                    synchronized(EventButton.this) {
+                    synchronized (EventButton.this) {
                         if (_bounceBackTime != null) {
                             // Ignore.  Still in the interval of the previous button press.
                             return;
@@ -251,7 +252,9 @@ public class EventButton extends TypedAtomicActor {
                         director.fireAtCurrentTime(EventButton.this);
                     }
                 } catch (IllegalActionException e) {
-                    MessageHandler.error("Director is unable to fire the actor as requested.", e);
+                    MessageHandler.error(
+                            "Director is unable to fire the actor as requested.",
+                            e);
                 }
             } else {
                 MessageHandler.error("No director!");

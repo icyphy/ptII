@@ -84,9 +84,9 @@ public class ArrayToElements extends Transformer {
         output.setMultiport(true);
 
         // Set the icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                        + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,8 +103,8 @@ public class ArrayToElements extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayToElements newObject = (ArrayToElements) super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.input));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.input));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);
@@ -160,8 +160,8 @@ public class ArrayToElements extends Transformer {
     protected Set<Inequality> _customTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
         if (isBackwardTypeInferenceEnabled()) {
-            result.add(new Inequality(new ArrayOfTypesFunction(output), input
-                    .getTypeTerm()));
+            result.add(new Inequality(new ArrayOfTypesFunction(output),
+                    input.getTypeTerm()));
         }
         return result;
     }

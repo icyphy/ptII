@@ -80,9 +80,9 @@ public class MonitorReceiverContents extends SingletonAttribute {
         super(container, name);
 
         // The icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-60\" y=\"-10\" " + "width=\"180\" height=\"20\" "
-                + "style=\"fill:#00FFFF\"/>\n" + "<text x=\"-55\" y=\"5\" "
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-60\" y=\"-10\" "
+                + "width=\"180\" height=\"20\" " + "style=\"fill:#00FFFF\"/>\n"
+                + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
                 + "MonitorReceiverContents\n" + "</text>\n" + "</svg>\n");
 
@@ -154,7 +154,8 @@ public class MonitorReceiverContents extends SingletonAttribute {
                             for (Actor entity : entities) {
                                 List<IOPort> ports = entity.inputPortList();
                                 for (IOPort port : ports) {
-                                    if (port.getAttribute("_showInfo") == null) {
+                                    if (port.getAttribute(
+                                            "_showInfo") == null) {
                                         MonitorReceiverAttribute attribute = new MonitorReceiverAttribute(
                                                 port, "_showInfo");
                                         attribute.setPersistent(false);
@@ -172,9 +173,10 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     @Override
                     public boolean postfire() {
                         ChangeRequest request = new ChangeRequest(this,
-                                "SetVariable change request", true /*Although this not a structural change in my point of view
-                                                                   , we however for some reason need to specify it is, otherwise the GUI won't update.*/
-                                ) {
+                                "SetVariable change request",
+                                true /*Although this not a structural change in my point of view
+                                     , we however for some reason need to specify it is, otherwise the GUI won't update.*/
+                        ) {
                             @Override
                             protected void _execute()
                                     throws IllegalActionException {
@@ -248,7 +250,8 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     }
 
                     @Override
-                    public void removeInitializable(Initializable initializable) {
+                    public void removeInitializable(
+                            Initializable initializable) {
                     }
                 };
             }

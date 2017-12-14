@@ -55,8 +55,7 @@ public class JTableComponentBuilder implements ComponentBuilder {
     @Override
     public String getDeclaration(String name,
             java.util.Map<String, Object> beanProperties) {
-        return "javax.swing.JTable "
-                + name
+        return "javax.swing.JTable " + name
                 + "Control = new javax.swing.JTable();\njavax.swing.JScrollPane "
                 + name + " = new javax.swing.JScrollPane(" + name
                 + "Control);\n";

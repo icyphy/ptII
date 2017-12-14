@@ -74,9 +74,10 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
         String ignoreCase = ((BooleanToken) actor.ignoreCase.getToken())
                 .booleanValue() ? "ignoreCase" : "dontIgnoreCase";
         String codeBlockName = ignoreCase
-                + (function.equals("equals") ? "EqualsBlock" : function
-                        .equals("startsWith") ? "StartsWithBlock" : function
-                                .equals("endsWith") ? "EndsWithBlock" : "ContainsBlock");
+                + (function.equals("equals") ? "EqualsBlock"
+                        : function.equals("startsWith") ? "StartsWithBlock"
+                                : function.equals("endsWith") ? "EndsWithBlock"
+                                        : "ContainsBlock");
         ArrayList<String> args = new ArrayList<String>();
         code.append(getTemplateParser().generateBlockCode(codeBlockName, args));
 

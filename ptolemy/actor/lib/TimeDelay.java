@@ -418,12 +418,9 @@ public class TimeDelay extends Transformer {
         int comparison = currentTime.compareTo(event.timeStamp);
         if (comparison > 0) {
             // Current time exceeds the event time. This should not happen.
-            throw new IllegalActionException(
-                    this,
-                    "Failed to output event with time stamp "
-                            + event.timeStamp
-                            + " and value "
-                            + event.token
+            throw new IllegalActionException(this,
+                    "Failed to output event with time stamp " + event.timeStamp
+                            + " and value " + event.token
                             + ". Perhaps the director is incompatible with TimeDelay?");
         }
         // If the time is right and the microstep matches or exceeds

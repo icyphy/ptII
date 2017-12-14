@@ -145,8 +145,8 @@ public class WaitingTime extends DEActor {
         if (godot) {
             for (int i = 0; i < _waiting.size(); i++) {
                 Time previousTime = (Time) _waiting.elementAt(i);
-                DoubleToken outToken = new DoubleToken(currentTime.subtract(
-                        previousTime).getDoubleValue());
+                DoubleToken outToken = new DoubleToken(
+                        currentTime.subtract(previousTime).getDoubleValue());
                 output.send(0, outToken);
             }
 

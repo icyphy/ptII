@@ -231,8 +231,8 @@ public class JCanvasPanner extends JPanel {
             //  System.out.println("viewRect = " + viewRect);
             Rectangle myRect = _getInsetBounds();
 
-            AffineTransform forward = CanvasUtilities.computeFitTransform(
-                    viewRect, myRect);
+            AffineTransform forward = CanvasUtilities
+                    .computeFitTransform(viewRect, myRect);
 
             // Also invert the current transform on the canvas.
             AffineTransform current = canvas.getCanvasPane()
@@ -251,10 +251,13 @@ public class JCanvasPanner extends JPanel {
                     forward.concatenate(current.createInverse());
                     inverse = forward.createInverse();
                 } catch (NoninvertibleTransformException ex) {
-                    throw new RuntimeException("Failed to create an inverse of an AffineTransform.\n viewRect: "
-                            + viewRect
-                            + "\ncurrent: " + current + " current determinant:" + current.getDeterminant()
-                            + "\nforward: " + forward + " forward determinant:" + forward.getDeterminant(),
+                    throw new RuntimeException(
+                            "Failed to create an inverse of an AffineTransform.\n viewRect: "
+                                    + viewRect + "\ncurrent: " + current
+                                    + " current determinant:"
+                                    + current.getDeterminant() + "\nforward: "
+                                    + forward + " forward determinant:"
+                                    + forward.getDeterminant(),
                             ex);
                 }
             } else {
@@ -279,7 +282,8 @@ public class JCanvasPanner extends JPanel {
 
             g.setColor(Color.red);
             g.drawRect((int) visibleRect.getX(), (int) visibleRect.getY(),
-                    (int) visibleRect.getWidth(), (int) visibleRect.getHeight());
+                    (int) visibleRect.getWidth(),
+                    (int) visibleRect.getHeight());
 
             // NOTE: No longer meaningful, since always full space.
 
@@ -300,16 +304,17 @@ public class JCanvasPanner extends JPanel {
 
         // There is a little extra border...
         int border = 2;
-        Rectangle myRect = new Rectangle(insets.left + border, insets.top
-                + border, mySize.width - insets.top - insets.bottom - border,
+        Rectangle myRect = new Rectangle(insets.left + border,
+                insets.top + border,
+                mySize.width - insets.top - insets.bottom - border,
                 mySize.height - insets.left - insets.right - border);
         return myRect;
     }
 
     // This listener is attached to this panner and is responsible for
     // panning the target in response to a mouse click on the panner.
-    private class PanMouseListener extends MouseAdapter implements
-    MouseMotionListener {
+    private class PanMouseListener extends MouseAdapter
+            implements MouseMotionListener {
         @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null
@@ -358,7 +363,7 @@ public class JCanvasPanner extends JPanel {
      }
      scale = Math.pow(1.3, scale);
      JCanvas canvas = (JCanvas)_target.getView();
-
+    
      AffineTransform current =
      canvas.getCanvasPane().getTransformContext().getTransform();
      current.setTransform(transformOrigin);
@@ -367,7 +372,7 @@ public class JCanvasPanner extends JPanel {
      current.translate(-scaled.getX(), -scaled.getY());
      canvas.getCanvasPane().setTransform(current);
      }
-
+    
      public void mousePressed(MouseEvent evt) {
      if (_target != null &&
      (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
@@ -380,23 +385,23 @@ public class JCanvasPanner extends JPanel {
      // avoid a lot of repeated scaling of the same transform.
      transformOrigin =
      (AffineTransform)context.getTransform().clone();
-
+    
      // Take the event and first transform it from the panner
      // coordinates into the view coordinates.
      Dimension viewSize =_target.getView().getSize();
      Rectangle viewRect =
      new Rectangle(0, 0, viewSize.width, viewSize.height);
      Rectangle myRect = _getInsetBounds();
-
+    
      AffineTransform forward =
      CanvasUtilities.computeFitTransform(viewRect, myRect);
-
+    
      double xScaled =
      (origin.getX() - myRect.getX()) / forward.getScaleX();
      double yScaled =
      (origin.getY() - myRect.getY()) / forward.getScaleY();
      scaled = new Point2D.Double(xScaled, yScaled);
-
+    
      // Now transform from the view coordinates into the
      // pane coordinates.
      try {

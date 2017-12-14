@@ -81,8 +81,8 @@ public class PingPongTokenHandler implements TokenHandler<Token> {
      */
     @Override
     public Token convertToToken(DataInputStream inputStream,
-            Class<? extends Token> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends Token> tokenType)
+            throws IOException, IllegalActionException {
         if (tokenType == PingToken.class) {
             return new PingToken(inputStream.readLong());
         } else if (tokenType == PongToken.class) {

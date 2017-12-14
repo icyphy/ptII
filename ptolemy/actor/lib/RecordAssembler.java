@@ -108,9 +108,9 @@ public class RecordAssembler extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"0\" y=\"0\" width=\"6\" "
-                + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                        + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -234,16 +234,17 @@ public class RecordAssembler extends TypedAtomicActor {
             TypedIOPort input = entry.getValue();
             // only include ports that have no type declared
             if (input.getTypeTerm().isSettable()) {
-                result.add(new Inequality(new ExtractFieldType(output,
-                        inputName), input.getTypeTerm()));
+                result.add(
+                        new Inequality(new ExtractFieldType(output, inputName),
+                                input.getTypeTerm()));
             }
         }
 
         // constrain the fields in the output record to be greater than or
         // equal to the declared or resolved types of the input ports:
         // output >= {x = typeOf(outputPortX), y = typeOf(outputPortY), ..}
-        result.add(new Inequality(new ConstructAssociativeType(_portMap
-                .values(), RecordType.class), output.getTypeTerm()));
+        result.add(new Inequality(new ConstructAssociativeType(
+                _portMap.values(), RecordType.class), output.getTypeTerm()));
 
         return result;
     }

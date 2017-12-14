@@ -236,8 +236,8 @@ public class CombinedCollection<E> implements Collection<E> {
     public <T> T[] toArray(T[] array) {
         int size = size();
         if (array.length < size) {
-            array = (T[]) Array.newInstance(
-                    array.getClass().getComponentType(), size);
+            array = (T[]) Array.newInstance(array.getClass().getComponentType(),
+                    size);
         }
 
         int i = 0;
@@ -278,7 +278,7 @@ public class CombinedCollection<E> implements Collection<E> {
 
     /**
      The iterator for iterating elements in this collection.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

@@ -67,8 +67,9 @@ public final class LinAlg {
         assert (a.length == b.length);
 
         double dist = 0;
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             dist += Math.abs(b[i] - a[i]);
+        }
 
         return dist;
     }
@@ -80,8 +81,9 @@ public final class LinAlg {
 
     public static final double[] resize(double v[], int newlength) {
         double r[] = new double[newlength];
-        for (int i = 0; i < Math.min(newlength, v.length); i++)
+        for (int i = 0; i < Math.min(newlength, v.length); i++) {
             r[i] = v[i];
+        }
         return r;
     }
 
@@ -95,8 +97,9 @@ public final class LinAlg {
     public static int squaredDistance(int a[], int b[], int len) {
         int mag = 0;
 
-        for (int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++) {
             mag += sq(b[i] - a[i]);
+        }
 
         return mag;
     }
@@ -115,8 +118,9 @@ public final class LinAlg {
     public static double squaredDistance(double a[], double b[], int len) {
         double mag = 0;
 
-        for (int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++) {
             mag += sq(b[i] - a[i]);
+        }
 
         return mag;
     }
@@ -134,29 +138,34 @@ public final class LinAlg {
 
     /** Return absolute value of each element. **/
     public static double[][] abs(double A[][]) {
-        if (A.length == 0)
+        if (A.length == 0) {
             return new double[0][0];
+        }
 
         double B[][] = new double[A.length][A[0].length];
-        for (int i = 0; i < A.length; i++)
-            for (int j = 0; j < A[i].length; j++)
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < A[i].length; j++) {
                 B[i][j] = Math.abs(A[i][j]);
+            }
+        }
         return B;
     }
 
     /** Return absolute value of each element. **/
     public static double[] abs(double a[]) {
         double b[] = new double[a.length];
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             b[i] = Math.abs(a[i]);
+        }
         return b;
     }
 
     /** Return absolute value of each element. **/
     public static float[] abs(float a[]) {
         float b[] = new float[a.length];
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             b[i] = Math.abs(a[i]);
+        }
         return b;
     }
 
@@ -164,8 +173,9 @@ public final class LinAlg {
     public static double normF(double a[]) {
         double mag = 0;
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             mag += sq(a[i]);
+        }
 
         return mag;
     }
@@ -174,8 +184,9 @@ public final class LinAlg {
     public static double magnitude(int a[]) {
         double mag = 0;
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             mag += sq(a[i]);
+        }
 
         return Math.sqrt(mag);
     }
@@ -184,8 +195,9 @@ public final class LinAlg {
     public static float magnitude(float a[]) {
         double mag = 0;
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             mag += sq(a[i]);
+        }
 
         return (float) Math.sqrt(mag);
     }
@@ -194,8 +206,9 @@ public final class LinAlg {
     public static double magnitude(double a[]) {
         double mag = 0;
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             mag += sq(a[i]);
+        }
 
         return Math.sqrt(mag);
     }
@@ -203,30 +216,34 @@ public final class LinAlg {
     /** average of elements in a vector **/
     public static float average(float a[]) {
         float sum = 0;
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             sum += a[i];
+        }
         return sum / a.length;
     }
 
     /** average of elements in a vector **/
     public static double average(double a[]) {
         double sum = 0;
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             sum += a[i];
+        }
         return sum / a.length;
     }
 
     public static float normL1(float a[]) {
         float mag = 0;
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             mag += Math.abs(a[i]);
+        }
         return mag;
     }
 
     public static double normL1(double a[]) {
         double mag = 0;
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             mag += Math.abs(a[i]);
+        }
         return mag;
     }
 
@@ -243,8 +260,9 @@ public final class LinAlg {
         float b[] = new float[a.length];
         float mag = magnitude(a);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             b[i] = a[i] / mag;
+        }
 
         return b;
     }
@@ -253,8 +271,9 @@ public final class LinAlg {
         double b[] = new double[a.length];
         double mag = magnitude(a);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             b[i] = a[i] / mag;
+        }
 
         return b;
     }
@@ -262,8 +281,9 @@ public final class LinAlg {
     public static void normalizeEquals(double a[]) {
         double mag = magnitude(a);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             a[i] = a[i] / mag;
+        }
     }
 
     public static double[] add(double a[], double b[]) {
@@ -272,12 +292,14 @@ public final class LinAlg {
 
     public static double[] add(double a[], double b[], double r[]) {
         assert (a.length == b.length);
-        if (r == null)
+        if (r == null) {
             r = new double[a.length];
+        }
         assert (r.length == a.length);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i] + b[i];
+        }
 
         return r;
     }
@@ -285,8 +307,9 @@ public final class LinAlg {
     public static double[][] addMany(double a[][], double[][]... bs) {
         double X[][] = copy(a);
 
-        for (double b[][] : bs)
+        for (double b[][] : bs) {
             LinAlg.plusEquals(X, b);
+        }
 
         return X;
     }
@@ -299,12 +322,15 @@ public final class LinAlg {
         assert (a.length == b.length);
         assert (a[0].length == b[0].length);
 
-        if (X == null)
+        if (X == null) {
             X = new double[a.length][a[0].length];
+        }
 
-        for (int i = 0; i < a.length; i++)
-            for (int j = 0; j < a[0].length; j++)
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
                 X[i][j] = a[i][j] + b[i][j];
+            }
+        }
         return X;
     }
 
@@ -312,16 +338,20 @@ public final class LinAlg {
         return subtract(a, b, null);
     }
 
-    public static double[][] subtract(double a[][], double b[][], double X[][]) {
+    public static double[][] subtract(double a[][], double b[][],
+            double X[][]) {
         assert (a.length == b.length);
         assert (a[0].length == b[0].length);
 
-        if (X == null)
+        if (X == null) {
             X = new double[a.length][a[0].length];
+        }
 
-        for (int i = 0; i < a.length; i++)
-            for (int j = 0; j < a[0].length; j++)
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
                 X[i][j] = a[i][j] - b[i][j];
+            }
+        }
         return X;
     }
 
@@ -339,27 +369,32 @@ public final class LinAlg {
                 t2 = a[i][2];
                 t3 = a[i][3];
 
-                for (int j = 0; j < 4; j++)
-                    a[i][j] = t0 * b[0][j] + t1 * b[1][j] + t2 * b[2][j] + t3
-                            * b[3][j];
+                for (int j = 0; j < 4; j++) {
+                    a[i][j] = t0 * b[0][j] + t1 * b[1][j] + t2 * b[2][j]
+                            + t3 * b[3][j];
+                }
             }
             return;
         }
 
         // dumb version: multiply, then copy.
         double x[][] = matrixAB(a, b);
-        for (int i = 0; i < x.length; i++)
-            for (int j = 0; j < x[0].length; j++)
+        for (int i = 0; i < x.length; i++) {
+            for (int j = 0; j < x[0].length; j++) {
                 a[i][j] = x[i][j];
+            }
+        }
     }
 
     public static void plusEquals(double a[][], double b[][]) {
         assert (a.length == b.length);
         assert (a[0].length == b[0].length);
 
-        for (int i = 0; i < a.length; i++)
-            for (int j = 0; j < a[0].length; j++)
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
                 a[i][j] += b[i][j];
+            }
+        }
     }
 
     public static double[][] inverse(double A[][]) {
@@ -367,11 +402,13 @@ public final class LinAlg {
     }
 
     public static double[][] inverse(double A[][], double X[][]) {
-        if (X == null)
+        if (X == null) {
             X = new double[A.length][A.length];
+        }
 
-        if (A.length == 0)
+        if (A.length == 0) {
             return new double[0][0];
+        }
 
         assert (X.length == A.length && X[0].length == A[0].length);
 
@@ -384,8 +421,9 @@ public final class LinAlg {
             double c = A[1][0], d = A[1][1];
 
             double det = (a * d - b * c);
-            if (det == 0)
+            if (det == 0) {
                 return null;
+            }
 
             det = 1.0 / det;
             X[0][0] = det * d;
@@ -401,10 +439,11 @@ public final class LinAlg {
             double d = A[1][0], e = A[1][1], f = A[1][2];
             double g = A[2][0], h = A[2][1], i = A[2][2];
 
-            double det = (a * e * i - a * f * h - d * b * i + d * c * h + g * b
-                    * f - g * c * e);
-            if (det == 0)
+            double det = (a * e * i - a * f * h - d * b * i + d * c * h
+                    + g * b * f - g * c * e);
+            if (det == 0) {
                 return null;
+            }
             det = 1.0 / det;
 
             X[0][0] = det * (e * i - f * h);
@@ -426,56 +465,61 @@ public final class LinAlg {
             double m20 = A[2][0], m21 = A[2][1], m22 = A[2][2], m23 = A[2][3];
             double m30 = A[3][0], m31 = A[3][1], m32 = A[3][2], m33 = A[3][3];
 
-            double det = m00 * m11 * m22 * m33 - m00 * m11 * m23 * m32 - m00
-                    * m21 * m12 * m33 + m00 * m21 * m13 * m32 + m00 * m31 * m12
-                    * m23 - m00 * m31 * m13 * m22 - m10 * m01 * m22 * m33 + m10
-                    * m01 * m23 * m32 + m10 * m21 * m02 * m33 - m10 * m21 * m03
-                    * m32 - m10 * m31 * m02 * m23 + m10 * m31 * m03 * m22 + m20
-                    * m01 * m12 * m33 - m20 * m01 * m13 * m32 - m20 * m11 * m02
-                    * m33 + m20 * m11 * m03 * m32 + m20 * m31 * m02 * m13 - m20
-                    * m31 * m03 * m12 - m30 * m01 * m12 * m23 + m30 * m01 * m13
-                    * m22 + m30 * m11 * m02 * m23 - m30 * m11 * m03 * m22 - m30
-                    * m21 * m02 * m13 + m30 * m21 * m03 * m12;
+            double det = m00 * m11 * m22 * m33 - m00 * m11 * m23 * m32
+                    - m00 * m21 * m12 * m33 + m00 * m21 * m13 * m32
+                    + m00 * m31 * m12 * m23 - m00 * m31 * m13 * m22
+                    - m10 * m01 * m22 * m33 + m10 * m01 * m23 * m32
+                    + m10 * m21 * m02 * m33 - m10 * m21 * m03 * m32
+                    - m10 * m31 * m02 * m23 + m10 * m31 * m03 * m22
+                    + m20 * m01 * m12 * m33 - m20 * m01 * m13 * m32
+                    - m20 * m11 * m02 * m33 + m20 * m11 * m03 * m32
+                    + m20 * m31 * m02 * m13 - m20 * m31 * m03 * m12
+                    - m30 * m01 * m12 * m23 + m30 * m01 * m13 * m22
+                    + m30 * m11 * m02 * m23 - m30 * m11 * m03 * m22
+                    - m30 * m21 * m02 * m13 + m30 * m21 * m03 * m12;
 
-            if (det == 0)
+            if (det == 0) {
                 return null;
+            }
 
-            X[0][0] = m11 * m22 * m33 - m11 * m23 * m32 - m21 * m12 * m33 + m21
-                    * m13 * m32 + m31 * m12 * m23 - m31 * m13 * m22;
+            X[0][0] = m11 * m22 * m33 - m11 * m23 * m32 - m21 * m12 * m33
+                    + m21 * m13 * m32 + m31 * m12 * m23 - m31 * m13 * m22;
             X[1][0] = -m10 * m22 * m33 + m10 * m23 * m32 + m20 * m12 * m33
                     - m20 * m13 * m32 - m30 * m12 * m23 + m30 * m13 * m22;
-            X[2][0] = m10 * m21 * m33 - m10 * m23 * m31 - m20 * m11 * m33 + m20
-                    * m13 * m31 + m30 * m11 * m23 - m30 * m13 * m21;
+            X[2][0] = m10 * m21 * m33 - m10 * m23 * m31 - m20 * m11 * m33
+                    + m20 * m13 * m31 + m30 * m11 * m23 - m30 * m13 * m21;
             X[3][0] = -m10 * m21 * m32 + m10 * m22 * m31 + m20 * m11 * m32
                     - m20 * m12 * m31 - m30 * m11 * m22 + m30 * m12 * m21;
             X[0][1] = -m01 * m22 * m33 + m01 * m23 * m32 + m21 * m02 * m33
                     - m21 * m03 * m32 - m31 * m02 * m23 + m31 * m03 * m22;
-            X[1][1] = m00 * m22 * m33 - m00 * m23 * m32 - m20 * m02 * m33 + m20
-                    * m03 * m32 + m30 * m02 * m23 - m30 * m03 * m22;
+            X[1][1] = m00 * m22 * m33 - m00 * m23 * m32 - m20 * m02 * m33
+                    + m20 * m03 * m32 + m30 * m02 * m23 - m30 * m03 * m22;
             X[2][1] = -m00 * m21 * m33 + m00 * m23 * m31 + m20 * m01 * m33
                     - m20 * m03 * m31 - m30 * m01 * m23 + m30 * m03 * m21;
-            X[3][1] = m00 * m21 * m32 - m00 * m22 * m31 - m20 * m01 * m32 + m20
-                    * m02 * m31 + m30 * m01 * m22 - m30 * m02 * m21;
-            X[0][2] = m01 * m12 * m33 - m01 * m13 * m32 - m11 * m02 * m33 + m11
-                    * m03 * m32 + m31 * m02 * m13 - m31 * m03 * m12;
+            X[3][1] = m00 * m21 * m32 - m00 * m22 * m31 - m20 * m01 * m32
+                    + m20 * m02 * m31 + m30 * m01 * m22 - m30 * m02 * m21;
+            X[0][2] = m01 * m12 * m33 - m01 * m13 * m32 - m11 * m02 * m33
+                    + m11 * m03 * m32 + m31 * m02 * m13 - m31 * m03 * m12;
             X[1][2] = -m00 * m12 * m33 + m00 * m13 * m32 + m10 * m02 * m33
                     - m10 * m03 * m32 - m30 * m02 * m13 + m30 * m03 * m12;
-            X[2][2] = m00 * m11 * m33 - m00 * m13 * m31 - m10 * m01 * m33 + m10
-                    * m03 * m31 + m30 * m01 * m13 - m30 * m03 * m11;
+            X[2][2] = m00 * m11 * m33 - m00 * m13 * m31 - m10 * m01 * m33
+                    + m10 * m03 * m31 + m30 * m01 * m13 - m30 * m03 * m11;
             X[3][2] = -m00 * m11 * m32 + m00 * m12 * m31 + m10 * m01 * m32
                     - m10 * m02 * m31 - m30 * m01 * m12 + m30 * m02 * m11;
             X[0][3] = -m01 * m12 * m23 + m01 * m13 * m22 + m11 * m02 * m23
                     - m11 * m03 * m22 - m21 * m02 * m13 + m21 * m03 * m12;
-            X[1][3] = m00 * m12 * m23 - m00 * m13 * m22 - m10 * m02 * m23 + m10
-                    * m03 * m22 + m20 * m02 * m13 - m20 * m03 * m12;
+            X[1][3] = m00 * m12 * m23 - m00 * m13 * m22 - m10 * m02 * m23
+                    + m10 * m03 * m22 + m20 * m02 * m13 - m20 * m03 * m12;
             X[2][3] = -m00 * m11 * m23 + m00 * m13 * m21 + m10 * m01 * m23
                     - m10 * m03 * m21 - m20 * m01 * m13 + m20 * m03 * m11;
-            X[3][3] = m00 * m11 * m22 - m00 * m12 * m21 - m10 * m01 * m22 + m10
-                    * m02 * m21 + m20 * m01 * m12 - m20 * m02 * m11;
+            X[3][3] = m00 * m11 * m22 - m00 * m12 * m21 - m10 * m01 * m22
+                    + m10 * m02 * m21 + m20 * m01 * m12 - m20 * m02 * m11;
 
-            for (int i = 0; i < 4; i++)
-                for (int j = 0; j < 4; j++)
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
                     X[i][j] /= det;
+                }
+            }
 
             return X;
         }
@@ -489,26 +533,31 @@ public final class LinAlg {
 
     public static double min(double a[][]) {
         double v = Double.MAX_VALUE;
-        for (int i = 0; i < a.length; i++)
-            for (int j = 0; j < a[0].length; j++)
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
                 v = Math.min(v, a[i][j]);
+            }
+        }
 
         return v;
     }
 
     public static double max(double a[][]) {
         double v = -Double.MAX_VALUE;
-        for (int i = 0; i < a.length; i++)
-            for (int j = 0; j < a[0].length; j++)
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
                 v = Math.max(v, a[i][j]);
+            }
+        }
 
         return v;
     }
 
     public static double[] max(double a[], double b[]) {
         double v[] = new double[a.length];
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             v[i] = Math.max(a[i], b[i]);
+        }
         return v;
     }
 
@@ -516,32 +565,36 @@ public final class LinAlg {
     public static void plusEquals(double a[], double b[]) {
         assert (a.length == b.length);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             a[i] += b[i];
+        }
     }
 
     /** a -= b **/
     public static void minusEquals(double a[], double b[]) {
         assert (a.length == b.length);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             a[i] -= b[i];
+        }
     }
 
     // a -= b
     public static void minusEquals(double a[], double b[], double scale) {
         assert (a.length == b.length);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             a[i] -= b[i] * scale;
+        }
     }
 
     // a += scale*b
     public static void plusEquals(double a[], double b[], double scale) {
         assert (a.length == b.length);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             a[i] += b[i] * scale;
+        }
     }
 
     public static double[] subtract(double a[], double b[]) {
@@ -550,19 +603,22 @@ public final class LinAlg {
 
     public static double[] subtract(double a[], double b[], double r[]) {
         assert (a.length == b.length);
-        if (r == null)
+        if (r == null) {
             r = new double[a.length];
+        }
         assert (r.length == a.length);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i] - b[i];
+        }
 
         return r;
     }
 
     public static double[] crossProduct(double a[], double b[], double r[]) {
-        if (r == null)
+        if (r == null) {
             r = new double[a.length];
+        }
         r[0] = a[1] * b[2] - a[2] * b[1];
         r[1] = a[2] * b[0] - a[0] * b[2];
         r[2] = a[0] * b[1] - a[1] * b[0];
@@ -574,8 +630,9 @@ public final class LinAlg {
     }
 
     public static float[] crossProduct(float a[], float b[], float r[]) {
-        if (r == null)
+        if (r == null) {
             r = new float[a.length];
+        }
         r[0] = a[1] * b[2] - a[2] * b[1];
         r[1] = a[2] * b[0] - a[0] * b[2];
         r[2] = a[0] * b[1] - a[1] * b[0];
@@ -612,44 +669,50 @@ public final class LinAlg {
 
     public static float[] copyFloats(double a[]) {
         float r[] = new float[a.length];
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = (float) a[i];
+        }
         return r;
     }
 
     public static double[] copyDoubles(float a[]) {
         double r[] = new double[a.length];
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i];
+        }
         return r;
     }
 
     public static double[] copyDoubles(int a[]) {
         double r[] = new double[a.length];
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i];
+        }
         return r;
     }
 
     public static float[] copy(float a[]) {
         float r[] = new float[a.length];
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i];
+        }
         return r;
     }
 
     public static int[] copy(int a[]) {
         int r[] = new int[a.length];
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i];
+        }
         return r;
     }
 
     public static double[] copy(double a[], int len) {
         double r[] = new double[len];
 
-        for (int i = 0; i < Math.min(len, a.length); i++)
+        for (int i = 0; i < Math.min(len, a.length); i++) {
             r[i] = a[i];
+        }
 
         return r;
     }
@@ -657,16 +720,18 @@ public final class LinAlg {
     public static double[] copy(double a[], int a0, int len) {
         assert (a.length >= a0 + len);
         double r[] = new double[len];
-        for (int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++) {
             r[i] = a[i + a0];
+        }
         return r;
     }
 
     public static double[] copy(double a[]) {
         double r[] = new double[a.length];
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i];
+        }
 
         return r;
     }
@@ -674,18 +739,22 @@ public final class LinAlg {
     public static void copy(double a[], double r[]) {
         assert (r.length == a.length);
 
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             r[i] = a[i];
+        }
     }
 
     public static double[][] copy(double a[][]) {
-        if (a.length == 0)
+        if (a.length == 0) {
             return new double[0][0];
+        }
 
         double X[][] = new double[a.length][a[0].length];
-        for (int i = 0; i < a.length; i++)
-            for (int j = 0; j < a[0].length; j++)
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
                 X[i][j] = a[i][j];
+            }
+        }
         return X;
     }
 
@@ -693,9 +762,11 @@ public final class LinAlg {
     public static double[][] copy(double a[][], int i0, int j0, int nrows,
             int ncols) {
         double X[][] = new double[nrows][ncols];
-        for (int i = 0; i < nrows; i++)
-            for (int j = 0; j < ncols; j++)
+        for (int i = 0; i < nrows; i++) {
+            for (int j = 0; j < ncols; j++) {
                 X[i][j] = a[i0 + i][j0 + j];
+            }
+        }
         return X;
     }
 
@@ -768,8 +839,9 @@ public final class LinAlg {
         double T[][] = identity(4);
         T[0][3] = xyz[0];
         T[1][3] = xyz[1];
-        if (xyz.length > 2)
+        if (xyz.length > 2) {
             T[2][3] = xyz[2];
+        }
 
         return T;
     }
@@ -792,24 +864,24 @@ public final class LinAlg {
     public static double[][] rotateX(double theta) {
         double c = Math.cos(theta), s = Math.sin(theta);
 
-        return new double[][] { { 1, 0, 0, 0 }, { 0, c, -s, 0 },
-                { 0, s, c, 0 }, { 0, 0, 0, 1 } };
+        return new double[][] { { 1, 0, 0, 0 }, { 0, c, -s, 0 }, { 0, s, c, 0 },
+                { 0, 0, 0, 1 } };
     }
 
     /** Returns the 4x4 transformation matrix due to rotate theta degrees around the Y axis **/
     public static double[][] rotateY(double theta) {
         double c = Math.cos(theta), s = Math.sin(theta);
 
-        return new double[][] { { c, 0, s, 0 }, { 0, 1, 0, 0 },
-                { -s, 0, c, 0 }, { 0, 0, 0, 1 } };
+        return new double[][] { { c, 0, s, 0 }, { 0, 1, 0, 0 }, { -s, 0, c, 0 },
+                { 0, 0, 0, 1 } };
     }
 
     /** Returns the 4x4 transformation matrix due to rotate theta degrees around the Z axis **/
     public static double[][] rotateZ(double theta) {
         double c = Math.cos(theta), s = Math.sin(theta);
 
-        return new double[][] { { c, -s, 0, 0 }, { s, c, 0, 0 },
-                { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
+        return new double[][] { { c, -s, 0, 0 }, { s, c, 0, 0 }, { 0, 0, 1, 0 },
+                { 0, 0, 0, 1 } };
     }
 
     /** Compose the rotations of quaternion a and quaternion b **/
@@ -859,17 +931,18 @@ public final class LinAlg {
         double angle = Math.acos(dot);
 
         // they're the same... don't blow up with divide by zero.
-        if (angle == 0)
+        if (angle == 0) {
             return LinAlg.copy(q0);
+        }
 
         // SLERP.
-        return LinAlg.normalize(LinAlg.add(
-                LinAlg.scale(q0, Math.sin(angle * (1 - w))),
-                LinAlg.scale(q1, Math.sin(angle * w))));
+        return LinAlg.normalize(
+                LinAlg.add(LinAlg.scale(q0, Math.sin(angle * (1 - w))),
+                        LinAlg.scale(q1, Math.sin(angle * w))));
 
         /* Test code template
            Try -45,-45 ; -45 +45 ; -45 134; -45 136 ; 0 90
-
+        
         double q0[] = LinAlg.rollPitchYawToQuat(new double[] {0, 0, Math.toRadians(-45)});
         double q1[] = LinAlg.rollPitchYawToQuat(new double[] {0, 0, Math.toRadians(-45)});
         for (double w = 0; w <= 1; w+= 0.1)
@@ -925,8 +998,9 @@ public final class LinAlg {
         double b0[] = LinAlg.quatRotate(q0, a);
         double b1[] = LinAlg.quatRotate(q1, a);
 
-        if (LinAlg.distance(b0, b) < LinAlg.distance(b1, b))
+        if (LinAlg.distance(b0, b) < LinAlg.distance(b1, b)) {
             return q0;
+        }
 
         return q1;
     }
@@ -1009,7 +1083,8 @@ public final class LinAlg {
     }
 
     /** compute:  X = xytMultiply(xytInverse(a), b) **/
-    public static final double[] xytInvMul31(double a[], double b[], double X[]) {
+    public static final double[] xytInvMul31(double a[], double b[],
+            double X[]) {
         assert (a.length == 3 && b.length == 3);
 
         double theta = a[2];
@@ -1017,8 +1092,9 @@ public final class LinAlg {
         double dx = b[0] - a[0];
         double dy = b[1] - a[1];
 
-        if (X == null)
+        if (X == null) {
             X = new double[3];
+        }
 
         X[0] = ca * dx + sa * dy;
         X[1] = -sa * dx + ca * dy;
@@ -1037,8 +1113,9 @@ public final class LinAlg {
         assert (a.length == 3 && b.length == 3);
 
         double s = Math.sin(a[2]), c = Math.cos(a[2]);
-        if (r == null)
+        if (r == null) {
             r = new double[3];
+        }
         assert (r.length == 3);
 
         r[0] = c * b[0] - s * b[1] + a[0];
@@ -1065,9 +1142,10 @@ public final class LinAlg {
     public static double[][] xyzrpyToMatrix(double xyzrpy[]) {
         assert (xyzrpy.length == 6);
 
-        return quatPosToMatrix(rollPitchYawToQuat(new double[] { xyzrpy[3],
-                xyzrpy[4], xyzrpy[5] }), new double[] { xyzrpy[0], xyzrpy[1],
-                xyzrpy[2] });
+        return quatPosToMatrix(
+                rollPitchYawToQuat(
+                        new double[] { xyzrpy[3], xyzrpy[4], xyzrpy[5] }),
+                new double[] { xyzrpy[0], xyzrpy[1], xyzrpy[2] });
     }
 
     public static double[][] xyzrpyToMatrix2(double xyzrpy[]) {
@@ -1155,8 +1233,8 @@ public final class LinAlg {
     }
 
     public static double[] angleAxisToQuat(double angleAxis[]) {
-        return angleAxisToQuat(angleAxis[0], new double[] { angleAxis[1],
-                angleAxis[2], angleAxis[3] });
+        return angleAxisToQuat(angleAxis[0],
+                new double[] { angleAxis[1], angleAxis[2], angleAxis[3] });
     }
 
     public static double[] angleAxisToQuat(double theta, double axis[]) {
@@ -1247,8 +1325,9 @@ public final class LinAlg {
 
     /** v = v*a, storing result back into v **/
     public static void scaleEquals(double v[], double a) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             v[i] *= a;
+        }
     }
 
     public static float[] scale(float v[], double a) {
@@ -1261,20 +1340,24 @@ public final class LinAlg {
     }
 
     public static double[] scale(double v[], double a, double nv[]) {
-        if (nv == null)
+        if (nv == null) {
             nv = new double[v.length];
+        }
 
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             nv[i] = v[i] * a;
+        }
         return nv;
     }
 
     public static float[] scale(float v[], double a, float nv[]) {
-        if (nv == null)
+        if (nv == null) {
             nv = new float[v.length];
+        }
 
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             nv[i] = (float) (v[i] * a);
+        }
         return nv;
     }
 
@@ -1284,61 +1367,73 @@ public final class LinAlg {
 
     public static double[] scale(double v[], double s[], double nv[]) {
         assert (v.length == s.length);
-        if (nv == null)
+        if (nv == null) {
             nv = new double[v.length];
+        }
 
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             nv[i] = v[i] * s[i];
+        }
         return nv;
     }
 
     public static double[][] scale(double v[][], double a) {
         double X[][] = new double[v.length][v[0].length];
-        for (int i = 0; i < v.length; i++)
-            for (int j = 0; j < v[0].length; j++)
+        for (int i = 0; i < v.length; i++) {
+            for (int j = 0; j < v[0].length; j++) {
                 X[i][j] = v[i][j] * a;
+            }
+        }
         return X;
     }
 
     public static void scaleEquals(double v[][], double a) {
-        for (int i = 0; i < v.length; i++)
-            for (int j = 0; j < v[0].length; j++)
+        for (int i = 0; i < v.length; i++) {
+            for (int j = 0; j < v[0].length; j++) {
                 v[i][j] *= a;
+            }
+        }
     }
 
     public static void printTranspose(byte v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15d\t", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void printTranspose(int v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15d\t", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void printTranspose(long v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15d\t", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void printTranspose(float v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15f\t", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void printTranspose(double v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15f\t", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void printTranspose(double v[][]) {
-        if (v.length == 0)
+        if (v.length == 0) {
             return;
+        }
         for (int j = 0; j < v[0].length; j++) {
             for (int i = 0; i < v.length; i++) {
                 System.out.printf("%14f ", v[i][j]);
@@ -1348,32 +1443,37 @@ public final class LinAlg {
     }
 
     public static void print(byte v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15d\n", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void print(int v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15d\n", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void print(long v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15dl\n", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void print(float v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15f\n", v[i]);
+        }
         System.out.printf("\n");
     }
 
     public static void print(double v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             System.out.printf("%15f\n", v[i]);
+        }
         System.out.printf("\n");
     }
 
@@ -1411,15 +1511,17 @@ public final class LinAlg {
             while (true) {
                 String line = ins.readLine();
                 String toks[] = line.trim().split("\\s+");
-                if (toks.length == 0)
+                if (toks.length == 0) {
                     continue;
+                }
                 if (toks.length != cols) {
                     System.out.println("LinAlg.readMatrix: bad line " + line);
                     assert (false);
                 }
                 assert (toks.length == cols);
-                for (int j = 0; j < cols; j++)
+                for (int j = 0; j < cols; j++) {
                     M[i][j] = Double.parseDouble(toks[j]);
+                }
                 break;
             }
         }
@@ -1430,10 +1532,11 @@ public final class LinAlg {
     public static void printPattern(double v[][]) {
         for (int i = 0; i < v.length; i++) {
             for (int j = 0; j < v[0].length; j++) {
-                if (v[i][j] == 0)
+                if (v[i][j] == 0) {
                     System.out.printf(".");
-                else
+                } else {
                     System.out.printf("X");
+                }
             }
             System.out.printf("\n");
         }
@@ -1445,8 +1548,9 @@ public final class LinAlg {
 
         for (int i = 0; i < v.length; i++) {
             for (int j = 0; j < v[0].length; j++) {
-                if (v[i][j] != 0)
+                if (v[i][j] != 0) {
                     nz++;
+                }
             }
         }
         return nz;
@@ -1463,8 +1567,9 @@ public final class LinAlg {
         assert (a.length == b.length);
 
         double mag = 0;
-        for (int i = 0; i < a.length; i++)
+        for (int i = 0; i < a.length; i++) {
             mag += a[i] * b[i];
+        }
 
         return mag;
     }
@@ -1488,12 +1593,14 @@ public final class LinAlg {
     }
 
     public static double[] centroid(List<double[]> points) {
-        if (points.size() == 0)
+        if (points.size() == 0) {
             return null;
+        }
 
         double acc[] = new double[points.get(0).length];
-        for (double p[] : points)
+        for (double p[] : points) {
             LinAlg.plusEquals(acc, p);
+        }
 
         LinAlg.scaleEquals(acc, 1.0 / points.size());
 
@@ -1501,25 +1608,29 @@ public final class LinAlg {
     }
 
     public static boolean equals(double a[], double b[], double thresh) {
-        if (a.length != b.length)
+        if (a.length != b.length) {
             return false;
+        }
 
         for (int i = 0; i < a.length; i++) {
-            if (Math.abs(a[i] - b[i]) > thresh)
+            if (Math.abs(a[i] - b[i]) > thresh) {
                 return false;
+            }
         }
 
         return true;
     }
 
     public static boolean equals(double a[][], double b[][], double thresh) {
-        if (a.length != b.length || a[0].length != b[0].length)
+        if (a.length != b.length || a[0].length != b[0].length) {
             return false;
+        }
 
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[0].length; j++) {
-                if (Math.abs(a[i][j] - b[i][j]) > thresh)
+                if (Math.abs(a[i][j] - b[i][j]) > thresh) {
                     return false;
+                }
             }
         }
 
@@ -1531,9 +1642,10 @@ public final class LinAlg {
         assert (xyt.length == 3);
         double c = Math.cos(xyt[2]), s = Math.sin(xyt[2]);
 
-        if (p.length == 2)
+        if (p.length == 2) {
             return new double[] { p[0] * c - p[1] * s + xyt[0],
                     p[0] * s + p[1] * c + xyt[1] };
+        }
 
         return new double[] { p[0] * c - p[1] * s + xyt[0],
                 p[0] * s + p[1] * c + xyt[1], p[2] };
@@ -1562,8 +1674,7 @@ public final class LinAlg {
     public final static double[] transform(double T[][], double p[]) {
         if (T.length == 4) {
             if (p.length == 2) {
-                return new double[] {
-                        T[0][0] * p[0] + T[0][1] * p[1] + T[0][3],
+                return new double[] { T[0][0] * p[0] + T[0][1] * p[1] + T[0][3],
                         T[1][0] * p[0] + T[1][1] * p[1] + T[1][3],
                         T[2][0] * p[0] + T[2][1] * p[1] + T[2][3] };
             } else if (p.length == 3) {
@@ -1581,14 +1692,14 @@ public final class LinAlg {
                         T[1][0] * p[0] + T[1][1] * p[1] + T[1][2] * p[2]
                                 + T[1][3],
                         T[2][0] * p[0] + T[2][1] * p[1] + T[2][2] * p[2]
-                                + T[2][3], 1 };
+                                + T[2][3],
+                        1 };
             }
             assert (false);
 
         } else if (T.length == 3) {
             if (p.length == 2) {
-                return new double[] {
-                        T[0][0] * p[0] + T[0][1] * p[1] + T[0][2],
+                return new double[] { T[0][0] * p[0] + T[0][1] * p[1] + T[0][2],
                         T[1][0] * p[0] + T[1][1] * p[1] + T[1][2],
                         T[2][0] * p[0] + T[2][1] * p[1] + T[2][2] };
             }
@@ -1608,20 +1719,21 @@ public final class LinAlg {
                         T.get(2, 0) * p[0] + T.get(2, 1) * p[1] + T.get(2, 3) };
             } else if (p.length == 3) {
                 return new double[] {
-                        T.get(0, 0) * p[0] + T.get(0, 1) * p[1] + T.get(0, 2)
-                                * p[2] + T.get(0, 3),
-                        T.get(1, 0) * p[0] + T.get(1, 1) * p[1] + T.get(1, 2)
-                                * p[2] + T.get(1, 3),
-                        T.get(2, 0) * p[0] + T.get(2, 1) * p[1] + T.get(2, 2)
-                                * p[2] + T.get(2, 3) };
+                        T.get(0, 0) * p[0] + T.get(0, 1) * p[1]
+                                + T.get(0, 2) * p[2] + T.get(0, 3),
+                        T.get(1, 0) * p[0] + T.get(1, 1) * p[1]
+                                + T.get(1, 2) * p[2] + T.get(1, 3),
+                        T.get(2, 0) * p[0] + T.get(2, 1) * p[1]
+                                + T.get(2, 2) * p[2] + T.get(2, 3) };
             } else if (p.length == 4) {
                 return new double[] {
-                        T.get(0, 0) * p[0] + T.get(0, 1) * p[1] + T.get(0, 2)
-                                * p[2] + T.get(0, 3),
-                        T.get(1, 0) * p[0] + T.get(1, 1) * p[1] + T.get(1, 2)
-                                * p[2] + T.get(1, 3),
-                        T.get(2, 0) * p[0] + T.get(2, 1) * p[1] + T.get(2, 2)
-                                * p[2] + T.get(2, 3), 1 };
+                        T.get(0, 0) * p[0] + T.get(0, 1) * p[1]
+                                + T.get(0, 2) * p[2] + T.get(0, 3),
+                        T.get(1, 0) * p[0] + T.get(1, 1) * p[1]
+                                + T.get(1, 2) * p[2] + T.get(1, 3),
+                        T.get(2, 0) * p[0] + T.get(2, 1) * p[1]
+                                + T.get(2, 2) * p[2] + T.get(2, 3),
+                        1 };
             }
             assert (false);
         }
@@ -1630,7 +1742,8 @@ public final class LinAlg {
         return null;
     }
 
-    public static ArrayList<double[]> transform(Matrix T, List<double[]> points) {
+    public static ArrayList<double[]> transform(Matrix T,
+            List<double[]> points) {
         ArrayList<double[]> newpoints = new ArrayList<double[]>();
 
         for (double p[] : points) {
@@ -1658,8 +1771,8 @@ public final class LinAlg {
         double x[] = new double[3];
 
         // scale can be set to 1 if there's no scale transformation.
-        double scale = 1.0 / Math.sqrt(LinAlg.sq(T[0][0]) + LinAlg.sq(T[1][0])
-                + LinAlg.sq(T[2][0]));
+        double scale = 1.0 / Math.sqrt(
+                LinAlg.sq(T[0][0]) + LinAlg.sq(T[1][0]) + LinAlg.sq(T[2][0]));
 
         // undo translation
         double px = (p[0] - T[0][3]) * scale;
@@ -1680,8 +1793,8 @@ public final class LinAlg {
         double x[] = new double[3];
 
         // scale can be set to 1 if there's no scale transformation.
-        double scale = 1.0 / Math.sqrt(LinAlg.sq(T[0][0]) + LinAlg.sq(T[1][0])
-                + LinAlg.sq(T[2][0]));
+        double scale = 1.0 / Math.sqrt(
+                LinAlg.sq(T[0][0]) + LinAlg.sq(T[1][0]) + LinAlg.sq(T[2][0]));
 
         // undo translation
         double px = (p[0]) * scale;
@@ -1697,40 +1810,49 @@ public final class LinAlg {
     }
 
     public static double clamp(double v, double min, double max) {
-        if (v < min)
+        if (v < min) {
             return min;
-        if (v > max)
+        }
+        if (v > max) {
             return max;
+        }
         return v;
     }
 
     public static int clamp(int v, int min, int max) {
-        if (v < min)
+        if (v < min) {
             return min;
-        if (v > max)
+        }
+        if (v > max) {
             return max;
+        }
         return v;
     }
 
     public static void clear(int v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             v[i] = 0;
+        }
     }
 
     public static void clear(double v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             v[i] = 0;
+        }
     }
 
     public static void clear(double v[][]) {
-        for (int i = 0; i < v.length; i++)
-            for (int j = 0; j < v[0].length; j++)
+        for (int i = 0; i < v.length; i++) {
+            for (int j = 0; j < v[0].length; j++) {
                 v[i][j] = 0;
+            }
+        }
     }
 
     public static final double[][] transpose(double A[][]) {
-        if (A.length == 0)
+        if (A.length == 0) {
             return copy(A);
+        }
 
         double R[][] = new double[A[0].length][A.length];
         for (int row = 0; row < A.length; row++) {
@@ -1766,16 +1888,18 @@ public final class LinAlg {
         int m = A.length, n = B[0].length;
         int in = A[0].length;
         assert (A[0].length == B.length);
-        if (X == null)
+        if (X == null) {
             X = new double[m][n];
+        }
 
         assert (X.length == m && X[0].length == n);
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 double acc = 0;
-                for (int k = 0; k < in; k++)
+                for (int k = 0; k < in; k++) {
                     acc += A[i][k] * B[k][j];
+                }
                 X[i][j] = acc;
             }
         }
@@ -1805,18 +1929,21 @@ public final class LinAlg {
         return matrixAB(A, B, null);
     }
 
-    public static final double[] matrixAB(double A[][], double B[], double X[]) {
+    public static final double[] matrixAB(double A[][], double B[],
+            double X[]) {
         assert (A[0].length == B.length);
 
-        if (X == null)
+        if (X == null) {
             X = new double[A.length];
+        }
 
         assert (A.length == X.length);
 
         for (int i = 0; i < X.length; i++) {
             double acc = 0;
-            for (int k = 0; k < A[0].length; k++)
+            for (int k = 0; k < A[0].length; k++) {
                 acc += A[i][k] * B[k];
+            }
             X[i] = acc;
         }
 
@@ -1826,9 +1953,11 @@ public final class LinAlg {
     public static final double[][] outerProduct(double A[], double B[]) {
         double X[][] = new double[A.length][B.length];
 
-        for (int i = 0; i < A.length; i++)
-            for (int j = 0; j < B.length; j++)
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < B.length; j++) {
                 X[i][j] = A[i] * B[j];
+            }
+        }
         return X;
     }
 
@@ -1842,15 +1971,17 @@ public final class LinAlg {
         int m = A[0].length, n = B[0].length;
         int in = A.length;
         assert (A.length == B.length);
-        if (X == null)
+        if (X == null) {
             X = new double[m][n];
+        }
         assert (X.length == m && X[0].length == n);
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 double acc = 0;
-                for (int k = 0; k < in; k++)
+                for (int k = 0; k < in; k++) {
                     acc += A[k][i] * B[k][j];
+                }
                 X[i][j] = acc;
             }
         }
@@ -1862,12 +1993,14 @@ public final class LinAlg {
         return matrixAtB(A, B, null);
     }
 
-    public static final double[] matrixAtB(double A[][], double B[], double X[]) {
+    public static final double[] matrixAtB(double A[][], double B[],
+            double X[]) {
         int m = A[0].length, n = B.length;
 
         assert (A.length == B.length);
-        if (X == null)
+        if (X == null) {
             X = new double[m];
+        }
         assert (X.length == A[0].length);
 
         for (int i = 0; i < m; i++) {
@@ -1891,16 +2024,18 @@ public final class LinAlg {
         int in = A[0].length;
 
         assert (A[0].length == B[0].length);
-        if (X == null)
+        if (X == null) {
             X = new double[m][n];
+        }
 
         assert (X.length == m && X[0].length == n);
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 double acc = 0;
-                for (int k = 0; k < in; k++)
+                for (int k = 0; k < in; k++) {
                     acc += A[i][k] * B[j][k];
+                }
                 X[i][j] = acc;
             }
         }
@@ -1928,8 +2063,9 @@ public final class LinAlg {
         int idx = -1;
 
         for (int i = 0; i < v.length; i++) {
-            if (idx < 0 || v[i] < v[idx])
+            if (idx < 0 || v[i] < v[idx]) {
                 idx = i;
+            }
         }
 
         return idx;
@@ -1943,8 +2079,9 @@ public final class LinAlg {
         int idx = -1;
 
         for (int i = 0; i < v.length; i++) {
-            if (idx < 0 || v[i] < v[idx])
+            if (idx < 0 || v[i] < v[idx]) {
                 idx = i;
+            }
         }
 
         return idx;
@@ -1958,8 +2095,9 @@ public final class LinAlg {
         int idx = -1;
 
         for (int i = 0; i < v.length; i++) {
-            if (idx < 0 || v[i] > v[idx])
+            if (idx < 0 || v[i] > v[idx]) {
                 idx = i;
+            }
         }
 
         return idx;
@@ -1973,8 +2111,9 @@ public final class LinAlg {
         int idx = -1;
 
         for (int i = 0; i < v.length; i++) {
-            if (idx < 0 || v[i] < v[idx])
+            if (idx < 0 || v[i] < v[idx]) {
                 idx = i;
+            }
         }
 
         return idx;
@@ -1988,8 +2127,9 @@ public final class LinAlg {
         int idx = -1;
 
         for (int i = 0; i < v.length; i++) {
-            if (idx < 0 || v[i] > v[idx])
+            if (idx < 0 || v[i] > v[idx]) {
                 idx = i;
+            }
         }
 
         return idx;
@@ -2006,9 +2146,11 @@ public final class LinAlg {
             int col1) {
         double R[][] = new double[row1 - row0 + 1][col1 - col0 + 1];
 
-        for (int r = row0; r <= row1; r++)
-            for (int c = col0; c <= col1; c++)
+        for (int r = row0; r <= row1; r++) {
+            for (int c = col0; c <= col1; c++) {
                 R[r - row0][c - col0] = A[r][c];
+            }
+        }
         return R;
     }
 
@@ -2016,33 +2158,38 @@ public final class LinAlg {
     public static double[] select(double A[], int col0, int col1) {
         double R[] = new double[col1 - col0 + 1];
 
-        for (int c = col0; c <= col1; c++)
+        for (int c = col0; c <= col1; c++) {
             R[c - col0] = A[c];
+        }
 
         return R;
     }
 
     public static double[][] diag(double d[]) {
         double M[][] = new double[d.length][d.length];
-        for (int i = 0; i < d.length; i++)
+        for (int i = 0; i < d.length; i++) {
             M[i][i] = d[i];
+        }
         return M;
     }
 
     /** Return the identity matrix of size 'sz' **/
     public static double[][] identity(int sz) {
         double M[][] = new double[sz][sz];
-        for (int i = 0; i < sz; i++)
+        for (int i = 0; i < sz; i++) {
             M[i][i] = 1;
+        }
         return M;
     }
 
     /** Generate a random matrix with each value drawn from uniform[0,1] **/
     public static double[][] randomMatrix(int rows, int cols, Random r) {
         double X[][] = new double[rows][cols];
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++)
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 X[i][j] = r.nextDouble();
+            }
+        }
 
         return X;
     }
@@ -2050,8 +2197,9 @@ public final class LinAlg {
     public static double[][] multiplyMany(double a[][], double[][]... bs) {
         double X[][] = copy(a);
 
-        for (double b[][] : bs)
+        for (double b[][] : bs) {
             X = LinAlg.matrixAB(X, b);
+        }
 
         return X;
     }
@@ -2064,10 +2212,10 @@ public final class LinAlg {
           for (int dim = 1; dim <= 4; dim++) {
           for (int iter = 0; iter < 1000; iter++) {
           double M[][] = randomMatrix(dim, dim, r);
-
+        
           double qident[][] = matrixAB(M, inverse(M));
           double ident[][] = identity(dim);
-
+        
           double err = max(abs(subtract(qident, ident)));
           if (err > 1E-10)
           System.out.println("WARNING: inverse dim="+dim+" err: "+err);
@@ -2075,13 +2223,14 @@ public final class LinAlg {
           }
          */
         LinAlg.print(rollPitchYawToQuat(new double[] { 1 + 0, 0, 0 }));
-        LinAlg.print(rollPitchYawToQuat(new double[] { 1 + 2 * Math.PI, 0, 0 }));
+        LinAlg.print(
+                rollPitchYawToQuat(new double[] { 1 + 2 * Math.PI, 0, 0 }));
 
         for (int i = 0; i < 100; i++) {
-            double q[] = angleAxisToQuat(
-                    r.nextDouble() * 2 * Math.PI,
+            double q[] = angleAxisToQuat(r.nextDouble() * 2 * Math.PI,
                     new double[] { (2 * r.nextDouble() - 1),
-                            (2 * r.nextDouble() - 1), (2 * r.nextDouble() - 1) });
+                            (2 * r.nextDouble() - 1),
+                            (2 * r.nextDouble() - 1) });
 
             double qinv[] = quatInverse(q);
             double M1[][] = quatToMatrix(q);
@@ -2095,10 +2244,10 @@ public final class LinAlg {
             double p[] = new double[] { 2 * r.nextDouble() - 1,
                     2 * r.nextDouble() - 1, 2 * r.nextDouble() - 1 };
 
-            double q[] = angleAxisToQuat(
-                    r.nextDouble() * 2 * Math.PI,
+            double q[] = angleAxisToQuat(r.nextDouble() * 2 * Math.PI,
                     new double[] { (2 * r.nextDouble() - 1),
-                            (2 * r.nextDouble() - 1), (2 * r.nextDouble() - 1) });
+                            (2 * r.nextDouble() - 1),
+                            (2 * r.nextDouble() - 1) });
 
             double qp[] = quatRotate(q, p);
 
@@ -2113,8 +2262,8 @@ public final class LinAlg {
 
             }
 
-            double Tp[] = matrixAB(quatToMatrix(q), new double[] { p[0], p[1],
-                    p[2], 1 });
+            double Tp[] = matrixAB(quatToMatrix(q),
+                    new double[] { p[0], p[1], p[2], 1 });
             if (LinAlg.squaredDistance(qp, LinAlg.copy(Tp, 3)) > 0.000001) {
                 LinAlg.print(qp);
                 LinAlg.print(Tp);
@@ -2122,8 +2271,8 @@ public final class LinAlg {
             }
 
             double rpy[] = quatToRollPitchYaw(q1);
-            double Sp[] = matrixAB(rollPitchYawToMatrix(rpy), new double[] {
-                    p[0], p[1], p[2], 1 });
+            double Sp[] = matrixAB(rollPitchYawToMatrix(rpy),
+                    new double[] { p[0], p[1], p[2], 1 });
             if (LinAlg.squaredDistance(qp, LinAlg.copy(Sp, 3)) > 0.000001) {
                 LinAlg.print(qp);
                 LinAlg.print(Sp);
@@ -2140,21 +2289,22 @@ public final class LinAlg {
             double Mp2[][] = xyzrpyToMatrix2(xyzrpy);
             double Mp3[][] = rollPitchYawToMatrix(rpy);
 
-            assert (LinAlg.equals(LinAlg.matrixAB(
-                    xyzrpyToMatrix2(xyzrpyInverse(xyzrpy)),
-                    xyzrpyToMatrix2(xyzrpy)), identity(4), 0.00001));
+            assert (LinAlg.equals(
+                    LinAlg.matrixAB(xyzrpyToMatrix2(xyzrpyInverse(xyzrpy)),
+                            xyzrpyToMatrix2(xyzrpy)),
+                    identity(4), 0.00001));
             double Mrpy[] = matrixToRollPitchYaw(Mp2);
             assert (LinAlg.equals(Mrpy, rpy, 0.00001));
 
             double Mxyzrpy[] = matrixToXyzrpy(Mp2);
-            assert (LinAlg.equals(Mxyzrpy, new double[] { 0, 0, 0, rpy[0],
-                    rpy[1], rpy[2] }, 0.00001));
+            assert (LinAlg.equals(Mxyzrpy,
+                    new double[] { 0, 0, 0, rpy[0], rpy[1], rpy[2] }, 0.00001));
 
             /*            LinAlg.print(Mp1);
                     System.out.println("\n");
                     LinAlg.print(Mp2); */
-                    assert (LinAlg.equals(Mp1, Mp2, 0.00001));
-                    assert (LinAlg.equals(Mp2, Mp3, 0.00001));
+            assert (LinAlg.equals(Mp1, Mp2, 0.00001));
+            assert (LinAlg.equals(Mp2, Mp3, 0.00001));
         }
 
         if (false) {
@@ -2208,8 +2358,9 @@ public final class LinAlg {
     public static double trace(double M[][]) {
         double t = 0;
 
-        for (int i = 0; i < Math.min(M.length, M[0].length); i++)
+        for (int i = 0; i < Math.min(M.length, M[0].length); i++) {
             t += M[i][i];
+        }
 
         return t;
     }
@@ -2227,8 +2378,8 @@ public final class LinAlg {
             double m10 = M[1][0], m11 = M[1][1], m12 = M[1][2];
             double m20 = M[2][0], m21 = M[2][1], m22 = M[2][2];
 
-            return m00 * m11 * m22 - m00 * m12 * m21 - m01 * m10 * m22 + m01
-                    * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20;
+            return m00 * m11 * m22 - m00 * m12 * m21 - m01 * m10 * m22
+                    + m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20;
         }
 
         if (n == 4) {
@@ -2237,16 +2388,18 @@ public final class LinAlg {
             double m20 = M[2][0], m21 = M[2][1], m22 = M[2][2], m23 = M[2][3];
             double m30 = M[3][0], m31 = M[3][1], m32 = M[3][2], m33 = M[3][3];
 
-            return m00 * m11 * m22 * m33 - m00 * m11 * m23 * m32 - m00 * m12
-                    * m21 * m33 + m00 * m12 * m23 * m31 + m00 * m13 * m21 * m32
-                    - m00 * m13 * m22 * m31 - m01 * m10 * m22 * m33 + m01 * m10
-                    * m23 * m32 + m01 * m12 * m20 * m33 - m01 * m12 * m23 * m30
-                    - m01 * m13 * m20 * m32 + m01 * m13 * m22 * m30 + m02 * m10
-                    * m21 * m33 - m02 * m10 * m23 * m31 - m02 * m11 * m20 * m33
-                    + m02 * m11 * m23 * m30 + m02 * m13 * m20 * m31 - m02 * m13
-                    * m21 * m30 - m03 * m10 * m21 * m32 + m03 * m10 * m22 * m31
-                    + m03 * m11 * m20 * m32 - m03 * m11 * m22 * m30 - m03 * m12
-                    * m20 * m31 + m03 * m12 * m21 * m30;
+            return m00 * m11 * m22 * m33 - m00 * m11 * m23 * m32
+                    - m00 * m12 * m21 * m33 + m00 * m12 * m23 * m31
+                    + m00 * m13 * m21 * m32 - m00 * m13 * m22 * m31
+                    - m01 * m10 * m22 * m33 + m01 * m10 * m23 * m32
+                    + m01 * m12 * m20 * m33 - m01 * m12 * m23 * m30
+                    - m01 * m13 * m20 * m32 + m01 * m13 * m22 * m30
+                    + m02 * m10 * m21 * m33 - m02 * m10 * m23 * m31
+                    - m02 * m11 * m20 * m33 + m02 * m11 * m23 * m30
+                    + m02 * m13 * m20 * m31 - m02 * m13 * m21 * m30
+                    - m03 * m10 * m21 * m32 + m03 * m10 * m22 * m31
+                    + m03 * m11 * m20 * m32 - m03 * m11 * m22 * m30
+                    - m03 * m12 * m20 * m31 + m03 * m12 * m21 * m30;
         }
 
         // use general version.
@@ -2260,12 +2413,14 @@ public final class LinAlg {
         double M[] = new double[3];
 
         for (double p[] : points) {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++) {
                 M[i] += p[i];
+            }
         }
 
-        for (int i = 0; i < M.length; i++)
+        for (int i = 0; i < M.length; i++) {
             M[i] /= points.size();
+        }
 
         for (double p[] : points) {
             double p0 = p[0] - M[0];
@@ -2334,8 +2489,9 @@ public final class LinAlg {
         for (double p[] : xyws) {
             // weight
             double w2 = 1;
-            if (p.length >= 3)
+            if (p.length >= 3) {
                 w2 = p[2] * p[2];
+            }
 
             double px = p[0] - mx;
             double py = p[1] - my;
@@ -2354,8 +2510,8 @@ public final class LinAlg {
         double JtJinv[][] = LinAlg.inverse(JtJ);
         double x[] = LinAlg.matrixAB(JtJinv, JtB);
 
-        double chi2 = LinAlg.dotProduct(x, LinAlg.matrixAB(JtJ, x)) - 2
-                * LinAlg.dotProduct(x, JtB) + btb;
+        double chi2 = LinAlg.dotProduct(x, LinAlg.matrixAB(JtJ, x))
+                - 2 * LinAlg.dotProduct(x, JtB) + btb;
 
         // fix up solution to account for mx and my. Only offset changes (slope stays the same).
         x[1] += my - x[0] * mx;
@@ -2371,7 +2527,7 @@ public final class LinAlg {
                         double w2 = 1;
                         if (p.length >= 3)
                             w2 = p[2]*p[2];
-
+        
                         chi2 += w2*w2*(ypred-p[1])*(ypred-p[1]);
                     }
                     System.out.printf("%15f \n", chi2);
@@ -2392,8 +2548,9 @@ public final class LinAlg {
         // for what values of dist would each coordinate be in range?
         for (int i = 0; i < 3; i++) {
             if (dir[i] == 0) {
-                if (Math.abs(xyz[i]) > sxyz[i] / 2)
+                if (Math.abs(xyz[i]) > sxyz[i] / 2) {
                     return Double.MAX_VALUE;
+                }
                 continue;
             }
 
@@ -2404,11 +2561,13 @@ public final class LinAlg {
             u1 = Math.min(u1, Math.max(a, b));
         }
 
-        if (u1 < u0)
+        if (u1 < u0) {
             return Double.MAX_VALUE; // no intersection
+        }
 
-        if (u0 < 0) // intersection is in the opposite direction
+        if (u0 < 0) {
             return Double.MAX_VALUE;
+        }
 
         return u0;
     }
@@ -2421,10 +2580,12 @@ public final class LinAlg {
         // Then, add to D dotProduct(new-normal,translation)
         double newp[] = new double[4];
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++) {
             newp[i] = T[i][0] * p[0] + T[i][1] * p[1] + T[i][2] * p[2];
+        }
 
-        double dot = (newp[0] * T[0][3] + newp[1] * T[1][3] + newp[2] * T[2][3]);
+        double dot = (newp[0] * T[0][3] + newp[1] * T[1][3]
+                + newp[2] * T[2][3]);
 
         newp[3] = p[3] - dot;
 
@@ -2435,8 +2596,9 @@ public final class LinAlg {
             ArrayList<double[]> planes) {
         ArrayList<double[]> newplanes = new ArrayList<double[]>();
 
-        for (double p[] : planes)
+        for (double p[] : planes) {
             newplanes.add(transformPlane(T, p));
+        }
 
         return newplanes;
     }
@@ -2452,7 +2614,7 @@ public final class LinAlg {
      *
      * The plane and points must be in the same coordinate frame
      * @see #transformPlane(double[][], double[])
-
+    
      *
      * We then test each of the points; if they are all on the
      * positive side of the plane, we return true.
@@ -2474,8 +2636,9 @@ public final class LinAlg {
         for (double p[] : points) {
             double v = plane[0] * p[0] + plane[1] * p[1] + plane[2] * p[2]
                     + plane[3];
-            if (v <= 0)
+            if (v <= 0) {
                 return false;
+            }
         }
         return true;
     }
@@ -2517,12 +2680,14 @@ public final class LinAlg {
             double v = plane[0] * p[0] + plane[1] * p[1] + plane[2] * p[2]
                     + plane[3];
 
-            if (v > 0)
+            if (v > 0) {
                 pos = true;
-            else if (v < 0)
+            } else if (v < 0) {
                 neg = true;
-            if (pos && neg)
+            }
+            if (pos && neg) {
                 return 0;
+            }
         }
 
         return (pos ? 1 : -1);
@@ -2550,12 +2715,14 @@ public final class LinAlg {
 
         for (double[] point : points) {
             double v = dotProduct(subtract(point, p), normal);
-            if (v > 0)
+            if (v > 0) {
                 pos = true;
-            else if (v < 0)
+            } else if (v < 0) {
                 neg = true;
-            if (pos && neg)
+            }
+            if (pos && neg) {
                 return 0;
+            }
         }
         return (pos ? 1 : -1);
     }
@@ -2568,7 +2735,8 @@ public final class LinAlg {
 
         double sa = Math.sqrt(a);
 
-        return new double[][] { { sa, b / sa }, { 0, Math.sqrt(c - b * b / a) } };
+        return new double[][] { { sa, b / sa },
+                { 0, Math.sqrt(c - b * b / a) } };
     }
 
     // compute determinant of small matrix. For large matrices an
@@ -2590,7 +2758,7 @@ public final class LinAlg {
     // computes A = U diag(sv) U^t in closed form. Derivation based on
     // computing minima/maxima wrt. t of v^tv where v = [a b; b d]* [cos(t), sin(t)]^t
     public static void svd22(double A[][],
-    // Return vars:
+            // Return vars:
             double sv[], double U[][]) {
         final double a = A[0][0];
         final double b = A[1][0];

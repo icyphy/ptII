@@ -99,8 +99,8 @@ public class SVGParser {
      * String) for a description of legal types and their attributes.
      *
      */
-    public static PaintedObject createPaintedObject(String type,
-            Map attributes, String content) {
+    public static PaintedObject createPaintedObject(String type, Map attributes,
+            String content) {
         if (type.equals("rect")) {
             double x;
             double y;
@@ -111,13 +111,14 @@ public class SVGParser {
             width = _getDouble(attributes, "width");
             height = _getDouble(attributes, "height");
 
-            PaintedShape ps = new PaintedShape(new Rectangle2D.Double(x, y,
-                    width, height));
+            PaintedShape ps = new PaintedShape(
+                    new Rectangle2D.Double(x, y, width, height));
             try {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in " + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps,
+                        ex);
             }
             return ps;
         } else if (type.equals("circle")) {
@@ -128,13 +129,14 @@ public class SVGParser {
             cy = _getDouble(attributes, "cy", 0);
             r = _getDouble(attributes, "r");
 
-            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - r, cy
-                    - r, 2 * r, 2 * r));
+            PaintedShape ps = new PaintedShape(
+                    new Ellipse2D.Double(cx - r, cy - r, 2 * r, 2 * r));
             try {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in " + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps,
+                        ex);
             }
             return ps;
         } else if (type.equals("ellipse")) {
@@ -147,14 +149,15 @@ public class SVGParser {
             rx = _getDouble(attributes, "rx");
             ry = _getDouble(attributes, "ry");
 
-            PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - rx, cy
-                    - ry, 2 * rx, 2 * ry));
+            PaintedShape ps = new PaintedShape(
+                    new Ellipse2D.Double(cx - rx, cy - ry, 2 * rx, 2 * ry));
 
             try {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in " + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps,
+                        ex);
             }
 
             return ps;
@@ -174,12 +177,13 @@ public class SVGParser {
                 processPaintedPathAttributes(pp, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in " + pp, ex);
+                throw new RuntimeException("Failed to parse color in " + pp,
+                        ex);
             }
             return pp;
         } else if (type.equals("polyline")) {
-            double[] coords = parseCoordString((String) attributes
-                    .get("points"));
+            double[] coords = parseCoordString(
+                    (String) attributes.get("points"));
             Polyline2D poly = new Polyline2D.Double();
             poly.moveTo(coords[0], coords[1]);
 
@@ -193,13 +197,14 @@ public class SVGParser {
                 processPaintedPathAttributes(pp, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in " + pp, ex);
+                throw new RuntimeException("Failed to parse color in " + pp,
+                        ex);
             }
 
             return pp;
         } else if (type.equals("polygon")) {
-            double[] coords = parseCoordString((String) attributes
-                    .get("points"));
+            double[] coords = parseCoordString(
+                    (String) attributes.get("points"));
             Polygon2D poly = new Polygon2D.Double();
             poly.moveTo(coords[0], coords[1]);
 
@@ -214,7 +219,8 @@ public class SVGParser {
                 processPaintedShapeAttributes(ps, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException("Failed to parse color in " + ps, ex);
+                throw new RuntimeException("Failed to parse color in " + ps,
+                        ex);
             }
             return ps;
         } else if (type.equals("text")) {
@@ -228,8 +234,8 @@ public class SVGParser {
                 processPaintedStringAttributes(string, attributes);
             } catch (NumberFormatException ex) {
                 // FIXME: should throw non-runtime exception
-                throw new RuntimeException(
-                        "Failed to parse color in " + string, ex);
+                throw new RuntimeException("Failed to parse color in " + string,
+                        ex);
             }
             string.translate(x, y);
             return string;
@@ -285,7 +291,8 @@ public class SVGParser {
 
                     int bitflags = tk.checkImage(img, -1, -1, image);
 
-                    if ((bitflags & (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
+                    if ((bitflags & (ImageObserver.ABORT
+                            | ImageObserver.ERROR)) != 0) {
                         // There was an error if either flag is set,
                         // so return null.
                         return null;
@@ -309,7 +316,8 @@ public class SVGParser {
      * that are not recognized will be ignored.  See the add(String,
      * String) for a description of legal types and their attributes.
      */
-    public static PaintedObject createPaintedObject(String type, Map attributes) {
+    public static PaintedObject createPaintedObject(String type,
+            Map attributes) {
         return createPaintedObject(type, attributes, null);
     }
 
@@ -369,7 +377,8 @@ public class SVGParser {
 
     /** Given a string, return a color.
      */
-    private static Color lookupColor(String color) throws NumberFormatException {
+    private static Color lookupColor(String color)
+            throws NumberFormatException {
         String s = color.toLowerCase(Locale.getDefault());
 
         if (s.equals("black")) {

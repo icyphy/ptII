@@ -27,12 +27,14 @@ public final class ExclusionComposite extends RGBComposite {
     }
 
     @Override
-    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
+    public CompositeContext createContext(ColorModel srcColorModel,
+            ColorModel dstColorModel, RenderingHints hints) {
         return new Context(extraAlpha, srcColorModel, dstColorModel);
     }
 
     static class Context extends RGBCompositeContext {
-        public Context(float alpha, ColorModel srcColorModel, ColorModel dstColorModel) {
+        public Context(float alpha, ColorModel srcColorModel,
+                ColorModel dstColorModel) {
             super(alpha, srcColorModel, dstColorModel);
         }
 

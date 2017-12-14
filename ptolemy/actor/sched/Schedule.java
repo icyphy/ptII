@@ -326,7 +326,8 @@ public class Schedule extends ScheduleElement {
                         return _lastHasNext;
                     }
                 } else {
-                    if (_currentIteration < _currentFiring.getIterationCount()) {
+                    if (_currentIteration < _currentFiring
+                            .getIterationCount()) {
                         _currentIteration++;
                         _advance = false;
                         _lastHasNext = true;
@@ -540,7 +541,8 @@ public class Schedule extends ScheduleElement {
 
             if (node == null) {
                 return null;
-            } else if (node.size() > ++_horizontalNodePosition[_currentDepth + 1]) {
+            } else if (node
+                    .size() > ++_horizontalNodePosition[_currentDepth + 1]) {
                 return node;
             } else if (++_iterationCounts[_currentDepth] < node
                     .getIterationCount()) {
@@ -590,7 +592,8 @@ public class Schedule extends ScheduleElement {
 
             if (node == null) {
                 return null;
-            } else if (node.size() > _horizontalNodePosition[_currentDepth + 1]) {
+            } else if (node
+                    .size() > _horizontalNodePosition[_currentDepth + 1]) {
                 _currentDepth++;
 
                 ScheduleElement nodeElement = node

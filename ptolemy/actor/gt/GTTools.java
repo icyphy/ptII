@@ -85,9 +85,8 @@ public class GTTools {
      *   the given container.
      */
     public static void checkContainerClass(Attribute attribute,
-            NamedObj container,
-            Class<? extends CompositeEntity> containerClass, boolean deep)
-                    throws IllegalActionException {
+            NamedObj container, Class<? extends CompositeEntity> containerClass,
+            boolean deep) throws IllegalActionException {
         while (deep && container != null
                 && !containerClass.isInstance(container)
                 && !(container instanceof EntityLibrary)) {
@@ -100,10 +99,10 @@ public class GTTools {
         if (container == null || !containerClass.isInstance(container)
                 && !(container instanceof EntityLibrary)) {
             _delete(attribute);
-            throw new IllegalActionException(attribute.getClass()
-                    .getSimpleName()
-                    + " can only be added to "
-                    + containerClass.getSimpleName() + ".");
+            throw new IllegalActionException(
+                    attribute.getClass().getSimpleName()
+                            + " can only be added to "
+                            + containerClass.getSimpleName() + ".");
         }
     }
 
@@ -128,9 +127,9 @@ public class GTTools {
                 if (existingAttribute != attribute
                         && existingAttribute.isPersistent()) {
                     _delete(attribute);
-                    throw new IllegalActionException("Only 1 "
-                            + attribute.getClass().getSimpleName()
-                            + " can be used.");
+                    throw new IllegalActionException(
+                            "Only 1 " + attribute.getClass().getSimpleName()
+                                    + " can be used.");
                 }
             }
         } finally {
@@ -161,8 +160,8 @@ public class GTTools {
     public static NamedObj cleanupModel(NamedObj model, MoMLParser parser)
             throws IllegalActionException {
         try {
-            URIAttribute uriAttribute = (URIAttribute) model.getAttribute(
-                    "_uri", URIAttribute.class);
+            URIAttribute uriAttribute = (URIAttribute) model
+                    .getAttribute("_uri", URIAttribute.class);
             NamedObj newModel;
             if (uriAttribute != null) {
                 newModel = parser.parse(uriAttribute.getURL(),
@@ -214,17 +213,15 @@ public class GTTools {
      */
     public static void deepAddAttributes(NamedObj container,
             Class<? extends Attribute> attributeClass)
-                    throws InstantiationException, IllegalAccessException,
-                    InvocationTargetException {
+            throws InstantiationException, IllegalAccessException,
+            InvocationTargetException {
         Constructor<?>[] constructors = attributeClass.getConstructors();
         for (Constructor<?> constructor : constructors) {
             Class<?>[] types = constructor.getParameterTypes();
             if (types.length == 2 && types[0].isInstance(container)
                     && types[1].equals(String.class)) {
-                constructor.newInstance(
-                        container,
-                        container.uniqueName("_"
-                                + attributeClass.getSimpleName()));
+                constructor.newInstance(container, container
+                        .uniqueName("_" + attributeClass.getSimpleName()));
                 break;
             }
         }
@@ -243,7 +240,7 @@ public class GTTools {
      */
     public static void deepRemoveAttributes(NamedObj container,
             Class<? extends Attribute> attributeClass)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         List<Object> attributes = new LinkedList<Object>(
                 container.attributeList(attributeClass));
         for (Object attribute : attributes) {
@@ -267,7 +264,8 @@ public class GTTools {
      *  @return The attribute if found, or null otherwise.
      */
     public static Attribute findMatchingAttribute(Object object,
-            Class<? extends Attribute> attributeClass, boolean searchContainers) {
+            Class<? extends Attribute> attributeClass,
+            boolean searchContainers) {
         if (object instanceof NamedObj) {
             NamedObj namedObj = (NamedObj) object;
             List<?> list = namedObj.attributeList(attributeClass);
@@ -358,8 +356,8 @@ public class GTTools {
     public static String getCodeFromObject(NamedObj object,
             NamedObj topContainer) {
         String replacementAbbrev = getObjectTypeAbbreviation(object);
-        String name = topContainer == null ? object.getName() : object
-                .getName(topContainer);
+        String name = topContainer == null ? object.getName()
+                : object.getName(topContainer);
         return replacementAbbrev + name;
     }
 
@@ -403,7 +401,8 @@ public class GTTools {
             return null;
         }
 
-        CompositeActorMatcher container = getContainingPatternOrReplacement(replacementObject);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(
+                replacementObject);
         if (container == null) {
             return null;
         }
@@ -458,7 +457,8 @@ public class GTTools {
      *  @return The object, or null if not found.
      *  @see #getCodeFromObject(NamedObj, NamedObj)
      */
-    public static NamedObj getObjectFromCode(String code, NamedObj topContainer) {
+    public static NamedObj getObjectFromCode(String code,
+            NamedObj topContainer) {
         String abbreviation = code.substring(0, 2);
         String name = code.substring(2);
         if (abbreviation.equals("A:")) {
@@ -466,7 +466,8 @@ public class GTTools {
         } else if (abbreviation.equals("E:")
                 && topContainer instanceof CompositeEntity) {
             return ((CompositeEntity) topContainer).getEntity(name);
-        } else if (abbreviation.equals("P:") && topContainer instanceof Entity) {
+        } else if (abbreviation.equals("P:")
+                && topContainer instanceof Entity) {
             return ((Entity) topContainer).getPort(name);
         } else if (abbreviation.equals("R:")
                 && topContainer instanceof CompositeEntity) {
@@ -509,11 +510,11 @@ public class GTTools {
      *   an attribute already in the container.
      */
     public static PatternObjectAttribute getPatternObjectAttribute(
-            NamedObj object, boolean createNew) throws IllegalActionException,
-            NameDuplicationException {
+            NamedObj object, boolean createNew)
+            throws IllegalActionException, NameDuplicationException {
         Attribute attribute = object.getAttribute("patternObject");
-        if (createNew
-                && (attribute == null || !(attribute instanceof PatternObjectAttribute))) {
+        if (createNew && (attribute == null
+                || !(attribute instanceof PatternObjectAttribute))) {
             attribute = new PatternObjectAttribute(object, "patternObject");
         }
         return (PatternObjectAttribute) attribute;
@@ -525,7 +526,8 @@ public class GTTools {
      *  @return true if it is to be created; false otherwise.
      */
     public static boolean isCreated(Object object) {
-        return findMatchingAttribute(object, CreationAttribute.class, true) != null;
+        return findMatchingAttribute(object, CreationAttribute.class,
+                true) != null;
     }
 
     /** Return whether the object in the pattern is to be ignored.
@@ -534,7 +536,8 @@ public class GTTools {
      *  @return true if it is to be ignored; false otherwise.
      */
     public static boolean isIgnored(Object object) {
-        return findMatchingAttribute(object, IgnoringAttribute.class, true) != null;
+        return findMatchingAttribute(object, IgnoringAttribute.class,
+                true) != null;
     }
 
     /** Return whether the object is in a pattern.
@@ -544,7 +547,8 @@ public class GTTools {
      *  @see #isInReplacement(NamedObj)
      */
     public static boolean isInPattern(NamedObj object) {
-        CompositeActorMatcher container = getContainingPatternOrReplacement(object);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(
+                object);
         return container != null && container instanceof Pattern;
     }
 
@@ -555,7 +559,8 @@ public class GTTools {
      *  @see #isInPattern(NamedObj)
      */
     public static boolean isInReplacement(NamedObj object) {
-        CompositeActorMatcher container = getContainingPatternOrReplacement(object);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(
+                object);
         return container != null && container instanceof Replacement;
     }
 
@@ -565,7 +570,8 @@ public class GTTools {
      *  @return true if it is to be negated; false otherwise.
      */
     public static boolean isNegated(Object object) {
-        return findMatchingAttribute(object, NegationAttribute.class, true) != null;
+        return findMatchingAttribute(object, NegationAttribute.class,
+                true) != null;
     }
 
     /** Return whether the object in the pattern is to be optional.
@@ -574,7 +580,8 @@ public class GTTools {
      *  @return true if it is to be optional; false otherwise.
      */
     public static boolean isOptional(Object object) {
-        return findMatchingAttribute(object, OptionAttribute.class, false) != null;
+        return findMatchingAttribute(object, OptionAttribute.class,
+                false) != null;
     }
 
     /** Return whether the object in the pattern is to be preserved.
@@ -583,7 +590,8 @@ public class GTTools {
      *  @return true if it is to be preserved; false otherwise.
      */
     public static boolean isPreserved(Object object) {
-        return findMatchingAttribute(object, PreservationAttribute.class, true) != null;
+        return findMatchingAttribute(object, PreservationAttribute.class,
+                true) != null;
     }
 
     /** Restore the values of the parameters that implement the {@link
@@ -598,7 +606,7 @@ public class GTTools {
      */
     public static void restoreValues(ComponentEntity root,
             Hashtable<ValueIterator, Token> records)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         if (root instanceof CompositeEntity) {
             for (Object entity : ((CompositeEntity) root).entityList()) {
                 restoreValues((ComponentEntity) entity, records);
@@ -626,7 +634,7 @@ public class GTTools {
      */
     public static void saveValues(ComponentEntity root,
             Hashtable<ValueIterator, Token> records)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         List<?> iterators = root.attributeList(ValueIterator.class);
         for (Object iteratorObject : iterators) {
             ValueIterator iterator = (ValueIterator) iteratorObject;
@@ -661,7 +669,7 @@ public class GTTools {
      */
     private static void _delete(Attribute attribute) {
         String moml = "<deleteProperty name=\"" + attribute.getName() + "\"/>";
-        attribute.requestChange(new MoMLChangeRequest(attribute, attribute
-                .getContainer(), moml));
+        attribute.requestChange(new MoMLChangeRequest(attribute,
+                attribute.getContainer(), moml));
     }
 }

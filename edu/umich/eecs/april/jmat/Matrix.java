@@ -61,8 +61,9 @@ public class Matrix {
     static Random rand = new Random();
 
     final Vec makeVec(int length) {
-        if ((options & SPARSE) == 0)
+        if ((options & SPARSE) == 0) {
             return new DenseVec(length);
+        }
 
         return new CSRVec(length);
         //        return new HashVec(length);
@@ -84,8 +85,9 @@ public class Matrix {
         this.n = n;
 
         rows = new Vec[m];
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             rows[i] = makeVec(n);
+        }
     }
 
     public Matrix(double A[][]) {
@@ -93,15 +95,17 @@ public class Matrix {
         n = A[0].length;
 
         rows = new Vec[m];
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             rows[i] = new DenseVec(A[i]);
+        }
     }
 
     // create a matrix whose diagonal elements are given
     public static Matrix diag(double v[]) {
         Matrix X = new Matrix(v.length, v.length);
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             X.set(i, i, v[i]);
+        }
         return X;
     }
 
@@ -111,8 +115,9 @@ public class Matrix {
 
     public static Matrix columnMatrix(double v[]) {
         Matrix M = new Matrix(v.length, 1);
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             M.set(i, 0, v[i]);
+        }
         return M;
     }
 
@@ -137,8 +142,9 @@ public class Matrix {
     // itself. Otherwise, converts the matrix and returns the newly
     // copied matrix.
     public Matrix coerceOption(int options) {
-        if (this.options == options)
+        if (this.options == options) {
             return this;
+        }
 
         Matrix X = new Matrix();
         X.m = m;
@@ -161,40 +167,48 @@ public class Matrix {
         X.options = options;
 
         X.rows = new Vec[m];
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             X.rows[i] = rows[i].copy();
+        }
 
         return X;
     }
 
     public double[][] copyArray() {
         double A[][] = new double[m][];
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             A[i] = rows[i].copyArray();
+        }
 
         return A;
     }
 
     public void copyToArray(double A[][]) {
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 A[i][j] = get(i, j);
+            }
+        }
     }
 
     /** Copy the submatrix beginning at (i0,j0) with m rows and n columns **/
     public double[][] copyArray(int i0, int j0, int tm, int tn) {
         double A[][] = new double[tm][tn];
-        for (int i = 0; i < tm; i++)
-            for (int j = 0; j < tn; j++)
+        for (int i = 0; i < tm; i++) {
+            for (int j = 0; j < tn; j++) {
                 A[i][j] = get(i0 + i, j0 + j);
+            }
+        }
         return A;
     }
 
     /** Copy the submatrix beginning at (i0,j0) with m rows and n columns **/
     public void copyArray(int i0, int j0, int tm, int tn, double A[][]) {
-        for (int i = 0; i < tm; i++)
-            for (int j = 0; j < tn; j++)
+        for (int i = 0; i < tm; i++) {
+            for (int j = 0; j < tn; j++) {
                 A[i][j] = get(i0 + i, j0 + j);
+            }
+        }
     }
 
     public double[] copyAsVector() {
@@ -208,26 +222,29 @@ public class Matrix {
         X.options = options;
 
         X.rows = new Vec[X.m];
-        for (int i = 0; i < X.m; i++)
+        for (int i = 0; i < X.m; i++) {
             X.rows[i] = rows[i + row0].copy(col0, col1);
+        }
 
         return X;
     }
 
     public static Matrix identity(int m, int n) {
         Matrix M = new Matrix(m, n);
-        for (int i = 0; i < Math.min(m, n); i++)
+        for (int i = 0; i < Math.min(m, n); i++) {
             M.set(i, i, 1);
+        }
 
         return M;
     }
 
     public static Matrix random(int m, int n) {
         Matrix M = new Matrix(m, n);
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 M.set(i, j, rand.nextDouble());
             }
+        }
 
         return M;
     }
@@ -271,9 +288,11 @@ public class Matrix {
     }
 
     public void set(int row, int col, double v[][]) {
-        for (int dr = 0; dr < v.length; dr++)
-            for (int dc = 0; dc < v[dr].length; dc++)
+        for (int dr = 0; dr < v.length; dr++) {
+            for (int dc = 0; dc < v[dr].length; dc++) {
                 set(row + dr, col + dc, v[dr][dc]);
+            }
+        }
     }
 
     /** Create a new Vec containing a copy of the column. Changes to
@@ -321,8 +340,9 @@ public class Matrix {
     ///////////////////////////////////////////////////////////////////
     // Operations
     public void clear() {
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             rows[i].clear();
+        }
     }
 
     public boolean equals(Matrix M) {
@@ -330,13 +350,17 @@ public class Matrix {
     }
 
     public boolean equals(Matrix M, double eps) {
-        if (m != M.m || n != M.n)
+        if (m != M.m || n != M.n) {
             return false;
+        }
 
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
-                if (Math.abs(M.get(i, j) - get(i, j)) > eps)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (Math.abs(M.get(i, j) - get(i, j)) > eps) {
                     return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -344,6 +368,7 @@ public class Matrix {
         System.out.print(toString());
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
@@ -361,24 +386,27 @@ public class Matrix {
 
     public Matrix times(double v) {
         Matrix X = copy();
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             X.rows[i].timesEquals(v);
+        }
         return X;
     }
 
     public Matrix times(Matrix B) {
-        if (n != B.m)
+        if (n != B.m) {
             throw new IllegalArgumentException(
                     "Matrix inner dimensions must agree");
+        }
 
         int xm = m;
         int xn = B.n;
 
         Matrix X = null;
-        if (isSparse() || B.isSparse())
+        if (isSparse() || B.isSparse()) {
             X = new Matrix(xm, xn, SPARSE);
-        else
+        } else {
             X = new Matrix(xm, xn, DENSE);
+        }
 
         for (int col = 0; col < xn; col++) {
             Vec bcol = B.getColumn(col);
@@ -418,18 +446,20 @@ public class Matrix {
     // compute this*BT'. This is often much faster than the ordinary
     // times() function since we don't have to process down columns.
     public Matrix timesTranspose(Matrix BT) {
-        if (n != BT.n)
+        if (n != BT.n) {
             throw new IllegalArgumentException(
                     "Matrix inner dimensions must agree");
+        }
 
         int xm = m;
         int xn = BT.m;
 
         Matrix X = null;
-        if (isSparse() || BT.isSparse())
+        if (isSparse() || BT.isSparse()) {
             X = new Matrix(xm, xn, SPARSE);
-        else
+        } else {
             X = new Matrix(xm, xn, DENSE);
+        }
 
         for (int col = 0; col < xn; col++) {
             Vec bcol = BT.getRow(col);
@@ -447,16 +477,18 @@ public class Matrix {
 
     // times column vector
     public double[] times(double B[]) {
-        if (n != B.length)
+        if (n != B.length) {
             throw new IllegalArgumentException(
                     "Matrix inner dimensions must agree");
+        }
 
         double v[] = new double[m];
 
         Vec col = new DenseVec(B);
 
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             v[i] = rows[i].dotProduct(col);
+        }
 
         return v;
     }
@@ -471,9 +503,11 @@ public class Matrix {
 
     public double[] getColumnPackedCopy() {
         double vals[] = new double[m * n];
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 vals[i + j * m] = get(i, j);
+            }
+        }
         return vals;
     }
 
@@ -482,15 +516,18 @@ public class Matrix {
     public static Matrix columnPackedMatrix(double v[], int m, int n) {
         assert (v.length == m * n);
         Matrix M = new Matrix(m, n);
-        for (int c = 0; c < n; c++)
-            for (int r = 0; r < m; r++)
+        for (int c = 0; c < n; c++) {
+            for (int r = 0; r < m; r++) {
                 M.set(r, c, v[c * m + r]);
+            }
+        }
         return M;
     }
 
     public void timesEquals(double v) {
-        for (Vec row : rows)
+        for (Vec row : rows) {
             row.timesEquals(v);
+        }
     }
 
     public void timesEquals(int i, int j, double v) {
@@ -498,22 +535,26 @@ public class Matrix {
     }
 
     public Matrix plus(Matrix B) {
-        if (m != B.m || n != B.n)
+        if (m != B.m || n != B.n) {
             throw new IllegalArgumentException("Matrix dimensions must agree");
+        }
 
         Matrix X = copy();
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             B.rows[i].addTo(X.rows[i], 1);
+        }
         return X;
     }
 
     public Matrix minus(Matrix B) {
-        if (m != B.m || n != B.n)
+        if (m != B.m || n != B.n) {
             throw new IllegalArgumentException("Matrix dimensions must agree");
+        }
 
         Matrix X = copy();
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             B.rows[i].addTo(X.rows[i], -1);
+        }
         return X;
     }
 
@@ -541,8 +582,9 @@ public class Matrix {
     }
 
     public void plusEqualsColumnVector(int i0, int j0, double v[]) {
-        for (int i = 0; i < v.length; i++)
+        for (int i = 0; i < v.length; i++) {
             rows[i0 + i].plusEquals(j0, v[i]);
+        }
     }
 
     public void plusEquals(Matrix M) {
@@ -583,8 +625,9 @@ public class Matrix {
     public double trace() {
         double acc = 0;
 
-        for (int i = 0; i < Math.min(m, n); i++)
+        for (int i = 0; i < Math.min(m, n); i++) {
             acc += get(i, i);
+        }
 
         return acc;
     }
@@ -615,8 +658,9 @@ public class Matrix {
     // e.g., B[i,:]=A[pivot[i],:]
     public void permuteRows(int perm[]) {
         Vec newrows[] = new Vec[m];
-        for (int i = 0; i < perm.length; i++)
+        for (int i = 0; i < perm.length; i++) {
             newrows[i] = rows[perm[i]];
+        }
         rows = newrows;
     }
 
@@ -625,8 +669,9 @@ public class Matrix {
 
         Vec newrows[] = new Vec[m];
 
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             newrows[i] = rows[i].copyPermuteColumns(p);
+        }
 
         Matrix X = new Matrix();
         X.m = m;
@@ -648,8 +693,9 @@ public class Matrix {
         X.options = options;
         X.rows = new Vec[m];
 
-        for (int i = 0; i < perm.length; i++)
+        for (int i = 0; i < perm.length; i++) {
             X.rows[i] = getRow(perm[i]).copyPermuteColumns(p);
+        }
 
         return X;
     }
@@ -658,8 +704,9 @@ public class Matrix {
     // e.g., B[pivot[i],:]=A[i,:]
     public void inversePermuteRows(int pivot[]) {
         Vec newrows[] = new Vec[m];
-        for (int i = 0; i < pivot.length; i++)
+        for (int i = 0; i < pivot.length; i++) {
             newrows[pivot[i]] = rows[i];
+        }
         rows = newrows;
     }
 
@@ -693,8 +740,9 @@ public class Matrix {
         X.options = options;
 
         X.rows = new Vec[m];
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < m; i++) {
             X.rows[i] = rows[i].copyPart(i, n - 1);
+        }
 
         return X;
     }
@@ -720,8 +768,8 @@ public class Matrix {
             double d = get(1, 0), e = get(1, 1), f = get(1, 2);
             double g = get(2, 0), h = get(2, 1), i = get(2, 2);
 
-            double det = 1 / (a * e * i - a * f * h - d * b * i + d * c * h + g
-                    * b * f - g * c * e);
+            double det = 1 / (a * e * i - a * f * h - d * b * i + d * c * h
+                    + g * b * f - g * c * e);
 
             Matrix X = new Matrix(3, 3);
 
@@ -756,8 +804,9 @@ public class Matrix {
             nrows.add(v);
         }
 
-        while (nrows.size() < newrows)
+        while (nrows.size() < newrows) {
             nrows.add(makeVec(newcols));
+        }
 
         m = newrows;
         n = newcols;
@@ -769,9 +818,11 @@ public class Matrix {
     public void write(BufferedWriter outs) throws IOException {
         outs.write(m + "\n");
         outs.write(n + "\n");
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 outs.write(get(i, j) + "\n");
+            }
+        }
 
     }
 
@@ -786,9 +837,11 @@ public class Matrix {
 
         Matrix A = new Matrix(m, n);
 
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 A.set(i, j, Double.parseDouble(ins.readLine()));
+            }
+        }
 
         return A;
     }
@@ -799,24 +852,33 @@ public class Matrix {
     public void writeMatlab(BufferedWriter outs, String matname)
             throws IOException {
         outs.write("rows_=[\n");
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
-                if (get(i, j) != 0)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (get(i, j) != 0) {
                     outs.write("" + (i + 1) + "\n");
+                }
+            }
+        }
         outs.write("];\n");
 
         outs.write("cols_=[\n");
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
-                if (get(i, j) != 0)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (get(i, j) != 0) {
                     outs.write("" + (j + 1) + "\n");
+                }
+            }
+        }
         outs.write("];\n");
 
         outs.write("vals_=[\n");
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++)
-                if (get(i, j) != 0)
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (get(i, j) != 0) {
                     outs.write("" + get(i, j) + "\n");
+                }
+            }
+        }
         outs.write("];\n");
 
         outs.write("" + matname + " = sparse(rows_,cols_,vals_," + m + "," + n

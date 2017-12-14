@@ -318,7 +318,8 @@ public class EntityTreeModel implements TreeModel {
                                         + " changeRequest source: "
                                         + change.getSource()
                                         + " changeRequest class: "
-                                        + change.getClass().getName(), ex);
+                                        + change.getClass().getName(),
+                                ex);
                     }
                 }
             });

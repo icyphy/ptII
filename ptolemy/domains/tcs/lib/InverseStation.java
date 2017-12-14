@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.tcs.lib;
 
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -65,6 +64,5 @@ public class InverseStation extends AbstractStation {
         cardinality = new StringAttribute(output, "_cardinal");
         cardinality.setExpression("WEST");
     }
-
 
 }

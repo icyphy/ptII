@@ -140,9 +140,9 @@ public class CustomizableRunFrame extends TableauFrame {
                     tableau.show();
                 } catch (KernelException ex) {
                     try {
-                        MessageHandler
-                        .warning("Failed to create layout customization frame: "
-                                + ex);
+                        MessageHandler.warning(
+                                "Failed to create layout customization frame: "
+                                        + ex);
                     } catch (CancelException exception) {
                     }
                 }
@@ -170,8 +170,8 @@ public class CustomizableRunFrame extends TableauFrame {
                                     close();
                                     try {
                                         InterfaceTableau tableau = new InterfaceTableau(
-                                                effigy,
-                                                effigy.uniqueName("interfaceTableau"));
+                                                effigy, effigy.uniqueName(
+                                                        "interfaceTableau"));
                                         tableau.show();
                                     } catch (KernelException e) {
                                         MessageHandler.error(
@@ -215,9 +215,9 @@ public class CustomizableRunFrame extends TableauFrame {
                     setVisible(true);
                 } catch (KernelException ex) {
                     try {
-                        MessageHandler
-                        .warning("Failed to create layout customization frame: "
-                                + ex);
+                        MessageHandler.warning(
+                                "Failed to create layout customization frame: "
+                                        + ex);
                     } catch (CancelException exception) {
                     }
                 }

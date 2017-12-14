@@ -95,7 +95,8 @@ public class ExportParameters {
      *  @param directoryToExportTo The directory to export to.
      *  @param template The template parameters.
      */
-    public ExportParameters(File directoryToExportTo, ExportParameters template) {
+    public ExportParameters(File directoryToExportTo,
+            ExportParameters template) {
         this.directoryToExportTo = directoryToExportTo;
         backgroundColor = template.backgroundColor;
         deleteFilesOnExit = template.deleteFilesOnExit;

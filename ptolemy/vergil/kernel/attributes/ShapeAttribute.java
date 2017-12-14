@@ -175,7 +175,7 @@ public abstract class ShapeAttribute extends VisibleAttribute {
                 _icon.setLineColor(lineColorValue);
             }
         } else if (attribute == rotation) {
-            double angle = ((DoubleToken)rotation.getToken()).doubleValue();
+            double angle = ((DoubleToken) rotation.getToken()).doubleValue();
             _icon.setRotation(angle);
         } else {
             super.attributeChanged(attribute);

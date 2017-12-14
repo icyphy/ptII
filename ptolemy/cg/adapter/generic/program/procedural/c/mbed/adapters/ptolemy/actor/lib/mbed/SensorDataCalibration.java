@@ -42,14 +42,14 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class SensorDataCalibration
-extends NamedProgramCodeGeneratorAdapter {
+public class SensorDataCalibration extends NamedProgramCodeGeneratorAdapter {
 
     /**
      *  Construct the SensorDataCalibration adapter.
      *  @param actor the associated actor
      */
-    public SensorDataCalibration(ptolemy.actor.lib.mbed.SensorDataCalibration actor) {
+    public SensorDataCalibration(
+            ptolemy.actor.lib.mbed.SensorDataCalibration actor) {
         super(actor);
     }
 

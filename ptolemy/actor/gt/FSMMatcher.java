@@ -58,8 +58,8 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
-ValueListener {
+public class FSMMatcher extends FSMActor
+        implements GTCompositeActor, GTEntity, ValueListener {
 
     /** Create an FSMMatcher in the specified container with the specified
      *  name. The name must be unique within the container or an exception
@@ -171,8 +171,7 @@ ValueListener {
      */
     @Override
     public boolean match(NamedObj object) {
-        return object instanceof FSMActor
-                || object.getClass().getName()
+        return object instanceof FSMActor || object.getClass().getName()
                 .equals("ptolemy.domains.modal.kernel.FSMActor");
     }
 

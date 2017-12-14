@@ -89,8 +89,8 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
  */
-public abstract class GenericCodeGenerator extends Attribute implements
-Decorator {
+public abstract class GenericCodeGenerator extends Attribute
+        implements Decorator {
     // Note: If you add publicly settable parameters, update
     // _commandFlags or _commandOptions.
 
@@ -126,7 +126,8 @@ Decorator {
 
         generatorPackage = new StringParameter(this, "generatorPackage");
 
-        generatorPackageList = new StringParameter(this, "generatorPackageList");
+        generatorPackageList = new StringParameter(this,
+                "generatorPackageList");
 
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
@@ -162,8 +163,8 @@ Decorator {
      *   exception or an error occurs when setting the file path.
      */
     public GenericCodeGenerator(NamedObj container, String name,
-            String outputFileExtension) throws IllegalActionException,
-            NameDuplicationException {
+            String outputFileExtension)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name);
         _outputFileExtension = outputFileExtension;
     }
@@ -248,19 +249,19 @@ Decorator {
                 if (!codeDirectory.asFile().toString()
                         .endsWith(_sanitizedModelName)) {
                     // Add the sanitized model name as a directory
-                    codeDirectory.setExpression(codeDirectory.asFile()
-                            .toString() + "/" + _sanitizedModelName);
-                    codeDirectory.setBaseDirectory(codeDirectory.asFile()
-                            .toURI());
+                    codeDirectory
+                            .setExpression(codeDirectory.asFile().toString()
+                                    + "/" + _sanitizedModelName);
+                    codeDirectory
+                            .setBaseDirectory(codeDirectory.asFile().toURI());
                 }
             } else {
                 _generateInSubdirectory = false;
                 // Dragging a GenericCodeGenerator into an empty model
                 // was resulting in a NullPointerException.
                 // See test GenericCodeGenerator-1.1
-                if (codeDirectory.asFile() != null
-                        && codeDirectory.asFile().toString()
-                        .endsWith(_sanitizedModelName)) {
+                if (codeDirectory.asFile() != null && codeDirectory.asFile()
+                        .toString().endsWith(_sanitizedModelName)) {
                     // Remove the sanitized model name as a directory.
                     String path = codeDirectory.asFile().toString();
                     path = path.substring(0, path.indexOf(_sanitizedModelName));
@@ -268,8 +269,8 @@ Decorator {
                     // return null.
                     codeDirectory.setExpression(path);
                     if (codeDirectory.asFile() != null) {
-                        codeDirectory.setBaseDirectory(codeDirectory.asFile()
-                                .toURI());
+                        codeDirectory.setBaseDirectory(
+                                codeDirectory.asFile().toURI());
                     }
                 }
             }
@@ -286,8 +287,8 @@ Decorator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GenericCodeGenerator newObject = (GenericCodeGenerator) super
-                .clone(workspace);
+        GenericCodeGenerator newObject = (GenericCodeGenerator) super.clone(
+                workspace);
         newObject._adapterStore = new HashMap<Object, CodeGeneratorAdapter>();
         newObject._generatorPackageListParser = new GeneratorPackageListParser();
         newObject._model = null;
@@ -396,8 +397,8 @@ Decorator {
                     // one that generates the code, then call wrapup(), then
                     // run the generated code.
                     manager.wrapup();
-                    _printTimeAndMemory(startTime, "CodeGenerator: "
-                            + "wrapup consumed: ");
+                    _printTimeAndMemory(startTime,
+                            "CodeGenerator: " + "wrapup consumed: ");
                 } catch (RuntimeException ex) {
                     // The Exit actor causes Manager.wrapup() to throw this.
                     if (!manager.isExitingAfterWrapup()) {
@@ -426,18 +427,17 @@ Decorator {
         GenericCodeGenerator codeGenerator = null;
         try {
             if (args.length == 0) {
-                System.err
-                .println("Usage: java -classpath $PTII "
+                System.err.println("Usage: java -classpath $PTII "
                         + "ptolemy.cg.kernel.generic.GenericCodeGenerator model.xml "
-                        + "[model.xml . . .]"
-                        + _eol
+                        + "[model.xml . . .]" + _eol
                         + "  The arguments name MoML files containing models."
                         + "  Use -help to get a full list of command line arguments.");
                 return -1;
             }
 
             // See MoMLSimpleApplication for similar code
-            Workspace workspace = new Workspace("GenericCodeGeneratorWorkspace");
+            Workspace workspace = new Workspace(
+                    "GenericCodeGeneratorWorkspace");
             MoMLParser parser = new MoMLParser(workspace);
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters(),
                     workspace);
@@ -462,9 +462,8 @@ Decorator {
                 }
                 if (args[i].trim().startsWith("-")) {
                     if (i >= args.length - 1) {
-                        throw new IllegalActionException("t set "
-                                + "parameter " + args[i] + " when no value is "
-                                + "given.");
+                        throw new IllegalActionException("t set " + "parameter "
+                                + args[i] + " when no value is " + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -497,11 +496,11 @@ Decorator {
                         // fail because the results don't match.
                         parser.reset();
                         MoMLParser.purgeModelRecord(modelURL);
-                        toplevel = (CompositeActor) parser
-                                .parse(null, modelURL);
+                        toplevel = (CompositeActor) parser.parse(null,
+                                modelURL);
                     } catch (Exception ex) {
-                        throw new Exception("Failed to parse \"" + args[i]
-                                + "\"", ex);
+                        throw new Exception(
+                                "Failed to parse \"" + args[i] + "\"", ex);
                     }
 
                     // Get all instances of this class contained in the model
@@ -509,7 +508,8 @@ Decorator {
                             .attributeList(GenericCodeGenerator.class);
 
                     String generatorPackageValue = _getGeneratorPackageValue();
-                    Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
+                    Class<?> generatorClass = _getCodeGeneratorClass(
+                            generatorPackageValue, _getGeneratorDialectValue());
 
                     if (codeGenerators.size() != 0) {
                         // Get the last CodeGenerator in the list, maybe
@@ -530,47 +530,41 @@ Decorator {
                                         String.class });
                         codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor
                                 .newInstance(new Object[] { toplevel,
-                                "CodeGenerator_AutoAdded" });
+                                        "CodeGenerator_AutoAdded" });
                     }
 
                     codeGenerator._updateParameters(toplevel);
                     // Pick up any new command line arguments from the codeGenerator.
                     _commandOptions = codeGenerator.updateCommandOptions();
                     codeGenerator.generatorPackage
-                    .setExpression(generatorPackageValue);
+                            .setExpression(generatorPackageValue);
 
                     Attribute generateEmbeddedCode = codeGenerator
                             .getAttribute("generateEmbeddedCode");
                     if (generateEmbeddedCode instanceof Parameter) {
                         ((Parameter) generateEmbeddedCode)
-                        .setExpression("false");
+                                .setExpression("false");
                     }
 
                     try {
                         codeGenerator.generateCode();
                     } catch (KernelException ex) {
-                        throw new Exception(
-                                "Failed to generate code for \""
-                                        + args[i]
-                                                + "\""
-                                                + "\ncodeDirectory:       "
-                                                + codeGenerator.codeDirectory
-                                                .stringValue()
-                                                + "\ngeneratorPackage:    "
-                                                + codeGenerator.generatorPackage
-                                                .stringValue()
-                                                + "\ngeneratePackageList: "
-                                                + codeGenerator.generatorPackageList
-                                                .stringValue(),
-                                                ex);
+                        throw new Exception("Failed to generate code for \""
+                                + args[i] + "\"" + "\ncodeDirectory:       "
+                                + codeGenerator.codeDirectory.stringValue()
+                                + "\ngeneratorPackage:    "
+                                + codeGenerator.generatorPackage.stringValue()
+                                + "\ngeneratePackageList: "
+                                + codeGenerator.generatorPackageList
+                                        .stringValue(),
+                                ex);
                     }
                 } finally {
                     // Destroy the top level so that we avoid
                     // problems with running the model after generating code
-                    if (toplevel != null
-                            && toplevel.getManager() != null
+                    if (toplevel != null && toplevel.getManager() != null
                             && toplevel.getManager().getState()
-                            .equals(Manager.IDLE)) {
+                                    .equals(Manager.IDLE)) {
                         try {
                             // Only set the container to null if the
                             // Manager is IDLE.  If it is not IDLE,
@@ -579,9 +573,7 @@ Decorator {
                             toplevel.setContainer(null);
                             toplevel.setManager(null);
                         } catch (KernelException ex) {
-                            throw new InternalErrorException(
-                                    toplevel,
-                                    null,
+                            throw new InternalErrorException(toplevel, null,
                                     "Failed to set the container of \""
                                             + toplevel.getFullName()
                                             + "\" to null?  This is done so as to avoid "
@@ -633,47 +625,37 @@ Decorator {
     public String generateCopyright() {
         // FIXME: Why isn't this method static?
         // Why isn't it in CodegenUtilities?
-        return comment("Generated by Ptolemy II (http://ptolemy.eecs.berkeley.edu)"
-                + _eol
-                + _eol
-                + "Copyright (c) 2005-2016 The Regents of the University of California."
-                + _eol
-                + "All rights reserved."
-                + _eol
-                + "Permission is hereby granted, without written agreement and without"
-                + _eol
-                + "license or royalty fees, to use, copy, modify, and distribute this"
-                + _eol
-                + "software and its documentation for any purpose, provided that the above"
-                + _eol
-                + "copyright notice and the following two paragraphs appear in all copies"
-                + _eol
-                + "of this software."
-                + _eol
-                + ""
-                + _eol
-                + "IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY"
-                + _eol
-                + "FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES"
-                + _eol
-                + "ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF"
-                + _eol
-                + "THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF"
-                + _eol
-                + "SUCH DAMAGE."
-                + _eol
-                + ""
-                + _eol
-                + "THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,"
-                + _eol
-                + "INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF"
-                + _eol
-                + "MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE"
-                + _eol
-                + "PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF"
-                + _eol
-                + "CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,"
-                + _eol + "ENHANCEMENTS, OR MODIFICATIONS." + _eol);
+        return comment(
+                "Generated by Ptolemy II (http://ptolemy.eecs.berkeley.edu)"
+                        + _eol + _eol
+                        + "Copyright (c) 2005-2016 The Regents of the University of California."
+                        + _eol + "All rights reserved." + _eol
+                        + "Permission is hereby granted, without written agreement and without"
+                        + _eol
+                        + "license or royalty fees, to use, copy, modify, and distribute this"
+                        + _eol
+                        + "software and its documentation for any purpose, provided that the above"
+                        + _eol
+                        + "copyright notice and the following two paragraphs appear in all copies"
+                        + _eol + "of this software." + _eol + "" + _eol
+                        + "IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY"
+                        + _eol
+                        + "FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES"
+                        + _eol
+                        + "ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF"
+                        + _eol
+                        + "THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF"
+                        + _eol + "SUCH DAMAGE." + _eol + "" + _eol
+                        + "THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,"
+                        + _eol
+                        + "INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF"
+                        + _eol
+                        + "MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE"
+                        + _eol
+                        + "PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF"
+                        + _eol
+                        + "CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,"
+                        + _eol + "ENHANCEMENTS, OR MODIFICATIONS." + _eol);
     }
 
     /** Get the code generator adapter associated with the given component.
@@ -780,8 +762,8 @@ Decorator {
      *   container with the same name.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "CodeGenerator can only be contained"
@@ -848,8 +830,8 @@ Decorator {
         ClassLoader classLoader = referenceClass.getClassLoader();
         URL url = classLoader.getResource(cFileName);
         if (url == null) {
-            throw new NullPointerException("Could not find \"" + cFileName
-                    + "\" in the classpath.");
+            throw new NullPointerException(
+                    "Could not find \"" + cFileName + "\" in the classpath.");
         }
         //        if (codeFileName.endsWith(".h"))
         //            codeFileName = "includes/" + codeFileName;
@@ -861,11 +843,11 @@ Decorator {
 
         try {
             try {
-                cFileReader = CodeGeneratorUtilities.openAsFileOrURL(url
-                        .toString());
+                cFileReader = CodeGeneratorUtilities
+                        .openAsFileOrURL(url.toString());
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to read \""
-                        + cFileName + "\"");
+                throw new IllegalActionException(this, ex,
+                        "Failed to read \"" + cFileName + "\"");
             }
             if (cFileReader != null) {
                 //                _executeCommands.stdout("Reading \"" + cFileName
@@ -997,8 +979,8 @@ Decorator {
         //      First the different packages
         //      Secondly the hierarchy of the object
         //      Lastly for each package the hierarchy of the package
-        StringBuffer errorMessage = new StringBuffer("Searched for "
-                + object.getClass() + "\n");
+        StringBuffer errorMessage = new StringBuffer(
+                "Searched for " + object.getClass() + "\n");
         while (adapterObject == null) {
             String className = componentClass.getName();
 
@@ -1007,20 +989,19 @@ Decorator {
                 // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=342
                 adapterObject = _getAutoGeneratedAdapter(this, object);
                 if (adapterObject == null) {
-                    throw new IllegalActionException(
-                            "There is no "
-                                    + "codegen adaptor for "
-                                    + object.getClass()
-                                    + ".  Searched the contents of the generatorPackageList parameter, "
-                                    + " which was: "
-                                    + generatorPackageList.stringValue()
-                                    + ". Search list was: \n" + errorMessage);
+                    throw new IllegalActionException("There is no "
+                            + "codegen adaptor for " + object.getClass()
+                            + ".  Searched the contents of the generatorPackageList parameter, "
+                            + " which was: "
+                            + generatorPackageList.stringValue()
+                            + ". Search list was: \n" + errorMessage);
                 }
                 _adapterStore.put(object, adapterObject);
                 return adapterObject;
             }
 
-            if (!className.contains("ptolemy") && !className.contains("terraswarm")) {
+            if (!className.contains("ptolemy")
+                    && !className.contains("terraswarm")) {
                 componentClass = object.getClass();
                 className = componentClass.getName();
                 for (int i = 0; i < packages.size(); ++i) {
@@ -1031,8 +1012,7 @@ Decorator {
                         packages.set(i, packageName);
                     } else {
                         if (_debugging) {
-                            _debug("Removing "
-                                    + packageName
+                            _debug("Removing " + packageName
                                     + " from the list of packages to be searched because it does "
                                     + "not of a '.' in it");
                         }
@@ -1067,12 +1047,8 @@ Decorator {
                     }
                 } catch (IllegalActionException ex) {
                     String message = "Warning: Failed to instantiate adapter: object: "
-                            + object
-                            + " packageName: "
-                            + packageName
-                            + " adapterClassName: "
-                            + adapterClassName
-                            + " "
+                            + object + " packageName: " + packageName
+                            + " adapterClassName: " + adapterClassName + " "
                             + KernelException.stackTraceToString(ex);
                     errorMessage.append(i + ". " + message + "\n");
                     if (_debugging) {
@@ -1124,7 +1100,8 @@ Decorator {
      *  the string value of the generatorPackage parameter.
      */
     protected String _getOutputFilename() throws IllegalActionException {
-        if (_outputFileExtension == null || _outputFileExtension.length() == 0) {
+        if (_outputFileExtension == null
+                || _outputFileExtension.length() == 0) {
             _outputFileExtension = _getOutputFileExtension();
         }
         return _sanitizedModelName + "." + _outputFileExtension;
@@ -1141,7 +1118,7 @@ Decorator {
      */
     protected CodeGeneratorAdapter _instantiateAdapter(Object component,
             Class<?> componentClass, String adapterClassName)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         Class<?> adapterClass = null;
 
@@ -1161,9 +1138,9 @@ Decorator {
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + adapterClassName
-                    + " which accepts an instance of "
-                    + component.getClass().getName()
-                    + " as the argument.");
+                            + " which accepts an instance of "
+                            + component.getClass().getName()
+                            + " as the argument.");
         }
 
         CodeGeneratorAdapter adapterObject = null;
@@ -1174,15 +1151,13 @@ Decorator {
         } catch (ClassCastException ex0) {
             throw new InternalErrorException(
                     component instanceof NamedObj ? (NamedObj) component : null,
-                            ex0,
-                            "Problem casting a "
-                                    + constructor
-                                    + " to a CodeGeneratorAdapter. Perhaps "
-                                    + adapterClass
-                                    + " should extend "
-                                    + CodeGeneratorAdapter.class.getName()
-                                    + "? Thus we fail to create an adapter class code generator for "
-                                    + adapterClassName + ".");
+                    ex0,
+                    "Problem casting a " + constructor
+                            + " to a CodeGeneratorAdapter. Perhaps "
+                            + adapterClass + " should extend "
+                            + CodeGeneratorAdapter.class.getName()
+                            + "? Thus we fail to create an adapter class code generator for "
+                            + adapterClassName + ".");
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to create adapter class code generator for "
@@ -1192,9 +1167,9 @@ Decorator {
         if (!_getAdapterClassFilter().isInstance(adapterObject)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
-                    + ". Its adapter class " + adapterObject
-                    + " does not" + " implement "
-                    + _getAdapterClassFilter() + ".");
+                            + ". Its adapter class " + adapterObject
+                            + " does not" + " implement "
+                            + _getAdapterClassFilter() + ".");
         }
 
         adapterObject.setCodeGenerator(this);
@@ -1252,8 +1227,8 @@ Decorator {
                 _model.setContainer(null);
             } catch (KernelException ex) {
                 throw new IllegalActionException(_model, ex,
-                        "Could not set the container of "
-                                + _model.getFullName() + " to null.");
+                        "Could not set the container of " + _model.getFullName()
+                                + " to null.");
             }
             _model = null;
         }
@@ -1281,11 +1256,11 @@ Decorator {
             _executeCommands.stdout("Writing "
                     // Findbugs says that codeFileName cannot be null,
                     // so no need to check.
-                    + codeFileName
-                    + " in "
+                    + codeFileName + " in "
                     + (codeDirectory == null ? "<codeDirectory was null?>"
-                            : codeDirectory.getBaseDirectory()) + " ("
-                            + (code == null ? 0 : code.length()) + " characters)");
+                            : codeDirectory.getBaseDirectory())
+                    + " (" + (code == null ? 0 : code.length())
+                    + " characters)");
         }
 
         return _writeCodeFileName(code, codeFileName, overwriteFile, false);
@@ -1306,7 +1281,7 @@ Decorator {
      */
     protected String _writeCodeFileName(StringBuffer code, String codeFileName,
             boolean overwriteFile, boolean dontShowDialog)
-                    throws IllegalActionException {
+            throws IllegalActionException {
 
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
@@ -1317,27 +1292,28 @@ Decorator {
                 // like this, since it makes it impossible to call
                 // this method from a script.  If the question is
                 // asked, the build will hang.
-                if (!dontShowDialog
-                        && !MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                                + " exists. OK to overwrite?")) {
+                if (!dontShowDialog && !MessageHandler.yesNoQuestion(
+                        codeDirectory.asFile() + " exists. OK to overwrite?")) {
                     /*
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                      */
-                    return FileUtilities.nameToFile(codeFileName,
-                            codeDirectory.getBaseDirectory())
+                    return FileUtilities
+                            .nameToFile(codeFileName,
+                                    codeDirectory.getBaseDirectory())
                             .getCanonicalPath();
                 }
             }
 
             File codeDirectoryFile = codeDirectory.asFile();
             if (codeDirectoryFile.isFile()) {
-                throw new IllegalActionException(this, "Error: "
-                        + codeDirectory.stringValue() + " is a file, "
-                        + " it should be a directory.");
+                throw new IllegalActionException(this,
+                        "Error: " + codeDirectory.stringValue() + " is a file, "
+                                + " it should be a directory.");
             }
 
-            if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+            if (!codeDirectoryFile.isDirectory()
+                    && !codeDirectoryFile.mkdirs()) {
                 throw new IllegalActionException(this, "Failed to make the \""
                         + codeDirectory.stringValue() + "\" directory.");
             }
@@ -1361,14 +1337,15 @@ Decorator {
                     writer.close();
                 }
             }
-            String fileNameWritten = FileUtilities.nameToFile(codeFileName,
-                    codeDirectory.getBaseDirectory()).getCanonicalPath();
+            String fileNameWritten = FileUtilities
+                    .nameToFile(codeFileName, codeDirectory.getBaseDirectory())
+                    .getCanonicalPath();
             //System.out.println("Wrote " + fileNameWritten);
             return fileNameWritten;
         } catch (Throwable ex) {
-            throw new IllegalActionException(this, ex, "Failed to write \""
-                    + codeFileName + "\" in "
-                    + codeDirectory.getBaseDirectory());
+            throw new IllegalActionException(this, ex,
+                    "Failed to write \"" + codeFileName + "\" in "
+                            + codeDirectory.getBaseDirectory());
         }
     }
 
@@ -1391,8 +1368,8 @@ Decorator {
         if (packageValue.indexOf(".") == -1) {
             return "";
         }
-        String outputFileExtension = packageValue.substring(packageValue
-                .lastIndexOf("."));
+        String outputFileExtension = packageValue
+                .substring(packageValue.lastIndexOf("."));
         return outputFileExtension;
     }
 
@@ -1428,8 +1405,8 @@ Decorator {
             String value = values.next();
 
             if (name.equals("inline") && value.equals("true") && ignoreInline) {
-                System.out
-                .println("Warning: '-inline true' is not relevant for a DE model, forcing the value to false.");
+                System.out.println(
+                        "Warning: '-inline true' is not relevant for a DE model, forcing the value to false.");
                 value = "false";
             }
 
@@ -1438,8 +1415,8 @@ Decorator {
             if (attribute instanceof Settable) {
                 // Use a MoMLChangeRequest so that visual rendition (if
                 // any) is updated and listeners are notified.
-                String moml = "<property name=\"" + name + "\" value=\""
-                        + value + "\"/>";
+                String moml = "<property name=\"" + name + "\" value=\"" + value
+                        + "\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, model,
                         moml);
                 model.requestChange(request);
@@ -1469,8 +1446,8 @@ Decorator {
                         // Use a MoMLChangeRequest so that
                         // visual rendition (if any) is
                         // updated and listeners are notified.
-                        String moml = "<property name=\"" + name
-                                + "\" value=\"" + value + "\"/>";
+                        String moml = "<property name=\"" + name + "\" value=\""
+                                + value + "\"/>";
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
                                 director, moml);
                         director.requestChange(request);
@@ -1497,8 +1474,7 @@ Decorator {
             // then StringUtilities.exit(0) might not actually exit.
             return true;
         } else if (arg.equals("-version")) {
-            System.out
-            .println("Version "
+            System.out.println("Version "
                     + VersionAttribute.CURRENT_VERSION.getExpression()
                     + ", Build $Id$");
 
@@ -1522,26 +1498,30 @@ Decorator {
             String generatorPackageValue = _getGeneratorPackageValue();
             Class<?> generatorClass = null;
             try {
-                generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
+                generatorClass = _getCodeGeneratorClass(generatorPackageValue,
+                        _getGeneratorDialectValue());
             } catch (Throwable throwable) {
                 // Cape Code does not include ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator
                 // so getting the usage may fail.
                 generatorPackageValue = "ptolemy.cg.kernel.generic.accessor";
-                generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
+                generatorClass = _getCodeGeneratorClass(generatorPackageValue,
+                        _getGeneratorDialectValue());
             }
             Constructor<?> codeGeneratorConstructor = generatorClass
-                    .getConstructor(new Class[] { NamedObj.class, String.class });
+                    .getConstructor(
+                            new Class[] { NamedObj.class, String.class });
             CompositeActor toplevel = new CompositeActor();
             GenericCodeGenerator codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor
-                    .newInstance(new Object[] { toplevel, "CodeGenerator_help" });
+                    .newInstance(
+                            new Object[] { toplevel, "CodeGenerator_help" });
             Method updateCommandOptions = generatorClass
                     .getMethod("updateCommandOptions");
             _commandOptions = (String[][]) updateCommandOptions
                     .invoke(codeGenerator);
         } catch (Throwable throwable) {
-            System.err
-            .println("Failed to get arguments from the generatorPackage: "
-                    + throwable.getMessage());
+            System.err.println(
+                    "Failed to get arguments from the generatorPackage: "
+                            + throwable.getMessage());
             throwable.printStackTrace();
         }
 
@@ -1560,20 +1540,19 @@ Decorator {
      *  is looked for.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    private static Class<?> _getCodeGeneratorClass(String generatorPackageValue, String generatorDialect)
-            throws IllegalActionException {
-        String language = generatorPackageValue.substring(generatorPackageValue
-                .lastIndexOf("."));
+    private static Class<?> _getCodeGeneratorClass(String generatorPackageValue,
+            String generatorDialect) throws IllegalActionException {
+        String language = generatorPackageValue
+                .substring(generatorPackageValue.lastIndexOf("."));
 
-        String capitalizedLanguage = language.substring(1, 2).toUpperCase(
-                Locale.getDefault())
-                + language.substring(2);
+        String capitalizedLanguage = language.substring(1, 2)
+                .toUpperCase(Locale.getDefault()) + language.substring(2);
 
         String dialect = "";
 
         if (generatorDialect != null && !generatorDialect.equals("")) {
-            dialect = generatorDialect.substring(0, 1).toUpperCase(
-                    Locale.getDefault());
+            dialect = generatorDialect.substring(0, 1)
+                    .toUpperCase(Locale.getDefault());
             if (generatorDialect.length() >= 2) {
                 dialect += generatorDialect.substring(1);
             }
@@ -1599,22 +1578,17 @@ Decorator {
             }
 
             String oldCodeGeneratorClassName = codeGeneratorClassName;
-            codeGeneratorClassName = generatorPackageValue
-                    + capitalizedLanguage + "CodeGenerator";
+            codeGeneratorClassName = generatorPackageValue + capitalizedLanguage
+                    + "CodeGenerator";
 
             try {
                 result = Class.forName(codeGeneratorClassName);
             } catch (Throwable throwable2) {
-                throw new IllegalActionException(
-                        null,
-                        throwable2,
-                        "Failed to find \""
-                                + oldCodeGeneratorClassName
-                                + "\" and \""
-                                + codeGeneratorClassName
+                throw new IllegalActionException(null, throwable2,
+                        "Failed to find \"" + oldCodeGeneratorClassName
+                                + "\" and \"" + codeGeneratorClassName
                                 + "\", generatorPackage parameter was \""
-                                + generatorPackageValue
-                                + "\". "
+                                + generatorPackageValue + "\". "
                                 + "Common values are ptolemy.cg.kernel.generic.program.procedural.c, "
                                 + "ptolemy.cg.kernel.generic.html, or "
                                 + "ptolemy.cg.kernel.generic.program.procedural.java");
@@ -1633,7 +1607,8 @@ Decorator {
         // argument.  This is a bit hacky, but works.
         String generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural.c";
         int parameterIndex = -1;
-        if ((parameterIndex = _parameterNames.indexOf("generatorPackage")) != -1) {
+        if ((parameterIndex = _parameterNames
+                .indexOf("generatorPackage")) != -1) {
             generatorPackageValue = _parameterValues.get(parameterIndex);
         }
 
@@ -1669,7 +1644,6 @@ Decorator {
         return generatorPackageValue;
     }
 
-
     /** Return the value of the -generatorDialect or -dialect command
      *  line argument.
      *  @return The value of the generatorPackage argument
@@ -1677,7 +1651,8 @@ Decorator {
     private static String _getGeneratorDialectValue() {
 
         int parameterIndex = -1;
-        if ((parameterIndex = _parameterNames.indexOf("generatorDialect")) != -1) {
+        if ((parameterIndex = _parameterNames
+                .indexOf("generatorDialect")) != -1) {
             return _parameterValues.get(parameterIndex);
         }
 
@@ -1743,28 +1718,27 @@ Decorator {
 
     /** The command-line options that are either present or not. */
     private static String[] _commandFlags = { "-help",
-        "-generateInSubdirectory", "-version", };
+            "-generateInSubdirectory", "-version", };
 
     /** The command-line options that take arguments. */
     private static String[][] _commandOptions = {
-        //{ "-allowDynamicMultiportReferences",
-        //  "        true|false (default: false)" },
-        {
-            "-codeDirectory",
-        "        <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
-        //    { "-compileTarget",
-        // "     <target to be run, defaults to empty string>" },
-        { "-dialect", "              <Use to distinguish between different implementations in the same package>" },
-        { "-generatorDialect", "     <Same as dialect. Class naming convention: <Package><Dialect>CodeGenerator>" },
-        {
-            "-generatorPackage",
-        " <Java package of code generator>" },
-        { "-generatorPackageList",
-        " <Semicolon or * separated list of Java packages to be searched for adapters>" },
-        { "-language", "             <c|java|html (default: c)>" },
-        //{ "-overwriteFiles", "    true|false (default: true)" },
-        //{ "-padBuffers", "        true|false (default: true)" },
-        { "-<parameter name>", "     <parameter value>" } };
+            //{ "-allowDynamicMultiportReferences",
+            //  "        true|false (default: false)" },
+            { "-codeDirectory",
+                    "        <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+            //    { "-compileTarget",
+            // "     <target to be run, defaults to empty string>" },
+            { "-dialect",
+                    "              <Use to distinguish between different implementations in the same package>" },
+            { "-generatorDialect",
+                    "     <Same as dialect. Class naming convention: <Package><Dialect>CodeGenerator>" },
+            { "-generatorPackage", " <Java package of code generator>" },
+            { "-generatorPackageList",
+                    " <Semicolon or * separated list of Java packages to be searched for adapters>" },
+            { "-language", "             <c|java|html (default: c)>" },
+            //{ "-overwriteFiles", "    true|false (default: true)" },
+            //{ "-padBuffers", "        true|false (default: true)" },
+            { "-<parameter name>", "     <parameter value>" } };
 
     //{ "-sourceLineBinding", " true|false (default: false)" },
     //{ "-target", "            <target name, defaults to false>" }}
@@ -1773,11 +1747,11 @@ Decorator {
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
 
     private static String[][] _languages = {
-        { "c", "ptolemy.cg.kernel.generic.program.procedural.c" },
-        { "fmima", "ptolemy.cg.kernel.generic.program.procedural.fmima" },
-        { "accessor", "ptolemy.cg.kernel.generic.accessor" },
-        { "html", "ptolemy.cg.kernel.generic.html" },
-        { "java", "ptolemy.cg.kernel.generic.program.procedural.java" } };
+            { "c", "ptolemy.cg.kernel.generic.program.procedural.c" },
+            { "fmima", "ptolemy.cg.kernel.generic.program.procedural.fmima" },
+            { "accessor", "ptolemy.cg.kernel.generic.accessor" },
+            { "html", "ptolemy.cg.kernel.generic.html" },
+            { "java", "ptolemy.cg.kernel.generic.program.procedural.java" } };
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
     /** List of parameter names seen on the command line. */

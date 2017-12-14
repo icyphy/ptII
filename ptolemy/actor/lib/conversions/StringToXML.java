@@ -109,7 +109,7 @@ public class StringToXML extends Transformer {
          try {
          //_outToken = new XmlToken[1];
          _outToken = new XmlToken(in);
-
+        
          }
          catch (Exception e) {
          e.printStackTrace();

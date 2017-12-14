@@ -115,7 +115,8 @@ public class SymmetricCrypto extends TypedAtomicActor {
         macAlgorithm.setExpression("SHA-256");
 
         key = new PortParameter(this, "key");
-        key.setExpression("{0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub}");
+        key.setExpression(
+                "{0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub}");
         key.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
@@ -172,30 +173,26 @@ public class SymmetricCrypto extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == operationMode) {
-            String modeString = ((StringToken) operationMode.getToken()).stringValue();
+            String modeString = ((StringToken) operationMode.getToken())
+                    .stringValue();
             if (modeString.equals("encrypt")) {
                 _isEncryption = true;
-            }
-            else {
+            } else {
                 _isEncryption = false;
             }
-        }
-        else if (attribute == algorithm) {
+        } else if (attribute == algorithm) {
             _algorithm = ((StringToken) algorithm.getToken()).stringValue();
-        }
-        else if (attribute == cipherMode) {
+        } else if (attribute == cipherMode) {
             _cipherMode = ((StringToken) cipherMode.getToken()).stringValue();
-        }
-        else if (attribute == padding) {
+        } else if (attribute == padding) {
             _padding = ((StringToken) padding.getToken()).stringValue();
-        }
-        else if (attribute == macAlgorithm) {
+        } else if (attribute == macAlgorithm) {
             // initialize() is synchronized, so accessing _macAlgorithm better be synchronized.
             synchronized (this) {
-                _macAlgorithm = ((StringToken) macAlgorithm.getToken()).stringValue();
+                _macAlgorithm = ((StringToken) macAlgorithm.getToken())
+                        .stringValue();
             }
-        }
-        else {
+        } else {
             super.attributeChanged(attribute);
         }
     }
@@ -220,8 +217,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
 
         if (_algorithm.equals("AES")) {
             blockSize = 16;
-        }
-        else if (_algorithm.equals("DES")) {
+        } else if (_algorithm.equals("DES")) {
             blockSize = 8;
         }
         byte[] encryptedBytes;
@@ -238,16 +234,17 @@ public class SymmetricCrypto extends TypedAtomicActor {
 
             IvParameterSpec ivspec = new IvParameterSpec(initVector);
             byte[] keyBytes = ArrayToken
-                    .arrayTokenToUnsignedByteArray((ArrayToken)key.getToken());
-            SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, _algorithm);
+                    .arrayTokenToUnsignedByteArray((ArrayToken) key.getToken());
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes,
+                    _algorithm);
 
             _initCipher(opmode, ivspec, secretKeySpec);
             super.fire(); // super.fire() will print out debugging messages.
 
             try {
                 if (input.hasToken(0)) {
-                    byte[] dataBytes = ArrayToken
-                            .arrayTokenToUnsignedByteArray((ArrayToken) input.get(0));
+                    byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
+                            (ArrayToken) input.get(0));
 
                     if (_messageDigest != null) {
                         byte[] digestedBytes = _messageDigest.digest(dataBytes);
@@ -256,29 +253,31 @@ public class SymmetricCrypto extends TypedAtomicActor {
                     }
 
                     dataBytes = _process(dataBytes);
-                    byte[] outputBytes = _concatByteArrays(initVector, dataBytes);
-                    output.send(0,
-                            ArrayToken.unsignedByteArrayToArrayToken(outputBytes));
+                    byte[] outputBytes = _concatByteArrays(initVector,
+                            dataBytes);
+                    output.send(0, ArrayToken
+                            .unsignedByteArrayToArrayToken(outputBytes));
                 }
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
+                        "Problem sending data");
             }
-            catch (Throwable throwable) {
-                throw new IllegalActionException(this, throwable, "Problem sending data");
-            }
-        }
-        else {
+        } else {
             int opmode = Cipher.DECRYPT_MODE;
 
             if (input.hasToken(0)) {
-                byte[] inputBytes = ArrayToken
-                        .arrayTokenToUnsignedByteArray((ArrayToken) input.get(0));
+                byte[] inputBytes = ArrayToken.arrayTokenToUnsignedByteArray(
+                        (ArrayToken) input.get(0));
 
                 initVector = Arrays.copyOfRange(inputBytes, 0, blockSize);
-                encryptedBytes = Arrays.copyOfRange(inputBytes, blockSize, inputBytes.length);
+                encryptedBytes = Arrays.copyOfRange(inputBytes, blockSize,
+                        inputBytes.length);
 
                 IvParameterSpec ivspec = new IvParameterSpec(initVector);
-                byte[] keyBytes = ArrayToken
-                        .arrayTokenToUnsignedByteArray((ArrayToken)key.getToken());
-                SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, _algorithm);
+                byte[] keyBytes = ArrayToken.arrayTokenToUnsignedByteArray(
+                        (ArrayToken) key.getToken());
+                SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes,
+                        _algorithm);
 
                 _initCipher(opmode, ivspec, secretKeySpec);
                 super.fire(); // super.fire() will print out debugging messages.
@@ -286,26 +285,29 @@ public class SymmetricCrypto extends TypedAtomicActor {
                 byte[] decryptedBytes = _process(encryptedBytes);
 
                 if (_messageDigest == null) {
-                    output.send(0,
-                            ArrayToken.unsignedByteArrayToArrayToken(decryptedBytes));
-                }
-                else {
-                    if (decryptedBytes.length < _messageDigest.getDigestLength()) {
-                        error.send(0, new StringToken("Decrypted message is shorter than MAC"));
-                    }
-                    else {
+                    output.send(0, ArrayToken
+                            .unsignedByteArrayToArrayToken(decryptedBytes));
+                } else {
+                    if (decryptedBytes.length < _messageDigest
+                            .getDigestLength()) {
+                        error.send(0, new StringToken(
+                                "Decrypted message is shorter than MAC"));
+                    } else {
                         byte[] dataBytes = Arrays.copyOfRange(decryptedBytes, 0,
-                                decryptedBytes.length - _messageDigest.getDigestLength());
-                        byte[] receivedDigestBytes = Arrays.copyOfRange(decryptedBytes,
-                                decryptedBytes.length - _messageDigest.getDigestLength(),
+                                decryptedBytes.length
+                                        - _messageDigest.getDigestLength());
+                        byte[] receivedDigestBytes = Arrays.copyOfRange(
+                                decryptedBytes,
+                                decryptedBytes.length
+                                        - _messageDigest.getDigestLength(),
                                 decryptedBytes.length);
                         byte[] digestedBytes = _messageDigest.digest(dataBytes);
                         if (Arrays.equals(receivedDigestBytes, digestedBytes)) {
-                            output.send(0,
-                                    ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
-                        }
-                        else {
-                            error.send(0, new StringToken("Data integrity error, MAC doesn't match"));
+                            output.send(0, ArrayToken
+                                    .unsignedByteArrayToArrayToken(dataBytes));
+                        } else {
+                            error.send(0, new StringToken(
+                                    "Data integrity error, MAC doesn't match"));
                         }
                     }
                 }
@@ -326,12 +328,10 @@ public class SymmetricCrypto extends TypedAtomicActor {
         super.initialize();
         if (_macAlgorithm.equals("None")) {
             _messageDigest = null;
-        }
-        else {
+        } else {
             try {
                 _messageDigest = MessageDigest.getInstance(_macAlgorithm);
-            }
-            catch (NoSuchAlgorithmException e) {
+            } catch (NoSuchAlgorithmException e) {
                 throw new IllegalActionException(this, e,
                         "Failed to initialize messageDigest");
             }
@@ -358,7 +358,6 @@ public class SymmetricCrypto extends TypedAtomicActor {
     /** Whether encrypt or decrypt the input data. */
     private boolean _isEncryption;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                    Private  Methods                      ////
 
@@ -376,18 +375,20 @@ public class SymmetricCrypto extends TypedAtomicActor {
         try {
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Problem processing "
-                    + dataBytes.length + " bytes.");
+            throw new IllegalActionException(this, ex,
+                    "Problem processing " + dataBytes.length + " bytes.");
         }
 
         return byteArrayOutputStream.toByteArray();
     }
+
     /** Initialize the javax.crypto.Cipher.
     */
-    private void _initCipher(int opmode, IvParameterSpec ivspec, SecretKeySpec secretKeySpec)
-            throws IllegalActionException {
+    private void _initCipher(int opmode, IvParameterSpec ivspec,
+            SecretKeySpec secretKeySpec) throws IllegalActionException {
         try {
-            _cipher = Cipher.getInstance(_algorithm + "/" + _cipherMode + "/" + _padding);
+            _cipher = Cipher.getInstance(
+                    _algorithm + "/" + _cipherMode + "/" + _padding);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e1) {
             throw new IllegalActionException(this, e1,
                     "Failed to get instance of cipher");
@@ -395,12 +396,10 @@ public class SymmetricCrypto extends TypedAtomicActor {
 
         try {
             _cipher.init(opmode, secretKeySpec, ivspec);
-        }
-        catch (InvalidKeyException e) {
+        } catch (InvalidKeyException e) {
             throw new IllegalActionException(this, e,
                     "Failed to initialize crypto");
-        }
-        catch (InvalidAlgorithmParameterException e) {
+        } catch (InvalidAlgorithmParameterException e) {
 
             throw new IllegalActionException(this, e,
                     "Failed to initialize crypto");
@@ -408,8 +407,10 @@ public class SymmetricCrypto extends TypedAtomicActor {
     }
 
     private byte[] _concatByteArrays(byte[] firstArray, byte[] secondArray) {
-        byte[] resultArray = Arrays.copyOf(firstArray, firstArray.length + secondArray.length);
-        System.arraycopy(secondArray, 0, resultArray, firstArray.length, secondArray.length);
+        byte[] resultArray = Arrays.copyOf(firstArray,
+                firstArray.length + secondArray.length);
+        System.arraycopy(secondArray, 0, resultArray, firstArray.length,
+                secondArray.length);
         return resultArray;
     }
 }

@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (ilgea)
 */
 public class MirrorDecoratorAttributes extends DecoratorAttributes
-implements MirrorDecoratorListener {
+        implements MirrorDecoratorListener {
 
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
@@ -89,7 +89,6 @@ implements MirrorDecoratorListener {
         super(target, name);
         _init();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -121,13 +120,13 @@ implements MirrorDecoratorListener {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
-        MirrorDecoratorAttributes result = (MirrorDecoratorAttributes) super.clone(workspace);
+        MirrorDecoratorAttributes result = (MirrorDecoratorAttributes) super.clone(
+                workspace);
         result._enabled = false;
         result._cachedDecoratorPortParameters = null;
         result._cachedDecoratorPorts = null;
         return result;
     }
-
 
     /** Return whether the decorator associated with this attribute is
      *  enabled.
@@ -146,10 +145,12 @@ implements MirrorDecoratorListener {
     public Parameter enable;
 
     @Override
-    public void event(MirrorDecorator ssm, DecoratorEvent eventType, Parameter p) {
+    public void event(MirrorDecorator ssm, DecoratorEvent eventType,
+            Parameter p) {
 
         Parameter param = (Parameter) this.getAttribute(p.getName());
-        Parameter containerParam = (Parameter) this.getContainer().getAttribute(p.getName());
+        Parameter containerParam = (Parameter) this.getContainer()
+                .getAttribute(p.getName());
         try {
             if (eventType == DecoratorEvent.ADDED_PARAMETER) {
                 if (param == null) {
@@ -175,16 +176,18 @@ implements MirrorDecoratorListener {
                 if (enabled()) {
                     if (containerParam == null) {
                         _cachedDecoratorPortParameters.put(p.getName(),
-                                new PortParameter(this.getContainer(), p.getName()));
+                                new PortParameter(this.getContainer(),
+                                        p.getName()));
                     } else {
-                        _cachedDecoratorPortParameters.put(p.getName(), containerParam);
+                        _cachedDecoratorPortParameters.put(p.getName(),
+                                containerParam);
                     }
                 }
                 if (param == null) {
                     new Parameter(this, p.getName());
                 }
             } else if (eventType == DecoratorEvent.REMOVED_PORT_PARAMETER) {
-                if (containerParam!=null) {
+                if (containerParam != null) {
                     containerParam.setContainer(null);
                     _cachedDecoratorPorts.remove(p.getName());
                     _cachedDecoratorPortParameters.remove(p.getName());
@@ -203,7 +206,8 @@ implements MirrorDecoratorListener {
      * Send out an event.
      */
     @Override
-    public void event(MirrorDecorator ssm, DecoratorEvent eventType, String portName) {
+    public void event(MirrorDecorator ssm, DecoratorEvent eventType,
+            String portName) {
         ComponentEntity container = (ComponentEntity) this.getContainer();
 
         try {
@@ -214,10 +218,13 @@ implements MirrorDecoratorListener {
             if (eventType == DecoratorEvent.ADDED_PORT) {
                 if (enabled()) {
                     if (port == null) {
-                        port = new TypedIOPort(container, targetPortName, true, false);
-                        SingletonParameter showNameParam = ((SingletonParameter)port.getAttribute("_showName"));
+                        port = new TypedIOPort(container, targetPortName, true,
+                                false);
+                        SingletonParameter showNameParam = ((SingletonParameter) port
+                                .getAttribute("_showName"));
                         if (showNameParam == null) {
-                            showNameParam = new SingletonParameter(port,"_showName");
+                            showNameParam = new SingletonParameter(port,
+                                    "_showName");
                         }
                         showNameParam.setExpression("true");
                     } else {
@@ -231,13 +238,15 @@ implements MirrorDecoratorListener {
                         }
                     }
                 }
-                _cachedDecoratorPorts.put(portName,port);
+                _cachedDecoratorPorts.put(portName, port);
             } else if (eventType == DecoratorEvent.REMOVED_PORT) {
                 // if the container has a port of this name AND this port
                 // is known to have been added by this decorator, remove it.
-                boolean portAddedByDecorator = _cachedDecoratorPorts.keySet().contains(portName);
-                boolean paramPortAddedByDecorator = _cachedDecoratorPortParameters.keySet().contains(portName);
-                if (port != null ) {
+                boolean portAddedByDecorator = _cachedDecoratorPorts.keySet()
+                        .contains(portName);
+                boolean paramPortAddedByDecorator = _cachedDecoratorPortParameters
+                        .keySet().contains(portName);
+                if (port != null) {
                     if (portAddedByDecorator) {
                         port.setContainer(null);
                     }
@@ -255,19 +264,21 @@ implements MirrorDecoratorListener {
         }
     }
 
-
     /**
      * Add all decorated ports and necessary parameters to the container.
      */
     public void decorateContainer() {
         if (this._decorator != null) {
-            for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortParameterNames()) {
-                event((MirrorDecorator)this._decorator,
+            for (String decoratorPort : ((MirrorDecorator) this._decorator)
+                    .getAddedPortParameterNames()) {
+                event((MirrorDecorator) this._decorator,
                         DecoratorEvent.ADDED_PORT_PARAMETER,
-                        (Parameter)((MirrorDecorator)this._decorator).getAttribute(decoratorPort));
+                        (Parameter) ((MirrorDecorator) this._decorator)
+                                .getAttribute(decoratorPort));
             }
-            for (String decoratorPort : ((MirrorDecorator)this._decorator).getAddedPortNames()) {
-                event((MirrorDecorator)this._decorator,
+            for (String decoratorPort : ((MirrorDecorator) this._decorator)
+                    .getAddedPortNames()) {
+                event((MirrorDecorator) this._decorator,
                         DecoratorEvent.ADDED_PORT, decoratorPort);
             }
         }
@@ -287,9 +298,10 @@ implements MirrorDecoratorListener {
                 }
             }
 
-            for (Parameter parameter : _cachedDecoratorPortParameters.values()) {
-                ParameterPort expectedPort = (ParameterPort) ((ComponentEntity)this.
-                        getContainer()).getPort(parameter.getName());
+            for (Parameter parameter : _cachedDecoratorPortParameters
+                    .values()) {
+                ParameterPort expectedPort = (ParameterPort) ((ComponentEntity) this
+                        .getContainer()).getPort(parameter.getName());
                 if (expectedPort != null) {
                     expectedPort.setContainer(null);
                 }
@@ -312,16 +324,16 @@ implements MirrorDecoratorListener {
 
     private void _addAllParameters() {
         if (this._decorator != null) {
-            List<Parameter> addedParameters =  ((MirrorDecorator)this._decorator).getAddedParameters();
+            List<Parameter> addedParameters = ((MirrorDecorator) this._decorator)
+                    .getAddedParameters();
             if (addedParameters != null) {
                 for (Parameter p : addedParameters) {
-                    event((MirrorDecorator)this._decorator,
+                    event((MirrorDecorator) this._decorator,
                             DecoratorEvent.ADDED_PARAMETER, p);
                 }
             }
         }
     }
-
 
     /** Create the parameters. Including any parameter the decorator already includes.
      */
@@ -330,7 +342,6 @@ implements MirrorDecoratorListener {
         _cachedDecoratorPorts = new HashMap<>();
 
         _cachedDecoratorPortParameters = new HashMap<>();
-
 
         try {
             enable = new Parameter(this, "enable");
@@ -351,11 +362,11 @@ implements MirrorDecoratorListener {
     /** Cached list of decorator ports that are added to the container by this
      * class.
      */
-    protected Map<String,Port> _cachedDecoratorPorts;
+    protected Map<String, Port> _cachedDecoratorPorts;
 
     /** Cached list of decorator parameters that are added to the container by this
      * class.
      */
-    protected Map<String,Parameter> _cachedDecoratorPortParameters;
+    protected Map<String, Parameter> _cachedDecoratorPortParameters;
 
 }

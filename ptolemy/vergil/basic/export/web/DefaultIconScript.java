@@ -118,8 +118,8 @@ public class DefaultIconScript extends IconScript {
         WebAttribute webAttribute;
 
         boolean entities = false, attributes = false;
-        String includeValue = include.stringValue().toLowerCase(
-                Locale.getDefault());
+        String includeValue = include.stringValue()
+                .toLowerCase(Locale.getDefault());
         if (includeValue.equals("all")) {
             entities = true;
             attributes = true;
@@ -140,8 +140,8 @@ public class DefaultIconScript extends IconScript {
                     objects = ((CompositeEntity) container)
                             .entityList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this, "No such class: "
-                            + instances);
+                    throw new IllegalActionException(this,
+                            "No such class: " + instances);
                 }
             }
             for (NamedObj object : objects) {
@@ -151,10 +151,9 @@ public class DefaultIconScript extends IconScript {
                     if (!eventTypeValue.trim().equals("")) {
                         // Create WebAttribute for event and add to exporter.
                         // Content should only be added once (onceOnly -> true).
-                        webAttribute = WebAttribute
-                                .createWebAttribute(getContainer(),
-                                        eventTypeValue + "WebAttribute",
-                                        eventTypeValue);
+                        webAttribute = WebAttribute.createWebAttribute(
+                                getContainer(), eventTypeValue + "WebAttribute",
+                                eventTypeValue);
                         webAttribute.setExpression(stringValue());
                         exporter.defineAttribute(webAttribute, true);
 
@@ -190,8 +189,8 @@ public class DefaultIconScript extends IconScript {
                     objects = ((CompositeEntity) container)
                             .attributeList(restrict);
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this, "No such class: "
-                            + instances);
+                    throw new IllegalActionException(this,
+                            "No such class: " + instances);
                 }
             }
             for (NamedObj object : objects) {
@@ -203,10 +202,9 @@ public class DefaultIconScript extends IconScript {
                     if (!eventTypeValue.trim().equals("")) {
                         // Create WebAttribute for event and add to exporter.
                         // Content should only be added once (onceOnly -> true).
-                        webAttribute = WebAttribute
-                                .createWebAttribute(getContainer(),
-                                        eventTypeValue + "WebAttribute",
-                                        eventTypeValue);
+                        webAttribute = WebAttribute.createWebAttribute(
+                                getContainer(), eventTypeValue + "WebAttribute",
+                                eventTypeValue);
                         webAttribute.setExpression(stringValue());
                         exporter.defineAttribute(webAttribute, true);
 

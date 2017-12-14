@@ -39,9 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ComplexToCartesian
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.ComplexToCartesian {
+public class ComplexToCartesian extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions.ComplexToCartesian {
     /**
      *  Construct a ComplexToCartesian adapter.
      *  @param actor The given ptolemy.actor.lib.ComplexToCartesian actor.

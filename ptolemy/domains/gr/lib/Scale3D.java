@@ -175,8 +175,8 @@ public class Scale3D extends GRTransform {
         _scaleZState = _getInitialScaleZ();
 
         Transform3D scaleTransform = new Transform3D();
-        scaleTransform.setScale(new Vector3d(_scaleXState, _scaleYState,
-                _scaleZState));
+        scaleTransform.setScale(
+                new Vector3d(_scaleXState, _scaleYState, _scaleZState));
         _transformNode.setTransform(scaleTransform);
     }
 

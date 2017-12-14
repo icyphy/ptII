@@ -96,14 +96,15 @@ public class MultiCompositeActor extends TypedCompositeActor {
      *  to the the refinement.
      */
     public static void mirrorContainerPortsInRefinement(Refinement refinement,
-            Set<Port> portsToMirror) throws IllegalActionException,
-            NameDuplicationException {
+            Set<Port> portsToMirror)
+            throws IllegalActionException, NameDuplicationException {
 
         for (Port port : portsToMirror) {
             try {
                 refinement.setMirrorDisable(true);
                 Port newPort = refinement.newPort(port.getName());
-                if (newPort instanceof RefinementPort && port instanceof IOPort) {
+                if (newPort instanceof RefinementPort
+                        && port instanceof IOPort) {
                     try {
                         ((RefinementPort) newPort).setMirrorDisable(true);
 

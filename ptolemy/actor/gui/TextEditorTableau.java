@@ -81,8 +81,8 @@ public class TextEditorTableau extends Tableau {
      *   attribute already in the container.
      */
     public TextEditorTableau(TextEffigy container, String name,
-            TextEditor editor) throws IllegalActionException,
-            NameDuplicationException {
+            TextEditor editor)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         String title = "Unnamed";
@@ -163,8 +163,8 @@ public class TextEditorTableau extends Tableau {
             String editorPreference = ".";
 
             try {
-                editorPreference = System.getProperty(
-                        "ptolemy.user.texteditor", ".");
+                editorPreference = System.getProperty("ptolemy.user.texteditor",
+                        ".");
             } catch (SecurityException security) {
                 // Ignore, we are probably running in a sandbox or as
                 // an applet
@@ -190,10 +190,11 @@ public class TextEditorTableau extends Tableau {
                 _tableauConstructor = tableauClass.getConstructor(new Class[] {
                         TextEffigy.class, String.class, TextEditor.class });
                 _newTextEffigyText = effigyClass.getMethod("newTextEffigy",
-                        new Class[] { CompositeEntity.class, String.class, String.class });
+                        new Class[] { CompositeEntity.class, String.class,
+                                String.class });
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
                         new Class[] { CompositeEntity.class, URL.class,
-                        URL.class });
+                                URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -272,24 +273,30 @@ public class TextEditorTableau extends Tableau {
                     TextEditor editor = null;
                     String style = syntaxStyle.getExpression();
                     if (style == null || style.trim().equals("")) {
-                        style = ((TextEffigy)effigy).getSyntaxStyle();
+                        style = ((TextEffigy) effigy).getSyntaxStyle();
                     }
                     if (style != null && !style.trim().equals("")) {
                         // Attempt to specify a syntax-aware text editor.
                         try {
                             Class editorClass = Class.forName(
                                     "ptolemy.actor.gui.syntax.SyntaxTextEditor");
-                            Constructor constructor = editorClass.getConstructor(
-                                    new Class[] {String.class, Document.class});
-                            editor = (TextEditor) constructor.newInstance(
-                                    new Object[] { "Unnamed", ((TextEffigy) effigy).getDocument()});
+                            Constructor constructor = editorClass
+                                    .getConstructor(new Class[] { String.class,
+                                            Document.class });
+                            editor = (TextEditor) constructor
+                                    .newInstance(new Object[] { "Unnamed",
+                                            ((TextEffigy) effigy)
+                                                    .getDocument() });
                         } catch (Throwable ex) {
                             // Ignore and use default text editor.
-                            System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                            System.out.println(
+                                    "Note: failed to open syntax-directed editor: "
+                                            + ex.getMessage());
                         }
                     }
                     tableau = (TextEditorTableau) _tableauConstructor
-                            .newInstance(new Object[] { effigy, "textTableau", editor });
+                            .newInstance(new Object[] { effigy, "textTableau",
+                                    editor });
                 }
 
                 URL url = effigy.uri.getURL();
@@ -348,7 +355,8 @@ public class TextEditorTableau extends Tableau {
                     textEffigy.setName("textEffigy");
                 }
 
-                TextEditorTableau textTableau = (TextEditorTableau) createTableau(textEffigy);
+                TextEditorTableau textTableau = (TextEditorTableau) createTableau(
+                        textEffigy);
 
                 if (url != null) {
                     // A NullPointerException was reported here, see

@@ -69,12 +69,12 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
-        String outputType = getCodeGenerator().codeGenType(
-                actor.output.getType());
-        String multiplyType = getCodeGenerator().codeGenType(
-                actor.multiply.getType());
-        String divideType = getCodeGenerator().codeGenType(
-                actor.divide.getType());
+        String outputType = getCodeGenerator()
+                .codeGenType(actor.output.getType());
+        String multiplyType = getCodeGenerator()
+                .codeGenType(actor.multiply.getType());
+        String divideType = getCodeGenerator()
+                .codeGenType(actor.divide.getType());
         boolean divideOnly = !actor.multiply.isOutsideConnected();
 
         ArrayList<String> args = new ArrayList<String>();
@@ -91,8 +91,8 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
         }
 
         CodeStream codeStream = getTemplateParser().getCodeStream();
-        codeStream.appendCodeBlock(divideOnly ? "divideOnlyInitProduct"
-                : "initProduct", initArgs);
+        codeStream.appendCodeBlock(
+                divideOnly ? "divideOnlyInitProduct" : "initProduct", initArgs);
 
         args.add("");
         args.add(outputType);
@@ -136,10 +136,8 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = getTemplateParser().getCodeStream();
 
         if (codeStream.isEmpty()) {
-            codeStream.append(_eol
-                    + getCodeGenerator().comment(
-                            "preinitialize "
-                                    + generateSimpleName(getComponent())));
+            codeStream.append(_eol + getCodeGenerator().comment(
+                    "preinitialize " + generateSimpleName(getComponent())));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

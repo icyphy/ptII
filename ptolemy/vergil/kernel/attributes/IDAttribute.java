@@ -132,8 +132,8 @@ public class IDAttribute extends SingletonAttribute {
         // We may force this to happen.:-) Further more, we may force
         // that only the top level contains an model ID.
         created = new StringAttribute(this, "created");
-        created.setExpression(DateFormat.getDateTimeInstance().format(
-                new Date()));
+        created.setExpression(
+                DateFormat.getDateTimeInstance().format(new Date()));
         created.setVisibility(Settable.NOT_EDITABLE);
         created.setPersistent(true);
 
@@ -259,8 +259,8 @@ public class IDAttribute extends SingletonAttribute {
      */
     private void _updateDate() {
         try {
-            lastUpdated.setExpression(DateFormat.getDateTimeInstance().format(
-                    new Date()));
+            lastUpdated.setExpression(
+                    DateFormat.getDateTimeInstance().format(new Date()));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

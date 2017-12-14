@@ -178,7 +178,8 @@ public abstract class ColtRandomSource extends RandomSource {
 
         _generatorClassName = generatorClassValue;
 
-        if (generatorClassValue == null || generatorClassValue.equals("DRand")) {
+        if (generatorClassValue == null
+                || generatorClassValue.equals("DRand")) {
             _randomNumberGenerator = new DRand((int) seedValue);
         } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
             _randomNumberGenerator = new MersenneTwister((int) seedValue);

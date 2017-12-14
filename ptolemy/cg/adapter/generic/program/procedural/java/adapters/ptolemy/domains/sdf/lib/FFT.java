@@ -41,9 +41,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FFT
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.FFT {
+public class FFT extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.FFT {
 
     /**
      * Construct a FFT adapter.
@@ -60,9 +59,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.F
      */
     @Override
     public Set getHeaderFiles() throws IllegalActionException {
-        ((ProceduralCodeGenerator) getCodeGenerator())
-        .addLibraryIfNecessary(StringUtilities
-                .getProperty("ptolemy.ptII.dir"));
+        ((ProceduralCodeGenerator) getCodeGenerator()).addLibraryIfNecessary(
+                StringUtilities.getProperty("ptolemy.ptII.dir"));
         Set files = super.getHeaderFiles();
         files.add("ptolemy.math.Complex;");
         files.add("ptolemy.math.SignalProcessing;");

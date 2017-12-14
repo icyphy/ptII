@@ -81,9 +81,12 @@ public class CheckModelSize {
                     String checkSizeOutput = _checkSize(
                             (TypedCompositeActor) entity, false);
                     if (!checkSizeOutput.equals("")) {
-                        results.append("<tr>\n  <td>"
-                                + ((TypedCompositeActor) entity).getFullName()
-                                + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
+                        results.append(
+                                "<tr>\n  <td>"
+                                        + ((TypedCompositeActor) entity)
+                                                .getFullName()
+                                        + "</td>\n  <td>" + checkSizeOutput
+                                        + "</td>\n");
                     }
                     sizeProblemSet.add(entity);
                 }
@@ -100,9 +103,12 @@ public class CheckModelSize {
                     String checkSizeOutput = _checkSize(
                             (TypedCompositeActor) entity, false);
                     if (!checkSizeOutput.equals("")) {
-                        results.append("<tr>\n  <td><b>Class</b> "
-                                + ((TypedCompositeActor) entity).getFullName()
-                                + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
+                        results.append(
+                                "<tr>\n  <td><b>Class</b> "
+                                        + ((TypedCompositeActor) entity)
+                                                .getFullName()
+                                        + "</td>\n  <td>" + checkSizeOutput
+                                        + "</td>\n");
                     }
                     sizeProblemSet.add(entity);
                 }
@@ -150,8 +156,8 @@ public class CheckModelSize {
             try {
                 NamedObj top = null;
                 try {
-                    top = parser
-                            .parse(null, new File(fileName).toURI().toURL());
+                    top = parser.parse(null,
+                            new File(fileName).toURI().toURL());
                 } catch (Exception ex) {
                     try {
                         top = parser.parse(null, new URL(fileName));
@@ -180,7 +186,7 @@ public class CheckModelSize {
                                 sizeProblemSet.add(entity);
                                 results.append("<tr>\n  <td>"
                                         + ((TypedCompositeActor) entity)
-                                        .getFullName()
+                                                .getFullName()
                                         + "</td>\n  <td>" + checkSizeOutput
                                         + "</td>\n");
                             }
@@ -200,11 +206,11 @@ public class CheckModelSize {
         }
 
         return "<h1>Check Size</h1>\nBelow are the results from checking the "
-        + "sizes of and centering of models\n<table>\n"
-        + "<b>Note: after running review these results, be"
-        + " sure to exit, as the graphical elements of the "
-        + " models will have been removed</b>\n" + results.toString()
-        + "</table>\n";
+                + "sizes of and centering of models\n<table>\n"
+                + "<b>Note: after running review these results, be"
+                + " sure to exit, as the graphical elements of the "
+                + " models will have been removed</b>\n" + results.toString()
+                + "</table>\n";
     }
 
     /** Check the size, zoom and location of the models named
@@ -274,8 +280,8 @@ public class CheckModelSize {
                             }
                         } catch (IllegalActionException ex) {
                             analysis.append(" _vergilCenter malformed");
-                            analysis.append(KernelException
-                                    .stackTraceToString(ex));
+                            analysis.append(
+                                    KernelException.stackTraceToString(ex));
                         }
                     }
                 } catch (IllegalActionException ex) {
@@ -303,8 +309,8 @@ public class CheckModelSize {
                 }
             }
         } else {
-            analysis.append(" is a " + top.getClassName()
-                    + " not a CompositeActor.");
+            analysis.append(
+                    " is a " + top.getClassName() + " not a CompositeActor.");
         }
 
         return analysis.toString();

@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class UnaryOperationMonotonicFunctionDefinition extends
-ExpressionConceptFunctionDefinitionAttribute {
+public class UnaryOperationMonotonicFunctionDefinition
+        extends ExpressionConceptFunctionDefinitionAttribute {
 
     /** Construct the UnaryOperationConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -65,8 +65,8 @@ ExpressionConceptFunctionDefinitionAttribute {
      *   actor with this name.
      */
     public UnaryOperationMonotonicFunctionDefinition(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Since a binary function always has 2 arguments, its
@@ -78,13 +78,14 @@ ExpressionConceptFunctionDefinitionAttribute {
         constrainFunctionToBeMonotonic.setToken(BooleanToken.TRUE);
         constrainFunctionToBeMonotonic.setVisibility(Settable.NOT_EDITABLE);
 
-        functionOntologyName = new StringParameter(this, "functionOntologyName");
+        functionOntologyName = new StringParameter(this,
+                "functionOntologyName");
         functionOntologyName.setExpression("");
 
         // Constrain argument list to have only 1 argument.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies
-        .setTypeEquals(new ArrayType(BaseType.STRING, 1));
+                .setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies.setVisibility(Settable.NONE);
 
         Token[] argNamesArray = new Token[] { new StringToken("arg") };

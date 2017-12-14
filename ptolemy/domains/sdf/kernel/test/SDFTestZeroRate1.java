@@ -121,11 +121,13 @@ public class SDFTestZeroRate1 extends Transformer {
      */
     @Override
     public void fire() throws IllegalActionException {
-        for (int i = 0; i < ((IntToken) input_rate1.getToken()).intValue(); i++) {
+        for (int i = 0; i < ((IntToken) input_rate1.getToken())
+                .intValue(); i++) {
             input.get(0);
         }
 
-        for (int i = 0; i < ((IntToken) output_rate1.getToken()).intValue(); i++) {
+        for (int i = 0; i < ((IntToken) output_rate1.getToken())
+                .intValue(); i++) {
             output.send(0, value.getToken());
         }
     }

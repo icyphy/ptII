@@ -265,8 +265,8 @@ public class Blob implements ConnectorEnd {
 
         switch (_style) {
         case BLOB_CIRCLE:
-            _shape = new Ellipse2D.Double(_originX, _originY - _unit,
-                    2 * _unit, 2 * _unit);
+            _shape = new Ellipse2D.Double(_originX, _originY - _unit, 2 * _unit,
+                    2 * _unit);
             break;
 
         case BLOB_DIAMOND:
@@ -284,9 +284,9 @@ public class Blob implements ConnectorEnd {
         case BLOB_CIRCLE_DIAMOND:
             Path2D shape = new Path2D.Float();
             shape.moveTo(_originX, _originY);
-            shape.curveTo(_originX, _originY - 1.3 * _unit, _originX + 2
-                    * _unit, _originY - 1.3 * _unit, _originX + 2 * _unit,
-                    _originY);
+            shape.curveTo(_originX, _originY - 1.3 * _unit,
+                    _originX + 2 * _unit, _originY - 1.3 * _unit,
+                    _originX + 2 * _unit, _originY);
             shape.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY - _unit);
             shape.lineTo(_originX + 2 * _unit + 3.0 * _unit, _originY);
             shape.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY + _unit);
@@ -359,9 +359,9 @@ public class Blob implements ConnectorEnd {
             arrow.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY + _unit);
             arrow.lineTo(_originX + 2 * _unit, _originY);
              */
-            arrow.curveTo(_originX, _originY + 1.3 * _unit, _originX + 2
-                    * _unit, _originY + 1.3 * _unit, _originX + 2 * _unit,
-                    _originY);
+            arrow.curveTo(_originX, _originY + 1.3 * _unit,
+                    _originX + 2 * _unit, _originY + 1.3 * _unit,
+                    _originX + 2 * _unit, _originY);
 
             // H part.
             double halfHeight = 0.60 * _unit;
@@ -387,9 +387,9 @@ public class Blob implements ConnectorEnd {
         case ERROR:
             Path2D error = new Path2D.Float();
             error.moveTo(_originX, _originY);
-            error.curveTo(_originX, _originY - 1.3 * _unit, _originX + 2
-                    * _unit, _originY - 1.3 * _unit, _originX + 2 * _unit,
-                    _originY);
+            error.curveTo(_originX, _originY - 1.3 * _unit,
+                    _originX + 2 * _unit, _originY - 1.3 * _unit,
+                    _originX + 2 * _unit, _originY);
             error.curveTo(_originX + 2 * _unit, _originY + 1.3 * _unit,
                     _originX, _originY + 1.3 * _unit, _originX, _originY);
             error.moveTo(_originX + 1.6 * _unit, _originY - 0.75 * _unit);

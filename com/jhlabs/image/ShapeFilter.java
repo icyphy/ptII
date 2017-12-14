@@ -106,7 +106,8 @@ public class ShapeFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int[] map = new int[width * height];
         makeMap(inPixels, map, width, height);
         int max = distanceMap(map, width, height);
@@ -125,12 +126,14 @@ public class ShapeFilter extends WholeImageFilter {
             for (int x = 0; x < width; x++) {
                 int offset = x + y * width;
                 if (map[offset] > 0) {
-                    if (x < 2 || x > xmax || y < 2 || y > ymax)
+                    if (x < 2 || x > xmax || y < 2 || y > ymax) {
                         v = setEdgeValue(x, y, map, width, offset, xmax, ymax);
-                    else
+                    } else {
                         v = setValue(map, width, offset);
-                    if (v > max)
+                    }
+                    if (v > max) {
                         max = v;
+                    }
                 }
             }
         }
@@ -138,12 +141,14 @@ public class ShapeFilter extends WholeImageFilter {
             for (int x = width - 1; x >= 0; x--) {
                 int offset = x + y * width;
                 if (map[offset] > 0) {
-                    if (x < 2 || x > xmax || y < 2 || y > ymax)
+                    if (x < 2 || x > xmax || y < 2 || y > ymax) {
                         v = setEdgeValue(x, y, map, width, offset, xmax, ymax);
-                    else
+                    } else {
                         v = setValue(map, width, offset);
-                    if (v > max)
+                    }
+                    if (v > max) {
                         max = v;
+                    }
                 }
             }
         }
@@ -154,16 +159,19 @@ public class ShapeFilter extends WholeImageFilter {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int offset = x + y * width;
-                int b = useAlpha ? (pixels[offset] >> 24) & 0xff : PixelUtils.brightness(pixels[offset]);
+                int b = useAlpha ? (pixels[offset] >> 24) & 0xff
+                        : PixelUtils.brightness(pixels[offset]);
                 //                                map[offset] = b * one;
                 map[offset] = b * one / 10;
             }
         }
     }
 
-    private void applyMap(int[] map, int[] pixels, int width, int height, int max) {
-        if (max == 0)
+    private void applyMap(int[] map, int[] pixels, int width, int height,
+            int max) {
+        if (max == 0) {
             max = 1;
+        }
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int offset = x + y * width;
@@ -200,7 +208,8 @@ public class ShapeFilter extends WholeImageFilter {
                         sb = (c) & 0xFF;
                     }
 
-                    sa = useAlpha ? (pixels[offset] >> 24) & 0xff : PixelUtils.brightness(pixels[offset]);
+                    sa = useAlpha ? (pixels[offset] >> 24) & 0xff
+                            : PixelUtils.brightness(pixels[offset]);
 
                     // invert v if necessary
                     if (invert) {
@@ -226,18 +235,24 @@ public class ShapeFilter extends WholeImageFilter {
                     b = ((sb * b / transp));
 
                     // clip colors
-                    if (r < 0)
+                    if (r < 0) {
                         r = 0;
-                    if (r > 255)
+                    }
+                    if (r > 255) {
                         r = 255;
-                    if (g < 0)
+                    }
+                    if (g < 0) {
                         g = 0;
-                    if (g > 255)
+                    }
+                    if (g > 255) {
                         g = 255;
-                    if (b < 0)
+                    }
+                    if (b < 0) {
                         b = 0;
-                    if (b > 255)
+                    }
+                    if (b > 255) {
                         b = 255;
+                    }
 
                     pixels[offset] = (a << 24) | (r << 16) | (g << 8) | b;
                 } else {
@@ -248,7 +263,8 @@ public class ShapeFilter extends WholeImageFilter {
         }
     }
 
-    private int setEdgeValue(int x, int y, int[] map, int width, int offset, int xmax, int ymax) {
+    private int setEdgeValue(int x, int y, int[] map, int width, int offset,
+            int xmax, int ymax) {
         int min, v;
         int r1, r2, r3, r4, r5;
 
@@ -258,74 +274,91 @@ public class ShapeFilter extends WholeImageFilter {
         r4 = r3 + width;
         r5 = r4 + width;
 
-        if (y == 0 || x == 0 || y == ymax + 2 || x == xmax + 2)
+        if (y == 0 || x == 0 || y == ymax + 2 || x == xmax + 2) {
             return map[offset] = one;
+        }
 
         v = map[r2 + 2] + one;
         min = v;
 
         v = map[r3 + 1] + one;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r3 + 3] + one;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r4 + 2] + one;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r2 + 1] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r2 + 3] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r4 + 1] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r4 + 3] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
-        if (y == 1 || x == 1 || y == ymax + 1 || x == xmax + 1)
+        if (y == 1 || x == 1 || y == ymax + 1 || x == xmax + 1) {
             return map[offset] = min;
+        }
 
         v = map[r1 + 1] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r1 + 3] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r2 + 4] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r4 + 4] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r5 + 3] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r5 + 1] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r4] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r2] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         return map[offset] = min;
     }
@@ -343,52 +376,67 @@ public class ShapeFilter extends WholeImageFilter {
         v = map[r2 + 2] + one;
         min = v;
         v = map[r3 + 1] + one;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r3 + 3] + one;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r4 + 2] + one;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r2 + 1] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r2 + 3] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r4 + 1] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r4 + 3] + sqrt2;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         v = map[r1 + 1] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r1 + 3] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r2 + 4] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r4 + 4] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r5 + 3] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r5 + 1] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r4] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
         v = map[r2] + sqrt5;
-        if (v < min)
+        if (v < min) {
             min = v;
+        }
 
         return map[offset] = min;
     }

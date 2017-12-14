@@ -81,8 +81,8 @@ public class AudioViewer extends PlotApplication {
         super(args);
 
         JMenuItem play = new JMenuItem("Play", KeyEvent.VK_P);
-        play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-                Event.CTRL_MASK));
+        play.setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
         play.setActionCommand("Play");
 
         PlayListener playlistener = new PlayListener();
@@ -148,26 +148,20 @@ public class AudioViewer extends PlotApplication {
      */
     @Override
     protected void _about() {
-        JOptionPane
-        .showMessageDialog(
-                this,
+        JOptionPane.showMessageDialog(this,
                 "Ptolemy AudioViewer (ptaudio program)\n"
-                        + "By: Edward A. Lee\n"
-                        + "Version 2.0, Build: "
+                        + "By: Edward A. Lee\n" + "Version 2.0, Build: "
                         + "$Id$"
-                        + "\n\n"
-                        + "For more information, see\n"
+                        + "\n\n" + "For more information, see\n"
                         + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
-                        "About Ptolemy AudioViewer",
-                        JOptionPane.INFORMATION_MESSAGE);
+                "About Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display some help.
      */
     @Override
     protected void _help() {
-        JOptionPane
-        .showMessageDialog(this, "Use Control-P to play the sound",
+        JOptionPane.showMessageDialog(this, "Use Control-P to play the sound",
                 "Usage of Ptolemy AudioViewer",
                 JOptionPane.INFORMATION_MESSAGE);
     }
@@ -259,9 +253,9 @@ public class AudioViewer extends PlotApplication {
                 out = new FileOutputStream(_file);
                 _sound.write(new DataOutputStream(out));
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error writing file \""
-                        + _file + "\". " + ex, "AudioViewer error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Error writing file \"" + _file + "\". " + ex,
+                        "AudioViewer error", JOptionPane.ERROR_MESSAGE);
             } finally {
                 if (out != null) {
                     try {

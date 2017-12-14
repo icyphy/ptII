@@ -121,40 +121,50 @@ public class WarpFilter extends WholeImageFilter {
     }
 
     @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels(int width, int height, int[] inPixels,
+            Rectangle transformedSpace) {
         int[] outPixels = new int[width * height];
 
         if (morphImage != null) {
             int[] morphPixels = getRGB(morphImage, 0, 0, width, height, null);
-            morph(inPixels, morphPixels, outPixels, sourceGrid, destGrid, width, height, time);
+            morph(inPixels, morphPixels, outPixels, sourceGrid, destGrid, width,
+                    height, time);
         } else if (frames <= 1) {
-            sourceGrid.warp(inPixels, width, height, sourceGrid, destGrid, outPixels);
+            sourceGrid.warp(inPixels, width, height, sourceGrid, destGrid,
+                    outPixels);
         } else {
-            WarpGrid newGrid = new WarpGrid(sourceGrid.rows, sourceGrid.cols, width, height);
+            WarpGrid newGrid = new WarpGrid(sourceGrid.rows, sourceGrid.cols,
+                    width, height);
             for (int i = 0; i < frames; i++) {
                 float t = (float) i / (frames - 1);
                 sourceGrid.lerp(t, destGrid, newGrid);
-                sourceGrid.warp(inPixels, width, height, sourceGrid, newGrid, outPixels);
+                sourceGrid.warp(inPixels, width, height, sourceGrid, newGrid,
+                        outPixels);
             }
         }
         return outPixels;
     }
 
-    public void morph(int[] srcPixels, int[] destPixels, int[] outPixels, WarpGrid srcGrid, WarpGrid destGrid,
-            int width, int height, float t) {
-        WarpGrid newGrid = new WarpGrid(srcGrid.rows, srcGrid.cols, width, height);
+    public void morph(int[] srcPixels, int[] destPixels, int[] outPixels,
+            WarpGrid srcGrid, WarpGrid destGrid, int width, int height,
+            float t) {
+        WarpGrid newGrid = new WarpGrid(srcGrid.rows, srcGrid.cols, width,
+                height);
         srcGrid.lerp(t, destGrid, newGrid);
         srcGrid.warp(srcPixels, width, height, srcGrid, newGrid, outPixels);
         int[] destPixels2 = new int[width * height];
-        destGrid.warp(destPixels, width, height, destGrid, newGrid, destPixels2);
+        destGrid.warp(destPixels, width, height, destGrid, newGrid,
+                destPixels2);
         crossDissolve(outPixels, destPixels2, width, height, t);
     }
 
-    public void crossDissolve(int[] pixels1, int[] pixels2, int width, int height, float t) {
+    public void crossDissolve(int[] pixels1, int[] pixels2, int width,
+            int height, float t) {
         int index = 0;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                pixels1[index] = ImageMath.mixColors(t, pixels1[index], pixels2[index]);
+                pixels1[index] = ImageMath.mixColors(t, pixels1[index],
+                        pixels2[index]);
                 index++;
             }
         }

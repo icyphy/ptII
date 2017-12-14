@@ -72,18 +72,19 @@ public class UnsharpFilter extends GaussianFilter {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         int[] inPixels = new int[width * height];
         int[] outPixels = new int[width * height];
         src.getRGB(0, 0, width, height, inPixels, 0, width);
 
         if (radius > 0) {
-            convolveAndTranspose(kernel, inPixels, outPixels, width, height, alpha, alpha && premultiplyAlpha, false,
-                    CLAMP_EDGES);
-            convolveAndTranspose(kernel, outPixels, inPixels, height, width, alpha, false, alpha && premultiplyAlpha,
-                    CLAMP_EDGES);
+            convolveAndTranspose(kernel, inPixels, outPixels, width, height,
+                    alpha, alpha && premultiplyAlpha, false, CLAMP_EDGES);
+            convolveAndTranspose(kernel, outPixels, inPixels, height, width,
+                    alpha, false, alpha && premultiplyAlpha, CLAMP_EDGES);
         }
 
         src.getRGB(0, 0, width, height, outPixels, 0, width);
@@ -103,14 +104,18 @@ public class UnsharpFilter extends GaussianFilter {
                 int g2 = (rgb2 >> 8) & 0xff;
                 int b2 = rgb2 & 0xff;
 
-                if (Math.abs(r1 - r2) >= threshold)
+                if (Math.abs(r1 - r2) >= threshold) {
                     r1 = PixelUtils.clamp((int) ((a + 1) * (r1 - r2) + r2));
-                if (Math.abs(g1 - g2) >= threshold)
+                }
+                if (Math.abs(g1 - g2) >= threshold) {
                     g1 = PixelUtils.clamp((int) ((a + 1) * (g1 - g2) + g2));
-                if (Math.abs(b1 - b2) >= threshold)
+                }
+                if (Math.abs(b1 - b2) >= threshold) {
                     b1 = PixelUtils.clamp((int) ((a + 1) * (b1 - b2) + b2));
+                }
 
-                inPixels[index] = (rgb1 & 0xff000000) | (r1 << 16) | (g1 << 8) | b1;
+                inPixels[index] = (rgb1 & 0xff000000) | (r1 << 16) | (g1 << 8)
+                        | b1;
                 index++;
             }
         }

@@ -127,16 +127,13 @@ public class ExportModelJUnitTest {
                 + modelDirectory + "/" + modelName);
 
         if (!openComposites) {
-            System.out
-            .println("Warning: not opening composites for "
+            System.out.println("Warning: not opening composites for "
                     + modelPath
                     + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
 
         if (!run) {
-            System.out
-            .println("Warning: not running "
-                    + modelPath
+            System.out.println("Warning: not running " + modelPath
                     + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
         // ExportModel.exportModel() calls System.exit() unless we set this property.
@@ -150,9 +147,9 @@ public class ExportModelJUnitTest {
 
             long startTime = new Date().getTime();
             exportModel.exportModel(false /* copyJavaScriptFiles */,
-                    true /* force */, "htm", fullModelPath, run,
-                    openComposites, false /* open results */, outputDirectory,
-                    false /* save */, timeOut, true /* whitebackground */);
+                    true /* force */, "htm", fullModelPath, run, openComposites,
+                    false /* open results */, outputDirectory, false /* save */,
+                    timeOut, true /* whitebackground */);
             System.out.println(Manager.timeAndMemory(startTime));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -185,21 +182,32 @@ public class ExportModelJUnitTest {
         // export the Cape Code models.
 
         try {
-            File configurationDirectory = ConfigurationApplication.configurationDirectoryFullOrFirst();
-            if (!configurationDirectory.getCanonicalPath().endsWith("configs/full")) {
-                String configurationDirectoryName = configurationDirectory.getName();
-                File configurationModelsFile = new File(configurationDirectory, configurationDirectoryName + "Models.txt");
+            File configurationDirectory = ConfigurationApplication
+                    .configurationDirectoryFullOrFirst();
+            if (!configurationDirectory.getCanonicalPath()
+                    .endsWith("configs/full")) {
+                String configurationDirectoryName = configurationDirectory
+                        .getName();
+                File configurationModelsFile = new File(configurationDirectory,
+                        configurationDirectoryName + "Models.txt");
                 if (configurationModelsFile.exists()) {
                     modelsFile = configurationModelsFile.getCanonicalPath();
-                    System.err.println("ExportModelJUnitTest: configurationDirectory is " + configurationDirectory
-                            + " Using " + modelsFile + ".");
+                    System.err.println(
+                            "ExportModelJUnitTest: configurationDirectory is "
+                                    + configurationDirectory + " Using "
+                                    + modelsFile + ".");
                 } else {
-                    System.err.println("ExportModelJUnitTest: Warning: configurationDirectory is " + configurationDirectory
-                            + ", yet " + configurationModelsFile + " does not exist?  Using " + modelsFile + ".");
+                    System.err.println(
+                            "ExportModelJUnitTest: Warning: configurationDirectory is "
+                                    + configurationDirectory + ", yet "
+                                    + configurationModelsFile
+                                    + " does not exist?  Using " + modelsFile
+                                    + ".");
                 }
             }
         } catch (Throwable throwable) {
-            IOException exception = new IOException("Failed to get the configuration");
+            IOException exception = new IOException(
+                    "Failed to get the configuration");
             exception.initCause(throwable);
             throw exception;
         }
@@ -208,7 +216,8 @@ public class ExportModelJUnitTest {
         try {
             fileInputStream = new FileInputStream(modelsFile);
             dataInputStream = new DataInputStream(fileInputStream);
-            reader = new BufferedReader(new InputStreamReader(dataInputStream, java.nio.charset.Charset.defaultCharset()));
+            reader = new BufferedReader(new InputStreamReader(dataInputStream,
+                    java.nio.charset.Charset.defaultCharset()));
             String line;
             while ((line = reader.readLine()) != null) {
                 // Lines in models.txt look like
@@ -225,8 +234,8 @@ public class ExportModelJUnitTest {
                 }
             }
         } catch (Exception ex) {
-            IOException exception = new IOException("Failed to read \""
-                    + modelsFile + "\"");
+            IOException exception = new IOException(
+                    "Failed to read \"" + modelsFile + "\"");
             exception.initCause(ex);
             throw exception;
         } finally {
@@ -335,7 +344,7 @@ public class ExportModelJUnitTest {
                 "org/hlacerti/demo/BillardHit/BillardHit.xml", // Has links to other models
                 "org/hlacerti/demo/legacy/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos and does not work
-                "org/hlacerti/demo/legacy/f14HLA/f14HLA.xml",  // Has links to other demos and does not work
+                "org/hlacerti/demo/legacy/f14HLA/f14HLA.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/f14HLA/f14HLA.xml", // Has links to other demos.
                 "org/hlacerti/demo/legacy/MultiProducerConsumer/MultiProducerConsumer.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/MicrostepReset/MicrostepReset.xml", // Has Links to other models.
@@ -384,9 +393,9 @@ public class ExportModelJUnitTest {
                 "PageAssembler.xml", // Has links to other models.
                 "ProbabilisticModels.xml", // Has links to other models.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
-                "ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml",  // Has links to pub and sub
-                "ptolemy/actor/lib/vertx/demo/PubSub/Publisher.xml",  // Subscriber needs to run
-                "ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml",  // Publisher needs to run.
+                "ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml", // Has links to pub and sub
+                "ptolemy/actor/lib/vertx/demo/PubSub/Publisher.xml", // Subscriber needs to run
+                "ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml", // Publisher needs to run.
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "jjs/modules/audio/demo/Audio/Audio.xml", // Has links to other models.
@@ -426,7 +435,7 @@ public class ExportModelJUnitTest {
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml", // Requires that other demos run.
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Just has links to other demos.
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/WriteToVertxBus.xml", // Requires that other demos run.
-                "ptolemy/domains/ptides/demo/VertxDemo/VertxDemo.xml",  // Just has links to other VertX demos.
+                "ptolemy/domains/ptides/demo/VertxDemo/VertxDemo.xml", // Just has links to other VertX demos.
                 "ptolemy/domains/ptides/demo/VertxDemo/Publisher.xml", // Requires that other demos run.
                 "ptolemy/domains/ptides/demo/VertxDemo/Subscriber.xml", // Requires that other demos run.
                 "ptolemy/domains/ptides/demo/VertxDemo/Publisher2.xml", // Requires that other demos run.
@@ -464,10 +473,7 @@ public class ExportModelJUnitTest {
         // Pathnames for demos that get a shorter running time because
         // they produce too much output.
         String[] shortRunningDemos = { "CntToLedsAndRfm.xml",
-                                       "SendAndReceiveCnt.xml",
-                                       "RfmToLeds.xml",
-                                       "Surge.xml"
-        };
+                "SendAndReceiveCnt.xml", "RfmToLeds.xml", "Surge.xml" };
         for (String shortRunningDemo : shortRunningDemos) {
             if (modelPath.indexOf(shortRunningDemo) != -1) {
                 return 5000;

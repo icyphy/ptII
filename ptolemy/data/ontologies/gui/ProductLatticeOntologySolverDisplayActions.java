@@ -55,8 +55,8 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ProductLatticeOntologySolverDisplayActions extends
-OntologyDisplayActions {
+public class ProductLatticeOntologySolverDisplayActions
+        extends OntologyDisplayActions {
 
     /** Construct a ProductLatticeOntologyDisplayActions object with the specified container
      *  and name.
@@ -68,8 +68,8 @@ OntologyDisplayActions {
      *   an attribute already in the container.
      */
     public ProductLatticeOntologySolverDisplayActions(NamedObj container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -113,8 +113,8 @@ OntologyDisplayActions {
      *  a submenu to select which of the component ontologies in the product
      *  lattice ontology to use as a basis for highlighting the resolved concepts.
      */
-    protected static class ProductLatticeHighlighterController extends
-    HighlighterController {
+    protected static class ProductLatticeHighlighterController
+            extends HighlighterController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The ProductLatticeOntologySolverDisplayActions object reference.
@@ -135,7 +135,8 @@ OntologyDisplayActions {
                         "Could not create the highlight "
                                 + "colors menu actions for the "
                                 + "ProductLatticeOntologySolver"
-                                + displayActions.getContainer().getName(), ex);
+                                + displayActions.getContainer().getName(),
+                        ex);
             }
         }
 
@@ -145,7 +146,8 @@ OntologyDisplayActions {
          *  @exception IllegalActionException Thrown if there is a problem creating
          *   the new highlight colors menu.
          */
-        public void setHighlightColorsMenu(ProductLatticeOntology solverOntology)
+        public void setHighlightColorsMenu(
+                ProductLatticeOntology solverOntology)
                 throws IllegalActionException {
             // Remove the old highlight colors menu if it has been created.
             if (_highlightColorsMenu != null) {
@@ -161,7 +163,8 @@ OntologyDisplayActions {
                 }
             }
 
-            SetHighlightColorsAction[] highlightColorsActions = new SetHighlightColorsAction[numSubOntologies + 1];
+            SetHighlightColorsAction[] highlightColorsActions = new SetHighlightColorsAction[numSubOntologies
+                    + 1];
 
             // Create a new SetHighlightColorsAction for each ontology contained
             // in the product lattice ontology.
@@ -171,8 +174,8 @@ OntologyDisplayActions {
             }
 
             // Also create a "None" option for when we want to show no colors.
-            highlightColorsActions[highlightColorsActions.length - 1] = _displayActions.new SetHighlightColorsAction(
-                    null);
+            highlightColorsActions[highlightColorsActions.length
+                    - 1] = _displayActions.new SetHighlightColorsAction(null);
 
             // Create the set highlight colors sub menu and add it to the
             // context menu.
@@ -209,8 +212,8 @@ OntologyDisplayActions {
          *   being created.
          */
         public SetHighlightColorsAction(Ontology highlightOntology) {
-            super(highlightOntology == null ? "None" : highlightOntology
-                    .getName());
+            super(highlightOntology == null ? "None"
+                    : highlightOntology.getName());
             _highlightOntology = highlightOntology;
         }
 

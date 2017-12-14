@@ -28,7 +28,6 @@
 
 package ptolemy.domains.atc.kernel.policy2;
 
-
 /** Nodes of a graph in DijkstraAlgorithm.
  *  @author Maryam Bagheri
  *  @version $Id$
@@ -40,14 +39,14 @@ public class Vertex {
      *  @param id The id.
      */
     public Vertex(int id) {
-      _id = id;
+        _id = id;
     }
 
     /** Get the id.
      *  @return The id.
      */
     public int getId() {
-      return _id;
+        return _id;
     }
 
     /** Return the hashcode.
@@ -55,10 +54,10 @@ public class Vertex {
      */
     @Override
     public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((_id == -1) ? 0 :1);
-      return result;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_id == -1) ? 0 : 1);
+        return result;
     }
 
     /** Return true if this object is equal to the argument of
@@ -82,7 +81,7 @@ public class Vertex {
             if (other._id != -1) {
                 return false;
             }
-        } else if (_id!=other._id) {
+        } else if (_id != other._id) {
             return false;
         }
         return true;

@@ -165,8 +165,8 @@ public class Scheduler extends Attribute {
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
      */
-    public Schedule getSchedule() throws IllegalActionException,
-    NotSchedulableException {
+    public Schedule getSchedule()
+            throws IllegalActionException, NotSchedulableException {
         try {
             workspace().getReadAccess();
 
@@ -240,8 +240,8 @@ public class Scheduler extends Attribute {
      *   CompositeActor.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -254,8 +254,8 @@ public class Scheduler extends Attribute {
                 // use the most recently added one.
                 Scheduler previous = null;
                 StaticSchedulingDirector castContainer = (StaticSchedulingDirector) oldContainer;
-                Iterator schedulers = castContainer.attributeList(
-                        Scheduler.class).iterator();
+                Iterator schedulers = castContainer
+                        .attributeList(Scheduler.class).iterator();
 
                 while (schedulers.hasNext()) {
                     Scheduler altScheduler = (Scheduler) schedulers.next();
@@ -328,8 +328,8 @@ public class Scheduler extends Attribute {
      *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepEntityList()
      */
-    protected Schedule _getSchedule() throws IllegalActionException,
-    NotSchedulableException {
+    protected Schedule _getSchedule()
+            throws IllegalActionException, NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) director
                 .getContainer();

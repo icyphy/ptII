@@ -174,8 +174,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
                     notSupportedIncomparableConversionMessage(token, "fix"));
         }
 
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "fix"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "fix"));
     }
 
     /** Return the fixed point value of this token as a double. The
@@ -337,8 +337,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseAnd", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -349,8 +349,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      */
     @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                this, this));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseNot", this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -364,8 +364,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseOr", this, rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -379,8 +379,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                this, rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseXor", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -402,7 +402,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
      */
-    protected ScalarToken _divide(ScalarToken rightArgument, Quantization quant) {
+    protected ScalarToken _divide(ScalarToken rightArgument,
+            Quantization quant) {
         FixPoint result = _value.divide(((FixToken) rightArgument).fixValue(),
                 quant);
         return new FixToken(result);
@@ -421,7 +422,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *   argument is close to the value of this token.
      */
     @Override
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         double right = ((FixToken) rightArgument).convertToDouble();
         double left = convertToDouble();
 
@@ -443,9 +445,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         FixToken convertedArgument = (FixToken) rightArgument;
-        return BooleanToken
-                .getInstance(_value.doubleValue() < convertedArgument
-                        .fixValue().doubleValue());
+        return BooleanToken.getInstance(_value.doubleValue() < convertedArgument
+                .fixValue().doubleValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -460,8 +461,8 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     @Override
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("modulo", this,
-                rightArgument));
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token

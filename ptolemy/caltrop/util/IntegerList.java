@@ -71,8 +71,8 @@ public class IntegerList extends AbstractList<IntToken> {
     @Override
     public IntToken get(int n) {
         if (_a + n > _b) {
-            throw new IndexOutOfBoundsException(_a + " + " + n
-                    + " is greater than " + _b);
+            throw new IndexOutOfBoundsException(
+                    _a + " + " + n + " is greater than " + _b);
         }
 
         return (IntToken) _context.createInteger(_a + n);

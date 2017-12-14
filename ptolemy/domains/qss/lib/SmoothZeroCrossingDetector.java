@@ -108,8 +108,8 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         output.setTypeAtLeast(value);
 
         _errorTolerance = 1e-4;
-        errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
-                _errorTolerance));
+        errorTolerance = new Parameter(this, "errorTolerance",
+                new DoubleToken(_errorTolerance));
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -181,8 +181,8 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                 _detectFallingCrossing = true;
                 _detectRisingCrossing = true;
             } else {
-                throw new IllegalActionException("Unknown direction: "
-                        + crossingDirections);
+                throw new IllegalActionException(
+                        "Unknown direction: " + crossingDirections);
             }
         } else if (attribute == level) {
             _level = ((DoubleToken) level.getToken()).doubleValue();
@@ -200,7 +200,8 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SmoothZeroCrossingDetector newObject = (SmoothZeroCrossingDetector) super.clone(workspace);
+        SmoothZeroCrossingDetector newObject = (SmoothZeroCrossingDetector) super.clone(
+                workspace);
 
         // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.value);
@@ -229,7 +230,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         // Current input.
         DoubleToken inputToken = null;
         if (input.hasNewToken(0)) {
-            inputToken = (DoubleToken)input.get(0);
+            inputToken = (DoubleToken) input.get(0);
             if (_debugging) {
                 _debug("Read input: " + inputToken);
             }
@@ -240,11 +241,14 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         if (inputToken == null && currentTime.equals(_lastFireAtTime)) {
             if (_previousInput != null) {
                 // There is no new token, so we just update the most recently seen token.
-                SmoothToken projectedToNow = ((SmoothToken)_previousInput).extrapolate(currentTime);
+                SmoothToken projectedToNow = _previousInput
+                        .extrapolate(currentTime);
                 // Create a virual new input with value 0.0.
-                inputToken = new SmoothToken(0.0, currentTime, projectedToNow.derivativeValues());
+                inputToken = new SmoothToken(0.0, currentTime,
+                        projectedToNow.derivativeValues());
                 if (_debugging) {
-                    _debug("Projected zero crossing has occurred. Assumed input value: " + inputToken);
+                    _debug("Projected zero crossing has occurred. Assumed input value: "
+                            + inputToken);
                 }
             }
         }
@@ -260,8 +264,10 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                 // If either the input is zero or the sign of the input is opposite of
                 // the previous input, then produce an output if the direction matches.
                 double previousValue = _previousInput.doubleValue();
-                boolean inputIsRising = inputValue >= targetValue && previousValue < targetValue;
-                boolean inputIsFalling = inputValue <= targetValue && previousValue > targetValue;
+                boolean inputIsRising = inputValue >= targetValue
+                        && previousValue < targetValue;
+                boolean inputIsFalling = inputValue <= targetValue
+                        && previousValue > targetValue;
                 if (_detectFallingCrossing && inputIsFalling
                         || _detectRisingCrossing && inputIsRising) {
                     output.send(0, value.getToken());
@@ -274,17 +280,23 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
             // Predict the time of a future zero crossing.
             Time future = null;
 
-            double[] derivatives = ((SmoothToken)inputToken).derivativeValues();
+            double[] derivatives = ((SmoothToken) inputToken)
+                    .derivativeValues();
             if (derivatives != null) {
                 // Handle linear case first.
                 if (derivatives.length == 1
                         || (derivatives.length == 2 && derivatives[1] == 0.0)
-                        || (derivatives.length > 2 && derivatives[1] == 0.0 && derivatives[2] == 0.0)) {
+                        || (derivatives.length > 2 && derivatives[1] == 0.0
+                                && derivatives[2] == 0.0)) {
                     // There is a predictable zero crossing only if the derivative
                     // and value have opposite signs.
-                    if (_detectRisingCrossing && inputValue < targetValue && derivatives[0] > 0.0
-                            || _detectFallingCrossing && inputValue > targetValue && derivatives[0] < 0.0) {
-                        future = currentTime.add((targetValue - inputValue) / derivatives[0]);
+                    if (_detectRisingCrossing && inputValue < targetValue
+                            && derivatives[0] > 0.0
+                            || _detectFallingCrossing
+                                    && inputValue > targetValue
+                                    && derivatives[0] < 0.0) {
+                        future = currentTime.add(
+                                (targetValue - inputValue) / derivatives[0]);
                     }
                 } else if (derivatives.length == 2
                         || (derivatives.length > 2 && derivatives[2] == 0.0)) {
@@ -293,8 +305,11 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                     // that solves the following quadratic (from the Taylor series expansion):
                     //   0 = (d2*t^2)/2 + d1*t + x,
                     // where d1 is the first derivative and d2 is the second.
-                    double delta = PolynomialRoot.findMinimumPositiveRoot2(derivatives[1]/2.0, derivatives[0], inputValue - targetValue);
-                    if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
+                    double delta = PolynomialRoot.findMinimumPositiveRoot2(
+                            derivatives[1] / 2.0, derivatives[0],
+                            inputValue - targetValue);
+                    if (delta >= _errorTolerance
+                            && delta != Double.POSITIVE_INFINITY) {
                         future = currentTime.add(delta);
                     }
                 } else if (derivatives.length >= 3) {
@@ -304,8 +319,11 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                     //   0 = (d3*t^3)/6 + (d2*t^2)/2 + d1*t + x,
                     // where d1 is the first derivative, d2 is the second, and d3 is the third.
                     double delta = PolynomialRoot.findMinimumPositiveRoot3(
-                            derivatives[2]/6.0, derivatives[1]/2.0, derivatives[0], inputValue - targetValue, _errorTolerance, 0.0);
-                    if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
+                            derivatives[2] / 6.0, derivatives[1] / 2.0,
+                            derivatives[0], inputValue - targetValue,
+                            _errorTolerance, 0.0);
+                    if (delta >= _errorTolerance
+                            && delta != Double.POSITIVE_INFINITY) {
                         future = currentTime.add(delta);
                     }
                 }
@@ -314,14 +332,17 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                 // If the new zero crossing prediction differs from the old by the error
                 // tolerance or more from the old prediction, cancel the old prediction and
                 // replace it with the new.
-                if (_lastFireAtTime == null || Math.abs(future.subtractToDouble(_lastFireAtTime)) >= _errorTolerance) {
+                if (_lastFireAtTime == null || Math.abs(future.subtractToDouble(
+                        _lastFireAtTime)) >= _errorTolerance) {
                     // First cancel any previous fireAt() request.
                     if (_lastFireAtTime != null) {
                         if (_debugging) {
-                            _debug("Cancelling previous fireAt request at " + _lastFireAtTime);
+                            _debug("Cancelling previous fireAt request at "
+                                    + _lastFireAtTime);
                         }
                         // Director class is checked in initialize().
-                        ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+                        ((DEDirector) getDirector()).cancelFireAt(this,
+                                _lastFireAtTime);
                     }
 
                     getDirector().fireAt(this, future);
@@ -332,10 +353,12 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                 // If there is a previous prediction, cancel it.
                 if (_lastFireAtTime != null) {
                     if (_debugging) {
-                        _debug("Cancelling previous fireAt request at " + _lastFireAtTime);
+                        _debug("Cancelling previous fireAt request at "
+                                + _lastFireAtTime);
                     }
                     // Director class is checked in initialize().
-                    ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+                    ((DEDirector) getDirector()).cancelFireAt(this,
+                            _lastFireAtTime);
                     _lastFireAtTime = null;
                 }
             }
@@ -344,10 +367,12 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
             // previous projection, since we assume all derivatives are zero.
             if (_lastFireAtTime != null) {
                 if (_debugging) {
-                    _debug("Input has zero derivatives. Cancelling previous fireAt request at " + _lastFireAtTime);
+                    _debug("Input has zero derivatives. Cancelling previous fireAt request at "
+                            + _lastFireAtTime);
                 }
                 // Director class is checked in initialize().
-                ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+                ((DEDirector) getDirector()).cancelFireAt(this,
+                        _lastFireAtTime);
             }
             _lastFireAtTime = null;
         }

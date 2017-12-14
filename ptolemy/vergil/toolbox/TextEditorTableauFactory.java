@@ -159,10 +159,11 @@ public class TextEditorTableauFactory extends TableauFactory
 
         if (!(attribute instanceof StringAttribute)
                 && !(attribute instanceof Variable)) {
-            throw new IllegalActionException(object, "Expected "
-                    + object.getFullName()
-                    + " to contain a StringAttribute or Variable named "
-                    + attributeName.getExpression() + ", but it does not.");
+            throw new IllegalActionException(object,
+                    "Expected " + object.getFullName()
+                            + " to contain a StringAttribute or Variable named "
+                            + attributeName.getExpression()
+                            + ", but it does not.");
         }
 
         // effigy may already contain a texteffigy.
@@ -202,25 +203,24 @@ public class TextEditorTableauFactory extends TableauFactory
                     Class editorClass = Class.forName(
                             "ptolemy.actor.gui.syntax.SyntaxTextEditorForStringAttributes");
                     Constructor constructor = editorClass.getConstructor(
-                            new Class[] {
-                                    TextEditorFactory.class, Attribute.class,
-                                    Integer.TYPE, Integer.TYPE,
-                                    String.class, Document.class
-                                    });
-                    _editor = (TextEditorForStringAttributes) constructor.newInstance(
-                            new Object[] {
-                                    this, attribute,
-                                    numberOfRows, numberOfColumns,
-                                    name, textEffigy.getDocument()});
+                            new Class[] { TextEditorFactory.class,
+                                    Attribute.class, Integer.TYPE, Integer.TYPE,
+                                    String.class, Document.class });
+                    _editor = (TextEditorForStringAttributes) constructor
+                            .newInstance(new Object[] { this, attribute,
+                                    numberOfRows, numberOfColumns, name,
+                                    textEffigy.getDocument() });
                 } catch (Throwable ex) {
                     // Ignore and use default text editor.
-                    System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                    System.out.println(
+                            "Note: failed to open syntax-directed editor: "
+                                    + ex.getMessage());
                 }
             }
             if (_editor == null) {
-                _editor = new TextEditorForStringAttributes(this,
-                        attribute, numberOfRows, numberOfColumns,
-                        name, textEffigy.getDocument());
+                _editor = new TextEditorForStringAttributes(this, attribute,
+                        numberOfRows, numberOfColumns, name,
+                        textEffigy.getDocument());
             }
         }
 
@@ -250,18 +250,19 @@ public class TextEditorTableauFactory extends TableauFactory
     public static String getTextToEdit(Attribute attributeToEdit) {
         String textToEdit = "";
         if (attributeToEdit instanceof StringAttribute) {
-            textToEdit = ((StringAttribute)attributeToEdit).getExpression();
+            textToEdit = ((StringAttribute) attributeToEdit).getExpression();
         } else if (attributeToEdit instanceof Variable) {
             try {
-                Token token = ((Variable)attributeToEdit).getToken();
+                Token token = ((Variable) attributeToEdit).getToken();
                 if (token instanceof StringToken) {
-                    textToEdit = ((StringToken)token).stringValue();
+                    textToEdit = ((StringToken) token).stringValue();
                 } else {
-                    textToEdit = "Error: Expected a String, but got: " + token.getType()
-                            + " with value " + token.toString();
+                    textToEdit = "Error: Expected a String, but got: "
+                            + token.getType() + " with value "
+                            + token.toString();
                 }
             } catch (IllegalActionException e) {
-                textToEdit = ((Variable)attributeToEdit).getExpression();
+                textToEdit = ((Variable) attributeToEdit).getExpression();
             }
         }
         return textToEdit;

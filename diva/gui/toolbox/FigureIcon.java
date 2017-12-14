@@ -116,7 +116,8 @@ public class FigureIcon extends ImageIcon {
      * to the given flag.
      * @param antialias True if antialiasing should be used.
      */
-    public FigureIcon(Figure figure, int x, int y, int border, boolean antialias) {
+    public FigureIcon(Figure figure, int x, int y, int border,
+            boolean antialias) {
         super();
 
         if (figure instanceof ImageFigure && border == 0) {
@@ -126,15 +127,15 @@ public class FigureIcon extends ImageIcon {
                 image = image.getScaledInstance(x, y, Image.SCALE_DEFAULT);
                 setImage(image);
             } else {
-                throw new NullPointerException("Failed to get an image from "
-                        + imageFigure);
+                throw new NullPointerException(
+                        "Failed to get an image from " + imageFigure);
             }
         } else {
             Rectangle2D bounds = figure.getBounds();
-            Rectangle2D size = new Rectangle2D.Double(border, border, x - 2
-                    * border, y - 2 * border);
-            AffineTransform transform = CanvasUtilities.computeFitTransform(
-                    bounds, size);
+            Rectangle2D size = new Rectangle2D.Double(border, border,
+                    x - 2 * border, y - 2 * border);
+            AffineTransform transform = CanvasUtilities
+                    .computeFitTransform(bounds, size);
             figure.transform(transform);
 
             BufferedImage image = new BufferedImage(x, y,

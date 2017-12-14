@@ -98,8 +98,8 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *   port with the specified name.
      */
     @Override
-    public Port newPort(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public Port newPort(String name)
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -167,8 +167,8 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *   name already in the entity.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof MethodCallPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this entity.");
@@ -180,10 +180,10 @@ public class AtomicComponent extends ComponentEntity implements Component {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addIcon() {
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:white\"/>\n"
-                + "<polygon points=\"-20,-10 20,0 -20,10\" "
-                + "style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                        + "height=\"40\" style=\"fill:white\"/>\n"
+                        + "<polygon points=\"-20,-10 20,0 -20,10\" "
+                        + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 }

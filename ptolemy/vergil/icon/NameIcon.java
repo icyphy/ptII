@@ -94,7 +94,8 @@ public class NameIcon extends EditorIcon {
         // in Vergil, and giving a reasonable rendition.
         TextIcon icon = new TextIcon(this, "_icon");
         icon.setIconText("-N-");
-        icon.setText("NameIcon attribute: This sets the icon to be a box with the name.");
+        icon.setText(
+                "NameIcon attribute: This sets the icon to be a box with the name.");
         icon.setPersistent(false);
 
         // Hide the name.
@@ -204,19 +205,18 @@ public class NameIcon extends EditorIcon {
             CompositeFigure result;
             if (_roundingValue == 0.0) {
                 result = new CompositeFigure(new BasicRectangle(-_spacingValue,
-                        -_spacingValue, width + 2 * _spacingValue, height + 2
-                        * _spacingValue, null, _getLineWidth()));
+                        -_spacingValue, width + 2 * _spacingValue,
+                        height + 2 * _spacingValue, null, _getLineWidth()));
                 result.add(new BasicRectangle(0, 0, width, height, _getFill(),
                         _getLineWidth()));
             } else {
                 result = new CompositeFigure(new RoundedRectangle(
-                        -_spacingValue, -_spacingValue, width + 2
-                        * _spacingValue, height + 2 * _spacingValue,
+                        -_spacingValue, -_spacingValue,
+                        width + 2 * _spacingValue, height + 2 * _spacingValue,
                         null, _getLineWidth(), _roundingValue + _spacingValue,
                         _roundingValue + _spacingValue));
-                result.add(new RoundedRectangle(0, 0, width, height,
-                        _getFill(), _getLineWidth(), _roundingValue,
-                        _roundingValue));
+                result.add(new RoundedRectangle(0, 0, width, height, _getFill(),
+                        _getLineWidth(), _roundingValue, _roundingValue));
             }
             return result;
         }
@@ -251,8 +251,8 @@ public class NameIcon extends EditorIcon {
             return _iconCache;
         }
 
-        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
-                _getFill(), 1.0f, 5.0, 5.0);
+        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10, _getFill(),
+                1.0f, 5.0, 5.0);
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
@@ -267,8 +267,8 @@ public class NameIcon extends EditorIcon {
      *   an attribute with the name of this attribute.
      */
     @Override
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container && previousContainer != null) {
             SingletonParameter hide = (SingletonParameter) previousContainer
@@ -320,8 +320,8 @@ public class NameIcon extends EditorIcon {
         // Quantize the width to an even multiple of the resolution.
         // The icon is centered on snap to grid, so this ensures that both
         // ends align with the grid.
-        width = Math.floor((width + defaultResolution)
-                / (2.0 * defaultResolution))
+        width = Math
+                .floor((width + defaultResolution) / (2.0 * defaultResolution))
                 * 2.0 * defaultResolution;
 
         return new Point2D.Double(width, height);

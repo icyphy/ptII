@@ -58,8 +58,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (ltrnc)
  */
 
-public class WebSocketReader extends TypedAtomicActor implements
-        WebSocketService {
+public class WebSocketReader extends TypedAtomicActor
+        implements WebSocketService {
     /** Create an instance of the actor.
      *  @param container The container
      *  @param name The name.
@@ -118,8 +118,8 @@ public class WebSocketReader extends TypedAtomicActor implements
         if (attribute == path) {
             // Unsubscribe from previous path (if any)
             if (_URIpath != null && !_URIpath.toString().isEmpty()
-                 && _endpointManager != null) {
-            // TODO: Shared vs. individual
+                    && _endpointManager != null) {
+                // TODO: Shared vs. individual
                 _endpointManager.unsubscribe(this, _URIpath.toString());
             }
 
@@ -201,7 +201,7 @@ public class WebSocketReader extends TypedAtomicActor implements
         // Subscribe to this endpoint.  Creates a new endpoint if needed.
         // Do not subscribe local clients.  The WebServer handles these, since
         // it ensures that connections are only opened after it starts.
-        if (! (!WebSocketEndpointManager.isRemoteURI(_URIpath) && isClient())) {
+        if (!(!WebSocketEndpointManager.isRemoteURI(_URIpath) && isClient())) {
             _endpointManager.subscribe(this, _URIpath.toString());
         }
     }
@@ -215,7 +215,9 @@ public class WebSocketReader extends TypedAtomicActor implements
         // Assume client side if no value given
         try {
             isClient = ((BooleanToken) client.getToken()).booleanValue();
-        } catch (IllegalActionException e){};
+        } catch (IllegalActionException e) {
+        }
+        ;
         return isClient;
     }
 

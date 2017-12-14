@@ -175,7 +175,8 @@ public class SystemCommand extends TypedAtomicActor {
         simulationLogFile.setTypeEquals(BaseType.STRING);
         simulationLogFile.setExpression("simulation.log");
         new Parameter(simulationLogFile, "allowFiles", BooleanToken.TRUE);
-        new Parameter(simulationLogFile, "allowDirectories", BooleanToken.FALSE);
+        new Parameter(simulationLogFile, "allowDirectories",
+                BooleanToken.FALSE);
 
         showConsoleWindow = new Parameter(this, "showConsoleWindow");
         showConsoleWindow.setTypeEquals(BaseType.BOOLEAN);
@@ -265,8 +266,8 @@ public class SystemCommand extends TypedAtomicActor {
                     Token inputToken = port.get(0);
                     _tokenMap.put(port.getName(), inputToken);
                 } else {
-                    throw new IllegalActionException(this, "Input port "
-                            + port.getName() + " has no data.");
+                    throw new IllegalActionException(this,
+                            "Input port " + port.getName() + " has no data.");
                 }
             }
         }
@@ -342,8 +343,8 @@ public class SystemCommand extends TypedAtomicActor {
                 comArg = programName.getExpression();
             }
         }
-        final String argLin = cutQuotationMarks(programArguments
-                .getExpression());
+        final String argLin = cutQuotationMarks(
+                programArguments.getExpression());
         commandList = new ArrayList<String>();
         /* mwetter:
            Disabled section. Otherwise, C:\Program Files\xyz is parsed to
@@ -389,20 +390,20 @@ public class SystemCommand extends TypedAtomicActor {
             for (Map.Entry<String, Token> e : _tokenMap.entrySet()) {
                 final String fin = '$' + e.getKey();
                 while (comIte.contains(fin)) {
-                    comIte = comIte.replace(fin, cutQuotationMarks(e.getValue()
-                            .toString()));
+                    comIte = comIte.replace(fin,
+                            cutQuotationMarks(e.getValue().toString()));
                 }
             }
             // Replace $time and $iteration
             String fin = "$time";
             while (comIte.contains(fin)) {
-                comIte = comIte.replace(fin, cutQuotationMarks(getDirector()
-                        .getModelTime().toString()));
+                comIte = comIte.replace(fin, cutQuotationMarks(
+                        getDirector().getModelTime().toString()));
             }
             fin = "$iteration";
             while (comIte.contains(fin)) {
-                comIte = comIte.replace(fin, Integer.toString(_iterationCount)
-                        .toString());
+                comIte = comIte.replace(fin,
+                        Integer.toString(_iterationCount).toString());
             }
             com.add(comIte);
         }
@@ -450,8 +451,8 @@ public class SystemCommand extends TypedAtomicActor {
 
         if (!cliPro.processStarted()) {
             String em = "Error: Simulation process did not start." + LS
-                    + cliPro.getErrorMessage() + LS
-                    + "Check configuration of '" + this.getFullName() + "'.";
+                    + cliPro.getErrorMessage() + LS + "Check configuration of '"
+                    + this.getFullName() + "'.";
             throw new IllegalActionException(this, em);
         }
     }
@@ -464,16 +465,14 @@ public class SystemCommand extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (getPort("time") != null) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "This actor has a port named \"time\", "
                             + "which will not be read, instead the "
                             + "reserved system variable \"time\" will be read. "
                             + "Delete the \"time\" port to avoid this message.");
         }
         if (getPort("iteration") != null) {
-            throw new IllegalActionException(
-                    this,
+            throw new IllegalActionException(this,
                     "This actor has a port named \"iteration\", "
                             + "which will not be read, instead the "
                             + "reserved system variable \"iteration\" will be read. "

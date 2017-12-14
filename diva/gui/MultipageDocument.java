@@ -129,8 +129,8 @@ public abstract class MultipageDocument extends AbstractDocument {
     @Override
     public void open() throws Exception {
         if (getFile() == null) {
-            throw new IllegalStateException("MultipageDocument " + getTitle()
-                    + " has no current file");
+            throw new IllegalStateException(
+                    "MultipageDocument " + getTitle() + " has no current file");
         }
 
         String filename = getFile().getName();
@@ -153,8 +153,8 @@ public abstract class MultipageDocument extends AbstractDocument {
     @Override
     public void save() throws Exception {
         if (getFile() == null) {
-            throw new IllegalStateException("MultipageDocument " + getTitle()
-                    + " has no current file");
+            throw new IllegalStateException(
+                    "MultipageDocument " + getTitle() + " has no current file");
         }
 
         saveAs(getFile());
@@ -188,7 +188,7 @@ public abstract class MultipageDocument extends AbstractDocument {
      */
     @Override
     public void saveAs(URL url) {
-        throw new UnsupportedOperationException("SketchDocument " + getTitle()
-                + ": save to URL not supported");
+        throw new UnsupportedOperationException(
+                "SketchDocument " + getTitle() + ": save to URL not supported");
     }
 }

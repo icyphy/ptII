@@ -91,9 +91,9 @@ public abstract class HttpSink extends TypedAtomicActor {
         properties.setExpression("{}");
         properties.setTypeAtMost(BaseType.RECORD);
         new SingletonParameter(properties.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
         (new StringAttribute(properties.getPort(), "_cardinal"))
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
 
         status = new TypedIOPort(this, "status", false, true);
         status.setTypeEquals(HttpResponse.getStatusType());
@@ -111,9 +111,9 @@ public abstract class HttpSink extends TypedAtomicActor {
         uri.setStringMode(true);
         uri.setExpression("http://localhost");
         new SingletonParameter(uri.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
         (new StringAttribute(uri.getPort(), "_cardinal"))
-        .setExpression("SOUTH");
+                .setExpression("SOUTH");
 
     }
 
@@ -187,6 +187,7 @@ public abstract class HttpSink extends TypedAtomicActor {
     /** If there is an input, then issue a request.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         uri.update();
@@ -200,8 +201,8 @@ public abstract class HttpSink extends TypedAtomicActor {
             }
 
             try {
-                _request.setUrl(new URL(((StringToken) uri.getToken())
-                        .stringValue()));
+                _request.setUrl(
+                        new URL(((StringToken) uri.getToken()).stringValue()));
             } catch (MalformedURLException e) {
                 throw new IllegalActionException(this, e, "Invalid URI.");
             }
@@ -228,9 +229,9 @@ public abstract class HttpSink extends TypedAtomicActor {
                 }
                 String timeout = timeoutResponse.stringValue();
                 if (timeout.trim().equals("")) {
-                    throw new IllegalActionException(this, "HTTP "
-                            + _request.getMethod() + " "
-                            + response.getResponseMessage());
+                    throw new IllegalActionException(this,
+                            "HTTP " + _request.getMethod() + " "
+                                    + response.getResponseMessage());
                 }
             }
 

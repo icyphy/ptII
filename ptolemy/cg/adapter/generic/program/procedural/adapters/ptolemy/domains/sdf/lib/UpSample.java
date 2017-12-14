@@ -109,9 +109,8 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
 
         if (codeStream.isEmpty()) {
-            codeStream.append(_eol
-                    + getCodeGenerator().comment(
-                            "preinitialize " + getComponent().getName()));
+            codeStream.append(_eol + getCodeGenerator()
+                    .comment("preinitialize " + getComponent().getName()));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

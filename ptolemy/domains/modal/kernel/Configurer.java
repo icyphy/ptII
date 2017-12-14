@@ -115,15 +115,15 @@ public class Configurer extends CompositeActor {
     /**
      The containment extender that returns the configured object as the
      container of this configurer.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    public static class ContainmentExtender extends Attribute implements
-    ptolemy.data.expr.ContainmentExtender {
+    public static class ContainmentExtender extends Attribute
+            implements ptolemy.data.expr.ContainmentExtender {
 
         /** Construct a containment extender.
          *

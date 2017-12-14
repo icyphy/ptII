@@ -40,8 +40,9 @@ public class IteratedFilter extends AbstractBufferedImageOp {
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
         BufferedImage image = src;
 
-        for (int i = 0; i < iterations; i++)
+        for (int i = 0; i < iterations; i++) {
             image = filter.filter(image, dst);
+        }
 
         return image;
     }

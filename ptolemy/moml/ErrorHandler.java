@@ -70,7 +70,8 @@ public interface ErrorHandler {
      *  @return CONTINUE to skip this element, CANCEL to abort processing
      *   of the XML, or RETHROW to request that the exception be rethrown.
      */
-    public int handleError(String element, NamedObj context, Throwable exception);
+    public int handleError(String element, NamedObj context,
+            Throwable exception);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

@@ -79,9 +79,9 @@ public class VectorAssembler extends Transformer {
         isColumn = new Parameter(this, "isColumn", BooleanToken.TRUE);
         isColumn.setTypeEquals(BaseType.BOOLEAN);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"0\" y=\"0\" width=\"6\" "
-                + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription",
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                        + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,8 +118,8 @@ public class VectorAssembler extends Transformer {
                 try {
                     data[i][0] = ((ScalarToken) token).doubleValue();
                 } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this, ex, "Cannot cast \""
-                            + token + "\" to a ScalarToken");
+                    throw new IllegalActionException(this, ex,
+                            "Cannot cast \"" + token + "\" to a ScalarToken");
                 }
             }
         } else {
@@ -130,8 +130,8 @@ public class VectorAssembler extends Transformer {
                 try {
                     data[0][i] = ((ScalarToken) token).doubleValue();
                 } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this, ex, "Cannot cast \""
-                            + token + "\" to a ScalarToken");
+                    throw new IllegalActionException(this, ex,
+                            "Cannot cast \"" + token + "\" to a ScalarToken");
                 }
             }
         }

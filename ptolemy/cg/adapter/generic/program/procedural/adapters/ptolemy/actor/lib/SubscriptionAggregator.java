@@ -51,7 +51,8 @@ public class SubscriptionAggregator extends NamedProgramCodeGeneratorAdapter {
      * Constructor method for the SubscriptionAggregator helper.
      * @param actor the associated actor
      */
-    public SubscriptionAggregator(ptolemy.actor.lib.SubscriptionAggregator actor) {
+    public SubscriptionAggregator(
+            ptolemy.actor.lib.SubscriptionAggregator actor) {
         super(actor);
     }
 
@@ -116,10 +117,8 @@ public class SubscriptionAggregator extends NamedProgramCodeGeneratorAdapter {
         args.add(targetType(type));
 
         if (codeStream.isEmpty()) {
-            codeStream.append(_eol
-                    + getCodeGenerator().comment(
-                            "preinitialize "
-                                    + generateSimpleName(getComponent())));
+            codeStream.append(_eol + getCodeGenerator().comment(
+                    "preinitialize " + generateSimpleName(getComponent())));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

@@ -88,14 +88,14 @@ public class GTTableau extends Tableau {
      *   contains an object with the specified name.
      */
     public GTTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof GTCompositeActor || !model.attributeList(
-                Factory.class).isEmpty())) {
+        if (!(model instanceof GTCompositeActor
+                || !model.attributeList(Factory.class).isEmpty())) {
             throw new IllegalActionException(this,
                     "Cannot edit a model that is not a GTCompositeActor.");
         }
@@ -119,9 +119,10 @@ public class GTTableau extends Tableau {
             LibraryAttribute defaultLibrary) {
         if (!(model instanceof GTCompositeActor)
                 && model.attributeList(Factory.class).isEmpty()) {
-            throw new InternalErrorException(this, null, "Composite entity \""
-                    + model.getFullName() + "\" is not an instance of "
-                    + "GTCompositeActor.");
+            throw new InternalErrorException(this, null,
+                    "Composite entity \"" + model.getFullName()
+                            + "\" is not an instance of "
+                            + "GTCompositeActor.");
         }
 
         ExtendedGraphFrame frame = new TransformationEditor(model, this,

@@ -152,8 +152,8 @@ public class PDFIcon extends DynamicEditorIcon {
         public void paint(Graphics2D graphics) {
             if (_page == null) {
                 // No page. Paint an error image.
-                URL url = getClass().getResource(
-                        "/diva/canvas/toolbox/errorImage.gif");
+                URL url = getClass()
+                        .getResource("/diva/canvas/toolbox/errorImage.gif");
                 Toolkit tk = Toolkit.getDefaultToolkit();
                 Image image = tk.getImage(url);
                 graphics.drawImage(image, null, null);
@@ -162,11 +162,11 @@ public class PDFIcon extends DynamicEditorIcon {
             }
             Rectangle2D boundingBox = _page.getBBox();
             PDFRenderer renderer = new PDFRenderer(_page, graphics,
-                    new Rectangle(0, 0,
-                            (int) (boundingBox.getWidth() * _scale),
-                            (int) (boundingBox.getHeight() * _scale)), null, // No clipping.
-                            null // Transparent background.
-                    );
+                    new Rectangle(0, 0, (int) (boundingBox.getWidth() * _scale),
+                            (int) (boundingBox.getHeight() * _scale)),
+                    null, // No clipping.
+                    null // Transparent background.
+            );
             try {
                 _page.waitForFinish();
             } catch (InterruptedException e) {

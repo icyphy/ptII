@@ -73,7 +73,8 @@ public class Diff {
                 if (aStringSplit[aIndex].equals(bStringSplit[bIndex])) {
                     lcs[aIndex][bIndex] = lcs[aIndex - 1][bIndex - 1] + 1;
                 } else {
-                    lcs[aIndex][bIndex] = Math.max(lcs[aIndex][bIndex - 1], lcs[aIndex - 1][bIndex]);
+                    lcs[aIndex][bIndex] = Math.max(lcs[aIndex][bIndex - 1],
+                            lcs[aIndex - 1][bIndex]);
                 }
             }
         }
@@ -109,7 +110,7 @@ public class Diff {
      *  <pre>
      *  java -classpath $PTII ptolemy.util.test.Diff File1.txt File2.txt
      *  </pre>
-
+    
      *  @param args An array of two elements, where
      *  the first element is the filename of the first
      *  file and the second element is the filename of
@@ -118,11 +119,11 @@ public class Diff {
      *  into a URL.
      *  @exception IOException If a file cannot be read.
      */
-    public static void main(String[] args) throws MalformedURLException,
-    IOException {
+    public static void main(String[] args)
+            throws MalformedURLException, IOException {
         if (args.length != 2) {
-            System.err.println("Error: number of arguments must be 2, "
-                    + "not " + args.length + ".");
+            System.err.println("Error: number of arguments must be 2, " + "not "
+                    + args.length + ".");
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.util.test.Diff File1.txt File2.txt");
         }
@@ -131,7 +132,9 @@ public class Diff {
         URL urlB = new File(args[1]).toURI().toURL();
 
         System.out.print(diff(
-                              new String(FileUtilities.binaryReadURLToByteArray(urlA), Charset.defaultCharset()),
-                              new String(FileUtilities.binaryReadURLToByteArray(urlB), Charset.defaultCharset())));
+                new String(FileUtilities.binaryReadURLToByteArray(urlA),
+                        Charset.defaultCharset()),
+                new String(FileUtilities.binaryReadURLToByteArray(urlB),
+                        Charset.defaultCharset())));
     }
 }

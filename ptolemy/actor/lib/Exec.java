@@ -122,8 +122,8 @@ public class Exec extends LimitedFiringSource {
 
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
-        command = new PortParameter(this, "command", new StringToken(
-                "echo \"Hello, world.\""));
+        command = new PortParameter(this, "command",
+                new StringToken("echo \"Hello, world.\""));
 
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
@@ -141,7 +141,7 @@ public class Exec extends LimitedFiringSource {
 
         // An array of records {{name = "", value = ""}}
         environment
-        .setTypeEquals(new ArrayType(new RecordType(labels, values)));
+                .setTypeEquals(new ArrayType(new RecordType(labels, values)));
 
         // Array with an empty name and value means
         // default environment of the calling process.
@@ -396,11 +396,10 @@ public class Exec extends LimitedFiringSource {
                             .getToken()).booleanValue();
 
                     if (throwExceptionOnNonZeroReturnValue) {
-                        throw new IllegalActionException(
-                                this,
+                        throw new IllegalActionException(this,
                                 "Executing command \""
                                         + ((StringToken) command.getToken())
-                                        .stringValue()
+                                                .stringValue()
                                         + "\" returned a non-zero return value of "
                                         + processReturnCode
                                         + ".\nThe last input was: " + line
@@ -513,9 +512,8 @@ public class Exec extends LimitedFiringSource {
             // be a single token and are returned as a single array
             // element.
             // FIXME: tokenizeForExec should return a List<String>
-            String[] commandArray = StringUtilities
-                    .tokenizeForExec(((StringToken) command.getToken())
-                            .stringValue());
+            String[] commandArray = StringUtilities.tokenizeForExec(
+                    ((StringToken) command.getToken()).stringValue());
             commandList.addAll(Arrays.asList(commandArray));
 
             // If the directory parameter is the empty string,
@@ -525,10 +523,9 @@ public class Exec extends LimitedFiringSource {
             // of the subprocess will be inherited from the current process.
             // See https://projects.ecoinformatics.org/ecoinfo/issues/6676
             directoryAsFile = directory.asFile();
-            if (directoryAsFile != null
-                    && !directoryAsFile.isDirectory()) {
-                throw new IllegalActionException("No such directory: "
-                        + directoryAsFile);
+            if (directoryAsFile != null && !directoryAsFile.isDirectory()) {
+                throw new IllegalActionException(
+                        "No such directory: " + directoryAsFile);
             }
 
             if (_debugging) {
@@ -537,7 +534,9 @@ public class Exec extends LimitedFiringSource {
                     commands.append(aCommand + " ");
                 }
                 _debug("About to exec \"" + commands + "\"\n in \""
-                        + (directoryAsFile == null ? "the working directory of the parent process" : directoryAsFile)
+                        + (directoryAsFile == null
+                                ? "the working directory of the parent process"
+                                : directoryAsFile)
                         + "\"\n with environment:");
             }
 
@@ -603,9 +602,10 @@ public class Exec extends LimitedFiringSource {
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem executing the command '" + command.getExpression()
-                    + "'\n" + "in the "
-                    + (directoryAsFile == null ? "the working directory of the parent process."
-                            : directoryAsFile + " directory."));
+                            + "'\n" + "in the "
+                            + (directoryAsFile == null
+                                    ? "the working directory of the parent process."
+                                    : directoryAsFile + " directory."));
         }
     }
 
@@ -647,10 +647,12 @@ public class Exec extends LimitedFiringSource {
          *  @param actor The parent actor of this thread, which
          *  is used in error messages.
          */
-        _StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
+        _StreamReaderThread(InputStream inputStream, String name,
+                Nameable actor) {
             super(name);
             _inputStream = inputStream;
-            _inputStreamReader = new InputStreamReader(_inputStream, java.nio.charset.Charset.defaultCharset());
+            _inputStreamReader = new InputStreamReader(_inputStream,
+                    java.nio.charset.Charset.defaultCharset());
             _actor = actor;
             _stringBuffer = new StringBuffer();
         }
@@ -688,8 +690,8 @@ public class Exec extends LimitedFiringSource {
                 _inputStreamReader.close();
                 _inputStreamReaderClosed = true;
             } catch (Exception ex) {
-                throw new InternalErrorException(null, ex, getName()
-                        + " failed to close.");
+                throw new InternalErrorException(null, ex,
+                        getName() + " failed to close.");
             }
 
             return results;
@@ -741,32 +743,23 @@ public class Exec extends LimitedFiringSource {
                             .getToken()).booleanValue();
 
                 } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(
-                            _actor,
-                            ex,
-                            getName()
+                    throw new InternalErrorException(_actor, ex, getName()
                             + ": Could not get the value of the ignoreIOExceptionReadErrors "
-                            + "parameter while trying to throw "
-                            + throwable);
+                            + "parameter while trying to throw " + throwable);
                 }
                 if (ignoreIOExceptionReadErrorsValue
                         && throwable instanceof IOException) {
-                    new Exception(
-                            "Warning: "
-                                    + getFullName()
-                                    + " had an exception, but "
-                                    + "ignoreIOExceptionReadErrors was true and the exception was an "
-                                    + "IOException, so it is being skipped.",
-                                    throwable).printStackTrace();
+                    new Exception("Warning: " + getFullName()
+                            + " had an exception, but "
+                            + "ignoreIOExceptionReadErrors was true and the exception was an "
+                            + "IOException, so it is being skipped.", throwable)
+                                    .printStackTrace();
                 } else {
-                    throw new InternalErrorException(
-                            _actor,
-                            throwable,
-                            getName()
-                            + ": Failed while reading from "
-                            + _inputStream
-                            + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
-                            + throwable.getCause());
+                    throw new InternalErrorException(_actor, throwable,
+                            getName() + ": Failed while reading from "
+                                    + _inputStream
+                                    + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
+                                    + throwable.getCause());
                 }
             }
         }

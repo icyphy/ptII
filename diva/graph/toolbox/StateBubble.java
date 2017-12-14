@@ -251,12 +251,12 @@ public class StateBubble extends AbstractFigure {
     @Override
     public void transform(AffineTransform at) {
         repaint();
-        _outsideEllipse.shape = ShapeUtilities.transformModify(
-                _outsideEllipse.shape, at);
+        _outsideEllipse.shape = ShapeUtilities
+                .transformModify(_outsideEllipse.shape, at);
 
         if (_insideEllipse != null) {
-            _insideEllipse.shape = ShapeUtilities.transformModify(
-                    _insideEllipse.shape, at);
+            _insideEllipse.shape = ShapeUtilities
+                    .transformModify(_insideEllipse.shape, at);
         }
 
         repaint();
@@ -273,12 +273,12 @@ public class StateBubble extends AbstractFigure {
     @Override
     public void translate(double x, double y) {
         repaint();
-        _outsideEllipse.shape = ShapeUtilities.translateModify(
-                _outsideEllipse.shape, x, y);
+        _outsideEllipse.shape = ShapeUtilities
+                .translateModify(_outsideEllipse.shape, x, y);
 
         if (_insideEllipse != null) {
-            _insideEllipse.shape = ShapeUtilities.translateModify(
-                    _insideEllipse.shape, x, y);
+            _insideEllipse.shape = ShapeUtilities
+                    .translateModify(_insideEllipse.shape, x, y);
         }
 
         repaint();

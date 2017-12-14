@@ -86,8 +86,8 @@ public class ProxySink extends ProxyActor {
      */
     public ProxySink(CompositeEntity container, ComponentEntity targetSink,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
-                    throws IllegalActionException, NameDuplicationException,
-                    CloneNotSupportedException {
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
         super(container, targetSink, replaceTargetEntity, portTypes);
     }
 
@@ -104,7 +104,8 @@ public class ProxySink extends ProxyActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        CommunicationToken token = new CommunicationToken(getTargetEntityName());
+        CommunicationToken token = new CommunicationToken(
+                getTargetEntityName());
         for (Object portObject : portList()) {
             if (portObject instanceof IOPort) {
                 IOPort port = (IOPort) portObject;
@@ -134,16 +135,19 @@ public class ProxySink extends ProxyActor {
         synchronized (this) {
             long waitTime = _MIN_WAIT;
             while (!_proxyModelInfrastructure.isStopped()
-                    && _proxyModelInfrastructure.getPingPongLatency() > _proxyModelInfrastructure
-                    .getMaxlatency() || force) {
+                    && _proxyModelInfrastructure
+                            .getPingPongLatency() > _proxyModelInfrastructure
+                                    .getMaxlatency()
+                    || force) {
                 force = false;
                 try {
                     wait(waitTime);
                 } catch (InterruptedException e) {
                     break;
                 }
-                if (_proxyModelInfrastructure.getPingPongLatency() > _proxyModelInfrastructure
-                        .getMaxlatency()) {
+                if (_proxyModelInfrastructure
+                        .getPingPongLatency() > _proxyModelInfrastructure
+                                .getMaxlatency()) {
                     waitTime *= _WAIT_TIME_INCREASE_FACTOR;
                 }
             }

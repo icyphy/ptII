@@ -112,8 +112,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
 
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
-                    .getAdapter(source.port.getContainer())).getReference(
-                            sourcePortChannel, false);
+                    .getAdapter(source.port.getContainer()))
+                            .getReference(sourcePortChannel, false);
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -129,8 +129,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
             sinkPortChannel = "@" + sinkPortChannel;
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
-                .getAdapter(sink.port.getContainer())).getReference(
-                        sinkPortChannel, true);
+                .getAdapter(sink.port.getContainer()))
+                        .getReference(sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -154,7 +154,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
                     + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";"
-        + StringUtilities.getProperty("line.separator");
+                + StringUtilities.getProperty("line.separator");
     }
 
     /** Return the translated token instance function invocation string.
@@ -167,8 +167,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
     @Override
     public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
-        return super.getFunctionInvocation(functionString, isStatic).replace(
-                ".type", "->type");
+        return super.getFunctionInvocation(functionString, isStatic)
+                .replace(".type", "->type");
     }
 
     /** Return a new parse tree code generator to use with expressions.
@@ -220,8 +220,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
             TypedIOPort port = getPort(parameter);
 
             if (port == null) {
-                throw new IllegalActionException(
-                        parameter
+                throw new IllegalActionException(parameter
                         + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (_getCodeGenerator().isPrimitive(port.getType())) {

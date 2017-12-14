@@ -92,12 +92,9 @@ public class EventBusHelper extends VertxHelperBase {
      *   for cluster connections, or null to create an unclustered
      *   EventBusHelper.
      */
-    public EventBusHelper(
-                    Object actor,
-                    ScriptObjectMirror vertxBusJS,
-                    int clusterPort,
-            String clusterHostname) {
-            super(actor, vertxBusJS);
+    public EventBusHelper(Object actor, ScriptObjectMirror vertxBusJS,
+            int clusterPort, String clusterHostname) {
+        super(actor, vertxBusJS);
         _vertxBusJS = vertxBusJS;
         if (clusterHostname == null) {
             if (_unclusteredVertxInstance == null) {
@@ -165,9 +162,11 @@ public class EventBusHelper extends VertxHelperBase {
      *  @param message A message to be published, as a string.
      *  @param replyHandler The handler for the reply.
      */
-    public void send(String address, String message, final Object replyHandler) {
+    public void send(String address, String message,
+            final Object replyHandler) {
         EventBus bus = _vertx.eventBus();
         Handler<AsyncResult<Message<String>>> newHandler = new Handler<AsyncResult<Message<String>>>() {
+            @Override
             public void handle(AsyncResult<Message<String>> event) {
                 _vertxBusJS.callMember("notifyReply", replyHandler,
                         event.result().body());
@@ -204,6 +203,7 @@ public class EventBusHelper extends VertxHelperBase {
             return;
         }
         Handler<Message<String>> newHandler = new Handler<Message<String>>() {
+            @Override
             public void handle(Message<String> message) {
                 _vertxBusJS.callMember("notify", address, message.body());
                 if (_reply != null) {
@@ -212,7 +212,8 @@ public class EventBusHelper extends VertxHelperBase {
             }
         };
         EventBus bus = _vertx.eventBus();
-        MessageConsumer<String> messageConsumer = bus.consumer(address, newHandler);
+        MessageConsumer<String> messageConsumer = bus.consumer(address,
+                newHandler);
         _subscriptions.put(address, messageConsumer);
     }
 
@@ -225,13 +226,15 @@ public class EventBusHelper extends VertxHelperBase {
     public void unsubscribe(final String address) {
         if (_subscriptions != null) {
             if (address == null) {
-                for (Entry<String, MessageConsumer<String>> entry : _subscriptions.entrySet()) {
+                for (Entry<String, MessageConsumer<String>> entry : _subscriptions
+                        .entrySet()) {
                     MessageConsumer<String> messageConsumer = entry.getValue();
                     messageConsumer.unregister();
                 }
                 _subscriptions.clear();
             } else {
-                MessageConsumer<String> messageConsumer = _subscriptions.get(address);
+                MessageConsumer<String> messageConsumer = _subscriptions
+                        .get(address);
                 if (messageConsumer != null) {
                     messageConsumer.unregister();
                     _subscriptions.remove(address);

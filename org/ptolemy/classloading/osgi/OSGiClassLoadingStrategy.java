@@ -65,7 +65,8 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
      * @exception ClassNotFoundException If the class is not found.
      */
     @Override
-    public Class<?> loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+    public Class<?> loadJavaClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException {
         Class<?> result = null;
 
         for (ModelElementClassProvider classProvider : _modelElementClassProviders) {
@@ -93,13 +94,14 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
      * @exception ClassNotFoundException If the class is not found.
      */
     @Override
-    public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec)
-            throws ClassNotFoundException {
+    public CompositeEntity loadActorOrientedClass(String className,
+            VersionSpecification versionSpec) throws ClassNotFoundException {
         CompositeEntity result = null;
 
         for (ActorOrientedClassProvider classProvider : _actorOrientedClassProviders) {
             try {
-                result = classProvider.getActorOrientedClass(className, versionSpec);
+                result = classProvider.getActorOrientedClass(className,
+                        versionSpec);
                 if (result != null) {
                     break;
                 }
@@ -124,7 +126,8 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
      * @return true if the entry was added successfully
      * @exception IllegalArgumentException when the given provider is null
      */
-    public boolean addModelElementClassProvider(ModelElementClassProvider classProvider) {
+    public boolean addModelElementClassProvider(
+            ModelElementClassProvider classProvider) {
         if (classProvider == null) {
             throw new IllegalArgumentException("classProvider can not be null");
         }
@@ -140,7 +143,8 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
      * given instance and it was removed successfully
      * @exception IllegalArgumentException when the given provider is null
      */
-    public boolean removeModelElementClassProvider(ModelElementClassProvider classProvider) {
+    public boolean removeModelElementClassProvider(
+            ModelElementClassProvider classProvider) {
         if (classProvider == null) {
             throw new IllegalArgumentException("classProvider can not be null");
         }
@@ -162,7 +166,8 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
      * @return true if the entry was added successfully
      * @exception IllegalArgumentException when the given provider is null
      */
-    public boolean addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+    public boolean addActorOrientedClassProvider(
+            ActorOrientedClassProvider classProvider) {
         if (classProvider == null) {
             throw new IllegalArgumentException("classProvider can not be null");
         }
@@ -177,7 +182,8 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
      * given instance and it was removed successfully
      * @exception IllegalArgumentException when the given provider is null
      */
-    public boolean removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+    public boolean removeActorOrientedClassProvider(
+            ActorOrientedClassProvider classProvider) {
         return _actorOrientedClassProviders.remove(classProvider);
     }
 

@@ -242,7 +242,7 @@ public class DDF extends DataflowWithRates {
 
                 if (freeVars != null) {
                     for (Iterator iterator = freeVars.iterator(); iterator
-                             .hasNext();) {
+                            .hasNext();) {
                         String name = (String) iterator.next();
 
                         if (_isBoundByPortVar(name, action)) {

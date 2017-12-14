@@ -317,7 +317,8 @@ public abstract class GTIngredient {
      *  @param separator The separator character.
      *  @return The position of the separator, if found, or -1 otherwise.
      */
-    protected static int _findSeparator(String s, int startPos, char separator) {
+    protected static int _findSeparator(String s, int startPos,
+            char separator) {
         boolean inDblQuote = false;
         boolean inSngQuote = false;
         boolean escaped = false;
@@ -371,7 +372,7 @@ public abstract class GTIngredient {
     /**
      An iterator to read the fields one by one in a string that describes the
      values of all the elements.
-
+    
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

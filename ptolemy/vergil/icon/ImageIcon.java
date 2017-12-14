@@ -138,7 +138,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // Make sure the image is fully loaded before we create the
         // images. This prevents flashing.
         if (_scalePercentage == _scalePercentageImplemented
-                && (tk.checkImage(_scaledImage, 43, 33, this) & ImageObserver.ALLBITS) != 0) {
+                && (tk.checkImage(_scaledImage, 43, 33, this)
+                        & ImageObserver.ALLBITS) != 0) {
             // Current image is fully loaded.
             newFigure = new ImageFigure(_scaledImage);
         } else {
@@ -186,9 +187,9 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *   completely loaded; true otherwise.
      */
     @Override
-    public synchronized boolean imageUpdate(
-            final Image image, final int infoflags, final int x,
-            final int y, final int width, final int height) {
+    public synchronized boolean imageUpdate(final Image image,
+            final int infoflags, final int x, final int y, final int width,
+            final int height) {
         // This has to run in the swing event thread.
         Runnable action = new Runnable() {
             @Override
@@ -209,9 +210,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                     return;
                 }
 
-                if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
-                    URL url = getClass().getClassLoader().getResource(
-                            "diva/canvas/toolbox/errorImage.gif");
+                if ((infoflags
+                        & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
+                    URL url = getClass().getClassLoader()
+                            .getResource("diva/canvas/toolbox/errorImage.gif");
                     Toolkit tk = Toolkit.getDefaultToolkit();
                     Image errorImage = tk.getImage(url);
                     synchronized (this) {
@@ -276,10 +278,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                         // This will be handled in imageUpdate().
                         return;
                     }
-                    int newWidth = (int) Math.round(width * _scalePercentage
-                            / 100.0);
-                    int newHeight = (int) Math.round(height * _scalePercentage
-                            / 100.0);
+                    int newWidth = (int) Math
+                            .round(width * _scalePercentage / 100.0);
+                    int newHeight = (int) Math
+                            .round(height * _scalePercentage / 100.0);
 
                     if (newWidth != 0 && newHeight != 0) {
                         // Avoid "Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: Width (0) and height (0) must be non-zero"
@@ -341,7 +343,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             }
         }
 
-        ChangeRequest request = new ChangeRequest(this, "Dummy change request") {
+        ChangeRequest request = new ChangeRequest(this,
+                "Dummy change request") {
             @Override
             protected void _execute() {
             }
@@ -358,8 +361,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     private Image _image;
 
     // Placeholder icon to be used if images are not fully processed.
-    private static Figure _PLACEHOLDER_ICON = new BasicRectangle(0.0, 0.0,
-            10.0, 10.0);
+    private static Figure _PLACEHOLDER_ICON = new BasicRectangle(0.0, 0.0, 10.0,
+            10.0);
 
     // The scaled version of the image that is the master.
     private Image _scaledImage;

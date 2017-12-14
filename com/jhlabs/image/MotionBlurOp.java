@@ -46,7 +46,8 @@ public class MotionBlurOp extends AbstractBufferedImageOp {
      * @param rotation the angle of rotation.
      * @param zoom the zoom factor.
      */
-    public MotionBlurOp(float distance, float angle, float rotation, float zoom) {
+    public MotionBlurOp(float distance, float angle, float rotation,
+            float zoom) {
         this.distance = distance;
         this.angle = angle;
         this.rotation = rotation;
@@ -193,8 +194,9 @@ public class MotionBlurOp extends AbstractBufferedImageOp {
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
         BufferedImage tsrc = src;
         float cx = src.getWidth() * centreX;
         float cy = src.getHeight() * centreY;
@@ -203,7 +205,8 @@ public class MotionBlurOp extends AbstractBufferedImageOp {
         float translateY = (float) (distance * -Math.sin(angle));
         float scale = zoom;
         float rotate = rotation;
-        float maxDistance = distance + Math.abs(rotation * imageRadius) + zoom * imageRadius;
+        float maxDistance = distance + Math.abs(rotation * imageRadius)
+                + zoom * imageRadius;
         int steps = log2((int) maxDistance);
 
         translateX /= maxDistance;
@@ -222,14 +225,18 @@ public class MotionBlurOp extends AbstractBufferedImageOp {
         for (int i = 0; i < steps; i++) {
             Graphics2D g = tmp.createGraphics();
             g.drawImage(tsrc, null, null);
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setComposite(
+                    AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 
             g.translate(cx + translateX, cy + translateY);
             g.scale(1.0001 + scale, 1.0001 + scale); // The .0001 works round a bug on Windows where drawImage throws an ArrayIndexOutofBoundException
-            if (rotation != 0)
+            if (rotation != 0) {
                 g.rotate(rotate);
+            }
             g.translate(-cx, -cy);
 
             g.drawImage(dst, null, null);

@@ -145,8 +145,8 @@ public final class ButtonBarBuilder extends PanelBuilder {
     /**
      * Specifies the FormLayout's the single button bar row.
      */
-    private static final RowSpec[] ROW_SPECS = new RowSpec[] { new RowSpec(
-            "center:pref") };
+    private static final RowSpec[] ROW_SPECS = new RowSpec[] {
+            new RowSpec("center:pref") };
 
     /**
      * The client property key used to indicate that a button shall

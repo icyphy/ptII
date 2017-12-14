@@ -99,7 +99,8 @@ public class DTReceiver extends SDFReceiver {
      *  @exception IllegalActionException If the container does
      *   not accept this receiver.
      */
-    public DTReceiver(IOPort container, int size) throws IllegalActionException {
+    public DTReceiver(IOPort container, int size)
+            throws IllegalActionException {
         super(container, size);
         _init();
 
@@ -215,7 +216,8 @@ public class DTReceiver extends SDFReceiver {
                         }
                     }
                 }
-            } else if (connectedPort.getContainer() instanceof TypedCompositeActor) {
+            } else if (connectedPort
+                    .getContainer() instanceof TypedCompositeActor) {
                 // FIXME: should use at isAtomic() instead of instanceof?
                 _from = (Actor) connectedPort.getContainer();
                 _fromPort = connectedPort;

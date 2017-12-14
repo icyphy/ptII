@@ -72,7 +72,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        scaleFactor = new Parameter(this,"scaleFactor");
+        scaleFactor = new Parameter(this, "scaleFactor");
         scaleFactor.setDisplayName("Time scale factor");
         scaleFactor.setTypeEquals(BaseType.DOUBLE);
         scaleFactor.setExpression("1.0");
@@ -86,6 +86,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
      * This class does not create change request for new actor in proposeTime.
      * Always return true then.
      */
+    @Override
     public boolean noNewActors() {
         return true;
     }
@@ -116,19 +117,23 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
                     // safely cast to a double.  This means that
                     // the SR domain has an upper limit on running
                     // time of Double.MAX_VALUE milliseconds.
-                    double elapsedTime_s = director.elapsedTimeSinceStart() / 1000.0;
-                    double currentTime_s = director.getModelTime().getDoubleValue();
+                    double elapsedTime_s = director.elapsedTimeSinceStart()
+                            / 1000.0;
+                    double currentTime_s = director.getModelTime()
+                            .getDoubleValue();
 
-                    double scale = ((DoubleToken) scaleFactor.getToken()).doubleValue();
-                    if (currentTime_s*scale <= elapsedTime_s) {
+                    double scale = ((DoubleToken) scaleFactor.getToken())
+                            .doubleValue();
+                    if (currentTime_s * scale <= elapsedTime_s) {
                         break;
                     }
 
-                    long timeToWait_ms = (long) ((currentTime_s*scale - elapsedTime_s) * 1000.0);
+                    long timeToWait_ms = (long) ((currentTime_s * scale
+                            - elapsedTime_s) * 1000.0);
 
                     if (_debugging) {
-                        _debug("Waiting for real time to pass: " + timeToWait_ms+
-                                " before " + proposedTime.getDoubleValue());
+                        _debug("Waiting for real time to pass: " + timeToWait_ms
+                                + " before " + proposedTime.getDoubleValue());
                     }
 
                     try {

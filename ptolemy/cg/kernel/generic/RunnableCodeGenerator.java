@@ -70,7 +70,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     public RunnableCodeGenerator(NamedObj container, String name,
             String outputFileExtension)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension);
 
         run = new Parameter(this, "run");
@@ -117,8 +117,8 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RunnableCodeGenerator newObject = (RunnableCodeGenerator) super
-                .clone(workspace);
+        RunnableCodeGenerator newObject = (RunnableCodeGenerator) super.clone(
+                workspace);
 
         try {
             newObject._substituteMap = CodeGeneratorUtilities.newMap(this);
@@ -152,12 +152,11 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
         String[][] options = {
                 { "-run", "               true|false (default: true)" },
                 { "-runCommand",
-                "        <a string, default: make -f @modelName@.mk run>" },
-        };
+                        "        <a string, default: make -f @modelName@.mk run>" }, };
 
         String[][] parentOptions = super.updateCommandOptions();
         String[][] allOptions = new String[parentOptions.length
-                                           + options.length][2];
+                + options.length][2];
         int i = 0;
         for (; i < parentOptions.length; i++) {
             allOptions[i][0] = parentOptions[i][0];
@@ -202,8 +201,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
         }
 
         System.out.println("RunnableCodeGenerator: run command: (cd "
-                           + codeDirectory.asFile() + "; "
-                           + command + ")");
+                + codeDirectory.asFile() + "; " + command + ")");
 
         _executeCommands.setCommands(commands);
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
@@ -231,9 +229,9 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     protected String _runCommand() throws IllegalActionException {
         _updateSubstituteMap();
-        String command = CodeGeneratorUtilities
-            .substitute(((StringToken) runCommand.getToken())
-                        .stringValue(), _substituteMap);
+        String command = CodeGeneratorUtilities.substitute(
+                ((StringToken) runCommand.getToken()).stringValue(),
+                _substituteMap);
         return command;
     }
 
@@ -254,18 +252,21 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      *  Derived classes should throw it if there is a problem parsing
      *  a value.
      */
-    protected void _updateSubstituteMap()
-        throws IllegalActionException {
+    protected void _updateSubstituteMap() throws IllegalActionException {
         if (_substituteMap == null) {
             _substituteMap = CodeGeneratorUtilities.newMap(this);
         }
 
-        _substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
+        _substituteMap.put("@codeDirectory@",
+                codeDirectory.asFile().toString());
         _substituteMap.put("@modelName@", _sanitizedModelName);
-        _substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+        _substituteMap.put("@PTII@",
+                StringUtilities.getProperty("ptolemy.ptII.dir"));
 
         if (_model instanceof CompositeActor) {
-            _substituteMap.put("@stopTime@", ((CompositeActor) _model).getDirector().stopTime.getExpression());
+            _substituteMap.put("@stopTime@",
+                    ((CompositeActor) _model).getDirector().stopTime
+                            .getExpression());
         }
     }
 

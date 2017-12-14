@@ -89,7 +89,8 @@ public class ImageWriter extends TypedAtomicActor {
     @Override
     public boolean postfire() throws IllegalActionException {
         ByteArrayToken token = (ByteArrayToken) input.get(0);
-        ByteArrayInputStream stream = new ByteArrayInputStream(token.getArray());
+        ByteArrayInputStream stream = new ByteArrayInputStream(
+                token.getArray());
 
         CompositeEntity container = (CompositeEntity) this.getContainer();
         ProxySource source = (ProxySource) container.getEntity("Video_remote");

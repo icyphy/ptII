@@ -133,7 +133,8 @@ public class RaysFilter extends MotionBlurOp {
         int[] pixels = new int[width];
         int[] srcPixels = new int[width];
 
-        BufferedImage rays = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage rays = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
 
         int threshold3 = (int) (threshold * 3 * 255);
         for (int y = 0; y < height; y++) {
@@ -145,9 +146,9 @@ public class RaysFilter extends MotionBlurOp {
                 int g = (rgb >> 8) & 0xff;
                 int b = rgb & 0xff;
                 int l = r + g + b;
-                if (l < threshold3)
+                if (l < threshold3) {
                     pixels[x] = 0xff000000;
-                else {
+                } else {
                     l /= 3;
                     pixels[x] = a | (l << 16) | (l << 8) | l;
                 }
@@ -182,8 +183,9 @@ public class RaysFilter extends MotionBlurOp {
             setRGB(rays, 0, y, width, 1, pixels);
         }
 
-        if (dst == null)
+        if (dst == null) {
             dst = createCompatibleDestImage(src, null);
+        }
 
         Graphics2D g = dst.createGraphics();
         if (!raysOnly) {

@@ -88,13 +88,13 @@ public class ColtBinomialSelector extends ColtRandomSource {
         trials = new PortParameter(this, "trials", new IntToken(1));
         trials.setTypeEquals(BaseType.INT);
         new SingletonParameter(trials.getPort(), "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         populations = new TypedIOPort(this, "populations", true, false);
         populations.setMultiport(true);
         populations.setTypeEquals(BaseType.LONG);
         new SingletonParameter(populations, "_showName")
-        .setToken(BooleanToken.TRUE);
+                .setToken(BooleanToken.TRUE);
 
         output.setMultiport(true);
         output.setTypeEquals(BaseType.INT);
@@ -154,8 +154,8 @@ public class ColtBinomialSelector extends ColtRandomSource {
         for (int i = 0; i < sourceValues.length; i++) {
             sourceValues[i] = ((LongToken) populations.get(i)).longValue();
             if (sourceValues[i] < 0) {
-                throw new IllegalActionException(this, "sourceValue[" + i
-                        + "] is negative.");
+                throw new IllegalActionException(this,
+                        "sourceValue[" + i + "] is negative.");
             }
 
             sourcePool += sourceValues[i];
@@ -200,8 +200,8 @@ public class ColtBinomialSelector extends ColtRandomSource {
                         // correct number of selections should the
                         // first pass (with high probability) fail to
                         // select the required number of selections
-                        selected = _generator.nextInt((int) Math.min(
-                                trialsRemaining, sourceValues[i]), p);
+                        selected = _generator.nextInt((int) Math
+                                .min(trialsRemaining, sourceValues[i]), p);
                     } else {
                         selected = trialsRemaining;
                     }
