@@ -1,0 +1,1129 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SecureCommServerClientJS" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-90.0, 170.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={146, 161, 1216, 724}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[982, 614]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0300318325006106">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.830078125, 382.54638470936226}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, 655.0}">
+        </property>
+    </property>
+    <property name="IOTAUTH_HOME" class="ptolemy.data.expr.FileParameter" value="$PTII/vendors/iotauth">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#00BB00" y="20">-F-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-105.0, 525.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To run this demo, an open-source local authorization entity (Auth) should be running.&#10;The Auth can be obtained in the github repository, https://github.com/iotauth/iotauth.&#10;&#10;See https://github.com/iotauth/iotauth/blob/master/examples/README.md or click on this annotation.&#10;&#10;NOTE2: The parameter IOTAUTH_HOME in this demo should be set to the repository directory of iotauth.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, 550.0}">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://github.com/iotauth/iotauth/blob/master/examples/README.md#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 570}">
+            </property>
+        </property>
+    </property>
+    <entity name="SecureCommClient" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor is used for accessing authorization service provided by&#10; *  a local authorization entity, Auth (https://github.com/iotauth/iotauth),&#10; *  and for secure communication with a SecureCommserver.&#10; *&#10; *  Specifically, this accessor establishes a secure communication with server&#10; *  using session keys (symmetric cryptographic keys) and sends/receives&#10; *  messages to/from the server. To obtain session keys, this accessor also&#10; *  communicates with the local authorization entity, Auth.&#10; *&#10; *  This accessor internally manages the credentials (cryptographic keys)&#10; *  for communication with remote Auth and remote server.&#10; *  All the messages to/from remote Auth and server are protected using&#10; *  the credentials, while input/output data of this accessor is in plain text.&#10; *&#10; *  This accessor requires the 'iotAuth', and 'dataConverter' modules.&#10; *&#10; *  @accessor net/SecureCommClient&#10; *&#10; *  @input serverHostPort Information of the destination server. This input triggers&#10; *   a secure connection with a server (possibly using the SecureCommServer accessor).&#10; *   This input is specified as a JSON with two properties, 'host' and 'port'. The property&#10; *   'host' specifies the IP address or domain name of server in string and 'port' specifies&#10; *   the port number in integer. If a session key for communicating with a server is not&#10; *   available, the SecureCommClient communicates with Auth to request the session key(s)&#10; *   for secure communication, before establishing a secure connection with the server.&#10; *  @input toSend The data to be sent over the secure connection with the server.&#10; *&#10; *  @output {boolean} connected Output `true` on connected and `false` on disconnected with&#10; *   the server over a secure connection.&#10; *  @output received The data received from the server over a secure connection.&#10; *&#10; *  @parameter {string} clientName The client's unique name in string.&#10; *  @parameter {string} authHost Auth's IP address or domain name.&#10; *  @parameter {int} authPort Auth's port number.&#10; *&#10; *  @parameter {string} authCertPath The path for the X.509 certificate file (in pem format)&#10; *   of Auth with which the client is registered.&#10; *  @parameter {string} clientPrivateKeyPath The path for the pem format private key of&#10; *   the client.&#10; *&#10; *  @parameter {string} publicKeyCryptoSpec The specification for the public cryptography&#10; *   algorithms to be used for communication with Auth&#10; *  @parameter {string} distributionCryptoSpec The specification for the symmetric cryptography&#10; *   algorithms to be used for communication with Auth&#10; *  @parameter {string} sessionCryptoSpec The specification for the symmetric cryptography&#10; *   algorithms to be used for communication with the server&#10; *&#10; *  @parameter {int} numKeysPerRequest The number of session keys to be requested per&#10; *   session key request to Auth&#10; *  @parameter {string} targetServerGroup The communication policy group to which the&#10; *   target server belong.&#10; *&#10; *  @parameter {string} receiveType Data type of the received data from server.&#10; *  @parameter {string} sendType Data type of the sent data to server.&#10; *&#10; *  @author Hokeun Kim&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*global console, exports, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var dataConverter = require('dataConverter');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('serverHostPort', {&#10;        type: 'JSON',&#10;        value:  {host: 'localhost', port: 21200}&#10;    });&#10;    this.input('toSend');&#10;    this.output('connected', {&#10;        type: 'boolean',&#10;        spontaneous: true&#10;    });&#10;    this.output('received', {&#10;        type: 'string'&#10;    });&#10;    // Client information&#10;    this.parameter('clientName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type: 'string',&#10;        value: 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('clientPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicKeyCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.publicKeyCryptoSpecs&#10;    });&#10;    this.parameter('distributionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs&#10;    });&#10;    this.parameter('numKeysPerRequest', {&#10;        value: 1,&#10;        type: 'int'&#10;    });&#10;    // For communication with server&#10;    this.parameter('targetServerGroup', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs&#10;    });&#10;    // Send/receive type&#10;    this.parameter('receiveType', {&#10;        type: 'string',&#10;        value: 'string',&#10;        options: ['string', 'image', 'byteArray']&#10;    });&#10;    this.parameter('sendType', {&#10;        type: 'string',&#10;        value: 'string',&#10;        options: ['string', 'image', 'byteArray']&#10;    });&#10;};&#10;&#10;// client communication state&#10;var clientCommState = {&#10;    IDLE: 0,&#10;    IN_COMM: 30 // Session message&#10;};&#10;&#10;// local variables&#10;var self;&#10;var receiveType;&#10;var sendType;&#10;var authPublicKey;&#10;var clientPrivateKey;&#10;var currentSecureClient = null;&#10;var currentDistributionKey = null;&#10;var currentSessionKeyList = [];&#10;var currentSessionKey = null;&#10;var currentState = clientCommState.IDLE;&#10;&#10;function outputError(errorMessage) {&#10;    console.log(errorMessage);&#10;    self.error(errorMessage);&#10;}&#10;&#10;// Event handlers for a secure client socket.&#10;function onConnection(entityClientSocket) {&#10;    console.log('communication initialization succeeded');&#10;    currentSecureClient = entityClientSocket;&#10;    currentState = clientCommState.IN_COMM;&#10;    self.send('connected', true);&#10;}&#10;&#10;function onClose() {&#10;    console.log('secure connection with the server closed.');&#10;    self.send('connected', false);&#10;}&#10;&#10;function onError(message) {&#10;    outputError('Error in secure comm - details: ' + message);&#10;}&#10;&#10;function onData(data) {&#10;    console.log('data received from server via secure communication');&#10;&#10;    if (receiveType == 'string') {&#10;        self.send('received', data.toString());&#10;    } else if (receiveType == 'image') {&#10;        self.send('received', dataConverter.jsArrayToImage(data.getArray()));&#10;    } else if (receiveType == 'byteArray') {&#10;        self.send('received', data.getArray());&#10;    }&#10;}&#10;&#10;function initSecureCommWithSessionKey(sessionKey, serverHost, serverPort) {&#10;    currentSessionKey = sessionKey;&#10;    if (currentSecureClient) {&#10;        currentSecureClient.close();&#10;        console.log('Status: Secure connection closed before starting a new connection.');&#10;        currentState = clientCommState.IDLE;&#10;    }&#10;    var options = {&#10;        serverHost: serverHost,&#10;        serverPort: serverPort,&#10;        sessionKey: currentSessionKey,&#10;        sessionCryptoSpec: self.getParameter('sessionCryptoSpec')&#10;    };&#10;    var eventHandlers = {&#10;        onClose: onClose,&#10;        onError: onError,&#10;        onData: onData,&#10;        onConnection: onConnection&#10;    };&#10;    iotAuth.initializeSecureCommunication(options, eventHandlers);&#10;}&#10;&#10;/*&#10;  callbackParameters = {&#10;  host,&#10;  port&#10;  }&#10;*/&#10;function sessionKeyResponseCallback(status, distributionKey, sessionKeyList, callbackParameters) {&#10;    if (status.error) {&#10;        console.log(status.error);&#10;        console.log('session key request failed...');&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        currentSessionKeyList.push(sessionKeyList[i]);&#10;    }&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        initSecureCommWithSessionKey(currentSessionKeyList.shift(),&#10;            callbackParameters.host, callbackParameters.port);&#10;    }&#10;}&#10;&#10;exports.serverHostPortInputHandler = function () {&#10;    var serverHostPort = this.get('serverHostPort');&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        initSecureCommWithSessionKey(currentSessionKeyList.shift(),&#10;            serverHostPort.host, serverHostPort.port);&#10;    } else {&#10;        var options = {&#10;            authHost: this.getParameter('authHost'),&#10;            authPort: this.getParameter('authPort'),&#10;            entityName: this.getParameter('clientName'),&#10;            numKeysPerRequest: this.getParameter('numKeysPerRequest'),&#10;            purpose: {&#10;                group: this.getParameter('targetServerGroup')&#10;            },&#10;            distributionKey: currentDistributionKey,&#10;            distributionCryptoSpec: this.getParameter('distributionCryptoSpec'),&#10;            publicKeyCryptoSpec: this.getParameter('publicKeyCryptoSpec'),&#10;            authPublicKey: authPublicKey,&#10;            entityPrivateKey: clientPrivateKey&#10;        };&#10;        iotAuth.sendSessionKeyRequest(options, sessionKeyResponseCallback, serverHostPort);&#10;    }&#10;};&#10;&#10;exports.toSendInputHandler = function () {&#10;    var toSend = this.get('toSend');&#10;&#10;    if (sendType == 'image') {&#10;        toSend = dataConverter.imageToJSArray(toSend);&#10;    }&#10;    if (currentSecureClient &amp;&amp; currentState == clientCommState.IN_COMM) {&#10;        if (!currentSecureClient.checkSessionKeyValidity()) {&#10;            outputError('session key expired!');&#10;        } else if (!currentSecureClient.send(toSend)) {&#10;            outputError('Error in sending data');&#10;        }&#10;    } else {&#10;        console.log('Discarding data because socket is not open.');&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    currentState = clientCommState.IDLE;&#10;    currentSessionKeyList = [];&#10;    currentSessionKey = null;&#10;&#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    clientPrivateKey = iotAuth.loadPrivateKey(this.getParameter('clientPrivateKeyPath'));&#10;    receiveType = this.getParameter('receiveType');&#10;    sendType = this.getParameter('sendType');&#10;&#10;    self = this;&#10;&#10;    this.addInputHandler('serverHostPort',&#10;        this.exports.serverHostPortInputHandler.bind(this));&#10;    this.addInputHandler('toSend',&#10;        this.exports.toSendInputHandler.bind(this));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (currentSecureClient) {&#10;        currentSecureClient.close();&#10;        console.log('Status: Connection closed in wrap-up.');&#10;        currentState = clientCommState.IDLE;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/SecureCommClient.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="clientName" class="ptolemy.data.expr.Parameter" value="net1.ptClient">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/auth_certs/Auth101EntityCert.pem">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="clientPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/Net1.PtClientKey.der">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="publicKeyCryptoSpec" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING:SHA256withRSA">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distributionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:HmacSHA256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="targetServerGroup" class="ptolemy.data.expr.Parameter" value="PtServers">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sessionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:HmacSHA256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 285.0}">
+        </property>
+        <property name="authPort" class="ptolemy.data.expr.Parameter" value="21900">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor is used for accessing authorization service provided by&#10; a local authorization entity, Auth (https://github.com/iotauth/iotauth),&#10; and for secure communication with a SecureCommserver.&lt;/p&gt;&#10;&lt;p&gt; Specifically, this accessor establishes a secure communication with server&#10; using session keys (symmetric cryptographic keys) and sends/receives&#10; messages to/from the server. To obtain session keys, this accessor also&#10; communicates with the local authorization entity, Auth.&lt;/p&gt;&#10;&lt;p&gt; This accessor internally manages the credentials (cryptographic keys)&#10; for communication with remote Auth and remote server.&#10; All the messages to/from remote Auth and server are protected using&#10; the credentials, while input/output data of this accessor is in plain text.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires the 'iotAuth', and 'dataConverter' modules.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="clientName (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The client's unique name in string.">
+            </property>
+            <property name="authHost (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Auth's IP address or domain name.">
+            </property>
+            <property name="authCertPath (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The path for the X.509 certificate file (in pem format)&#10;  of Auth with which the client is registered.">
+            </property>
+            <property name="clientPrivateKeyPath (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The path for the pem format private key of&#10;  the client.">
+            </property>
+            <property name="publicKeyCryptoSpec (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The specification for the public cryptography&#10;  algorithms to be used for communication with Auth">
+            </property>
+            <property name="distributionCryptoSpec (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The specification for the symmetric cryptography&#10;  algorithms to be used for communication with Auth">
+            </property>
+            <property name="targetServerGroup (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The communication policy group to which the&#10;  target server belong.">
+            </property>
+            <property name="sessionCryptoSpec (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The specification for the symmetric cryptography&#10;  algorithms to be used for communication with the server">
+            </property>
+            <property name="receiveType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Data type of the received data from server.">
+            </property>
+            <property name="sendType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Data type of the sent data to server.">
+            </property>
+            <property name="authPort (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Auth's port number.">
+            </property>
+            <property name="numKeysPerRequest (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The number of session keys to be requested per&#10;  session key request to Auth">
+            </property>
+            <property name="serverHostPort (port)" class="ptolemy.kernel.util.StringAttribute" value="Information of the destination server. This input triggers&#10;  a secure connection with a server (possibly using the SecureCommServer accessor).&#10;  This input is specified as a JSON with two properties, 'host' and 'port'. The property&#10;  'host' specifies the IP address or domain name of server in string and 'port' specifies&#10;  the port number in integer. If a session key for communicating with a server is not&#10;  available, the SecureCommClient communicates with Auth to request the session key(s)&#10;  for secure communication, before establishing a secure connection with the server.">
+            </property>
+            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be sent over the secure connection with the server.">
+            </property>
+            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="Output `true` on connected and `false` on disconnected with&#10;  the server over a secure connection.">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The data received from the server over a secure connection.">
+            </property>
+        </property>
+        <property name="serverHostPort" class="ptolemy.actor.parameters.PortParameter" value="{&quot;host&quot;:&quot;localhost&quot;,&quot;port&quot;:21200}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="serverHostPort" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="SecureCommServer" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor is used for accessing authorization service provided by&#10; *  a local authorization entity, Auth (https://github.com/iotauth/iotauth),&#10; *  and for secure communication with a SecureCommClient.&#10; *&#10; *  Specifically, this access listens to secure communication requests from&#10; *  clients and handles the client requests.&#10; *&#10; *  This accessor internally manages the credentials (cryptographic keys)&#10; *  for communication with remote Auth and remote client.&#10; *&#10; *  All the messages to/from remote Auth and client are protected using&#10; *  the credentials, while input/output data of this accessor is in plain text.&#10; *&#10; *  This accessor requires the 'iotAuth', and 'dataConverter' modules.&#10; *&#10; *  @accessor net/SecureCommServer&#10; *&#10; *  @input toSend&#10; *  @input {int} toSendID&#10; *&#10; *  @output {int} listening&#10; *  @output connection Includes information of the remote client&#10; *  @output received&#10; *  @output receivedID&#10; *&#10; *  @parameter {string} serverName The server's unique name in string.&#10; *  @parameter {int} serverPort Server's port number.&#10; *  @parameter {string} authHost Auth's IP address or domain name.&#10; *  @parameter {int} authPort Auth's port number.&#10; *&#10; *  @parameter {string} authCertPath The path for the X.509 certificate file (in pem format)&#10; *   of Auth with which the server is registered.&#10; *  @parameter {string} serverPrivateKeyPath The path for the pem format private key of&#10; *   the server.&#10; *&#10; *  @parameter {string} publicKeyCryptoSpec The specification for the public cryptography&#10; *   algorithms to be used for communication with Auth&#10; *  @parameter {string} distributionCryptoSpec The specification for the symmetric cryptography&#10; *   algorithms to be used for communication with Auth&#10; *  @parameter {string} sessionCryptoSpec The specification for the symmetric cryptography&#10; *   algorithms to be used for communication with the client&#10; *&#10; *  @parameter {string} receiveType Data type of the received data from client.&#10; *  @parameter {string} sendType Data type of the sent data to client.&#10; *&#10; *  @author Hokeun Kim&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*global console, exports, idToSendTo, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var dataConverter = require('dataConverter');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('toSend');&#10;    this.input('toSendID', {&#10;        type: 'int',&#10;        value: -1&#10;    });&#10;    this.output('listening', {&#10;        type: 'int'&#10;    });&#10;    this.output('connection');&#10;    this.output('received', {&#10;        spontaneous: true&#10;    });&#10;    this.output('receivedID', {&#10;        type: 'int',&#10;        spontaneous: true&#10;    });&#10;    // Server information&#10;    this.parameter('serverName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('serverPort', {&#10;        type: 'int',&#10;        value: 4000&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type: 'string',&#10;        value: 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('serverPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicKeyCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.publicKeyCryptoSpecs&#10;    });&#10;    this.parameter('distributionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs&#10;    });&#10;    // For communication with client&#10;    this.parameter('sessionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs&#10;    });&#10;    // Send/receive type&#10;    this.parameter('receiveType', {&#10;        type: 'string',&#10;        value: 'string',&#10;        options: ['string', 'image', 'byteArray']&#10;    });&#10;    this.parameter('sendType', {&#10;        type: 'string',&#10;        value: 'string',&#10;        options: ['string', 'image', 'byteArray']&#10;    });&#10;};&#10;&#10;&#10;// local variables&#10;var self;&#10;var receiveType;&#10;var sendType;&#10;var authPublicKey;&#10;var serverPrivateKey;&#10;var currentDistributionKey = null;&#10;var server = null;&#10;var sockets = [];&#10;var currentSessionKey = null;&#10;&#10;function outputError(errorMessage) {&#10;    console.log(errorMessage);&#10;    self.error(errorMessage);&#10;}&#10;&#10;/*&#10;  callbackParameters = {&#10;  keyId,&#10;  sendHandshake2Callback,&#10;  handshake1Payload,&#10;  serverSocket&#10;  }&#10;*/&#10;function sessionKeyResponseCallback(status, distributionKey, sessionKeyList, callbackParameters) {&#10;    if (status.error) {&#10;        console.log('session key request failed: ' + status.error);&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    var receivedSessionKey;&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        receivedSessionKey = sessionKeyList[i];&#10;    }&#10;    console.log('Session key arrived');&#10;    if (receivedSessionKey.id == callbackParameters.keyId) {&#10;        console.log('Session key id is as expected');&#10;        currentSessionKey = receivedSessionKey;&#10;        callbackParameters.sendHandshake2Callback(callbackParameters.handshake1Payload,&#10;            callbackParameters.serverSocket, receivedSessionKey);&#10;    } else {&#10;        outputError('Session key id is NOT as expected');&#10;    }&#10;}&#10;&#10;// event handlers for the listening server&#10;function onServerListening(listeningPort) {&#10;    console.log('Server: Listening for socket connection requests on port ' + listeningPort);&#10;    self.send('listening', listeningPort);&#10;}&#10;&#10;function onServerError(message) {&#10;    outputError('Error in server - details: ' + message);&#10;}&#10;&#10;function onClientRequest(handshake1Payload, serverSocket, sendHandshake2Callback) {&#10;    var keyId = handshake1Payload.readUIntBE(0, iotAuth.SESSION_KEY_ID_SIZE);&#10;    if (currentSessionKey !== null &amp;&amp; currentSessionKey.id === keyId) {&#10;        sendHandshake2Callback(handshake1Payload, serverSocket, currentSessionKey);&#10;    } else {&#10;        console.log('session key NOT found! sending session key id to AuthService');&#10;        var options = {&#10;            authHost: self.getParameter('authHost'),&#10;            authPort: self.getParameter('authPort'),&#10;            entityName: self.getParameter('serverName'),&#10;            numKeysPerRequest: 1,&#10;            purpose: {&#10;                keyId: keyId&#10;            },&#10;            distributionKey: currentDistributionKey,&#10;            distributionCryptoSpec: self.getParameter('distributionCryptoSpec'),&#10;            publicKeyCryptoSpec: self.getParameter('publicKeyCryptoSpec'),&#10;            authPublicKey: authPublicKey,&#10;            entityPrivateKey: serverPrivateKey&#10;        };&#10;        var callbackParameters = {&#10;            keyId: keyId,&#10;            sendHandshake2Callback: sendHandshake2Callback,&#10;            handshake1Payload: handshake1Payload,&#10;            serverSocket: serverSocket&#10;        };&#10;        iotAuth.sendSessionKeyRequest(options, sessionKeyResponseCallback, callbackParameters);&#10;    }&#10;}&#10;&#10;// Event handlers for individual sockets.&#10;function onClose(socketID) {&#10;    console.log('secure connection with the client closed.');&#10;    sockets[socketID] = null;&#10;    self.send('connection', 'socket #' + socketID + ' closed');&#10;}&#10;&#10;function onError(message, socketID) {&#10;    outputError('Error in secure server socket #' + socketID +&#10;        ' details: ' + message);&#10;}&#10;&#10;function onConnection(socketInstance, entityServerSocket) {&#10;    console.log('secure connection with the client established.');&#10;    self.send('connection', socketInstance);&#10;    sockets[socketInstance.id] = entityServerSocket;&#10;}&#10;&#10;function onData(data, socketID) {&#10;    console.log('data received from server via secure communication');&#10;&#10;    if (receiveType == 'string') {&#10;        self.send('received', data.toString());&#10;    } else if (receiveType == 'image') {&#10;        self.send('received', dataConverter.jsArrayToImage(data.getArray()));&#10;    } else if (receiveType == 'byteArray') {&#10;        self.send('received', data.getArray());&#10;    }&#10;    self.send('receivedID', socketID);&#10;}&#10;&#10;exports.toSendInputHandler = function () {&#10;    var toSend = this.get('toSend');&#10;    if (sendType == 'image') {&#10;        toSend = dataConverter.imageToJSArray(toSend);&#10;    }&#10;&#10;    var toSendID = this.get('toSendID');&#10;    // broadcasting&#10;    if (toSendID &lt; 0) {&#10;        for (var i = 0; i &lt; sockets.length; i++) {&#10;            if (!sockets[i]) {&#10;                continue;&#10;            }&#10;            if (!sockets[i].checkSessionKeyValidity()) {&#10;                outputError('session key expired!');&#10;            } else if (!sockets[i].send(toSend)) {&#10;                outputError('Error in sending data');&#10;            }&#10;        }&#10;    } else if (sockets[toSendID]) {&#10;        sockets[toSendID].send(toSend);&#10;    } else {&#10;        console.log('Socket with ID ' + idToSendTo + ' is not open. Discarding data.');&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    currentSessionKey = null;&#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    serverPrivateKey = iotAuth.loadPrivateKey(this.getParameter('serverPrivateKeyPath'));&#10;    receiveType = this.getParameter('receiveType');&#10;    sendType = this.getParameter('sendType');&#10;&#10;    self = this;&#10;    var options = {&#10;        serverPort: this.getParameter('serverPort'),&#10;        sessionCryptoSpec: this.getParameter('sessionCryptoSpec')&#10;    };&#10;    var eventHandlers = {&#10;        onServerError: onServerError,&#10;        onServerListening: onServerListening,&#10;        onClientRequest: onClientRequest,&#10;&#10;        onData: onData,&#10;        onClose: onClose,&#10;        onError: onError,&#10;        onConnection: onConnection&#10;    };&#10;    server = iotAuth.initializeSecureServer(options, eventHandlers);&#10;&#10;    this.addInputHandler('toSend', exports.toSendInputHandler.bind(this));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    sockets = [];&#10;    if (server !== null) {&#10;        server.stop();&#10;        server = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/SecureCommServer.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="serverName" class="ptolemy.data.expr.Parameter" value="net1.ptServer">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/auth_certs/Auth101EntityCert.pem">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="serverPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/Net1.PtServerKey.der">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="publicKeyCryptoSpec" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING:SHA256withRSA">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distributionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:HmacSHA256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sessionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:HmacSHA256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="toSendID" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 195.0}">
+        </property>
+        <property name="serverPort" class="ptolemy.data.expr.Parameter" value="21200">
+        </property>
+        <property name="authPort" class="ptolemy.data.expr.Parameter" value="21900">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor is used for accessing authorization service provided by&#10; a local authorization entity, Auth (https://github.com/iotauth/iotauth),&#10; and for secure communication with a SecureCommClient.&lt;/p&gt;&#10;&lt;p&gt; Specifically, this access listens to secure communication requests from&#10; clients and handles the client requests.&lt;/p&gt;&#10;&lt;p&gt; This accessor internally manages the credentials (cryptographic keys)&#10; for communication with remote Auth and remote client.&lt;/p&gt;&#10;&lt;p&gt; All the messages to/from remote Auth and client are protected using&#10; the credentials, while input/output data of this accessor is in plain text.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires the 'iotAuth', and 'dataConverter' modules.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="serverName (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The server's unique name in string.">
+            </property>
+            <property name="authHost (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Auth's IP address or domain name.">
+            </property>
+            <property name="authCertPath (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The path for the X.509 certificate file (in pem format)&#10;  of Auth with which the server is registered.">
+            </property>
+            <property name="serverPrivateKeyPath (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The path for the pem format private key of&#10;  the server.">
+            </property>
+            <property name="publicKeyCryptoSpec (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The specification for the public cryptography&#10;  algorithms to be used for communication with Auth">
+            </property>
+            <property name="distributionCryptoSpec (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The specification for the symmetric cryptography&#10;  algorithms to be used for communication with Auth">
+            </property>
+            <property name="sessionCryptoSpec (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The specification for the symmetric cryptography&#10;  algorithms to be used for communication with the client">
+            </property>
+            <property name="receiveType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Data type of the received data from client.">
+            </property>
+            <property name="sendType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Data type of the sent data to client.">
+            </property>
+            <property name="serverPort (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Server's port number.">
+            </property>
+            <property name="authPort (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Auth's port number.">
+            </property>
+            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined">
+            </property>
+            <property name="listening (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined">
+            </property>
+            <property name="connection (port)" class="ptolemy.kernel.util.StringAttribute" value="Includes information of the remote client">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined">
+            </property>
+            <property name="receivedID (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined">
+            </property>
+            <property name="toSendID (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined">
+            </property>
+        </property>
+        <port name="toSendID" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="listening" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="connection" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="receivedID" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="ReceivedID" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={94, 61, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ReceivedID">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 125.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Listening" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={397, 90, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="Listening">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 125.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Connection" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 299, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ServerConnection">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 265.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ServerError" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 684, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ServerError">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 280.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ServerReceived" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 510, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ServerReceived">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 370.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ClientConnected" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={931, 74, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ClientConnected">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{640.0, 200.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ClientReceived" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={935, 283, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ClientReceived">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 380.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ClientError" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={923, 687, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ClientError">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 425.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TrainableTest" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;/** Compare the input with a known good input.&#10; *  If you set ''trainingMode'' to true and provide inputs, then the&#10; *  inputs will be recorded in the ''correctValues'' parameters.&#10; *  Otherwise, the inputs will be compared against those in the&#10; *  ''correctValue'' parameter.&#10; *&#10; *  @accessor test/TrainableTest&#10; *  @input input The input value.&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, exports*/&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    this.parameter('correctValues', {&#10;        'value': [0]&#10;    });&#10;    this.input('input');&#10;    this.output('output', {&#10;        'type': 'boolean'&#10;    });&#10;    this.parameter('tolerance', {&#10;        'type': 'number',&#10;        'value': 0.000000001&#10;    });&#10;    this.parameter('trainingMode', {&#10;        'type': 'boolean',&#10;        'value': false&#10;    });&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialize() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;// Set to false in initialize() and true at the end of wrapup().&#10;// FIXME: We should have an exit hook that checks that wrapup() is called for all the actors.&#10;var wrappedUp = false;&#10;&#10;// So we can test this in hosts/node/test/mocha/testMain.js to test that wrapup was called.&#10;exports.wrappedUp = wrappedUp;&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s)&#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    var inputValueValue,&#10;        self = this;&#10;&#10;    trainingTokens = [];&#10;    exports.wrappedUp = false;&#10;    numberOfInputTokensSeen = 0;&#10;&#10;    this.addInputHandler('input', function () {&#10;        var cache = [],&#10;            inputValue = self.get('input'),&#10;            inputValueValue;&#10;        inputHandled = true;&#10;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'boolean' &amp;&amp;&#10;                typeof inputValue !== 'number' &amp;&amp;&#10;                typeof inputValue !== 'object' &amp;&amp;&#10;                typeof inputValue !== 'string') {&#10;                if (inputValue === null) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                        ' tokens, the value of the input was null?  ' +&#10;                        'Perhaps the input is not connected?'&#10;                    );&#10;                }&#10;                cache = [];&#10;                inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0, 100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                    ' tokens, the input &quot;' + inputValue +&#10;                    '&quot; is neither a number nor a string, it is a ' +&#10;                    typeof inputValue + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'boolean') {&#10;                // If the input not a boolean, then throw an error.&#10;                if (typeof inputValue !== 'boolean') {&#10;                    inputValueValue = inputValue;&#10;                    if (typeof inputValue === 'object') {&#10;                        inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                            if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                                if (cache.indexOf(value) !== -1) {&#10;                                    // Circular reference found, discard key&#10;                                    return;&#10;                                }&#10;                                // Store value in our collection&#10;                                cache.push(value);&#10;                            }&#10;                            return value;&#10;                        });&#10;                    }&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValueValue +&#10;                                    '&quot; is not a boolean, it is a ' +&#10;                                    typeof inputValue + '.  The expected value was &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;                if (inputValue !== referenceToken) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValue + '&quot; is not equal to &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'number') {&#10;                // If the input not a number, then throw an error.&#10;                if (typeof inputValue !== 'number') {&#10;                    inputValueValue = inputValue;&#10;                    if (typeof inputValue === 'object') {&#10;                        inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                            if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                                if (cache.indexOf(value) !== -1) {&#10;                                    // Circular reference found, discard key&#10;                                    return;&#10;                                }&#10;                                // Store value in our collection&#10;                                cache.push(value);&#10;                            }&#10;                            return value;&#10;                        });&#10;                    }&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValueValue +&#10;                                    '&quot; is not a number, it is a ' +&#10;                                    typeof inputValue + '.  The expected value was &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;&#10;                var difference = Math.abs(inputValue - referenceToken);&#10;                if (isNaN(difference)) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the absolute value of the input &quot;' +&#10;                                    inputValue + '&quot; - the referenceToken &quot;' +&#10;                                    referenceToken + '&quot; is NaN?  It should be less than ' +&#10;                                    self.getParameter('tolerance'));&#10;                }&#10;                if (difference &gt; self.getParameter('tolerance')) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                    // devices/test/auto/WatchEmulator.js needs this test for object because&#10;                    // if we receive a JSON object, then we should try to stringify it.&#10;                    if (typeof inputValue === 'object') {&#10;                        inputValueValue = null;&#10;                        try {&#10;                            inputValueValue = JSON.stringify(inputValue);&#10;                        } catch (err) {&#10;                            throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                            ' tokens, the input &quot;' + inputValue + '&quot; is !== ' +&#10;                                            ' to the expected value &quot;' +&#10;                                            referenceToken + '&quot;.  The input was an object, and a string was expected.');&#10;                        }&#10;                        if (inputValueValue !== referenceToken) {&#10;                            throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                            ' tokens, the input &quot;' + inputValueValue + '&quot; is !== ' +&#10;                                            ' to the expected value &quot;' +&#10;                                            referenceToken +&#10;                                            '&quot;.  The input was an object and JSON.stringify() did not throw an exception.' +&#10;                                            'A string was expected.');&#10;                        }&#10;                    }&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                cache = [];&#10;                inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function (key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;&#10;                // If we are comparing longs from CapeCode, then the values will be like &quot;1L&quot;,&#10;                // and stringify will return undefined.&#10;                if (inputValueValue === undefined) {&#10;                    inputValueValue = inputValue;&#10;                }&#10;                if (referenceTokenValue === undefined) {&#10;                    referenceTokenValue = referenceToken;&#10;                }&#10;&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    // inputValueValue could still be undefined here if inputValue&#10;                    // was undefined.&#10;                    if (inputValueValue !== undefined &amp;&amp; inputValueValue.length &gt; 100) {&#10;                        inputValueValue = inputValueValue.substring(0, 100) + '...';&#10;                    }&#10;                    if (referenceTokenValue !== undefined &amp;&amp; referenceTokenValue.length &gt; 100) {&#10;                        referenceTokenValue = referenceTokenValue.substring(0, 100) + '...';&#10;                    }&#10;                    // Deal with referenceTokens with value 1L.&#10;                    if (typeof inputValueValue !== 'object' || typeof referenceTokenValue !== 'object' &amp;&amp;&#10;                        inputValueValue.toString() !== referenceTokenValue.toString) {&#10;                        throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                        'tokens, the input &quot;' + inputValueValue +&#10;                                        '&quot; is !== to the expected value &quot;' +&#10;                                        referenceTokenValue + '&quot; typeof inputValueValue: ' + typeof inputValueValue + ' typeof referenceTokenValue: ' + typeof referenceTokenValue);&#10;                    }&#10;                }&#10;            } else {&#10;                throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                    ' tokens, the referenceToken &quot;' + referenceToken +&#10;                    '&quot; is not a number, it is a ' +&#10;                    typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen += 1;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;    initialized = true;&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + ': The input handler of this accessor was never invoked. ' +&#10;                    'Usually, this is an error indicating that ' +&#10;                    'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                    numberOfInputTokensSeen +&#10;                    ' tokens, yet the correctValues parameter was ' +&#10;                    'expecting ' +&#10;                    correctValuesValues.length +&#10;                    ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName;&#10;&#10;    // FIXME: Should we check to see if the name has no dots in and if&#10;    // it does not, add the container name?&#10;&#10;    //if (this.container) {&#10;    //    name = this.container.accessorName + &quot;.&quot; + name;&#10;    //}&#10;&#10;    //&#10;    exports.wrappedUp = true;&#10;    // console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name + &quot;, exports.wrappedUp: &quot; + exports.wrappedUp);&#10;&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TrainableTest.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&#10; If you set ''trainingMode'' to true and provide inputs, then the&#10; inputs will be recorded in the ''correctValues'' parameters.&#10; Otherwise, the inputs will be compared against those in the&#10; ''correctValue'' parameter.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 480.0]">
+        </property>
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;PtClient message # 0&quot;, &quot;PtClient message # 1&quot;, &quot;PtClient message # 2&quot;, &quot;PtClient message # 3&quot;, &quot;PtClient message # 4&quot;, &quot;PtClient message # 5&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TrainableTest2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;/** Compare the input with a known good input.&#10; *  If you set ''trainingMode'' to true and provide inputs, then the&#10; *  inputs will be recorded in the ''correctValues'' parameters.&#10; *  Otherwise, the inputs will be compared against those in the&#10; *  ''correctValue'' parameter.&#10; *&#10; *  @accessor test/TrainableTest&#10; *  @input input The input value.&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals console, exports*/&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    this.parameter('correctValues', {&#10;        'value': [0]&#10;    });&#10;    this.input('input');&#10;    this.output('output', {&#10;        'type': 'boolean'&#10;    });&#10;    this.parameter('tolerance', {&#10;        'type': 'number',&#10;        'value': 0.000000001&#10;    });&#10;    this.parameter('trainingMode', {&#10;        'type': 'boolean',&#10;        'value': false&#10;    });&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialize() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;// Set to false in initialize() and true at the end of wrapup().&#10;// FIXME: We should have an exit hook that checks that wrapup() is called for all the actors.&#10;var wrappedUp = false;&#10;&#10;// So we can test this in hosts/node/test/mocha/testMain.js to test that wrapup was called.&#10;exports.wrappedUp = wrappedUp;&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s)&#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    var inputValueValue,&#10;        self = this;&#10;&#10;    trainingTokens = [];&#10;    exports.wrappedUp = false;&#10;    numberOfInputTokensSeen = 0;&#10;&#10;    this.addInputHandler('input', function () {&#10;        var cache = [],&#10;            inputValue = self.get('input'),&#10;            inputValueValue;&#10;        inputHandled = true;&#10;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'boolean' &amp;&amp;&#10;                typeof inputValue !== 'number' &amp;&amp;&#10;                typeof inputValue !== 'object' &amp;&amp;&#10;                typeof inputValue !== 'string') {&#10;                if (inputValue === null) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                        ' tokens, the value of the input was null?  ' +&#10;                        'Perhaps the input is not connected?'&#10;                    );&#10;                }&#10;                cache = [];&#10;                inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0, 100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                    ' tokens, the input &quot;' + inputValue +&#10;                    '&quot; is neither a number nor a string, it is a ' +&#10;                    typeof inputValue + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'boolean') {&#10;                // If the input not a boolean, then throw an error.&#10;                if (typeof inputValue !== 'boolean') {&#10;                    inputValueValue = inputValue;&#10;                    if (typeof inputValue === 'object') {&#10;                        inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                            if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                                if (cache.indexOf(value) !== -1) {&#10;                                    // Circular reference found, discard key&#10;                                    return;&#10;                                }&#10;                                // Store value in our collection&#10;                                cache.push(value);&#10;                            }&#10;                            return value;&#10;                        });&#10;                    }&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValueValue +&#10;                                    '&quot; is not a boolean, it is a ' +&#10;                                    typeof inputValue + '.  The expected value was &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;                if (inputValue !== referenceToken) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValue + '&quot; is not equal to &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'number') {&#10;                // If the input not a number, then throw an error.&#10;                if (typeof inputValue !== 'number') {&#10;                    inputValueValue = inputValue;&#10;                    if (typeof inputValue === 'object') {&#10;                        inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                            if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                                if (cache.indexOf(value) !== -1) {&#10;                                    // Circular reference found, discard key&#10;                                    return;&#10;                                }&#10;                                // Store value in our collection&#10;                                cache.push(value);&#10;                            }&#10;                            return value;&#10;                        });&#10;                    }&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValueValue +&#10;                                    '&quot; is not a number, it is a ' +&#10;                                    typeof inputValue + '.  The expected value was &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;&#10;                var difference = Math.abs(inputValue - referenceToken);&#10;                if (isNaN(difference)) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the absolute value of the input &quot;' +&#10;                                    inputValue + '&quot; - the referenceToken &quot;' +&#10;                                    referenceToken + '&quot; is NaN?  It should be less than ' +&#10;                                    self.getParameter('tolerance'));&#10;                }&#10;                if (difference &gt; self.getParameter('tolerance')) {&#10;                    throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                    // devices/test/auto/WatchEmulator.js needs this test for object because&#10;                    // if we receive a JSON object, then we should try to stringify it.&#10;                    if (typeof inputValue === 'object') {&#10;                        inputValueValue = null;&#10;                        try {&#10;                            inputValueValue = JSON.stringify(inputValue);&#10;                        } catch (err) {&#10;                            throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                            ' tokens, the input &quot;' + inputValue + '&quot; is !== ' +&#10;                                            ' to the expected value &quot;' +&#10;                                            referenceToken + '&quot;.  The input was an object, and a string was expected.');&#10;                        }&#10;                        if (inputValueValue !== referenceToken) {&#10;                            throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                            ' tokens, the input &quot;' + inputValueValue + '&quot; is !== ' +&#10;                                            ' to the expected value &quot;' +&#10;                                            referenceToken +&#10;                                            '&quot;.  The input was an object and JSON.stringify() did not throw an exception.' +&#10;                                            'A string was expected.');&#10;                        }&#10;                    }&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                cache = [];&#10;                inputValueValue = JSON.stringify(inputValue, function (key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function (key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;&#10;                // If we are comparing longs from CapeCode, then the values will be like &quot;1L&quot;,&#10;                // and stringify will return undefined.&#10;                if (inputValueValue === undefined) {&#10;                    inputValueValue = inputValue;&#10;                }&#10;                if (referenceTokenValue === undefined) {&#10;                    referenceTokenValue = referenceToken;&#10;                }&#10;&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    // inputValueValue could still be undefined here if inputValue&#10;                    // was undefined.&#10;                    if (inputValueValue !== undefined &amp;&amp; inputValueValue.length &gt; 100) {&#10;                        inputValueValue = inputValueValue.substring(0, 100) + '...';&#10;                    }&#10;                    if (referenceTokenValue !== undefined &amp;&amp; referenceTokenValue.length &gt; 100) {&#10;                        referenceTokenValue = referenceTokenValue.substring(0, 100) + '...';&#10;                    }&#10;                    // Deal with referenceTokens with value 1L.&#10;                    if (typeof inputValueValue !== 'object' || typeof referenceTokenValue !== 'object' &amp;&amp;&#10;                        inputValueValue.toString() !== referenceTokenValue.toString) {&#10;                        throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                                        'tokens, the input &quot;' + inputValueValue +&#10;                                        '&quot; is !== to the expected value &quot;' +&#10;                                        referenceTokenValue + '&quot; typeof inputValueValue: ' + typeof inputValueValue + ' typeof referenceTokenValue: ' + typeof referenceTokenValue);&#10;                    }&#10;                }&#10;            } else {&#10;                throw new Error(self.accessorName + ': After seeing ' + numberOfInputTokensSeen +&#10;                    ' tokens, the referenceToken &quot;' + referenceToken +&#10;                    '&quot; is not a number, it is a ' +&#10;                    typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen += 1;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;    initialized = true;&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + ': The input handler of this accessor was never invoked. ' +&#10;                    'Usually, this is an error indicating that ' +&#10;                    'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                    numberOfInputTokensSeen +&#10;                    ' tokens, yet the correctValues parameter was ' +&#10;                    'expecting ' +&#10;                    correctValuesValues.length +&#10;                    ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName;&#10;&#10;    // FIXME: Should we check to see if the name has no dots in and if&#10;    // it does not, add the container name?&#10;&#10;    //if (this.container) {&#10;    //    name = this.container.accessorName + &quot;.&quot; + name;&#10;    //}&#10;&#10;    //&#10;    exports.wrappedUp = true;&#10;    // console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name + &quot;, exports.wrappedUp: &quot; + exports.wrappedUp);&#10;&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TrainableTest.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&#10; If you set ''trainingMode'' to true and provide inputs, then the&#10; inputs will be recorded in the ''correctValues'' parameters.&#10; Otherwise, the inputs will be compared against those in the&#10; ''correctValue'' parameter.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 320.0}">
+        </property>
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Server resp #0 to \&quot;PtClient message # 0\&quot;&quot;, &quot;Server resp #1 to \&quot;PtClient message # 1\&quot;&quot;, &quot;Server resp #2 to \&quot;PtClient message # 2\&quot;&quot;, &quot;Server resp #3 to \&quot;PtClient message # 3\&quot;&quot;, &quot;Server resp #4 to \&quot;PtClient message # 4\&quot;&quot;, &quot;Server resp #5 to \&quot;PtClient message # 5\&quot;&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptGenerateClientMessage" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Create a client message.&#10; *&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('output', {&#10;        'type': 'string'&#10;    });&#10;};&#10;&#10;var _lastValue = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = 0;&#10;}&#10;&#10;exports.fire = function () {&#10;	 _lastValue += 1;&#10;    this.send('output', &quot;PtClient message # &quot; + _lastValue);&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 500.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaScriptRamp" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor JavaScriptRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;};&#10;&#10;var _lastValue = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    _lastValue += this.getParameter('step');&#10;    this.send('output', _lastValue);&#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 405.0]">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaScriptGenerateServerMessage" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Create a client message.&#10; *&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('count');&#10;    this.input('received');&#10;    this.output('output', {&#10;        'type': 'string'&#10;    });&#10;};&#10;&#10;exports.fire = function () {&#10;	var count = this.get('count');&#10;	var received = this.get('received');&#10;    this.send('output', &quot;Server resp #&quot; + count + &quot; to \&quot;&quot; + received + &quot;\&quot;&quot;);&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 380.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaScriptGenerateServerHost" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Generate JSON with the hostname and port name.&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('output', {&#10;        'type': 'JSON',&#10;        'value': {host: 'localhost', port: 21200}&#10;    });&#10;};&#10;&#10;exports.fire = function () {&#10;    this.send('output', {host: 'localhost', port: 21200});&#10;};&#10;&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 205.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 315.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="2.6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 395.0]">
+        </property>
+    </entity>
+    <entity name="ClockOrig" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={931, 74, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="ClockOrig">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 500.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{595.0, 275.0}">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[355.0, 275.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{230.0, 175.0}">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{195.0, 370.0}">
+        </vertex>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{195.0, 205.0}">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-140.0, 205.0}">
+        </vertex>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{55.0, 310.0}">
+        </vertex>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[195.0, 405.0]">
+        </vertex>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{170.0, 310.0}">
+        </vertex>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{55.0, 185.0}">
+        </vertex>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{210.0, 185.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{210.0, 265.0}">
+        </vertex>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{125.0, 240.0}">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{480.0, 320.0}">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[700.0, 315.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[795.0, 430.0]">
+        </vertex>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[640.0, 500.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[680.0, 500.0]">
+        </vertex>
+    </relation>
+    <link port="SecureCommClient.error" relation="relation11"/>
+    <link port="SecureCommClient.serverHostPort" relation="relation4"/>
+    <link port="SecureCommClient.toSend" relation="relation8"/>
+    <link port="SecureCommClient.connected" relation="relation3"/>
+    <link port="SecureCommClient.received" relation="relation10"/>
+    <link port="SecureCommServer.error" relation="relation23"/>
+    <link port="SecureCommServer.toSendID" relation="relation21"/>
+    <link port="SecureCommServer.toSend" relation="relation15"/>
+    <link port="SecureCommServer.listening" relation="relation12"/>
+    <link port="SecureCommServer.connection" relation="relation22"/>
+    <link port="SecureCommServer.received" relation="relation14"/>
+    <link port="SecureCommServer.receivedID" relation="relation20"/>
+    <link port="ReceivedID.input" relation="relation21"/>
+    <link port="Listening.input" relation="relation12"/>
+    <link port="Connection.input" relation="relation"/>
+    <link port="ServerError.input" relation="relation23"/>
+    <link port="ServerReceived.input" relation="relation13"/>
+    <link port="ClientConnected.input" relation="relation3"/>
+    <link port="ClientReceived.input" relation="relation10"/>
+    <link port="ClientError.input" relation="relation11"/>
+    <link port="TrainableTest.input" relation="relation13"/>
+    <link port="TrainableTest2.input" relation="relation10"/>
+    <link port="JavaScriptGenerateClientMessage.output" relation="relation8"/>
+    <link port="JavaScriptGenerateClientMessage.trigger" relation="relation16"/>
+    <link port="JavaScriptRamp.trigger" relation="relation19"/>
+    <link port="JavaScriptRamp.output" relation="relation6"/>
+    <link port="JavaScriptGenerateServerMessage.output" relation="relation15"/>
+    <link port="JavaScriptGenerateServerMessage.count" relation="relation13"/>
+    <link port="JavaScriptGenerateServerMessage.received" relation="relation6"/>
+    <link port="JavaScriptGenerateServerHost.output" relation="relation4"/>
+    <link port="JavaScriptGenerateServerHost.trigger" relation="relation12"/>
+    <link port="TrueGate.input" relation="relation3"/>
+    <link port="TrueGate.output" relation="relation5"/>
+    <link port="TimeDelay.input" relation="relation5"/>
+    <link port="TimeDelay.output" relation="relation9"/>
+    <link port="DiscreteClock.output" relation="relation7"/>
+    <link port="DiscreteClock.start" relation="relation5"/>
+    <link port="DiscreteClock.stop" relation="relation9"/>
+    <link port="ClockOrig.input" relation="relation7"/>
+    <link relation1="relation13" relation2="relation14"/>
+    <link relation1="relation13" relation2="relation19"/>
+    <link relation1="relation17" relation2="relation20"/>
+    <link relation1="relation17" relation2="relation21"/>
+    <link relation1="relation22" relation2="relation"/>
+    <link relation1="relation16" relation2="relation7"/>
+</entity>
