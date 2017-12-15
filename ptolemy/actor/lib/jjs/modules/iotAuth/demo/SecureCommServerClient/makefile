@@ -47,7 +47,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	SecureCommServerClient.xml
+	SecureCommServerClient.xml \
+	SecureCommServerClientJS.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
