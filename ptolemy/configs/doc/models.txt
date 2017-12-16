@@ -225,6 +225,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Threshol
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClient.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClientJS.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
