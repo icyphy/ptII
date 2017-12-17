@@ -168,7 +168,14 @@ exports.Player.prototype.stop = function () {
  */
 exports.ClipPlayer = function (url) {
     this.clipHelper = new ClipPlayerHelper(actor, this);
-    this.clipHelper.setURL(url);
+    
+    // Use getResource() to check for illegal URIs.  Note that
+    // getResource() does not support file: as an argument,
+    // but may return a valid URI that starts with file://
+    
+    var resourceURI = getResource(url, {'returnURI' : 'true'});
+    
+    this.clipHelper.setURL(resourceURI);
 };
 
 util.inherits(exports.ClipPlayer, EventEmitter);
