@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{76.36973571777344, 37.2265625}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 1076, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[842, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2094617884011747">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.2508473674611, 201.49121093750003}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.9546449416343, 201.49121093750003}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The JavaScript actor above constructs a simple&#10;&quot;Hello World&quot; response.">
@@ -300,7 +300,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 135.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 135.0]">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;200: OK&quot;}">
         </property>
@@ -344,7 +344,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 250.0]">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{headers = {Connection = &quot;close&quot;, Host = &quot;localhost:8097&quot;}, method = &quot;GET&quot;, params = emptyRecord(), path = &quot;/&quot;, requestID = 1}}">
         </property>
@@ -388,7 +388,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 70.0]">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;H1&gt;Hello World&lt;/H1&gt;&quot;}">
         </property>
@@ -432,7 +432,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 195.0]">
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{8097}">
         </property>
@@ -443,6 +443,80 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptBarrier" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// After inputs appear on both inputs, generate a true output.&#10;var sawInput1 = false;&#10;var sawInput2 = false;&#10;var sawInput3 = false;&#10;var sawInput4 = false;&#10;&#10;exports.setup = function() {&#10;    this.input('input1');   &#10;    this.input('input2');&#10;    this.input('input3');   &#10;    this.input('input4');&#10;    this.output('output', {&#10;    	'type': 'boolean'&#10;    });&#10;    &#10;    var self = this;&#10;    self.addInputHandler('input1', function() {&#10;    	self.sawInput1 = true;&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 == true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input2', function() {&#10;		self.sawInput2 = true;&#10; 		if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 == true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input3', function() {&#10;    	self.sawInput3 = true;&#10;    	if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 == true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;    self.addInputHandler('input4', function() {&#10;		self.sawInput4 = true;&#10;        if (self.sawInput1 == true &amp;&amp; self.sawInput2 === true &amp;&amp; self.sawInput3 === true &amp;&amp; self.sawInput4 == true) {&#10;    		self.send('output', true);&#10;    	}&#10;    });&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 230.0]">
+        </property>
+        <port name="input1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="input2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="input4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="Stop" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that stops execution of the enclosing swarmlet.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor that stops execution of the enclosing swarmlet when it&#10; *  receives an input with value true. It does this by identifying&#10; *  the top-level enclosing composite accessor and invoking wrapup&#10; *  on it.&#10; *&#10; *  @accessor utilities/Stop&#10; *  @input {boolean} stop A signal with value true to stop the swarmlet.&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global  exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('stop', {&#10;        'type': 'boolean'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('stop', function () {&#10;        var stop = this.get('stop');&#10;        if (stop) {&#10;            this.stop();&#10;        }&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Stop.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that stops execution of the enclosing swarmlet when it&#10; receives an input with value true. It does this by identifying&#10; the top-level enclosing composite accessor and invoking wrapup&#10; on it.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="stop (port)" class="ptolemy.kernel.util.StringAttribute" value="A signal with value true to stop the swarmlet.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 230.0]">
+        </property>
+        <port name="stop" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -465,6 +539,16 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="WebServer.response" relation="relation3"/>
     <link port="WebServer.listening" relation="relation7"/>
     <link port="WebServer.request" relation="relation4"/>
@@ -475,7 +559,17 @@
     <link port="JavaScript.response" relation="relation3"/>
     <link port="TestSpontaneousOnce.output" relation="relation"/>
     <link port="TrainableTest.input" relation="relation2"/>
+    <link port="TrainableTest.output" relation="relation9"/>
     <link port="TrainableTest2.input" relation="relation4"/>
+    <link port="TrainableTest2.output" relation="relation11"/>
     <link port="TrainableTest4.input" relation="relation6"/>
+    <link port="TrainableTest4.output" relation="relation8"/>
     <link port="TrainableTest5.input" relation="relation7"/>
+    <link port="TrainableTest5.output" relation="relation10"/>
+    <link port="JavaScriptBarrier.input1" relation="relation8"/>
+    <link port="JavaScriptBarrier.input2" relation="relation9"/>
+    <link port="JavaScriptBarrier.output" relation="relation5"/>
+    <link port="JavaScriptBarrier.input3" relation="relation10"/>
+    <link port="JavaScriptBarrier.input4" relation="relation11"/>
+    <link port="Stop.stop" relation="relation5"/>
 </entity>
