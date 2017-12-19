@@ -52,7 +52,7 @@ test RecordToken-1.0 {Create an empty instance} {
 
     set r [java::new {ptolemy.data.RecordToken} $l $v]
     $r toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
@@ -101,13 +101,13 @@ ptolemy.kernel.util.IllegalActionException: RecordToken: The labels array contai
 
 ######################################################################
 ####
-# This test has been commented out because "{}" could either be an
+# Previously, this test was been commented out because "{}" could either be an
 # empty record or an empty array.
 # 
-# test RecordToken-1.2 {Create an empty instance from string} {
-#     set r [java::new {ptolemy.data.RecordToken String} "{}"]
-#     $r toString
-# } {{}} {This is not possible because of ambiguities in the Expression language}
+test RecordToken-1.2 {Create an empty instance from string} {
+    catch {java::new {ptolemy.data.RecordToken String} "{}"} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: A record token cannot be created from the expression '{}' because '{}' could be either an empty record or an empty array.  To create an empty record, use 'emptyRecord()'.}}
 
 #######################################################################
 ####
@@ -205,7 +205,7 @@ test RecordToken-add.1 {Test adding with empty record} {
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
     [$r add $r1] toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
@@ -458,7 +458,7 @@ test RecordToken-merge.1 {Test merge with empty record} {
 
 test RecordToken-merge.4.2 {Test merge with two empty records} {
     [java::call ptolemy.data.RecordToken merge $r $r] toString
-} {{}}
+} {emptyRecord()}
 
 test RecordToken-merge.5 {Test mergeReturnType, increase coverage} {
     set t1 [java::call ptolemy.data.RecordToken mergeReturnType \
@@ -567,14 +567,14 @@ test RecordToken-multiply.3 {Test multiplying with empty record} {
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
     [$r multiply $r1] toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
 # 
 test RecordToken-multiply.4 {Test multiplying with empty record, reverse order} {
     [$r1 multiply $r] toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
@@ -586,7 +586,7 @@ test RecordToken-one.0 {Test one} {
     set r [java::new {ptolemy.data.RecordToken} $l $v]
 
     [$r one] toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
@@ -703,14 +703,14 @@ test RecordToken-subtract.4 {Test subtracting with empty record} {
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
     [$r subtract $r1] toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
 # 
 test RecordToken-subtract.5 {Test subtracting with empty record, reverse order} {
     [$r1 subtract $r] toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
@@ -739,7 +739,7 @@ test RecordToken-zero.0 {Test zero} {
     set r [java::new {ptolemy.data.RecordToken} $l $v]
 
     [$r zero] toString
-} {{}}
+} {emptyRecord()}
 
 ######################################################################
 ####
