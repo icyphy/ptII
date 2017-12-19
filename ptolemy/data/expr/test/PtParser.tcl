@@ -1166,3 +1166,10 @@ test PtParser-21.6 {Test the smallest short token -(32768s)} {
     set lines [split $output "\n"]
     list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2] [lindex $lines 3]
 } {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:} {"-(32768s)"} Because: {Unable to convert token 32768s to an integer or long}}
+
+test PtParser-22.1 {Parse an empty set of braces} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [$p {generateParseTree String} "{}"]
+    set results [$root evaluateParseTree]
+    list [$results toString] [$results isNil] [[$results getType] toString]
+} {{{}} 1 arrayType(niltype,0)}
