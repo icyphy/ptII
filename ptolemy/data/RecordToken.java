@@ -127,6 +127,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
             _initialize(labels, values);
         } else {
+            if (init.trim().equals("{}")) {
+                throw new IllegalActionException("A record token cannot be"
+                    + " created from the expression '" + init
+                    + "' because '{}' could be either an empty record"
+                    + " or an empty array.  To create an empty record, "
+                    + "use 'emptyRecord()'.");                                                 
+
+            }
             throw new IllegalActionException("A record token cannot be"
                     + " created from the expression '" + init + "'");
         }
@@ -387,6 +395,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     @Override
     public String toString() {
+        // RecordToken.toString() now outputs 'emptyRecord()' for a
+        // RecordToken of length zero.  Formerly, it outputted '{}'.
+        // This could cause serious trouble.  However, we need it for
+        // handling empty JavaScript objects returned by the CapeCode
+        // WebServer accessor.
+        if (length() == 0) {
+            return "emptyRecord()";
+        }
         Object[] labelsObjects = _fields.keySet().toArray();
 
         // order the labels
