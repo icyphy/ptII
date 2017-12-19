@@ -193,6 +193,8 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="8000">
+        </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -376,7 +378,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{body = nil, method = &quot;GET&quot;, path = &quot;/&quot;, requestID = 1}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{headers = {Connection = &quot;close&quot;, Host = &quot;localhost:8096&quot;}, method = &quot;GET&quot;, params = {}, path = &quot;/&quot;, requestID = 1}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

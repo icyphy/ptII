@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{76.36973571777344, 37.2265625}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 917, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of the WebServer accessor.&#10;This starts a web server on localhost on port 8188&#10;and sends back a simple &quot;Hello World&quot; response to&#10;one request.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of the WebServer accessor.&#10;This starts a web server on localhost on port 8097&#10;and sends back a simple &quot;Hello World&quot; response to&#10;one request.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, -15.0}">
         </property>
@@ -86,7 +86,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 295.0}">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8188">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8097">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -147,7 +147,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://localhost:8188&quot;">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://localhost:8097&quot;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -164,6 +164,8 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 132.5]">
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="8000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -344,7 +346,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 230.0}">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{body = nil, method = &quot;GET&quot;, path = &quot;/&quot;, requestID = 1}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{headers = {Connection = &quot;close&quot;, Host = &quot;localhost:8097&quot;}, method = &quot;GET&quot;, params = {}, path = &quot;/&quot;, requestID = 1}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -432,7 +434,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 210.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{8188}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{8097}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
