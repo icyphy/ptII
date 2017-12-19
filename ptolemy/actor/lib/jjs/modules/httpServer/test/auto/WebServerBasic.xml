@@ -378,7 +378,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{headers = {Connection = &quot;close&quot;, Host = &quot;localhost:8096&quot;}, method = &quot;GET&quot;, params = {}, path = &quot;/&quot;, requestID = 1}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{headers = {Connection = &quot;close&quot;, Host = &quot;localhost:8096&quot;}, method = &quot;GET&quot;, params = emptyRecord(), path = &quot;/&quot;, requestID = 1}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>

@@ -346,7 +346,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 230.0}">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{headers = {Connection = &quot;close&quot;, Host = &quot;localhost:8097&quot;}, method = &quot;GET&quot;, params = {}, path = &quot;/&quot;, requestID = 1}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{headers = {Connection = &quot;close&quot;, Host = &quot;localhost:8097&quot;}, method = &quot;GET&quot;, params = emptyRecord(), path = &quot;/&quot;, requestID = 1}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
