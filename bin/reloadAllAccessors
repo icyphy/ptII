@@ -82,7 +82,7 @@ fi
 echo ""
 echo "$0: Generating the list of .xml files"
 cd $PTII
-$PTII/adm/bin/ptIItxtfiles | egrep '.xml$' | grep -v ' ' | grep -v 'findbugsOut.xml' | grep -v ptolemy/apps | grep -v bin/reloadAllAccessors | grep -v vendors > $modelsFile
+$PTII/adm/bin/ptIItxtfiles | egrep '.xml$' | grep -v ' ' | grep -v 'spotbugsOut.xml' | grep -v ptolemy/apps | grep -v bin/reloadAllAccessors | grep -v vendors > $modelsFile
 
 echo "$0: Generating the list of .xml files that contain JSAccessor.  This will take a moment."
 
