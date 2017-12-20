@@ -2119,6 +2119,8 @@
 	<include name="ptolemy/demo/CapeCode/Sounds/*.wav"/>
 	<include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
 	<include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
+	<include name="ptolemy/demo/PLC*/Figures/*.pdf"/>
+	<include name="ptolemy/demo/PLC*/Figures/*.tex"/>
 	<include name="ptolemy/demo/*/*.csv"/>
 	<include name="ptolemy/demo/*/*.fmu"/>
 	<include name="ptolemy/demo/*/*.htm"/>
