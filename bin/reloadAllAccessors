@@ -106,7 +106,9 @@ fi
 
 if [ "$cg" = "true" ]; then
     echo "$0: Generating a list of models that contain AccessorCodeGenerator"
-    cgModels=`cat $jsaccessors | xargs grep AccessorCodeGenerator | awk -F : '{print $1}' | sort | uniq`
+    # Exclude models like ptolemy/actor/lib/jjs/modules/gdp/test/auto/GDPAppendViaGWTest.xml
+    # that have accessors that mention AccessorCodeGenerator
+    cgModels=`cat $jsaccessors | xargs grep 'class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator"' |  awk -F : '{print $1}' | sort | uniq`
     echo "$0: Regenerating code for `echo "$cgModels" | wc -l ` models that contain AccessorCodeGenerator"
     for cgModel in $cgModels
     do
