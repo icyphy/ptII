@@ -89,7 +89,7 @@
         </property>
     </property>
     <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
-        <property name="modules" class="ptolemy.data.expr.StringParameter" value="@accessors-modules/http-server,@accessors-modules/local-storage">
+        <property name="modules" class="ptolemy.data.expr.StringParameter" value="@accessors-modules/http-server,@accessors-modules/local-storage,@accessors-modules/text-display">
         </property>
         <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@terra.eecs.berkeley.edu">
         </property>
