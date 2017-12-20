@@ -62,14 +62,6 @@
             </property>
         </property>
     </property>
-    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/net/test/auto">
-        </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="@node@ ../../../hosts/node/nodeHostInvoke.js net/test/auto/@modelName@">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{540, 25}">
-        </property>
-    </property>
     <entity name="TCPSocketClient1" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
@@ -180,10 +172,6 @@
         <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="500">
         </property>
         <property name="reconnectInterval" class="ptolemy.data.expr.Parameter" value="200">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <port name="host" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -321,10 +309,6 @@
             </property>
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <port name="toSendID" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -464,10 +448,6 @@
         </property>
         <property name="reconnectInterval" class="ptolemy.data.expr.Parameter" value="200">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <port name="host" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -541,10 +521,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 75.0]">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 3}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -588,10 +564,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 85.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2}">
         </property>
@@ -637,10 +609,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[81.58805847167969, -16.431884765625]">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplayClient2Received">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -684,10 +652,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 5.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplayClient1Received">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -733,10 +697,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 170.0]">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplayServerConnected">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -771,10 +731,6 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -787,7 +743,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Generate discrete events at prespecified time instants.    &#10; *&#10; *  @accessor JavaScriptDiscreteClock&#10; *  @param offsets The offsets at which the specified values will be produced.                                                                                         &#10; * 	This parameter must contain an array of doubles, and it defaults                                                                                    &#10; *  to [0.0]. &#10; *  @param period The period of the output waveform.                                                                                                                  &#10; *  This is a double that defaults to 1.0.&#10; *  @input start  A port that, if connected, is used to specify when the clock                                                                                        &#10; *  starts. This port accepts any type. The arrival of an event                                                                                         &#10; *  is what starts the clock. Upon arrival of such an event,                                                                                            &#10; *  the clock starts as if just initialized. The clock will not                                                                                         &#10; *  start until such an event is provided, unless the port is                                                                                           &#10; *  left unconnected, in which case the actor starts immediately.                                                                                       &#10; *  Note that when the clock starts, the period will be set to                                                                                          &#10; *  its initial value. If an input period arrives before a                                                                                              &#10; *  start input, then that arrived value will be ignored.&#10; *  @input stop A port that, if connected, is used to specify when the clock                                                                                        &#10; *  stops. This port accepts any type. The arrival of an event                                                                                          &#10; *  is what stops the clock.&#10; *  @param values The values that will be produced at the specified offsets.                                                                                          &#10; *  This parameter must contain an ArrayToken, and it defaults to [1].&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('offsets', {'value': [0.0]});&#10;    this.parameter('period', {'type':'number', 'value': 1.0});&#10;    this.input('start');&#10;    this.input('stop');&#10;    this.input('trigger');&#10;    this.output('output', {'type':'int'});&#10;    this.parameter('values', {'value': [1]});&#10;};&#10;&#10;var _handle = null;&#10;var _phase = 0;&#10;var _enabled = true; &#10;&#10;exports.initialize = function() {&#10;    _phase = 0;&#10;    _enabled = true;&#10;	// FIXME: Need to check to see if start is connected.  How?&#10;    var self = this;&#10;    this.addInputHandler(&quot;start&quot;, function () {&#10;    	self._enabled = true&#10; 	 });&#10;    this.addInputHandler(&quot;stop&quot;, function () {&#10;    	self._enabled = false&#10; 	 });&#10;}&#10;&#10;exports.fire = function() {&#10;	if (_enabled) {&#10;    	this.send('output', this.getParameter('values')[_phase]);&#10;    	_phase += 1;&#10;    	if (_phase &gt;= this.getParameter('offsets').length) {&#10;    		// FIXME: do something with period?&#10;    		_phase = 0;&#10;    	}&#10;    	&#10;    	var periodValue = this.getParameter('period');&#10;    	var offsetValue = this.getParameter('offsets')[_phase];&#10;    	if (offsetValue &gt; periodValue) {&#10;    		throw new Error(&quot;Offset of &quot; + offsetValue + &#10;                  &quot; is greater than the period &quot; + periodValue);&#10;    	}&#10;    	&#10;    	var self = this;&#10;    	handle = setTimeout(function () {&#10;			self.fire()&#10;        }, offsetValue * 1000.0);&#10;    }&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Generate discrete events at prespecified time instants.    &#10; *&#10; *  @accessor JavaScriptDiscreteClock&#10; *  @param offsets The offsets at which the specified values will be produced.                                                                                         &#10; * 	This parameter must contain an array of doubles, and it defaults                                                                                    &#10; *  to [0.0]. &#10; *  @param period The period of the output waveform.                                                                                                                  &#10; *  This is a double that defaults to 1.0.&#10; *  @input start  A port that, if connected, is used to specify when the clock                                                                                        &#10; *  starts. This port accepts any type. The arrival of an event                                                                                         &#10; *  is what starts the clock. Upon arrival of such an event,                                                                                            &#10; *  the clock starts as if just initialized. The clock will not                                                                                         &#10; *  start until such an event is provided, unless the port is                                                                                           &#10; *  left unconnected, in which case the actor starts immediately.                                                                                       &#10; *  Note that when the clock starts, the period will be set to                                                                                          &#10; *  its initial value. If an input period arrives before a                                                                                              &#10; *  start input, then that arrived value will be ignored.&#10; *  @input stop A port that, if connected, is used to specify when the clock                                                                                        &#10; *  stops. This port accepts any type. The arrival of an event                                                                                          &#10; *  is what stops the clock.&#10; *  @param values The values that will be produced at the specified offsets.                                                                                          &#10; *  This parameter must contain an ArrayToken, and it defaults to [1].&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('offsets', {'value': [0.0]});&#10;    this.parameter('period', {'type':'number', 'value': 1.0});&#10;    this.input('start');&#10;    this.input('stop');&#10;    this.input('trigger');&#10;    this.output('output', {'type':'int'});&#10;    this.parameter('values', {'value': [1]});&#10;};&#10;&#10;var _handle = null;&#10;var _phase = 0;&#10;var _enabled = true; &#10;&#10;exports.initialize = function() {&#10;    _phase = 0;&#10;    _enabled = true;&#10;	// FIXME: Need to check to see if start is connected.  How?&#10;    var self = this;&#10;    this.addInputHandler(&quot;start&quot;, function () {&#10;    	self._enabled = true&#10; 	 });&#10;    this.addInputHandler(&quot;stop&quot;, function () {&#10;    	self._enabled = false&#10; 	 });&#10;}&#10;&#10;exports.fire = function() {&#10;	if (_enabled) {&#10;    	this.send('output', this.getParameter('values')[_phase]);&#10;    	_phase += 1;&#10;    	if (_phase &gt;= this.getParameter('offsets').length) {&#10;    		// FIXME: do something with period?&#10;    		_phase = 0;&#10;    	}&#10;    	&#10;    	var periodValue = this.getParameter('period');&#10;    	var offsetValue = this.getParameter('offsets')[_phase];&#10;    	if (offsetValue &gt; periodValue) {&#10;    		throw new Error(&quot;Offset of &quot; + offsetValue + &#10;                  &quot; is greater than the period &quot; + periodValue);&#10;    	}&#10;    	&#10;    	var self = this;&#10;    	_handle = setTimeout(function () {&#10;			self.fire()&#10;        }, offsetValue * 1000.0);&#10;    }&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (_handle) {&#10;        clearInterval(_handle);&#10;        _handle = null;&#10;    }&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -799,11 +755,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 190.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 190.0}">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
         </property>
@@ -856,10 +808,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.28781512605042, 265.17632287289916}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplayServerConnected2">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
