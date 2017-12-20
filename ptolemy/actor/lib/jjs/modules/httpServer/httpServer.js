@@ -156,6 +156,7 @@ exports.HttpServer.prototype.stop = function () {
  */
 exports.HttpServer.prototype._request = 
 	function (requestID, method, path, body, headers, params) {
+            console.log("httpServer.js: _request() params: " + params);
 	var headersObject = {};
 	var paramsObject = {};
 	// headers is an array of name=value.
@@ -163,8 +164,13 @@ exports.HttpServer.prototype._request =
 		for (var i = 0; i < headers.length; i++) {
 			var header = headers[i].toString();
 			var sign = header.indexOf('=');
+                        // http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html
+                        // section 4.2 says header keys are
+                        // case-insensitive and Node returns lower
+                        // case header keys, so CapeCode should as
+                        // well.
 			if (sign > 0) {
-				headersObject[header.substring(0, sign)] = 
+			    headersObject[header.substring(0, sign).toLowerCase()] = 
 					header.substring(sign+1, headers[i].length);
 			}
 		}
@@ -182,6 +188,9 @@ exports.HttpServer.prototype._request =
 		}
 	}
 	
+    // If you change what fields are in request, then change
+    // $PTII/org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/http-server/http-server.js
+
     var request = {
     	'headers' : headersObject,	
         'requestID': requestID,
