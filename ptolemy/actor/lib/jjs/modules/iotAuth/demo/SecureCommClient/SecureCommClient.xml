@@ -261,6 +261,13 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <port name="serverHostPort" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -271,13 +278,6 @@
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="serverHostPort" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
         </port>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

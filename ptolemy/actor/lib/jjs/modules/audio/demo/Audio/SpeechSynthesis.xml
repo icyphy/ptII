@@ -88,8 +88,6 @@
         </port>
         <port name="start" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
