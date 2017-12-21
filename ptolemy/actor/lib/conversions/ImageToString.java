@@ -101,21 +101,27 @@ public class ImageToString extends Converter {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        final RenderedImage im = getRenderedImage(
-                ((AWTImageToken) input.get(0)).getValue());
-        try {
-            OutputStream enc = Base64.getUrlEncoder().wrap(os);
-            ImageIO.write(im, "png", enc); // FIXME: Use parameter instead.
-            enc.close(); // Important, flushes the output buffer.
-            StringToken tk = new StringToken(
-                    os.toString(StandardCharsets.US_ASCII.name()));
-            output.send(0, tk);
-        } catch (final IOException ioe) {
-            throw new IllegalActionException(
-                    "Unable to convert image to base-64 string.");
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Object inputValue = input.get(0);
+        if (! (inputValue instanceof AWTImageToken)) {
+            throw new IllegalActionException(this, "The input value \""
+                                             + inputValue + "\" is not an AWTImageToken, "
+                                             + "it is a " + inputValue.getClass());
+        } else {
+            RenderedImage image = getRenderedImage(
+                                                   ((AWTImageToken) inputValue).getValue());
+            try {
+                OutputStream encodedStream = Base64.getUrlEncoder().wrap(outputStream);
+                ImageIO.write(image, "png", encodedStream); // FIXME: Use parameter instead.
+                encodedStream.close(); // Important, flushes the output buffer.
+                StringToken result = new StringToken(
+                                                     outputStream.toString(StandardCharsets.US_ASCII.name()));
+                output.send(0, result);
+            } catch (final IOException ioe) {
+                throw new IllegalActionException(this, ioe,
+                                                 "Unable to convert image to base-64 string.");
+            }
         }
-
     }
 
     /** Return false if the input port has no token, otherwise return
