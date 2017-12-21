@@ -156,7 +156,6 @@ exports.HttpServer.prototype.stop = function () {
  */
 exports.HttpServer.prototype._request = 
 	function (requestID, method, path, body, headers, params) {
-            console.log("httpServer.js: _request() params: " + params);
 	var headersObject = {};
 	var paramsObject = {};
 	// headers is an array of name=value.
@@ -170,8 +169,9 @@ exports.HttpServer.prototype._request =
                         // case header keys, so CapeCode should as
                         // well.
 			if (sign > 0) {
-			    headersObject[header.substring(0, sign).toLowerCase()] = 
-					header.substring(sign+1, headers[i].length);
+		            headersObject[header.substring(0, sign).toLowerCase()] = 
+			    	header.substring(sign+1, headers[i].length);
+
 			}
 		}
 	}
@@ -209,7 +209,13 @@ exports.HttpServer.prototype._request =
     			var newBody = this.helper.convertImageBody(body);
     			request.body = newBody;
     		}
-    	}
+    	} else if (request.headers['content-type'] !== null && 
+    		   typeof request.headers['content-type'] !== 'undefined') {
+    		if (request.headers['content-type'].indexOf('image') > -1) {
+    			var newBody = this.helper.convertImageBody(body);
+    			request.body = newBody;
+    		}
+        }
     }
     this.emit('request', request);
 };
