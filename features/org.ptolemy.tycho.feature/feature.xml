@@ -74,15 +74,11 @@ Ptolemy II includes other third party material, see the about.html files in each
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="org.ptolemy.actor.gui.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+    <!-- Exclude the *.test modules because they have not yet gone
+         through the Eclipse IP process.
 
    <plugin
-         id="org.ptolemy.commons"
+         id="org.ptolemy.actor.gui.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -104,6 +100,14 @@ Ptolemy II includes other third party material, see the about.html files in each
 
    <plugin
          id="org.ptolemy.testsupport"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   -->
+   
+   <plugin
+         id="org.ptolemy.commons"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -29,11 +29,18 @@ $Id$
     <!-- org.json is not a module
     <module>org.json</module>
     -->
+
+    <!-- Exclude the *.test modules because they have not yet gone
+         through the Eclipse IP process.
     <module>org.ptolemy.actor.gui.test</module>
-    <module>org.ptolemy.commons</module>
     <module>org.ptolemy.core.test</module>
     <module>org.ptolemy.core.test.actor</module>
     <module>org.ptolemy.testsupport</module>
+    -->
+
+    <module>org.ptolemy.commons</module>
+
+
 
     <!-- exclude org.terraswarm.accessor for now
          <module>org.terraswarm.accessor</module>
