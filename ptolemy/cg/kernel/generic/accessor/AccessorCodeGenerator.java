@@ -255,10 +255,10 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                         + _eol + "    exports.initialize = function() {" + _eol
                         + "        originalInitialize.call(this);" + _eol
                         + "        this.stopAt(" + stopTimeValue + ");" + _eol
-                        + "    }" + _eol + "} else {" + _eol
+                        + "    };" + _eol + "} else {" + _eol
                         + "    exports.initialize = function() {" + _eol
                         + "        this.stopAt(" + stopTimeValue + ");" + _eol
-                        + "    }" + _eol + "}" + _eol);
+                        + "    };" + _eol + "}" + _eol);
             } else {
                 code.append(_eol + comment(
                         "The stopTime parameter of the directory in the model was 0, so this.stopAt() is not being generated."
