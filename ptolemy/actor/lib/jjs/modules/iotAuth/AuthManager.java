@@ -297,7 +297,7 @@ public class AuthManager extends AbstractInitializableAttribute {
 
         //String commands = "";
         System.out.println("AuthManager._generateCredentials(" + directory
-                + ", " + subdirectory);
+                + ", " + subdirectory + ")");
         //File subdirectoryDirectory = new File(directory, subdirectory);
 
     }
