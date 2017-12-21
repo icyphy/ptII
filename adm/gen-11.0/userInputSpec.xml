@@ -4,7 +4,7 @@
   <panel id="startApplicationPanelConfigure" >
     <os family="unix" />
     <field type="check" variable="startConfigure" >
-      <spec txt="Would you like to build and start $APP_NAME next?" true="true" false="false"
+      <spec txt="Would you like to build and start the application next?" true="true" false="false"
 	    id="startConfigureCheck"
 	    set="true" />
     </field>
