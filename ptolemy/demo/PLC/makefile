@@ -52,15 +52,10 @@ OTHER_FILES_TO_BE_JARED = \
 	Arm.xml \
 	BouncingArm.xml \
 	Figures \
-	PLC \
-	PLCwithBounce \
 	PLCwithBounce.xml \
-	PLCwithConstantTorque \
 	PLCwithConstantTorque.xml \
-	PLCwithFeedbackTorque \
 	PLCwithFeedbackTorque.xml \
 	PLCwithSampledFeedbackTorque.xml \
-	PLCwithTimeFeedback \
 	PLCwithTimeFeedback.xml \
 	PLC.xml
 
