@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules/faceDetector/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -79,9 +79,6 @@ test_java: jclass
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
-
-# Look for libgdp in $PTII/lib
-JAVAFLAGS=-Djna.debug_load=true -Djna.library.path="$(PTII)/lib"
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_tcl test_auto

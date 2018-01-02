@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules/httpServer/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(JNA_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -80,13 +80,9 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-# Look for libgdp in $PTII/lib
-JAVAFLAGS=-Djna.debug_load=true -Djna.library.path="$(PTII)/lib"
-
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_tcl test_auto
 
-# Run the tcl tests before auto so that we do the build of the gdp.
 test_tcl:
 	$(JTCLSH) alljtests.tcl
 
