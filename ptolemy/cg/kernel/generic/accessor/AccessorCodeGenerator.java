@@ -135,9 +135,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
-    /** A comma separated list of modules to be installed
-     *  To install the Global Data Plane module,
-     *  use <code>@terraswarm/gdp</code>.
+    /** A comma separated list of modules to be installed.
      */
     public StringParameter modules;
 

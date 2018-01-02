@@ -232,9 +232,6 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "org.terraswarm.accessor.JSAccessor",
                 "org/terraswarm/accessor/accessors/web/accessors-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "org.terraswarm.gdp.GDP_GCL",
-                "lib/gdp-license.htm");
-
         // Vertx
         _addIfClassPresent(copyrightsMap,
                 "com.fasterxml.jackson.core.base.GeneratorBase",
@@ -1043,7 +1040,6 @@ public class GenerateCopyrights {
             { "fmipp", " ", " ", "Y", " ", "FMUSDK: Qtronic: Similar to BSD" },
             { "fmusdk", " ", " ", "Y", " ", " QTronic: Similar to BSD" },
             { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
-            { "gdp", " ", " ", "Y", " ", "LGPL and BSD" }, // Backtracking.
             { "gcj", " ", " ", "Y", " ", "GPL with libgcc Exception" }, // Backtracking.
             { "graph", "Y", " ", "Y", "Y", "BSD" },
             { "guava", " ", " ", "Y", "Y", "Apache License" },

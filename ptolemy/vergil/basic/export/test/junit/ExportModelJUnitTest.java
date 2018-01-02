@@ -317,7 +317,6 @@ public class ExportModelJUnitTest {
                 "AudioRecorder.xml", // Wrong Audio Hardware on the test machine.
                 "AudioSynthesis.xml", // Wrong Audio Hardware on the test machine.
                 "AugmentedReality.xml", // Has links to other models.
-                "AugmentedRealityGDP.xml", // Has links to other models.
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
                 "ConstScaleZeroDemoProductLattice.xml", // Lattice, used by other models.
                 // CRoom, MatlabRoom, SystemCommand
@@ -331,7 +330,6 @@ public class ExportModelJUnitTest {
                 "jjs/modules/contextAware/demo/ContextAware/ContextAware.xml", // Need to have the user selecte which service to use before running.
 
                 "jjs/modules/discovery/demo/Discovery/Discovery.xml", // Has links to other models
-                "jjs/modules/gdp/demo/", // Exclude the GDP demos for now.
                 // HLA Models that have links to other demos.
                 "2Billes1Fed.xml", // Has links to other models
                 "2Billes2Fed.xml", // Has links to other models
