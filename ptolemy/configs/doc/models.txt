@@ -152,7 +152,6 @@ $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTagImageAnnotate/AprilTagImageAnnotate.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTags/AprilTags.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/aprilTags/demo/Kubi/Kubi.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml
@@ -183,14 +182,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera/FaceDetectorCamera.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/faceDetector/demo/OccupancyCount/OccupancyCount.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/AugmentedRealityGDP/AugmentedRealityBasicGDP.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/AugmentedRealityGDP/AugmentedRealityGDP.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/AugmentedRealityGDP/TagMapAccessorAR.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPBrowser/GDPBrowser.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogSubscribe/GDPLogSubscribe.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriteRead/GDPLogWriteRead.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPTestGenerator/GDPTestGenerator.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPToWebSocket/GDPToWebSocket.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml
