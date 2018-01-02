@@ -4052,8 +4052,6 @@
 	 >
       <fileset dir="${basedir}">
 
-        <include name="org/terraswarm/accessor/accessors/web/gdp/test/runNodeAutoTests"/>
-        <include name="org/terraswarm/accessor/accessors/web/gdp/updateIndex"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/browser/common"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/browser/test/runBrowserTests"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/demo/cleanAll"/>
@@ -4139,9 +4137,6 @@
         <include name="org/terraswarm/accessor/accessors/web/devices/test/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/devices/test/*.xml"/>
         <include name="org/terraswarm/accessor/accessors/web/devices/test/auto/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/gdp/adm/*.sh"/>
-        <include name="org/terraswarm/accessor/accessors/web/gdp/test/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/gdp/test/auto/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/geodesy/test/*.xml"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.css"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.htm"/>
@@ -4309,8 +4304,6 @@
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/cameras/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/discovery/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/discovery/*.json"/>
-        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/gdp/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/gdp/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/http-client/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/http-client/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/@accessors-modules/http-server/*.js"/>

@@ -3320,16 +3320,6 @@ PTFMI_DIR=
 # PTFMI_PACKAGES is used in doc/makefile
 PTFMI_PACKAGES=
 
-# PTGDP_DIR is set to gdp if jna.jar was found
-# $PTII/org/terraswarm/makefile uses PTGDP_DIR
-PTGDP_DIR=
-
-# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
-PTGDP_JAR=
-
-# PTGDP_PACKAGES is used in doc/makefile
-PTGDP_PACKAGES=
-
 # The location of the jna.jar file, typically $PTII/lib/jna.jar
 JNA_JAR=
 
@@ -3340,10 +3330,9 @@ JNA_DEFAULT_JAR=jna-4.0.0-variadic.jar
 
 # We only need look for jmf if $PTII/ptolemy/actor/lib/fmi exists
 JNA_USER_DIR_FMI="$PTII/ptolemy/actor/lib/fmi"
-JNA_USER_DIR_GDP="$PTII/ptolemy/actor/lib/jjs/modules/gdp"
 
-if test ! -d "$JNA_USER_DIR_FMI" -a ! -d "$JNA_USER_DIR_GDP"; then
-    PT_MSG_STATUS([$JNA_USER_DIR_FMI and $JNA_USER_DIR_GDP are not present,
+if test ! -d "$JNA_USER_DIR_FMI" ;  then
+    PT_MSG_STATUS([$JNA_USER_DIR_FMI are not present,
     so we need not find the JNA - The Java Native Access utility.])
 else
     AC_MSG_CHECKING([for Java Native Access (JNA) jar])
@@ -3358,24 +3347,6 @@ else
 		PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
         fi		
         updateClasspath "$JNA_JAR"
-	if test -d "$PTII/ptolemy/actor/lib/jjs/modules/gdp"; then
-	    AC_MSG_CHECKING([for GDP jar file])
-	    AC_ARG_WITH(gdp-jar, [  --with-gdp-jar=JARFILE       use GDP from JARFILE,
-                          defaults to \$PTII/lib/gdp-0.8-0.jar],
-     	    PTGDP_JAR=$withval,
-	    PTGDP_JAR=$PTII/lib/gdp-0.8-0.jar)
-            if test -f "$PTGDP_JAR"; then
-                PT_MSG_RESULT($PTGDP_JAR)
-	        PTGDP_DIR=gdp
-                updateClasspath "$PTGDP_JAR"
-                PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
-            else
-                AC_MSG_WARN([Failed to find $PTII/lib/gdp-0.8-0.jar,
-   which supplies an implementation of the Global Data Plane.
-   The GDP is only necessary for use with the GDP Accessor.])
-             updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
-            fi
-        fi
     else
         AC_MSG_WARN([Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
     JNA is the Java Native Access interfaced, used by the 
@@ -3384,7 +3355,6 @@ else
     These actors are optional, but require JNA.
     For more information about JNA, see https://github.com/twall/jna])
         updateExcludes "ptolemy/actor/lib/fmi/"
-        updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
     fi
 fi
 
@@ -7405,16 +7375,6 @@ AC_SUBST(PTG4LTL_DIR)
 
 # Packages in Ptolemy that depend on g4ltl.jar
 AC_SUBST(PTG4LTL_PACKAGES)
-
-# PTGDP_DIR is set to gdp if jna.jar was found
-# $PTII/org/terraswarm/makefile uses PTGDP_DIR
-AC_SUBST(PTGDP_DIR)
-
-# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
-AC_SUBST(PTGDP_JAR)
-
-# PTGDP_PACKAGES is used in doc/makefile
-AC_SUBST(PTGDP_PACKAGES)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat

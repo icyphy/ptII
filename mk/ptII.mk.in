@@ -548,16 +548,6 @@ PTFMIPP_DIR =		@PTFMIPP_DIR@
 # PTFMIPP_PACKAGES is used in doc/makefile
 PTFMIPP_PACKAGES =	@PTFMIPP_PACKAGES@
 
-# PTGDP_DIR is set to gdp if jna.jar was found
-# $PTII/org/terraswarm/makefile uses PTGDP_DIR
-PTGDP_DIR =		@PTGDP_DIR@
-
-# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
-PTGDP_JAR =	@PTGDP_JAR@
-
-# PTGDP_PACKAGES is used in doc/makefile
-PTGDP_PACKAGES =	@PTGDP_PACKAGES@
-
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
 PTII_LOCALURL = @PTII_LOCALURL@

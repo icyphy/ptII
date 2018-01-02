@@ -216,11 +216,6 @@
 
 	    <!-- It looks like Windows does not need to have the exec bit set? -->
 
-            <file src="../dists/ptII11.0.devel/lib/libgdp.0.8.so"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/lib/linux-x86-64-rhel/libgdp.0.8.so"
-                  targetdir="$INSTALL_PATH/lib/linux-x86-64-rhel"/>
-
             <file src="../dists/ptII11.0.devel/jar_dist/lib/diva.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/ptliblicenses.jar"
@@ -438,8 +433,6 @@
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
 <!--LinuxInclude -->
 
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/gdp-0.8-0.jar"
-		  targetdir="$INSTALL_PATH/lib"/>
 	    <file src="../dists/ptII11.0.devel/jar_dist/lib/jna-4.0.0-variadic.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
 	    <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
