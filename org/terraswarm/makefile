@@ -29,7 +29,6 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# PTGDP_DIR is set by configure in $PTII/mk/ptII.mk if jna is found.
 DIRS = $(PTACCESSOR_DIR) ros  #demo
 
 # Root of Ptolemy II directory

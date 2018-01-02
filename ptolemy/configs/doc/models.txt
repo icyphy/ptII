@@ -62,7 +62,6 @@ $CLASSPATH/org/ptolemy/ssm/demo/StatePrediction/StatePrediction.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedReality.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedback.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedbackBlee.xml
-$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityFeedbackGDP.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityKeyValueStore.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityVideo.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO.xml

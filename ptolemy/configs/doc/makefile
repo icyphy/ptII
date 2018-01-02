@@ -148,9 +148,11 @@ docsPtiny.htm: docs.htm
 docsPtinyKepler.htm: docsPtiny.htm
 	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk docsPtiny.htm | sed 's/introPtiny.htm/introPtinyKepler.htm/' | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
 
+$(ROOT)/ptolemy/configs/capecode/capecodeModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class $(ROOT)/ptolemy/configs/capecode/demonstrations.htm
+	(cd $(ROOT)/ptolemy/configs/capecode; $(MAKE) capecodeModels.txt)
 
 # models.txt contains a list of model file names
-models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm
+models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm $(ROOT)/ptolemy/configs/capecode/capecodeModels.txt
 	@echo "#"
 	@echo "# Starting to build models.txt: `date`"
 	@echo "#"
