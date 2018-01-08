@@ -112,9 +112,6 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     #if {[glob -nocomplain {*.class}] != {}} {
 	#exec rm [glob -nocomplain {*.class}]
     #} 
-    puts "Removing gdp jar and shared libraries because they are binaries that are updated."
-    exec sh -c "rm -f lib/*gdp*" 
-    exec svn update lib
     puts "Removing doc/books/systems because building jnlp files creates files and directories."
     exec rm -rf doc/books/systems papers
     exec svn update doc/books/systems
@@ -161,7 +158,6 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       .maven} {
 ?       capeCodeNonGUI} {
 ?       cobertura.ser} {
-?       gdp-0.8-0.jar} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.pgm} {
