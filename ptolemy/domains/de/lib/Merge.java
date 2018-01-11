@@ -46,8 +46,8 @@ import ptolemy.kernel.util.Workspace;
  A timed merge actor for the DE domain. It merges a set of input signals
  into a single output signal based on the order of the tags
  associated with the events of signals. A tag is a tuple of a timestamp
- (as double) and a microstep or index (as non-negative integer). Tags have a
- lexicographic order.
+ (as an instance of Time) and a microstep or index (as non-negative integer).
+ Tags have a lexicographic order.
  <p>
  This actor has an input port (a multiport) and an output port
  (a single port). The types of the ports are undeclared and will be
@@ -66,11 +66,11 @@ import ptolemy.kernel.util.Workspace;
  <p>
  If the <i>discardEvents</i> parameter is configured to false (the default),
  then the handling of simultaneous events is a bit more subtle.
- On each firing, it reads all available inputs in the order of the channels
- and puts them on a queue to be produced as an output. It then takes
- the first token (the oldest one) from the queue and produces it
- on the output. If after this firing the queue is not empty, then
- it requests a refiring at the current time.
+ On each firing, it reads at most one input from each input channel
+ in the order of the channels and puts them on a queue to be produced
+ as an output. It then takes the first token (the oldest one) from the queue
+ and produces it on the output. If after this firing the queue is not empty,
+ then it requests a refiring at the current time.
 
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
