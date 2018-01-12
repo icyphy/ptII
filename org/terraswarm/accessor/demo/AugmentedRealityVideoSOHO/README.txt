@@ -268,3 +268,5 @@ convert *labeled.png tag36h11-19-29.pdf
 # Create one page with 11 tiles
 montage *labeled.png -tile 3x4 tag36h11-19-29-montage.png
 --end--
+
+tag36h11-19-29-montage.png has been checked in to the repository.
