@@ -216,14 +216,23 @@ and use ssh to connect to it as the debian user.
 
 === AprilTags ===
 
-https://april.eecs.umich.edu/software/apriltag.html contains a set of
-pregenerated tags as png and PostScript files.  However, these are of
-low resolution.  To scale them, use linear interpolation to avoid
-blurring.
+https://april.eecs.umich.edu/software/apriltag.html contains
+https://april.eecs.umich.edu/media/apriltag/tag36h11.tgz, which is a
+set of pregenerated tags as png and PostScript files.  However, these
+are of low resolution.  To scale them, use linear interpolation to
+avoid blurring.
 
-Under Mac OS X, ImageMagik can be installed using MacPort
 
-For example, with ImageMagik, use:
+  wget https://april.eecs.umich.edu/media/apriltag/tag36h11.tgz
+  tar -zxf tag36h11.tgz
+  cd tag36h11
+
+Under Mac OS X, ImageMagik can be installed using MacPorts
+(https://www.macports.org/)
+
+  sudo port install imagemagick
+
+For example, with ImageMagik, to increase the size of the images use:
 
   mogrify -scale 1000x1000 *.png
 
@@ -241,17 +250,21 @@ To annotate an image with a string:
 Below is a script that will generate a pdf file with labels
 --start--
 #!/bin/sh
-convert tag36_11_00019.png label:'AprilTag 19: Sound Server' -gravity Center -append tag36_11_00019_labeled.png
-convert tag36_11_00020.png label:'AprilTag 20: Robot Service' -gravity Center -append tag36_11_00020_labeled.png
-convert tag36_11_00021.png label:'AprilTag 21: Light Bulb' -gravity Center -append tag36_11_00021_labeled.png
-convert tag36_11_00022.png label:'AprilTag 22: Blee c0:98:E5:30:00:B4' -gravity Center -append tag36_11_00022_labeled.png
-convert tag36_11_00023.png label:'April Tag 23: Blee c0:98:E5:30:00:5B Office' -gravity Center -append tag36_11_00023_labeled.png
-convert tag36_11_00024.png label:'April Tag 24: PowerBlade c0:98:e5:70:02:1e: Netgear N300' -gravity Center -append tag36_11_00024_labeled.png
-convert tag36_11_00025.png label:'April Tag 25: PowerBlade c0:98:e5:70:02:0b: Swarmnuc1017' -gravity Center -append tag36_11_00025_labeled.png
-convert tag36_11_00026.png label:'April Tag 26: PowerBlade c0:98:e5:70:02:3e: Light Bulb' -gravity Center -append tag36_11_00026_labeled.png
-convert tag36_11_00027.png label:'April Tag 27: PowerBlade c0:98:e5:80:02:3a: Office' -gravity Center -append tag36_11_00027_labeled.png
-convert tag36_11_00028.png label:'April Tag 28' -gravity Center -append tag36_11_00028_labeled.png
-convert tag36_11_00029.png label:'April Tag 29' -gravity Center -append tag36_11_00029_labeled.png
+convert tag36_11_00019.png -size 800x label:'AprilTag 19: Sound Server' -gravity Center -append tag36_11_00019_labeled.png
+convert tag36_11_00020.png -size 800x label:'AprilTag 20: Robot Service' -gravity Center -append tag36_11_00020_labeled.png
+convert tag36_11_00021.png -size 800x label:'AprilTag 21: Light Bulb' -gravity Center -append tag36_11_00021_labeled.png
+convert tag36_11_00022.png -size 800x label:'AprilTag 22: Blee c0:98:E5:30:00:B4' -gravity Center -append tag36_11_00022_labeled.png
+convert tag36_11_00023.png -size 800x label:'April Tag 23: Blee c0:98:E5:30:00:5B Office' -gravity Center -append tag36_11_00023_labeled.png
+convert tag36_11_00024.png -size 800x label:'April Tag 24: PowerBlade c0:98:e5:70:02:1e: Netgear N300' -gravity Center -append tag36_11_00024_labeled.png
+convert tag36_11_00025.png -size 800x label:'April Tag 25: PowerBlade c0:98:e5:70:02:0b: Swarmnuc1017' -gravity Center -append tag36_11_00025_labeled.png
+convert tag36_11_00026.png -size 800x label:'April Tag 26: PowerBlade c0:98:e5:70:02:3e: Light Bulb' -gravity Center -append tag36_11_00026_labeled.png
+convert tag36_11_00027.png -size 800x label:'April Tag 27: PowerBlade c0:98:e5:80:02:3a: Office' -gravity Center -append tag36_11_00027_labeled.png
+convert tag36_11_00028.png -size 800x label:'April Tag 28' -gravity Center -append tag36_11_00028_labeled.png
+convert tag36_11_00029.png -size 800x label:'April Tag 29' -gravity Center -append tag36_11_00029_labeled.png
 
+# Create a pdf with one page per tag
 convert *labeled.png tag36h11-19-29.pdf 
+
+# Create one page with 11 tiles
+montage *labeled.png -tile 3x4 tag36h11-19-29-montage.png
 --end--
