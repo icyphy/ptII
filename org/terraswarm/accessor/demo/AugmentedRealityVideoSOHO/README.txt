@@ -266,7 +266,7 @@ convert tag36_11_00029.png -size 800x label:'April Tag 29' -gravity Center -appe
 convert *labeled.png tag36h11-19-29.pdf 
 
 # Create one page with 11 tiles
-montage *labeled.png -tile 3x4 tag36h11-19-29-montage.png
+montage *labeled.png -geometry '1000x1200>+4+3' -tile 3x4 tag36h11-19-29-montage.png
 --end--
 
 tag36h11-19-29-montage.png has been checked in to the repository.
