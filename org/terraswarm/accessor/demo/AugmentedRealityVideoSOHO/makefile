@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2017 The Regents of the University of California.
+# @Copyright (c) 2017-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -65,6 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	SoundServerSOHO.xml \
 	mqtts.json \
 	tag36h11-19-29.pdf \
+	tag36h11-19-29-montage.png \
 	tag36_11_00019_labeled.png
 
 EXTRA_SRCS = \
