@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy release administration tools (not shipped)
+# Makefile for the Ptolemy Coverity test
 #
 # @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2009-2018 The Regents of the University of California.
+# @Copyright (c) 2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,14 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		adm
+ME =		coverity
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		coverity test
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		..
+ROOT =		../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adm
+PTPACKAGE = 	adm/coverity
 PTCLASSJAR =
 
 JSRCS =

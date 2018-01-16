@@ -51,7 +51,6 @@ JSRCS =
 JSIMPLE_TESTS = \
 	ant.tcl \
 	checkClasspathDefault.tcl \
-	Coverity.tcl \
 	license.tcl \
 	Nightly.tcl \
 	NightlyInstall.tcl \
