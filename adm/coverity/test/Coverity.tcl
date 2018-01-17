@@ -4,7 +4,7 @@
 #
 # $Id: Release.tcl 63463 2012-05-02 02:47:37Z hudson $
 #
-# @Copyright (c) 2012 The Regents of the University of California.
+# @Copyright (c) 2012-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -46,7 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up the test definitions.
 if {[string compare test [info procs nightlyMake]] == 1} then {
-    source nightlyMake.tcl
+    source ../../test/nightlyMake.tcl 
 } {}
 
 # Override the default of 8400 seconds in $PTII/util/testsuite/testDefs.tcl because the Coverity
