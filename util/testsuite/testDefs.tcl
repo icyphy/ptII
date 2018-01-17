@@ -737,7 +737,7 @@ if {"$isRunningNightlyBuild" == "true" \
 	|| "$timeOutSeconds" != "" } {
     if {"$timeOutSeconds" == ""} {
 	# This timeout should be long enough to run adm/test/Nightly.tcl
-        set timeOutSeconds 9000
+        set timeOutSeconds 12000
     }
     puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds at [clock format [clock seconds]]"
