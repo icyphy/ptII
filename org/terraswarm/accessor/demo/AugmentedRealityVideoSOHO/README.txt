@@ -270,3 +270,9 @@ montage *labeled.png -geometry '1000x1200>+4+3' -tile 3x4 tag36h11-19-29-montage
 --end--
 
 tag36h11-19-29-montage.png has been checked in to the repository.
+
+=== Key/Value Store ===
+
+The Key/Value store is started up using pm2, see
+
+See https://www.icyphy.org/accessors/wiki/Notes/KeyValueStoreOnTerra
