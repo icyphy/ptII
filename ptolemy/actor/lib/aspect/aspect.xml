@@ -58,7 +58,7 @@
 	</entity>
   </entity>
 
-  
+  <entity name="ConstraintMonitor" class=ptolemy.data.expr.ConstraintMonitor"/>
  
   <entity name="CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.CrossbarSwitch"/> 
   <entity name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.DynamicCoreAssignmentScheduler"> </entity>
@@ -66,16 +66,6 @@
   <entity name="FixedPriorityScheduler" class="ptolemy.actor.lib.aspect.FixedPriorityScheduler"/>
   <entity name="TTESwitch" class="ptolemy.domains.de.lib.aspect.TTESwitch"/>  
    
-
-  
-
-
-  
-  
-  
-  
-
-
 
 <!--entity name="CommunicationRequestPort" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
   </entity>
