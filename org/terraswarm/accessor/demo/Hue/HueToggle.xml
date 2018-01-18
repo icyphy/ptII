@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 113, 918, 654}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 113, 1156, 654}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 544]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[922, 544]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 272.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.0, 272.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test example that toggles a hue light on and off&#10;every 3 seconds with a random color each time.">
@@ -127,6 +127,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 510.0]">
         </property>
     </property>
+    <property name="lightID" class="ptolemy.data.expr.Parameter" value="8">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+        </property>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="3.0">
         </property>
@@ -137,11 +156,11 @@
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 350.0}">
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
@@ -214,7 +233,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 255.0]">
         </property>
         <property name="onWrapup" class="ptolemy.data.expr.Parameter" value="turn off">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -239,7 +258,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Read the hue and on values and create JSON commands. */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function() {&#10;    this.input('hue', {&#10;        type: &quot;number&quot;&#10;    });&#10;    this.input('on', {&#10;        type: &quot;boolean&quot;&#10;    });&#10;    this.output('commands', {&#10;        type: &quot;JSON&quot;&#10;    });&#10;};&#10;&#10;/** Respond to motion by actuating Hue lights. */&#10;exports.fire = function() {&#10;	var hue = this.get('hue');&#10;	var on = this.get('on');&#10;	var cmds = [];	&#10; &#10;    // pack commands into object&#10;    cmds[0] = {&quot;id&quot; : 6, &quot;on&quot; : on, &quot;hue&quot; : hue};&#10;    // send the commands&#10;    this.send('commands', cmds);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Read the hue and on values and create JSON commands. */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function() {&#10;    this.input('hue', {&#10;        type: &quot;number&quot;&#10;    });&#10;    this.input('on', {&#10;        type: &quot;boolean&quot;&#10;    });&#10;    this.output('commands', {&#10;        type: &quot;JSON&quot;&#10;    });&#10;    this.parameter('lightID', {&#10;    	type: &quot;int&quot;,&#10;    	value: 1&#10;    });&#10;};&#10;&#10;/** Respond to motion by actuating Hue lights. */&#10;exports.fire = function() {&#10;	var hue = this.get('hue');&#10;	var on = this.get('on');&#10;	var id = this.getParameter('lightID');&#10;	var cmds = [];	&#10; &#10;    // pack commands into object&#10;    cmds[0] = {&quot;id&quot; : id, &quot;on&quot; : on, &quot;hue&quot; : hue};&#10;    // send the commands&#10;    this.send('commands', cmds);&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -253,7 +272,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 255.0]">
         </property>
-        <property name="id" class="ptolemy.data.expr.Parameter" value="8">
+        <property name="lightID" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <port name="hue" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -267,13 +286,93 @@
             </property>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
+    <entity name="TextDisplay" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 306, 580, 540}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 496]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 350.0]">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id: TextDisplay.js 2255 2017-11-21 00:30:20Z eal $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TextDisplay.js 2255 2017-11-21 00:30:20Z eal $$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 245.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Commands" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 85, 580, 540}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 496]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id: TextDisplay.js 2255 2017-11-21 00:30:20Z eal $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        var text = util.inspect(inputValue);&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TextDisplay.js 2255 2017-11-21 00:30:20Z eal $$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 380.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -281,23 +380,28 @@
         <vertex name="vertex1" value="[155.0, 350.0]">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[465.0, 255.0]">
+        </vertex>
     </relation>
     <link port="DiscreteClock.output" relation="relation4"/>
     <link port="Sequence.enable" relation="relation4"/>
     <link port="Sequence.output" relation="relation5"/>
     <link port="Uniform.output" relation="relation"/>
     <link port="Uniform.trigger" relation="relation4"/>
-    <link port="Hue.commands" relation="relation2"/>
-    <link port="Hue.lights" relation="relation3"/>
+    <link port="Hue.commands" relation="relation3"/>
+    <link port="Hue.lights" relation="relation6"/>
     <link port="JavaScript.hue" relation="relation"/>
     <link port="JavaScript.on" relation="relation5"/>
-    <link port="JavaScript.commands" relation="relation2"/>
-    <link port="Display.input" relation="relation3"/>
+    <link port="JavaScript.commands" relation="relation3"/>
+    <link port="TextDisplay.input" relation="relation6"/>
+    <link port="Commands.input" relation="relation3"/>
 </entity>
