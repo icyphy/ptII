@@ -276,3 +276,11 @@ tag36h11-19-29-montage.png has been checked in to the repository.
 The Key/Value store is started up using pm2, see
 
 See https://www.icyphy.org/accessors/wiki/Notes/KeyValueStoreOnTerra
+
+The script runKVStore script looks like
+
+--start--
+#!/bin/sh                                                                                                                                                     
+# pm2 start  --interpreter=bash ~/runKVStore                                                                                                                  
+$PTII/bin/ptinvoke ptolemy.moml.MoMLSimpleApplication $PTII/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreServerSOHO.xml
+--end
