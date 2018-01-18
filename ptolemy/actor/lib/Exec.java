@@ -122,11 +122,11 @@ public class Exec extends LimitedFiringSource {
 
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
-        command = new PortParameter(this, "command",
-                new StringToken("echo \"Hello, world.\""));
-
+        command = new PortParameter(this, "command");
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
+        command.setExpression("echo \"Hello world.\"");
+        
         new Parameter(command.getPort(), "_showName", BooleanToken.TRUE);
 
         directory = new FileParameter(this, "directory");
