@@ -11,6 +11,9 @@ interface is displayed in a web browser.
 The demo requires various pieces of hardware, so it is not likely to
 run for most people.
 
+See https://www.terraswarm.org/testbeds/wiki/Main/Swarmnuc2008 for notes
+about the hardware.
+
 The hardware is:
 
 * A SOHO gateway configured to statically set the IP addresses of the
@@ -283,4 +286,9 @@ The script runKVStore script looks like
 #!/bin/sh                                                                                                                                                     
 # pm2 start  --interpreter=bash ~/runKVStore                                                                                                                  
 $PTII/bin/ptinvoke ptolemy.moml.MoMLSimpleApplication $PTII/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreServerSOHO.xml
---end
+--end--
+
+
+=== Audio ===
+
+See https://www.terraswarm.org/testbeds/wiki/Main/Swarmnuc2008
