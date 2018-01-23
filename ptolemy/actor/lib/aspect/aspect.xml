@@ -58,7 +58,7 @@
 	</entity>
   </entity>
 
-  <entity name="ConstraintMonitor" class=ptolemy.data.expr.ConstraintMonitor"/>
+  <entity name="ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor"/>
  
   <entity name="CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.CrossbarSwitch"/> 
   <entity name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.DynamicCoreAssignmentScheduler"> </entity>
