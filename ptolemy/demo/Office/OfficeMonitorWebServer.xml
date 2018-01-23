@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 84, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 84, 917, 625}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9403347387249266">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.89062499999994, 263.24347826086955}">
     </property>
     <entity name="WebServer" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -63,9 +63,9 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 115.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 105.0}">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="80">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -84,7 +84,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = thiz.get('request');&#10;		thiz.send('response', {&#10;			'requestID': request.requestID,&#10;			'response': 'hello world'&#10;		});&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.input('jlist');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = thiz.get('request');&#10;		var jlist = thiz.get('jlist');&#10;		thiz.send('response', {&#10;			'requestID': request.requestID,&#10;			'response': jlist&#10;		});&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -96,7 +96,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 115.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 105.0}">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -104,29 +104,55 @@
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+        <port name="jlist" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
     </entity>
     <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={689, 433, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={689, 433, 458, 196}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{660.0, 95.0}">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebServer.request&quot;,x=270.0,y=115.0}, tail={id=&quot;JavaScript.request&quot;,x=100.0,y=115.0}, points={360.0,125.0,360.0,65.0,15.0,65.0,15.0,115.0} } }">
+    <entity name="Exec" class="ptolemy.actor.lib.Exec">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="pm2 jlist">
         </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebServer.response&quot;,x=270.0,y=115.0}, tail={id=&quot;JavaScript.response&quot;,x=100.0,y=115.0}, points={} } }">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 140.0}">
         </property>
-    </relation>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebServer.listening&quot;,x=520.0,y=105.0}, tail={id=&quot;TimedDisplay.input&quot;,x=660.0,y=95.0}, points={} } }">
+        </property>
     </relation>
-    <link port="WebServer.response" relation="relation2"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{410.0, 105.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.response&quot;,x=315.0,y=105.0}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=105.0}, points={} },{ head={id=&quot;WebServer.response&quot;,x=520.0,y=105.0}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=105.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{40.0, 95.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=40.0,y=95.0}, tail={id=&quot;.Exec.trigger&quot;,x=140.0,y=140.0}, points={40.0,130.0} },{ head={id=&quot;JavaScript.request&quot;,x=315.0,y=105.0}, tail={id=&quot;relation5.vertex1&quot;,x=40.0,y=95.0}, points={} },{ head={id=&quot;WebServer.request&quot;,x=520.0,y=105.0}, tail={id=&quot;relation5.vertex1&quot;,x=40.0,y=95.0}, points={610.0,115.0,610.0,185.0,40.0,185.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="WebServer.response" relation="relation4"/>
     <link port="WebServer.listening" relation="relation3"/>
-    <link port="WebServer.request" relation="relation"/>
-    <link port="JavaScript.request" relation="relation"/>
-    <link port="JavaScript.response" relation="relation2"/>
+    <link port="WebServer.request" relation="relation5"/>
+    <link port="JavaScript.request" relation="relation5"/>
+    <link port="JavaScript.response" relation="relation4"/>
+    <link port="JavaScript.jlist" relation="relation6"/>
     <link port="TimedDisplay.input" relation="relation3"/>
+    <link port="Exec.output" relation="relation6"/>
+    <link port="Exec.trigger" relation="relation5"/>
 </entity>
