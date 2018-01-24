@@ -106,8 +106,6 @@
         </port>
         <port name="jlist" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
