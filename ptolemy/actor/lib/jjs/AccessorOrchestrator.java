@@ -95,7 +95,7 @@ public interface AccessorOrchestrator extends Nameable {
      *  @exception IllegalActionException If the director cannot respect the request.
      *  @see #clearTimeout(Object)
      */
-    public Object setInterval(Runnable function, int milliseconds)
+    public Object setInterval(Runnable function, long milliseconds)
             throws IllegalActionException;
 
     /** Invoke the specified function after the specified amount of time.
@@ -105,7 +105,7 @@ public interface AccessorOrchestrator extends Nameable {
      *  @exception IllegalActionException If the director cannot respect the request.
      *  @see #clearTimeout(Object)
      */
-    public Object setTimeout(Runnable function, int milliseconds)
+    public Object setTimeout(Runnable function, long milliseconds)
             throws IllegalActionException;
 
     /** Cancel all pending callbacks and stop responding to future

@@ -274,9 +274,9 @@ public class RestrictedJavaScriptInterface {
      *  @return A unique ID for this callback
      *  @exception IllegalActionException If the director cannot respect the request.
      */
-    public Object setInterval(final Runnable function, int millisecond)
+    public Object setInterval(final Runnable function, Double millisecond)
             throws IllegalActionException {
-        return _actor.setInterval(function, millisecond);
+        return _actor.setInterval(function, millisecond.longValue());
     }
 
     /** Invoke the specified function after the specified amount of time.
@@ -290,9 +290,9 @@ public class RestrictedJavaScriptInterface {
      *  @return A unique ID for this callback
      *  @exception IllegalActionException If the director cannot respect the request.
      */
-    public Object setTimeout(final Runnable function, int millisecond)
+    public Object setTimeout(final Runnable function, Double millisecond)
             throws IllegalActionException {
-        return _actor.setTimeout(function, millisecond);
+        return _actor.setTimeout(function, millisecond.longValue());
     }
 
     /** Stop execution of the enclosing model.
