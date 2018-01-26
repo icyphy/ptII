@@ -2020,7 +2020,7 @@ public class JavaScript extends AbstractPlaceableActor
      */
     @Override
     public synchronized Object setInterval(final Runnable function,
-            final int milliseconds) throws IllegalActionException {
+            final long milliseconds) throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         // Create a new function that invokes the specified function and then reschedules
         // itself.
@@ -2049,7 +2049,7 @@ public class JavaScript extends AbstractPlaceableActor
      */
     @Override
     public synchronized Object setTimeout(final Runnable function,
-            final int milliseconds) throws IllegalActionException {
+            final long milliseconds) throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         _setTimeout(function, milliseconds, id);
         return id;
@@ -2533,7 +2533,7 @@ public class JavaScript extends AbstractPlaceableActor
      *  @param id The id to use for the timeout function.
      */
     private synchronized void _runThenReschedule(final Runnable function,
-            final int milliseconds, final Integer id) {
+            final long milliseconds, final Integer id) {
         // Invoke the function.
         function.run();
 
@@ -2767,7 +2767,7 @@ public class JavaScript extends AbstractPlaceableActor
      *  @exception IllegalActionException If the director cannot respect the request.
      */
     private synchronized void _setTimeout(final Runnable function,
-            int milliseconds, Integer id) throws IllegalActionException {
+            long milliseconds, Integer id) throws IllegalActionException {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
         if (currentTime == null) {
