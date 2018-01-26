@@ -58,8 +58,15 @@
 	</entity>
   </entity>
 
-  <entity name="ConstraintMonitor" class="ptolemy.data.expr.ConstraintMonitor"/>
- 
+  <!-- ConstraintMonitor also appears in ptolemy/configs/utilityAnalysis.xml -->
+  <property name="ConstraintMonitor"
+            class="ptolemy.data.expr.ConstraintMonitor">
+    <property name="_icon" class="ptolemy.vergil.icon.ConstraintMonitorIcon">
+      <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="30">
+      </property>
+    </property>
+  </property>
+
   <entity name="CrossbarSwitch" class="ptolemy.domains.de.lib.aspect.CrossbarSwitch"/> 
   <entity name="DynamicCoreAssignmentScheduler" class="ptolemy.actor.lib.aspect.DynamicCoreAssignmentScheduler"> </entity>
   <entity name="EDFScheduler" class="ptolemy.actor.lib.aspect.EDFScheduler"> </entity>
