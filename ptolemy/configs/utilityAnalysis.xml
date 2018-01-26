@@ -18,13 +18,16 @@
             </property>
         </property>
     </entity>
-				<property name="ConstraintMonitor"
-						  class="ptolemy.data.expr.ConstraintMonitor">
-        			<property name="_icon" class="ptolemy.vergil.icon.ConstraintMonitorIcon">
-            			<property name="displayWidth" class="ptolemy.data.expr.Parameter" value="30">
-            			</property>
-        			</property>
-				</property>
+
+<!-- ConstraintMonitor also appears in ptolemy/configs/utilityAnalysis.xml -->
+    <property name="ConstraintMonitor"
+              class="ptolemy.data.expr.ConstraintMonitor">
+      <property name="_icon" class="ptolemy.vergil.icon.ConstraintMonitorIcon">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+      </property>
+    </property>
+
                 <property name="DependencyHighlighter"
                           class="ptolemy.vergil.basic.DependencyHighlighter"/>
                 <property name="MonitorReceiverContents"
