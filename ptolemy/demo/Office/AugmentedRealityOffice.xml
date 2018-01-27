@@ -18,9 +18,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[976, 667]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9936212037744042">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{488.0, 333.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{493.100737549943, 344.60888671875006}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -34,9 +34,11 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is for the TerraSwarm demo, where the test environment is a Small Office/Home Office (SOHO) router with a:&#10;* SwarmGateway (192.168.1.200) that acts as a Bluetooth Low Energry (BLE) Gateway that allow&#10;   access to local MQTT devices and optionally publishes to the GDP.&#10;* SwarmBox (192.168.1.217) that acts as the key-value store &#10;&#10;This model looks for AR tags in the camera's field of view, then using the ID of the AR tag, fetches an&#10;accessor from a key-value store, reifies it, and then overlays the sensor data provided&#10;by the accessor on the image. If the accessor provides a schema, then it will also&#10;construct a form for data entry to be sent back to the accessor.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 10.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses your video camera to look for AR tags in the camera's field of view,&#10;then using the ID of the AR tag, fetches an accessor from a key-value store, reifies it,&#10;and then overlays data and control inputs provided by the accessor on the image.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 75.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -52,17 +54,17 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a key-value store which is assumed&#10;to be running on the address specified below.&#10;The key-value store service is defined by this model:&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model relies on a key-value store which is assumed&#10;to be running on the address specified here:&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 435.0]">
         </property>
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServerSOHO Model">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStoreServer">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 525.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreServerSOHO.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="KeyValueStoreServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -93,17 +95,17 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To get a service to access, you can also run the companion&#10;SoundServerSOHO.xml model, which provides an a sound&#10;actuator that reacts to commands:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A service that does not require any additional hardware&#10;is the Sound service, defined here:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 540.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 560.0]">
         </property>
     </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SoundServerSOHO Model">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OfficeServices/Sound">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 605.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 600.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/SoundServerSOHO.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/Sound.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -145,15 +147,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 525.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 485.0]">
         </property>
     </property>
     <property name="Sender3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="tag36h11-19-29.pdf">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OfficeServicesMap.pdf">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 505.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/tag36h11-19-29.pdf">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServicesMap.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -180,140 +182,49 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open the file below &#10;and take a picture&#10;with your phone&#10;camera.&#10;Tag 21 is the light&#10;Tag 22 is the BLEE">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The file below shows the&#10;AR tags associated with&#10;each office service. Take&#10;a picture with your phone.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 435.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="E.g. 192.168.1.217:8099">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 475.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The key-value store service is defined by this model:&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 500.0}">
+        </property>
+    </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="You can also run the companion GenerateMQTTAccessors.xml&#10;model, which generates accessors for MQTT topics listed in&#10;mqtts.json and uploads them to the key-value store:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Augmented Reality Office">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 430.0]">
-        </property>
-    </property>
-    <property name="Sender4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GenerateMQTTAccessors Model">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 485.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateMQTTAccessors.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="You can also run the companion GenerateHueAccessors.xml&#10;model, which generates accessors for Hue bulbs listed in&#10;hues.json and uploads them to the key-value store:">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 515.0]">
-        </property>
-    </property>
-    <property name="Sender5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GenerateHueAccessors Model">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 575.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateHueAccessors.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="You can also run the companion GenerateLifxAccessors.xml&#10;model, which generates accessors for Lifx bulbs listed in&#10;lifxs.json and uploads them to the key-value store:">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 600.0]">
-        </property>
-    </property>
-    <property name="Sender6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GenerateLifxAccessors Model">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 660.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/GenerateLifxAccessors.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 30.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">

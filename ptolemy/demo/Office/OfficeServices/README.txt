@@ -13,8 +13,6 @@ instantiated to access the service.  For example, Sound.xml, another executable 
 when executed, will publish an accessor to the KeyValueStoreServer under key '21'.
 The master list of services and their keys in this directory is here:
 
-
-
     tag36_11_00019 Sound server
     tag36_11_00020 Robot Service
     tag36_11_00021 Light bulb 
