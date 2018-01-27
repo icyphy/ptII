@@ -129,7 +129,7 @@
             </property>
         </property>
     </property>
-    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="192.168.1.217:8099">
+    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="localhost:8099">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -773,7 +773,7 @@
             </port>
         </entity>
         <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 43, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -810,7 +810,7 @@
             </port>
         </entity>
         <entity name="TagToAccessorAccessor2" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 43, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -818,7 +818,7 @@
             </property>
         </entity>
         <entity name="TimedDisplay2" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={744, 143, 696, 282}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={584, 43, 696, 282}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 238]">
             </property>
@@ -953,7 +953,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="camera" class="ptolemy.data.expr.Parameter" value="default camera">
+        <property name="camera" class="ptolemy.data.expr.Parameter" value="HD Pro Webcam C920 0x14200000046d082d">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
