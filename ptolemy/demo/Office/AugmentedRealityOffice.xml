@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9936212037744042">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{493.100737549943, 344.60888671875006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{493.1007375499432, 344.60888671875006}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -64,7 +64,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 525.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="KeyValueStoreServer.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/KeyValueStoreServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -131,7 +131,7 @@
             </property>
         </property>
     </property>
-    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="localhost:8099">
+    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="192.168.1.217:8099">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -864,7 +864,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="camera" class="ptolemy.data.expr.Parameter" value="HD Pro Webcam C920 0x14200000046d082d">
+        <property name="camera" class="ptolemy.data.expr.Parameter" value="default camera">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
