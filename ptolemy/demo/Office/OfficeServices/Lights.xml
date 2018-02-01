@@ -313,7 +313,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="minute" class="ptolemy.actor.parameters.PortParameter" value="&quot;*&quot;">
+        <property name="minute" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 395.0]">
         </property>
@@ -321,7 +321,7 @@
         </property>
         <property name="date" class="ptolemy.actor.parameters.PortParameter" value="&quot;*&quot;">
         </property>
-        <property name="month" class="ptolemy.actor.parameters.PortParameter" value="0">
+        <property name="month" class="ptolemy.actor.parameters.PortParameter" value="&quot;*&quot;">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that spontaneously produces outputs at specified times of day.&#10; This implementation produces a counting sequence, so each output will have&#10; a value one greater than the previous value. The default parameters will&#10; produce an output at the zeroth minute of every hour on any day of the month&#10; and any day of the week.&lt;/p&gt;">
