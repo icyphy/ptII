@@ -134,8 +134,6 @@
         </port>
         <port name="probe" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="InteractiveDialog" class="ptolemy.actor.lib.gui.InteractiveDialog">
