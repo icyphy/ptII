@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Sound" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Services" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -23,7 +23,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model starts a web socket server and, upon receiving messages, plays a sound.&#10;In addition, it publishes to a key-value store an accessor that can be instantiated to&#10;access this service. The AR tag below can be used to retrieve the accessor from the&#10;key-value store.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model starts a web socket server that is used to report the status of services in this&#10;office environment. It publishes to the KeyValueStore a summary of the services as a JSON&#10;data structure, and it responds to queries over the web socket by reporting the current status&#10;of each of those services.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, -10.0]">
         </property>
@@ -86,7 +86,7 @@
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="AprilTags/tag36_11_00019.png">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="AprilTags/tag36_11_00000.png">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
@@ -145,22 +145,11 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Office Sound Service">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Office Services">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -30.0]">
         </property>
     </property>
-    <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Sounds/strum.wav">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 135.0]">
-        </property>
-        <port name="fileOrURL" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
@@ -232,7 +221,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 180.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8070">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -349,11 +338,11 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="resource" class="ptolemy.actor.parameters.PortParameter" value="Sound.js">
+        <property name="resource" class="ptolemy.actor.parameters.PortParameter" value="Services.js">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 435.0}">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -419,7 +408,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="19">
+        <property name="key" class="ptolemy.actor.parameters.PortParameter" value="0">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -463,7 +452,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('response', {'type':'JSON'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('trigger', function() {&#10;		var trigger = thiz.get('trigger');&#10;		if (trigger) {&#10;			thiz.send('response', {'response':'started'});&#10;		} else {&#10;			thiz.send('response', {'response':'stopped'});&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('status');&#10;	this.input('fault');&#10;	this.output('response', {'type':'JSON'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('status', function() {&#10;		var status = thiz.get('status');&#10;		if (status) {&#10;			thiz.send('response', status);&#10;		} else {&#10;			thiz.send('response', 'no status');&#10;		}&#10;	});&#10;	this.addInputHandler('fault', function() {&#10;		var err = thiz.get('fault');&#10;		if (err) {&#10;			thiz.send('response', 'Error: ' + err);&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -475,23 +464,28 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 180.0]">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="fault" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
     </entity>
-    <entity name="ChooseSound" class="ptolemy.actor.lib.jjs.JavaScript">
+    <entity name="HandleRequest" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.output('sound', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	// Send a startup sound.&#10;	thiz.send('sound', 'Sounds/bell.wav');&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		if (received.message) {&#10;			var spec = JSON.parse(received.message);&#10;			if (spec.sound) {&#10;				thiz.send('sound', 'Sounds/' + spec.sound + '.wav');&#10;			}&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.output('status');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('received', function() {&#10;		var services = getResource('Services.json');&#10;		thiz.send('status', JSON.parse(services));&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -508,17 +502,9 @@
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="sound" class="ptolemy.actor.TypedIOPort">
+        <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={578, 653, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 210.0]">
-        </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -540,21 +526,14 @@
         <vertex name="vertex1" value="[15.0, 95.0]">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[295.0, 170.0]">
-        </vertex>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ClipPlayer.trigger" relation="relation11"/>
-    <link port="ClipPlayer.fileOrURL" relation="relation11"/>
-    <link port="ClipPlayer.output" relation="relation2"/>
     <link port="WebSocketServer.toSend" relation="relation9"/>
     <link port="WebSocketServer.received" relation="relation8"/>
     <link port="SingleEvent.output" relation="relation3"/>
@@ -569,9 +548,10 @@
     <link port="KeyValueStore.value" relation="relation7"/>
     <link port="KeyValueStore.trigger" relation="relation7"/>
     <link port="Errors.input" relation="relation6"/>
-    <link port="ConstructResponse.trigger" relation="relation2"/>
     <link port="ConstructResponse.response" relation="relation9"/>
-    <link port="ChooseSound.received" relation="relation8"/>
-    <link port="ChooseSound.sound" relation="relation11"/>
-    <link port="Display.input" relation="relation11"/>
+    <link port="ConstructResponse.status" relation="relation2"/>
+    <link port="ConstructResponse.fault" relation="relation4"/>
+    <link port="HandleRequest.error" relation="relation4"/>
+    <link port="HandleRequest.received" relation="relation8"/>
+    <link port="HandleRequest.status" relation="relation2"/>
 </entity>

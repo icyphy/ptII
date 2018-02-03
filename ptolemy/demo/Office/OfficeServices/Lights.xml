@@ -606,7 +606,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="resource" class="ptolemy.actor.parameters.PortParameter" value="LightsAccessor.js">
+        <property name="resource" class="ptolemy.actor.parameters.PortParameter" value="Lights.js">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
