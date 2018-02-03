@@ -1,0 +1,14 @@
+{
+"Lights": {
+    "Description":"Set themes for the lights in the room.",
+    "Tag":21
+},
+"Services": {
+    "Description":"Report the status of services.",
+    "Tag":0
+},
+"Sound": {
+    "Description":"Produce sounds from a suite of clips.",
+    "Tag":19
+}
+}

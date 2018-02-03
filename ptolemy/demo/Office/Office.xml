@@ -108,7 +108,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 505.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServicesMap.pdf">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/OfficeServicesMap.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -191,6 +191,16 @@
             </property>
         </property>
     </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port:8089">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 185.0]">
+        </property>
+    </property>
     <entity name="AugmentedRealityOffice" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6156863,0.7882353,0.80784315,1.0}">
         </property>
@@ -227,7 +237,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[382.0000000000009, 374.0411046079094]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/KeyValueStoreServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -256,7 +266,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 450.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/Sound.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -285,7 +295,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 450.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/Lights.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -307,8 +317,37 @@
             </property>
         </property>
     </entity>
+    <entity name="Services" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.74509805,0.74509805,0.88235295,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[222.0000000000009, 374.0411046079094]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/Services.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 180}">
+            </property>
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
-        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="discovery">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="discovery&#10;Port:8099">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
@@ -316,21 +355,35 @@
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="Tag:19&#10;Port:8078">
+        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.5873837091570746">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7446228197649625">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="Tag:21&#10;Port:8079">
+        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.796489832698764">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.8144822663913533">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.data.ontologies.ConceptRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="Tag:0&#10;Port:8070">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0031447373909807737">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.005840160396272577">
         </property>
     </relation>
     <link port="AugmentedRealityOffice.belowPort" relation="relation"/>
     <link port="KeyValueStoreServer.belowPort" relation="relation2"/>
     <link port="KeyValueStoreServer.belowPort" relation="relation3"/>
+    <link port="KeyValueStoreServer.belowPort" relation="relation4"/>
     <link port="KeyValueStoreServer.abovePort" relation="relation"/>
     <link port="Sound.abovePort" relation="relation2"/>
     <link port="Lights.abovePort" relation="relation3"/>
+    <link port="Services.abovePort" relation="relation4"/>
 </class>

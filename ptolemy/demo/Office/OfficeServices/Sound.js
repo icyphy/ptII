@@ -1,8 +1,8 @@
-/** Accessor for the Lights service. 
- *  This accessor sends messages to the Lights model via a web socket.
- *  It has embedded in it the IP address of the host running the Lights model.
- *  The Lights model, when it executes, modifies that IP address to conform
- *  with the IP address of whatever server is running the Lights model
+/** Accessor for the Sound service. 
+ *  This accessor sends messages to the Sound model via a web socket.
+ *  It has embedded in it the IP address of the host running the Sound model.
+ *  The Sound model, when it executes, modifies that IP address to conform
+ *  with the IP address of whatever server is running the Sound model
  *  and then publishes this accessor, modified with the correct IP address,
  *  to a KeyValueStoreServer running on the same host.
  *  
@@ -10,14 +10,14 @@
  *  control input that it expects.  It also sends null to the data output to
  *  signal anything downstream that it is starting up.
  *
- *  @accessor LightsAccessor
+ *  @accessor Sound
  *  @author Edward A. Lee (eal@eecs.berkeley.edu)
- *  @input control A JSON object of the form {"mood":"moodname"}, where 
- *   moodname is one of the supported mood names as indicated in the schema
+ *  @input control A JSON object of the form {"sound":"soundname"}, where 
+ *   soundname is one of the supported sound names as indicated in the schema
  *   output.
- *  @output data A JSON object of the form {"response":"OK"} or
- *   {"response":"error message"} to indicate whether the
- *   command has suceeded.
+ *  @output data A JSON object of the form {"response":"started"} or
+ *   {"response":"stopped"} to indicate when the sound playback has
+ *   started and stopped.
  *  @output schema Upon initialization, this output port produces a JSON object that
  *   is a schema for the JSON expected on the control input. This schema
  *   conforms to the JSON schema standard at http://json-schema.org/.
@@ -36,7 +36,7 @@ exports.setup = function() {
 	    'value': '128.32.47.81'
 	});
 	WebSocketClient.input('port', {
-	    'value': '8079'
+	    'value': '8078'
 	});
     this.connect('control', WebSocketClient, 'toSend');
     this.connect(WebSocketClient, 'received', 'data');
@@ -54,11 +54,11 @@ exports.initialize = function() {
 var schema = {
   "type": "object",
   "properties": {
-    "mood": {
+    "sound": {
       	"type": "string",
-      	"title": "Mood",
-      	"description": "Name of the mood to produce using the lights",
-      	"choices": ["dark", "bright", "warm", "cool"]
+      	"title": "Name of the sound to produce",
+      	"description": "The name of the sound to produce",
+      	"choices": ["strum", "bell", "laughter", "thunder", "train", "ring"]
     }
   }
 };

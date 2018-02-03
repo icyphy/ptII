@@ -11,21 +11,21 @@ The core service is KeyValueStoreServer.xml. This is an executable model that th
 other services use to advertise their presence and publish an accessor that can be
 instantiated to access the service.  For example, Sound.xml, another executable model,
 when executed, will publish an accessor to the KeyValueStoreServer under key '21'.
-The master list of services and their keys in this directory is here:
-
-    tag36_11_00019 Sound server
-    tag36_11_00020 Robot Service
-    tag36_11_00021 Light bulb 
-
-
-FIXME: They key-value store should contain this table and the services should be
-indexed in the table by name.  The Augmented-reality demo should read the table and
-do the translation.
+The master list of services and their keys in this directory is in a file in this
+directory called Services.json.  That file contains an object whose
+property names are the name of the services and and the value of each property is
+an object containing a Description and a unique Tag for the service.
 
 This directory contains shell scripts for running each of the services.
 For example, the KeyValueStoreServer can be started by executing its shell script:
 
   ./KeyValueStoreServer.sh
+
+For each service, there are three files. E.g., for Sound, there are:
+
+  Sound.xml   The implementation of the service.
+  Sound.sh    A shell script for starting the service
+  Sound.js    An accessor for the service, published to the KV store by Sound.xml
 
 ================ Making Services Persistent with pm2
 

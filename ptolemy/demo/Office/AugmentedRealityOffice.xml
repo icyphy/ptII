@@ -18,9 +18,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[976, 667]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9936212037744042">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{493.1007375499432, 344.60888671875006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{488.0, 333.5}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -46,7 +46,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Christopher Brooks, Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 655.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 630.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -155,7 +155,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 505.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServicesMap.pdf">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OfficeServices/OfficeServicesMap.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
