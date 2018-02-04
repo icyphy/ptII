@@ -699,11 +699,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
         if (_synchronizeToRealTime && !_isInitializing) {
             long elapsedTime = elapsedTimeSinceStart();
-            // NOTE: The cast to double below is essential because the Time
-            // constructor that takes a long argument interprets that long as
-            // a multiple of the time resolution.
-            Time modelTimeForCurrentRealTime = new Time(this,
-                    (double) elapsedTime / 1000);
+            // NOTE: The Time constructor that takes a long argument interprets
+            // that long as a multiple of the time resolution.
+            // Hence, we use the static milliseconds() method.
+            Time modelTimeForCurrentRealTime = Time.milliseconds(this, elapsedTime);
             return fireAt(actor, modelTimeForCurrentRealTime);
         } else {
             // NOTE: We do not need to override the functionality of
