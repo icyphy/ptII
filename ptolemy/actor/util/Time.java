@@ -160,9 +160,9 @@ public class Time implements Comparable {
      */
     public Time(Director director, long timeValue) {
         _director = director;
-        _timeValue = new BigInteger(Long.toString(timeValue));
+        _timeValue = BigInteger.valueOf(timeValue);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private constructor               ////
 
@@ -639,8 +639,27 @@ public class Time implements Comparable {
         return ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY
                 * Math.pow(2.0, maximumGain);
     }
+    
+    /** Return a new Time object whose value equals the argument,
+     *  which is interpreted in milliseconds.
+     *  @param director The director with which this time object is associated.
+     *  @param timeValue The time in ms.
+     * @return 
+     */
+    public static Time milliseconds(Director director, long milliseconds) {
+        // Handle the default case efficiently and exactly.
+        double resolution = director.getTimeResolution();
+        if (resolution == 10E-10) {
+            return new Time(director,
+                    BigInteger.valueOf(milliseconds).multiply(BigInteger.valueOf(10000000)));
+        }
+        // Resolution in ms.
+        double resolutionMs = resolution * 1000;
+        long multiple = Math.round(milliseconds/resolutionMs);
+        return new Time(director, multiple);
+    }
 
-    /** Return a new time object whose time value is decreased by the
+    /** Return a new Time object whose time value is decreased by the
      *  given double value. Quantization is performed on both the
      *  timeValue argument and the result.
      *  @param timeValue The amount of time decrement.
