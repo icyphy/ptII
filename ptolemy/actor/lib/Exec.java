@@ -549,7 +549,7 @@ public class Exec extends LimitedFiringSource {
 
             String[] environmentArray = null;
 
-            if (environmentTokens.length() >= 1) {
+            if (environmentTokens != null && environmentTokens.length() >= 1) {
                 environmentArray = new String[environmentTokens.length()];
 
                 for (int i = 0; i < environmentTokens.length(); i++) {
