@@ -14,7 +14,7 @@
  *  @author Edward A. Lee (eal@eecs.berkeley.edu)
  *  @input control A trigger, which can be anything, that causes this accessor
  *   to query for the status of services.
- *  @output data An array of objects reporting the status of services.
+ *  @output data An object reporting the status of services.
  *  @output schema Not used by this accessor
  *  @version $$Id$$
  */
