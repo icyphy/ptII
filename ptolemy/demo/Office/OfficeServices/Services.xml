@@ -381,8 +381,6 @@
         </port>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
