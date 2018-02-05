@@ -109,7 +109,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.modal.kernel.ha.Mode;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMActor
