@@ -319,16 +319,7 @@ public class QSSIntegrator extends TypedAtomicActor
                 director.invalidateSchedule();
             }
         } else if (attribute == solver) {
-            String solverValue = solver.stringValue().trim();
-            if (solverValue.startsWith("QSS1")) {
-                _solverOrder = 1;
-            } else if (solverValue.startsWith("QSS2")) {
-                _solverOrder = 2;
-            } else if (solverValue.startsWith("QSS3")) {
-                _solverOrder = 3;
-            } else {
-                _solverOrder = 0;
-            }
+            /* Nothing to do */
         } else {
             super.attributeChanged(attribute);
         }
@@ -598,34 +589,12 @@ public class QSSIntegrator extends TypedAtomicActor
 
         // Create a new QSS solver and initialize it.
         // If no solver is specified, use the director's specification.
-        String solverValue = solver.stringValue().trim();
-        if (solverValue.equals("")) {
+        String solverSpec = solver.stringValue().trim();
+        if (solverSpec.equals("")) {
             // Figure out what order the solver is.
-            String solverSpec = ((QSSDirector) director).QSSSolver.stringValue()
-                    .trim();
-            if (solverSpec.startsWith("QSS1")) {
-                _solverOrder = 1;
-            } else if (solverSpec.startsWith("QSS2")) {
-                _solverOrder = 2;
-            } else if (solverSpec.startsWith("QSS3")) {
-                _solverOrder = 3;
-            }
+            solverSpec = ((QSSDirector) director).QSSSolver.stringValue().trim();
         }
-        switch (_solverOrder) {
-        case 1:
-            _qssSolver = ((QSSDirector) director).newQSSSolver("QSS1");
-            break;
-        case 2:
-            _qssSolver = ((QSSDirector) director).newQSSSolver("QSS2Fd");
-            break;
-        case 3:
-            _qssSolver = ((QSSDirector) director).newQSSSolver("QSS3Fd");
-            break;
-        default:
-            throw new IllegalActionException(this,
-                    "Unsupported solver order: " + _solverOrder);
-        }
-
+        _qssSolver = ((QSSDirector) director).newQSSSolver(solverSpec);
         if (((BooleanToken) exactInputs.getToken()).booleanValue()) {
             _qssSolver.setExactInputs(true);
         } else {
@@ -999,9 +968,4 @@ public class QSSIntegrator extends TypedAtomicActor
      *  <i>QSSSolver</i> parameter of the director.
      */
     private QSSBase _qssSolver = null;
-
-    /** The order of the solver. This is 0, 1, 2, or 3,
-     *  where 0 delegates to the director.
-     */
-    private int _solverOrder = 0;
 }

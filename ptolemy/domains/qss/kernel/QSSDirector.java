@@ -197,11 +197,11 @@ public class QSSDirector extends DEDirector {
         solverParameter.setExpression(defaultSolver);
         solverParameter.addChoice("QSS1");
         solverParameter.addChoice("QSS2Fd");
-        //solverParameter.addChoice("QSS2FdJac");
-        //solverParameter.addChoice("QSS2Pts");
-        //solverParameter.addChoice("QSS2Qts");
+        solverParameter.addChoice("QSS2FdJac");
+        solverParameter.addChoice("QSS2Pts");
+        solverParameter.addChoice("QSS2Qts");
         solverParameter.addChoice("QSS3Fd");
-        //solverParameter.addChoice("QSS3Pts");
+        solverParameter.addChoice("QSS3Pts");
         solverParameter.addChoice("LIQSS1");
         solverParameter.addChoice("LIQSS2Fd");
     }
