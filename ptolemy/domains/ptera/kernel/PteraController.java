@@ -89,7 +89,7 @@ public class PteraController extends ModalController {
     public PteraController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
+        _pinit();
     }
 
     /** Construct an Ptera controller in the specified workspace with
@@ -105,7 +105,7 @@ public class PteraController extends ModalController {
     public PteraController(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        _init();
+        _pinit();
     }
 
     /** React to a change in an attribute.
@@ -501,7 +501,7 @@ public class PteraController extends ModalController {
      *  @exception NameDuplicationException If the name of the director
      *  coincides with a director already in the controller.
      */
-    private void _init()
+    private void _pinit()
             throws IllegalActionException, NameDuplicationException {
         director = new PteraDirector(this, "_Director");
         new SingletonAttribute(director, "_hide");
