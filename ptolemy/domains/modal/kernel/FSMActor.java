@@ -109,6 +109,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.domains.modal.kernel.ha.Mode;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMActor
@@ -2053,10 +2054,10 @@ public class FSMActor extends CompositeEntity
     @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
-        if (!(entity instanceof State)) {
+        if (!(entity instanceof State)){
             throw new IllegalActionException(this, entity,
                     "FSMActor can only contain entities that "
-                            + "are instances of State.");
+                            + "are instances of State or Mode.");
         }
 
         super._addEntity(entity);
@@ -3651,7 +3652,7 @@ public class FSMActor extends CompositeEntity
     /*  Initialize the actor.
      *  @exception IllegalActionException If any port throws it.
      */
-    private void _init() {
+    protected void _init() {
         // Create a more reasonable default icon.
         _attachText("_iconDescription",
                 "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
