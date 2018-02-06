@@ -1,6 +1,6 @@
 /** Accessor for the Services service. 
- *  This accessor sends messages to the Services model via a web socket
- *  and produces the response on its output.
+ *  This accessor queries the Services model via HTTP
+ *  and produces the parsed JSON response on its output.
  *  It has embedded in it the IP address of the host running the Services model.
  *  The Services model, when it executes, modifies that IP address to conform
  *  with the IP address of whatever server is running the Services model
@@ -26,15 +26,12 @@
 
 exports.setup = function() {
 	this.implement('ControllableSensor');
-	var WebSocketClient = this.instantiate('WebSocketClient', 'net/WebSocketClient');
-	WebSocketClient.input('server', {
-	    'value': '128.32.47.81'
+	var REST = this.instantiate('REST', 'net/REST');
+	REST.input('options', {
+	    'value': '"http://128.32.47.81:8080/json"'
 	});
-	WebSocketClient.input('port', {
-	    'value': '8070'
-	});
-    this.connect('control', WebSocketClient, 'toSend');
-    this.connect(WebSocketClient, 'received', 'data');
+    this.connect('control', REST, 'trigger');
+    this.connect(REST, 'response', 'data');
 };
 
 exports.initialize = function() {
@@ -46,7 +43,7 @@ exports.initialize = function() {
 var schema = {
   "type": "object",
   "properties": {
-    "sound": {
+    "trigger": {
       	"type": "string",
       	"title": "Any trigger at all",
       	"description": "Any trigger at all",

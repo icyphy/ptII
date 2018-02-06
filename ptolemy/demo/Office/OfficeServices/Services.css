@@ -1,0 +1,14 @@
+/* Style for table of service status report. */
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+}
+th {
+	background-color: black;
+	color: white;
+	padding: 5px;
+}
+td {
+    padding: 5px;
+}
