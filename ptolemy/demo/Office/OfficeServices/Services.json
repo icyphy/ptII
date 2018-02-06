@@ -1,14 +1,21 @@
 {
-"Lights": {
-    "Description":"Set themes for the lights in the room.",
-    "Tag":21
-},
-"Services": {
-    "Description":"Report the status of services.",
-    "Tag":0
-},
-"Sound": {
-    "Description":"Produce sounds from a suite of clips.",
-    "Tag":19
-}
+	"KeyValueStoreServer": {
+		"Description":"Storage for accessors for services.",
+		"Port":8099
+	},
+	"Lights": {
+    	"Description":"Set themes for the lights in the room.",
+    	"Tag":21,
+    	"Port":8079
+	},
+	"Services": {
+    	"Description":"Report the status of services.",
+    	"Tag":0,
+    	"Port":8080
+	},
+	"Sound": {
+    	"Description":"Produce sounds from a suite of clips.",
+    	"Tag":19,
+    	"Port":8078
+	}
 }

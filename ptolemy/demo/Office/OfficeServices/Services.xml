@@ -360,7 +360,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.input('status');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = thiz.get('request');&#10;		// FIXME&#10;		console.log('Received request: ' + util.inspect(request));&#10;		var requestID = request.requestID;&#10;		var services = getResource('Services.json');&#10;		services = JSON.parse(services);&#10;		if (services) {&#10;			var pm2 = thiz.get('status');&#10;			if (pm2) {&#10;				try {&#10;					// Strip off any leading cruft.&#10;					var index = pm2.indexOf('[');&#10;					pm2 = pm2.substring(index);&#10;					pm2 = JSON.parse(pm2);&#10;					for (var i in pm2) {&#10;						var name = pm2[i]['name'];&#10;						if (name &amp;&amp; services[name]) {&#10;							services[name].pid = pm2[i].pid;&#10;							var status = pm2[i].pm2_env.status;&#10;							services[name].status = status;&#10;							if (status === 'online') {&#10;								var uptime = Date.now() - pm2[i].pm2_env.pm_uptime;&#10;								// Convert to human readable amount of time.&#10;								var x = Math.floor(uptime / 1000);&#10;								var seconds = x % 60;&#10;								x = Math.floor(x/60);&#10;								var minutes = x % 60;&#10;								x = Math.floor(x/60);&#10;								var hours = x % 24;&#10;								x = Math.floor(x/24);&#10;								var days = Math.floor(x);&#10;								if (days &gt; 0) {&#10;									services[name].uptime = days + ' days';&#10;								} else if (hours &gt; 0) {&#10;									services[name].uptime = hours + ' hours';&#10;								} else if (minutes &gt; 0) {&#10;									services[name].uptime = minutes + ' minutes';&#10;								} else {&#10;									services[name].uptime = seconds + ' seconds';&#10;								}&#10;							}&#10;						}&#10;					}&#10;				} catch (err) {&#10;					thiz.send('response', {&#10;						'requestID':requestID,&#10;						'response':{'error':'Failed to get pm2 status: ' + err.message}&#10;					});&#10;					return;&#10;				}&#10;			}&#10;			thiz.send('response', {&#10;				'requestID':requestID,&#10;				'response':services&#10;			});&#10;		} else {&#10;			thiz.send('response', {&#10;				'requestID':requestID,&#10;				'response':{'error':'No services found.'}&#10;			});&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('request');&#10;	this.input('status');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('request', function() {&#10;		var request = thiz.get('request');&#10;		// FIXME&#10;		console.log('Received request: ' + util.inspect(request));&#10;		var requestID = request.requestID;&#10;		var services = getResource('Services.json');&#10;		services = JSON.parse(services);&#10;		if (services) {&#10;			var pm2 = thiz.get('status');&#10;			if (pm2) {&#10;				try {&#10;					// Strip off any leading cruft.&#10;					var index = pm2.indexOf('[');&#10;					pm2 = pm2.substring(index);&#10;					pm2 = JSON.parse(pm2);&#10;					for (var i in pm2) {&#10;						var name = pm2[i]['name'];&#10;						if (name &amp;&amp; services[name]) {&#10;							services[name].PID = pm2[i].pid;&#10;							var status = pm2[i].pm2_env.status;&#10;							services[name].Status = status;&#10;							if (status === 'online') {&#10;								var uptime = Date.now() - pm2[i].pm2_env.pm_uptime;&#10;								// Convert to human readable amount of time.&#10;								var x = Math.floor(uptime / 1000);&#10;								var seconds = x % 60;&#10;								x = Math.floor(x/60);&#10;								var minutes = x % 60;&#10;								x = Math.floor(x/60);&#10;								var hours = x % 24;&#10;								x = Math.floor(x/24);&#10;								var days = Math.floor(x);&#10;								if (days &gt; 0) {&#10;									services[name].Uptime = days + ' days';&#10;								} else if (hours &gt; 0) {&#10;									services[name].Uptime = hours + ' hours';&#10;								} else if (minutes &gt; 0) {&#10;									services[name].Uptime = minutes + ' minutes';&#10;								} else {&#10;									services[name].Uptime = seconds + ' seconds';&#10;								}&#10;							}&#10;						}&#10;					}&#10;				} catch (err) {&#10;					thiz.send('response', {&#10;						'requestID':requestID,&#10;						'response':{'error':'Failed to get pm2 status: ' + err.message}&#10;					});&#10;					return;&#10;				}&#10;			}&#10;			if (request.path.startsWith('/json')) {&#10;				thiz.send('response', {&#10;					'requestID':requestID,&#10;					'response':services&#10;				});&#10;			} else {&#10;				// Construct HTML response.&#10;				// First, collect all the column names.&#10;				// Columns appear in alphabetical order.&#10;				var columns = [];&#10;				for (var service in services) {&#10;					for (var item in services[service]) {&#10;						if (columns.indexOf(item) &lt; 0) {&#10;							columns.push(item);&#10;						}&#10;					}&#10;				}&#10;				columns = columns.sort();&#10;				var html = '&lt;!DOCTYPE html&gt;\n&lt;html&gt;&lt;head&gt;&lt;style&gt;';&#10;				html += getResource('Services.css');&#10;				html += '&lt;/style&gt;&lt;/head&gt;&lt;h1&gt;Local Services&lt;/h1&gt;&lt;table&gt;';&#10;				// Column headers&#10;				html += '&lt;tr&gt;&lt;th&gt;Service&lt;/th&gt;'&#10;				for (var i in columns) {&#10;					html += '&lt;th&gt;' + columns[i] + '&lt;/th&gt;';&#10;				}&#10;				html += '&lt;/tr&gt;';&#10;				&#10;				// Table contents.&#10;				for (var service in services) {&#10;					html += '&lt;tr&gt;&lt;td&gt;' + service + '&lt;/td&gt;';&#10;					for (var i in columns) {&#10;						var entry = services[service][columns[i]];&#10;						if (typeof entry !== 'undefined') {&#10;							html += '&lt;td&gt;' + entry + '&lt;/td&gt;';&#10;						} else {&#10;							html += '&lt;td&gt;&lt;/td&gt;';&#10;						}&#10;					}&#10;					html += '&lt;/tr&gt;';&#10;				}&#10;				&#10;				html += '&lt;/table&gt;&lt;/html&gt;';&#10;				thiz.send('response', {&#10;					'requestID':requestID,&#10;					'response':html&#10;				});&#10;			}&#10;		} else {&#10;			thiz.send('response', {&#10;				'requestID':requestID,&#10;				'response':{'error':'No services found.'}&#10;			});&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -381,9 +381,13 @@
         </port>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
@@ -416,8 +420,6 @@
             </property>
             <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="The response to issue to a request.">
             </property>
-            <property name="shutdown (port)" class="ptolemy.kernel.util.StringAttribute" value="Shutdown the web server.">
-            </property>
             <property name="listening (port)" class="ptolemy.kernel.util.StringAttribute" value="When the server is listening for connections, this output&#10;   will produce the port number that the server is listening on">
             </property>
             <property name="request (port)" class="ptolemy.kernel.util.StringAttribute" value="The request that came into the server.">
@@ -433,13 +435,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="0.0.0.0">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 145.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8070">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
