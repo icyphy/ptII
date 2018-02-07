@@ -83,7 +83,13 @@ public class TextDisplayHelper extends HelperBase {
                 _createOrShowWindow(title);
             }
         };
-        Top.deferIfNecessary(doDisplay);
+        // The following will fail if we are executing headless.
+        // Catch and send to standard output.
+        try {
+            Top.deferIfNecessary(doDisplay);
+        } catch(Throwable ex) {
+            // Ignore, assuming other invocations of deferIfNecessary will fail similarly.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,7 +98,7 @@ public class TextDisplayHelper extends HelperBase {
     /** Append to any text already displayed starting on a new line.
      *  @param text The text to be displayed.
      */
-    public void appendText(String text) {
+    public void appendText(final String text) {
         // Display probably to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
             @Override
@@ -100,7 +106,12 @@ public class TextDisplayHelper extends HelperBase {
                 _append(text);
             }
         };
-        Top.deferIfNecessary(doDisplay);
+        try {
+            Top.deferIfNecessary(doDisplay);
+        } catch(Throwable ex) {
+            // Print to standard out.
+            System.out.println("TextDisplay: " + text);
+        }
     }
 
     /** Display text.
@@ -114,7 +125,12 @@ public class TextDisplayHelper extends HelperBase {
                 _display(text);
             }
         };
-        Top.deferIfNecessary(doDisplay);
+        try {
+            Top.deferIfNecessary(doDisplay);
+        } catch(Throwable ex) {
+            // Print to standard out.
+            System.out.println("TextDisplay: " + text);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
