@@ -197,10 +197,18 @@ public class TimedPlotter extends Plotter implements TimedActor {
                 SmoothToken smoothToken = currentToken instanceof SmoothToken
                         ? (SmoothToken) currentToken
                         : null;
+                double[] derivatives;
+                if (smoothToken != null) {
+                    derivatives = smoothToken.derivativeValues();
+                    if (derivatives == null) {
+                        derivatives = new double[0];
+                    }
+                } else {
+                    derivatives = null;
+                }
                 plot.addPoint(i + offset, currentTimeValue,
                         currentToken.doubleValue(),
-                        smoothToken != null ? smoothToken.derivativeValues()
-                                : null,
+                        derivatives,
                         _connected.get(i));
                 if (disconnectOnAbsent) {
                     _connected.set(i, true);
