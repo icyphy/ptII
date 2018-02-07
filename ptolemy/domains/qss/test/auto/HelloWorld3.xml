@@ -9,6 +9,10 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.02">
+        </property>
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="absoluteQuantum">
+        </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
@@ -35,10 +39,6 @@
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.02">
-        </property>
-        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="absoluteQuantum">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 110.0}">
         </property>
     </entity>
