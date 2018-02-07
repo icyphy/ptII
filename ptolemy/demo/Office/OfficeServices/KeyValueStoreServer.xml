@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 268, 1274, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 168, 1274, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1040, 522]">
     </property>
@@ -295,7 +295,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('getResult');&#10;	this.input('request');&#10;	this.input('responseBody');&#10;	this.input('responseCode');&#10;	this.input('notFound');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;	// Send a response for set and delete requests.&#10;	this.addInputHandler('responseBody', function() {&#10;		console.log('handling body');&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: self.get('responseBody')&#10;		};&#10;		&#10;		var responseCode = self.get('responseCode');&#10;		if (responseCode !== null) {&#10;			response.responseCode = responseCode;&#10;		}&#10;		&#10;		self.send('response', response);&#10;	});&#10;	&#10;	// Send a response for a successful get request.&#10;	this.addInputHandler('getResult', function() {&#10;		var value = self.get('getResult');&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: value&#10;		}&#10;		self.send('response', response);&#10;	});&#10;	&#10;	// Send a response for an unsuccessful get request.&#10;	this.addInputHandler('notFound', function() {&#10;		var value =  '&lt;html&gt;Error (404): Not Found.  No value for key.';&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: value,&#10;			responseCode: 404&#10;		} &#10;		self.send('response', response);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('getResult');&#10;	this.input('request');&#10;	this.input('responseBody');&#10;	this.input('responseCode');&#10;	this.input('notFound');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;	// Send a response for set and delete requests.&#10;	this.addInputHandler('responseBody', function() {&#10;		console.log('handling set or delete request.');&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: self.get('responseBody')&#10;		};&#10;		&#10;		var responseCode = self.get('responseCode');&#10;		if (responseCode !== null) {&#10;			response.responseCode = responseCode;&#10;		}&#10;		&#10;		self.send('response', response);&#10;	});&#10;	&#10;	// Send a response for a successful get request.&#10;	this.addInputHandler('getResult', function() {&#10;		console.log('handling get request.');&#10;		var value = self.get('getResult');&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: value&#10;		}&#10;		self.send('response', response);&#10;	});&#10;	&#10;	// Send a response for an unsuccessful get request.&#10;	this.addInputHandler('notFound', function() {&#10;		console.log('handling unsuccessful get request.');&#10;		var value =  '&lt;html&gt;Error (404): Not Found.  No value for key.';&#10;		var requestID = self.get('request').requestID;&#10;		var response = {&#10;			requestID: requestID,&#10;			response: value,&#10;			responseCode: 404&#10;		} &#10;		self.send('response', response);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -307,7 +307,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 420.0]">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
