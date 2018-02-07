@@ -150,7 +150,7 @@
     <entity name="T3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 605.0]">
         </property>
@@ -164,7 +164,7 @@
     <entity name="T4" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 605.0]">
         </property>

@@ -45,7 +45,7 @@
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
         <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>

@@ -11,7 +11,7 @@
         </property>
         <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Pts">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Pts">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 220.0}">
         </property>
@@ -192,7 +192,7 @@
     <entity name="QSSIntegrator3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Pts">
         </property>
         <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -296,7 +296,7 @@
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS3">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>

@@ -11,6 +11,8 @@
         </property>
         <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-2">
         </property>
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Pts">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
         </property>
     </property>
@@ -87,7 +89,7 @@
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
         <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">

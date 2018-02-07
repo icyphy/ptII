@@ -112,8 +112,6 @@
         </property>
     </entity>
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
-        </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
