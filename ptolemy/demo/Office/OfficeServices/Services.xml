@@ -424,6 +424,8 @@
             </property>
             <property name="port (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port to listen on.">
             </property>
+            <property name="shutdown (port)" class="ptolemy.kernel.util.StringAttribute" value="Shutdown the web server.">
+            </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
