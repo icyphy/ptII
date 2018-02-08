@@ -131,7 +131,7 @@
             </property>
         </property>
     </property>
-    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="localhost:8099">
+    <property name="storeLocation" class="ptolemy.data.expr.StringParameter" value="192.168.1.217:8099">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
