@@ -98,7 +98,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.5, {4.0}), smoothToken(1.00000000015, {3.5}), smoothToken(1.500000000225, {2.99999999985}), smoothToken(2.00000000018, {2.499999999775}), smoothToken(2.500000000135, {1.99999999982}), smoothToken(3.00000000019, {1.499999999865}), smoothToken(3.500000000195, {0.99999999981}), smoothToken(4.0000000002, {0.499999999805}), smoothToken(3.9999999989436, {-2.000000165480742E-10})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.5), smoothToken(1.00000000015), smoothToken(1.500000000225), smoothToken(2.00000000018), smoothToken(2.500000000135), smoothToken(3.00000000019), smoothToken(3.500000000195), smoothToken(4.0000000002), smoothToken(3.9999999989436)}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

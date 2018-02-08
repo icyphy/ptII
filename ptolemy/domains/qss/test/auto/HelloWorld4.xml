@@ -133,7 +133,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.0, {1.0}), smoothToken(4.0, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {0.0}), smoothToken(0.0, {1.0}), smoothToken(4.0, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -153,7 +153,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.099999999961, {1.095445115,1.0}), smoothToken(0.6898979500651, {1.5426587119000001,1.0}), smoothToken(1.4797959014213, {1.9898723087999999,1.0}), smoothToken(2.4696938562503, {2.4370859057,1.0}), smoothToken(3.6597945764213, {2.8842994976,1.0}), smoothToken(5.0541978007213, {3.3329340366,1.0}), smoothToken(6.6465372733733, {3.7806587187000003,1.0}), smoothToken(8.4384656735793, {4.2281538038,1.0}), smoothToken(10.429658462628, {4.6754203825000005,1.0}), smoothToken(11.9999462202294, {5.0,1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {0.0}), smoothToken(0.0999999999887, {1.095445115}), smoothToken(0.6898979485206, {1.5426587105}), smoothToken(1.4797958971476, {1.989872306}), smoothToken(2.4696938464252, {2.4370859017999997}), smoothToken(3.6595917950871, {2.8842994973}), smoothToken(5.0494897443071, {3.331513093}), smoothToken(6.6393876941709, {3.7787266888}), smoothToken(8.4292856436511, {4.2259402844}), smoothToken(10.4191835963021, {4.6731538807}), smoothToken(12.0000000000699, {5.0})}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
@@ -167,7 +167,7 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.095445115, 0.5426587119, 0.9898723088, 1.4370859057, 1.8842994976, 2.3329340366, 2.7806587187, 3.2281538038, 3.6754203825, 4.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.095445115, 0.5426587105, 0.989872306, 1.4370859018, 1.8842994973, 2.331513093, 2.7787266888, 3.2259402844, 3.6731538807, 4.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>

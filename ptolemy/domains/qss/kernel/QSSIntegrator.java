@@ -496,16 +496,11 @@ public class QSSIntegrator extends TypedAtomicActor
 
             // The derivatives of the output are determined by the most recent
             // input, extrapolated to the present, up to the n-th derivative, for QSSn.
-            double[] derivatives = null;
+            double[] derivatives = new double[_qssSolver.getStateModelOrder()];
             if (_previousInput != null) {
                 SmoothToken extrapolatedInput = _previousInput
                         .extrapolate(currentTime);
-                derivatives = new double[SmoothToken.order(extrapolatedInput)
-                        + 1];
-                if (derivatives.length > 0) {
-                    derivatives[0] = extrapolatedInput.doubleValue();
-                }
-                for (int i = 1; i < derivatives.length; i++) {
+                for (int i = 0; i < derivatives.length; i++) {
                     derivatives[i] = SmoothToken
                             .derivativeValue(extrapolatedInput, i);
                 }
