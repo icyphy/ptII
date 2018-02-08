@@ -188,6 +188,11 @@ public class QSSDirector extends DEDirector {
         }
     }
 
+    /** Gets the list of all available QSS solver names. */
+    public static String[] getQSSSolverNames() {
+        return new String[] { "QSS1", "QSS2Fd", "QSS2FdJac", "QSS2Pts", "QSS2Qts", "QSS3Fd", "QSS3Pts", "LIQSS1", "LIQSS2Fd" };
+    }
+
     /** Set the default solver method and list solver alternatives for the specified solver.
      *  @param solverParameter The parameter specifying the solver method.
      *  @param defaultSolver The default solver to use.
@@ -195,15 +200,10 @@ public class QSSDirector extends DEDirector {
     public static void configureSolverParameter(StringParameter solverParameter,
             String defaultSolver) {
         solverParameter.setExpression(defaultSolver);
-        solverParameter.addChoice("QSS1");
-        solverParameter.addChoice("QSS2Fd");
-        solverParameter.addChoice("QSS2FdJac");
-        solverParameter.addChoice("QSS2Pts");
-        solverParameter.addChoice("QSS2Qts");
-        solverParameter.addChoice("QSS3Fd");
-        solverParameter.addChoice("QSS3Pts");
-        solverParameter.addChoice("LIQSS1");
-        solverParameter.addChoice("LIQSS2Fd");
+        String[] solvers = getQSSSolverNames();
+        for (int i = 0; i < solvers.length; ++i) {
+            solverParameter.addChoice(solvers[i]);
+        }
     }
 
     /** Return the value of the absoluteQuantum parameter.

@@ -213,9 +213,10 @@ public class QSSIntegrator extends TypedAtomicActor
         xInit.setExpression("0.0");
 
         solver = new StringParameter(this, "solver");
-        solver.addChoice("QSS1");
-        solver.addChoice("QSS2");
-        solver.addChoice("QSS3");
+        String[] solvers = QSSDirector.getQSSSolverNames();
+        for (int i = 0; i < solvers.length; ++i) {
+            solver.addChoice(solvers[i]);
+        }
 
         absoluteQuantum = new Parameter(this, "absoluteQuantum");
         absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
@@ -289,8 +290,7 @@ public class QSSIntegrator extends TypedAtomicActor
 
     /** The class name of the QSS solver used for integration.  This
      *  is a string that defaults to the empty string, which delegates
-     *  the choice to the director. The possibilities here are "QSS1",
-     *  "QSS2", and "QSS3".
+     *  the choice to the director.
      */
     public StringParameter solver;
 
