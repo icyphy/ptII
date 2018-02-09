@@ -6,28 +6,6 @@
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 315.0]">
     </property>
-    <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
-        </property>
-        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
-        </property>
-    </property>
     <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/PLC/Figures/Drumstick.pdf">
         </property>
@@ -99,13 +77,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 385.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1639, 1055}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, -9, 1938, 1063}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1419, 937]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 936]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{699.5, 458.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{844.0, 458.0}">
     </property>
     <property name="initialAngularVelocity" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -192,7 +170,7 @@
     </port>
     <port name="SetAngularVelocity" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 340.0}">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -206,8 +184,6 @@
     </port>
     <port name="I" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 295.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -267,8 +243,6 @@
         </port>
         <port name="I" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -298,15 +272,11 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{185.0, 245.0}">
         </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -314,17 +284,29 @@
         <vertex name="vertex1" value="[470.0, 295.0]">
         </vertex>
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[70.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[135.0, 340.0]">
+        </vertex>
+    </relation>
     <link port="Torque" relation="relation3"/>
     <link port="Theta" relation="relation4"/>
-    <link port="SetAngularVelocity" relation="relation2"/>
+    <link port="SetAngularVelocity" relation="relation"/>
     <link port="AngularVelocity" relation="relation5"/>
     <link port="I" relation="relation7"/>
     <link port="Angle.derivative" relation="relation5"/>
     <link port="Angle.state" relation="relation4"/>
-    <link port="AngularVelocity.derivative" relation="relation"/>
+    <link port="AngularVelocity.derivative" relation="relation6"/>
     <link port="AngularVelocity.state" relation="relation5"/>
-    <link port="AngularVelocity.initialState" relation="relation2"/>
-    <link port="Expression.output" relation="relation"/>
+    <link port="AngularVelocity.initialState" relation="relation"/>
+    <link port="Expression.output" relation="relation6"/>
     <link port="Expression.theta" relation="relation4"/>
     <link port="Expression.torque" relation="relation3"/>
     <link port="Expression.I" relation="relation7"/>
