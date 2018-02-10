@@ -188,10 +188,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 495.0]">
             </property>
         </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 300.0]">
-            </property>
-        </property>
         <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
             </property>
