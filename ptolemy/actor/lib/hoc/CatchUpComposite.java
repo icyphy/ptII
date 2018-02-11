@@ -45,6 +45,9 @@ import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -67,6 +70,16 @@ exception. This director then transfers any available
 inputs to the inside model and fires the inside model
 one more time. On this "caught up" firing, the inside
 model is permitted to produce outputs.
+<p>
+By default, if an actor contained by this composite requests
+a firing at a future time, then that request is passed up to
+the containing director. If <i>fireOnlyWhenTriggered</i> is set
+to <i>true</i>, however, then such requests are not passed up.
+In this case, the next firing will occur whenever the container
+has an input to provide to this composite, and catching up will
+occur only at that time. Note that if this composite produces
+outputs, you have to be very careful to ensure that those outputs
+are produced only at times when an input trigger is provided.
 <p>
 Note that a firing of this composite results in one
 or more complete iterations of the inside model, including
@@ -105,7 +118,7 @@ public class CatchUpComposite extends MirrorComposite {
     public CatchUpComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
+        _init(container);
     }
 
     /** Construct a CatchUpComposite in the specified workspace with
@@ -123,7 +136,8 @@ public class CatchUpComposite extends MirrorComposite {
         // This constructor is needed if CatchUpComposite is used as an
         // actor-oriented class.
         super(workspace);
-        _init();
+        // FIXME: The null argument will be a problem!
+        _init(null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -207,13 +221,10 @@ public class CatchUpComposite extends MirrorComposite {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The contained composite actor. */
-    private MirrorComposite.MirrorCompositeContents _contents;
+    private Contents _contents;
 
     /** The default value icon.  This is static so that we avoid doing
      *  string concatenation each time we construct this object.
@@ -241,12 +252,13 @@ public class CatchUpComposite extends MirrorComposite {
     ////                         private methods                   ////
 
     /** Initialize the actor.
+     *  @param container The container.
      *  @exception IllegalActionException If the container is incompatible
      *   with this actor.
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    private void _init()
+    private void _init(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.CatchUpComposite");
 
@@ -256,8 +268,7 @@ public class CatchUpComposite extends MirrorComposite {
         _director.setName("CatchUpDirector");
 
         // Create the composite actor for the contents.
-        _contents = new MirrorComposite.MirrorCompositeContents(this,
-                "Contents");
+        _contents = new Contents(this, "Contents");
 
         // Override the default icon.
         _attachText("_iconDescription", _defaultIcon);
@@ -499,18 +510,28 @@ public class CatchUpComposite extends MirrorComposite {
                     .getEnvironmentTimeForLocalTime(time);
             Director director = getExecutiveDirector();
 
-            Time response = director.fireAt(CatchUpComposite.this,
-                    environmentTime, microstep);
-
-            int comparison = response.compareTo(time);
-            if (comparison == 0) {
-                return time;
-            } else {
+            if (((BooleanToken)_contents.fireOnlyWhenTriggered.getToken()).booleanValue()) {
+                // Do not pass the request up the hierarchy.
                 if (_pendingFiringTimes == null) {
                     _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
                 }
                 _pendingFiringTimes.add(new SuperdenseTime(time, microstep));
+                // Do as below and return time anyway since the inside
+                // actor will think its time matches the requested firing time.
                 return time;
+            } else {
+                Time response = director.fireAt(CatchUpComposite.this,
+                        environmentTime, microstep);
+                int comparison = response.compareTo(time);
+                if (comparison == 0) {
+                    return time;
+                } else {
+                    if (_pendingFiringTimes == null) {
+                        _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
+                    }
+                    _pendingFiringTimes.add(new SuperdenseTime(time, microstep));
+                    return time;
+                }
             }
         }
 
@@ -648,5 +669,34 @@ public class CatchUpComposite extends MirrorComposite {
 
         /** Indicator that the inside model returned false in postfire. */
         private boolean _postfireReturns = true;
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //// Contents
+    
+    /** Contents composite that overrides the base class to have a parameter
+     *  indicating whether to fire only when triggered.
+     */
+    private class Contents extends MirrorComposite.MirrorCompositeContents {
+
+        public Contents(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            
+            fireOnlyWhenTriggered = new Parameter(this, "fireOnlyWhenTriggered");
+            fireOnlyWhenTriggered.setTypeEquals(BaseType.BOOLEAN);
+            fireOnlyWhenTriggered.setExpression("false");
+        }
+        
+        /** If false (the default), then whenever any contained actor
+         *  makes a fireAt() request, that request is passed up to the container,
+         *  and hence this composite will be fired at the requested time.
+         *  If set to true, then the request will not be passed up,
+         *  and this composite will be fired only when the container
+         *  chooses to fire it. If the containing director is DE, for example,
+         *  that will occur only when there is an input event to provide to
+         *  this composite.
+         */
+        public Parameter fireOnlyWhenTriggered;
     }
 }
