@@ -1,0 +1,391 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CatchUpComposite7" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 636, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[402, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9873624912783723">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{499.779425621033, 290.9955842932876}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 190.0]">
+        </property>
+    </property>
+    <entity name="PLC" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 290.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 722, 632}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[488, 522]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.8905660649507063">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{698.417163848877, 407.5908203125}">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 300.0]">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.05">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="ExecutionRequestPort">
+            </property>
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="180">
+        </property>
+        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.8, 0.0, 1.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 410.0]">
+            </property>
+        </port>
+        <entity name="CatchUpComposite" class="ptolemy.actor.lib.hoc.CatchUpComposite">
+            <doc>Composite actor where inside can catch up with the outside</doc>
+            <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 410.0}">
+            </property>
+            <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+            <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <entity name="Contents" class="ptolemy.actor.TypedCompositeActor">
+                <property name="fireOnlyWhenTriggered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 55.0]">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={501, 243, 786, 632}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[552, 522]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3233570341969603">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.7822265625, 257.65347166166976}">
+                </property>
+                <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                    </property>
+                    <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                    </property>
+                </property>
+                <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 175.0}">
+                    </property>
+                </property>
+                <port name="trigger" class="ptolemy.actor.lib.hoc.MirrorPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 240.0]">
+                    </property>
+                </port>
+                <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={731, 23, 509, 374}, maximized=false}">
+                    </property>
+                    <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 330]">
+                    </property>
+                    <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{615.0, 240.0}">
+                    </property>
+                    <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="2.0500000000000003"/>
+<yRange min="0.0" max="2.0000000000000004"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+                    </configure>
+                </entity>
+                <entity name="AngularVelocity" class="ptolemy.domains.continuous.lib.Integrator">
+                    <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 240.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                    <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                        <property name="input"/>
+                        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                    </port>
+                </entity>
+                <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 240.0]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={723, 421, 499, 208}, maximized=false}">
+                    </property>
+                    <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{630, 395}">
+                    </property>
+                    <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                        </property>
+                        <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                        </property>
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                    </property>
+                    <vertex name="vertex1" value="{555.0, 240.0}">
+                    </vertex>
+                </relation>
+                <link port="trigger" relation="relation"/>
+                <link port="TimedPlotter.input" relation="relation4"/>
+                <link port="AngularVelocity.derivative" relation="relation2"/>
+                <link port="AngularVelocity.state" relation="relation4"/>
+                <link port="ZeroOrderHold.input" relation="relation"/>
+                <link port="ZeroOrderHold.output" relation="relation2"/>
+                <link port="TimedDisplay.input" relation="relation4"/>
+            </entity>
+        </entity>
+        <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{675, 465}">
+            </property>
+            <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 1.05, 2.05}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{775.0, 520.0}">
+            </property>
+            <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 520.0]">
+            </property>
+            <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[610.0, 410.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="trigger" relation="relation"/>
+        <link port="CatchUpComposite.trigger" relation="relation"/>
+        <link port="TimedDisplay.input" relation="relation"/>
+        <link port="NonStrictTest.input" relation="relation2"/>
+        <link port="CurrentTime.output" relation="relation2"/>
+        <link port="CurrentTime.trigger" relation="relation"/>
+    </entity>
+    <entity name="Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 385.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 877}, maximized=true}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 936]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.796120075201951">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.1484374999999, 203.48791777090665}">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 25.0]">
+            </property>
+        </property>
+        <entity name="ExecutionRequestPort" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 105.0]">
+            </property>
+        </entity>
+        <entity name="ExecutionResponsePort" class="ptolemy.actor.lib.aspect.ExecutionResponsePort">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 105.0]">
+            </property>
+        </entity>
+        <entity name="Server" class="ptolemy.domains.de.lib.Server">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 105.0]">
+            </property>
+        </entity>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 175.0]">
+            </property>
+            <port name="executionTime" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[190.0, 105.0]">
+            </vertex>
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="ExecutionRequestPort.output" relation="relation"/>
+        <link port="ExecutionResponsePort.input" relation="relation8"/>
+        <link port="Server.input" relation="relation"/>
+        <link port="Server.output" relation="relation8"/>
+        <link port="Server.serviceTime" relation="relation5"/>
+        <link port="RecordDisassembler.input" relation="relation"/>
+        <link port="RecordDisassembler.executionTime" relation="relation5"/>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 290.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="DecoratorAttributesFor_Scheduler2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
+            </property>
+            <property name="enable" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="PLC.trigger" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+</entity>
