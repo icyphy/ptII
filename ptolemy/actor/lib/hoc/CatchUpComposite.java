@@ -509,6 +509,14 @@ public class CatchUpComposite extends MirrorComposite {
             Time environmentTime = localClock
                     .getEnvironmentTimeForLocalTime(time);
             Director director = getExecutiveDirector();
+            if (director instanceof SuperdenseTimeDirector) {
+                int environmentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+                // Microstep should be greater than that of the enclosing director
+                // if the time matches current time.
+                if (getModelTime().equals(time) && microstep < environmentMicrostep) {
+                    microstep = environmentMicrostep + 1;
+                }
+            }
 
             if (((BooleanToken)_contents.fireOnlyWhenTriggered.getToken()).booleanValue()) {
                 // Do not pass the request up the hierarchy.
