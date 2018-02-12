@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 936]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.369833211381722">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3698332113817224">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.1041953563678, 168.7546690082785}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{344.10419535636765, 168.75466900827854}">
     </property>
     <property name="armRadius" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -199,7 +199,7 @@
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+    <port name="samplingTrigger" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 370.0]">
         </property>
@@ -248,11 +248,11 @@
         </property>
     </entity>
     <entity name="LevelCrossingDetector" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
-        <property name="level" class="ptolemy.data.expr.Parameter" value="asin((ballRadius/armRadius))">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="asin(ballRadius/armRadius)">
         </property>
         <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 120.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -351,10 +351,44 @@
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
+    <entity name="AnimateTargetArm" class="ptolemy.demo.PLC.AnimateArm">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[473.5841827392578, -18.877365112304688]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 23, 1189, 889}, maximized=false}">
+        </property>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+        </entity>
+    </entity>
+    <entity name="ContinuousMerge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 205.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="LevelCrossingDetector2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
+        <property name="level" class="ptolemy.data.expr.Parameter" value="pi - asin(ballRadius/armRadius)">
+        </property>
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 165.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{395.0, 50.0}">
+        <vertex name="vertex1" value="[395.0, 50.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -403,11 +437,11 @@
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[25.0, 50.0]">
-        </vertex>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="torque" relation="relation19"/>
     <link port="theta" relation="relation"/>
@@ -415,20 +449,20 @@
     <link port="x" relation="relation18"/>
     <link port="y" relation="relation5"/>
     <link port="I" relation="relation21"/>
-    <link port="trigger" relation="relation12"/>
+    <link port="samplingTrigger" relation="relation12"/>
     <link port="PolarToCartesian.magnitude" relation="relation3"/>
     <link port="PolarToCartesian.angle" relation="relation10"/>
     <link port="PolarToCartesian.x" relation="relation16"/>
     <link port="PolarToCartesian.y" relation="relation2"/>
     <link port="Const.output" relation="relation3"/>
-    <link port="LevelCrossingDetector.output" relation="relation15"/>
+    <link port="LevelCrossingDetector.output" relation="relation23"/>
     <link port="LevelCrossingDetector.trigger" relation="relation10"/>
     <link port="Sampler.input" relation="relation11"/>
     <link port="Sampler.output" relation="relation14"/>
     <link port="Sampler.trigger" relation="relation15"/>
     <link port="MicrostepDelay.input" relation="relation6"/>
     <link port="MicrostepDelay.output" relation="relation8"/>
-    <link port="InstanceOfArm.Torque" relation="relation22"/>
+    <link port="InstanceOfArm.Torque" relation="relation4"/>
     <link port="InstanceOfArm.Theta" relation="relation10"/>
     <link port="InstanceOfArm.SetAngularVelocity" relation="relation8"/>
     <link port="InstanceOfArm.AngularVelocity" relation="relation11"/>
@@ -455,5 +489,11 @@
     <link port="Sampler3.output" relation="relation21"/>
     <link port="Sampler3.trigger" relation="relation12"/>
     <link port="ZeroOrderHold.input" relation="relation19"/>
-    <link port="ZeroOrderHold.output" relation="relation22"/>
+    <link port="ZeroOrderHold.output" relation="relation4"/>
+    <link port="AnimateTargetArm.Theta" relation="relation10"/>
+    <link port="ContinuousMerge.input" relation="relation23"/>
+    <link port="ContinuousMerge.input" relation="relation24"/>
+    <link port="ContinuousMerge.output" relation="relation15"/>
+    <link port="LevelCrossingDetector2.output" relation="relation24"/>
+    <link port="LevelCrossingDetector2.trigger" relation="relation10"/>
 </class>
