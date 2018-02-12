@@ -49,10 +49,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	AnimateArm.xml \
 	Arm.png \
-	Arm.xml \
 	BouncingArm.xml \
 	Figures \
-	PLCwithSampledFeedbackTorque.xml \
 	PLC.xml
 
 EXTRA_SRCS = \
