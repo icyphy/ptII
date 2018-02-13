@@ -49,19 +49,13 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3f;
 
-import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
-import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
-import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.geometry.Cylinder;
-import com.sun.j3d.utils.geometry.Sphere;
-import com.sun.j3d.utils.universe.SimpleUniverse;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor3D;
 import ptolemy.domains.gr.kernel.SceneGraphToken;
@@ -71,6 +65,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
+import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
+import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.geometry.Cylinder;
+import com.sun.j3d.utils.geometry.Sphere;
+import com.sun.j3d.utils.universe.SimpleUniverse;
 
 ///////////////////////////////////////////////////////////////////
 //// ViewScreen3D
@@ -107,6 +108,9 @@ public class ViewScreen3D extends GRActor3D
         sceneGraphIn.setInput(true);
         sceneGraphIn.setTypeEquals(SceneGraphToken.TYPE);
         sceneGraphIn.setMultiport(true);
+        
+        title = new StringParameter(this, "title");
+        title.setExpression("ViewScreen");
 
         horizontalResolution = new Parameter(this, "horizontalResolution",
                 new IntToken(400));
@@ -186,6 +190,9 @@ public class ViewScreen3D extends GRActor3D
      *  This parameter is a boolean with default false.
      */
     public Parameter showAxes;
+    
+    /** The title to put at the top of the frame. */
+    public StringParameter title;
 
     /** Boolean variable that determines whether the user can
      *  translate the model with the mouse.
@@ -514,7 +521,7 @@ public class ViewScreen3D extends GRActor3D
 
         // Create a frame, if placeable was not called.
         if (_container == null) {
-            _frame = new JFrame("ViewScreen");
+            _frame = new JFrame(title.stringValue());
             _frame.setVisible(true);
             _frame.validate();
             _frame.setSize(horizontalDimension + 50, verticalDimension);
