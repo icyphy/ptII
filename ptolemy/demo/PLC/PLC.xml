@@ -4,13 +4,13 @@
 <entity name="PLC" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, -9, 1938, 1063}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1049, 463}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 936]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[815, 353]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0714873066137922">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{976.3565634044551, 579.2912859209514}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{742.1027384168011, 500.4289424490121}">
     </property>
     <property name="armRadius" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -316,13 +316,13 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 10.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, -9, 1938, 1063}, maximized=true}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 877}, maximized=true}">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 936]">
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 767]">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0279329608938548">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{770.8043478260869, 417.53980978260853}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{526.6249999999999, 335.3360054347824}">
                 </property>
                 <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 75}">
@@ -384,6 +384,8 @@
                         </property>
                         <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
+                    </property>
+                    <property name="title" class="ptolemy.data.expr.StringParameter" value="Reference Arm">
                     </property>
                     <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
                         <property name="DecoratorAttributesFor_Scheduler2" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
@@ -878,6 +880,8 @@
             <property name="requestPort" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Controlled Arm">
+        </property>
         <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
             <property name="DecoratorAttributesFor_Scheduler" class="ptolemy.actor.lib.aspect.CompositeExecutionAspect$CompositeExecutionAspectAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Scheduler">
@@ -1279,7 +1283,7 @@
             </property>
         </property>
         <entity name="ExecutionRequestPort" class="ptolemy.actor.lib.aspect.ExecutionRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="{actor = object(ptolemy.actor.TypedCompositeActor {.PLC.PLC}), executionTime = 9.765625E-4}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 105.0]">
             </property>
