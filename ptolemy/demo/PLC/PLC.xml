@@ -4,13 +4,13 @@
 <entity name="PLC" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1011, 650}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, -9, 1938, 1063}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[777, 540]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 936]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0714873066137922">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{541.9137126803398, 394.5014160103717}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{976.3565634044551, 579.2912859209514}">
     </property>
     <property name="armRadius" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -96,7 +96,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 175.0]">
         </property>
     </property>
-    <property name="clockPeriod" class="ptolemy.data.expr.Parameter" value="1.0/2^12">
+    <property name="clockPeriod" class="ptolemy.data.expr.Parameter" value="1.0/2^10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -115,7 +115,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 235.0]">
         </property>
     </property>
-    <property name="mainLoopPeriod" class="ptolemy.data.expr.Parameter" value="clockPeriod * 2^6">
+    <property name="mainLoopPeriod" class="ptolemy.data.expr.Parameter" value="clockPeriod * 2^4">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1291,7 +1291,7 @@
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
             <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 105.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 105.0]">
             </property>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
@@ -1309,7 +1309,7 @@
             <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
             <doc>Create a sequence of gaussian random variables</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 285.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 260.0}">
             </property>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -1323,9 +1323,11 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 205.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 175.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
             </property>
             <port name="x" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1344,7 +1346,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 285.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 260.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -1359,17 +1361,9 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 315.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 290.0]">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </entity>
-        <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={778, 412, 346, 230}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[346, 186]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 15.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1389,7 +1383,7 @@
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[165.0, 195.0]">
+            <vertex name="vertex1" value="[155.0, 195.0]">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1411,8 +1405,9 @@
         <link port="Expression.x" relation="relation5"/>
         <link port="Expression.n" relation="relation3"/>
         <link port="Const.output" relation="relation2"/>
+        <link port="Const.trigger" relation="relation5"/>
         <link port="Const2.output" relation="relation6"/>
-        <link port="TimedDisplay.input" relation="relation"/>
+        <link port="Const2.trigger" relation="relation5"/>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="mainLoopPeriod">
