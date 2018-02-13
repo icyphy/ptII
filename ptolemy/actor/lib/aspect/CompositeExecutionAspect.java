@@ -319,45 +319,45 @@ public class CompositeExecutionAspect extends TypedCompositeActor
     @Override
     public boolean postfire() throws IllegalActionException {
         boolean postfire = super.postfire();
+        if (!_justMonitor) {
+            for (Object entity : entityList()) {
+                if (entity instanceof ExecutionResponsePort) {
+                    ExecutionResponsePort outputPort = ((ExecutionResponsePort) entity);
+                    if (outputPort.hasToken()
+                            && outputPort.getToken() instanceof RecordToken) {
+                        RecordToken recordToken = (RecordToken) outputPort
+                                .getToken();
+                        if (recordToken.get("actor") != null
+                                && ((ObjectToken) recordToken.get("actor"))
+                                        .getValue() != null) {
+                            NamedObj actor = (NamedObj) ((ObjectToken) recordToken
+                                    .get("actor")).getValue();
+                            notifyExecutionListeners(actor,
+                                    getExecutiveDirector().getModelTime()
+                                            .getDoubleValue(),
+                                    ExecutionEventType.STOP);
+                            outputPort.takeToken();
+                            _currentlyExecuting.remove(actor);
 
-        for (Object entity : entityList()) {
-            if (entity instanceof ExecutionResponsePort) {
-                ExecutionResponsePort outputPort = ((ExecutionResponsePort) entity);
-                if (outputPort.hasToken()
-                        && outputPort.getToken() instanceof RecordToken) {
-                    RecordToken recordToken = (RecordToken) outputPort
-                            .getToken();
-                    if (recordToken.get("actor") != null
-                            && ((ObjectToken) recordToken.get("actor"))
-                                    .getValue() != null) {
-                        NamedObj actor = (NamedObj) ((ObjectToken) recordToken
-                                .get("actor")).getValue();
-                        notifyExecutionListeners(actor,
-                                getExecutiveDirector().getModelTime()
-                                        .getDoubleValue(),
-                                ExecutionEventType.STOP);
-                        outputPort.takeToken();
-                        _currentlyExecuting.remove(actor);
+                            Director director = null;
+                            if (actor instanceof Actor) {
+                                director = ((Actor) actor).getExecutiveDirector();
+                            } else {
+                                Nameable container = actor.getContainer();
 
-                        Director director = null;
-                        if (actor instanceof Actor) {
-                            director = ((Actor) actor).getExecutiveDirector();
-                        } else {
-                            Nameable container = actor.getContainer();
-
-                            while (!(container instanceof Actor)) {
-                                container = container.getContainer();
+                                while (!(container instanceof Actor)) {
+                                    container = container.getContainer();
+                                }
+                                director = ((Actor) container).getDirector();
                             }
-                            director = ((Actor) container).getDirector();
-                        }
 
-                        director.resumeActor(actor);
-                        _lastActorFinished = true;
+                            director.resumeActor(actor);
+                            _lastActorFinished = true;
+                        }
                     }
                 }
             }
         }
-
         return postfire;
     }
 
