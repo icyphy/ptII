@@ -6,7 +6,7 @@
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 315.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 23, 1179, 880}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 23, 1193, 872}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[959, 762]">
     </property>
@@ -75,6 +75,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 105.0]">
         </property>
     </property>
+    <property name="title" class="ptolemy.data.expr.StringParameter" value="ViewScreen">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 65.0]">
+        </property>
+    </property>
     <port name="Theta" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 330.0]">
@@ -83,6 +102,8 @@
         </property>
     </port>
     <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="$title">
+        </property>
         <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="600">
         </property>
         <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="600">
