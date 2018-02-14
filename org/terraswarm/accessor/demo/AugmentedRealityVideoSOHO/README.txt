@@ -85,7 +85,7 @@ To run the demo
    Netgear02 wireless network, the you know what is on the side of the Netgear box
 
 ** SwarmBox: http://192.168.1.217:8099/keyvalue/help
-   Should see the help page.
+   Should see the help page for the Key-Value store, which is running under pm2.
 
    To log in use
    ssh eal@192.168.1.217
@@ -96,7 +96,12 @@ To run the demo
    sudo -i
    su - sbuser
    pm2 restart 0
-    
+
+Getting info about processes:
+
+pm2 list               # Display all processes status
+pm2 jlist              # Print process list in raw JSON
+pm2 prettylist         # Print process list in beautified JSON
 
 == Changing Light Bulbs ==
 To try different lightbulbs:
