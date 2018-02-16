@@ -1,10 +1,9 @@
-{
-    "mqtts": [
-        { "topic": "device/BLEES/c098e53000b4", "type": "BLEE", "location": "Cory", "room": "545Q", "atag": "22", "humanName": "Edwards Office b4"},
-        { "topic": "device/BLEES/c098e530005b", "type": "BLEE", "location": "Cory", "room": "545Q", "atag": "23", "humanName": "Edwards Office 5b"},
-        { "topic": "device/PowerBlade/c098e570021e", "type": "PowerBlade", "location": "CKC", "room": "Krutch", "atag": "24", "humanName": "NetGear N300"},
-        { "topic": "device/PowerBlade/c098e570020b", "type": "PowerBlade", "location": "CKC", "room": "Krutch", "atag": "25", "humanName": "SwarmNuc1017"},
-        { "topic": "device/PowerBlade/c098e570023e", "type": "PowerBlade", "location": "CKC", "room": "Krutch", "atag": "26", "humanName": "LightBulb"},
-        { "topic": "device/PowerBlade/c098e570023a", "type": "PowerBlade", "location": "Cory", "room": "545Q", "atag": "27", "humanName": "Edwards Office"}
-    ]
-}
+[
+    {"name":"Floor lamp power meter", "type":"PowerBlade", "mac":"c098e570021e", "location":"545Q Cory Hall"},
+    {"name":"FIXME", "type":"PowerBlade", "mac":"c098e570020b", "location":"545Q Cory Hall"},
+    {"name":"FIXME", "type":"PowerBlade", "mac":"c098e570023e", "location":"545Q Cory Hall"},
+    {"name":"FIXME", "type":"PowerBlade", "mac":"c098e570023a", "location":"545Q Cory Hall"},
+    {"name":"FIXME", "type":"BLEES", "mac":"c098e53000b4", "location":"545Q Cory Hall"},
+    {"name":"FIXME", "type":"BLEES", "mac":"c098e530005b", "location":"545Q Cory Hall"},
+]
+

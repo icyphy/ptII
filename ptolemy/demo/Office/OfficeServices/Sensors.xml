@@ -238,7 +238,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 185.0]">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
         </property>
@@ -466,60 +466,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 425.0]">
         </property>
     </entity>
-    <entity name="ConstructResponse" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('response', {'type':'JSON'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('trigger', function() {&#10;		var trigger = thiz.get('trigger');&#10;		if (trigger) {&#10;			thiz.send('response', {'response':'started'});&#10;		} else {&#10;			thiz.send('response', {'response':'stopped'});&#10;		}&#10;	});&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 135.0]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="response" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-    </entity>
-    <entity name="ChooseSound" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.output('sound', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	// Send a startup sound.&#10;	thiz.send('sound', 'Sounds/bell.wav');&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		if (received.message) {&#10;			var spec = JSON.parse(received.message);&#10;			if (spec.sound) {&#10;				thiz.send('sound', 'Sounds/' + spec.sound + '.wav');&#10;			}&#10;		}&#10;	});&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 170.0}">
-        </property>
-        <port name="received" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="sound" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="MQTTSubscriber" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
@@ -567,7 +513,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 220}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 175.0}">
         </property>
         <port name="subscribe" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -629,13 +575,75 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 95.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Subscribe" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('topics');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('trigger', function() {&#10;		var spec = getResource('Sensors.json');&#10;		var sensors = JSON.parse(spec);&#10;		for (var i = 0; i &lt; sensors.length(); i++) {&#10;			var sensor = sensors[i];&#10;			var topic = 'device/'&#10;					+ sensor['type']&#10;					+ '/'&#10;					+ sensor['mac'];&#10;			thiz.send('topics', topic);&#10;		}&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[61.95838928222656, 97.03117370605469]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="topics" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="HandleSensorData" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		thiz.send('response', {'response': JSON.parse('received')});&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 185.0]">
+        </property>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -654,18 +662,21 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[15.0, 95.0]">
-        </vertex>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="WebSocketServer.toSend" relation="relation9"/>
-    <link port="WebSocketServer.received" relation="relation8"/>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{370.0, 185.0}">
+        </vertex>
+    </relation>
+    <link port="WebSocketServer.toSend" relation="relation10"/>
     <link port="SingleEvent.output" relation="relation3"/>
     <link port="IPAddress.trigger" relation="relation3"/>
     <link port="IPAddress.IPAddress" relation="relation5"/>
@@ -678,8 +689,12 @@
     <link port="KeyValueStore.value" relation="relation7"/>
     <link port="KeyValueStore.trigger" relation="relation7"/>
     <link port="Errors.input" relation="relation6"/>
-    <link port="ConstructResponse.response" relation="relation9"/>
-    <link port="ChooseSound.received" relation="relation8"/>
+    <link port="MQTTSubscriber.subscribe" relation="relation8"/>
+    <link port="MQTTSubscriber.connection" relation="relation4"/>
     <link port="MQTTSubscriber.received" relation="relation2"/>
-    <link port="TextDisplay.input" relation="relation2"/>
+    <link port="TextDisplay.input" relation="relation10"/>
+    <link port="Subscribe.trigger" relation="relation4"/>
+    <link port="Subscribe.topics" relation="relation8"/>
+    <link port="HandleSensorData.received" relation="relation2"/>
+    <link port="HandleSensorData.response" relation="relation10"/>
 </entity>
