@@ -8,6 +8,11 @@
     	"Tag":21,
     	"Port":8079
 	},
+	"Sensors": {
+	    "Description":"Report data from sensors in the room.",
+	    "Tag":24,
+	    "Port":8077
+	}
 	"Services": {
     	"Description":"Report the status of services.",
     	"Tag":0,
