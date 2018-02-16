@@ -641,8 +641,13 @@ public class StringUtilities {
      */
     public static boolean isValidIdentifier(String name) {
         char[] nameArray = name.toCharArray();
-
-        for (int i = 0; i < nameArray.length; i++) {
+        if (nameArray.length == 0) {
+            return false;
+        }
+        if (!Character.isJavaIdentifierStart(nameArray[0])) {
+            return false;
+        }
+        for (int i = 1; i < nameArray.length; i++) {
             if (!Character.isJavaIdentifierPart(nameArray[i])) {
                 return false;
             }
