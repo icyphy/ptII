@@ -386,8 +386,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  labels determined by the java.lang.String.compareTo() method.
      *
      *  <p>Record labels that contain any non-Java identifier characters
-     *  are surrounded with double quotes. Quotes within label strings are
-     *  escaped using a backslash.
+     *  or contain only numbers are surrounded with double quotes.
+     *  Quotes within label strings are escaped using a backslash.
      *  </p>
      *
      *  @return A String beginning with "{" that contains label and value
