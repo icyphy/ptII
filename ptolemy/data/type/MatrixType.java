@@ -165,7 +165,7 @@ public class MatrixType extends StructuredType implements Cloneable {
             matrixType = BaseType.FIX_MATRIX;
         } else {
             throw new IllegalActionException("Type " + elementType
-                    + " does have a corresponding matrix type.");
+                    + " does not have a corresponding matrix type.");
         }
 
         return matrixType;
