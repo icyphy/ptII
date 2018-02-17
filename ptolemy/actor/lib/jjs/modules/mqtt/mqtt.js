@@ -82,16 +82,6 @@ function Client(port, host, options) {
 
     this.javaClient = new MQTTHelper.MQTTClientWrapper(helper, this, port, host, options.clientId, options.rawBytes);
 
-    // When "use strict" was added, the following exception occurred because of this.connected = undefined.
-    //
-    // ptolemy.kernel.util.IllegalActionException: Failure executing the initialize function: TypeError: Cannot set property "connected" of [object Object] that has only a getter in /Users/cxh/ptII/ptolemy/actor/lib/jjs/external/require.js#209:26<eval> at line number 79
-    //    in .MQTTPubSub.MqttSubscriber
-    //Because:
-    //TypeError: Cannot set property "connected" of [object Object] that has only a getter in /Users/cxh/ptII/ptolemy/actor/lib/jjs/external/require.js#209:26<eval> at line number 79
-    //at ptolemy.actor.lib.jjs.JavaScript._invokeMethodInContext(JavaScript.java:1846)
-
-    //this.connected = undefined;
-
     events.EventEmitter.call(this);
 }
 util.inherits(Client, events.EventEmitter);
