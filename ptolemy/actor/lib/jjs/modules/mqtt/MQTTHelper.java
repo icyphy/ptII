@@ -166,19 +166,6 @@ public class MQTTHelper extends HelperBase {
          * @exception MqttException
          */
         public void start() throws MqttSecurityException, MqttException {
-            _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
-
-                @Override
-                public void onSuccess(IMqttToken arg0) {
-                    _currentObj.callMember("emit", "connect");
-                }
-
-                @Override
-                public void onFailure(IMqttToken arg0, Throwable arg1) {
-                    _error(_currentObj, "Connection refused.", arg1);
-                }
-            });
-
             _mqttClient.setCallback(new MqttCallback() {
 
                 @Override
@@ -206,7 +193,19 @@ public class MQTTHelper extends HelperBase {
                     _currentObj.callMember("emit", "close");
                 }
             });
+            
+            _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
 
+                @Override
+                public void onSuccess(IMqttToken arg0) {
+                    _currentObj.callMember("emit", "connect");
+                }
+
+                @Override
+                public void onFailure(IMqttToken arg0, Throwable arg1) {
+                    _error(_currentObj, "Connection refused.", arg1);
+                }
+            });
         }
 
         /**
@@ -268,7 +267,11 @@ public class MQTTHelper extends HelperBase {
             if (_mqttClient.isConnected()) {
                 _mqttClient.disconnect();
             }
-            _mqttClient.close();
+            try {
+                _mqttClient.close();
+            } catch(Throwable ex) {
+                System.err.println("Closing MQTT connection failed: " + ex);
+            }
         }
 
         /**
