@@ -904,7 +904,16 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     }
                     if (result != null) {
                         if (result instanceof Variable) {
-                            return ((Variable) result).getType();
+                            // If the variable is a Matrix or an Array, the return type
+                            // will be the element type, not the Matrix or Array.
+                            Type type = ((Variable) result).getType();
+                            if (type instanceof MatrixType) {
+                                return ((MatrixType)type).getElementType();
+                            }
+                            if (type instanceof ArrayType) {
+                                return ((ArrayType)type).getElementType();
+                            }
+                            return type;
                         } else {
                             return new ObjectType(result, result.getClass());
                         }
