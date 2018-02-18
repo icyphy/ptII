@@ -1513,13 +1513,27 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                 // The first argument is the object on which this is evaluated.
                                 // E.g., Container in Container.parameter(0).
                                 // If no argument is given, return the token itself.
-                                if (argValues.length < 2 || !(argValues[1] instanceof IntToken)) {
+                                if (argValues.length < 2) {
                                     return token;
+                                }
+                                if  (!(argValues[1] instanceof IntToken)) {
+                                    throw new IllegalActionException(
+                                            "Expected integer index for accessing "
+                                            + ((Variable)result).getFullName()
+                                            + " but got "
+                                            + token);
                                 }
                                 int row = ((IntToken)(argValues[1])).intValue();
                                 // If no column argument is given, assume it is zero.
                                 int column = 0;
-                                if (argValues.length >= 3 && !(argValues[2] instanceof IntToken)) {
+                                if (argValues.length >= 3) {
+                                    if  (!(argValues[2] instanceof IntToken)) {
+                                        throw new IllegalActionException(
+                                                "Expected integer index for accessing "
+                                                + ((Variable)result).getFullName()
+                                                + " but got "
+                                                + token);
+                                    }
                                     column = ((IntToken)(argValues[2])).intValue();
                                 }
                                 return ((MatrixToken)token).getElementAsToken(row, column);
