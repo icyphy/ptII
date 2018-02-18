@@ -1506,7 +1506,36 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     }
                     if (result != null) {
                         if (result instanceof Variable) {
-                            return ((Variable) result).getToken();
+                            ptolemy.data.Token token = ((Variable) result).getToken();
+                            // If the token is a Matrix or an Array, then it is
+                            // getting indexed by the argument(s).
+                            if (token instanceof MatrixToken) {
+                                // The first argument is the object on which this is evaluated.
+                                // E.g., Container in Container.parameter(0).
+                                // If no argument is given, return the token itself.
+                                if (argValues.length < 2 || !(argValues[1] instanceof IntToken)) {
+                                    return token;
+                                }
+                                int row = ((IntToken)(argValues[1])).intValue();
+                                // If no column argument is given, assume it is zero.
+                                int column = 0;
+                                if (argValues.length >= 3 && !(argValues[2] instanceof IntToken)) {
+                                    column = ((IntToken)(argValues[2])).intValue();
+                                }
+                                return ((MatrixToken)token).getElementAsToken(row, column);
+                            }
+                            if (token instanceof ArrayToken) {
+                                // The first argument is the object on which this is evaluated.
+                                // E.g., Container in Container.parameter(0).
+                                // If no argument is given, return the token itself.
+                                if (argValues.length < 2 || !(argValues[1] instanceof IntToken)) {
+                                    return token;
+                                }
+                                int index = ((IntToken)(argValues[1])).intValue();
+                                return ((ArrayToken)token).getElement(index);
+                            }
+
+                            return token;
                         } else {
                             return new ObjectToken(result, result.getClass());
                         }
