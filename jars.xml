@@ -377,6 +377,7 @@
     <include name="ptolemy/demo/ExecDemos/ExecDemos.jar" />
     <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
     <include name="ptolemy/demo/FuelSystem/FuelSystem.jar" />
+    <include name="ptolemy/demo/Office/Office.jar" />
     <include name="ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar" />
     <include name="ptolemy/distributed/demo/Sleep/Sleep.jar" />
     <include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.jar" />
@@ -2119,6 +2120,16 @@
 	<include name="ptolemy/demo/CapeCode/Sounds/*.wav"/>
 	<include name="ptolemy/demo/ExecDemos/Demos/*.xml"/>
 	<include name="ptolemy/demo/ExecDemos/Demos/HyVisualDemos/*.xml"/>
+        <include name="ptolemy/demo/Office/OfficeServices/README.txt"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.css"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.js"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.json"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.pdf"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.sh"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.xml"/>
+        <include name="ptolemy/demo/Office/AprilTags/README.txt"/>
+	<include name="ptolemy/demo/Office/OfficeServices/AprilTags/*.png"/>
+	<include name="ptolemy/demo/Office/OfficeServices/Sounds/*.wav"/>
 	<include name="ptolemy/demo/PLC*/Figures/*.pdf"/>
 	<include name="ptolemy/demo/PLC*/Figures/*.tex"/>
 	<include name="ptolemy/demo/*/*.csv"/>
@@ -7103,6 +7114,24 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/demo/FuelSystem/*.xml"/>
+       </fileset>
+    </jar>
+
+    <jar defaultexcludes="yes"
+         destfile="${basedir}/ptolemy/demo/Office/Office.jar"
+         >
+       <fileset dir="${basedir}">
+        <include name="ptolemy/demo/Office/*.xml"/>
+        <include name="ptolemy/demo/Office/OfficeServices/README.txt"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.css"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.js"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.json"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.pdf"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.sh"/>
+        <include name="ptolemy/demo/Office/OfficeServices/*.xml"/>
+        <include name="ptolemy/demo/Office/AprilTags/README.txt"/>
+        <include name="ptolemy/demo/Office/AprilTags/*.png"/>
+        <include name="ptolemy/demo/Office/Sounds/*.wav"/>
        </fileset>
     </jar>
 
