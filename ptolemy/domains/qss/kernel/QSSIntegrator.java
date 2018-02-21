@@ -450,7 +450,7 @@ public class QSSIntegrator extends TypedAtomicActor
 
         // There's no need to keep re-firing once we've fired as many times as the order of the integrator,
         // since by that time, we should have reached a fixed point.
-        produceOutput |= hasInput && _inputChanged <= _maximumInputOrder + 1;
+        produceOutput |= hasInput && _inputChanged <= _maximumInputOrder;
 
         if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) < 0) {
             // The current simulation time is ahead of the solver's time.
@@ -496,7 +496,7 @@ public class QSSIntegrator extends TypedAtomicActor
 
             // The derivatives of the output are determined by the most recent
             // input, extrapolated to the present, up to the n-th derivative, for QSSn.
-            double[] derivatives = new double[_qssSolver.getStateModelOrder()];
+            double[] derivatives = new double[_maximumInputOrder];
             if (_previousInput != null) {
                 SmoothToken extrapolatedInput = _previousInput
                         .extrapolate(currentTime);
