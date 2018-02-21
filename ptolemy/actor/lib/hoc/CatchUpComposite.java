@@ -685,7 +685,10 @@ public class CatchUpComposite extends MirrorComposite {
     /** Contents composite that overrides the base class to have a parameter
      *  indicating whether to fire only when triggered.
      */
-    private class Contents extends MirrorComposite.MirrorCompositeContents {
+    public class Contents extends MirrorComposite.MirrorCompositeContents {
+
+        // The Contents class should be public so that cloning works.
+        // To test: (cd $PTII/ptolemy/configs/test/; $PTII/bin/ptjacl allConfigs.tcl) 
 
         public Contents(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
