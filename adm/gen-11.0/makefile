@@ -1073,9 +1073,6 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/gtTableauFactory.xml \
 		ptolemy/configs/iaEffigyFactory.xml \
 		ptolemy/configs/iaTableauFactory.xml \
-		ptolemy/configs/ontologyEffigyFactory.xml \
-		ptolemy/configs/ontologySolverEffigyFactory.xml \
-		ptolemy/configs/ontologyTableauFactories.xml \
 		ptolemy/configs/pn \
 		ptolemy/configs/ptdb \
 		ptolemy/configs/ptiny \
@@ -1454,7 +1451,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/test/makefile 
 	#
 	# Fix up ptolemy/configs/makefile
-	egrep -v "bcvtb|cyphysim|defaultFullConfiguration.xml|dsp|fmv|full|gt|hyvisual|iaEffigy|iaTablea|jxta|ontology|pn|ptdb|ptiny|Ptera|ptserver|space|test|viptos|visualsense" \
+	egrep -v "bcvtb|cyphysim|defaultFullConfiguration.xml|dsp|fmv|full|gt|hyvisual|iaEffigy|iaTablea|jxta|pn|ptdb|ptiny|Ptera|ptserver|space|test|viptos|visualsense" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp \
@@ -1468,7 +1465,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile
 	#
 	# Fix up ptolemy/demo/makefile
-	egrep -v "AirManagement|ElectriPowerSystem|EnterpriseOntology|ExecDemos|FuelSystem|ProbabilisticMOdels|RobotMPC|PLC" \
+	egrep -v "AirManagement|ElectricPowerSystem|EnterpriseOntology|ExecDemos|FuelSystem|ProbabilisticModels|RobotMPC|PLC" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile.tmp \
