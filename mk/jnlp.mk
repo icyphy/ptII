@@ -307,18 +307,18 @@ CAPECODE_JNLP_JARS = \
 	$(EXPORT_JARS) \
 	$(PDFRENDERER_JARS) \
 	ptolemy/actor/gui/syntax/syntax.jar \
+	ptolemy/data/ontologies/ontologies.jar \
+	ptolemy/vergil/ontologies/ontologies.jar \
 	$(PTRSYNTAXTEXTAREA_JAR) \
 	$(JSOUP_JARS)
 
 # As per Edward, exclude these from CapeCode
 #	ptolemy/actor/gt/gt.jar
 #	ptolemy/vergil/gt/gt.jar 
-#	ptolemy/data/ontologies/ontologies.jar
 #	ptolemy/domains/scr/scr.jar
 #	ptolemy/domains/scr/demo/demo.jar
 #	ptolemy/vergil/scr/scr.jar
 #	ptolemy/vergil/modal/fmv/fmv.jar
-#	ptolemy/vergil/ontologies/ontologies.jar
 #	$(RUN_JARS)
 #	$(PTERA_JARS)
 #	$(PTFMI_JARS)
