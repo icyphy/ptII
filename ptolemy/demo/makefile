@@ -31,9 +31,13 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		test \
-		AirManagementSystem ElectricPowerSystem EnterpriseOntology ExecDemos FuelSystem ProbabilisticModels RobotMPC PLC doc test \
-		CapeCode
+# Include test on the line with the Ptolemy demos because
+# ptolemy/demo/test/auto contains tests that will not work with
+# CapeCode, these tests require the full Ptolemy tree.
+DIRS = 		doc \
+		AirManagementSystem ElectricPowerSystem EnterpriseOntology ExecDemos FuelSystem ProbabilisticModels RobotMPC PLC test \
+		CapeCode \
+		Office
 
 # Root of Ptolemy II directory
 ROOT =		../..
