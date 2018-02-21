@@ -195,7 +195,13 @@ update: $(DERIVED_FILES)
 	rm -f doc.jar
 	$(MAKE) doc.jar
 	# The first commit will change completeDemosPtiny.htm, which will cause completeDemosBcvtb.htm to be updated
-	svn commit -m "Master files changed" $(DERIVED_FILES)
+	if [ -d .svn ]; then \
+		echo "Committing changes to $(DERIVED_FILES)"; \
+		svn commit -m "Master files changed" $(DERIVED_FILES); \
+        else \
+		echo "No .svn/ directory, so $(DERIVED_FILES) are not being committed."; \
+		echo "This only a problem if the ptII tree is supposed to be under Subversion."; \
+        fi
 
 update_clean: 
 	rm -f $(DERIVED_FILES)
