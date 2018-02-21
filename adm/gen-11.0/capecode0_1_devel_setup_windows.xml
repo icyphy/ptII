@@ -384,9 +384,9 @@
             <file src="../dists/ptII11.0.devel/jar_dist/lib/vertx-web-3.4.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/webcam-capture-0.3.10.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/webcam-capture-0.3.12.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/bridj-0.6.2.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/bridj-0.7.0.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
             <file src="../dists/ptII11.0.devel/jar_dist/lib/xbjlib-1.1.0.nrjavaserial.jar"

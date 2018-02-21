@@ -73,7 +73,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  *  <pre>
  *  cd /tmp
- *  jar -xf $PTII/lib/webcam-capture-0.3.10.jar
+ *  jar -xf $PTII/lib/webcam-capture-0.3.12.jar
  *  ldd ./com/github/sarxos/webcam/ds/buildin/lib/linux_x64/OpenIMAJGrabber.so
  *  </pre>
  *

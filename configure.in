@@ -6716,12 +6716,12 @@ else
     if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_SIMPLE_JAR"; then
         AC_MSG_CHECKING([for webcam-capture])
         AC_ARG_WITH(webcam-capture, [  --with-webcam-capture=WEBCAMCAPTURE_JAR     use webcam-capture WEBCAMCAPTURE_JAR
-                          defaults to \$PTII/lib/webcam-capture-0.3.10.jar],
+                          defaults to \$PTII/lib/webcam-capture-0.3.12.jar],
 	    PTWEBCAMCAPTURE_JAR=$withval,
-	    PTWEBCAMCAPTURE_JAR=$PTII/lib/webcam-capture-0.3.10.jar)
+	    PTWEBCAMCAPTURE_JAR=$PTII/lib/webcam-capture-0.3.12.jar)
 
         if test -f "$PTWEBCAMCAPTURE_JAR"; then
-            PTBRIDG_JAR="$PTII/lib/bridj-0.6.2.jar"
+            PTBRIDG_JAR="$PTII/lib/bridj-0.7.0.jar"
             if test -f "$PTBRIDG_JAR"; then
                 PT_MSG_RESULT([$PTWEBCAMCAPTURE_JAR])
                 PTCAMERAS_DIR=cameras
