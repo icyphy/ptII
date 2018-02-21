@@ -131,8 +131,11 @@ test RecordToken-1.3 {Create a non-empty instance from string} {
 # 
 test RecordToken-1.4 {Create a non-empty instance from string} {
     set r4 [java::new {ptolemy.data.RecordToken String} "{\"586\" = \"bar\"}"]
+    # This used to return {586 = "bar"} until StringUtilities was updated in r77487:
+    # Java identifiers cannot begin with numbers so we have to separately test the first character in isValidIdentifier()
     list [$r4 toString] [$r4 length]
-} {{{586 = "bar"}} 1}
+
+} {{{"586" = "bar"}} 1}
 
 test RecordToken-1.5 {Create a non-empty instance from string} {
     catch {
