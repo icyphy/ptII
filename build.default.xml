@@ -117,7 +117,7 @@
     <pathelement location="lib/PDFRenderer.jar" />
     <pathelement location="lib/StructuralCoder.jar" />
     <pathelement location="lib/YieldAdapter.jar" />
-    <pathelement location="lib/bridj-0.6.2.jar" />
+    <pathelement location="lib/bridj-0.7.0.jar" />
     <pathelement location="lib/bsh-2.0b4.jar" />
     <pathelement location="lib/chic.jar" />
     <pathelement location="lib/commons-lang-2.6.jar" />
@@ -187,7 +187,7 @@
     <pathelement location="lib/vertx-lang-ruby-3.4.2.jar" />
     <pathelement location="lib/vertx-service-proxy-3.4.2.jar" />
     <pathelement location="lib/vertx-web-3.4.2.jar" />
-    <pathelement location="lib/webcam-capture-0.3.10.jar" />
+    <pathelement location="lib/webcam-capture-0.3.12.jar" />
     <pathelement location="lib/xbjlib-1.1.0.nrjavaserial.jar" />
 
     <pathelement location="ptolemy/distributed/jini/jar/jini-core.jar" />

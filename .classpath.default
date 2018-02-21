@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="lib/PDFRenderer.jar"/>
 	<classpathentry kind="lib" path="lib/StructuralCoder.jar"/>
 	<classpathentry kind="lib" path="lib/YieldAdapter.jar"/>
-	<classpathentry kind="lib" path="lib/bridj-0.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/bridj-0.7.0.jar"/>
 	<classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
 	<classpathentry kind="lib" path="lib/chic.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
@@ -80,7 +80,7 @@
 	<classpathentry kind="lib" path="lib/vertx-lang-ruby-3.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/vertx-service-proxy-3.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/vertx-web-3.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/webcam-capture-0.3.10.jar"/>
+	<classpathentry kind="lib" path="lib/webcam-capture-0.3.12.jar"/>
 	<classpathentry kind="lib" path="lib/xbjlib-1.1.0.nrjavaserial.jar"/>
 
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
