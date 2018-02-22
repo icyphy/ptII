@@ -736,8 +736,8 @@ java::call System setProperty ptolemy.ptII.nonInteractive true
 if {"$isRunningNightlyBuild" == "true" \
 	|| "$timeOutSeconds" != "" } {
     if {"$timeOutSeconds" == ""} {
-	# This timeout should be long enough to run adm/test/Nightly.tcl
-        set timeOutSeconds 12000
+	# Note that adm/test/Nightly.tcl overrides the timeout below.
+        set timeOutSeconds 9000
     }
     puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds at [clock format [clock seconds]]"
