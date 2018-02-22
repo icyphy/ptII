@@ -36,6 +36,8 @@
 # Get rid of any previous lists of .java files etc.
 exec make clean
 
+set timeOutSeconds 14567
+
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
