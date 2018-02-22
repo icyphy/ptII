@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld_Propagate" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorldPropagate" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
@@ -570,7 +570,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0, 0.0}, {0.0, 0.0}, {0.5, 0.5}, {1.0, 1.0}, {1.5, 1.5}, {2.0, 2.0}, {2.5, 2.5}, {3.0, 3.0}, {3.5, 3.5}, {4.0, 4.0}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0, 0.0}, {0.5, 0.5}, {1.0, 1.0}, {1.5, 1.5}, {2.0, 2.0}, {2.5, 2.5}, {3.0, 3.0}, {3.5, 3.5}, {4.0, 4.0}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
