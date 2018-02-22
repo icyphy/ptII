@@ -943,7 +943,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/SingleWindow \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
-		ptolemy/data/ontologies \
 		ptolemy/distributed \
 		ptolemy/demo/AirManagementSystem \
 		ptolemy/demo/doc \
@@ -1085,6 +1084,7 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/viptos \
 		ptolemy/configs/visualsense \
 		ptolemy/data/expr/test/Variable2.tcl \
+		ptolemy/data/ontologies \
 		ptolemy/data/unit/test/auto/Units.xml \
 		ptolemy/domains/algebraic \
 		ptolemy/domains/atc \
@@ -1149,6 +1149,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/ptalon \
 		ptolemy/cg \
 		ptolemy/configs/ptiny \
+		ptolemy/data/ontologies \
 		ptolemy/demo \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
@@ -1174,6 +1175,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/ptalon \
 		ptolemy/cg \
 		ptolemy/configs/hyvisual \
+		ptolemy/data/ontologies \
 		ptolemy/demo \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/tester
