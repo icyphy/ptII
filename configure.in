@@ -2350,9 +2350,10 @@ fi
 #       db and dbxml are basically GPL'd, see $PTII/ptdb/lib/db-dbxml-license.htm
 #--------------------------------------------------------------------
 
-# PTDB_DIR is set to ptdb and used in
-# $PTII/makefile if dbxml is found
+# PTDB_DIR is set to database and used in
+# $PTII/ptdb/makefile if dbxml is found
 PTDB_DIR=
+
 
 PTDBXML_JAR='${PTII}/vendors/oracle/dbxml.jar'
 PTDB_JAR='${PTII}/vendors/oracle/db.jar'
@@ -2386,9 +2387,9 @@ else
 	    # Set to ptdb and used in
 	    # $PTII/makefile
 
-	    # Set to ptdb and used in
-	    # $PTII/makefile
-	    PTDB_DIR=ptdb
+	    # Set to database and used in
+	    # $PTII/ptdb/makefile
+	    PTDB_DIR=database
             # PTDB_PACKAGES is used in ptII/doc/makefile
 	    PTDB_PACKAGES=`$FIND ptdb -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
          fi
@@ -2436,7 +2437,7 @@ else
 fi
 
 if test -z "$PTDB_DIR"; then
-   updateExcludes "ptdb/"
+   updateExcludes "ptdb/database"
 else
    updateClasspath "$PTDBXML_JAR"
    updateClasspath "$PTDB_JAR"

@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-package ptdb.kernel.bl.setup.test;
+package ptdb.kernel.database.test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;

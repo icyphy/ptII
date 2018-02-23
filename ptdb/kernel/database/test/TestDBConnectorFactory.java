@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-package ptdb.common.util.test;
+package ptdb.kernel.database.test;
 
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertTrue;

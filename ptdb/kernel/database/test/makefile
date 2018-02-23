@@ -46,8 +46,10 @@ include $(CONFIG)
 JSRCS_TEST_DRIVERS = \
 	TestCacheManager.java \
 	TestCacheRequirementsIntegration.java \
+	TestDBConnectorFactory.java \
 	TestOracleXMLDBConnection.java \
-	TestRebuildReferenceFile.java
+	TestRebuildReferenceFile.java \
+	TestSetupManager.java
 
 JSRCS = $(JSRCS_TEST_DRIVERS)
 
@@ -84,8 +86,12 @@ test_java: jclass $(ROOT)/ptdb/config/database/testdata/Testing.dbxml
 	(cd $(ROOT)/ptdb/config/database/testdata; $(MAKE) initialize)
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestCacheManager
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestCacheRequirementsIntegrator
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestDBConnectorFactory
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestRebuildReferenceFile
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestSetupManger.java
+
+
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java
