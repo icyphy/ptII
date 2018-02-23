@@ -47,7 +47,7 @@ if {[string compare test [info procs test]] == 1} then {
 
     set loader [[$parser getClass] getClassLoader]
 
-set URL [$loader getResource ptolemy/configs/capecode/configuration.xml]
+set URL [$loader getResource ptolemy/configs/ptdb/configuration.xml]
 puts "Checking [$URL toString]"
 set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
 set configuration [java::cast ptolemy.kernel.CompositeEntity $object]

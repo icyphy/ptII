@@ -31,7 +31,8 @@
 
 ME =		ptdb/kernel
 
-DIRS =		bl database
+# PTDB_DIR is set to database by configure if the Oracle jars files are found in $PTII/vendors/oracle
+DIRS =		bl $(PTDB_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
