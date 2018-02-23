@@ -31,9 +31,7 @@
 
 ME = 		ptdb/kernel/bl/setup/
 
-# $PTII/configure runs and looks for PTPOWERMOCK
-# $(PTPOWERMOCK_DIR) to test
-DIRS =		$(PTPOWERMOCK_DIR)
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -65,7 +63,6 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	test \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
