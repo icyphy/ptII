@@ -17,8 +17,8 @@
     -->
     <info>
         <appname>CapeCode</appname>
-        <appversion>0.1.devel</appversion>
-	<appsubpath>Ptolemy/capeCode0.1.devel</appsubpath>
+        <appversion>0.2.devel</appversion>
+	<appsubpath>Ptolemy/capeCode0.2.devel</appsubpath>
         <url>http://capecode.org</url>
 	<javaversion>1.8</javaversion>
     </info>
@@ -128,9 +128,9 @@
     </resources>
     
     <variables>
-      <variable name="TargetPanel.dir.mac" value="/Applications/capecode0.1.devel"/>
-      <variable name="TargetPanel.dir.unix" value="/usr/local/capecode0.1.devel"/>
-      <variable name="TargetPanel.dir.windows" value="c:/Ptolemy/capecode0.1.devel"/>
+      <variable name="TargetPanel.dir.mac" value="/Applications/capecode0.2.devel"/>
+      <variable name="TargetPanel.dir.unix" value="/usr/local/capecode0.2.devel"/>
+      <variable name="TargetPanel.dir.windows" value="c:/Ptolemy/capecode0.2.devel"/>
     </variables> 
 
     <jar src="izpacksetup.jar" stage="install"/>
@@ -467,8 +467,8 @@
 		  os="mac"/>
 
             <!-- We can't get these files from jar files -->
-	    <file src="src_jar/capecode0.1.devel/ptolemy/actor/lib/jjs" targetdir="$INSTALL_PATH/ptolemy/actor/lib"/>
-	    <file src="src_jar/capecode0.1.devel/org/terraswarm/accessor/accessors/web" targetdir="$INSTALL_PATH/org/terraswarm/accessor/accessors"/>
+	    <file src="src_jar/capecode0.2.devel/ptolemy/actor/lib/jjs" targetdir="$INSTALL_PATH/ptolemy/actor/lib"/>
+	    <file src="src_jar/capecode0.2.devel/org/terraswarm/accessor/accessors/web" targetdir="$INSTALL_PATH/org/terraswarm/accessor/accessors"/>
 
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
@@ -508,36 +508,36 @@
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
-	    <file src="src_jar/capecode0.1.devel/.classpath.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/build.default.xml" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/build.xml.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/cluster.xml" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/com" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/config" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/configure" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/configure.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/contrib" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/copyright.htm" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/diva" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/doc" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/edu" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/jars.xml" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/lib" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/makefile" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/mk" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/net" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/org" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/plugin.xml" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/pom.xml" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/ptolemy" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/README.txt" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/util" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.1.devel/vergilCapeCode.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/.classpath.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/build.default.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/build.xml.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/cluster.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/com" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/config" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/configure" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/configure.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/contrib" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/copyright.htm" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/diva" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/doc" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/edu" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/jars.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/lib" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/makefile" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/mk" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/net" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/org" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/plugin.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/pom.xml" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/ptolemy" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/README.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/util" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/vergilCapeCode.jnlp.in" targetdir="$INSTALL_PATH"/>
 
-	    <!-- file src="src_jar/capecode0.1.devel/vergil_l4j.jar" targetdir="$INSTALL_PATH"/-->
-	    <!-- file src="src_jar/capecode0.1.devel/vergil_l4j.mf" targetdir="$INSTALL_PATH"/-->
+	    <!-- file src="src_jar/capecode0.2.devel/vergil_l4j.jar" targetdir="$INSTALL_PATH"/-->
+	    <!-- file src="src_jar/capecode0.2.devel/vergil_l4j.mf" targetdir="$INSTALL_PATH"/-->
             <!-- file src="ptII11.0.devel.src.jar" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
 

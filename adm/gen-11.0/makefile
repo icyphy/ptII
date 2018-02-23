@@ -46,8 +46,8 @@ VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	11_0_devel
 
-CAPECODE_VERSION =	0.1.devel
-CAPECODE_WINDOWS_VERSION =	0_1_devel
+CAPECODE_VERSION =	0.2.devel
+CAPECODE_WINDOWS_VERSION =	0_2_devel
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -970,7 +970,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/hde \
 		ptolemy/domains/hdf \
 		ptolemy/domains/modal/kernel/fmv \
-		ptolemy/domains/ontologies \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/psdf \
 		ptolemy/domains/ptera \
@@ -1001,7 +1000,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/vergil/basic/layout/kieler/test/junit/KielerJUnitTestExtendedModels.java \
 		ptolemy/vergil/gt \
 		ptolemy/vergil/modal/fmv \
-		ptolemy/vergil/ontologies \
 		ptolemy/vergil/tdl \
 		ptolemy/vergil/ptera \
 		ptolemy/vergil/scr \
@@ -1084,7 +1082,6 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/viptos \
 		ptolemy/configs/visualsense \
 		ptolemy/data/expr/test/Variable2.tcl \
-		ptolemy/data/ontologies \
 		ptolemy/data/unit/test/auto/Units.xml \
 		ptolemy/domains/algebraic \
 		ptolemy/domains/atc \
@@ -1157,7 +1154,9 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/ptinyos \
 		ptolemy/domains/tester \
 		ptolemy/domains/wireless \
-		ptolemy/configs/visualsense
+		ptolemy/configs/visualsense \
+		ptolemy/vergil/ontologies
+
 
 # Files to be removed from Viptos source distributions
 VIPTOS_SRC_TO_BE_REMOVED = \
@@ -1178,7 +1177,8 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		ptolemy/data/ontologies \
 		ptolemy/demo \
 		ptolemy/domains/ptinyDomains.xml \
-		ptolemy/domains/tester
+		ptolemy/domains/tester \
+		ptolemy/vergil/ontologies
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
@@ -1459,13 +1459,6 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile
 	#
-	# Fix up ptolemy/data/makefile
-	egrep -v "ontologies" \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile
-	#
 	# Fix up ptolemy/demo/makefile
 	egrep -v "AirManagement|ElectricPowerSystem|EnterpriseOntology|ExecDemos|FuelSystem|ProbabilisticModels|RobotMPC|PLC" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/demo/makefile \
@@ -1484,7 +1477,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	#
 	# Use this to sort: awk -F '|' '{for (i=1;i<=NF;i++) {print $i}}' | sort |awk '{printf("%s|", $1)}'
 	#
-	egrep -v "\$\(PTSPACEDOMAIN_JAR\)|algebraic.jar|algebraic/demo|ca.jar|ca/demo|ci.jar|continuous.jar|csp.jar|curriculum.jar|dde.jar|ddf.jar|ddf/demo|domains.xml|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|hdf/demo|ontologies.jar|petrinet.jar|pn.jar|pn/demo|ptera.jar|ptera/demo|ptera/demo|ptides|pthales.jar|pthales/demo|ptides.jar|ptinyDomains.xml|qss.jar|rendezvous/demo.jar|rendezvous.jar|scr.jar|space.jar|sr.jar|sr/demo/demo.jar|sr/doc/doc.jar|sysml.jar|taskpt.jar|tm.jar|wireless.jar" \
+	egrep -v "\$\(PTSPACEDOMAIN_JAR\)|algebraic.jar|algebraic/demo|ca.jar|ca/demo|ci.jar|continuous.jar|csp.jar|curriculum.jar|dde.jar|ddf.jar|ddf/demo|domains.xml|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|hdf/demo|petrinet.jar|pn.jar|pn/demo|ptera.jar|ptera/demo|ptera/demo|ptides|pthales.jar|pthales/demo|ptides.jar|ptinyDomains.xml|qss.jar|rendezvous/demo.jar|rendezvous.jar|scr.jar|space.jar|sr.jar|sr/demo/demo.jar|sr/doc/doc.jar|sysml.jar|taskpt.jar|tm.jar|wireless.jar" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp \
@@ -1525,7 +1518,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/moml/filter/test/makefile
 	#
 	# Fix up ptolemy/vergil/makefile
-	egrep -v "gt|ontologies|ptera|scr|tdl" \
+	egrep -v "gt|ptera|scr|tdl" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile.tmp \
