@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0379346680716544">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{514.7025380710663, 294.7056575218435}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{514.7025380710664, 294.70565752184353}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -604,7 +604,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.input('filter');&#10;	this.input('connection');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var filters = {};&#10;	var connections = {};&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		var message = JSON.parse(received);&#10;		for (var connection in connections) {&#10;    		if (connections.hasOwnProperty(connection)) {&#10;    			// Check filters for a connection property.&#10;    			var filter = filters[connection];&#10;    			if (filter) {&#10;    				if (filter.device_id) {&#10;    					// There is a device_id filter.&#10;    					if (message.device_id === filter.device_id) {&#10;    						thiz.send('response', {&#10;								'socketID':connection,&#10;								'message': {'response': message}&#10;							});&#10;    					}&#10;    				} else if (filter.device) {&#10;    					// There is a device filter.&#10;    					if (message.device === filter.device) {&#10;    						thiz.send('response', {&#10;								'socketID':connection,&#10;								'message': {'response': message}&#10;							});&#10;    					}&#10;    				} else {&#10;    					// Filter not recognized. Send anyway.&#10;    					thiz.send('response', {&#10;							'socketID':connection,&#10;							'message': {'response': message}&#10;						});&#10;    				}&#10;    			} else {&#10;    				// No filter. Send message.&#10;					thiz.send('response', {&#10;						'socketID':connection,&#10;						'message': {'response': message}&#10;					});&#10;    			}&#10;    		}&#10;		}&#10;	});&#10;	this.addInputHandler('connection', function() {&#10;		// A new connection is established or one is lost.&#10;		var connection = thiz.get('connection');&#10;		console.log('connection: ' + util.inspect(connection));&#10;		if (connection.status === 'closed') {&#10;			delete connections[connection.socketID];&#10;		} else {&#10;			connections[connection.socketID] = 'open';&#10;		}&#10;	});&#10;	this.addInputHandler('filter', function() {&#10;		var received = thiz.get('filter');&#10;		var socketID = received.socketID;&#10;		var filter = JSON.parse(received.message);&#10;		if (filter.device_ID || filter.device) {&#10;			filters[socketID] = filter;&#10;		} else {&#10;			delete filters[socketID];&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('received');&#10;	this.input('filter');&#10;	this.input('connection');&#10;	this.output('response');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var filters = {};&#10;	var connections = {};&#10;	this.addInputHandler('received', function() {&#10;		var received = thiz.get('received');&#10;		var message = JSON.parse(received);&#10;		for (var connection in connections) {&#10;    		if (connections.hasOwnProperty(connection)) {&#10;    			// Check filters for a connection property.&#10;    			var filter = filters[connection];&#10;    			if (filter) {&#10;    				if (filter.device_id) {&#10;    					// There is a device_id filter.&#10;    					if (message._meta.device_id === filter.device_id) {&#10;    						thiz.send('response', {&#10;								'socketID':connection,&#10;								'message': {'response': message}&#10;							});&#10;    					}&#10;    				} else if (filter.device) {&#10;    					// There is a device filter.&#10;    					if (message.device === filter.device) {&#10;    						thiz.send('response', {&#10;								'socketID':connection,&#10;								'message': {'response': message}&#10;							});&#10;    					}&#10;    				} else {&#10;    					// Filter not recognized. Send anyway.&#10;    					thiz.send('response', {&#10;							'socketID':connection,&#10;							'message': {'response': message}&#10;						});&#10;    				}&#10;    			} else {&#10;    				// No filter for this connection. Send message.&#10;					thiz.send('response', {&#10;						'socketID':connection,&#10;						'message': {'response': message}&#10;					});&#10;    			}&#10;    		}&#10;		}&#10;	});&#10;	this.addInputHandler('connection', function() {&#10;		// A new connection is established or one is lost.&#10;		var connection = thiz.get('connection');&#10;		console.log('connection: ' + util.inspect(connection));&#10;		if (connection.status === 'closed') {&#10;			delete connections[connection.socketID];&#10;		} else {&#10;			connections[connection.socketID] = 'open';&#10;		}&#10;	});&#10;	this.addInputHandler('filter', function() {&#10;		var received = thiz.get('filter');&#10;		var socketID = received.socketID;&#10;		if (received.message) {&#10;			var form = JSON.parse(received.message);&#10;			if (form.filter) {&#10;				var filter = JSON.parse(form.filter);&#10;				if (filter.device_id || filter.device) {&#10;					filters[socketID] = filter;&#10;				} else {&#10;					delete filters[socketID];&#10;				}&#10;			}&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -661,7 +661,16 @@
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[230.0, 260.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{535.0, 260.0}">
+        </vertex>
+    </relation>
     <link port="WebSocketServer.toSend" relation="relation10"/>
+    <link port="WebSocketServer.received" relation="relation12"/>
     <link port="WebSocketServer.connection" relation="relation9"/>
     <link port="SingleEvent.output" relation="relation3"/>
     <link port="IPAddress.trigger" relation="relation3"/>
@@ -682,5 +691,7 @@
     <link port="Subscribe.topics" relation="relation8"/>
     <link port="HandleSensorData.received" relation="relation2"/>
     <link port="HandleSensorData.response" relation="relation10"/>
+    <link port="HandleSensorData.filter" relation="relation11"/>
     <link port="HandleSensorData.connection" relation="relation9"/>
+    <link relation1="relation11" relation2="relation12"/>
 </entity>
