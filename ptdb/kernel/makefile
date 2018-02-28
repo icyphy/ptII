@@ -51,8 +51,7 @@ JSRCS =
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTCLASSALLJARS = \
-	bl/bl.jar \
-	database/database.jar
+	bl/bl.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
