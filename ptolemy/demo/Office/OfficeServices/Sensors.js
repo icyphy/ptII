@@ -48,11 +48,15 @@ exports.initialize = function() {
 var schema = {
   "type": "object",
   "properties": {
-    "trigger": {
+    "filter": {
       	"type": "string",
-      	"title": "Any trigger at all",
-      	"description": "Any trigger at all",
-      	"value": "request service status"
+      	"title": "A JSON object specifying a filter",
+      	"description": "If the control has the form of an object with \
+property 'device_id', then the service will be informed to forward only \
+messages from the specified device. If the object has property 'device', \
+then the service will be informed to forward only messages from the specified \
+device type (e.g. 'PowerBlade'). Any other form will be interpreted as no filter.",
+      	"value": "no filter"
     }
   }
 };
