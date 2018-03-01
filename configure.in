@@ -2437,7 +2437,7 @@ else
 fi
 
 if test -z "$PTDB_DIR"; then
-   updateExcludes "ptdb/database"
+   updateExcludes "ptdb/kernel/database/"
 else
    updateClasspath "$PTDBXML_JAR"
    updateClasspath "$PTDB_JAR"
