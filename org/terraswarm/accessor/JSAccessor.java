@@ -115,7 +115,7 @@ import ptolemy.util.StringUtilities;
    and thus requires Nashorn, which is present in Java-1.8 and
    later.</p>
 
-   <p>This actor will run <code>svn</code> and <code>node</code>, which
+   <p>This actor will run <code>git</code> and <code>node</code>, which
    require network access.  To skip running things that require network
    access, set the <code>PT_NO_NET</code> environment variable to a
    non-empty string.  For example, under bash:</p>
@@ -127,7 +127,7 @@ import ptolemy.util.StringUtilities;
 
    <p>To always run ptdoc, set the <code>PT_RUN_PTDOC</code>
    environment variable.  Otherwise, if PT_NO_NET is not set, then the
-   ptdocs are only regenerated when the svn update modifies a
+   ptdocs are only regenerated when the git pull modifies a
    file.</p>
 
    <h2>References</h2>
@@ -204,7 +204,7 @@ public class JSAccessor extends JavaScript {
     /** The source of the accessor (a URL). */
     public ActionableAttribute accessorSource;
 
-    /** If true, then check out the accessors svn
+    /** If true, then check out the accessors git
      *  repository when the accessor is reloaded and run ant to build
      *  the PtDoc files.  This repository is not currently publically
      *  readable.  This parameter is a boolean, and the initial
@@ -400,7 +400,7 @@ public class JSAccessor extends JavaScript {
     /** Check out or update the accessor repository, unless
      *  the <i>checkoutOrUpdateAccessorsRepository</i> parameter is
      *  false, in which case, do nothing.
-     *  If the udpate succeeds, and the response from the SVN server
+     *  If the upate succeeds, and the response from the git server
      *  does not include "At revision ", then also run ant in the
      *  accessors/web directory to update the documentation.
      *  If the checkout or update fails once, the it will not be tried
@@ -427,50 +427,45 @@ public class JSAccessor extends JavaScript {
             if (!_printedPtNoNetMessage) {
                 _printedPtNoNetMessage = true;
                 System.out.println(
-                        "JSAccessor: PT_NO_NET environment variable is set, so svn update and ptdoc are not being run.");
+                        "JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.");
             }
             return;
         }
 
-        // The installer might not have the .svn/ directory.
-        File svnDirectory = new File(accessorsRepoDirectory, ".svn");
+        // The installer might not have the .git/ directory.
+        File gitDirectory = new File(accessorsRepoDirectory, ".git");
         if (accessorsRepoDirectory.isDirectory()
-                && !svnDirectory.isDirectory()) {
-            if (!_printedNoSvnMessage) {
+                && !gitDirectory.isDirectory()) {
+            if (!_printedNoGitMessage) {
                 System.out.println(accessorsRepoDirectory
-                        + " is a directory, but does not contain .svn/, so there is no point in running svn. (This message will be printed only once.)");
+                        + " is a directory, but does not contain .git/, so there is no point in running git. (This message will be printed only once.)");
             }
         } else {
             try {
                 List execCommands = new LinkedList<String>();
                 // If the org/terraswarm/accessor/accessors directory
-                // exists, then run svn update, otherwise try to check out
+                // exists, then run git pull, otherwise try to check out
                 // the repo.
 
                 if (accessorsRepoDirectory.isDirectory()) {
                     exec.setWorkingDirectory(accessorsRepoDirectory);
                     // Use --accept postpone so that the updated proceeds despite local mods.
                     // See http://lists.nceas.ucsb.edu/kepler/pipermail/kepler-dev/2010-January/017045.html
-                    String svnUpdateCommand = "svn update --non-interactive --trust-server-cert --accept postpone";
-                    execCommands.add(svnUpdateCommand);
+                    String gitUpdateCommand = "git pull";
+                    execCommands.add(gitUpdateCommand);
                     _commands = "cd " + accessorsRepoDirectory + "\n"
-                            + svnUpdateCommand;
+                            + gitUpdateCommand;
                     MessageHandler.status(
                             "Updating local copy of the accessors repository.");
                 } else {
                     newCheckout = true;
                     // Default to anonymous, read-only access.
-                    String accessorsRepo = "https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors";
-                    // If the ptII svn repo is read/write, then try read write access to the accessors repo.
-                    if (_ptIISvnRepoIsReadWrite()) {
-                        accessorsRepo = "https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors";
-                    }
                     exec.setWorkingDirectory(JSAccessor._accessorDirectory());
-                    String svnCommand = "svn co --non-interactive --trust-server-cert "
-                            + accessorsRepo;
-                    execCommands.add(svnCommand);
+                    String gitCommand = "git clone https://github.com/icyphy/accessors";
+
+                    execCommands.add(gitCommand);
                     _commands = "cd " + JSAccessor._accessorDirectory() + "\n"
-                            + svnCommand;
+                            + gitCommand;
                     MessageHandler
                             .status("Checking out the accessors repository.");
                 }
@@ -478,7 +473,7 @@ public class JSAccessor extends JavaScript {
                 if (!_printedPtNoNetMessage) {
                     _printedPtNoNetMessage = true;
                     System.out.println(
-                            "JSAccessor: If running svn hangs, then try setting the PT_NO_NET environment variable to skip running svn and jsdoc.");
+                            "JSAccessor: If running git hangs, then try setting the PT_NO_NET environment variable to skip running git and jsdoc.");
                 }
 
                 exec.setCommands(execCommands);
@@ -507,23 +502,7 @@ public class JSAccessor extends JavaScript {
                                         + _commands + "\n" + "The output was: "
                                         + exec.buffer);
                     } else {
-                        String message = "Could not update the accessors repository. Using local version.";
-                        if (exec.buffer.toString().indexOf(
-                                "Unable to conect to a repository") != -1
-                                || exec.buffer.toString().indexOf(
-                                        "No more credentials or we tried too many times.") != -1) {
-                            String osName = StringUtilities
-                                    .getProperty("os.name");
-                            if (osName.startsWith("Mac OS X")) {
-                                message += "  Under Mac OS X, this can occur if the svn "
-                                        + "command does not have access to your keychain. "
-                                        + "One possible solution is reboot and run the command "
-                                        + "by hand.  A dialog will pop up asking if the svn "
-                                        + "command should have access to the keychain. "
-                                        + "Select 'Always' and rerun the demo.";
-                            }
-                        }
-                        MessageHandler.status(message);
+                        MessageHandler.status("Could not update the accessors repository");
                     }
                 }
             } catch (Throwable throwable) {
@@ -534,14 +513,11 @@ public class JSAccessor extends JavaScript {
                     IOException ioException = new IOException(
                             "Failed to check out the accessors repository with:\n"
                                     + _commands + "\n"
-                                    + "Perhaps you don't have read access?  "
-                                    + "The accessors repository is under development.\n"
                                     + "The output was: " + exec.buffer);
                     ioException.initCause(throwable);
                     throw ioException;
                 } else {
-                    MessageHandler.status(
-                            "Could not update the accessors repository. Using local version.");
+                    MessageHandler.status("Could not update the accessors repository");
                 }
             }
         }
@@ -725,7 +701,7 @@ public class JSAccessor extends JavaScript {
         return _nodeOrNpmBinary("npm");
     }
 
-    /** Reload an accessor.  The svn repository containing the
+    /** Reload an accessor.  The repository containing the
      *  accessors is checked out or updated and JSDoc is run on the
      *  documentation.
      *  @exception IllegalActionException If no source file is specified.
@@ -1016,21 +992,15 @@ public class JSAccessor extends JavaScript {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** The directory that contains the accessors svn repository.
-     *  The default value is $PTII/org/terraswarm/accessor
-     *  Note that this svn repo is world readable.
-     *  The command to check out the repo anonymously read-only is:</p>
-     *  <pre>
-     *  cd $PTII/org/terraswarm/accessor
-     *  svn co svn co https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
-     *  </pre>
+    /** The directory that contains the accessors repository.
      *
-     *  <p>For read/write access, you need an account on repo.eecs.berkeley.edu,
-     *  see <a href="https://accessors.org/svn.html#in_browser">https://accessors.org/svn.html</a>.
-     *  The command is:</p>
+     *  <p>The default value is $PTII/org/terraswarm/accessor Note
+     *  that this repo is world readable.  The command to check out
+     *  the repo is:</p>
+     *
      *  <pre>
      *  cd $PTII/org/terraswarm/accessor
-     *  svn co svn co https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
+     *  git clone https://github.com/icyphy/accessors
      *  </pre>
      *
      *  @return The $PTII/org/terraswarm/accessor directory.
@@ -1070,8 +1040,8 @@ public class JSAccessor extends JavaScript {
      *  <p>After the repo is loaded or updated, if url starts with
      *  https://accessors.org/ or
      *  https://icyphy.org/accessors/, and the corresponding file
-     *  in the local svn accessors repo directory exists, then the
-     *  file in the local svn directory is used instead of the file
+     *  in the local accessors repo directory exists, then the
+     *  file in the local accessors repo is used instead of the file
      *  from the website.</p>
      *
      *  @param urlSpec The URL of the accessor.
@@ -1480,61 +1450,6 @@ public class JSAccessor extends JavaScript {
         return binaryName;
     }
 
-    /** Return true if the ptII tree was checked out with svn
-     *  read/write access.  Return false if the ptII tree was not
-     *  checked out of svn or if the ptII tree was checked out with
-     *  anonymous svn access.
-     */
-    private static boolean _ptIISvnRepoIsReadWrite() {
-        String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
-
-        // Return false if $PTII/.svn is not a directory.
-        if (!(new File(ptII, ".svn").isDirectory())) {
-            return false;
-        }
-
-        // Run svn info, get the Repository Root: line and return the value.
-        StringBufferExec exec = new StringBufferExec(
-                true /*appendToStderrAndStdout*/);
-        exec.setWorkingDirectory(new File(ptII));
-
-        List execCommands = new LinkedList<String>();
-        execCommands.add("svn info");
-        exec.setCommands(execCommands);
-
-        exec.setWaitForLastSubprocess(true);
-
-        System.out.println(
-                "Invoking \"svn info\" in order to determine whether the anonymous, read only accessors repo should be used or the user-specific, read/write accessors repo should be used.");
-        exec.start();
-
-        // If the subprocess returns non-zero, then return false
-        int returnCode = exec.getLastSubprocessReturnCode();
-        if (returnCode != 0) {
-            MessageHandler.status("In " + ptII + ", \"svn info\" returned "
-                    + returnCode + ".  The output was: " + exec.buffer);
-            return false;
-        }
-
-        // Search for "Repository Root:"
-        String repositoryRoot = "Repository Root:";
-        int index = exec.buffer.toString().indexOf(repositoryRoot);
-        if (index == -1) {
-            return false;
-        }
-
-        // Search for the URL after "Repository Root:"
-        String readWriteURL = "https://repo.eecs.berkeley.edu/svn/projects/eal/ptII";
-
-        int index2 = exec.buffer.toString().indexOf(readWriteURL,
-                index + repositoryRoot.length() + 1);
-        if (index2 != 1) {
-            return true;
-        }
-
-        return false;
-    }
-
     /** Build the ptdoc files.
      *  @return 0 if ant and node were found and ant returned 0.
      */
@@ -1543,7 +1458,7 @@ public class JSAccessor extends JavaScript {
             if (!_printedPtNoNetMessage) {
                 _printedPtNoNetMessage = true;
                 System.out.println(
-                        "JSAccessor: PT_NO_NET environment variable is set, so svn update and ptdoc are not being run.");
+                        "JSAccessor: PT_NO_NET environment variable is set, so git pull and ptdoc are not being run.");
             }
             return 3;
         }
@@ -1742,8 +1657,8 @@ public class JSAccessor extends JavaScript {
      */
     private static boolean _ptDocFailed = false;
 
-    /** Set to true if the message about .svn/ missing has been printed. */
-    private static boolean _printedNoSvnMessage = false;
+    /** Set to true if the message about .git/ missing has been printed. */
+    private static boolean _printedNoGitMessage = false;
 
     /** Set to true if the PT_NO_NET message has been printed. */
     private static boolean _printedPtNoNetMessage = false;
