@@ -1003,6 +1003,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="org/terraswarm/accessor/accessors/web/node_modules/" />
 <exclude name="org/terraswarm/accessor/accessors/web/hosts/cordova/demo/" />
 <exclude name="org/terraswarm/accessor/accessors/web/hosts/cordova/plugins/" />
+<exclude name="org/terraswarm/accessor/accessors-svn/" />
 <exclude name="pt-modules/"/>
 <exclude name="ptolemy/apps/agilent/"/>
 <exclude name="ptolemy/apps/anytimecontrol/"/>
