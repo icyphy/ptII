@@ -27,9 +27,9 @@
  */
 package ptolemy.domains.de.lib;
 
+import java.util.PriorityQueue;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
 //// Server
 
 /**
- This actor models a server with a fixed or variable service time.
+ This actor models a presemptive server with a fixed or variable service time.
  A server is either busy (serving a customer) or not busy at any given time.
  If an input arrives when the server is not busy, then the input token is
  produced on the output with a delay given by the <i>serviceTime</i>
@@ -60,11 +60,11 @@ import ptolemy.kernel.util.Workspace;
  served on a first-come, first-served basis.
  On every firing, produce an output indicating the final queue size.
  <p>
- The service time used for a job is the most recently arrived service
- time prior to or simultaneous with the <i>arrival</i> of the job
+ The service time and priority used for a job are the most recently arrived
+ values prior to or simultaneous with the <i>arrival</i> of the job
  (not with the time at which service begins). Thus, if you want
- each job to have independent service times, you should provide a
- new serviceTime input synchronized with each new job arrival.
+ each job to have an independent service time or priority, you should
+ provide each parameter as an input synchronized with each new job arrival.
 
  @see ptolemy.actor.lib.TimeDelay
 
@@ -75,7 +75,6 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class Server extends DETransformer {
-
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
@@ -99,7 +98,17 @@ public class Server extends DETransformer {
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        _queue = new FIFOQueue();
+        priority = new PortParameter(this, "priority");
+        priority.setExpression("0.0");
+        priority.setTypeEquals(BaseType.DOUBLE);
+        // Put the priority port at the bottom of the icon by default.
+        cardinality = new StringAttribute(priority.getPort(),
+                "_cardinal");
+        cardinality.setExpression("SOUTH");
+
+        _queue = new PriorityQueue();
+
+        _queueCounter = 0;
 
         size = new TypedIOPort(this, "size", false, true);
         size.setTypeEquals(BaseType.INT);
@@ -132,6 +141,12 @@ public class Server extends DETransformer {
      */
     public PortParameter serviceTime;
 
+    /** The priority. This is a double with default 0.0.
+     *  A higher priority implies the task has precedence over tasks
+     *  with lower priority values.
+     */
+    public PortParameter priority;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -149,24 +164,24 @@ public class Server extends DETransformer {
         if (attribute == serviceTime) {
             double value = ((DoubleToken) serviceTime.getToken()).doubleValue();
 
-            if (value < 0.0) {
+            if (value < 0.0 || Double.isNaN(value)) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative serviceTime: " + value);
+                        "Cannot have negative or NaN serviceTime: " + value);
+            }
+        } else if (attribute == priority) {
+            double value = ((DoubleToken) priority.getToken()).doubleValue();
+
+            if (Double.isNaN(value)) {
+                throw new IllegalActionException(this,
+                        "Cannot have NaN priority: " + value);
             }
         } else if (attribute == capacity) {
             int newCapacity = ((IntToken) capacity.getToken()).intValue();
-            if (newCapacity <= 0) {
-                if (_queue.getCapacity() != FIFOQueue.INFINITE_CAPACITY) {
-                    _queue.setCapacity(FIFOQueue.INFINITE_CAPACITY);
-                }
-            } else {
-                if (newCapacity < _queue.size()) {
-                    throw new IllegalActionException(this,
-                            "Queue size (" + _queue.size()
-                                    + ") exceed requested capacity "
-                                    + newCapacity + ").");
-                }
-                _queue.setCapacity(newCapacity);
+            if (newCapacity > 0 && _queue.size() > newCapacity) {
+                throw new IllegalActionException(this,
+                        "Queue size (" + _queue.size()
+                                + ") exceed requested capacity "
+                                + newCapacity + ").");
             }
         } else {
             super.attributeChanged(attribute);
@@ -184,12 +199,12 @@ public class Server extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Server newObject = (Server) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._queue = new FIFOQueue();
+        newObject._queue = new PriorityQueue<Job>();
         return newObject;
     }
 
-    /** Declare that the <i>output</i>
-     *  does not depend on the <i>input</i> and <i>serviceTime</i> in a firing.
+    /** Declare that the <i>output</i> does not depend on
+     *  the <i>input</i>, <i>serviceTime</i>, and <i>priority</i>, in a firing.
      *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
@@ -200,14 +215,16 @@ public class Server extends DETransformer {
         // though there is no lower bound on the time delay.
         _declareDelayDependency(input, output, 0.0);
         _declareDelayDependency(serviceTime.getPort(), output, 0.0);
+        _declareDelayDependency(priority.getPort(), output, 0.0);
     }
 
     /** If there is input, read it and put it in the queue.
      *  If the service time has expired for a token currently
      *  in the queue, then send that token on the output.
      *  Produce an output indicating the current queue size.
-     *  @exception IllegalActionException If the serviceTime is invalid,
-     *   or if an error occurs sending the output token.
+     *  @exception IllegalActionException If the serviceTime
+     *  or priority is invalid, or if an error occurs sending
+     *  the output token.
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -215,13 +232,22 @@ public class Server extends DETransformer {
         Time currentTime = getDirector().getModelTime();
 
         serviceTime.update();
+        priority.update();
+
+        Job currentJob = this.peekQueue();
+        if (currentJob != null) {
+            currentJob.serviceTimeRemaining =
+                    _nextTimeFree.subtractToDouble(currentTime);
+        }
 
         // Consume the input.
         if (input.hasToken(0)) {
             double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
                     .doubleValue();
+            double priorityValue = ((DoubleToken) priority.getToken())
+                    .doubleValue();
             Token token = input.get(0);
-            _queue.put(new Job(token, serviceTimeValue));
+            this.enqueue(new Job(token, serviceTimeValue, priorityValue, currentTime));
             if (_debugging) {
                 _debug("Read input with value " + token
                         + ", and put into queue, which now has size"
@@ -233,11 +259,10 @@ public class Server extends DETransformer {
 
         // If appropriate, produce output.
         if (_queue.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
-            Job job = (Job) _queue.take();
+            Job job = this.dequeue();
             Token outputToken = job.payload;
             output.send(0, outputToken);
             // Indicate that the server is free.
-            _nextTimeFree = Time.NEGATIVE_INFINITY;
             if (_debugging) {
                 _debug("Produced output " + outputToken
                         + ", so queue now has size " + _queue.size()
@@ -245,6 +270,38 @@ public class Server extends DETransformer {
             }
         }
         size.send(0, new IntToken(_queue.size()));
+    }
+
+    private Job peekQueue() {
+        return _queue.peek();
+    }
+
+    private void enqueue(Job newJob) throws IllegalActionException {
+        int currentCapacity = ((IntToken) capacity.getToken()).intValue();
+        if (currentCapacity > 0 && _queue.size() >= currentCapacity) {
+            throw new IllegalActionException(this,
+                    "Queue size (" + _queue.size()
+                            + ") is already at maximum capacity "
+                            + currentCapacity + ").");
+        }
+        newJob.queueCounter = _queueCounter;
+        _queue.add(newJob);
+        ++_queueCounter;
+    }
+
+    private void updateNextTimeFree(Time now) {
+        Job job = this.peekQueue();
+        if (job != null) {
+            _nextTimeFree = now.add(job.serviceTimeRemaining);
+        }
+    }
+
+    private Job dequeue() throws IllegalActionException {
+        Job job = _queue.poll();
+        if (job == null) {
+            throw new IllegalActionException(this, "Queue is empty");
+        }
+        return job;
     }
 
     /** Reset the states of the server to indicate that the server is ready
@@ -256,6 +313,7 @@ public class Server extends DETransformer {
         super.initialize();
         _nextTimeFree = Time.NEGATIVE_INFINITY;
         _queue.clear();
+        _queueCounter = 0;
     }
 
     /** If the server is free and there is at least one token in the queue,
@@ -266,10 +324,8 @@ public class Server extends DETransformer {
     @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-
-        if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
-            Job job = (Job) _queue.get(0);
-            _nextTimeFree = currentTime.add(job.serviceTime);
+        updateNextTimeFree(currentTime);
+        if (!_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
             if (_debugging) {
                 _debug("In postfire, requesting a refiring at time "
                         + _nextTimeFree);
@@ -286,6 +342,7 @@ public class Server extends DETransformer {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _queue.clear();
+        _queueCounter = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -294,20 +351,45 @@ public class Server extends DETransformer {
     /** Next time the server becomes free. */
     protected Time _nextTimeFree;
 
-    /** The FIFOQueue. */
-    protected FIFOQueue _queue;
+    /** The min heap. */
+    protected PriorityQueue<Job> _queue;
+
+    /** The counter for tie-breaking the queue by insertion order. */
+    protected long _queueCounter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** A data structure containing a token and a service time. */
-    private static class Job {
-        public Job(Token payload, double serviceTime) {
+    private static class Job implements Comparable<Job> {
+        public Job(Token payload, double serviceTime,
+                double priority, Time creationTime) {
             this.payload = payload;
-            this.serviceTime = serviceTime;
+            this.serviceTimeRemaining = serviceTime;
+            this.priority = priority;
+            this.creationTime = creationTime;
         }
 
         public Token payload;
-        public double serviceTime;
+        public double serviceTimeRemaining;
+        public double priority;    //     priority=1 >     priority=0
+        public Time creationTime;  // creationTime=1 < creationTime=0
+        public long queueCounter;  // queueCounter=1 < queueCounter=0
+
+        @Override
+        public int compareTo(Job other) {
+            int result = 0;
+            if (result == 0) {
+                result = Double.compare(this.priority, other.priority);
+                result = -result;  // higher priorities are smaller for min heap
+            }
+            if (result == 0) {
+                result = this.creationTime.compareTo(other.creationTime);
+            }
+            if (result == 0) {
+                result = Long.compare(this.queueCounter, other.queueCounter);
+            }
+            return result;
+        }
     }
 }
