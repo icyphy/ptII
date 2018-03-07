@@ -1,13 +1,15 @@
 # Configure requires $PTII
 env:
-  - ANT_OPTS=-Xmx1024m
-  - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
-  - PATH=${TRAVIS_BUILD_DIR)/bin:${PATH}
-  - PT_NO_NET=true
-  - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
-  - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
-  - PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
-  - PTII=${TRAVIS_BUILD_DIR}
+  global:
+    - ANT_OPTS=-Xmx1024m
+    - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
+    - PATH=${TRAVIS_BUILD_DIR)/bin:${PATH}
+    - PT_NO_NET=true
+    - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
+    - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
+    - PATH=${PTII}/bin:${PATH}
+    - PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
+    - PTII=${TRAVIS_BUILD_DIR}
 
 language: node_js
 
@@ -15,10 +17,6 @@ language: node_js
 node_js:
   - "7"
 
-# Include $PTII/bin/ant in the path
-before_install:
-  - export PATH=$PTII/bin:$PATH
-  
 install: ./configure
 
 script: ant cleanAll build-all javadoc jsdoc
