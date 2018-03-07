@@ -108,7 +108,7 @@
         <res id="HTMLInfoPanel.info" src="indexCapeCode.htm"/> 
         <res id="HTMLLicencePanel.licence" src="licenseCapeCode.htm"/>
         <res id="HTMLInfoPanel.capeCodeStartupMacOSX" src="startupCapeCodeMacOSX.htm"/> 
-        <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.txt"/>
+        <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.md"/>
         <res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows"/>
 	<res id="Installer.image" src="../dists/ptII11.0.devel/ptolemy/configs/capecode/CapeCodeSmall.png" />
 	<res id="InstallerLarger.image" src="../dists/ptII11.0.devel/ptolemy/configs/capecode/CapeCode.png" />
@@ -164,7 +164,7 @@
         <pack name="CapeCode" required="yes">
             <description>CapeCode: Ptolemy Actors for use with Accessors.
             </description>
-            <file src="../dists/ptII11.0.devel/README.txt" targetdir="$INSTALL_PATH"/>
+            <file src="../dists/ptII11.0.devel/README.md" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/bin" targetdir="$INSTALL_PATH"/>
@@ -532,7 +532,7 @@
 	    <file src="src_jar/capecode0.2.devel/pom.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/ptolemy" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode0.2.devel/README.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src_jar/capecode0.2.devel/README.md" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/util" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode0.2.devel/vergilCapeCode.jnlp.in" targetdir="$INSTALL_PATH"/>
 
