@@ -96,16 +96,25 @@ module.exports = (function () {
 
         // console.log('accessorMapCapeCode.js: checkIfDone(): Object.keys(testsToAccessors).length: ' +
         //             Object.keys(testsToAccessors).length +
-        //             ' ' + (testcases.length - testsError.length)  +
-        //             ' ' + (testcases.length > 0)
-        //            );
+        //              ' ' + (testcases.length - testsError.length)  +
+        //              ' ' + (testcases.length > 0)
+        //             );
 
         if (Object.keys(testsToAccessors).length === (testcases.length - testsError.length) &&
             testcases.length > 0) {
+            // console.log('accessorMapCapeCode.js: checkIfDone(): Object.keys(accessorsToModules).length: ' +
+            //         Object.keys(accessorsToModules).length +
+            //         ' ' + (accessors.length - accessorsError.length) + 
+            //         ' accessors.length: ' + accessors.length + ' ' + accessorsError.length);
+            var util = require('util');
+            // console.log('accessorMapCapeCode.js: checkIfDone(): accessorsToModules: ' + util.inspect(accessorsToModules));
+            // console.log('accessorMapCapeCode.js: checkIfDone(): accessors: ' + util.inspect(accessors, {maxArrayLength: 200}));
+
             if (Object.keys(accessorsToModules).length ===
                 (accessors.length - accessorsError.length)) {
 
                 // Calculate modules from superclass accessors.
+                // console.log('accessorMapCapeCode.js: checkIfDone(): Calculate modules from superclass accessors.');
                 for (var accessor in accessorExtends) {
                     if (accessorExtends[accessor].length > 0) {
                         accessorExtends[accessor].forEach(function(superclass) {
@@ -124,7 +133,7 @@ module.exports = (function () {
                 }
                 
                 // Calculate accessors to hosts.
-
+                // console.log('accessorMapCapeCode.js: checkIfDone(): Calculate accessors to hosts.');
                 // accessorsToHosts is a JSON variable where each
                 // accessor is followed by an array containing the
                 // names of the hosts that implement it
@@ -213,7 +222,7 @@ module.exports = (function () {
                         // FIXME: This assumes all accessors are in this location.
                         // We could try to parse the script parameter...
                         var accessorIndexFile = './org/terraswarm/accessor/accessors/web/' + accessorUsed + 'Idx.html';
-                        console.log('Writing index file ' + accessorIndexFile);
+                        // console.log('Writing index file ' + accessorIndexFile);
                         fs.writeFile(accessorIndexFile, text, function(err) {
                             if (err) {
                                 console.log('Error writing Accessor index file: ' + accessorIndexFile + ': ' + err);
@@ -244,7 +253,8 @@ module.exports = (function () {
     var findAccessors = function () {
         // Accessors are located in org/terraswarm/accessor/accessors/web
         // Find *.js files not in /test/auto or in any excluded directory.
-        glob('./org/terraswarm/accessor/accessors/web/!(demo|hosts|jsdoc|library|obsolete|reports|styles|wiki)**/*.js', function (err, files) {
+        // Exclude node_modules/ipaddr.js
+        glob('./org/terraswarm/accessor/accessors/web/!(demo|hosts|jsdoc|library|node_modules|obsolete|reports|styles|wiki)**/*.js', function (err, files) {
             accessors = files; // So we can check all finished later.
             // Accessors to modules:s
             // Any file not under a /test/auto directory with a .js extension.
