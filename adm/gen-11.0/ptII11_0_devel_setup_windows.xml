@@ -89,7 +89,7 @@
 	<res id="CustomLangPack.xml" src="CustomLangPack.xml"/> 
         <res id="HTMLInfoPanel.info" src="index.htm"/> 
         <res id="HTMLLicencePanel.licence" src="copyright.htm"/>
-        <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.txt"/>
+        <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.md"/>
         <res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows"/>
 	<res id="Installer.image" src="../dists/ptII11.0.devel/doc/img/PtolemyIISmallIcon.gif" />
 	<res id="InstallerLarger.image" src="../dists/ptII11.0.devel/doc/img/PtolemyIISmall.gif" />
