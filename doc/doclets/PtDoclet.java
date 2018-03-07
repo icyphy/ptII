@@ -321,7 +321,7 @@ public class PtDoclet {
                 // Java 1.5 Type.isPrimitive() would help here.
             } catch (Throwable throwable) {
                 // Ignore, probably a loader error for Java3D
-                System.out.println("Failed to finde class " + className);
+                System.out.println("Failed to find class " + className);
                 throwable.printStackTrace();
             }
         }
@@ -409,9 +409,11 @@ public class PtDoclet {
         // .xml file
         String extension = isIncluded ? ".xml" : ".html";
 
-        System.out.println("PtDoclet: relativize: " + baseDirectory + " "
-                + baseClassName + " " + baseClassParts.length + " " + offset
-                + " " + relativePath + relativeURI.getPath() + extension);
+        if (_verbose) {
+            System.out.println("PtDoclet: relativize: " + baseDirectory + " "
+                               + baseClassName + " " + baseClassParts.length + " " + offset
+                               + " " + relativePath + relativeURI.getPath() + extension);
+        }
 
         return relativePath + relativeURI.getPath() + extension;
     }
@@ -450,7 +452,9 @@ public class PtDoclet {
                         + "\" does not exist and cannot be created.");
             }
         }
-        System.out.println("Creating " + fileName);
+        if (_verbose) {
+            System.out.println("Creating " + fileName);
+        }
 
         FileWriter writer = new FileWriter(fileName);
         try {
@@ -471,4 +475,7 @@ public class PtDoclet {
 
     /** Index of keywords in the documentation. */
     private static PtIndexer _ptIndexer;
+    
+    /** Set to true for verbose messages. */
+    private static boolean _verbose = false;
 }

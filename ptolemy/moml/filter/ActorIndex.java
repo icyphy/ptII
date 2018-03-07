@@ -100,7 +100,9 @@ public class ActorIndex {
                     java.nio.charset.Charset.defaultCharset()));
             String className;
             while ((className = classesReader.readLine()) != null) {
-                System.out.println("Going to index " + className);
+                if (_verbose) {
+                    System.out.println("Going to index " + className);
+                }
                 classesToBeIndexed.put(className, new HashSet());
             }
 
@@ -137,7 +139,9 @@ public class ActorIndex {
                 try {
                     URL modelURL = FileUtilities.nameToURL(modelName, null,
                             null);
-                    System.out.println("Parsing: " + modelURL);
+                    if (_verbose) {
+                        System.out.println("Parsing: " + modelURL);
+                    }
                     parser.reset();
                     parser.parse(null, modelURL);
                 } catch (Exception ex) {
@@ -226,7 +230,9 @@ public class ActorIndex {
                 File outputDirectoryFile = new File(
                         new File(outputFileName).getParent());
                 if (!outputDirectoryFile.exists()) {
-                    System.out.println("Creating " + outputDirectoryFile);
+                    if (_verbose) {
+                        System.out.println("Creating " + outputDirectoryFile);
+                    }
                     if (!outputDirectoryFile.mkdirs()) {
                         throw new IOException("Directory \""
                                 + outputDirectoryFile
@@ -234,7 +240,9 @@ public class ActorIndex {
                     }
                 }
 
-                System.out.println("Writing " + outputFileName);
+                if (_verbose) {
+                    System.out.println("Writing " + outputFileName);
+                }
                 writer = new BufferedWriter(new FileWriter(outputFileName));
 
                 writer.write("<html>\n<head>\n<title>Index for "
@@ -287,4 +295,10 @@ public class ActorIndex {
         // Need to call exit here because Jython and Jetty cause hangs during exit.
         StringUtilities.exit(0);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Set to true for verbose messages. */
+    private static boolean _verbose = false;
 }
