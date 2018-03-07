@@ -19,6 +19,6 @@ node_js:
 
 install: ./configure
 
-script: ant cleanAll build-all javadoc jsdoc
+script: ant clean build-all javadoc jsdoc
 
 
