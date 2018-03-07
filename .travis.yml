@@ -1,7 +1,35 @@
+# Configure requires $PTII
+env:
+  - ANT_OPTS=-Xmx1024m
+  - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
+  # CCHOME=/opt/centos/devtoolset-1.1/root/usr
+  # CERTI_HOST=localhost
+  # CERTI_HOME=/usr/local/certi
+  # CERTI_FED=/usr/local/certi/share/federations
+PTII=${TRAVIS_BUILD_DIR}
+  # LD_LIBRARY_PATH=/usr/local/gcc-4.9.2/lib64:/usr/local/matlab/recent/sys/os/glnxa64:${CERTI_HOME}/lib:${TRAVIS_BUILD_DIR}/lbnl/lib/util:${TRAVIS_BUILD_DIR}/lib:/usr/local/matlab/recent/bin/glnxa64:${TRAVIS_BUILD_DIR}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:/usr/lib64:/usr/local/gcc-4.8.2/lib64
+  # CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
+  # OPENMODELICAHOME=/usr/local/openmodelica
+  # PATH=${CCHOME}/bin:/usr/local/bin:${CERTI_HOME}/share/scripts:${CERTI_HOME}/bin:${OPENMODELICAHOME}/bin:${PATH}:${TRAVIS_BUILD_DIR}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin:$HOME/.cargo/bin
+  PATH=${TRAVIS_BUILD_DIR)/bin:${PATH}
+  PT_NO_NET=true
+  # PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+  TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
+  TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
+  PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
+  - PTII=${TRAVIS_BUILD_DIR}
+  # PTJAVA32_DIR=/usr/lib/jvm/jdk1.8.0_91-i586
+
 language: node_js
+
+# Node 8 breaks npm horribly, see http://www.accessors.org/wiki/Notes/Npm5
 node_js:
   - "7"
 
+# Include $PTII/bin/ant in the path
+before_install:
+  - export PATH=$PTII/bin:$PATH
+  
 install: ./configure
 
 script: ant cleanAll build-all javadoc jsdoc
