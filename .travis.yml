@@ -7,7 +7,6 @@ env:
     # ptII variables
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
-    - PATH=${TRAVIS_BUILD_DIR}/bin:${PATH}
     - PT_NO_NET=true
     - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
     - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
@@ -105,7 +104,7 @@ install:
   
   - sudo apt-get install -y libopencv2.4-java
   - ls /usr/share/java
-  - ./configure --with-opencv-jar=/usr/share/java/opencv.jar
+  - ./configure --enable-verbose --with-opencv-jar=/usr/share/java/opencv.jar
 
 script: ant clean build-all javadoc jsdoc
 
