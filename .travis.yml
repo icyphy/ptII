@@ -35,12 +35,12 @@ install:
   - sudo apt-get install -y libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev
   - sudo apt-get install -y libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
 
-  # Build OpenCV 3.3.4 from source (opencv + opencv_contrib)
+  # Build OpenCV 3.4.1 from source (opencv + opencv_contrib)
   - mkdir $HOME/cv && pushd $HOME/cv
-  - wget -O opencv-3.3.4.zip https://github.com/opencv/opencv/archive/3.4.1.tar.gz
-  - wget -O opencv_contrib-3.3.4.zip https://github.com/opencv/opencv_contrib/archive/3.3.4.tar.gz
-  - tar -zxf opencv-3.3.4.tar.gz > /dev/null
-  - tar -zxf opencv_contrib-3.3.4.tar.gz > /dev/null
+  - wget -O opencv-3.4.1.zip https://github.com/opencv/opencv/archive/3.4.1.tar.gz
+  - wget -O opencv_contrib-3.4.1.zip https://github.com/opencv/opencv_contrib/archive/3.4.1.tar.gz
+  - tar -zxf opencv-3.4.1.tar.gz > /dev/null
+  - tar -zxf opencv_contrib-3.4.1.tar.gz > /dev/null
   - mkdir build && cd build
   - cmake -G "$CMAKE_GEN" -Wno-dev
       -DBUILD_DOCS:BOOL=OFF
@@ -91,7 +91,7 @@ install:
       -DCMAKE_BUILD_TYPE:STRING=Release
       -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_PREFIX
       -DOPENCV_ENABLE_NONFREE:BOOL=ON
-      -DOPENCV_EXTRA_MODULES_PATH:PATH=$HOME/cv/opencv_contrib-3.3.4/modules $HOME/cv/opencv-3.3.4
+      -DOPENCV_EXTRA_MODULES_PATH:PATH=$HOME/cv/opencv_contrib-3.4.1/modules $HOME/cv/opencv-3.4.1
   - cmake --build .
   - sudo cmake --build . --target install
   - popd
