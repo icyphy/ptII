@@ -37,8 +37,8 @@ install:
 
   # Build OpenCV 3.4.1 from source (opencv + opencv_contrib)
   - mkdir $HOME/cv && pushd $HOME/cv
-  - wget -O opencv-3.4.1.zip https://github.com/opencv/opencv/archive/3.4.1.tar.gz
-  - wget -O opencv_contrib-3.4.1.zip https://github.com/opencv/opencv_contrib/archive/3.4.1.tar.gz
+  - wget -O opencv-3.4.1.tar.gz https://github.com/opencv/opencv/archive/3.4.1.tar.gz
+  - wget -O opencv_contrib-3.4.1.tar.gz https://github.com/opencv/opencv_contrib/archive/3.4.1.tar.gz
   - tar -zxf opencv-3.4.1.tar.gz > /dev/null
   - tar -zxf opencv_contrib-3.4.1.tar.gz > /dev/null
   - mkdir build && cd build
