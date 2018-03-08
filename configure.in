@@ -2842,13 +2842,27 @@ else
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JAITest.java ; then
        PT_MSG_RESULT(JAI found in the default classpath)
-       PTJAI_DIR=jai
-       # PTJAI_PACKAGES is used in ptII/doc/makefile
-       PTJAI_PACKAGES=ptolemy.actor.lib.jai
-	AC_MSG_CHECKING([for the jai jar files])
+       PTJAI_OK=1
+    else
+        TMP_JAI_DIR=`find $PTII/vendors -type d -name "jai*"  | head -1`
+        if test -f "$TMP_JAI_DIR/lib/jai_core.jar"; then
+            if "$JAVAC" -classpath "$TMP_JAI_DIR/lib/*" JAITest.java ; then
+                PT_MSG_RESULT(JAI found in $TMP_JAI_DIR)
+                PTJAI_OK=1
+                JAI_DIR="$TMP_JAI_DIR"
+            fi
+        fi
+    fi
+
+    if ! test -z "$PTJAI_OK" ; then
+        PTJAI_DIR=jai
+        # PTJAI_PACKAGES is used in ptII/doc/makefile
+        PTJAI_PACKAGES=ptolemy.actor.lib.jai
+
+        AC_MSG_CHECKING([for the jai jar files])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.jai.RenderedOp`
+	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib/*" FindClass javax.media.jai.RenderedOp`
 	    if test -f "$JAI_JAR" ; then
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
@@ -2878,7 +2892,8 @@ else
 	       JAI_JAR=
             fi
 	else
-	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
+	    AC_MSG_WARN(['"$JAVAC" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib" FindClass javax.media.jai.RenderedOp` 
+    failed.            
     This means that Eclipse might not be able to find the JAI files.
     This is only a problem if you are using Eclipse])
         fi
@@ -2888,7 +2903,7 @@ else
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from 
-    https://jai.dev.java.net/])
+    http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-client-419417.html])
     fi
     cd "$startdir"
 fi
@@ -2896,7 +2911,6 @@ fi
 if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
 fi
-
 
 #--------------------------------------------------------------------
 #       "CERTI is an Open Source HLA RTI. HLA (High-Level Architecture) is a general purpose architecture for distributed computer simulation systems."
@@ -3120,7 +3134,7 @@ JMODELICA_HOME=
 # PTJMODELICA_PACKAGES is used in doc/makefile
 PTJMODELICA_PACKAGES=
 
-# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+# We only beed look for JModelica if $PTII/ptolemy/actor/lib/fmi exists
 JMODELICA_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica"
 if test ! -d "$JMODELICA_USER_DIR"; then
     PT_MSG_STATUS([$JMODELICA_USER_DIR is not present,
@@ -3208,6 +3222,20 @@ else
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JMFTest.java ; then
         PT_MSG_RESULT(JMF found in the default classpath.)
+        PTJMF_OK=1
+    else
+        TMP_JMF_DIR=`find $PTII/vendors -type d \( -name "JMF*" -o -name "jmf*" \) -print  | head -1`
+        if test -f "$TMP_JMF_DIR/lib/jmf.jar"; then
+            if "$JAVAC" -classpath "$TMP_JMF_DIR/lib/jmf.jar" JMFTest.java ; then
+               JMF_DIR="$TMP_JMF_DIR"
+               PT_MSG_RESULT(JMF found in $TMP_JMF_DIR)
+               PTJMF_OK=1
+               JMF_DIR="$TMP_JMF_DIR"
+            fi
+        fi
+    fi
+
+    if ! test -z "$PTJMF_OK"; then
         PTJMF_DIR=jmf
 	# PTJMF_PACKAGES is used in ptII/doc/makefile
 	PTJMF_PACKAGES=ptolemy.actor.lib.jmf
@@ -3219,7 +3247,7 @@ else
 	AC_MSG_CHECKING([for the JMF directory])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jmf.jar will be in the CLASSPATH
-	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.CaptureDeviceInfo`
+	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH${JMF_DIR}/lib/*" FindClass javax.media.CaptureDeviceInfo`
 	    if test -f "$JMF_JAR" ; then
 	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
 	       PT_MSG_RESULT($JMF_JARS_DIR)
@@ -3931,6 +3959,7 @@ OPENCV_JAR=
 # We only need to look for OpenCVif the org/ptolemy/opencv directory is present
 OPENCV_USER_DIR="$PTII/org/ptolemy/opencv"
 
+
 if test ! -d "$OPENCV_USER_DIR" ; then
     PT_MSG_STATUS([$OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API.])
@@ -3945,13 +3974,25 @@ else
     # build.default.xml
     # config/OpenCVTest.java
 
+    AC_ARG_WITH(opencv-jar, [  --with-opencv-jar=JARFILE       use OpenCV from JARFILE,
+                          defaults to \$PTII/lib/opencv-320.jar],
+	OPENCV_JAR=$withval,
+	OPENCV_JAR=$PTII/lib/opencv-320.jar)
+
+    OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
     startdir=$PTII
     cd "$srcdir/config"
-    TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
-    if test -e "$TMP_OPENCV_JAR"; then
-        OPENCV_JAR=$TMP_OPENCV_JAR
-        OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."               
+
+    # If we did not find the jar, then look in $PTII/lib
+    if test ! -f "$OPENCV_JAR"; then
+        TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
+        if test -e "$TMP_OPENCV_JAR"; then
+            AC_MSG_WARN([Did not find $OPENCV_JAR, but $TMP_OPENCV_JAR is present])
+            OPENCV_JAR=$TMP_OPENCV_JAR
+            OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+        fi
     fi
+
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
         if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
@@ -3985,6 +4026,7 @@ else
     This is only a problem if you are using Eclipse])
                 fi # "$JAVAC" FindClass.java
             else
+                PT_MSG_RESULT($OPENCV_JAR)
                 updateClasspath "$OPENCV_JAR"
             fi # -z "$OPENCV_JAR"
         else

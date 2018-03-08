@@ -1038,6 +1038,7 @@ with_junitparams
 with_jxl
 with_jython
 with_kieler_jar
+with_opencv_jar
 with_oscp5
 with_rxtx
 with_lejos
@@ -1773,6 +1774,8 @@ Optional Packages:
 			  is searched for jython
   --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar
+  --with-opencv-jar=JARFILE       use OpenCV from JARFILE,
+                          defaults to \$PTII/lib/opencv-320.jar
   --with-oscp5=JAR       use oscP5.jar from JAR,
                           defaults to \$PTII/lib/oscP5.jar
   --with-rxtx=DIR       use Java Serial Port Interface rxtx from DIR,
@@ -8581,14 +8584,30 @@ $as_echo_n "checking for Java Advanced Imaging (JAI) API... " >&6; }
        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JAI found in the default classpath" >&5
 $as_echo "JAI found in the default classpath" >&6; }; fi
-       PTJAI_DIR=jai
-       # PTJAI_PACKAGES is used in ptII/doc/makefile
-       PTJAI_PACKAGES=ptolemy.actor.lib.jai
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for the jai jar files" >&5
+       PTJAI_OK=1
+    else
+        TMP_JAI_DIR=`find $PTII/vendors -type d -name "jai*"  | head -1`
+        if test -f "$TMP_JAI_DIR/lib/jai_core.jar"; then
+            if "$JAVAC" -classpath "$TMP_JAI_DIR/lib/*" JAITest.java ; then
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JAI found in $TMP_JAI_DIR" >&5
+$as_echo "JAI found in $TMP_JAI_DIR" >&6; }; fi
+                PTJAI_OK=1
+                JAI_DIR="$TMP_JAI_DIR"
+            fi
+        fi
+    fi
+
+    if ! test -z "$PTJAI_OK" ; then
+        PTJAI_DIR=jai
+        # PTJAI_PACKAGES is used in ptII/doc/makefile
+        PTJAI_PACKAGES=ptolemy.actor.lib.jai
+
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the jai jar files" >&5
 $as_echo_n "checking for the jai jar files... " >&6; }
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.jai.RenderedOp`
+	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib/*" FindClass javax.media.jai.RenderedOp`
 	    if test -f "$JAI_JAR" ; then
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
@@ -8632,10 +8651,12 @@ $as_echo "$as_me: WARNING: Either we could not find
 	       JAI_JAR=
             fi
 	else
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" FindClass.java' failed.
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" -classpath \"$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib\" FindClass javax.media.jai.RenderedOp\`
+    failed.
     This means that Eclipse might not be able to find the JAI files.
     This is only a problem if you are using Eclipse" >&5
-$as_echo "$as_me: WARNING: '\"$JAVAC\" FindClass.java' failed.
+$as_echo "$as_me: WARNING: '\"$JAVAC\" -classpath \"$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib\" FindClass javax.media.jai.RenderedOp\`
+    failed.
     This means that Eclipse might not be able to find the JAI files.
     This is only a problem if you are using Eclipse" >&2;}
         fi
@@ -8645,13 +8666,13 @@ $as_echo "$as_me: WARNING: '\"$JAVAC\" FindClass.java' failed.
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from
-    https://jai.dev.java.net/" >&5
+    http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-client-419417.html" >&5
 $as_echo "$as_me: WARNING: '\"$JAVAC\" JAITest.java' failed.
     perhaps the Java Advanced Imaging API is not installed?
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from
-    https://jai.dev.java.net/" >&2;}
+    http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-client-419417.html" >&2;}
     fi
     cd "$startdir"
 fi
@@ -8659,7 +8680,6 @@ fi
 if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
 fi
-
 
 #--------------------------------------------------------------------
 #       "CERTI is an Open Source HLA RTI. HLA (High-Level Architecture) is a general purpose architecture for distributed computer simulation systems."
@@ -8960,7 +8980,7 @@ JMODELICA_HOME=
 # PTJMODELICA_PACKAGES is used in doc/makefile
 PTJMODELICA_PACKAGES=
 
-# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+# We only beed look for JModelica if $PTII/ptolemy/actor/lib/fmi exists
 JMODELICA_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica"
 if test ! -d "$JMODELICA_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JMODELICA_USER_DIR is not present,
@@ -9071,6 +9091,22 @@ $as_echo_n "checking for Java Media Framework (JMF)... " >&6; }
         if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JMF found in the default classpath." >&5
 $as_echo "JMF found in the default classpath." >&6; }; fi
+        PTJMF_OK=1
+    else
+        TMP_JMF_DIR=`find $PTII/vendors -type d \( -name "JMF*" -o -name "jmf*" \) -print  | head -1`
+        if test -f "$TMP_JMF_DIR/lib/jmf.jar"; then
+            if "$JAVAC" -classpath "$TMP_JMF_DIR/lib/jmf.jar" JMFTest.java ; then
+               JMF_DIR="$TMP_JMF_DIR"
+               if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JMF found in $TMP_JMF_DIR" >&5
+$as_echo "JMF found in $TMP_JMF_DIR" >&6; }; fi
+               PTJMF_OK=1
+               JMF_DIR="$TMP_JMF_DIR"
+            fi
+        fi
+    fi
+
+    if ! test -z "$PTJMF_OK"; then
         PTJMF_DIR=jmf
 	# PTJMF_PACKAGES is used in ptII/doc/makefile
 	PTJMF_PACKAGES=ptolemy.actor.lib.jmf
@@ -9083,7 +9119,7 @@ $as_echo "JMF found in the default classpath." >&6; }; fi
 $as_echo_n "checking for the JMF directory... " >&6; }
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jmf.jar will be in the CLASSPATH
-	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.CaptureDeviceInfo`
+	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH${JMF_DIR}/lib/*" FindClass javax.media.CaptureDeviceInfo`
 	    if test -f "$JMF_JAR" ; then
 	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
 	       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
@@ -10154,6 +10190,7 @@ OPENCV_JAR=
 # We only need to look for OpenCVif the org/ptolemy/opencv directory is present
 OPENCV_USER_DIR="$PTII/org/ptolemy/opencv"
 
+
 if test ! -d "$OPENCV_USER_DIR" ; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API." >&5
@@ -10171,13 +10208,30 @@ $as_echo_n "checking for OpenCV Java API... " >&6; }
     # build.default.xml
     # config/OpenCVTest.java
 
+
+# Check whether --with-opencv-jar was given.
+if test "${with_opencv_jar+set}" = set; then :
+  withval=$with_opencv_jar; OPENCV_JAR=$withval
+else
+  OPENCV_JAR=$PTII/lib/opencv-320.jar
+fi
+
+
+    OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
     startdir=$PTII
     cd "$srcdir/config"
-    TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
-    if test -e "$TMP_OPENCV_JAR"; then
-        OPENCV_JAR=$TMP_OPENCV_JAR
-        OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+
+    # If we did not find the jar, then look in $PTII/lib
+    if test ! -f "$OPENCV_JAR"; then
+        TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
+        if test -e "$TMP_OPENCV_JAR"; then
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Did not find $OPENCV_JAR, but $TMP_OPENCV_JAR is present" >&5
+$as_echo "$as_me: WARNING: Did not find $OPENCV_JAR, but $TMP_OPENCV_JAR is present" >&2;}
+            OPENCV_JAR=$TMP_OPENCV_JAR
+            OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+        fi
     fi
+
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
         if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
@@ -10229,6 +10283,9 @@ $as_echo "$as_me: WARNING: '\"$JAVAC\" FindClass.java' failed.
     This is only a problem if you are using Eclipse" >&2;}
                 fi # "$JAVAC" FindClass.java
             else
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPENCV_JAR" >&5
+$as_echo "$OPENCV_JAR" >&6; }; fi
                 updateClasspath "$OPENCV_JAR"
             fi # -z "$OPENCV_JAR"
         else

@@ -1,9 +1,13 @@
 # Configure requires $PTII
 env:
   global:
+    # OpenCV build options
+    - INSTALL_PREFIX=/usr/local
+
+    # ptII variables
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
-    - PATH=${TRAVIS_BUILD_DIR)/bin:${PATH}
+    - LD_LIBRARY_PATH=/usr/lib/jni:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
     - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
@@ -17,7 +21,26 @@ language: node_js
 node_js:
   - "7"
 
-install: ./configure
+install:
+  # libv4l is needed by Bridj for the camera
+  -  sudo apt-get install -y libv4l-dev 
+
+  # Install OpenCV
+  - sudo apt-get install -y libopencv2.4-java
+  - ls -l /usr/share/OpenCV/java
+  - cp  /usr/share/OpenCV/java/opencv-248.jar lib
+  - rm -f lib/opencv-320.jar
+
+  # Install JAI.  If the wget fails, then don't stop the build.
+  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true
+  - if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi
+
+  # Install JMF.  If the wget fails, then don't stop the build.
+  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true
+  - if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi
+
+  - env
+  - ./configure --enable-verbose
 
 script: ant clean build-all javadoc jsdoc
 
