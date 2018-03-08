@@ -1038,6 +1038,7 @@ with_junitparams
 with_jxl
 with_jython
 with_kieler_jar
+with_opencv_jar
 with_oscp5
 with_rxtx
 with_lejos
@@ -1773,6 +1774,8 @@ Optional Packages:
 			  is searched for jython
   --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar
+  --with-opencv-jar=JARFILE       use OpenCV from JARFILE,
+                          defaults to \$PTII/lib/opencv-320.jar
   --with-oscp5=JAR       use oscP5.jar from JAR,
                           defaults to \$PTII/lib/oscP5.jar
   --with-rxtx=DIR       use Java Serial Port Interface rxtx from DIR,
@@ -8660,7 +8663,6 @@ if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
 fi
 
-
 #--------------------------------------------------------------------
 #       "CERTI is an Open Source HLA RTI. HLA (High-Level Architecture) is a general purpose architecture for distributed computer simulation systems."
 #	See https://savannah.nongnu.org/projects/certi
@@ -10171,13 +10173,28 @@ $as_echo_n "checking for OpenCV Java API... " >&6; }
     # build.default.xml
     # config/OpenCVTest.java
 
+
+# Check whether --with-opencv-jar was given.
+if test "${with_opencv_jar+set}" = set; then :
+  withval=$with_opencv_jar; OPENCV_JAR=$withval
+else
+  OPENCV_JAR=$PTII/lib/opencv-320.jar
+fi
+
+
+    OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
     startdir=$PTII
     cd "$srcdir/config"
-    TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
-    if test -e "$TMP_OPENCV_JAR"; then
-        OPENCV_JAR=$TMP_OPENCV_JAR
-        OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+
+    # If we did not find the jar, then look in $PTII/lib
+    if test ! -f "$OPENCV_JAR"; then
+        TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
+        if test -e "$TMP_OPENCV_JAR"; then
+            OPENCV_JAR=$TMP_OPENCV_JAR
+            OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+        fi
     fi
+
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
         if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
@@ -10273,7 +10290,6 @@ fi
 if test -z "$PTOPENCV_DIR"; then
    updateExcludes "org/ptolemy/opencv/"
 fi
-
 
 #--------------------------------------------------------------------
 #       oscP5 Open Sound Control/processing.org interface
