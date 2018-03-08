@@ -67,7 +67,7 @@ public class OpenCVTest {
                     }
                 }
             }
-            throw new RuntimeException("Could not load " + Core.NATIVE_LIBRARY_NAME);
+            throw new RuntimeException("Could not load " + Core.NATIVE_LIBRARY_NAME, throwable);
         }
     }
 }
