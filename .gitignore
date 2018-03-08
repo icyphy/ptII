@@ -1,6 +1,8 @@
 .*~
 .classpath
 org/terraswarm/accessor/accessors/
+vendors/JMF-2.1.1e/
+vendors/jai-1_1_2_01/
 vendors/jogl/
 vendors/oscP5/
 vendors/universalJavaApplicationStub/
