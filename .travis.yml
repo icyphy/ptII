@@ -30,12 +30,12 @@ install:
   - cp  /usr/share/OpenCV/java/opencv-248.jar lib
   - rm -f lib/opencv-320.jar
 
-  # Install JAI.  If we don't find it, then don't stop the build.
-  - wget --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz
+  # Install JAI.  
+  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz
   - if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi
 
-  # Install JMF.  If we don't find it, then don't stop the build.
-  - wget --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip
+  # Install JMF.  
+  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip
   - if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi
 
   - ./configure --enable-verbose
