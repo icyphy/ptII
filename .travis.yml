@@ -1,6 +1,10 @@
 # Configure requires $PTII
 env:
   global:
+    # OpenCV build options
+    - INSTALL_PREFIX=/usr/local
+
+    # ptII variables
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
     - PATH=${TRAVIS_BUILD_DIR)/bin:${PATH}
@@ -20,6 +24,85 @@ node_js:
 install:
   # libv4l is needed by Bridj for the camera
   -  sudo apt-get install -y libv4l-dev 
+
+  # For OpenCV from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
+  - sudo apt-get install -y cmake pkg-config ninja-build
+
+  # Install some OpenCV dependencies
+  - sudo apt-get install -y zlib1g-dev libjpeg8-dev libpng12-dev libtiff5-dev libjasper-dev libopenexr-dev
+  - sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev
+  - sudo apt-get install -y libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+  - sudo apt-get install -y libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev
+  - sudo apt-get install -y libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
+
+  # Build OpenCV 3.3.4 from source (opencv + opencv_contrib)
+  - mkdir $HOME/cv && pushd $HOME/cv
+  - wget -O opencv-3.3.4.zip https://github.com/opencv/opencv/archive/3.4.1.tar.gz
+  - wget -O opencv_contrib-3.3.4.zip https://github.com/opencv/opencv_contrib/archive/3.3.4.tar.gz
+  - tar -zxf opencv-3.3.4.tar.gz > /dev/null
+  - tar -zxf opencv_contrib-3.3.4.tar.gz > /dev/null
+  - mkdir build && cd build
+  - cmake -G "$CMAKE_GEN" -Wno-dev
+      -DBUILD_DOCS:BOOL=OFF
+      -DBUILD_EXAMPLES:BOOL=OFF
+      -DBUILD_PACKAGE:BOOL=OFF
+      -DBUILD_PERF_TESTS:BOOL=OFF
+      -DBUILD_TESTS:BOOL=OFF
+      -DBUILD_WITH_DEBUG_INFO:BOOL=OFF
+      -DBUILD_ITT:BOOL=OFF
+      -DCV_TRACE:BOOL=OFF
+      -DENABLE_PYLINT:BOOL=OFF
+      -DWITH_CUDA:BOOL=OFF
+      -DWITH_CUBLAS:BOOL=OFF
+      -DWITH_CUFFT:BOOL=OFF
+      -DWITH_NVCUVID:BOOL=OFF
+      -DWITH_ITT:BOOL=OFF
+      -DWITH_MATLAB:BOOL=OFF
+      -DWITH_OPENCL:BOOL=OFF
+      -DWITH_VTK:BOOL=OFF
+      -DBUILD_opencv_apps:BOOL=OFF
+      -DBUILD_opencv_cudaarithm:BOOL=OFF
+      -DBUILD_opencv_cudabgsegm:BOOL=OFF
+      -DBUILD_opencv_cudacodec:BOOL=OFF
+      -DBUILD_opencv_cudafeatures2d:BOOL=OFF
+      -DBUILD_opencv_cudafilters:BOOL=OFF
+      -DBUILD_opencv_cudaimgproc:BOOL=OFF
+      -DBUILD_opencv_cudalegacy:BOOL=OFF
+      -DBUILD_opencv_cudaobjdetect:BOOL=OFF
+      -DBUILD_opencv_cudaoptflow:BOOL=OFF
+      -DBUILD_opencv_cudastereo:BOOL=OFF
+      -DBUILD_opencv_cudawarping:BOOL=OFF
+      -DBUILD_opencv_cudev:BOOL=OFF
+      -DBUILD_opencv_java:BOOL=ON
+      -DBUILD_opencv_js:BOOL=OFF
+      -DBUILD_opencv_python2:BOOL=OFF
+      -DBUILD_opencv_python3:BOOL=OFF
+      -DBUILD_opencv_ts:BOOL=OFF
+      -DBUILD_opencv_viz:BOOL=OFF
+      -DBUILD_opencv_world:BOOL=OFF
+      -DBUILD_opencv_contrib_world:BOOL=OFF
+      -DBUILD_opencv_matlab:BOOL=OFF
+      -DBUILD_opencv_ccalib:BOOL=OFF
+      -DBUILD_opencv_cvv:BOOL=OFF
+      -DBUILD_opencv_hdf:BOOL=OFF
+      -DBUILD_opencv_sfm:BOOL=OFF
+      -DBUILD_opencv_structured_light:BOOL=OFF
+      -DBUILD_opencv_surface_matching:BOOL=OFF
+      -DCMAKE_BUILD_TYPE:STRING=Release
+      -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_PREFIX
+      -DOPENCV_ENABLE_NONFREE:BOOL=ON
+      -DOPENCV_EXTRA_MODULES_PATH:PATH=$HOME/cv/opencv_contrib-3.3.4/modules $HOME/cv/opencv-3.3.4
+  - cmake --build .
+  - sudo cmake --build . --target install
+  - popd
+
+  # finish OpenCV installation
+  - export PATH=$PATH:$INSTALL_PREFIX/bin
+  - export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$INSTALL_PREFIX/lib/pkgconfig
+  - sudo sh -c 'echo "$INSTALL_PREFIX/lib" > /etc/ld.so.conf.d/opencv.conf'
+  - sudo ldconfig
+  # end of section from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
+  
   - ./configure
 
 script: ant clean build-all javadoc jsdoc
