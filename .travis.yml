@@ -42,7 +42,7 @@ install:
   - tar -zxf opencv-3.4.1.tar.gz > /dev/null
   - tar -zxf opencv_contrib-3.4.1.tar.gz > /dev/null
   - mkdir build && cd build
-  - cmake -G "$CMAKE_GEN" -Wno-dev
+  - cmake -G Ninja -Wno-dev
       -DBUILD_DOCS:BOOL=OFF
       -DBUILD_EXAMPLES:BOOL=OFF
       -DBUILD_PACKAGE:BOOL=OFF
