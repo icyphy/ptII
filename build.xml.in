@@ -541,6 +541,7 @@ For example:
 	  depends="initReports"
 	  description="Run Doccheck (http://java.sun.com/j2se/javadoc/doccheck/) to detect JavaDoc bugs." >
     <javadoc destdir="${ptII.reports}/doccheck"
+             docletpathref="ptII.classpath"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
@@ -664,7 +665,9 @@ For example:
     java.maxmemory.large, which could cause problems for 32-bit
     jvms. -->
 
-    <javadoc destdir="doc/codeDoc"
+    <javadoc additionalparam="-quiet"
+             destdir="doc/codeDoc"
+             docletpathref="ptII.classpath"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory.large}"
@@ -707,7 +710,7 @@ For example:
 	  depends="javadoc.doclets">
     <echo>Generate javadoc without building the actor documentation and the actor/demonstration index</echo>
     <javadoc destdir="doc/codeDoc"
-	     additionalparam="-tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
+	     additionalparam="-quiet -tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
@@ -865,6 +868,7 @@ For example:
 	  depends="initReports"
 	  description="Ojdcheck - An updated version of DocCheck. See http://github.com/egonw/ojdcheck">
     <javadoc additionalparam="-xhtml -file ${ptII.reports}/ojdcheck/ojdcheck.htm"
+             docletpathref="ptII.classpath"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
