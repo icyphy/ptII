@@ -2840,7 +2840,7 @@ else
     startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" JAITest.javaxxx ; then
+    if "$JAVAC" JAITest.java ; then
        PT_MSG_RESULT(JAI found in the default classpath)
        PTJAI_OK=1
     else
@@ -2848,7 +2848,7 @@ else
         if test -d "$TMP_JAI_DIR/lib/jai_core.jar"; then
             JAI_DIR="$TMP_JAI_DIR"
         fi
-        if "$JAVAC" -classpath "$TMP_JAI_DIR/lib" JAITest.java ; then
+        if "$JAVAC" -classpath "$TMP_JAI_DIR/lib/*" JAITest.java ; then
             PT_MSG_RESULT(JAI found in $TMP_JAI_DIR)
             PTJAI_OK=1
             JAI_DIR="$TMP_JAI_DIR"
@@ -2863,7 +2863,7 @@ else
         AC_MSG_CHECKING([for the jai jar files])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib" FindClass javax.media.jai.RenderedOp`
+	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib/*" FindClass javax.media.jai.RenderedOp`
 	    if test -f "$JAI_JAR" ; then
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
