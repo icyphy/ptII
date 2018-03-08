@@ -2840,15 +2840,30 @@ else
     startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" JAITest.java ; then
+    if "$JAVAC" JAITest.javaxxx ; then
        PT_MSG_RESULT(JAI found in the default classpath)
-       PTJAI_DIR=jai
-       # PTJAI_PACKAGES is used in ptII/doc/makefile
-       PTJAI_PACKAGES=ptolemy.actor.lib.jai
-	AC_MSG_CHECKING([for the jai jar files])
+       PTJAI_OK=1
+    else
+        TMP_JAI_DIR=`find $PTII/vendors -type d -name "jai*"  | head -1`
+        if test -d "$TMP_JAI_DIR/lib/jai_core.jar"; then
+            JAI_DIR="$TMP_JAI_DIR"
+        fi
+        if "$JAVAC" -classpath "$TMP_JAI_DIR/lib" JAITest.java ; then
+            PT_MSG_RESULT(JAI found in $TMP_JAI_DIR)
+            PTJAI_OK=1
+            JAI_DIR="$TMP_JAI_DIR"
+        fi
+    fi
+
+    if ! test -z "$PTJAI_OK" ; then
+        PTJAI_DIR=jai
+        # PTJAI_PACKAGES is used in ptII/doc/makefile
+        PTJAI_PACKAGES=ptolemy.actor.lib.jai
+
+        AC_MSG_CHECKING([for the jai jar files])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.jai.RenderedOp`
+	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib" FindClass javax.media.jai.RenderedOp`
 	    if test -f "$JAI_JAR" ; then
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
@@ -2878,7 +2893,8 @@ else
 	       JAI_JAR=
             fi
 	else
-	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
+	    AC_MSG_WARN(['"$JAVAC" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib" FindClass javax.media.jai.RenderedOp` 
+    failed.            
     This means that Eclipse might not be able to find the JAI files.
     This is only a problem if you are using Eclipse])
         fi
@@ -2888,7 +2904,7 @@ else
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from 
-    https://jai.dev.java.net/])
+    http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-client-419417.html])
     fi
     cd "$startdir"
 fi
@@ -3930,7 +3946,7 @@ OPENCV_JAR=
 # We only need to look for OpenCVif the org/ptolemy/opencv directory is present
 OPENCV_USER_DIR="$PTII/org/ptolemy/opencv"
 
-set -x
+
 if test ! -d "$OPENCV_USER_DIR" ; then
     PT_MSG_STATUS([$OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API.])
@@ -4026,7 +4042,8 @@ fi
 if test -z "$PTOPENCV_DIR"; then
    updateExcludes "org/ptolemy/opencv/"
 fi
-set +x
+
+
 #--------------------------------------------------------------------
 #       oscP5 Open Sound Control/processing.org interface
 #	http://www.sojamo.de/libraries/oscP5/
