@@ -308,7 +308,6 @@ var deterministicTemporalSemantics = require('./modules/deterministicTemporalSem
  *    accessors.
  *  Notes: (i) When a mutable accessor is reified, the attribute containedAccessors will contain
  *  the selected accessor for reification (ii) A mutable accessor cannot extend another accessor.
- *  FIXME: Check if a  mutable accessor can implement another accessor.
  *
  *  The bindings parameter provides function bindings for functions that are used by
  *  accessors.  Any that are not provided will be provided with defaults.
@@ -1821,6 +1820,11 @@ Accessor.prototype.reify = function (accessor) {
         // No accessor specified.
         // Remove previous reification, if any.
         thiz.unreify();
+        
+        // Unregister any input handlers for this Mutable.
+        thiz.wrapup();
+        thiz.ssuper.initialize();
+        
         return false;
     } else if (accessor.accessorName) {
         // An accessor object is provided.
@@ -1851,7 +1855,7 @@ Accessor.prototype.reify = function (accessor) {
     
     // Add the accessor to the list of all accessors if it is a new one
     // FIXME: Do we really need this?
-    if (isNewAccessor) {
+    if (isNewAccessor && accessorInstance) {
         allAccessors.push(accessorInstance);
     };
 
@@ -2652,7 +2656,7 @@ function convertType(value, destination, name) {
 function getTopLevelAccessors() {
     var result = [];
     for (var i = 0; i < allAccessors.length; i++) {
-        if (!allAccessors[i].container && !allAccessors[i].extendedBy && !allAccessors[i].implementedBy) {
+        if (allAccessors[i] && !allAccessors[i].container && !allAccessors[i].extendedBy && !allAccessors[i].implementedBy) {
             result.push(allAccessors[i]);
         }
     }
