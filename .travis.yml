@@ -103,12 +103,8 @@ install:
   # # end of section from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
   
   - sudo apt-get install -y libopencv2.4-java
-  - ls -l /usr/share/java
-  - ls -l /usr
-  - ls -l /usr/share
-  - ls -l /usr/share/OpenCV
   - ls -l /usr/share/OpenCV/java
-  - cp /usr/share/java/opencv-247.jar lib
+  - cp /usr/share/java/opencv-248.jar lib
   - rm -f lib/opencv-320.jar
   - ./configure --enable-verbose
 
