@@ -3214,7 +3214,6 @@ if test ! -d "$JMF_USER_DIR"; then
     PT_MSG_STATUS([$JMF_USER_DIR is not present,
     so we need not find the JMF - The Java Media Framework.])
 else
-set -x
     AC_MSG_CHECKING([for Java Media Framework (JMF)])
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
@@ -3301,7 +3300,6 @@ if test -z "$PTJMF_DIR"; then
    updateExcludes "ptolemy/actor/lib/jmf/"
 fi
 
-set +x
 
 #--------------------------------------------------------------------
 #       The Java Native Access (JNA) facility is used to call native code without JNI
