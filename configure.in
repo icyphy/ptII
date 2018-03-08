@@ -2845,13 +2845,12 @@ else
        PTJAI_OK=1
     else
         TMP_JAI_DIR=`find $PTII/vendors -type d -name "jai*"  | head -1`
-        if test -d "$TMP_JAI_DIR/lib/jai_core.jar"; then
-            JAI_DIR="$TMP_JAI_DIR"
-        fi
-        if "$JAVAC" -classpath "$TMP_JAI_DIR/lib/*" JAITest.java ; then
-            PT_MSG_RESULT(JAI found in $TMP_JAI_DIR)
-            PTJAI_OK=1
-            JAI_DIR="$TMP_JAI_DIR"
+        if test -f "$TMP_JAI_DIR/lib/jai_core.jar"; then
+            if "$JAVAC" -classpath "$TMP_JAI_DIR/lib/*" JAITest.java ; then
+                PT_MSG_RESULT(JAI found in $TMP_JAI_DIR)
+                PTJAI_OK=1
+                JAI_DIR="$TMP_JAI_DIR"
+            fi
         fi
     fi
 
@@ -3135,7 +3134,7 @@ JMODELICA_HOME=
 # PTJMODELICA_PACKAGES is used in doc/makefile
 PTJMODELICA_PACKAGES=
 
-# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+# We only beed look for JModelica if $PTII/ptolemy/actor/lib/fmi exists
 JMODELICA_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica"
 if test ! -d "$JMODELICA_USER_DIR"; then
     PT_MSG_STATUS([$JMODELICA_USER_DIR is not present,
@@ -3215,6 +3214,7 @@ if test ! -d "$JMF_USER_DIR"; then
     PT_MSG_STATUS([$JMF_USER_DIR is not present,
     so we need not find the JMF - The Java Media Framework.])
 else
+set -x
     AC_MSG_CHECKING([for Java Media Framework (JMF)])
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
@@ -3223,6 +3223,20 @@ else
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JMFTest.java ; then
         PT_MSG_RESULT(JMF found in the default classpath.)
+        PTJMF_OK=1
+    else
+        TMP_JMF_DIR=`find $PTII/vendors -type d \( -name "JMF*" -o -name "jmf*" \) -print  | head -1`
+        if test -f "$TMP_JMF_DIR/lib/jmf.jar"; then
+            if "$JAVAC" -classpath "$TMP_JMF_DIR/lib/jmf.jar" JMFTest.java ; then
+               JMF_DIR="$TMP_JMF_DIR"
+               PT_MSG_RESULT(JMF found in $TMP_JMF_DIR)
+               PTJMF_OK=1
+               JMF_DIR="$TMP_JMF_DIR"
+            fi
+        fi
+    fi
+
+    if ! test -z "$PTJMF_OK"; then
         PTJMF_DIR=jmf
 	# PTJMF_PACKAGES is used in ptII/doc/makefile
 	PTJMF_PACKAGES=ptolemy.actor.lib.jmf
@@ -3234,7 +3248,7 @@ else
 	AC_MSG_CHECKING([for the JMF directory])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jmf.jar will be in the CLASSPATH
-	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.CaptureDeviceInfo`
+	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH${JMF_DIR}/lib/*" FindClass javax.media.CaptureDeviceInfo`
 	    if test -f "$JMF_JAR" ; then
 	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
 	       PT_MSG_RESULT($JMF_JARS_DIR)
@@ -3287,6 +3301,7 @@ if test -z "$PTJMF_DIR"; then
    updateExcludes "ptolemy/actor/lib/jmf/"
 fi
 
+set +x
 
 #--------------------------------------------------------------------
 #       The Java Native Access (JNA) facility is used to call native code without JNI
