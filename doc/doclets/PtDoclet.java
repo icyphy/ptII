@@ -96,6 +96,9 @@ public class PtDoclet {
         // We cache the names of all actors for which we generate text.
         FileWriter allNamedObjsWriter = null;
         try {
+            if (_outputDirectory == null) {
+                throw new IOException("There was no output directory specified?  Use -d directory.");
+            }
             File outputDirectoryFile = new File(_outputDirectory);
             if (!outputDirectoryFile.isDirectory()) {
                 if (!outputDirectoryFile.mkdirs()) {
