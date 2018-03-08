@@ -3957,6 +3957,7 @@ else
     if test ! -f "$OPENCV_JAR"; then
         TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
         if test -e "$TMP_OPENCV_JAR"; then
+            AC_MSG_WARN([Did not find $OPENCV_JAR, but $TMP_OPENCV_JAR is present])
             OPENCV_JAR=$TMP_OPENCV_JAR
             OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
         fi
@@ -3995,6 +3996,7 @@ else
     This is only a problem if you are using Eclipse])
                 fi # "$JAVAC" FindClass.java
             else
+                PT_MSG_RESULT($OPENCV_JAR)
                 updateClasspath "$OPENCV_JAR"
             fi # -z "$OPENCV_JAR"
         else
