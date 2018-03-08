@@ -17,7 +17,10 @@ language: node_js
 node_js:
   - "7"
 
-install: ./configure
+install:
+  # libv4l is needed by Bridj for the camera
+  -  sudo apt-get install -y libv4l-dev 
+  - ./configure
 
 script: ant clean build-all javadoc jsdoc
 
