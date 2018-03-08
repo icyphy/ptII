@@ -9080,7 +9080,6 @@ if test ! -d "$JMF_USER_DIR"; then
 $as_echo "$JMF_USER_DIR is not present,
     so we need not find the JMF - The Java Media Framework." >&6; }; fi
 else
-set -x
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Media Framework (JMF)" >&5
 $as_echo_n "checking for Java Media Framework (JMF)... " >&6; }
     # We need to run javac in the config directory so that javac
@@ -9193,7 +9192,6 @@ if test -z "$PTJMF_DIR"; then
    updateExcludes "ptolemy/actor/lib/jmf/"
 fi
 
-set +x
 
 #--------------------------------------------------------------------
 #       The Java Native Access (JNA) facility is used to call native code without JNI
