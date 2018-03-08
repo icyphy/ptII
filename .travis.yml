@@ -103,8 +103,10 @@ install:
   # # end of section from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
   
   - sudo apt-get install -y libopencv2.4-java
-  - ls /usr/share/java
-  - ./configure --enable-verbose --with-opencv-jar=/usr/share/java/opencv.jar
+  - ls -l /usr/share/java
+  - cp /usr/share/java/opencv-247.jar lib
+  - rm -f lib/opencv-320.jar
+  - ./configure --enable-verbose
 
 script: ant clean build-all javadoc jsdoc
 
