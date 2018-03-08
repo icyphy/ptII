@@ -10156,6 +10156,7 @@ OPENCV_JAR=
 # We only need to look for OpenCVif the org/ptolemy/opencv directory is present
 OPENCV_USER_DIR="$PTII/org/ptolemy/opencv"
 
+set -x
 if test ! -d "$OPENCV_USER_DIR" ; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API." >&5
@@ -10295,7 +10296,7 @@ fi
 if test -z "$PTOPENCV_DIR"; then
    updateExcludes "org/ptolemy/opencv/"
 fi
-
+set +x
 #--------------------------------------------------------------------
 #       oscP5 Open Sound Control/processing.org interface
 #	http://www.sojamo.de/libraries/oscP5/
