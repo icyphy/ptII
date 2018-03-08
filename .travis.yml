@@ -103,7 +103,7 @@ install:
   # - sudo ldconfig
   # # end of section from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
   
-  - sudo apt-get install -y opencv3.1-java
+  - sudo apt-get install -y libopencv2.4-java
   - ls /usr/share/java
   - ./configure --with-opencv-jar=/usr/share/java/opencv.jar
 
