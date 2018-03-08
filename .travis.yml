@@ -7,6 +7,7 @@ env:
     # ptII variables
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
+    - LD_LIBRARY_PATH=/usr/lib/jni:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
     - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
@@ -35,6 +36,7 @@ install:
   - if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi
 
   
+  - echo $LD_LIBRARY_PATH
   - ./configure --enable-verbose
 
 script: ant clean build-all javadoc jsdoc
