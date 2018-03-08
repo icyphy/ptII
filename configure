@@ -8580,22 +8580,21 @@ $as_echo_n "checking for Java Advanced Imaging (JAI) API... " >&6; }
     startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" JAITest.javaxxx ; then
+    if "$JAVAC" JAITest.java ; then
        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JAI found in the default classpath" >&5
 $as_echo "JAI found in the default classpath" >&6; }; fi
        PTJAI_OK=1
     else
         TMP_JAI_DIR=`find $PTII/vendors -type d -name "jai*"  | head -1`
-        if test -d "$TMP_JAI_DIR/lib/jai_core.jar"; then
-            JAI_DIR="$TMP_JAI_DIR"
-        fi
-        if "$JAVAC" -classpath "$TMP_JAI_DIR/lib" JAITest.java ; then
-            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        if test -f "$TMP_JAI_DIR/lib/jai_core.jar"; then
+            if "$JAVAC" -classpath "$TMP_JAI_DIR/lib/*" JAITest.java ; then
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JAI found in $TMP_JAI_DIR" >&5
 $as_echo "JAI found in $TMP_JAI_DIR" >&6; }; fi
-            PTJAI_OK=1
-            JAI_DIR="$TMP_JAI_DIR"
+                PTJAI_OK=1
+                JAI_DIR="$TMP_JAI_DIR"
+            fi
         fi
     fi
 
@@ -8608,7 +8607,7 @@ $as_echo "JAI found in $TMP_JAI_DIR" >&6; }; fi
 $as_echo_n "checking for the jai jar files... " >&6; }
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib" FindClass javax.media.jai.RenderedOp`
+	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib/*" FindClass javax.media.jai.RenderedOp`
 	    if test -f "$JAI_JAR" ; then
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
@@ -8981,7 +8980,7 @@ JMODELICA_HOME=
 # PTJMODELICA_PACKAGES is used in doc/makefile
 PTJMODELICA_PACKAGES=
 
-# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+# We only beed look for JModelica if $PTII/ptolemy/actor/lib/fmi exists
 JMODELICA_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica"
 if test ! -d "$JMODELICA_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JMODELICA_USER_DIR is not present,
@@ -9092,6 +9091,22 @@ $as_echo_n "checking for Java Media Framework (JMF)... " >&6; }
         if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JMF found in the default classpath." >&5
 $as_echo "JMF found in the default classpath." >&6; }; fi
+        PTJMF_OK=1
+    else
+        TMP_JMF_DIR=`find $PTII/vendors -type d \( -name "JMF*" -o -name "jmf*" \) -print  | head -1`
+        if test -f "$TMP_JMF_DIR/lib/jmf.jar"; then
+            if "$JAVAC" -classpath "$TMP_JMF_DIR/lib/jmf.jar" JMFTest.java ; then
+               JMF_DIR="$TMP_JMF_DIR"
+               if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JMF found in $TMP_JMF_DIR" >&5
+$as_echo "JMF found in $TMP_JMF_DIR" >&6; }; fi
+               PTJMF_OK=1
+               JMF_DIR="$TMP_JMF_DIR"
+            fi
+        fi
+    fi
+
+    if ! test -z "$PTJMF_OK"; then
         PTJMF_DIR=jmf
 	# PTJMF_PACKAGES is used in ptII/doc/makefile
 	PTJMF_PACKAGES=ptolemy.actor.lib.jmf
@@ -9104,7 +9119,7 @@ $as_echo "JMF found in the default classpath." >&6; }; fi
 $as_echo_n "checking for the JMF directory... " >&6; }
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jmf.jar will be in the CLASSPATH
-	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.CaptureDeviceInfo`
+	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH${JMF_DIR}/lib/*" FindClass javax.media.CaptureDeviceInfo`
 	    if test -f "$JMF_JAR" ; then
 	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
 	       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
