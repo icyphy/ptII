@@ -7,7 +7,7 @@ env:
     # ptII variables
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
-    - PATH=${TRAVIS_BUILD_DIR)/bin:${PATH}
+    - PATH=${TRAVIS_BUILD_DIR}/bin:${PATH}
     - PT_NO_NET=true
     - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
     - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
