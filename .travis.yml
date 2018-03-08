@@ -7,6 +7,7 @@ env:
     # ptII variables
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
+    - LD_LIBRARY_PATH=/usr/lib/jni:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
     - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
     - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
@@ -38,6 +39,7 @@ install:
   - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true
   - if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi
 
+  - echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
   - ./configure --enable-verbose
 
 script: ant clean build-all javadoc jsdoc
