@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Sensors" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SensorsDummy" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 57, 1300, 798}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 59, 1300, 798}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1066, 688]">
     </property>
@@ -23,7 +23,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model monitors MQTT messages from all sensors listed in Sensors.json.&#10;The accessor Sensors.js, available at tag 24, reports all sensor data.&#10;In addition, an accessor is created for each sensor in Sensors.json.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates dummy data for all sensors listed in Sensors.json.&#10;The accessor Sensors.js, available at tag 24, reports all sensor data.&#10;In addition, an accessor is created for each sensor in Sensors.json.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -25.0]">
         </property>
@@ -145,28 +145,9 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Office Sensors Service">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Dummy Sensors Service">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -30.0]">
-        </property>
-    </property>
-    <property name="MQTTServerAddress" class="ptolemy.data.expr.StringParameter" value="192.168.1.200">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 75.0]">
         </property>
     </property>
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -449,108 +430,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 425.0]">
         </property>
     </entity>
-    <entity name="MQTTSubscriber" class="org.terraswarm.accessor.JSAccessor">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Subscribe to MQTT protocol messages.&#10; *  MQTT is a lightweight messaging protocol.&#10; *  The brokerHost and brokerPort parameters specify the IP address and port&#10; *  of an MQTT broker, such as Mosquito.&#10; *  When a connection to the broker is established, a message will be produced&#10; *  on the connection output.&#10; *  To subscribe to a topic, provide the topic name to the subscribe input.&#10; *  If you send multiple topics to this input, it will subscribe to all the specified&#10; *  topics. To subscribe to all topics provided by the broker, give # as the topic name.&#10; *  To unsubscribe to a topic, provide the topics name to the unsubscribe input.&#10; *  &#10; *  This accessor requires the 'mqtt' module.&#10; *&#10; *  @input subscribe The topic name to which to subscribe.&#10; *   Use # to subscribe to all topics.&#10; *  @input unsubscribe A topic to unsubscribe from.&#10; *  @output connection Output on which a string is sent when a&#10; *   connection to the broker has been established.&#10; *  @output subscription Output on which a string is sent when a&#10; *   subscription is initiated or terminated.&#10; *  @output received Output on which received data is produced.&#10; *  @output receivedTopic Output indicating the topic of received data.&#10; *  @param brokerHost The IP address or domain name of the MQTT broker.&#10; *   If you don't have a local MQTT Broker, then try &#10; *   iot.eclipse.org.  If you use iot.eclipse.org, then avoid&#10; *   using &quot;#&quot; as a topic.&#10; *  @param brokerPort The port for the MQTT broker, which defaults&#10; *   to 1883.&#10; *&#10; *  @accessor net/MQTTSubscriber&#10; *  @author Hokeun Kim, contributor: Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*global console, exports, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var mqtt = require('@accessors-modules/mqtt');&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('subscribe', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('unsubscribe');&#10;    this.output('connection', {&#10;        spontaneous: true&#10;    });&#10;    this.output('subscription');&#10;    this.output('received', {&#10;        spontaneous: true&#10;    });&#10;    this.output('receivedTopic');&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type: 'int',&#10;        value: 1883&#10;    });&#10;};&#10;&#10;var self;&#10;var mqttClient;&#10;&#10;function onMessage(topic, data) {&#10;    self.send('received', data);&#10;    self.send('receivedTopic', topic);&#10;}&#10;&#10;function onConnect() {&#10;    self.send('connection', 'connected to broker');&#10;    // In case there is a topic, subscribe to it.&#10;    exports.subscribeInputHandler.call(self);&#10;}&#10;&#10;exports.subscribeInputHandler = function () {&#10;    var topic = this.get('subscribe');&#10;    if (topic === '') {&#10;        // No topic is given.&#10;        return;&#10;    }&#10;    if (mqttClient.connected) {&#10;        mqttClient.subscribe(topic);&#10;        this.send('subscription', 'Topic: ' + topic + ' - subscribed');&#10;    } else {&#10;        this.error('Client is not connected to broker, subscribe failed. Topic: ' + topic);&#10;    }&#10;};&#10;&#10;exports.unsubscribeInputHandler = function () {&#10;    var topic = this.get('unsubscribe');&#10;    if (mqttClient.connected) {&#10;        mqttClient.unsubscribe(topic);&#10;        this.send('subscription', 'Topic: ' + topic + ' - unsubscribed');&#10;    } else {&#10;        this.error('Client is not connected to broker, unsubscribe failed. Topic: ' + topic);&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    self = this;&#10;    this.addInputHandler('subscribe', exports.subscribeInputHandler.bind(this));&#10;    this.addInputHandler('unsubscribe', exports.unsubscribeInputHandler.bind(this));&#10;    mqttClient = mqtt.createClient(this.getParameter('brokerPort'), this.getParameter('brokerHost'));&#10;    mqttClient.on('connect', onConnect.bind(this));&#10;    mqttClient.on('message', onMessage.bind(this));&#10;    mqttClient.start();&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (mqttClient) {&#10;        mqttClient.end();&#10;    }&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/MQTTSubscriber.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Subscribe to MQTT protocol messages.&#10; MQTT is a lightweight messaging protocol.&#10; The brokerHost and brokerPort parameters specify the IP address and port&#10; of an MQTT broker, such as Mosquito.&#10; When a connection to the broker is established, a message will be produced&#10; on the connection output.&#10; To subscribe to a topic, provide the topic name to the subscribe input.&#10; If you send multiple topics to this input, it will subscribe to all the specified&#10; topics. To subscribe to all topics provided by the broker, give # as the topic name.&#10; To unsubscribe to a topic, provide the topics name to the unsubscribe input.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires the 'mqtt' module.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim, contributor: Christopher Brooks">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
-            </property>
-            <property name="subscribe (port)" class="ptolemy.kernel.util.StringAttribute" value="The topic name to which to subscribe.&#10;  Use # to subscribe to all topics.">
-            </property>
-            <property name="unsubscribe (port)" class="ptolemy.kernel.util.StringAttribute" value="A topic to unsubscribe from.">
-            </property>
-            <property name="connection (port)" class="ptolemy.kernel.util.StringAttribute" value="Output on which a string is sent when a&#10;  connection to the broker has been established.">
-            </property>
-            <property name="subscription (port)" class="ptolemy.kernel.util.StringAttribute" value="Output on which a string is sent when a&#10;  subscription is initiated or terminated.">
-            </property>
-            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="Output on which received data is produced.">
-            </property>
-            <property name="receivedTopic (port)" class="ptolemy.kernel.util.StringAttribute" value="Output indicating the topic of received data.">
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="subscribe" class="ptolemy.actor.parameters.PortParameter" value="#">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="$MQTTServerAddress">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 175.0}">
-        </property>
-        <port name="subscribe" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="unsubscribe" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="connection" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="subscription" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="received" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="receivedTopic" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="Subscribe" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('topics', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('trigger', function() {&#10;		var spec = getResource('Sensors.json');&#10;		var sensors = JSON.parse(spec);&#10;		for (var i = 0; i &lt; sensors.length; i++) {&#10;			var sensor = sensors[i];&#10;			var topic = 'device/'&#10;					+ sensor['type']&#10;					+ '/'&#10;					+ sensor['mac'];&#10;			thiz.send('topics', topic);&#10;		}&#10;	});&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 95.0}">
-        </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="topics" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="HandleSensorData" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
@@ -588,7 +467,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Given an IP address, publish to the KeyValueStore a suite&#10;// of accessors for sensors. The first one listens for all sensors&#10;// and accepts an optional filter input. The remaining ones are&#10;// accessors for each sensor listed in the Sensors.json file.&#10;exports.setup = function() {&#10;	this.input('IPAddress', {'type':'string'});&#10;	this.output('tagID', {'type':'string'});&#10;	this.output('accessor', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('IPAddress', function() {&#10;		// Modify and publish the Sensors accessor.&#10;		var IPAddress = thiz.get('IPAddress');&#10;		var SensorsAccessor = getResource('Sensors.js');&#10;		SensorsAccessor = SensorsAccessor.replace('localhost', IPAddress);&#10;		thiz.send('tagID', '24');&#10;		thiz.send('accessor', SensorsAccessor);&#10;		&#10;		// Modify and publish one accessor for each sensor in Sensors.json.&#10;		var sensorSpec = getResource('Sensors.json');&#10;		var sensors = JSON.parse(sensorSpec);&#10;		var SensorAccessor = getResource('Sesnor.js');&#10;		SensorAccessor = SensorAccessor.replace('localhost', IPAddress);&#10;		for (var id in sensors) {&#10;			if (sensors.hasOwnProperty(id)) {&#10;				var specific = SensorAccessor.replace('sensorID', id);&#10;				specific = specific.replace('sensorName', sensors[id].name);&#10;				specific = specific.replace('sensorType', sensors[id].type);&#10;				specific = specific.replace('sensorLocation', sensors[id].location);&#10;				&#10;				thiz.send('tagID', sensors[id].tag);&#10;				thiz.send('accessor', specific);&#10;			}&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Given an IP address, publish to the KeyValueStore a suite&#10;// of accessors for sensors. The first one listens for all sensors&#10;// and accepts an optional filter input. The remaining ones are&#10;// accessors for each sensor listed in the Sensors.json file.&#10;exports.setup = function() {&#10;	this.input('IPAddress', {'type':'string'});&#10;	this.output('tagID', {'type':'string'});&#10;	this.output('accessor', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	this.addInputHandler('IPAddress', function() {&#10;		// Modify and publish the Sensors accessor.&#10;		var IPAddress = thiz.get('IPAddress');&#10;		var SensorsAccessor = getResource('Sensors.js');&#10;		SensorsAccessor = SensorsAccessor.replace('localhost', IPAddress);&#10;		thiz.send('tagID', '24');&#10;		thiz.send('accessor', SensorsAccessor);&#10;		&#10;		// Modify and publish one accessor for each sensor in Sensors.json.&#10;		var sensorSpec = getResource('Sensors.json');&#10;		var sensors = JSON.parse(sensorSpec);&#10;		var SensorAccessor = getResource('Sensor.js');&#10;		SensorAccessor = SensorAccessor.replace('localhost', IPAddress);&#10;		for (var id in sensors) {&#10;			if (sensors.hasOwnProperty(id)) {&#10;				var specific = SensorAccessor.replace('sensorID', id);&#10;				specific = specific.replace('sensorName', sensors[id].name);&#10;				specific = specific.replace('sensorType', sensors[id].type);&#10;				specific = specific.replace('sensorLocation', sensors[id].location);&#10;				&#10;				thiz.send('tagID', sensors[id].tag);&#10;				thiz.send('accessor', specific);&#10;			}&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -612,6 +491,29 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="DummySensorDataSource" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Generate dummy sensor data for each sensor in Sensors.json.&#10;// Data is produced once per second in a round-robin fashion alternating&#10;// sensors.&#10;exports.setup = function() {&#10;	this.output('data', {'type':'string'});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var sensorsSpec = getResource('Sensors.json');&#10;	var sensors = JSON.parse(sensorsSpec);&#10;	var ids = [];&#10;	for (var id in sensors) {&#10;		if (sensors.hasOwnProperty(id)) {&#10;			ids.push(id);&#10;		}&#10;	}&#10;	&#10;	var sequenceNumber = 0;&#10;	var sensorNumber = 0;&#10;	setInterval(function() {&#10;		sequenceNumber++;&#10;		var id = ids[sensorNumber];&#10;		sensorNumber += 1;&#10;		if (sensorNumber &gt;= ids.length) {&#10;			sensorNumber = 0;&#10;		}&#10;		var data = {&#10;			&quot;device&quot;:sensors[id].type,&#10;			&quot;sequence_number&quot;:sequenceNumber,&#10;			&quot;id&quot;:id&#10;		};&#10;		if (sensors[id].type === 'PowerBlade') {&#10;			data.rms_voltage = &quot;124.95&quot;;&#10;			data.power = &quot;0.87&quot;;&#10;			data.apparent_power = &quot;14.39&quot;;&#10;			data.energy = &quot;6447.18&quot;;&#10;			data.power_factor = &quot;0.06&quot;;&#10;			data.flags = 67;&#10;		}&#10;		// FIXME: Support BLEE data&#10;		// FIXME: Omitted _meta property.&#10;		thiz.send('data', JSON.stringify(data));&#10;	}, 1000);&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 185.0]">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -621,12 +523,6 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[255.0, 250.0]">
@@ -646,6 +542,8 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="WebSocketServer.toSend" relation="relation10"/>
     <link port="WebSocketServer.received" relation="relation12"/>
     <link port="WebSocketServer.connection" relation="relation9"/>
@@ -657,11 +555,6 @@
     <link port="KeyValueStore.value" relation="relation7"/>
     <link port="KeyValueStore.trigger" relation="relation7"/>
     <link port="Errors.input" relation="relation6"/>
-    <link port="MQTTSubscriber.subscribe" relation="relation8"/>
-    <link port="MQTTSubscriber.connection" relation="relation4"/>
-    <link port="MQTTSubscriber.received" relation="relation2"/>
-    <link port="Subscribe.trigger" relation="relation4"/>
-    <link port="Subscribe.topics" relation="relation8"/>
     <link port="HandleSensorData.received" relation="relation2"/>
     <link port="HandleSensorData.response" relation="relation10"/>
     <link port="HandleSensorData.filter" relation="relation11"/>
@@ -669,5 +562,6 @@
     <link port="JavaScript.IPAddress" relation="relation"/>
     <link port="JavaScript.tagID" relation="relation5"/>
     <link port="JavaScript.accessor" relation="relation7"/>
+    <link port="DummySensorDataSource.data" relation="relation2"/>
     <link relation1="relation11" relation2="relation12"/>
 </entity>

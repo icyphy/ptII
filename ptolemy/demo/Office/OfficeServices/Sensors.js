@@ -27,7 +27,7 @@ exports.setup = function() {
 	this.implement('ControllableSensor');
 	var WebSocketClient = this.instantiate('WebSocketClient', 'net/WebSocketClient');
 	WebSocketClient.input('server', {
-	    'value': '128.32.47.81'
+	    'value': 'localhost'
 	});
 	WebSocketClient.input('port', {
 	    'value': '8077'

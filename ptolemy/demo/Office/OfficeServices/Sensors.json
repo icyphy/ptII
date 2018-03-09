@@ -1,9 +1,21 @@
-[
-    {"name":"Floor lamp power meter", "type":"PowerBlade", "mac":"c098e570021e", "location":"545Q Cory Hall"},
-    {"name":"FIXME", "type":"PowerBlade", "mac":"c098e570020b", "location":"545Q Cory Hall"},
-    {"name":"FIXME", "type":"PowerBlade", "mac":"c098e570023e", "location":"545Q Cory Hall"},
-    {"name":"FIXME", "type":"PowerBlade", "mac":"c098e570023a", "location":"545Q Cory Hall"},
-    {"name":"FIXME", "type":"BLEES", "mac":"c098e53000b4", "location":"545Q Cory Hall"},
-    {"name":"FIXME", "type":"BLEES", "mac":"c098e530005b", "location":"545Q Cory Hall"}
-]
+{
+	"c098e570021e": {
+   		"name":"Floor lamp power meter",
+   		"type":"PowerBlade",
+   		"location":"545Q Cory Hall",
+   		"tag":"25"
+   	},
+	"c098e570023e": {
+   		"name":"Bloom lamp power meter",
+   		"type":"PowerBlade",
+   		"location":"545Q Cory Hall",
+   		"tag":"26"
+   	},
+	"c098e53000b4": {
+   		"name":"Multi sensor",
+   		"type":"BLEE",
+   		"location":"545Q Cory Hall",
+   		"tag":"23"
+   	}
+}
 

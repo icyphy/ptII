@@ -9,7 +9,7 @@
     	"Port":8079
 	},
 	"Sensors": {
-	    "Description":"Report data from sensors in the room.",
+	    "Description":"Report data from all sensors in the room.",
 	    "Tag":24,
 	    "Port":8077
 	},
