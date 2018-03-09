@@ -26,6 +26,7 @@ COPYRIGHTENDKEY
 
 */
 import org.opencv.core.Core;
+import org.opencv.imgproc.Imgproc;
 import java.io.File;
 
 /** Simple class used by configure to test whether the OpenCV
@@ -49,6 +50,9 @@ public class OpenCVTest {
         try {
             System.out.println("About to load " + Core.NATIVE_LIBRARY_NAME);
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+            System.out.println("Imgproc.LINE_8: " + Imgproc.LINE_8);  // Imgproc.LINE_8 is missing from OpenCV 2.4.8, so we test for it here.
+
             System.out.println("Loaded " + Core.NATIVE_LIBRARY_NAME);
         } catch (Throwable throwable) {
             String osName = System.getProperty("os.name");
@@ -67,7 +71,8 @@ public class OpenCVTest {
                     }
                 }
             }
-            throw new RuntimeException("Could not load " + Core.NATIVE_LIBRARY_NAME, throwable);
+            throw new RuntimeException("Could not load " + Core.NATIVE_LIBRARY_NAME
+                                       + ".\n    java.library.path = " + System.getProperty("java.library.path"), throwable);
         }
     }
 }
