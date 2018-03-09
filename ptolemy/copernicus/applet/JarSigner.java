@@ -58,7 +58,6 @@ import java.util.zip.ZipFile;
 
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
-import sun.misc.BASE64Encoder;
 import sun.security.util.ManifestDigester;
 
 /**
@@ -544,7 +543,7 @@ public class JarSigner {
         } finally {
             inputStream.close();
         }
-        return _b64Encoder.encode(digest.digest());
+        return _b64Codec.encodeToString(digest.digest());
 
     }
 
@@ -851,13 +850,74 @@ public class JarSigner {
         }
     }
 
+    private static class Base64 {
+        // Note: The implementations may not return identical results,
+        // but the results will always be correct according to the specs.
+        // See this post for details: https://stackoverflow.com/a/35384409
+        private Object _encoder, _decoder;
+        private Method _encodeToString, _decodeFromString;
+        public Base64(Object encoder, Object decoder, Method encodeToString, Method decodeFromString) {
+            _encoder = encoder;
+            _decoder = decoder;
+            _encodeToString = encodeToString;
+            _decodeFromString = decodeFromString;
+        }
+        public String encodeToString(byte[] source) {
+            String output;
+            try {
+                output = (String)_encodeToString.invoke(_encoder, source);
+            } catch (ReflectiveOperationException e) {
+                e.printStackTrace();
+                output = null;
+            }
+            return output;
+        }
+        public byte[] decodeFromString(String source) {
+            byte[] output;
+            try {
+                output = (byte[])_decodeFromString.invoke(_decoder, source);
+            } catch (ReflectiveOperationException e) {
+                e.printStackTrace();
+                output = null;
+            }
+            return output;
+        }
+        public static Base64 create() {
+            Base64 result = null;
+            if (result == null) {
+                try {
+                    // Java 1.8 or higher
+                    Class<?> loaded = Class.forName("java.util.Base64");
+                    result = new Base64(
+                            _findMethod(loaded, "getEncoder").invoke(null),
+                            _findMethod(loaded, "getDecoder").invoke(null),
+                            _findMethod(Class.forName("java.util.Base64$Encoder"), "encodeToString", byte[].class),
+                            _findMethod(Class.forName("java.util.Base64$Decoder"), "decode", String.class));
+                } catch (ReflectiveOperationException | RuntimeException e1) {
+                }
+            }
+            if (result == null) {
+                try {
+                    // Java 1.8 or lower
+                    result = new Base64(
+                            _findConstructor(Class.forName("sun.misc.BASE64Encoder")).newInstance(),
+                            _findConstructor(Class.forName("sun.misc.BASE64Decoder")).newInstance(),
+                            _findMethod(Class.forName("sun.misc.CharacterEncoder"), "encode", byte[].class),
+                            _findMethod(Class.forName("sun.misc.CharacterDecoder"), "decodeBuffer", String.class));
+                } catch (ReflectiveOperationException | RuntimeException e2) {
+                }
+            }
+            return result;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The alias for the signing key. */
     private String _alias;
 
-    private static BASE64Encoder _b64Encoder = new BASE64Encoder();
+    private static Base64 _b64Codec = Base64.create();
 
     /** The private key to sign with. */
     private PrivateKey _privateKey;
