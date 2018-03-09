@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import sun.misc.Unsafe;
+
 ///////////////////////////////////////////////////////////////////
 //// StringUtilities
 
@@ -111,17 +113,26 @@ public class StringUtilities {
     public static void addDirectoryToJavaLibraryPath(String directoryName)
             throws IOException {
         try {
+            // Java 1.9 throws a warning unless we use this:
+            // https://stackoverflow.com/a/46458447
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+
             Field usrPathsField = ClassLoader.class
                     .getDeclaredField("usr_paths");
-            usrPathsField.setAccessible(true);
-            String[] libraryPathsArray = (String[]) usrPathsField.get(null);
+            String[] libraryPathsArray = (String[]) unsafe.getObjectVolatile(
+                    ClassLoader.class,
+                    unsafe.staticFieldOffset(usrPathsField));
             ArrayList<String> libraryPaths = new ArrayList<String>(
                     Arrays.asList(libraryPathsArray));
             if (libraryPaths.contains(directoryName)) {
                 return;
             }
             libraryPaths.add(directoryName);
-            usrPathsField.set(null,
+            unsafe.putObjectVolatile(
+                    ClassLoader.class,
+                    unsafe.staticFieldOffset(usrPathsField),
                     libraryPaths.toArray(new String[libraryPaths.size()]));
             System.setProperty("java.library.path",
                     System.getProperty("java.library.path") + File.pathSeparator
