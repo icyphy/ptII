@@ -4,16 +4,17 @@ env:
     # OpenCV build options
     - INSTALL_PREFIX=/usr/local
 
-    # ptII variables
+    # Environment variables (in alphabetical order)
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
-    - LD_LIBRARY_PATH=/usr/lib/jni:${LD_LIBRARY_PATH}
+    - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
-    - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
     - TOSDIR=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x/tos
+    - TOSROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/tinyos-1.x
     - PATH=${PTII}/bin:${PATH}
-    - PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
     - PTII=${TRAVIS_BUILD_DIR}
+    - PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
+
 
 language: node_js
 
@@ -121,6 +122,6 @@ script:
   - ant clean
   - ant build-all
   - ant javadoc
-  - jsdoc
-
+  - ant jsdoc
+  - ant test.report
 
