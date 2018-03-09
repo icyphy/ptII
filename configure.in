@@ -4003,6 +4003,8 @@ else
             AC_MSG_WARN([Failed to compile OpenCV test program in $PTII/config with
     $JAVAC $OPENCV_CLASSPATH OpenCVTest.java
     so we will search other directories.]);
+            OPENCV_BAD_JAR=$OPENCV_JAR
+            OPENCV_JAR=
         fi
     fi
 
@@ -4038,7 +4040,11 @@ else
                     PTOPENCV_PACKAGES="org.ptolemy.opencv"
                     updateClasspath "$OPENCV_JAR"
                     break;
+                else
+                    PT_MSG_RESULT(OpenCVTest failed to run using $OPENCV_JAR.)
                 fi
+            else
+                    PT_MSG_RESULT(OpenCVTest failed to compile using $OPENCV_JAR.)
             fi
          done
      fi
@@ -4056,7 +4062,7 @@ else
     without problems.
     For details, see $PTII/org/ptolemy/opencv/package.html])
 
-         fi
+    fi
 
     if ! test -f OpenCVTest.class; then
        AC_MSG_WARN(['"$JAVAC" OpenCVTest.java' failed.
