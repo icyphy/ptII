@@ -3983,63 +3983,80 @@ else
     startdir=$PTII
     cd "$srcdir/config"
 
-    # If we did not find the jar, then look in $PTII/lib
-    if test ! -f "$OPENCV_JAR"; then
-        TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
-        if test -e "$TMP_OPENCV_JAR"; then
-            AC_MSG_WARN([Did not find $OPENCV_JAR, but $TMP_OPENCV_JAR is present])
-            OPENCV_JAR=$TMP_OPENCV_JAR
-            OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+    # Try the jar file that was included in the ptII tree or via the command line.
+    if test -f "$OPENCV_JAR"; then
+        PT_MSG_RESULT(OpenCV found at $OPENCV_JAR.)
+        OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+        AC_MSG_CHECKING([for OpenCV by compiling and running a small OpenCV program])
+        if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
+            if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
+                PT_MSG_RESULT($OPENCV_JAR)
+                updateClasspath "$OPENCV_JAR"
+            else
+                AC_MSG_WARN([Failed to run OpenCV test program in $PTII/config with
+    $JAVA $OPENCV_CLASSPATH OpenCVTest
+    so we will try other jars.])
+                OPENCV_BAD_JAR=$OPENCV_JAR
+                OPENCV_JAR=
+            fi
+        else 
+            AC_MSG_WARN([Failed to compile OpenCV test program in $PTII/config with
+    $JAVAC $OPENCV_CLASSPATH OpenCVTest.java
+    so we will search other directories.]);
         fi
     fi
 
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
-        if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
-            PT_MSG_RESULT(OpenCV found in the default classpath.)
-            PTOPENCV_DIR=opencv
-            # PTOPENCV_PACKAGES is used in ptII/doc/makefile
-            PTOPENCV_PACKAGES="org.ptolemy.opencv"
-            if test -z "$OPENCV_JAR"; then
-                AC_MSG_CHECKING([for the OpenCV jar files])
-                if "$JAVAC" FindClass.java ; then
-	            # Usually opencv.jar will be in the CLASSPATH
-	            OPENCV_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass org.opencv.core.Core`
-	            if test -f "$OPENCV_JAR" ; then
-	                PT_MSG_RESULT($OPENCV_JAR)
-  	                updateClasspath "$OPENCV_JAR"
-	            else 
-       	                AC_MSG_WARN([Either we could not find 
+    # If we did not find the jar, then look in few directories.
+    if ! test -f "$OPENCV_JAR"; then
+        OPENCV_JARS=""
+        OPENCV_DIRS="$PTII/lib /opt/local/share/OpenCV/java /usr/share/OpenCV/java"
+        for OPENCV_DIR in $OPENCV_DIRS
+        do
+            if test -d $OPENCV_DIR; then
+                TMP_OPENCV_JAR=`find $OPENCV_DIR -name "opencv-*.jar" | head -1`
+                # If the file is not the bad jar we already tried, then add it to the list
+                if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
+                    OPENCV_JARS="$TMP_OPENCV_JAR $OPENCV_JARS"
+                fi
+            fi
+        done
+
+        for TMP_OPENCV_JAR in $OPENCV_JARS
+        do
+            AC_MSG_CHECKING([$TMP_OPENCV_JAR])
+
+            OPENCV_CLASSPATH="-classpath $TMP_OPENCV_JAR${CLASSPATHSEPARATOR}."
+            # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+            if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
+                if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
+                    OPENCV_JAR=$TMP_OPENCV_JAR
+                    PT_MSG_RESULT(OpenCV found at $OPENCV_JAR.)
+                    PTOPENCV_DIR=opencv
+                    # PTOPENCV_PACKAGES is used in ptII/doc/makefile
+                    PTOPENCV_PACKAGES="org.ptolemy.opencv"
+                    updateClasspath "$OPENCV_JAR"
+                    break;
+                fi
+            fi
+         done
+     fi
+
+     if ! test -f "$OPENCV_JAR"; then
+              AC_MSG_WARN([Either we could not find 
     org.opencv.core.Core or else it was already in the JRE.
     Searching for OpenCV.jar returned:
       $OPENCV_JAR
     If the class cannot be found, then Eclipse might not be able to find
     the OpenCV files.  
+
     This is only a problem if you are using Eclipse.
     If the class was in the JRE, then Eclipse should compile the OpenCV files
     without problems.
     For details, see $PTII/org/ptolemy/opencv/package.html])
-                    fi # -f "$OPENCV_JAR"
-	        else
-	            AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
-    This means that Eclipse might not be able to find the OpenCV files.
-    This is only a problem if you are using Eclipse])
-                fi # "$JAVAC" FindClass.java
-            else
-                PT_MSG_RESULT($OPENCV_JAR)
-                updateClasspath "$OPENCV_JAR"
-            fi # -z "$OPENCV_JAR"
-        else
-            AC_MSG_WARN(['"$JAVA" $OPENCV_CLASSPATH OpenCVTest' failed.
-    perhaps the OpenCV Computer Vision API is not installed?
-    You need not download OpenCV unless you plan on using the video
-    actors in $OPENCV_USER_DIR
-    The OpenCV API can be downloaded from http://opencv.org.
-    Under Mac OS X, try:
-       sudo port install opencv +python27 +java
-    See org/ptolemy/opencv/package.html for installation help.])
-        fi
-    else
+
+         fi
+
+    if ! test -f OpenCVTest.class; then
        AC_MSG_WARN(['"$JAVAC" OpenCVTest.java' failed.
     perhaps the OpenCV Computer Vision API is not installed?
     You need not download OpenCV unless you plan on using the video
@@ -4049,6 +4066,7 @@ else
        sudo port install opencv +python27 +java
     See org/ptolemy/opencv/package.html for installation help.])
     fi
+
     cd "$startdir"
 fi
 
