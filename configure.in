@@ -4009,13 +4009,15 @@ else
     # If we did not find the jar, then look in few directories.
     if ! test -f "$OPENCV_JAR"; then
         OPENCV_JARS=""
-        OPENCV_DIRS="$PTII/lib /opt/local/share/OpenCV/java /usr/share/OpenCV/java"
+        OPENCV_DIRS="$PTII/lib /opt/local/share/OpenCV/java /usr/share/OpenCV/java /usr/local/share/OpenCV/java"
+        AC_MSG_CHECKING([for opencv-*.jar in $OPENCV_DIRS])
         for OPENCV_DIR in $OPENCV_DIRS
         do
             if test -d $OPENCV_DIR; then
                 TMP_OPENCV_JAR=`find $OPENCV_DIR -name "opencv-*.jar" | head -1`
                 # If the file is not the bad jar we already tried, then add it to the list
                 if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
+                    PT_MSG_RESULT($TMP_OPENCV_JAR)
                     OPENCV_JARS="$TMP_OPENCV_JAR $OPENCV_JARS"
                 fi
             fi
