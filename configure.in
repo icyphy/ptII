@@ -4041,16 +4041,16 @@ else
                     updateClasspath "$OPENCV_JAR"
                     break;
                 else
-                    PT_MSG_RESULT(OpenCVTest failed to run using $OPENCV_JAR.)
+                    PT_MSG_RESULT(OpenCVTest failed to run using $TMP_OPENCV_JAR.)
                 fi
             else
-                    PT_MSG_RESULT(OpenCVTest failed to compile using $OPENCV_JAR.)
+                PT_MSG_RESULT(OpenCVTest failed to compile using $TMP_OPENCV_JAR.)
             fi
          done
      fi
 
-     if ! test -f "$OPENCV_JAR"; then
-              AC_MSG_WARN([Either we could not find 
+    if ! test -f "$OPENCV_JAR"; then
+        AC_MSG_WARN([Either we could not find 
     org.opencv.core.Core or else it was already in the JRE.
     Searching for OpenCV.jar returned:
       $OPENCV_JAR
@@ -4065,7 +4065,7 @@ else
     fi
 
     if ! test -f OpenCVTest.class; then
-       AC_MSG_WARN(['"$JAVAC" OpenCVTest.java' failed.
+        AC_MSG_WARN(['"$JAVAC" OpenCVTest.java' failed.
     perhaps the OpenCV Computer Vision API is not installed?
     You need not download OpenCV unless you plan on using the video
     actors in $OPENCV_USER_DIR
@@ -4073,13 +4073,19 @@ else
     Under Mac OS X, try:
        sudo port install opencv +python27 +java
     See org/ptolemy/opencv/package.html for installation help.])
+
     fi
 
     cd "$startdir"
 fi
 
+AC_MSG_CHECKING([if org/ptolemy/opencv will be compiled.])
 if test -z "$PTOPENCV_DIR"; then
+   AC_MSG_WARN([OpenCV was not found, so org/ptolemy/opencv will not be compiled.])
    updateExcludes "org/ptolemy/opencv/"
+else
+   # Print a message to summarize what's happening and make any extraneous "ok" lines less confusing.
+   PT_MSG_RESULT(ok)
 fi
 
 
