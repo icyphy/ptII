@@ -3983,66 +3983,63 @@ else
     startdir=$PTII
     cd "$srcdir/config"
 
-    # Try the jar file that was included in the tree
+    # Try the jar file that was included in the ptII tree or via the command line.
     if test -f "$OPENCV_JAR"; then
+        PT_MSG_RESULT(OpenCV found at $OPENCV_JAR.)
         OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."
+        AC_MSG_CHECKING([for OpenCV by compiling and running a small OpenCV program])
         if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
-            if ! "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
-                AC_MSG_WARN([$JAVA $OPENCV_CLASSPATH OpenCVTest failed, so try other jars.])
+            if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
+                PT_MSG_RESULT($OPENCV_JAR)
+                updateClasspath "$OPENCV_JAR"
+            else
+                AC_MSG_WARN([Failed to run OpenCV test program in $PTII/config with
+    $JAVA $OPENCV_CLASSPATH OpenCVTest
+    so we will try other jars.])
+                OPENCV_BAD_JAR=$OPENCV_JAR
                 OPENCV_JAR=
             fi
         else 
-            AC_MSG_WARN([$JAVAC $OPENCV_CLASSPATH OpenCVTest.java failed, so we will search other directories.]);
+            AC_MSG_WARN([Failed to compile OpenCV test program in $PTII/config with
+    $JAVAC $OPENCV_CLASSPATH OpenCVTest.java
+    so we will search other directories.]);
         fi
     fi
 
     # If we did not find the jar, then look in few directories.
-    if test -f "$OPENCV_JAR"; then
-        opencv_jars="$OPENCV_JAR"
-    else
-        opencv_jars=""
-        opencv_dirs="$PTII/lib /opt/local/share/OpenCV/java /usr/share/OpenCV/java"
-        for opencv_dir in $opencv_dirs
+    if ! test -f "$OPENCV_JAR"; then
+        OPENCV_JARS=""
+        OPENCV_DIRS="$PTII/lib /opt/local/share/OpenCV/java /usr/share/OpenCV/java"
+        for OPENCV_DIR in $OPENCV_DIRS
         do
-            if test -d $opencv_dir; then
-                TMP_OPENCV_JAR=`find $opencv_dir -name "opencv-*.jar" | head -1`
-                if test -e "$TMP_OPENCV_JAR"; then
-                    opencv_jars="$TMP_OPENCV_JAR $opencv_jars"
+            if test -d $OPENCV_DIR; then
+                TMP_OPENCV_JAR=`find $OPENCV_DIR -name "opencv-*.jar" | head -1`
+                # If the file is not the bad jar we already tried, then add it to the list
+                if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
+                    OPENCV_JARS="$TMP_OPENCV_JAR $OPENCV_JARS"
                 fi
             fi
         done
-    fi
 
+        for TMP_OPENCV_JAR in $OPENCV_JARS
+        do
+            AC_MSG_CHECKING([$TMP_OPENCV_JAR])
 
-    for opencv_jar in $opencv_jars
-    do
-        OPENCV_CLASSPATH="-classpath $opencv_jar${CLASSPATHSEPARATOR}."
-        # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-        if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
-            if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
-               PT_MSG_RESULT(OpenCV found at $opencv_jar.)
-               PTOPENCV_DIR=opencv
-               # PTOPENCV_PACKAGES is used in ptII/doc/makefile
-               PTOPENCV_PACKAGES="org.ptolemy.opencv"
-               if test -z "$OPENCV_JAR"; then
-                   AC_MSG_CHECKING([for the OpenCV jar files])
-                   if "$JAVAC" FindClass.java ; then
-	               # Usually opencv.jar will be in the CLASSPATH
-	               OPENCV_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass org.opencv.core.Core`
-	               if test -f "$OPENCV_JAR" ; then
-	                   PT_MSG_RESULT($OPENCV_JAR)
-  	                   updateClasspath "$OPENCV_JAR"
-                           break;
-
-                       fi
-                   fi
-                   PT_MSG_RESULT($OPENCV_JAR)
-                   updateClasspath "$OPENCV_JAR"
-                   break
-               fi
+            OPENCV_CLASSPATH="-classpath $TMP_OPENCV_JAR${CLASSPATHSEPARATOR}."
+            # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+            if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
+                if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
+                    OPENCV_JAR=$TMP_OPENCV_JAR
+                    PT_MSG_RESULT(OpenCV found at $OPENCV_JAR.)
+                    PTOPENCV_DIR=opencv
+                    # PTOPENCV_PACKAGES is used in ptII/doc/makefile
+                    PTOPENCV_PACKAGES="org.ptolemy.opencv"
+                    updateClasspath "$OPENCV_JAR"
+                    break;
+                fi
             fi
-         fi
-     done
+         done
+     fi
 
      if ! test -f "$OPENCV_JAR"; then
               AC_MSG_WARN([Either we could not find 
