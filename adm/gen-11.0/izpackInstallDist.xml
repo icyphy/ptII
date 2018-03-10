@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AutomatedInstallation langpack="eng">
+<com.izforge.izpack.panels.checkedhello.CheckedHelloPanel id="hellopanel"/>
+<com.izforge.izpack.panels.htmlinfo.HTMLInfoPanel id="infopanel"/>
+<com.izforge.izpack.panels.htmllicence.HTMLLicencePanel id="licensepanel"/>
+<com.izforge.izpack.panels.target.TargetPanel id="targetpanel">
+<installpath>@@PTII@@/vendors/izpack</installpath>
+</com.izforge.izpack.panels.target.TargetPanel>
+<com.izforge.izpack.panels.packs.PacksPanel id="packspanel">
+<pack index="0" name="Core" selected="true"/>
+<pack index="1" name="Experimental tools" selected="true"/>
+</com.izforge.izpack.panels.packs.PacksPanel>
+<com.izforge.izpack.panels.summary.SummaryPanel id="summarypanel"/>
+<com.izforge.izpack.panels.install.InstallPanel id="installpanel"/>
+<com.izforge.izpack.panels.shortcut.ShortcutPanel id="shortcutpanel">
+<createMenuShortcuts>false</createMenuShortcuts>
+<programGroup>IzPack 5.1.2</programGroup>
+<createDesktopShortcuts>false</createDesktopShortcuts>
+<createStartupShortcuts>false</createStartupShortcuts>
+<shortcutType>user</shortcutType>
+</com.izforge.izpack.panels.shortcut.ShortcutPanel>
+<com.izforge.izpack.panels.finish.FinishPanel id="finishpanel"/>
+</AutomatedInstallation>
