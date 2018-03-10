@@ -116,7 +116,14 @@ install:
       -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_PREFIX
       -DOPENCV_ENABLE_NONFREE:BOOL=ON
       -DOPENCV_EXTRA_MODULES_PATH:PATH=$HOME/cv/opencv_contrib-3.4.1/modules $HOME/cv/opencv-3.4.1 >& $HOME/logs/opencv_configure.txt
-  - travis_wait 30 cmake --build . >& $HOME/logs/opencv_build.txt
+
+  # travis_wait does not help here because we want to redirect the output of cmake.
+  # See https://github.com/travis-ci/travis-ci/issues/4190
+  - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+  - cmake --build . >& $HOME/logs/opencv_build.txt
+  # Killing background sleep loop
+  - kill %1
+
   - sudo cmake --build . --target install >& $HOME/logs/opencv_install.txt
   - popd
 
