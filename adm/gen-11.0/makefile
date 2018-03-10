@@ -383,7 +383,7 @@ $(NODE_WIN): node
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST) 
-$(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
+$(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(PTIIHOME)/vendors/izpack $(PTIIHOME)/vendors/launch4j
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -3439,10 +3439,13 @@ $(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
 
 # Download IzPack
 $(PTIIHOME)/vendors/izpack:
-	mkdir $(PTIIHOME)/vendors/izpack
-	cd $(PTIIHOME)/vendors/izpack; \
-		wget --quiet https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.0.10/izpack-dist-5.0.10.jar; \
-		java -jar $(IZPACK_TAR)
+	sed 's#@@PTII@@#$(PTIIHOME)#' izpackInstallDist.xml > izpackInstall.xml
+	if [ ! -f $(PTIIHOME)/vendors/izpack-dist-5.1.2.jar ]; then \
+		echo "Downloading izpack"; \
+		wget --quiet https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.1.2/izpack-dist-5.1.2.jar -O $(PTIIHOME)/vendors/izpack-dist-5.1.2.jar; \
+        fi
+	(cd $(PTIIHOME)/vendors; java -jar izpack-dist-5.1.2.jar $(PTIIHOME)/adm/gen-$(PTII_MAJOR_VERSION)/izpackInstall.xml)
+	rm -f izpackInstall.xml
 
 # It is necessary to this before create the Windows and Mac setup jar files.
 cleanSrc:
@@ -3551,10 +3554,11 @@ izpack:
 
 L4J_DIR=$(PTIIHOME)/vendors/launch4j
 
-L4J_TAR=launch4j-3.0.0-pre2-solaris-sparc.tgz
+L4J_TAR=launch4j-3.11-linux-x64.tgz
+
 $(PTIIHOME)/vendors/launch4j:
 	cd $(PTIIHOME)/vendors; \
-		wget --quiet http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
+		wget --quiet 'https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-linux-x64.tgz' -O $(L4J_TAR); \
 		$(TAR) -zxf $(L4J_TAR)
 
 
