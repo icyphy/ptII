@@ -58,7 +58,6 @@ CAPECODE_WINDOWS_VERSION =	0_2_devel
 TAR = 		/usr/local/bin/tar
 ZIP =		zip
 COMPRESS =	gzip
-GUNZIP =	gunzip
 NON_GNUTAR =	/bin/tar
 SUFFIX =
 
@@ -383,7 +382,7 @@ $(NODE_WIN): node
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST) 
-$(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(PTIIHOME)/vendors/izpack $(PTIIHOME)/vendors/launch4j
+$(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(IZPACK_DIR) $(L4J_DIR)
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -424,7 +423,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(PTIIHOME)/
 	mkdir -p $(PTIIDIST)/vendors/node
 	(cd $(PTIIDIST)/vendors/node; tar -zxf $(GENDIR)/$(NODE_DARWIN))
 	(cd $(PTIIDIST)/vendors/node; tar -Jxf $(GENDIR)/$(NODE_LINUX))
-	(cd $(PTIIDIST)/vendors/node; unzip $(GENDIR)/$(NODE_WIN))
+	(cd $(PTIIDIST)/vendors/node; unzip -q $(GENDIR)/$(NODE_WIN))
 	# Remove the duktape binaries.
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 	#
@@ -465,7 +464,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) $(PTIIHOME)/
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
 	# Tools used to build installers.
 	ln -s $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
-	ln -s $(PTIIHOME)/vendors/launch4j $(PTIIDIST)/vendors/launch4j
+	ln -s $(L4J_DIR) $(PTIIDIST)/vendors/launch4j
 	#
 	# Checking to be sure we can build
 	#(cd $(PTIIDIST); PTII=`pwd` ./configure; ant)
@@ -1190,6 +1189,7 @@ $(PTII_SRC_JAR): src_jar
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	rm -rf src_jar/ptII$(VERSION)/vendor/izpack* src_jar/ptII$(VERSION)/vendor/launch4j*
 	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
@@ -3395,17 +3395,17 @@ indent_all:
 # IzPack is the installer we use
 # Download from http://www.izforge.com/izpack/downloads
 
-#IZPACKDIR=c:/Program Files/IzPack
-IZPACKDIR=$(PTIIHOME)/vendors/izpack
-IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
+#IZPACK_DIR=c:/Program Files/IzPack
+IZPACK_DIR=$(PTIIHOME)/vendors/izpack
+IZPACK_COMPILE=$(IZPACK_DIR)/bin/compile
 IZPACK_COMMAND=IZPACK_OPTS=-Djava.util.logging.config.file=$(GENDIR)/izpackLogging.txt sh "$(IZPACK_COMPILE)" -o
 
-IZPACK_PLIST=$(IZPACKDIR)/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist
+IZPACK_PLIST=$(IZPACK_DIR)/utils/wrappers/izpack2app/Mac-App-Template/Contents/Info.plist
 
 # Fix up izpack Installation by updating Info.plist for the Mac.
 # We currently require Java 1.8 and only Java 1.8 for the installer.
 # See https://izpack.atlassian.net/browse/IZPACK-1562
-izpackFix:
+izpackFix: $(IZPACK_DIR)
 	@echo ""
 	@echo "izpackFix:"
 	@echo "Changing the Info.plist for the Mac installer app to require Java 1.8."
@@ -3421,7 +3421,7 @@ izpackFix:
 # To build it use: make PTIIHOME=$PTII IzpackSetup.class
 # See https://izpack.atlassian.net/wiki/display/IZPACK/Executing+a+Java+Class+with+ProcessPanel
 IzpackSetup.class: IzpackSetup.java
-	javac -classpath `ls -1 $(IZPACKDIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACKDIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
+	javac -classpath `ls -1 $(IZPACK_DIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACK_DIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
 
 izpacksetup.jar: izpackFix IzpackSetup.class
 	$(JAR) cf $@ IzpackSetup.class
@@ -3434,18 +3434,18 @@ izpacksetup.jar: izpackFix IzpackSetup.class
 #   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.1 foo
 # :-|
 make_izpack: $(IZPACK_COMPILE)
-$(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
-	 cd $(PTIIHOME)/vendors/izpack/src; ant dist
+$(IZPACK_COMPILE): $(IZPACK_DIR)
+	 cd $(IZPACK_DIR)/src; ant dist
 
 # Download IzPack
-$(PTIIHOME)/vendors/izpack:
+$(IZPACK_DIR):
 	sed 's#@@PTII@@#$(PTIIHOME)#' izpackInstallDist.xml > izpackInstall.xml
 	if [ ! -f $(PTIIHOME)/vendors/izpack-dist-5.1.2.jar ]; then \
 		echo "Downloading izpack"; \
 		wget --quiet https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.1.2/izpack-dist-5.1.2.jar -O $(PTIIHOME)/vendors/izpack-dist-5.1.2.jar; \
         fi
 	(cd $(PTIIHOME)/vendors; java -jar izpack-dist-5.1.2.jar $(PTIIHOME)/adm/gen-$(PTII_MAJOR_VERSION)/izpackInstall.xml)
-	rm -f izpackInstall.xml
+	#rm -f izpackInstall.xml
 
 # It is necessary to this before create the Windows and Mac setup jar files.
 cleanSrc:
@@ -3460,10 +3460,42 @@ cleanSrc:
 	rm -f src/ptII$(VERSION)/lib/ptII.properties
 
 BOOK_PDF=PtolemyII_DigitalV1_02.pdf
+
+$(PTIIDIST)/jar_dist/ptolemy/matlab/matlab.jar:
+	if [ ! -f $@ ]; then \
+		mkdir -p `dirname $@`; \
+		jar -cf $@ copyright.txt; \
+	fi
+$(PTIIDIST)/ptolemy/matlab/matlab.jar:
+	if [ ! -f $@ ]; then \
+		mkdir -p `dirname $@`; \
+		jar -cf $@ copyright.txt; \
+	fi
+$(PTIIDIST)/jar_dist/ptolemy/matlab/demo/demo.jar:
+	if [ ! -f $@ ]; then \
+		mkdir -p `dirname $@`; \
+		jar -cf $@ copyright.txt; \
+	fi
+$(PTIIDIST)/ptolemy/matlab/demo/demo.jar:
+	if [ ! -f $@ ]; then \
+		mkdir -p `dirname $@`; \
+		jar -cf $@ copyright.txt; \
+	fi
+$(PTIIDIST)/jar_dist/lib/matlab.jar:
+	if [ ! -f $@ ]; then \
+		mkdir -p `dirname $@`; \
+		jar -cf $@ copyright.txt; \
+	fi
+$(PTIIDIST)/lib/matlab.jar:
+	if [ ! -f $@ ]; then \
+		mkdir -p `dirname $@`; \
+		jar -cf $@ copyright.txt; \
+	fi
+
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar izpacksetup.jar
-$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32 izpacksetup.jar
+$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32 izpacksetup.jar $(PTIIDIST)/jar_dist/ptolemy/matlab/matlab.jar $(PTIIDIST)/ptolemy/matlab/matlab.jar $(PTIIDIST)/ptolemy/matlab/demo/demo.jar $(PTIIDIST)/jar_dist/ptolemy/matlab/demo/demo.jar $(PTIIDIST)/jar_dist/lib/matlab.jar $(PTIIDIST)/lib/matlab.jar
 	@echo "#"
 	@echo "# Now building target setup_jar (PTSETUP).jar: $@"
 	@echo "# `date`"
@@ -3529,7 +3561,7 @@ $(CAPECODE_SETUP_64).jar: $(CAPECODE_SETUP_64).xml $(PTIIDIST)/jar_dist $(PTIIDI
 
 
 CLASSPATHSEPARATOR=;
-IZPACK_CLASSDIR=${IZPACKDIR}/lib/compiler.jar${CLASSPATHSEPARATOR}${IZPACKDIR}/lib/installer.jar${CLASSPATHSEPARATOR}
+IZPACK_CLASSDIR=${IZPACK_DIR}/lib/compiler.jar${CLASSPATHSEPARATOR}${IZPACK_DIR}/lib/installer.jar${CLASSPATHSEPARATOR}
 #IZPACK_CLASSDIR=c:/cxh/src/izpack/trunk/src/lib
 ExtractJarFile.class: ExtractJarFile.java
 	javac -classpath "$(IZPACK_CLASSDIR)" $^
@@ -3556,7 +3588,7 @@ L4J_DIR=$(PTIIHOME)/vendors/launch4j
 
 L4J_TAR=launch4j-3.11-linux-x64.tgz
 
-$(PTIIHOME)/vendors/launch4j:
+$(L4J_DIR):
 	cd $(PTIIHOME)/vendors; \
 		wget --quiet 'https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-linux-x64.tgz' -O $(L4J_TAR); \
 		$(TAR) -zxf $(L4J_TAR)
@@ -4000,7 +4032,7 @@ $(CAPECODE_SETUP_LINUX).tar.gz: $(CAPECODE_SETUP_LINUX).jar
 	tar -zcf $@ $<
 
 
-IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
+IZPACK2APP=$(IZPACK_DIR)/utils/wrappers/izpack2app/izpack2app.py
 setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
