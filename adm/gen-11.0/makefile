@@ -353,7 +353,7 @@ JAVADOC=javadoc
 OPENCV_DLL=opencv_java320.dll
 opencv_dll: $(OPENCV_DLL)
 $(OPENCV_DLL):
-	wget https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
+	wget --quiet https://chess.eecs.berkeley.edu/ptexternal/src/opencv_java320.dll
 
 # If you update the NODE_VERSION, then be sure to edit IzpackSetup.java.
 NODE_VERSION=7.10.1
@@ -365,19 +365,19 @@ node:
 NODE_DARWIN = node/node-v$(NODE_VERSION)-darwin-x64.tar.gz
 $(NODE_DARWIN): node
 	if [ ! -f "$@" ]; then \
-		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.gz); \
+		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-darwin-x64.tar.gz); \
 	fi
 
 NODE_LINUX = node/node-v$(NODE_VERSION)-linux-x64.tar.xz
 $(NODE_LINUX): node
 	if [ ! -f "$@" ]; then \
-		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz); \
+		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-linux-x64.tar.xz); \
 	fi
 
 NODE_WIN = node/node-v$(NODE_VERSION)-win-x64.zip
 $(NODE_WIN): node
 	if [ ! -f "$@" ]; then \
-		(cd node; wget https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
+		(cd node; wget --quiet https://nodejs.org/dist/v$(NODE_VERSION)/node-v$(NODE_VERSION)-win-x64.zip); \
 	fi
 
 
@@ -409,7 +409,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN)
 			-X $(GENDIR)/src.ex \
 			-X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
-		(cd $@; $(TAR) -xvpf -)
+		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	#@echo "  tar -X does not seem to work under Cygwin"
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
@@ -441,7 +441,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN)
 		echo "Downloading Jogl for the mac because it is too damn big to check in."; \
 		mkdir $(PTIIHOME)/vendors/jogl; \
 		cd $(PTIIHOME)/vendors/jogl; \
-		wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z; \
+		wget --quiet http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z; \
 		7z x jogamp-all-platforms.7z; \
 	fi
 	mkdir -p $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
@@ -738,7 +738,7 @@ $(PTII_SRC): $(PTII_FULL)
 	rm -rf src/ptII$(VERSION)
 	-mkdir src
 	(cd src; \
-		$(TAR) -xvf $(PTII_FULL); \
+		$(TAR) -xf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
 		echo "PATH: ${PATH}"; \
@@ -800,7 +800,7 @@ $(PTII_SRC): $(PTII_FULL)
 	(cd src; \
 		echo "#  Starting tar of $@"; \
 		rm -f ptII$(VERSION)/build.xml; \
-		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex --exclude bin/vergil -f $(PTII_SRC) ptII$(VERSION); \
+		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex --exclude bin/vergil -f $(PTII_SRC) ptII$(VERSION); \
 		);
 
 ###############
@@ -1661,7 +1661,7 @@ viptos: $(VIPTOS_SRC_TAR)
 viptos.tar: $(VIPTOS_SRC_TAR)
 $(VIPTOS_SRC_TAR): src_jar/viptos$(VIPTOS_VERSION)
 	(cd src_jar; \
-		$(TAR) -cvzf ../viptos$(VIPTOS_VERSION).src.tar.gz \
+		$(TAR) -czf ../viptos$(VIPTOS_VERSION).src.tar.gz \
 		viptos$(VIPTOS_VERSION) \
 	)
 	#cp $(PTIIHOME)/doc/design/viptos.pdf \
@@ -1814,7 +1814,7 @@ PtolemyII_DigitalV1_02.pdf:
 			cp $(HOME)/Downloads/$(BOOK_PDF) .; \
 		else \
 			echo "Downloading $(BOOK_URL)"; \
-			wget $(BOOK_URL); \
+			wget --quiet $(BOOK_URL); \
 		fi; \
         fi
 
@@ -3442,7 +3442,7 @@ $(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
 $(PTIIHOME)/vendors/izpack:
 	mkdir $(PTIIHOME)/vendors/izpack
 	cd $(PTIIHOME)/vendors/izpack; \
-		wget https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.0.10/izpack-dist-5.0.10.jar; \
+		wget --quiet https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.0.10/izpack-dist-5.0.10.jar; \
 		java -jar $(IZPACK_TAR)
 
 # It is necessary to this before create the Windows and Mac setup jar files.
@@ -3555,7 +3555,7 @@ L4J_DIR=$(PTIIHOME)/vendors/launch4j
 L4J_TAR=launch4j-3.0.0-pre2-solaris-sparc.tgz
 $(PTIIHOME)/vendors/launch4j:
 	cd $(PTIIHOME)/vendors; \
-		wget http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
+		wget --quiet http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
 		$(TAR) -zxf $(L4J_TAR)
 
 
@@ -3656,7 +3656,7 @@ $(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
 			cp $(HOME)/Downloads/$(BOOK_PDF) .; \
 		else \
 			echo "Downloading $(BOOK_URL)"; \
-			wget $(BOOK_URL); \
+			wget --quiet $(BOOK_URL); \
 			if [ -d $(HOME)/Downloads ]; then \
 				cp $(BOOK_PDF) $(HOME)/Downloads; \
 			fi; \
