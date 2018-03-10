@@ -21,9 +21,29 @@ node_js:
   - "7"
 
 install:
+  # Shorter running installations first.
+  
   # libv4l is needed by Bridj for the camera
   -  sudo apt-get install -y libv4l-dev 
 
+  # Install Java3D
+  - sudo apt-get install -y libjava3d-java || true
+
+  # Install JAI.  If the wget fails, then don't stop the build.
+  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true
+  - if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi
+
+  # Install JMF.  If the wget fails, then don't stop the build.
+  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true
+  - if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi
+
+  # Install Sphinx for the speech recognition accessor
+  - mkdir $PTII/vendors/misc/sphinx4
+  - wget -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar' || true
+  - wget -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar' || true
+
+  # Longer running installations
+  
   # For OpenCV.  Sadly, OpenCV 3.x is not available for Ubunty Trusty (14.04) under Travis.
   # In theory, it is possible to use docker and get a more recent version of Ubuntu
   #
@@ -105,20 +125,6 @@ install:
   - sudo ldconfig
   # end of section from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
 
-  # Install Java3D
-  - sudo apt-get install -y libjava3d-java || true
-
-  # Install JAI.  If the wget fails, then don't stop the build.
-  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true
-  - if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi
-
-  # Install JMF.  If the wget fails, then don't stop the build.
-  - wget --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true
-  - if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi
-
-  # Install Sphinxs for the speech recognition accessor
-  - wget -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar' || true
-  - wget -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar'
 
   - env
   - ./configure --enable-verbose
