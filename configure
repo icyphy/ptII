@@ -5968,6 +5968,9 @@ $as_echo_n "checking for Eclipse installation... " >&6; }
 	    TMP_ECLIPSE_DIR=/Applications/eclipse
         else
             TMP_ECLIPSE_DIR=`ls -1dr /Applications/[Ee]clipse* | head -1`
+            if ! test -d "$TMP_ECLIPSE_DIR" -a -d /usr/lib/eclipse; then
+                TMP_ECLIPSE_DIR=/usr/lib/eclipse
+            fi
         fi
 
 # Check whether --with-eclipse was given.
@@ -6078,13 +6081,14 @@ $as_echo_n "checking for jars used by backtracking in $ECLIPSE_DIR... " >&6; }
 	    Linux) ECLIPSE_SWT_JAR=eclipse.swt.gtk.linux
 		;;
 	    *) ECLIPSE_SWT_JAR=eclipse.swt.win32.win32.x86_
+	       ECLIPSE_JDT_UI_JAR=eclipse.jdt.ui_
 		;;
 	    esac
 
 	    # jars="jdt.core osgi resources runtime"
 	    # jdt.core core.runtime_ are needed to build backtrack
 	    # osgi_ and resources_ are needed to run the tests in backtrack
-	    jars="eclipse.jdt.core_ eclipse.core.runtime_ eclipse.osgi_ eclipse.core.resources_ eclipse.equinox.common_ eclipse.core.jobs_ eclipse.core.contenttype_ eclipse.equinox.preferences_ eclipse.text_ eclipse.ui.workbench_ eclipse.jface_ $ECLIPSE_SWT_JAR eclipse.jdt.ui_ eclipse.jface.text_ eclipse.ui.workbench.texteditor_ eclipse.ui.editors_ eclipse.core.commands_ org.eclipse.equinox.registry_ eclipse.ui.console_ eclipse.ui.forms_ eclipse.ui.ide_"
+	    jars="eclipse.jdt.core_ eclipse.core.runtime_ eclipse.osgi_ eclipse.core.resources_ eclipse.equinox.common_ eclipse.core.jobs_ eclipse.core.contenttype_ eclipse.equinox.preferences_ eclipse.text_ eclipse.ui.workbench_ eclipse.jface_ $ECLIPSE_SWT_JAR $ECLIPSE_JDT_UI eclipse.jface.text_ eclipse.ui.workbench.texteditor_ eclipse.ui.editors_ eclipse.core.commands_ org.eclipse.equinox.registry_ eclipse.ui.console_ eclipse.ui.forms_ eclipse.ui.ide_"
 	    ANT_ECLIPSE_CLASSPATH=
 	    eclipsejarpath=
 	    for jar in $jars
@@ -6130,12 +6134,13 @@ $as_echo "ok" >&6; }; fi
 		Linux)	ECLIPSE_SWT_JAR=eclipse.swt.gtk.linux
 			;;
 		*)	ECLIPSE_SWT_JAR=eclipse.swt.win32.win32.x86_
+		        ECLIPSE_JDT_UI_JAR=eclipse.jdt.ui_
 			PT_ECHO=echo
 			;;
 		esac
 	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Eclipse jars used with javadoc" >&5
 $as_echo_n "checking for Eclipse jars used with javadoc... " >&6; }
-		docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_ $ECLIPSE_SWT_JAR"
+		docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ $ECLIPSE_SWT_JAR $ECLIPSE_JDT_UI_JAR"
 		# eclipse.core.runtime_ org.eclipse.equinox.common_ org.eclipse.core.resources_ org.eclipse.core.jobs_
 	        PTBACKTRACK_ECLIPSE_DOC_JARS=
 	        for jar in $docjars
