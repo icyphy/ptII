@@ -170,8 +170,6 @@ PTII_TOPDIR=	.cshrc \
 		vergilSpace.jnlp.in \
 		vergilVisualSense.jnlp.in
 
-# Location of the SVN Repository
-SVN_REPOSITORY = file:///home/svn/chess/ptII/trunk
 
 ##############################################################################
 # Files to be produced
@@ -392,10 +390,10 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN)
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	mkdir -p $@
-	@echo "svn update in $(PTIIHOME)"
-	(cd $(PTIIHOME); svn update)
-	@echo "svn update in $(PTIIHOME)/org/terraswarm/accessor/accessors/web"
-	(cd $(PTIIHOME)/org/terraswarm/accessor/accessors/web; svn update)
+	@echo "git pull in $(PTIIHOME)"
+	(cd $(PTIIHOME); git pull)
+	@echo "git pull in $(PTIIHOME)/org/terraswarm/accessor/accessors/web"
+	(cd $(PTIIHOME)/org/terraswarm/accessor/accessors/web; git pull)
 	#@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
 	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
@@ -405,6 +403,7 @@ $(PTIIDIST): $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN)
 		$(TAR) -c --no-anchored \
 			--exclude="CVS" \
 			--exclude=",svn" \
+			--exclude=".git" \
 			--exclude="*codeDoc*" \
 			-X $(GENDIR)/src.ex \
 			-X $(GENDIR)/src1.ex \
@@ -1830,7 +1829,7 @@ ptII$(WINDOWS_VERSION)_src.zip:
 
 # Make the distribution, run htmlchek
 htmlchek:
-	-(cd $(PTIIHOME); svn update)
+	-(cd $(PTIIHOME); git pull)
 	$(MAKE) clean
 	$(MAKE)
 	(cd $(PTIIDIST); PTII=$(PTIIDIST) make htmlchek) > $(PTIIDIST)/htmlchek.out 2>&1
@@ -1880,7 +1879,7 @@ ptbuild:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); rm configure; svn update; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.5" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); rm configure; git pull; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.5" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
@@ -2616,7 +2615,7 @@ remote1distjsrestore:
 	    fi ; \
 	done ; \
 	# Try to get rid of JavaScope files
-	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack; rm -rf automatic util; svn update)
+	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack; rm -rf automatic util; git pull)
 
 # Build the docs
 remote1doc:
@@ -2863,7 +2862,7 @@ remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 
 
 #####################################################################
-# Build on a remote host by doing a svn checkout
+# Build on a remote host by doing a git clone
 
 # Host to run on
 REMOTE3HOST = moog
@@ -2905,11 +2904,11 @@ remote3nuke:
 remote3ptiidist: $(REMOTE3PTIIDIST)
 $(REMOTE3PTIIDIST):
 	@echo "#"
-	@echo "# Now doing a svn checkout on `hostname`"
+	@echo "# Now doing a git clone on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE3HOME); svn checkout $(SVN_REPOSITORY) )
+	(cd $(REMOTE3HOME); git clone --depth=50 --branch=master --single-branch https://github.com/icyphy/ptII )
 
 
 # clean the remote tree
