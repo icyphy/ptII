@@ -925,7 +925,11 @@ full_docs: $(FULL_DOCS)
 codeDoc.jar: $(FULL_DOCS)
 	"$(JAR)" $(JARFLAGS) -cvf $@ -C $(ROOT) doc/codeDoc
 
-codeDoc/tree.html:	../ptolemy/plot/*.java \
+doclets/RatingTaglet.class:
+	(cd doclets; $(MAKE))
+
+codeDoc/tree.html: doclets/RatingTaglet.class \
+			../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
 			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
