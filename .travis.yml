@@ -53,17 +53,14 @@ install:
   # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Travis#OpenCV
   #
   # From https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
-  - sudo apt-get install -y cmake pkg-config ninja-build
 
   # Install some OpenCV dependencies
-  - sudo apt-get install -y zlib1g-dev libjpeg8-dev libpng12-dev libtiff5-dev libjasper-dev libopenexr-dev
-  - sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev
-  - sudo apt-get install -y libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
-  - sudo apt-get install -y libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev
-  - sudo apt-get install -y libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
+  - mkdir $HOME/logs && mkdir $HOME/cv && pushd $HOME/cv
+
+  # Redirect output of long running commands to avoid the 10k Travis limit
+  - sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libpng12-dev libtiff5-dev libjasper-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev >& $HOME/logs/opencv_apt
 
   # Build OpenCV 3.4.1 from source (opencv + opencv_contrib)
-  - mkdir $HOME/cv && pushd $HOME/cv
   - wget --quiet -O opencv-3.4.1.tar.gz https://github.com/opencv/opencv/archive/3.4.1.tar.gz
   - wget --quiet -O opencv_contrib-3.4.1.tar.gz https://github.com/opencv/opencv_contrib/archive/3.4.1.tar.gz
   - tar -zxf opencv-3.4.1.tar.gz > /dev/null
@@ -118,9 +115,9 @@ install:
       -DCMAKE_BUILD_TYPE:STRING=Release
       -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_PREFIX
       -DOPENCV_ENABLE_NONFREE:BOOL=ON
-      -DOPENCV_EXTRA_MODULES_PATH:PATH=$HOME/cv/opencv_contrib-3.4.1/modules $HOME/cv/opencv-3.4.1
-  - cmake --build .
-  - sudo cmake --build . --target install
+      -DOPENCV_EXTRA_MODULES_PATH:PATH=$HOME/cv/opencv_contrib-3.4.1/modules $HOME/cv/opencv-3.4.1 >& $HOME/logs/opencv_configure.txt
+  - cmake --build . >& $HOME/logs/opencv_cmake.txt
+  - sudo cmake --build . --target install >& $HOME/logs/opencv_install.txt
   - popd
 
   # finish OpenCV installation
@@ -130,15 +127,16 @@ install:
   - sudo ldconfig
   # end of section from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
 
-
   - env
   - ./configure --enable-verbose
 
 
 script:
-  - ant clean
+  - ant clean >& $HOME/logs/ant_clean.txt
   - ant build-all
-  - ant javadoc
-  - ant jsdoc
+  - ant javadoc >& $HOME/logs/ant_javadoc.txt
+  - ant jsdoc >& $HOME/logs/ant_jsdoc.txt
   - ant test.report
+
+# FIXME: Copy the $HOME/logs directory back to Github.
 
