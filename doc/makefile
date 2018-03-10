@@ -1038,7 +1038,7 @@ PTDOCPACKAGES = $(ALLPACKAGES)
 # The ptdoc doclet (does not work yet) 
 PTDOCLET = -doclet doc.doclets.PtDoclet
 # Path relative to $PTII
-PTDOCFLAGS = -d doc/codeDoc
+PTDOCFLAGS = -d doc/codeDoc -quiet
 ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
 codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
