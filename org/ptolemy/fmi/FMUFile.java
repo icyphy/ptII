@@ -695,7 +695,7 @@ public class FMUFile {
         }
         topDirectoryFile.deleteOnExit();
         String topDirectory = topDirectoryFile.getCanonicalPath();
-        System.out.println("FMUFile: Extracting to " + topDirectory);
+        // System.out.println("FMUFile: Extracting to " + topDirectory);
         List<File> files = new LinkedList<File>();
         FileInputStream fileInputStream = null;
         ZipInputStream zipInputStream = null;
