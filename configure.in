@@ -4398,9 +4398,9 @@ JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
     PT_MSG_STATUS([$JAVA3D_USER_DIR is not present,
-    so we need not find Java 3D.])
+    so we need not find Java3D.])
 else
-    AC_MSG_CHECKING([for Java 3D])
+    AC_MSG_CHECKING([for Java3D])
     AC_ARG_WITH(java3D, [  --with-java3D=DIR       use j3dcore.jar, j3dutils.jar,
                           and vecmath.jar from DIR.  Usually Java 3D is
 			  installed in the JDK in jre/lib/ext or $PTII/vendors/j3d],
@@ -4423,6 +4423,10 @@ else
        fi
        if test -d "$directory"; then
        	  JAVA3D_DIR="$directory"
+       else 
+          if test -f /usr/share/java/j3dcore.jar; then
+              JAVA3D_DIR=/usr/share/java
+          fi
        fi
     fi
     if test -f "$JAVA3D_DIR/j3dcore.jar" -a -f "$JAVA3D_DIR/j3dutils.jar" -a -f "$JAVA3D_DIR/vecmath.jar"; then
