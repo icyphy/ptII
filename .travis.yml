@@ -42,6 +42,10 @@ install:
   - wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar' || true
   - wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar' || true
 
+  # Needed for building installers.
+  - sudo ln -s /bin/tar /usr/local/bin/tar
+  - ls -l /usr/local/bin/tar
+  
   # Longer running installations
   
   # For OpenCV.  Sadly, OpenCV 3.x is not available for Ubunty Trusty (14.04) under Travis.
