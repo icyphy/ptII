@@ -10822,12 +10822,12 @@ JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JAVA3D_USER_DIR is not present,
-    so we need not find Java 3D." >&5
+    so we need not find Java3D." >&5
 $as_echo "$JAVA3D_USER_DIR is not present,
-    so we need not find Java 3D." >&6; }; fi
+    so we need not find Java3D." >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java 3D" >&5
-$as_echo_n "checking for Java 3D... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java3D" >&5
+$as_echo_n "checking for Java3D... " >&6; }
 
 # Check whether --with-java3D was given.
 if test "${with_java3D+set}" = set; then :
@@ -10853,6 +10853,10 @@ fi
        fi
        if test -d "$directory"; then
        	  JAVA3D_DIR="$directory"
+       else
+          if test -f /usr/share/java/j3dcore.jar; then
+              JAVA3D_DIR=/usr/share/java
+          fi
        fi
     fi
     if test -f "$JAVA3D_DIR/j3dcore.jar" -a -f "$JAVA3D_DIR/j3dutils.jar" -a -f "$JAVA3D_DIR/vecmath.jar"; then
