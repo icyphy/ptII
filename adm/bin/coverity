@@ -12,7 +12,7 @@ fi
 export PTII=$coverityPtII/ptII
 if [ ! -d $PTII ]; then
     cd $coverityPtII
-    svn co  https://repo.eecs.berkeley.edu/svn-anon/projects/eal/ptII/trunk ptII
+    git clone --depth=50 --branch=master https://github.com/icyphy/ptII.git
 fi
 
 if [ ! -d $PTII ]; then
