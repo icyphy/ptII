@@ -923,7 +923,7 @@ javadocs: full_docs
 full_docs: $(FULL_DOCS)
 
 codeDoc.jar: $(FULL_DOCS)
-	"$(JAR)" $(JARFLAGS) -cvf $@ -C $(ROOT) doc/codeDoc
+	"$(JAR)" $(JARFLAGS) -cf $@ -C $(ROOT) doc/codeDoc
 
 doclets/RatingTaglet.class:
 	(cd doclets; $(MAKE))
@@ -1079,7 +1079,7 @@ bcvtb_docs: $(BCVTB_DOCS)
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
 codeDocBcvtb.jar: $(BCVTB_DOCS)
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocBcvtb doc/codeDoc
+	"$(JAR)" -cf $@ -C $(ROOT)/doc/codeDocBcvtb doc/codeDoc
 
 # We do something crafty here and create a tree of html files
 # that we can substitute in for the usual doc/codeDoc tree in the
@@ -1128,7 +1128,7 @@ capecode_docs: $(CAPECODE_DOCS)
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
 codeDocCapeCode.jar: $(CAPECODE_DOCS)
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocCapeCode doc/codeDoc
+	"$(JAR)" -cf $@ -C $(ROOT)/doc/codeDocCapeCode doc/codeDoc
 
 # We do something crafty here and create a tree of html files
 # that we can substitute in for the usual doc/codeDoc tree in the
@@ -1178,7 +1178,7 @@ hyvisual_docs: $(HYVISUAL_DOCS)
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
 codeDocHyVisual.jar: $(HYVISUAL_DOCS)
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocHyVisual doc/codeDoc
+	"$(JAR)" -cf $@ -C $(ROOT)/doc/codeDocHyVisual doc/codeDoc
 
 # We do something crafty here and create a tree of html files
 # that we can substitute in for the usual doc/codeDoc tree in the
@@ -1228,7 +1228,7 @@ viptos_docs: $(VIPTOS_DOCS)
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
 codeDocViptos.jar: $(VIPTOS_DOCS)
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocViptos doc/codeDoc
+	"$(JAR)" -cf $@ -C $(ROOT)/doc/codeDocViptos doc/codeDoc
 
 # We do something crafty here and create a tree of html files
 # that we can substitute in for the usual doc/codeDoc tree in the
@@ -1279,7 +1279,7 @@ visualsense_docs: $(VISUALSENSE_DOCS)
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
 codeDocVisualSense.jar: $(VISUALSENSE_DOCS)
-	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocVisualSense doc/codeDoc
+	"$(JAR)" -cf $@ -C $(ROOT)/doc/codeDocVisualSense doc/codeDoc
 
 # We do something crafty here and create a tree of html files
 # that we can substitute in for the usual doc/codeDoc tree in the
