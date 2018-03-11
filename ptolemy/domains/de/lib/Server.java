@@ -287,11 +287,13 @@ public class Server extends DETransformer {
         newJob.queueCounter = _queueCounter;
         _queue.add(newJob);
         ++_queueCounter;
+        updateNextTimeFree();
     }
 
-    private void updateNextTimeFree(Time now) {
+    private void updateNextTimeFree() {
         Job job = this.peekQueue();
         if (job != null) {
+            Time now = getDirector().getModelTime();
             _nextTimeFree = now.add(job.serviceTimeRemaining);
         }
     }
@@ -301,6 +303,7 @@ public class Server extends DETransformer {
         if (job == null) {
             throw new IllegalActionException(this, "Queue is empty");
         }
+        updateNextTimeFree();
         return job;
     }
 
@@ -323,8 +326,7 @@ public class Server extends DETransformer {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        updateNextTimeFree(currentTime);
+        updateNextTimeFree();
         if (!_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
             if (_debugging) {
                 _debug("In postfire, requesting a refiring at time "
