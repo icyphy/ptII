@@ -57,7 +57,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	haarcascade_eye.xml \
-	haarcascade_frontalface_default.xml
+	haarcascade_frontalface_default.xml \
+	travis_build_opencv.sh 
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
