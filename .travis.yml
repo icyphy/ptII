@@ -54,7 +54,7 @@ install:
   #
 
   # Use the Travis cache, see https://docs.travis-ci.com/user/caching
-  sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+  - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   
   # Here's an alternative way to build OpenCV.sh
@@ -153,7 +153,6 @@ script:
 
 # See https://docs.travis-ci.com/user/caching
 cache:
-  timeout: 1000
   directories:
     - $HOME/usr/installed-version
     - $HOME/usr/include
