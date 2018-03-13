@@ -20,8 +20,11 @@ node_js:
   - "7"
 
 install:
+  # We keep logs in a directory to avoid the 10k line problem.
+  mkdir $HOME/logs  
+
   # Shorter running installations first.
-  
+
   # libv4l is needed by Bridj for the camera
   -  sudo apt-get install -y libv4l-dev 
 
