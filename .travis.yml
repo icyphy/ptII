@@ -28,7 +28,11 @@ node_js:
 install:
   # We keep logs in a directory to avoid the 10k line problem.
   - mkdir $HOME/logs
-
+  - echo $HOME
+  - echo "Created by Travis-ci" > $HOME/README.md
+  - ls -l $HOME
+  - ls -l $HOME/logs
+  
   # Shorter running installations first.
 
   # libv4l is needed by Bridj for the camera
@@ -57,7 +61,7 @@ install:
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   # Display environment variables
-  - env
+  - env | sort
   - ls -l vendors
   - ./configure --enable-verbose
 
@@ -65,7 +69,7 @@ script:
   - ant clean >& $HOME/logs/ant_clean.txt
   - if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then ant build-all; fi
   - if [ ! -z "$PT_TRAVIS_DOCS" ]; then ant javadoc jsdoc; fi
-  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers >& $HOME/logs/installers.txt; fi
+  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers >& $HOME/logs/installers.txt; ls $PTII/adm/gen-11.0; fi
   - if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then ant test.capecode.xml >& $HOME/logs/test.capecode.xml.txt; fi
   - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short >& $HOME/logs/test.report.short.txt; fi
 
@@ -77,14 +81,30 @@ cache:
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "cxbrooks"
+  - git config --local user.email "cxh@eecs.berkeley.edu"
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+  - ls -l $HOME/logs
+
 deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
-  local-dir: $HOME/logs
-  # keep-history: true
-  on:
-    branch: master
-  verbose: true
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+    local-dir: $HOME/logs
+    # keep-history: true
+    on:
+      branch: master
+    verbose: true
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
+    on:
+      branch: master
+      condition: "$PT_TRAVIS_INSTALLERS == true"
+    skip_cleanup: true    
+
       
 
