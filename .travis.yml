@@ -40,13 +40,13 @@ install:
   # Install JAI.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then \
        wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; \
-       if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi;
+       if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; \
     fi
 
   # Install JMF.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then \
        wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; \
-       if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi
+       if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; \
     fi
 
   # Install Sphinx for the speech recognition accessor
@@ -87,4 +87,14 @@ cache:
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
-# FIXME: Copy the $HOME/logs directory back to Github.
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+  local-dir: $HOME/logs
+  # keep-history: true
+  on:
+    branch: master
+  verbose: true
+      
+
