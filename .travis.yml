@@ -1,10 +1,13 @@
 # Configure requires $PTII
 env:
   matrix:
-    # Run separate jobs with these variables.
+    # Run separate jobs with these variables.  The name of the
+    # variable corresponds with the target name in $PTII/build.xml and
+    # should be alphabetical.
     - PT_TRAVIS_BUILD_ALL=true
     - PT_TRAVIS_DOCS=true
     - PT_TRAVIS_INSTALLERS=true
+    - PT_TRAVIS_TEST_CAPECODE_XML=true
     - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
@@ -49,28 +52,24 @@ install:
 
   # Needed for building installers.
   - sudo ln -s /bin/tar /usr/local/bin/tar
-  - ls -l /usr/local/bin/tar
 
   # Longer running installations
 
-  # For OpenCV.  Sadly, OpenCV 3.x is not available for Ubunty Trusty (14.04) under Travis.
-  # In theory, it is possible to use docker and get a more recent version of Ubuntu
-  # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Travis#OpenCV
-  #
-
-  # Use the Travis cache, see https://docs.travis-ci.com/user/caching
+  # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   # Display environment variables
   - env
+  - ls -l vendors
   - ./configure --enable-verbose
 
 script:
   - ant clean >& $HOME/logs/ant_clean.txt
   - if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then ant build-all; fi
   - if [ ! -z "$PT_TRAVIS_DOCS" ]; then ant javadoc jsdoc; fi
-  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers; fi
-  - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short; fi
+  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers >& $HOME/logs/installers.txt; fi
+  - if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then ant test.capecode.xml >& $HOME/logs/test.capecode.xml.txt; fi
+  - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short >& $HOME/logs/test.report.short.txt; fi
 
 # See https://docs.travis-ci.com/user/caching
 cache:
