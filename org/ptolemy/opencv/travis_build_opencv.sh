@@ -25,7 +25,6 @@ INSTALL_FLAG=$HOME/usr/installed-version/$OPENCV_VERSION
 INSTALL_PREFIX=$HOME/usr
 
 if [ ! -e $INSTALL_FLAG ]; then
-     mkdir $HOME/logs && mkdir $HOME/cv && pushd $HOME/cv
      sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
 
      # sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
@@ -53,7 +52,7 @@ if [ ! -e $INSTALL_FLAG ]; then
         # unzip -q ${TMP}/opencv_contrib.zip
         # rm ${TMP}/opencv_contrib.zip
 
-        mkdir $OPENCV_BUILD
+        mkdir -p $OPENCV_BUILD
     fi
 
     pushd $OPENCV_BUILD
@@ -126,7 +125,7 @@ if [ ! -e $INSTALL_FLAG ]; then
       -DCMAKE_BUILD_TYPE:STRING=Release \
       -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_PREFIX \
       -DOPENCV_ENABLE_NONFREE:BOOL=ON \
-      -DOPENCV_EXTRA_MODULES_PATH:PATH=$OPENCV_CONTRIB ..
+      -DOPENCV_EXTRA_MODULES_PATH:PATH=$OPENCV_CONTRIB $OPENCV_BUILD/..
               
     make install && sudo mkdir -p "$(dirname "$INSTALL_FLAG")" && sudo touch "$INSTALL_FLAG";
     popd
