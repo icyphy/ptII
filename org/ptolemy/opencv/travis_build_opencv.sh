@@ -22,14 +22,15 @@ URL_CONTRIB=https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip
 SRC=$HOME/src
 OPENCV_BUILD=$SRC/opencv-$OPENCV_VERSION/build
 OPENCV_CONTRIB=$SRC/opencv_contrib-$OPENCV_VERSION/modules
-INSTALL_FLAG=$HOME/vendors/opencv/share/OpenCV/java
 INSTALL_PREFIX=$PTII/vendors/opencv
+INSTALL_FLAG=$INSTALL_PREFIX/share/OpenCV/java
+
 
 if [ ! -d $INSTALL_FLAG ]; then
      sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
 
+     # The packages below did not work for me under Ubuntu 17.x:
      # sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
-    TMP=$(mktemp -d)
     if [ ! -d $OPENCV_BUILD ]; then
 	OPENCV_TAR=/tmp/opencv-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_TAR ]; then
@@ -40,21 +41,12 @@ if [ ! -d $INSTALL_FLAG ]; then
 	    wget --quiet -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
 	fi
 
-
 	if [ ! -d $SRC ]; then
 	    mkdir $SRC
 	fi
 
 	(cd $SRC; tar -zxf $OPENCV_TAR)
 	(cd $SRC; tar -zxf $OPENCV_CONTRIB_TAR)
-
-        # curl -sL ${URL}  > ${TMP}/opencv.zip
-        # unzip -q ${TMP}/opencv.zip
-        # rm ${TMP}/opencv.zip
-
-        # curl -sL ${URL_CONTRIB}  > ${TMP}/opencv_contrib.zip
-        # unzip -q ${TMP}/opencv_contrib.zip
-        # rm ${TMP}/opencv_contrib.zip
 
         mkdir -p $OPENCV_BUILD
     fi
