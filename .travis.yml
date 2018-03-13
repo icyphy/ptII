@@ -1,5 +1,7 @@
 # Configure requires $PTII
 env:
+  matrix:
+      - PT_TRAVIS_TEST_REPORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
     - ANT_OPTS=-Xmx1024m
@@ -9,8 +11,7 @@ env:
     - PATH=${PTII}/bin:${PATH}
     - PTII=${TRAVIS_BUILD_DIR}
     - PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
-  matrix:
-    - PT_TRAVIS_TEST_REPORT=true
+
 
 
 language: node_js
@@ -21,12 +22,12 @@ node_js:
 
 install:
   # We keep logs in a directory to avoid the 10k line problem.
-  mkdir $HOME/logs  
+  - mkdir $HOME/logs
 
   # Shorter running installations first.
 
   # libv4l is needed by Bridj for the camera
-  -  sudo apt-get install -y libv4l-dev 
+  -  sudo apt-get install -y libv4l-dev
 
   # Install Java3D
   - sudo apt-get install -y libjava3d-java || true
@@ -47,9 +48,9 @@ install:
   # Needed for building installers.
   - sudo ln -s /bin/tar /usr/local/bin/tar
   - ls -l /usr/local/bin/tar
-  
+
   # Longer running installations
-  
+
   # For OpenCV.  Sadly, OpenCV 3.x is not available for Ubunty Trusty (14.04) under Travis.
   # In theory, it is possible to use docker and get a more recent version of Ubuntu
   # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Travis#OpenCV
@@ -58,7 +59,7 @@ install:
   # Use the Travis cache, see https://docs.travis-ci.com/user/caching
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
-  
+
   # Here's an alternative way to build OpenCV.sh
   # # From https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
 
@@ -162,4 +163,3 @@ cache:
     - $HOME/usr/lib
 
 # FIXME: Copy the $HOME/logs directory back to Github.
-
