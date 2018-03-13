@@ -150,12 +150,20 @@
     <exclude name="**/junit/JUnitAuto32Test.*" />
   </patternset>
 
-  <!-- Tests for Cape Code. -->
-  <patternset id="test.capeCode.includes">
+  <!-- Tests for Cape Code. See
+       $PTII/org/terraswarm/accessor/accessors/web/build.xml for
+       non-CapeCode tests.-->
+  <patternset id="test.capecode.includes">
     <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
     <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
   </patternset>
   
+  <!-- Exclude Cape Code tests from short, long and longest. -->
+  <patternset id="test.capecode.excludes">
+    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
+    <include name="**/org/terraswarm/accessor/test/junit/JUnitTclTest.*" />
+  </patternset>
+
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     @ANT_EXCLUDE_TESTS@
@@ -980,6 +988,7 @@ For example:
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -992,12 +1001,12 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capeCode"
+  <target name="test.capecode"
 	  description="Run the Cape Code tests.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capeCode ==
+      ==test.capecode ==
       This target runs the Cape Code accessors tests
       timeout = ${timeout.long} milliseconds
     </echo>
@@ -1014,7 +1023,7 @@ For example:
       <batchtest filtertrace="off">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capeCode.includes" />
+	  <patternset refid="test.capecode.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1024,12 +1033,12 @@ For example:
     </junit>
   </target>
 
-  <target name="test.capeCode.xml"
+  <target name="test.capecode.xml"
 	  description="Run the Cape Code tests with xml output.">
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
     <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
     <echo>
-      ==test.capeCode ==
+      ==test.capecode ==
       This target runs the Cape Code accessors tests and generates JUnit xml output.
       timeout = ${timeout.long} milliseconds
     </echo>
@@ -1045,7 +1054,7 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <patternset refid="test.capeCode.includes" />
+	  <patternset refid="test.capecode.includes" />
 	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
@@ -1133,6 +1142,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1166,6 +1176,7 @@ For example:
 	  <include name="**/junit/JUnitAuto32Test.*" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	  <!-- Exclude the longest running tests -->
@@ -1233,6 +1244,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1323,6 +1335,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
@@ -1487,6 +1500,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the longest running tests -->
 	  <patternset refid="test.longest.excludes" />
 	</fileset>
@@ -1537,6 +1551,7 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <patternset refid="test.capecode.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
 	</fileset>
