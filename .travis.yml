@@ -1,10 +1,7 @@
 # Configure requires $PTII
 env:
   global:
-    # OpenCV build options
-    - INSTALL_PREFIX=/usr/local
-
-    # Environment variables (in alphabetical order)
+    # Environment variables shared between all builds(in alphabetical order)
     - ANT_OPTS=-Xmx1024m
     - BCVTB_HOME=${TRAVIS_BUILD_DIR}/lbnl
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
@@ -12,6 +9,8 @@ env:
     - PATH=${PTII}/bin:${PATH}
     - PTII=${TRAVIS_BUILD_DIR}
     - PTINYOS_MOMLROOT=${TRAVIS_BUILD_DIR}/vendors/ptinyos/moml
+  matrix:
+    - PT_TRAVIS_TEST_REPORT=true
 
 
 language: node_js
@@ -140,6 +139,7 @@ install:
   # - sudo ldconfig
   # # end of section from https://raw.githubusercontent.com/kyamagu/mexopencv/v3.3.1/.travis.yml
 
+  # Display environment variables
   - env
   - ./configure --enable-verbose
 
@@ -149,7 +149,7 @@ script:
   - ant build-all
   - ant javadoc >& $HOME/logs/ant_javadoc.txt
   - ant jsdoc >& $HOME/logs/ant_jsdoc.txt
-  - ant test.report
+  - if [ ! -z "$PT_TRAVIS_TEST_REPORT ]; then ant test.report; fi
 
 # See https://docs.travis-ci.com/user/caching
 cache:
