@@ -3,7 +3,7 @@ dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
 
 # Version: $Id$
-# Copyright (c) 1997-2017 The Regents of the University of California.
+# Copyright (c) 1997-2018 The Regents of the University of California.
 # All rights reserved. 
 #
 # Permission is hereby granted, without written agreement and without
@@ -4016,7 +4016,7 @@ else
     # If we did not find the jar, then look in few directories.
     if ! test -f "$OPENCV_JAR"; then
         OPENCV_JARS=""
-        OPENCV_DIRS="$PTII/lib /opt/local/share/OpenCV/java /usr/share/OpenCV/java /usr/local/share/OpenCV/java"
+        OPENCV_DIRS="$PTII/vendors/opencv/share/OpenCV/java $PTII/lib /opt/local/share/OpenCV/java /usr/share/OpenCV/java /usr/local/share/OpenCV/java"
         AC_MSG_CHECKING([for opencv-*.jar in $OPENCV_DIRS])
         for OPENCV_DIR in $OPENCV_DIRS
         do
@@ -4025,7 +4025,7 @@ else
                 # If the file is not the bad jar we already tried, then add it to the list
                 if test "$TMP_OPENCV_JAR" != "$OPENCV_BAD_JAR"; then
                     PT_MSG_RESULT($TMP_OPENCV_JAR)
-                    OPENCV_JARS="$TMP_OPENCV_JAR $OPENCV_JARS"
+                    OPENCV_JARS=" $OPENCV_JARS $TMP_OPENCV_JAR"
                 fi
             fi
         done
