@@ -19,12 +19,13 @@ set -eux -o pipefail
 OPENCV_VERSION=${OPENCV_VERSION:-3.4.1}
 URL=https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip
 URL_CONTRIB=https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip
-OPENCV_BUILD=$(pwd)/opencv-$OPENCV_VERSION/build
-OPENCV_CONTRIB=$(pwd)/opencv_contrib-$OPENCV_VERSION/modules
-INSTALL_FLAG=$HOME/usr/installed-version/$OPENCV_VERSION
-INSTALL_PREFIX=$HOME/usr
+SRC=$HOME/src
+OPENCV_BUILD=$SRC/opencv-$OPENCV_VERSION/build
+OPENCV_CONTRIB=$SRC/opencv_contrib-$OPENCV_VERSION/modules
+INSTALL_FLAG=$HOME/vendors/opencv/share/OpenCV/java
+INSTALL_PREFIX=$PTII/vendors/opencv
 
-if [ ! -e $INSTALL_FLAG ]; then
+if [ ! -d $INSTALL_FLAG ]; then
      sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
 
      # sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
@@ -39,10 +40,13 @@ if [ ! -e $INSTALL_FLAG ]; then
 	    wget --quiet -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
 	fi
 
-	tar -zxf $OPENCV_TAR
-	tar -zxf $OPENCV_CONTRIB_TAR
-	pwd
-	ls -l
+
+	if [ ! -d $SRC ]; then
+	    mkdir $SRC
+	fi
+
+	(cd $SRC; tar -zxf $OPENCV_TAR)
+	(cd $SRC; tar -zxf $OPENCV_CONTRIB_TAR)
 
         # curl -sL ${URL}  > ${TMP}/opencv.zip
         # unzip -q ${TMP}/opencv.zip
@@ -133,7 +137,9 @@ if [ ! -e $INSTALL_FLAG ]; then
 
 fi
 
-sudo cp -r $HOME/usr/include/* /usr/local/include/
-sudo cp -r $HOME/usr/lib/* /usr/local/lib/
-sudo sh -c 'echo "$INSTALL_PREFIX/lib" > /etc/ld.so.conf.d/opencv.conf'
+sudo cp -r $INSTALL_PREFIX/include/* /usr/local/include/
+sudo cp -r $INSTALL_PREFIX/lib/* /usr/local/lib/
+sudo cp $INSTALL_PREFIX/share/OpenCV/java/*so /usr/lib/jni/
+sudo sh -c "echo \"$INSTALL_PREFIX/lib\" > /etc/ld.so.conf.d/opencv.conf"
+sudo sh -c "echo \"$INSTALL_PREFIX/share/OpenCV/java\" > /etc/ld.so.conf.d/opencv-java.conf"
 sudo ldconfig
