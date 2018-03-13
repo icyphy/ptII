@@ -158,8 +158,6 @@ script:
 # See https://docs.travis-ci.com/user/caching
 cache:
   directories:
-    - $HOME/usr/installed-version
-    - $HOME/usr/include
-    - $HOME/usr/lib
+    - $PTII/vendors/opencv
 
 # FIXME: Copy the $HOME/logs directory back to Github.
