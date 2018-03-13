@@ -27,11 +27,11 @@ node_js:
 
 install:
   # We keep logs in a directory to avoid the 10k line problem.
-  - mkdir $HOME/logs
+  - mkdir $PTII/logs
   - echo $HOME
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
-  - ls -l $HOME/logs
+  - ls -l $PTII/logs
   
   # Shorter running installations first.
 
@@ -46,7 +46,7 @@ install:
 
   # Install JMF.  If the wget fails, then don't stop the build.
   - ls $PTII/vendors
-  - ls $PIII/vendors/JMF-2.1.1e || true
+  - ls $PTII/vendors/JMF-2.1.1e || true
   - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; fi
 
   # Install Sphinx for the speech recognition accessor
@@ -68,12 +68,12 @@ install:
   - ./configure --enable-verbose
 
 script:
-  - ant clean >& $HOME/logs/ant_clean.txt
+  - ant clean >& $PTII/logs/ant_clean.txt
   - if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then ant build-all; fi
   - if [ ! -z "$PT_TRAVIS_DOCS" ]; then ant javadoc jsdoc; fi
-  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers >& $HOME/logs/installers.txt; ls $PTII/adm/gen-11.0; fi
-  - if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then ant test.capecode.xml >& $HOME/logs/test.capecode.xml.txt; fi
-  - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short >& $HOME/logs/test.report.short.txt; fi
+  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers >& $PTII/logs/installers.txt; tail -100 $PTII/logs/installers.txt; ls $PTII/adm/gen-11.0; fi
+  - if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then ant test.capecode.xml >& $PTII/logs/test.capecode.xml.txt; tail -100 $PTII/logs/test.capecode.xml.txt; fi
+  - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short >& $PTII/logs/test.report.short.txt; tail -100 $PTII/logs/test.report.short.txt fi
 
 # See https://docs.travis-ci.com/user/caching
 cache:
@@ -88,13 +88,16 @@ before_deploy:
   - git config --local user.name "cxbrooks"
   - git config --local user.email "cxh@eecs.berkeley.edu"
   - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
-  - ls -l $HOME/logs
-
+  - echo $PTII
+  - ls -l $PTII/logs
+  - pwd
+  
 deploy:
   - provider: pages
     skip-cleanup: true
     github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
-    local-dir: $HOME/logs
+    # local-dir is relative to the current directory
+    local-dir: logs   
     # keep-history: true
     on:
       branch: master
