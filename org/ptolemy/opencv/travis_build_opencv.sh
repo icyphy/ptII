@@ -16,7 +16,7 @@
 
 set -eux -o pipefail
 
-OPENCV_VERSION=${OPENCV_VERSION:-3.4.0}
+OPENCV_VERSION=${OPENCV_VERSION:-3.4.1}
 URL=https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip
 URL_CONTRIB=https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip
 OPENCV_BUILD=$(pwd)/opencv-$OPENCV_VERSION/build
@@ -24,24 +24,26 @@ OPENCV_CONTRIB=$(pwd)/opencv_contrib-$OPENCV_VERSION/modules
 INSTALL_FLAG=$HOME/usr/installed-version/$OPENCV_VERSION
 INSTALL_PREFIX=$HOME/usr
 
-if [[ ! -e $INSTALL_FLAG ]]; then
+if [ ! -e $INSTALL_FLAG ]; then
      mkdir $HOME/logs && mkdir $HOME/cv && pushd $HOME/cv
      sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
 
      # sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
     TMP=$(mktemp -d)
-    if [[ ! -d $OPENCV_BUILD ]]; then
-	OPENCV_TAR=/tmp/opencv-3.4.1.tar.gz
+    if [ ! -d $OPENCV_BUILD ]; then
+	OPENCV_TAR=/tmp/opencv-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_TAR ]; then
-	    wget --quiet -O $OPENCV_TAR https://github.com/opencv/opencv/archive/3.4.1.tar.gz
+	    wget --quiet -O $OPENCV_TAR https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
 	fi
-	OPENCV_CONTRIB_TAR=/tmp/opencv_contrib-3.4.1.tar.gz
+	OPENCV_CONTRIB_TAR=/tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
-	    wget --quiet -O /tmp/opencv_contrib-3.4.1.tar.gz https://github.com/opencv/opencv_contrib/archive/3.4.1.tar.gz
+	    wget --quiet -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
 	fi
 
 	tar -zxf $OPENCV_TAR
 	tar -zxf $OPENCV_CONTRIB_TAR
+	pwd
+	ls -l
 
         # curl -sL ${URL}  > ${TMP}/opencv.zip
         # unzip -q ${TMP}/opencv.zip
