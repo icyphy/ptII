@@ -159,6 +159,7 @@
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     @ANT_EXCLUDE_TESTS@
+    <exclude name="**/adm/test/junit/*"/>
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGTests.*" />
@@ -1599,7 +1600,9 @@ For example:
     </exec>
   </target>
 
-  <target name="test.report" depends="build, initReports"
+  <target name="test.report" depends="test.report.all"/>
+
+  <target name="test.report.all" depends="build, initReports, installers"
 	  description="Run the all the junit tests by path (**/junit/*.java), results in $PTII/reports.">
     <echo>
       ==test.report==
@@ -1633,6 +1636,59 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}" />
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.report.short" depends="build, initReports"
+	  description="Run the short-running junit tests in a directory or directories, results in $PTII/reports.">
+    <echo>
+      ==test.repor.short==
+      This target runs test specified by a file name and generates 
+      ${junit.formatter} output in ${junit.output.dir}.
+
+      The default is to run all the fairly short-running tests.
+      On a fast machine, these tests take around 30 minutes.
+
+      To run different tests, use -Dtest.batch, for example:
+         ant test.short -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
+
+       test - builds and runs test.short, test.long and test.longest
+       test.32bit - runs the 32-bit JVM tests in auto32/
+       test.long - runs tests that are fairly long (called by the test target)
+       test.longest - runs tests that are longest (called by the test target)
+       test.report.all - runs batch of tests specified by a path with wildcards (output=files)
+       test.report.short - runs tests that are fairly fast, generates JUnit xml
+       test.short - runs tests that are fairly fast (~30 min., called by the test target)
+       test.single target runs single test specified by its class name (output=stdout)
+
+      test.batch = ${test.batch}
+      timeout.long = ${timeout.long}
+    </echo>
+    <junit fork="yes"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <include name="${test.batch}" />
+	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.32bit.excludes" />
+	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}" />
