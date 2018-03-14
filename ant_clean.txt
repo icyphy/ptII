@@ -1,0 +1,10 @@
+Buildfile: /home/travis/build/icyphy/ptII/build.xml
+
+clean:
+     [echo] 
+     [echo]       Removing .class files.  Use 'ant cleanall' to remove files in reports/ and codeDoc/.
+     [echo]       Use 'ant jars.clean' to remove the jar files created by 'ant jars'.      
+     [echo]     
+
+BUILD SUCCESSFUL
+Total time: 1 second
