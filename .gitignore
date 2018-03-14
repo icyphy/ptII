@@ -5,6 +5,7 @@
 
 # File globs
 .*~
+*~
 *.app
 *.class
 *.dll
@@ -18,6 +19,8 @@
 *.out
 *.tmp
 *._*
+\#*
+.\#*
 .classpath
 log.*
 PtolemyII_Digital*.pdf
@@ -37,6 +40,7 @@ __db.*
 /codeDoc
 /confdefs.h
 /config.cache
+/config.log
 /config.status
 /.externalToolBuilders
 /.fbprefs
@@ -49,6 +53,7 @@ __db.*
 /node_modules
 /.project
 /ptKeystore
+/reports
 /signed
 /src
 /svnupdate.txt

@@ -9,9 +9,13 @@
 /IzPack*
 /izpack
 /launch4j
+/jai-*
 /jhdl
+/JMF-*
+/jogl/jogamp-all-platforms*
 /jsdoc
 /openmpi-*
 /mosquitto-*
 /ptinyos
 /spotbugs-*
+/universalJavaApplicationStub
