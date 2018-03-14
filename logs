@@ -1,0 +1,48 @@
+Buildfile: /Users/cxh/src/ptII11.0.devel/build.xml
+
+Main targets:
+
+ build                  Build Ptolemy II by compiling the .java files and possibly the scripts in $PTII/bin.  This is the default ant target.  Run 'ant build-all' to build everything.
+ build-all              Build Ptolemy II by compiling the .java files, the scripts in $PTII/bin and the .c files in $PTII/lbnl
+ build-bin              Run make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
+ build-lbnl             Run make in $PTII/lbnl, which creates executables like cclient.
+ build-subprojects      Build subprojects. ,build-websensor
+ checkstyle             Run checkstyle and find common code style problems.
+ clean                  Remove all the class files.
+ cleanall               Remove all the class files, the ${ptII.reports} directory, any codeDoc directories and runs clean in accessors.
+ doccheck               Run Doccheck (http://java.sun.com/j2se/javadoc/doccheck/) to detect JavaDoc bugs.
+ installers             Build installers by running a test, output goes to stdout.
+ jars                   Create jar files.
+ jars.clean             Remove all the jar files created by 'ant jars'.
+ jars.vergil            Run vergil using jar files.
+ javadoc                Generate javadoc including actor documentation and actor/demo index.
+ jsdoc                  Run jsdoc to generate documentation for JavaScript files.
+ jsdoc-getFromWiki      Attempt to get an Accessors-specific page from the TerraSwarm wiki.
+ jshint                 Run jshint on the .js files.  Install with 'npm install jshint'
+ jshint-checkstyle      Run jshint on the .js files and generate checkstyle output.
+ jshint-install         Install jshint in ${env.HOME} using npm
+ ojdcheck               Ojdcheck - An updated version of DocCheck. See http://github.com/egonw/ojdcheck
+ ptdoc                  Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy
+ reports                Generate non-test reports about the Ptolemy II code base.
+ resignjars             Update the certificate of jar files in signed/**/*.jar and **/signed_*.jar.
+ run                    Invoke the Ptolemy II User Interface (alias for the vergil target)
+ spotbugs               Run Spotbugs
+ test                   Build and run the all the junit tests.
+ test.32bit             Run the 32-bit JVM tests in auto32/..
+ test.capecode          Run the Cape Code tests.
+ test.capecode.xml      Run the Cape Code tests with xml output.
+ test.cobertura         Run code coverage on all the tests
+ test.cobertura.single  Run code coverage on a single test.
+ test.installers        Build installers by running a test, output goes to reports/junit.
+ test.long              Run the long-running junit tests in a directory or directories.
+ test.longest           Run the longest-running junit tests in a directory or directories.
+ test.mocha             Use mocha to test node.js and generate output on stdout.
+ test.mocha.xml         Use mocha to test node.js and generate JUnit compatible xml output.
+ test.report.all        Run the all the junit tests by path (**/junit/*.java), results in $PTII/reports.
+ test.report.short      Run the short-running junit tests in a directory or directories, results in $PTII/reports.
+ test.short             Run the short-running junit tests in a directory or directories.
+ test.single            Run a single JUnit test by classname (ptolemy.actor.lib.test.junit.JUnitTclTest).
+ update                 Update the tree from the SVN repository.
+ update-accessors       Update the org/terraswarm/accessor/accessors from the SVN repository.
+ vergil                 Invoke the Ptolemy II User Interface.  To run a model, use ant vergil -Dmodel=model.xml
+Default target: build
