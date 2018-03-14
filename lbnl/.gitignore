@@ -1,0 +1,13 @@
+/actor/lib/ 
+/actor/lib/net/ 
+/demo/CRoom/cclient
+/demo/CRoom/cclient.dSYM
+/lib/matlab/libbcvtb_thunk_*
+/lib/util/libbcvtb.dylib
+/lib/util/libbcvtb.dylib.dSYM
+/lib/util/libbcvtb.jnilib
+/lib/util/libbcvtb.jnilib.dSYM
+/lib/util/libbcvtb.so
+/test/socket.cfg
+/test/auto/socket.cfg
+/util/ 
