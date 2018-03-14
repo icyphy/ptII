@@ -63,10 +63,25 @@ updateGhPages () {
     fi        
     cp -Rf $1 $2
     git add -f .
-    git commit -m "Lastest javadoc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
+    git commit -m "Lastest successful travis build $TRAVIS_BUILD_NUMBER auto-pushed $1 to $2 in gh-pages."
     git push -fq origin gh-pages
     # rm -rf $TMP
 }
+
+# Below here, the if statements should be in alphabetical order
+# according to variable name.
+
+# These two builds produce less than 10K lines, so we don't save the
+# output to a log file.
+if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then
+    ant build-all;
+fi
+
+if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
+    ant javadoc jsdoc;
+    updateGhPages $PTII/doc/codeDoc doc/codeDoc/
+    updateGhPages $PTII/doc/jsdoc doc/jsdoc/
+fi
 
 # Use this for testing, it quickly runs "ant -p" and then updated the gh-pages repo.
 if [ ! -z "$PT_TRAVIS_P" ]; then
