@@ -1,6 +1,6 @@
 /* Restricted interface to the JavaScript actor.
 
-   Copyright (c) 2014-2016 The Regents of the University of California.
+   Copyright (c) 2014-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -70,7 +70,7 @@ public class RestrictedJavaScriptInterface {
 
     /** Clear the interval with the specified handle, if it has not already executed.
      *  @param handle The interval handle.
-     *  @see #setInterval(Runnable, int)
+     *  @see #setInterval(Runnable, long)
      */
     public void clearInterval(Integer handle) {
         _actor.clearTimeout(handle);
@@ -78,7 +78,7 @@ public class RestrictedJavaScriptInterface {
 
     /** Clear the timeout with the specified handle, if it has not already executed.
      *  @param handle The timeout handle.
-     *  @see #setTimeout(Runnable, int)
+     *  @see #setTimeout(Runnable, long)
      */
     public void clearTimeout(Integer handle) {
         _actor.clearTimeout(handle);
