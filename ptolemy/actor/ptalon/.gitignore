@@ -1,0 +1,6 @@
+/bugs/SendAndReceiveCnt/output
+/demo/MapReduce/*.red
+/demo/SmallWorld/dataOut*.txt
+/demo/ptinyos/SendAndReceiveCnt/output
+/demo/ptinyos/SenseToLeds/output
+/test/auto/*.red
