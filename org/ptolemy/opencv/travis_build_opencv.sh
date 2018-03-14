@@ -26,11 +26,13 @@ INSTALL_PREFIX=$PTII/vendors/opencv
 INSTALL_FLAG=$INSTALL_PREFIX/share/OpenCV/java
 
 
-if [ ! -d $INSTALL_FLAG ]; then
-     sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
+# Install shared libraries necessary for compilation and runtime.  We need liblapack.so.3 etc.
+sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
 
-     # The packages below did not work for me under Ubuntu 17.x:
-     # sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+# The packages below did not work for me under Ubuntu 17.x:
+# sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+
+if [ ! -d $INSTALL_FLAG ]; then
     if [ ! -d $OPENCV_BUILD ]; then
 	OPENCV_TAR=/tmp/opencv-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_TAR ]; then
