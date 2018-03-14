@@ -71,9 +71,9 @@ script:
   - ant clean >& $PTII/logs/ant_clean.txt
   - if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then ant build-all; fi
   - if [ ! -z "$PT_TRAVIS_DOCS" ]; then ant javadoc jsdoc; fi
-  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers >& $PTII/logs/installers.txt; tail -100 $PTII/logs/installers.txt; ls $PTII/adm/gen-11.0; fi
-  - if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then ant test.capecode.xml >& $PTII/logs/test.capecode.xml.txt; tail -100 $PTII/logs/test.capecode.xml.txt; fi
-  - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short >& $PTII/logs/test.report.short.txt; tail -100 $PTII/logs/test.report.short.txt; fi
+  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers | grep -v GITHUB_TOKEN >& $PTII/logs/installers.txt; tail -100 $PTII/logs/installers.txt; ls $PTII/adm/gen-11.0; fi
+  - if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then ant test.capecode.xml | grep -v GITHUB_TOKEN >& $PTII/logs/test.capecode.xml.txt; tail -100 $PTII/logs/test.capecode.xml.txt; fi
+  - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short | grep -v GITHUB_TOKEN >& $PTII/logs/test.report.short.txt; tail -100 $PTII/logs/test.report.short.txt; fi
 
 # See https://docs.travis-ci.com/user/caching
 cache:
