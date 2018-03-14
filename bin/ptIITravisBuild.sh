@@ -57,7 +57,7 @@ updateGhPages () {
     status=$?
     if [ $status -eq 0 ]; then
         if [ ! -d $2 ]; then
-            mkdir $2
+            mkdir -p $2
             echo "$0: Created $2 in [pwd]."
         fi
     fi        
@@ -106,7 +106,8 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
 
     ls $PTII/adm/gen-11.0
     if [ -f $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar ]; then
-        updateGhPages $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar downloads/
+        updateGhPages $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
+        downloads/
     fi
 fi
 
