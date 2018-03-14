@@ -72,7 +72,7 @@ updateGhPages () {
 if [ ! -z "$PT_TRAVIS_P" ]; then
     LOG=$PTII/logs/ant_p.txt
     echo "$0: Output will appear in $LOG"
-    ant -p | grep -v GITHUB_TOKEN >& $LOG
+    ant -p | grep -v GITHUB_TOKEN > $LOG 2>&1
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
@@ -83,13 +83,13 @@ fi
 if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
-    ant installers | grep -v GITHUB_TOKEN >& $LOG
+    ant installers | grep -v GITHUB_TOKEN > $LOG 2>&1
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
     updateGhPages $LOG logs/
 
-    ls $PTII/adm/gen-11.0;
+    ls $PTII/adm/gen-11.0
     if [ -f $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar ]; then
         updateGhPages $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar downloads/
     fi
@@ -99,10 +99,10 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     LOG=$PTII/logs/test.capecode.xml
     echo "$0: Output will appear in $LOG"
-    ant test.capecode.xml | grep -v GITHUB_TOKEN >& $LOG;
+    ant test.capecode.xml | grep -v GITHUB_TOKEN > $LOG 2>&1
 
     echo "$0: Start of last 100 lines of $LOG"
-    tail -100 $PTII/logs/test.capecode.xml.txt;
+    tail -100 $PTII/logs/test.capecode.xml.txt
     updateGhPages $LOG logs/
 fi
 
@@ -110,7 +110,7 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     LOG=$PTII/logs/test.report.short.txt
     echo "$0: Output will appear in $LOG"
-    ant test.report.short | grep -v GITHUB_TOKEN >& $LOG;
+    ant test.report.short | grep -v GITHUB_TOKEN > $LOG 2>&1
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
