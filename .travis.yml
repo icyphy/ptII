@@ -27,7 +27,7 @@ node_js:
 
 install:
   # We keep logs in a directory to avoid the 10k line problem.
-  - mkdir $PTII/logs
+  - mkdir -p $PTII/logs $PTII/reports/junit
   - echo $HOME
   - echo "Created by Travis-ci" > $HOME/README.md
   - ls -l $HOME
@@ -46,6 +46,7 @@ install:
 
   # Install JMF.  If the wget fails, then don't stop the build.
   - ls $PTII/vendors
+  - ls -l $PTII/vendors/opencv/share/OpenCV/java || true
   - ls $PTII/vendors/JMF-2.1.1e || true
   - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; fi
 
@@ -61,6 +62,8 @@ install:
 
   # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
   - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+  - ls -l /usr/lib/jni/
+  - ls -l $PTII/vendors/opencv/share/OpenCV/java/
 
   # Display environment variables
   - env | sort
