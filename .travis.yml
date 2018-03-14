@@ -74,17 +74,6 @@ install:
 script:
   - ant clean >& $PTII/logs/ant_clean.txt
  
-  # These builds do not produce more than 10k lines of output
-  - |
-    if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then \
-      ant build-all; \
-    fi
-
-  - |
-    if [ ! -z "$PT_TRAVIS_DOCS" ]; then \
-      ant javadoc jsdoc;
-    fi
-
   # travis_wait does not help here because we want to redirect the output of cmake.
   # See https://github.com/travis-ci/travis-ci/issues/4190
   - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
