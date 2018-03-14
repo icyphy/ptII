@@ -23,6 +23,7 @@
 .\#*
 .classpath
 log.*
+/logs
 PtolemyII_Digital*.pdf
 tmp
 __db.*
