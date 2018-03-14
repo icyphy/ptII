@@ -72,11 +72,37 @@ install:
 
 script:
   - ant clean >& $PTII/logs/ant_clean.txt
+ 
+  # travis_wait does not help here because we want to redirect the output of cmake.
+  # See https://github.com/travis-ci/travis-ci/issues/4190
+  - while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
   - if [ ! -z "$PT_TRAVIS_BUILD_ALL" ]; then ant build-all; fi
+
   - if [ ! -z "$PT_TRAVIS_DOCS" ]; then ant javadoc jsdoc; fi
-  - if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then ant installers | grep -v GITHUB_TOKEN >& $PTII/logs/installers.txt; tail -100 $PTII/logs/installers.txt; ls $PTII/adm/gen-11.0; fi
-  - if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then ant test.capecode.xml | grep -v GITHUB_TOKEN >& $PTII/logs/test.capecode.xml.txt; tail -100 $PTII/logs/test.capecode.xml.txt; fi
-  - if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then ant test.report.short | grep -v GITHUB_TOKEN >& $PTII/logs/test.report.short.txt; tail -100 $PTII/logs/test.report.short.txt; fi
+
+  - |
+    if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then \
+      (ant installers | grep -v GITHUB_TOKEN >& $PTII/logs/installers.txt) || true; \
+      tail -100 $PTII/logs/installers.txt; \
+      ls $PTII/adm/gen-11.0; \
+    fi
+
+  - |
+    if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then \
+      (ant test.capecode.xml | grep -v GITHUB_TOKEN >& $PTII/logs/test.capecode.xml.txt) || true; \
+      tail -100 $PTII/logs/test.capecode.xml.txt; \
+    fi
+
+  - |
+    if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then \
+      (ant test.report.short | grep -v GITHUB_TOKEN >& $PTII/logs/test.report.short.txt) || true; \
+      tail -100 $PTII/logs/test.report.short.txt; \
+    fi
+
+  # Killing background sleep loop.
+  - kill %1
+
 
 # See https://docs.travis-ci.com/user/caching
 cache:
@@ -97,13 +123,13 @@ before_deploy:
   
 deploy:
   - provider: pages
-    skip-cleanup: true
     github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
     # local-dir is relative to the current directory
     local-dir: logs   
-    # keep-history: true
+    keep-history: true
     on:
       branch: master
+    skip-cleanup: true
     verbose: true
   - provider: releases
     api_key: $GITHUB_TOKEN
@@ -113,6 +139,5 @@ deploy:
       branch: master
       condition: "$PT_TRAVIS_INSTALLERS == true"
     skip_cleanup: true    
-
-      
+    verbose: true
 
