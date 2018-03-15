@@ -101,8 +101,7 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
     
-    # Stop after 46 minutes
-    timeout 2760 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+    timeout 2400 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
@@ -120,8 +119,7 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     LOG=$PTII/logs/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
 
-    # Stop after 46 minutes
-    timeout 2760 ant test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout 2400 ant test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $PTII/logs/test.capecode.xml.txt
