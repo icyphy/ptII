@@ -23,13 +23,17 @@ fi
 
 # Usage: updateGhPages source-file-or-directory directory-in-gh-pages
 
+# Number of seconds to run the subprocess.  Can't be more than 50
+# minutes or 3000 seconds.  We can't use Travis' timeout feature
+# because we want to copy the output to gh-pages.
+TIMEOUT=2700
+
 # This shell procedure copies the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example
 #   updateGhPages logs/installers.txt logs
 # will copy logs/installers.txt to logs in the gh-pages and push it.
 # The reason we need this is because the Travis deploy to gh-pages seems
 # to overwrite everything in the repo.
-
 updateGhPages () {
     if [ -z "$GITHUB_TOKEN" ]; then
         echo "$0: GITHUB_TOKEN was not set, so $1 will not be copied to $2 in the gh-pages repo."
@@ -82,7 +86,6 @@ updateGhPages () {
         fi
     done        
     echo "Done."
-
     set -x
 
     git add -f .
@@ -92,7 +95,7 @@ updateGhPages () {
     rm -rf $TMP
 }
 
-# timeout a process
+# Timeout a process.
 function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
 
 # Below here, the if statements should be in alphabetical order
@@ -125,7 +128,7 @@ if [ ! -z "$PT_TRAVIS_INSTALLERS" ]; then
     LOG=$PTII/logs/installers.txt
     echo "$0: Output will appear in $LOG"
     
-    timeout 2400 ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
+    timeout $TIMEOUT ant installers 2>&1 | grep -v GITHUB_TOKEN > $LOG
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
@@ -143,11 +146,12 @@ if [ ! -z "$PT_TRAVIS_TEST_CAPECODE_XML" ]; then
     LOG=$PTII/logs/test.capecode.xml.txt
     echo "$0: Output will appear in $LOG"
 
-    timeout 2400 ant test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout $TIMEOUT ant build test.capecode.xml 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $PTII/logs/test.capecode.xml.txt
     updateGhPages $LOG logs/
+    ant junitreport
     updateGhPages $PTII/reports/junit reports/
 fi
 
@@ -155,11 +159,12 @@ fi
 if [ ! -z "$PT_TRAVIS_TEST_REPORT_SHORT" ]; then
     LOG=$PTII/logs/test.report.short.txt
     echo "$0: Output will appear in $LOG"
-    ant test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
+    timeout $TIMEOUT ant build test.report.short 2>&1 | grep -v GITHUB_TOKEN > $LOG 
 
     echo "$0: Start of last 100 lines of $LOG"
     tail -100 $LOG
     updateGhPages $LOG logs
+    ant junitreport
     updateGhPages $PTII/reports/junit reports/
 fi
 
