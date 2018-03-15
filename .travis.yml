@@ -106,7 +106,7 @@ before_deploy:
   - ls -l $PTII/logs
   - pwd
   
-# deploy:
+deploy:
   # - provider: pages
   #   github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
   #   # local-dir is relative to the current directory
@@ -116,13 +116,13 @@ before_deploy:
   #     branch: master
   #   skip-cleanup: true
   #   verbose: true
-  # - provider: releases
-  #   api_key: $GITHUB_TOKEN
-  #   file_glob: true
-  #   file: $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
-  #   on:
-  #     branch: master
-  #     condition: "$PT_TRAVIS_INSTALLERS == true"
-  #   skip_cleanup: true    
-  #   verbose: true
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.jar
+    on:
+      branch: master
+      condition: "$PT_TRAVIS_INSTALLERS == true"
+    skip_cleanup: true    
+    verbose: true
 
